@@ -5,7 +5,7 @@
   "description": "Scout PRO v72 · eFootball 2027 · 246 cartas offline, Android e Windows com atualização segura.",
   "main": "desktop/main.cjs",
   "scripts": {
-    "check": "node scripts/check-content.cjs && node scripts/test-mobile-art.cjs && node scripts/verify-release-workflow.cjs",
+    "check": "node scripts/check-content.cjs && node scripts/test-mobile-art.cjs && node scripts/verify-release-workflow.cjs && node scripts/test-performance-v74.cjs",
     "desktop:dev": "electron .",
     "desktop:win": "electron-builder --config electron-builder.config.cjs --win nsis --x64 --publish never",
     "android:init": "npx cap add android",
