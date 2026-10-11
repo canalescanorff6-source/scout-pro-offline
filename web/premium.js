@@ -3,7 +3,7 @@
 const $=(s,root=document)=>root.querySelector(s), $$=(s,root=document)=>Array.from(root.querySelectorAll(s));
 const fold=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 if(document.body.dataset.page==='catalog'){
- const cards=$('.player-card'), search=$('#search'), sort=$('#sort'), styleSelect=$('#style-filter'), count=$('#shown-count'), allcount=$('#all-count'), more=$('#more'), none=$('#none');
+ const cards=$$('.player-card'), search=$('#search'), sort=$('#sort'), styleSelect=$('#style-filter'), count=$('#shown-count'), allcount=$('#all-count'), more=$('#more'), none=$('#none');
  let role='TODOS', rarity='TODAS', style='TODOS', limit=30, filtered=[];
  const buttonState=(root,value)=>{$$('.filter',root).forEach(btn=>{const on=btn.dataset.value===value;btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false')})};
  const apply=()=>{
@@ -17,7 +17,7 @@ if(document.body.dataset.page==='catalog'){
   more.hidden=filtered.length<=limit;none.hidden=filtered.length!==0;
  };
  $$('.filter', $('#roles')).forEach(btn=>btn.addEventListener('click',()=>{role=btn.dataset.value;buttonState($('#roles'),role);limit=30;apply()}));
- $('.filter', $('#rarities')).forEach(btn=>btn.addEventListener('click',()=>{rarity=btn.dataset.value;buttonState($('#rarities'),rarity);limit=30;apply()}));
+ $$('.filter', $('#rarities')).forEach(btn=>btn.addEventListener('click',()=>{rarity=btn.dataset.value;buttonState($('#rarities'),rarity);limit=30;apply()}));
  styleSelect?.addEventListener('change',()=>{style=styleSelect.value;limit=30;apply()});
  search.addEventListener('input',()=>{limit=30;apply()}); sort.addEventListener('change',()=>{limit=30;apply()});
  more.addEventListener('click',()=>{limit+=30;apply()});
