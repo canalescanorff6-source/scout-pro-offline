@@ -29,7 +29,7 @@ function updateCard(html,obj){
  const findJSON=(id)=>{
   const i=scripts.findIndex(tag=>new RegExp('id=["\\x27]'+id+'["\\x27]','i').test(tag));
   if(i<0)throw Error('Script ausente: '+id+' - '+obj.name);
-  const tag=scripts[i],start=tag.indexOf('>')+1,end=tag.toLowerCase().lastIndexOf('</script>');
+  const tag=scripts[i],start=tag.indexOf('>')+1,end=tag.search(/<\/script>$/i);
   return {i,value:JSON.parse(tag.slice(start,end)),start,end};
  };
  const data=findJSON('scout-v68-data'),lab=findJSON('lab-data');
