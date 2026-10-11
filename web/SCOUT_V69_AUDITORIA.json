@@ -3,13 +3,14 @@
   "method": "video-inspired competitive analysis; not attributed pro personal judgement",
   "summary": {
     "micro_pro": 73,
-    "with_pp": 162,
+    "with_pp": 172,
     "native_skills": 130,
     "processed": 246,
     "with_stats": 14,
-    "no_pp": 84,
+    "no_pp": 74,
     "adapt_alert": 55,
-    "extra_confirmed": 16
+    "extra_confirmed": 16,
+    "level_user_entered": 10
   },
   "cards": [
     {
@@ -250,7 +251,7 @@
       "posicao": "DE",
       "estilo_ataque": "Lateral Defensivo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 68,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -260,11 +261,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/007_Sergi_Cardona.html"
+      "arquivo": "fichas/007_Sergi_Cardona.html",
+      "max_level": 35,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 8,
@@ -415,7 +417,7 @@
       "posicao": "AC",
       "estilo_ataque": "Matador",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -431,11 +433,12 @@
         "Cabeceio"
       ],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/012_Ruud_van_Nistelrooij.html"
+      "arquivo": "fichas/012_Ruud_van_Nistelrooij.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 13,
@@ -560,7 +563,7 @@
       "posicao": "DC",
       "estilo_ataque": "Básico",
       "estilo_defesa": "O Destruidor",
-      "pp": null,
+      "pp": 52,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -570,11 +573,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/016_Dayot_Upamecano.html"
+      "arquivo": "fichas/016_Dayot_Upamecano.html",
+      "max_level": 27,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 17,
@@ -621,7 +625,7 @@
       "posicao": "AC",
       "estilo_ataque": "Matador",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 62,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -631,11 +635,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/018_Safee_Sali.html"
+      "arquivo": "fichas/018_Safee_Sali.html",
+      "max_level": 32,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 19,
@@ -903,7 +908,7 @@
       "posicao": "AC",
       "estilo_ataque": "Matador",
       "estilo_defesa": "Foco no Ataque",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -918,11 +923,12 @@
         "Finalização fenomenal"
       ],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/026_Luis_Suarez.html"
+      "arquivo": "fichas/026_Luis_Suarez.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 27,
@@ -1839,7 +1845,7 @@
       "posicao": "SA",
       "estilo_ataque": "Clássico nº 10",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -1850,13 +1856,14 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Raridade em conflito entre captura do jogo e banco externo"
       ],
-      "arquivo": "fichas/050_Lionel_Messi.html"
+      "arquivo": "fichas/050_Lionel_Messi.html",
+      "max_level": 29,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 51,
@@ -2350,7 +2357,7 @@
       "posicao": "PTD",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 36,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -2365,12 +2372,13 @@
         "Chute colocado de longa distância"
       ],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/064_Burchet.html"
+      "arquivo": "fichas/064_Burchet.html",
+      "max_level": 19,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 65,
@@ -2380,7 +2388,7 @@
       "posicao": "PTD",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -2390,12 +2398,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/065_Raphinha.html"
+      "arquivo": "fichas/065_Raphinha.html",
+      "max_level": 29,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 66,
@@ -2441,7 +2450,7 @@
       "posicao": "PTD",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Pressão no ataque",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -2451,12 +2460,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/067_Antoine_Semenyo.html"
+      "arquivo": "fichas/067_Antoine_Semenyo.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 68,
@@ -2579,7 +2589,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Lateral móvel",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 68,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -2589,13 +2599,14 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/071_Ramadhan_Saifullah.html"
+      "arquivo": "fichas/071_Ramadhan_Saifullah.html",
+      "max_level": 35,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 72,
