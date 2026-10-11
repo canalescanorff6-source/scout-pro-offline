@@ -165,7 +165,7 @@ jobs:
           "$ZIPALIGN" -f 4 android/app/build/outputs/apk/release/app-release-unsigned.apk release-out/scout-aligned.apk
           "$APKSIGNER" sign --ks /tmp/scout-release.jks --ks-key-alias "$KEYALIAS" --ks-pass env:KSPASS --key-pass env:KEYPASS --out release-out/ScoutPRO-Android.apk release-out/scout-aligned.apk
           "$APKSIGNER" verify --verbose release-out/ScoutPRO-Android.apk
-          sha256sum release-out/ScoutPRO-Android.apk > release-out/ScoutPRO-Android.apk.sha256
+          (cd release-out && sha256sum ScoutPRO-Android.apk > ScoutPRO-Android.apk.sha256)
           rm -f release-out/scout-aligned.apk
       - name: Arquivar APK de teste
         uses: actions/upload-artifact@v4

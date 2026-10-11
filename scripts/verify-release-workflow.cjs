@@ -16,4 +16,5 @@ if(!winJob.includes('assets/latest.yml')||!winJob.includes('Publicar Windows par
 if(winJob.includes("needs.android.outputs.signed == 'true'"))throw Error('Windows não pode depender da assinatura Android');
 if(!apkJob.includes("if: ${{ needs.android.outputs.signed == 'true' }}"))throw Error('APK oficial precisa de assinatura persistente');
 if(!apkJob.includes('sha256sum -c ScoutPRO-Android.apk.sha256'))throw Error('APK oficial exige verificação SHA256');
+if(!wf.includes('(cd release-out && sha256sum ScoutPRO-Android.apk > ScoutPRO-Android.apk.sha256)'))throw Error('Checksum do APK deve ser relativo ao artefato da Release');
 console.log('PASSOU: Windows publica após CI GREEN sem bloquear por assinatura Android; APK somente assinado.');
