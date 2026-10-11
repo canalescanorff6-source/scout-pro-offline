@@ -9,7 +9,7 @@ if(!document.querySelector('link[href$="scout-premium-v73.css"]')){
  const premiumLink=document.createElement('link');premiumLink.rel='stylesheet';premiumLink.href=(inCard?'../':'')+'scout-premium-v73.css';document.head.appendChild(premiumLink);
 }
 const originalBrand=document.querySelector('.brand .brand-logo');
-if(originalBrand){const logo=document.createElement('img');logo.className='brand-logo-img';logo.alt='Logotipo Scout PRO';logo.src=(inCard?'../':'')+'assets/scout-pro-v75.svg';originalBrand.replaceWith(logo)}
+if(originalBrand){const logo=document.createElement('img');logo.className='brand-logo-img';logo.alt='Logotipo Scout PRO';logo.src=(inCard?'../':'')+'assets/scout-pro-icon-premium-original.png';originalBrand.replaceWith(logo)}
 const home=(inCard?'../index.html':'index.html');
 const homeBtn=bar.querySelector('#scout-home'),backBtn=bar.querySelector('#scout-back');
 homeBtn.href=home+'#catalogo';

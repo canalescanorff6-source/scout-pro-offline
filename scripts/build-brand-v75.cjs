@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),sharp=require('sharp');
-const root=path.resolve(__dirname,'..'),assets=path.join(root,'web/assets'),svg=fs.readFileSync(path.join(assets,'scout-pro-v75.svg'));
+const root=path.resolve(__dirname,'..'),assets=path.join(root,'web/assets'),svg=fs.readFileSync(fs.existsSync(path.join(assets,'scout-pro-icon-premium-original.png'))?path.join(assets,'scout-pro-icon-premium-original.png'):path.join(assets,'scout-pro-v75.svg'));
 (async()=>{
  const sizes=[16,32,48,64,72,96,144,192,256,512],pngs=new Map();
  for(const n of sizes)pngs.set(n,await sharp(svg).resize(n,n).png().toBuffer());
