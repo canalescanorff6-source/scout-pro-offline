@@ -10,7 +10,7 @@ if(document.body.dataset.page==='catalog'){
   const q=fold(search.value.trim());
   filtered=cards.filter(el=>(role==='TODOS'||el.dataset.role===role)&&(rarity==='TODAS'||el.dataset.rarity===rarity)&&fold(el.dataset.search).includes(q));
   const key=sort.value;
-  filtered.sort((a,b)=>key==='alpha'?a.dataset.name.localeCompare(b.dataset.name,'pt-BR'):key==='reverse'?Number(b.dataset.cap)-Number(a.dataset.cap):Number(a.dataset.cap)-Number(b.dataset.cap));
+  filtered.sort((a,b)=>key==='alpha'?a.dataset.name.localeCompare(b.dataset.name,'pt-BR'):key==='reverse'?Number(b.dataset.cap)-Number(a.dataset.cap):key==='position'?((window.SCOUT_POSITION_ORDER?.[a.dataset.position]??99)-(window.SCOUT_POSITION_ORDER?.[b.dataset.position]??99)||Number(a.dataset.cap)-Number(b.dataset.cap)):Number(a.dataset.cap)-Number(b.dataset.cap));
   cards.forEach(el=>el.hidden=true);
   filtered.forEach((el,i)=>{if(i<limit){$('#cards').appendChild(el);el.hidden=false}});
   count.textContent=Math.min(limit,filtered.length);allcount.textContent=filtered.length;

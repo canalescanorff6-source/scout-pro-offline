@@ -2,8 +2,23 @@
 if(document.getElementById('scout-app-bar'))return;
 const repo=String(window.SCOUT_GITHUB_REPO||'').trim();
 const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribute('aria-label','Gerenciamento do Scout PRO');
-bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
+bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
+const inCard=location.pathname.includes('/fichas/');
+if(!document.querySelector('link[href$="scout-premium-v73.css"]')){
+ const premiumLink=document.createElement('link');premiumLink.rel='stylesheet';premiumLink.href=(inCard?'../':'')+'scout-premium-v73.css';document.head.appendChild(premiumLink);
+}
+const originalBrand=document.querySelector('.brand .brand-logo');
+if(originalBrand){const logo=document.createElement('img');logo.className='brand-logo-img';logo.alt='Logotipo Scout PRO';logo.src=(inCard?'../':'')+'assets/scout-pro-mark.svg';originalBrand.replaceWith(logo)}
+const home=(inCard?'../index.html':'index.html');
+const homeBtn=bar.querySelector('#scout-home'),backBtn=bar.querySelector('#scout-back');
+homeBtn.href=home+'#catalogo';
+const oldOrigin=()=>{try{return new URL(document.referrer).origin===location.origin}catch{return false}};
+backBtn.hidden=!inCard&&!oldOrigin();
+backBtn.onclick=()=>{if(history.length>1&&oldOrigin())history.back();else location.href=home+'#catalogo'};
+bar.querySelector('#scout-top').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+if(!inCard)homeBtn.href='#catalogo';
+
 const label=document.getElementById('scout-update-label'),btn=document.getElementById('scout-update');
 const notify=s=>{label.textContent=s;label.title=s};
 const getKeys=()=>Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:'));
