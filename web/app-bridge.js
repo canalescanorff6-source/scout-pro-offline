@@ -59,6 +59,12 @@ else{btn.onclick=()=>onlineUpdate(false);setTimeout(()=>{if(navigator.onLine)onl
 if(document.body?.dataset.page==='detail'){
  const css=document.createElement('link');css.rel='stylesheet';css.href='../scout-engine-v74.css';document.head.appendChild(css);
  const script=document.createElement('script');script.src='../scout-engine-v74.js';document.body.appendChild(script);
+ // V80: auditoria por carta + experimento offline; não substitui as builds existentes.
+ const reviewCss=document.createElement('link');reviewCss.rel='stylesheet';reviewCss.href='../performance-review-v80.css';document.head.appendChild(reviewCss);
+ const core=document.createElement('script');core.src='../performance-core-v80.js';
+ core.onload=()=>{const review=document.createElement('script');review.src='../performance-review-v80.js';document.body.appendChild(review)};
+ core.onerror=()=>console.warn('Scout V80: motor de avaliação não carregado');
+ document.body.appendChild(core);
 }
 (()=>{
 if(!document.querySelector('link[data-scout-favicon]')){
