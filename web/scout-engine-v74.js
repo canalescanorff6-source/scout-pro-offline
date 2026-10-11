@@ -5,7 +5,8 @@ let d,l;try{d=JSON.parse(s.textContent);l=JSON.parse(ls.textContent)}catch(e){co
 const escape=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const pmap={AC:'CA',CA:'CA',SA:'SA',PTD:'PTD',PTE:'PTE',MO:'MAT',MAT:'MAT',MLD:'MLD',MLE:'MLE',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',ZC:'ZG',DC:'ZG',ZG:'ZG',GR:'GO',GO:'GO'};
-const position=pmap[d.shown_position]||pmap[d.role_used]||'MLG', style=String(d.attack_style||'Não confirmado');
+const position=pmap[d.shown_position]||pmap[d.role_used]||'MLG', style=String(d.playing_style||(d.attack_style==='Básico'?d.defence_style:d.attack_style)||'Não confirmado');
+const styleDisplay=d.style_conflict?'Conflito de cadastro: '+[d.attack_style,d.defence_style].join(' / ')+' — conferir no jogo':style;
 const roles={
 CA:['Tabelar no corredor central e atacar o espaço entre zagueiros.','Ruptura por dentro após recuperação, procurando passe curto ou finalização.','Finalização, Destreza, Força das pernas','CA + SA/MAT com apoio próximo','finalizações no alvo, tabelas completadas, perdas sob pressão'],
 SA:['Apoiar o CA entre as linhas; fazer a parede, triangular e infiltrar.','Dar sequência ao segundo passe e atacar a área após a devolução.','Passe, Drible, Destreza','CA de perfil complementar','passes que rompem linhas, infiltrações e criação de chances'],
@@ -21,15 +22,15 @@ LE:['Dar saída curta pela esquerda; medir a subida e a proteção às costas.',
 ZG:['Sair jogando pelo chão sem expor a profundidade; dividir cobertura com o parceiro.','Proteger espaço nas costas e recomeçar com passe seguro.','Defesa, Jogo aéreo, Força das pernas','outro ZG de função complementar e VOL','duelos, profundidade protegida e saídas limpas'],
 GO:['Construir saída curta de forma segura, conforme sua linha defensiva.','Decidir quando sair e repor rápido sem oferecer posse ao rival.','Goleiro 1, Goleiro 2, Goleiro 3','ZG e VOL como primeira linha de passe','defesas difíceis, posicionamento e reposições certas']};
 const r=roles[position];const st=norm(style);
-let styleAdvice='Confirme em qual posição este estilo realmente ativa no Plano de Jogo; não presuma ativação fora da posição compatível.';
-if(/orquestrador/.test(st))styleAdvice='Observe a circulação e a disponibilidade para passe, não apenas infiltrações.';
-else if(/infiltr|surpresa/.test(st))styleAdvice='Meça as infiltrações e a qualidade do apoio para devolver passes curtos.';
-else if(/destruidor/.test(st))styleAdvice='Antecipar só com cobertura: compare duelos ganhos e bolas nas costas.';
-else if(/defensor criativo|construcao/.test(st))styleAdvice='Priorize passes na saída sem perder proteção de profundidade.';
-else if(/primeiro volante|trinco/.test(st))styleAdvice='Proteja o centro e simplifique o primeiro passe.';
-else if(/artilheiro|oportunista|matador|homem de area/.test(st))styleAdvice='Avalie oportunidades criadas para finalizar e qualidade dos desmarques.';
-else if(/armador|classico/.test(st))styleAdvice='Avalie participação entrelinhas e geração de passes claros.';
-else if(/lateral ofensivo|lateral atacante|ala produtivo/.test(st))styleAdvice='Apoie o ataque sem perder cobertura do seu corredor.';
+let styleAdvice=d.style_conflict?'Esta ficha contém estilos incompatíveis. Confira a carta no jogo antes de definir a função ou o treino.':'Confirme em qual posição este estilo realmente ativa no Plano de Jogo; não presuma ativação fora da posição compatível.';
+if(!d.style_conflict&&/orquestrador/.test(st))styleAdvice='Observe a circulação e a disponibilidade para passe, não apenas infiltrações.';
+else if(!d.style_conflict&&/infiltr|surpresa/.test(st))styleAdvice='Meça as infiltrações e a qualidade do apoio para devolver passes curtos.';
+else if(!d.style_conflict&&/destruidor/.test(st))styleAdvice='Antecipar só com cobertura: compare duelos ganhos e bolas nas costas.';
+else if(!d.style_conflict&&/defensor criativo|construcao/.test(st))styleAdvice='Priorize passes na saída sem perder proteção de profundidade.';
+else if(!d.style_conflict&&/primeiro volante|trinco/.test(st))styleAdvice='Proteja o centro e simplifique o primeiro passe.';
+else if(!d.style_conflict&&/artilheiro|oportunista|matador|homem de area/.test(st))styleAdvice='Avalie oportunidades criadas para finalizar e qualidade dos desmarques.';
+else if(!d.style_conflict&&/armador|classico/.test(st))styleAdvice='Avalie participação entrelinhas e geração de passes claros.';
+else if(!d.style_conflict&&/lateral ofensivo|lateral atacante|ala produtivo/.test(st))styleAdvice='Apoie o ataque sem perder cobertura do seu corredor.';
 const native=d.has_native_skills?String(d.native_skills||'').split(';').map(x=>x.trim()).filter(Boolean):[];
 const candidates=(Array.isArray(d.additional_candidates)?d.additional_candidates:[]).filter(x=>!native.some(y=>norm(x)===norm(y))).slice(0,5);
 const verifiedID=/^\d{8,}$/.test(String(d.id||'')),pp=Number.isInteger(d.pp)&&d.pp>=0?d.pp:null;
@@ -55,7 +56,7 @@ if(preferred&&Object.keys(plans).length>1&&pp!==null){
 }
 const mark=(text,okay)=>'<span class="v74-chip '+(okay?'ok':'wait')+'">'+escape(text)+'</span>';
 const out=document.createElement('section');out.className='v74-engine';out.id='scout-v74';
-out.innerHTML='<header><small>PERFORMANCE ENGINE V74 · POR EDIÇÃO E FUNÇÃO</small><h2>'+escape(d.name||l.name)+' · '+escape(position)+'</h2><p>'+escape(style)+' · '+escape(d.edition||'Edição a confirmar')+'</p>'+mark(allValid?'PP conferidos':'Evidência parcial',allValid)+mark(d.base_stats_known?'Base disponível':'Base não documentada',d.base_stats_known)+'</header>'+
+out.innerHTML='<header><small>PERFORMANCE ENGINE V74 · POR EDIÇÃO E FUNÇÃO</small><h2>'+escape(d.name||l.name)+' · '+escape(position)+'</h2><p>'+escape(styleDisplay)+' · '+escape(d.edition||'Edição a confirmar')+'</p>'+mark(allValid?'PP conferidos':'Evidência parcial',allValid)+mark(d.base_stats_known?'Base disponível':'Base não documentada',d.base_stats_known)+'</header>'+
  '<div class="v74-controls"><button type="button" data-mode="posse">Posse de Bola</button><button type="button" data-mode="contra">Contra-ataque</button></div>'+
  '<article class="v74-highlight"><h3>Função em campo</h3><p id="v74-mode-text"></p><p><b>Estilo registrado:</b> '+escape(styleAdvice)+'</p><p><b>Parceiros por função:</b> '+escape(r[3])+'.</p><p><b>Indicadores de teste:</b> '+escape(r[4])+'.</p></article>'+
  '<div class="v74-grid"><article><h3>01 · PP e treinamento</h3><p>'+(pp===null?'Sem orçamento confirmado: não aplicar distribuição numérica.':'Orçamento registrado: '+pp+' PP.')+'</p>'+
