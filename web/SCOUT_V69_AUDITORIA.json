@@ -3,14 +3,14 @@
   "method": "video-inspired competitive analysis; not attributed pro personal judgement",
   "summary": {
     "micro_pro": 73,
-    "with_pp": 192,
+    "with_pp": 202,
     "native_skills": 130,
     "processed": 246,
     "with_stats": 14,
-    "no_pp": 54,
+    "no_pp": 44,
     "adapt_alert": 55,
     "extra_confirmed": 16,
-    "level_user_entered": 30
+    "level_user_entered": 40
   },
   "cards": [
     {
@@ -5349,7 +5349,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Defensor criativo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 52,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5359,11 +5359,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/152_Pierre_Kalulu.html"
+      "arquivo": "fichas/152_Pierre_Kalulu.html",
+      "max_level": 27,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 153,
@@ -5443,7 +5444,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Defensor criativo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 48,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5453,11 +5454,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/155_Micky_van_de_Ven.html"
+      "arquivo": "fichas/155_Micky_van_de_Ven.html",
+      "max_level": 25,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 156,
@@ -5642,7 +5644,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Defensor criativo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 52,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5652,12 +5654,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/161_Ruben_Dias.html"
+      "arquivo": "fichas/161_Ruben_Dias.html",
+      "max_level": 27,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 162,
@@ -5667,7 +5670,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Defensor criativo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 52,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5677,12 +5680,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/162_Pau_Torres.html"
+      "arquivo": "fichas/162_Pau_Torres.html",
+      "max_level": 27,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 163,
@@ -5727,7 +5731,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Atacante surpresa",
       "estilo_defesa": "Mestre da linha alta",
-      "pp": null,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5740,10 +5744,11 @@
         "Passe ponderado"
       ],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/164_Marc_Guehi.html"
+      "arquivo": "fichas/164_Marc_Guehi.html",
+      "max_level": 29,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 165,
@@ -5826,7 +5831,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Defensor criativo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 52,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5836,12 +5841,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Raridade em conflito entre captura do jogo e banco externo"
       ],
-      "arquivo": "fichas/167_Danilo.html"
+      "arquivo": "fichas/167_Danilo.html",
+      "max_level": 27,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 168,
@@ -5851,7 +5857,7 @@
       "posicao": "GO",
       "estilo_ataque": "Básico",
       "estilo_defesa": "Goleiro defensivo",
-      "pp": null,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5861,12 +5867,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/168_Petr_Cech.html"
+      "arquivo": "fichas/168_Petr_Cech.html",
+      "max_level": 29,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 169,
@@ -5913,7 +5920,7 @@
       "posicao": "GO",
       "estilo_ataque": "Básico",
       "estilo_defesa": "Goleiro defensivo",
-      "pp": null,
+      "pp": 50,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5923,13 +5930,14 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Raridade em conflito entre captura do jogo e banco externo"
       ],
-      "arquivo": "fichas/170_Jan_Oblak.html"
+      "arquivo": "fichas/170_Jan_Oblak.html",
+      "max_level": 26,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 171,
@@ -5975,7 +5983,7 @@
       "posicao": "GO",
       "estilo_ataque": "Básico",
       "estilo_defesa": "Goleiro defensivo",
-      "pp": null,
+      "pp": 46,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5985,11 +5993,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/172_Thibaut_Courtois.html"
+      "arquivo": "fichas/172_Thibaut_Courtois.html",
+      "max_level": 24,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 173,
@@ -6144,7 +6153,7 @@
       "posicao": "GO",
       "estilo_ataque": "Básico",
       "estilo_defesa": "Goleiro ofensivo",
-      "pp": null,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6154,12 +6163,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Raridade em conflito entre captura do jogo e banco externo"
       ],
-      "arquivo": "fichas/177_Dean_Henderson.html"
+      "arquivo": "fichas/177_Dean_Henderson.html",
+      "max_level": 29,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 178,
