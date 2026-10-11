@@ -65,11 +65,5 @@ if(!document.querySelector('link[data-scout-favicon]')){
  const link=document.createElement('link');link.setAttribute('data-scout-favicon','true');link.rel='icon';link.type='image/png';
  link.href=(location.pathname.includes('/fichas/')?'../':'')+'assets/icon-192.png';document.head.appendChild(link);
 }
-if(!document.getElementById('scout-brand-v75')&&!location.pathname.includes('/fichas/')){
- const hero=document.querySelector('.hero,.hero-content,main .intro,.headline');
- if(hero){const img=document.createElement('img');img.id='scout-brand-v75';img.alt='Scout PRO Performance Lab';img.src='assets/scout-pro-wordmark-v75.svg';
- img.style.cssText='display:block;max-width:min(520px,88%);width:100%;height:auto;object-fit:contain;margin:0 auto 18px;filter:drop-shadow(0 5px 15px rgba(40,135,240,.22))';
- hero.prepend(img);}
-}
 })();
 })();
