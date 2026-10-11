@@ -2,6 +2,14 @@
 (function(){'use strict';
 const el=document.getElementById('lab-data');if(!el)return;
 const d=JSON.parse(el.textContent), cat=d.categories,box=document.getElementById('lab-controls'),status=document.getElementById('lab-stats');
+const cardCap=Number.parseInt(d.card,10);
+function refreshPersonalPP(){
+ if(d.pp!==null)return;
+ try{const p=JSON.parse(localStorage.getItem('scoutpro:v81:pp:'+cardCap)||'null');
+ if(p?.cap===cardCap&&p.name===d.name&&Number.isInteger(p.level)&&p.level>=1&&p.level<=120&&p.pp===2*(p.level-1))d.pp=p.pp;
+ }catch(e){}
+}
+refreshPersonalPP();
 const pps=n=>{let k=0;for(let i=0;i<n;i++)k+=1+Math.floor(i/4);return k};
 const total=vec=>vec.reduce((s,n)=>s+pps(n),0);
 const GROUP={'Consciência ofensiva':3,'Finalização':0,'Força do chute':4,'Aceleração':3,'Velocidade':4,'Controle de bola':2,'Drible':2,'Posse apertada':2,'Equilíbrio':3,'Contato físico':5,'Passe rasteiro':1,'Passe alto':1,'Resistência':4,'Cabeceio':5,'Salto':5,'Consciência defensiva':6,'Desarme':6,'Dedicação defensiva':6,'Agressividade':6,'Talento de GO':7,'Consciência do goleiro':7,'Salto GO':7,'Reflexos de GO':9,'Alcance do GO':8,'Defesa do GO':8,'Firmeza do GO':9,'Reflexos':9,'Alcance':8};
@@ -39,5 +47,13 @@ const historyKey='scoutpro:v67:test:'+d.id+':'+d.card;
 let history=[];try{history=JSON.parse(localStorage.getItem(historyKey)||'[]')}catch(e){}
 function showHistory(){$('lab-history').innerHTML=history.slice(-5).reverse().map(x=>'<div class="lab-history-item"><b>'+safe(x.result)+'</b> · '+safe(x.when)+' · '+safe(x.plan)+' · '+x.goals+' '+safe(d.measureName.toLowerCase())+'<br>'+safe(x.note)+'</div>').join('')||'<p>Nenhuma partida registrada neste navegador.</p>'}
 $('lab-save').addEventListener('click',()=>{const obs=$('lab-note').value.trim().slice(0,400),goals=Math.min(20,Math.max(0,Number($('lab-goals').value)||0));history.push({when:new Date().toLocaleDateString('pt-BR'),result:$('lab-result').value,goals,plan:active,note:obs});history=history.slice(-30);try{localStorage.setItem(historyKey,JSON.stringify(history))}catch(e){}$('lab-note').value='';showHistory()});
+window.addEventListener('scoutpro:pp-updated',e=>{
+ if(e.detail?.cap!==cardCap)return;
+ if(Number.isInteger(e.detail.pp))d.pp=e.detail.pp;
+ if(Array.isArray(e.detail.train)&&e.detail.train.length===10){
+  current=e.detail.train.slice();active='personalizado';
+ }
+ render();
+});
 render();showHistory();
 })();

@@ -7,6 +7,19 @@
  let d,l;try{d=JSON.parse(src.textContent);l=JSON.parse(lab.textContent)}catch(e){return}
  const esc=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const storageKey='scoutpro:v80:matches:'+d.capture+':'+d.id;
+ function restorePersonalPP(){
+  if(d.pp!==null)return;
+  try{
+   const p=JSON.parse(localStorage.getItem('scoutpro:v81:pp:'+d.capture)||'null');
+   if(!p||p.cap!==d.capture||p.name!==d.name||!Number.isInteger(p.level)||p.pp!==2*(p.level-1))return;
+   d.pp=p.pp;
+   const customTrain=JSON.parse(localStorage.getItem('scoutpro:v67:'+l.id+':'+l.card)||'null')?.train;
+   if(core.valid(customTrain)&&core.cost(customTrain)===p.pp){
+    d.recommended_levels=customTrain;d.recommended_scenario='Personalizada';
+   }
+  }catch(e){}
+ }
+ restorePersonalPP();
  const customKey='scoutpro:v67:'+l.id+':'+l.card;
  const custom=()=>{try{const saved=JSON.parse(localStorage.getItem(customKey)||'null');return core.valid(saved?.train)?saved.train:null}catch(e){return null}};
  const load=()=>{try{const raw=JSON.parse(localStorage.getItem(storageKey)||'[]');return Array.isArray(raw)?raw:[]}catch(e){return []}};
@@ -78,5 +91,13 @@
    catch(e){area.querySelector('#v80-feedback').textContent='Não foi possível atualizar o armazenamento.'}
   });
  }
+ window.addEventListener('scoutpro:pp-updated',e=>{
+  if(e.detail?.cap!==d.capture)return;
+  d.pp=e.detail.pp;
+  if(core.valid(e.detail.train)&&core.cost(e.detail.train)===e.detail.pp){
+   d.recommended_levels=e.detail.train;d.recommended_scenario='Personalizada';
+  }
+  render();
+ });
  render();
 })();

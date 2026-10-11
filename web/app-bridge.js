@@ -56,6 +56,8 @@ async function onlineUpdate(auto=false){
 }
 if(window.scoutDesktop){window.scoutDesktop.onUpdate(e=>notify(e.message));btn.onclick=async()=>{notify('Buscando atualizações…');const result=await window.scoutDesktop.checkUpdates();if(!result?.ok)notify(result?.message||'Verificação indisponível.')};}
 else{btn.onclick=()=>onlineUpdate(false);setTimeout(()=>{if(navigator.onLine)onlineUpdate(true)},16000);}
+const ppCss=document.createElement('link');ppCss.rel='stylesheet';ppCss.href=(inCard?'../':'')+'progress-v81.css';document.head.appendChild(ppCss);
+const ppScript=document.createElement('script');ppScript.src=(inCard?'../':'')+'progress-v81.js';document.body.appendChild(ppScript);
 if(document.body?.dataset.page==='detail'){
  const css=document.createElement('link');css.rel='stylesheet';css.href='../scout-engine-v74.css';document.head.appendChild(css);
  const script=document.createElement('script');script.src='../scout-engine-v74.js';document.body.appendChild(script);
