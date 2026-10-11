@@ -29,9 +29,11 @@ const tools=document.querySelector('.tools');
 if(tools&&!document.getElementById('style-filter')){
  const counts=new Map();
  for(const el of items){
-  const style=el.dataset.style;
-  if(!style)throw Error('Scout PRO: carta sem estilo para filtro #'+el.dataset.cap);
-  counts.set(style,(counts.get(style)||0)+1);
+  const primary=el.dataset.style;
+  if(!primary)throw Error('Scout PRO: carta sem estilo para filtro #'+el.dataset.cap);
+  // Cada carta conta uma vez por estilo, mesmo que haja dois estilos por fase.
+  const unique=new Set([primary,el.dataset.styleDefense].filter(Boolean));
+  for(const style of unique)counts.set(style,(counts.get(style)||0)+1);
  }
  const container=document.createElement('div');container.className='scout-style-picker';
  const caption=document.createElement('label');caption.htmlFor='style-filter';caption.textContent='Estilo de jogo';

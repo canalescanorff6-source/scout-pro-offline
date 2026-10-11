@@ -6,7 +6,7 @@ const escape=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>'
 const norm=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const pmap={AC:'CA',CA:'CA',SA:'SA',PTD:'PTD',PTE:'PTE',MO:'MAT',MAT:'MAT',MLD:'MLD',MLE:'MLE',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',ZC:'ZG',DC:'ZG',ZG:'ZG',GR:'GO',GO:'GO'};
 const position=pmap[d.shown_position]||pmap[d.role_used]||'MLG', style=String(d.playing_style||(d.attack_style==='Básico'?d.defence_style:d.attack_style)||'Não confirmado');
-const styleDisplay=d.style_conflict?'Conflito de cadastro: '+[d.attack_style,d.defence_style].join(' / ')+' — conferir no jogo':style;
+const styleDisplay=d.dual_playing_style?d.attack_style+' (ataque) / '+d.defence_style+' (defesa)':d.style_conflict?'Conflito de cadastro: '+[d.attack_style,d.defence_style].join(' / ')+' — conferir no jogo':style;
 const roles={
 CA:['Tabelar no corredor central e atacar o espaço entre zagueiros.','Ruptura por dentro após recuperação, procurando passe curto ou finalização.','Finalização, Destreza, Força das pernas','CA + SA/MAT com apoio próximo','finalizações no alvo, tabelas completadas, perdas sob pressão'],
 SA:['Apoiar o CA entre as linhas; fazer a parede, triangular e infiltrar.','Dar sequência ao segundo passe e atacar a área após a devolução.','Passe, Drible, Destreza','CA de perfil complementar','passes que rompem linhas, infiltrações e criação de chances'],
@@ -23,7 +23,8 @@ ZG:['Sair jogando pelo chão sem expor a profundidade; dividir cobertura com o p
 GO:['Construir saída curta de forma segura, conforme sua linha defensiva.','Decidir quando sair e repor rápido sem oferecer posse ao rival.','Goleiro 1, Goleiro 2, Goleiro 3','ZG e VOL como primeira linha de passe','defesas difíceis, posicionamento e reposições certas']};
 const r=roles[position];const st=norm(style);
 let styleAdvice=d.style_conflict?'Esta ficha contém estilos incompatíveis. Confira a carta no jogo antes de definir a função ou o treino.':'Confirme em qual posição este estilo realmente ativa no Plano de Jogo; não presuma ativação fora da posição compatível.';
-if(!d.style_conflict&&/orquestrador/.test(st))styleAdvice='Observe a circulação e a disponibilidade para passe, não apenas infiltrações.';
+if(d.dual_playing_style)styleAdvice='Ao atacar, avalie a saída de bola e o apoio por baixo. Ao defender, avalie os duelos e as antecipações do Destruidor, sempre com cobertura. Confirme a ativação em cada fase no Plano de Jogo.';
+else if(!d.style_conflict&&/orquestrador/.test(st))styleAdvice='Observe a circulação e a disponibilidade para passe, não apenas infiltrações.';
 else if(!d.style_conflict&&/infiltr|surpresa/.test(st))styleAdvice='Meça as infiltrações e a qualidade do apoio para devolver passes curtos.';
 else if(!d.style_conflict&&/destruidor/.test(st))styleAdvice='Antecipar só com cobertura: compare duelos ganhos e bolas nas costas.';
 else if(!d.style_conflict&&/defensor criativo|construcao/.test(st))styleAdvice='Priorize passes na saída sem perder proteção de profundidade.';

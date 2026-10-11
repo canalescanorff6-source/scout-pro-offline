@@ -8,7 +8,7 @@ if(document.body.dataset.page==='catalog'){
  const buttonState=(root,value)=>{$$('.filter',root).forEach(btn=>{const on=btn.dataset.value===value;btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false')})};
  const apply=()=>{
   const q=fold(search.value.trim());
-  filtered=cards.filter(el=>(role==='TODOS'||el.dataset.role===role)&&(rarity==='TODAS'||el.dataset.rarity===rarity)&&(style==='TODOS'||el.dataset.style===style)&&fold(el.dataset.search).includes(q));
+  filtered=cards.filter(el=>(role==='TODOS'||el.dataset.role===role)&&(rarity==='TODAS'||el.dataset.rarity===rarity)&&(style==='TODOS'||el.dataset.style===style||el.dataset.styleDefense===style)&&fold(el.dataset.search).includes(q));
   const key=sort.value;
   filtered.sort((a,b)=>key==='alpha'?a.dataset.name.localeCompare(b.dataset.name,'pt-BR'):key==='reverse'?Number(b.dataset.cap)-Number(a.dataset.cap):key==='position'?((window.SCOUT_POSITION_ORDER?.[a.dataset.position]??99)-(window.SCOUT_POSITION_ORDER?.[b.dataset.position]??99)||Number(a.dataset.cap)-Number(b.dataset.cap)):Number(a.dataset.cap)-Number(b.dataset.cap));
   cards.forEach(el=>el.hidden=true);

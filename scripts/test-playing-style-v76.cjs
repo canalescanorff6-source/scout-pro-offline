@@ -4,7 +4,7 @@ const web=path.resolve(__dirname,'../web'),dir=path.join(web,'fichas');
 const files=fs.readdirSync(dir).filter(n=>/^\d{3}_.*\.html$/.test(n));
 assert.equal(files.length,246);
 const catalog=fs.readFileSync(path.join(web,'index.html'),'utf8');
-let recovered=0,goalkeepers=0,conflicts=0;
+let recovered=0,goalkeepers=0,conflicts=0,dual=0;
 for(const file of files){
  const source=fs.readFileSync(path.join(dir,file),'utf8');
  const data=JSON.parse(source.match(/<script[^>]*id="scout-v68-data"[^>]*>([\s\S]*?)<\/script>/i)?.[1]||'null');
@@ -26,13 +26,17 @@ for(const file of files){
   assert.match(card,/<span class="player-role">[^<]*Goleiro (?:ofensivo|defensivo)<\/span>/);
  }
  if(d==='Destruidor'&&a!=='Básico'&&a!=='Destruidor'){
-  conflicts++;
-  assert.equal(data.style_conflict,true,'Conflito não sinalizado: '+file);
-  assert.equal(data.playing_style,'A confirmar no jogo','Conflito ignorado: '+file);
-  assert.match(card,/Destruidor \(conferir\)/,'Conflito oculto: '+file);
+  dual++;
+  assert.equal(data.dual_playing_style,true,'Estilo duplo não registrado: '+file);
+  assert.equal(data.style_conflict,false,'Duplo estilo não é conflito: '+file);
+  assert.deepEqual(data.playing_styles,[a,d],'Os dois estilos devem permanecer: '+file);
+  assert.equal(data.playing_style,a,'Estilo ofensivo deve ser o principal: '+file);
+  assert.match(card,/\(ataque\) \/ Destruidor \(defesa\)/,'Fases não exibidas: '+file);
  }
+ if(data.style_conflict)conflicts++;
 }
 assert.equal(recovered,12,'Número de registros Destruidor/Básico mudou; auditar os dados.');
 assert.equal(goalkeepers,11,'Número de goleiros com Básico mudou; auditar os dados.');
-assert.equal(conflicts,3,'Número de conflitos de Destruidor mudou; auditar os dados.');
-console.log('V76 OK: 12 Destruidores, 11 goleiros recuperados; 3 conflitos sinalizados; 246 cartas preservadas.');
+assert.equal(dual,3,'Devem existir três estilos duplos confirmados.');
+assert.equal(conflicts,0,'Não há conflitos entre as três cartas confirmadas.');
+console.log('V79 OK: 12 Destruidores simples, 3 cartas de estilos duplos, 11 goleiros; 246 cartas preservadas.');

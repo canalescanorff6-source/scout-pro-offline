@@ -7,15 +7,21 @@ const doubtful=new Set(['Defensor participativo','Mestre da linha alta','Foco no
 const translate=(v,id,i)=>confirmed[String(id)]?.[i]||((doubtful.has(v))?'A confirmar no jogo':alias[v]||v);
 const replace=(s,a,b)=>(a&&a!==b)?s.split(a).join(b):s;
 const ordered=Object.entries(alias).sort((a,b)=>b[0].length-a[0].length);
-// Um único estilo de jogo na Konami: "Básico" na coluna ofensiva é apenas
-// um marcador do catálogo quando o estilo real consta na coluna defensiva.
+// Confirmações do proprietário: estas três cartas têm estilos distintos por fase.
+// Nunca tratar seus dois estilos legítimos como conflito ou informação pendente.
+const dualVerified=new Map([
+ [149,{name:'Jan Paul van Hecke',attack:'Defensor criativo',defense:'Destruidor'}],
+ [150,{name:'Ibrahima Konaté',attack:'Defensor criativo',defense:'Destruidor'}],
+ [237,{name:'Piero Hincapié',attack:'Lateral defensivo',defense:'Destruidor'}]
+]);
 const isBasic=v=>!v||v==='Básico';
-const styleOf=(a,d)=>{
- const conflict=d==='Destruidor'&&!isBasic(a)&&a!==d;
- return {
-  style:conflict?'A confirmar no jogo':isBasic(a)&&!isBasic(d)?d:a,
-  conflict
- };
+const styleOf=(a,d,obj)=>{
+ const verified=dualVerified.get(obj.capture);
+ if(verified&&(verified.name!==obj.name||verified.attack!==a||verified.defense!==d))
+  throw Error('Estilos confirmados divergem da carta #'+obj.capture+' ('+obj.name+')');
+ const dual=Boolean(verified),conflict=!dual&&d==='Destruidor'&&!isBasic(a)&&a!==d;
+ const style=conflict?'A confirmar no jogo':isBasic(a)&&!isBasic(d)?d:a;
+ return {style,dual,conflict,styles:dual?[a,d]:[style]};
 };
 const dir=path.join(web,'fichas'),files=fs.readdirSync(dir).filter(s=>/^\d{3}_.*\.html$/.test(s));
 if(files.length!==246)throw Error('Esperadas 246 cartas; recebidas '+files.length);
@@ -35,15 +41,18 @@ function updateCard(html,obj){
  const data=findJSON('scout-v68-data'),lab=findJSON('lab-data');
  const oldA=data.value.attack_style,oldD=data.value.defence_style;
  const a=translate(oldA,obj.id,0),d=translate(oldD,obj.id,1);
- const choice=styleOf(a,d);
+ const choice=styleOf(a,d,obj);
  if(!data.value.legacy_attack_style)data.value.legacy_attack_style=oldA;
  if(!data.value.legacy_defence_style)data.value.legacy_defence_style=oldD;
  data.value.attack_style=a;data.value.defence_style=d;
  data.value.playing_style=choice.style;
+ data.value.playing_styles=choice.styles;
+ data.value.dual_playing_style=choice.dual;
  data.value.style_conflict=choice.conflict;
  if(choice.conflict)data.value.style_candidates=[a,d];
  else delete data.value.style_candidates;
  lab.value.style=choice.style;
+ lab.value.playing_styles=choice.styles;
  const replaceJSON=(which,content)=>{
   const tag=scripts[which.i];scripts[which.i]=tag.slice(0,which.start)+JSON.stringify(content)+tag.slice(which.end);
  };
@@ -56,11 +65,11 @@ function updateCard(html,obj){
   visible=replace(visible,'ESTILO OFENSIVO / DEFENSIVO','ESTILO DE JOGO');
   visible=replace(visible,d+' / '+d,d);
  }
- // Registros com dois estilos incompatíveis não são convertidos arbitrariamente.
- // Ambas as opções ficam documentadas até conferência da carta original.
+ // As duas fases de jogo confirmadas são preservadas; possíveis conflitos
+ // não confirmados continuam pendentes e não recebem nomes inventados.
  return {html:visible.replace(/SCOUT_SCRIPT_PLACEHOLDER_(\d+)_END/g,(_,n)=>scripts[Number(n)]),
   record:{cap:obj.capture,id:obj.id,oldAttack:oldA,attack:a,oldDefense:oldD,defense:d,
-   playingStyle:choice.style,conflict:choice.conflict,
+   playingStyle:choice.style,playingStyles:choice.styles,dual:choice.dual,conflict:choice.conflict,
    needsCheck:choice.conflict||a==='A confirmar no jogo'||d==='A confirmar no jogo'}};
 }
 for(const name of files){
@@ -80,12 +89,17 @@ for(const item of records){
  const re=new RegExp('(<a\\b[^>]*\\bclass="player-card"[^>]*\\bdata-cap="'+item.cap+'"[^>]*>)([\\s\\S]*?)(<\\/a>)','i');
  if(!re.test(index))throw Error('Carta ausente no catálogo: '+item.cap);
  index=index.replace(re,(_,tag,content,end)=>{
-  // Mesmo em recompilações repetidas, cada card tem apenas um data-style.
-  tag=tag.replace(/ data-style="[^"]*"/g,'');
-  const safe=item.playingStyle.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
-  tag=tag.replace(' data-cap=',' data-style="'+safe+'" data-cap=');
+  // Um filtro pode localizar a carta pelo estilo principal ou defensivo confirmado.
+  // Regrava atributos em novas compilações sem criar duplicatas.
+  tag=tag.replace(/ data-style(?:-defense)?="[^"]*"/g,'');
+  const safe=v=>v.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  tag=tag.replace(' data-cap=',' data-style="'+safe(item.playingStyle)+'" data-style-defense="'+safe(item.dual?item.defense:'')+'" data-cap=');
   if(displayed)content=replace(content,'Básico',displayed);
-  if(item.conflict){
+  if(item.dual){
+   tag=tag.replace('data-search="','data-search="'+safe(item.attack+' ataque '+item.defense+' defesa ') );
+   content=content.replace(/(<span class="player-role">)([^<]*)(<\/span>)/,(_,a,b,c)=>
+    a+b.replace(/\s*·.*$/,'')+' · '+item.attack+' (ataque) / '+item.defense+' (defesa)'+c);
+  }else if(item.conflict){
    const warning='Estilos conflitantes: '+item.attack+' / '+item.defense+' (conferir)';
    tag=tag.replace('data-search="','data-search="'+warning+' ');
    content=content.replace(/(<span class="player-role">)([^<]*)(<\/span>)/,(_,a,b,c)=>a+b+' / '+item.defense+' (conferir)'+c);
@@ -97,6 +111,7 @@ fs.writeFileSync(path.join(web,'index.html'),index);
 fs.writeFileSync(path.join(web,'AUDITORIA_ESTILOS_PTBR_V75.json'),
  JSON.stringify({version:'V76',language:'pt-BR',records},null,2));
 console.log('V76:',records.length,'cartas;',records.filter(x=>x.playingStyle==='Destruidor'&&isBasic(x.attack)).length,
- 'Destruidor recuperados do campo defensivo;',records.filter(x=>x.conflict).length,
- 'conflitos sinalizados;',records.filter(x=>x.playingStyle.startsWith('Goleiro ')&&isBasic(x.attack)).length,
+ 'Destruidor recuperados do campo defensivo;',records.filter(x=>x.dual).length,
+ 'cartas com estilo duplo confirmado;',records.filter(x=>x.conflict).length,
+ 'conflitos não confirmados;',records.filter(x=>x.playingStyle.startsWith('Goleiro ')&&isBasic(x.attack)).length,
  'goleiros corrigidos.');
