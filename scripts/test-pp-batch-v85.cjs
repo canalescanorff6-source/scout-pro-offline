@@ -1,0 +1,32 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const web=path.resolve(__dirname,'../web');
+const audit=JSON.parse(fs.readFileSync(path.join(web,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const expected=new Map([[152,["Pierre Kalulu",27,52]],[155,["Micky van de Ven",25,48]],[161,["Rúben Dias",27,52]],[162,["Pau Torres",27,52]],[164,["Marc Guéhi",29,56]],[167,["Danilo",27,52]],[168,["Petr Čech",29,56]],[170,["Jan Oblak",26,50]],[172,["Thibaut Courtois",24,46]],[177,["Dean Henderson",29,56]]]);
+const index=fs.readFileSync(path.join(web,'index.html'),'utf8');
+const dir=path.join(web,'fichas'),files=fs.readdirSync(dir).filter(x=>/^\d{3}_.+\.html$/.test(x));
+let checked=0;
+for(const card of audit.cards){
+ if(!expected.has(card.numero))continue;
+ checked++;
+ const [name,level,pp]=expected.get(card.numero);
+ assert.equal(card.name,name);assert.equal(card.max_level,level);assert.equal(card.pp,pp);
+ assert.equal(card.niveis,null,'Build fictícia não pode entrar '+name);
+ assert.match(card.pp_origem,/usuario/);
+ const match=index.match(new RegExp('<a class="player-card"[^>]*data-cap="'+card.numero+'"[^>]*>[\\s\\S]*?<\\/a>'));
+ assert(match&&match[0].includes('<span class="pp">'+pp+' PP</span>'),name+' ausente ou PP errado no índice');
+ assert(!match[0].includes('Aguardando PP'),name+' pendente incorretamente');
+ const f=files.find(x=>x.startsWith(String(card.numero).padStart(3,'0')+'_'));
+ assert(f,'Arquivo da ficha ausente: '+name);
+ const html=fs.readFileSync(path.join(dir,f),'utf8');
+ const get=id=>JSON.parse(html.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>','i'))[1]);
+ const d=get('scout-v68-data'),l=get('lab-data');
+ assert.equal(d.capture,card.numero);assert.equal(d.name,name);
+ assert.equal(d.max_level,level);assert.equal(d.pp,pp);assert.equal(pp,2*(level-1));
+ assert.equal(d.recommended_levels,null);assert.equal(d.recommended_scenario,null);assert.deepEqual(d.alternate_scenarios,{});
+ assert.equal(l.maxLevel,level);assert.equal(l.pp,pp);assert.equal(l.A,null);assert.equal(l.B,null);assert.equal(l.C,null);
+ assert(html.includes('PP REGISTRADOS · TREINO PENDENTE'));
+}
+assert.equal(checked,10);assert.equal(audit.cards.length,246);
+assert.equal(audit.summary.with_pp,202);assert.equal(audit.summary.no_pp,44);assert.equal(audit.summary.level_user_entered,40);
+console.log('V85 OK: 10 níveis e PP registrados no código; 202 com PP, 44 sem PP, 246 cartas preservadas sem builds fictícias.');

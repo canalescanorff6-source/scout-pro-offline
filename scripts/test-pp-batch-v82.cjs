@@ -22,7 +22,7 @@ for(const c of audit.cards){
  assert.equal(data.recommended_levels,null,'Build não informada não pode ser inventada');
  assert.equal(lab.pp,pp);assert.equal(lab.maxLevel,level);assert.equal(pp,2*(level-1));
 }
-assert.equal(count,10);assert.equal(audit.summary.with_pp,192);assert.equal(audit.summary.no_pp,54);
+assert.equal(count,10);assert.equal(audit.summary.with_pp,202);assert.equal(audit.summary.no_pp,44);
 const core=require('../web/performance-core-v80.js');
 assert.equal(core.review({pp:60,pp_estimated:false,recommended_levels:null,has_native_skills:false,boost2:'PENDENTE'}, {A:null,B:null,C:null,stats:{}},[],null).status,'PP confirmados · treino pendente');
 console.log('V82 OK: 10 cartas com níveis máximos e PP persistentes; 246 preservadas; sem builds inventadas.');

@@ -3,7 +3,7 @@ const fs=require('fs'),path=require('path'),assert=require('assert');
 const root=path.resolve(__dirname,'..'),files=fs.readdirSync(path.join(root,'web/fichas')).filter(n=>/^\d{3}_.+\.html$/.test(n));
 assert.equal(files.length,246);
 let budgets=0,missing=0,base=0,native=0,budgetNoBuild=0;
-const manual=new Map([[7,[35,68]],[12,[31,60]],[16,[27,52]],[18,[32,62]],[26,[31,60]],[50,[29,56]],[64,[19,36]],[65,[29,56]],[67,[31,60]],[71,[35,68]],[73,[29,56]],[86,[33,64]],[87,[32,62]],[101,[34,66]],[103,[31,60]],[107,[33,64]],[109,[31,60]],[112,[29,56]],[115,[28,54]],[116,[35,68]],[117,[33,64]],[118,[35,68]],[119,[35,68]],[120,[35,68]],[126,[35,68]],[139,[35,68]],[140,[33,64]],[141,[39,76]],[142,[33,64]],[151,[27,52]]]);
+const manual=new Map([[7,[35,68]],[12,[31,60]],[16,[27,52]],[18,[32,62]],[26,[31,60]],[50,[29,56]],[64,[19,36]],[65,[29,56]],[67,[31,60]],[71,[35,68]],[73,[29,56]],[86,[33,64]],[87,[32,62]],[101,[34,66]],[103,[31,60]],[107,[33,64]],[109,[31,60]],[112,[29,56]],[115,[28,54]],[116,[35,68]],[117,[33,64]],[118,[35,68]],[119,[35,68]],[120,[35,68]],[126,[35,68]],[139,[35,68]],[140,[33,64]],[141,[39,76]],[142,[33,64]],[151,[27,52]],[152,[27,52]],[155,[25,48]],[161,[27,52]],[162,[27,52]],[164,[29,56]],[167,[27,52]],[168,[29,56]],[170,[26,50]],[172,[24,46]],[177,[29,56]]]);
 for(const file of files){
  const html=fs.readFileSync(path.join(root,'web/fichas',file),'utf8');
  const get=id=>{const m=html.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)</script>'));assert(m,file+' '+id);return JSON.parse(m[1])};
@@ -16,7 +16,7 @@ for(const file of files){
  }
  if(d.base_stats_known)base++;if(d.has_native_skills)native++;
 }
-assert.equal(budgets,192);assert.equal(missing,54);assert.equal(budgetNoBuild,30);
+assert.equal(budgets,202);assert.equal(missing,44);assert.equal(budgetNoBuild,40);
 assert(fs.readFileSync(path.join(root,'web/app-bridge.js'),'utf8').includes('scout-engine-v74.js'));
 new (require('vm').Script)(fs.readFileSync(path.join(root,'web/scout-engine-v74.js'),'utf8'));
-console.log('V84 OK: '+files.length+' fichas, '+budgets+' PP, '+missing+' pendentes, '+budgetNoBuild+' treinamentos não distribuídos, '+base+' bases, '+native+' skills.');
+console.log('V85 OK: '+files.length+' fichas, '+budgets+' PP, '+missing+' pendentes, '+budgetNoBuild+' treinamentos não distribuídos, '+base+' bases, '+native+' skills.');

@@ -27,5 +27,5 @@ for(const card of audit.cards){
  assert(html.includes('PP REGISTRADOS · TREINO PENDENTE'),card.name+' visual desatualizado');
 }
 assert.equal(checked,10);assert.equal(audit.cards.length,246);
-assert.equal(audit.summary.with_pp,192);assert.equal(audit.summary.no_pp,54);assert.equal(audit.summary.level_user_entered,30);
+assert.equal(audit.summary.with_pp,202);assert.equal(audit.summary.no_pp,44);assert.equal(audit.summary.level_user_entered,40);
 console.log('V83 OK: 10 novas cartas com PP e níveis permanentes; 182 com PP, 64 pendentes; 246 cartas sem builds inventadas.');
