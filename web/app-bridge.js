@@ -9,7 +9,7 @@ if(!document.querySelector('link[href$="scout-premium-v73.css"]')){
  const premiumLink=document.createElement('link');premiumLink.rel='stylesheet';premiumLink.href=(inCard?'../':'')+'scout-premium-v73.css';document.head.appendChild(premiumLink);
 }
 const originalBrand=document.querySelector('.brand .brand-logo');
-if(originalBrand){const logo=document.createElement('img');logo.className='brand-logo-img';logo.alt='Logotipo Scout PRO';logo.src=(inCard?'../':'')+'assets/scout-pro-mark.svg';originalBrand.replaceWith(logo)}
+if(originalBrand){const logo=document.createElement('img');logo.className='brand-logo-img';logo.alt='Logotipo Scout PRO';logo.src=(inCard?'../':'')+'assets/scout-pro-v75.svg';originalBrand.replaceWith(logo)}
 const home=(inCard?'../index.html':'index.html');
 const homeBtn=bar.querySelector('#scout-home'),backBtn=bar.querySelector('#scout-back');
 homeBtn.href=home+'#catalogo';
@@ -60,4 +60,16 @@ if(document.body?.dataset.page==='detail'){
  const css=document.createElement('link');css.rel='stylesheet';css.href='../scout-engine-v74.css';document.head.appendChild(css);
  const script=document.createElement('script');script.src='../scout-engine-v74.js';document.body.appendChild(script);
 }
+(()=>{
+if(!document.querySelector('link[data-scout-favicon]')){
+ const link=document.createElement('link');link.setAttribute('data-scout-favicon','true');link.rel='icon';link.type='image/png';
+ link.href=(location.pathname.includes('/fichas/')?'../':'')+'assets/icon-192.png';document.head.appendChild(link);
+}
+if(!document.getElementById('scout-brand-v75')&&!location.pathname.includes('/fichas/')){
+ const hero=document.querySelector('.hero,.hero-content,main .intro,.headline');
+ if(hero){const img=document.createElement('img');img.id='scout-brand-v75';img.alt='Scout PRO Performance Lab';img.src='assets/scout-pro-wordmark-v75.svg';
+ img.style.cssText='display:block;max-width:min(520px,88%);width:100%;height:auto;object-fit:contain;margin:0 auto 18px;filter:drop-shadow(0 5px 15px rgba(40,135,240,.22))';
+ hero.prepend(img);}
+}
+})();
 })();

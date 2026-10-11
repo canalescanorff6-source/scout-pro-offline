@@ -49,6 +49,8 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Padronizar estilos PT-BR
         run: npm run styles:ptbr
+      - name: Gerar ícones premium Windows
+        run: npm run brand:build
       - name: Definir versão
         run: node scripts/set-version.cjs 1.1.${{ github.run_number }} ${{ github.repository }}
       - name: Gerar instalador Windows
@@ -128,6 +130,8 @@ jobs:
         run: node scripts/set-version.cjs 1.1.${{ github.run_number }} ${{ github.repository }}
       - name: Padronizar estilos PT-BR
         run: npm run styles:ptbr
+      - name: Gerar ícones premium Android
+        run: npm run brand:build
       - name: Criar projeto Android e sincronizar catálogo offline
         run: |
           npx cap add android
