@@ -7,7 +7,7 @@
   "scripts": {
     "check": "node scripts/check-content.cjs && node scripts/test-mobile-art.cjs && node scripts/verify-release-workflow.cjs",
     "desktop:dev": "electron .",
-    "desktop:win": "electron-builder --win nsis --x64 --publish never",
+    "desktop:win": "electron-builder --config electron-builder.config.cjs --win nsis --x64 --publish never",
     "android:init": "npx cap add android",
     "android:sync": "npx cap sync android",
     "android:build:debug": "npx cap sync android && cd android && ./gradlew assembleDebug"
