@@ -3,14 +3,14 @@
   "method": "video-inspired competitive analysis; not attributed pro personal judgement",
   "summary": {
     "micro_pro": 73,
-    "with_pp": 182,
+    "with_pp": 192,
     "native_skills": 130,
     "processed": 246,
     "with_stats": 14,
-    "no_pp": 64,
+    "no_pp": 54,
     "adapt_alert": 55,
     "extra_confirmed": 16,
-    "level_user_entered": 20
+    "level_user_entered": 30
   },
   "cards": [
     {
@@ -4184,7 +4184,7 @@
       "posicao": "VOL",
       "estilo_ataque": "Meia versátil",
       "estilo_defesa": "Meia versátil",
-      "pp": null,
+      "pp": 64,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -4194,11 +4194,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/117_Moises_Caicedo.html"
+      "arquivo": "fichas/117_Moises_Caicedo.html",
+      "max_level": 33,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 118,
@@ -4208,7 +4209,7 @@
       "posicao": "VOL",
       "estilo_ataque": "Meia versátil",
       "estilo_defesa": "Meia versátil",
-      "pp": null,
+      "pp": 68,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -4218,11 +4219,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/118_Sandro_Tonali.html"
+      "arquivo": "fichas/118_Sandro_Tonali.html",
+      "max_level": 35,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 119,
@@ -4232,7 +4234,7 @@
       "posicao": "VOL",
       "estilo_ataque": "Meia versátil",
       "estilo_defesa": "Meia versátil",
-      "pp": null,
+      "pp": 68,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -4242,13 +4244,14 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Raridade em conflito entre captura do jogo e banco externo"
       ],
-      "arquivo": "fichas/119_Tyler_Adams.html"
+      "arquivo": "fichas/119_Tyler_Adams.html",
+      "max_level": 35,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 120,
@@ -4258,7 +4261,7 @@
       "posicao": "VOL",
       "estilo_ataque": "Orquestrador",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 68,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -4268,13 +4271,14 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Raridade em conflito entre captura do jogo e banco externo"
       ],
-      "arquivo": "fichas/120_Rodrigo_Bentancur.html"
+      "arquivo": "fichas/120_Rodrigo_Bentancur.html",
+      "max_level": 35,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 121,
@@ -4465,7 +4469,7 @@
       "posicao": "LD",
       "estilo_ataque": "Lateral atacante",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 68,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -4475,12 +4479,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Raridade em conflito entre captura do jogo e banco externo"
       ],
-      "arquivo": "fichas/126_Daniel_Munoz.html"
+      "arquivo": "fichas/126_Daniel_Munoz.html",
+      "max_level": 35,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 127,
@@ -4929,7 +4934,7 @@
       "posicao": "LE",
       "estilo_ataque": "Lateral ofensivo",
       "estilo_defesa": "Cobertura",
-      "pp": null,
+      "pp": 68,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -4939,12 +4944,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/139_Noussair_Mazraoui.html"
+      "arquivo": "fichas/139_Noussair_Mazraoui.html",
+      "max_level": 35,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 140,
@@ -4954,7 +4960,7 @@
       "posicao": "LE",
       "estilo_ataque": "Lateral ofensivo",
       "estilo_defesa": "Cobertura",
-      "pp": null,
+      "pp": 64,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -4964,11 +4970,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/140_Alejandro_Grimaldo.html"
+      "arquivo": "fichas/140_Alejandro_Grimaldo.html",
+      "max_level": 33,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 141,
@@ -4978,7 +4985,7 @@
       "posicao": "LE",
       "estilo_ataque": "Lateral ofensivo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 76,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -4988,13 +4995,14 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Raridade em conflito entre captura do jogo e banco externo"
       ],
-      "arquivo": "fichas/141_Ian_Maatsen.html"
+      "arquivo": "fichas/141_Ian_Maatsen.html",
+      "max_level": 39,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 142,
@@ -5004,7 +5012,7 @@
       "posicao": "LE",
       "estilo_ataque": "Lateral ofensivo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 64,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5014,12 +5022,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/142_Andrew_Robertson.html"
+      "arquivo": "fichas/142_Andrew_Robertson.html",
+      "max_level": 33,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 143,
@@ -5314,7 +5323,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Básico",
       "estilo_defesa": "O destruidor",
-      "pp": null,
+      "pp": 52,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5324,12 +5333,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/151_Willian_Pacho.html"
+      "arquivo": "fichas/151_Willian_Pacho.html",
+      "max_level": 27,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 152,
