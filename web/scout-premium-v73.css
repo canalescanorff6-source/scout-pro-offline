@@ -14,3 +14,11 @@
 #scout-back[hidden]{display:none!important}
 @media(max-width:780px){#scout-app-bar{display:grid;grid-template-columns:1fr;justify-items:center;gap:8px;padding:9px;width:min(96%,520px)}#scout-app-bar>div:first-child{text-align:center}#scout-app-bar .app-actions{flex-direction:row}#scout-app-bar .scout-page-actions a,#scout-app-bar .scout-page-actions button{min-width:79px;padding:8px 10px}body{padding-bottom:180px!important}}
 @media(max-width:390px){#scout-app-bar{font-size:10px}#scout-app-bar .app-small{display:none}#scout-app-bar .scout-page-actions a,#scout-app-bar .scout-page-actions button{font-size:11px}}
+/* V77 — estilo de jogo; responsivo e compatível com os filtros existentes */
+.tools:has(.scout-style-picker){grid-template-columns:minmax(220px,1fr) minmax(210px,280px) minmax(150px,180px);align-items:end}
+.scout-style-picker{display:flex;flex-direction:column;gap:5px;min-width:0}
+.scout-style-picker label{font-size:11px;color:#a8c9e1;font-weight:850;letter-spacing:.045em;padding-left:3px}
+.scout-style-picker select{width:100%;min-width:0}
+.scout-style-picker select:focus-visible{outline:3px solid #e6b862;outline-offset:2px}
+@media(max-width:780px){.tools:has(.scout-style-picker){grid-template-columns:repeat(2,minmax(0,1fr))}.tools:has(.scout-style-picker)>.search-input{grid-column:1/-1}}
+@media(max-width:420px){.tools:has(.scout-style-picker){grid-template-columns:minmax(0,1fr)}.tools:has(.scout-style-picker)>.search-input{grid-column:auto}}

@@ -74,16 +74,23 @@ for(const name of files){
 }
 let index=fs.readFileSync(path.join(web,'index.html'),'utf8');
 for(const [from,to] of ordered)index=replace(index,from,to);
+// O índice é a fonte do filtro: derive o estilo exclusivamente da ficha normalizada.
 for(const item of records){
  const displayed=isBasic(item.attack)&&!isBasic(item.defense)?item.defense:null;
- if(!displayed&&!item.conflict)continue;
  const re=new RegExp('(<a\\b[^>]*\\bclass="player-card"[^>]*\\bdata-cap="'+item.cap+'"[^>]*>)([\\s\\S]*?)(<\\/a>)','i');
  if(!re.test(index))throw Error('Carta ausente no catálogo: '+item.cap);
  index=index.replace(re,(_,tag,content,end)=>{
-  if(displayed)return replace(tag+content,'Básico',displayed)+end;
-  const warning='Estilos conflitantes: '+item.attack+' / '+item.defense+' (conferir)';
-  const fixed=content.replace(/(<span class="player-role">)([^<]*)(<\/span>)/,(_,a,b,c)=>a+b+' / '+item.defense+' (conferir)'+c);
-  return tag.replace('data-search="','data-search="'+warning+' ')+fixed+end;
+  // Mesmo em recompilações repetidas, cada card tem apenas um data-style.
+  tag=tag.replace(/ data-style="[^"]*"/g,'');
+  const safe=item.playingStyle.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  tag=tag.replace(' data-cap=',' data-style="'+safe+'" data-cap=');
+  if(displayed)content=replace(content,'Básico',displayed);
+  if(item.conflict){
+   const warning='Estilos conflitantes: '+item.attack+' / '+item.defense+' (conferir)';
+   tag=tag.replace('data-search="','data-search="'+warning+' ');
+   content=content.replace(/(<span class="player-role">)([^<]*)(<\/span>)/,(_,a,b,c)=>a+b+' / '+item.defense+' (conferir)'+c);
+  }
+  return tag+content+end;
  });
 }
 fs.writeFileSync(path.join(web,'index.html'),index);

@@ -24,6 +24,28 @@ for(const [id,label] of [['TODOS','Todas as posições'],...positions]){
 roles.setAttribute('aria-label','Filtrar pela posição original da carta, na ordem personalizada');
 const option=document.createElement('option');option.value='position';option.textContent='Posição • CA até GO';
 sort.insertBefore(option,sort.firstElementChild);sort.value='position';
+// Filtro por estilo de jogo real das fichas V76, sem atribuições por posição.
+const tools=document.querySelector('.tools');
+if(tools&&!document.getElementById('style-filter')){
+ const counts=new Map();
+ for(const el of items){
+  const style=el.dataset.style;
+  if(!style)throw Error('Scout PRO: carta sem estilo para filtro #'+el.dataset.cap);
+  counts.set(style,(counts.get(style)||0)+1);
+ }
+ const container=document.createElement('div');container.className='scout-style-picker';
+ const caption=document.createElement('label');caption.htmlFor='style-filter';caption.textContent='Estilo de jogo';
+ const select=document.createElement('select');select.id='style-filter';select.className='select scout-style-select';
+ select.setAttribute('aria-label','Filtrar jogadores por estilo de jogo');
+ const initial=document.createElement('option');initial.value='TODOS';initial.textContent='Todos os estilos · '+items.length;select.appendChild(initial);
+ const sorted=[...counts.entries()].sort((a,b)=>a[0].localeCompare(b[0],'pt-BR'));
+ for(const [style,total] of sorted){
+  const opt=document.createElement('option');opt.value=style;opt.textContent=style+' · '+total;
+  select.appendChild(opt);
+ }
+ container.appendChild(caption);container.appendChild(select);
+ tools.insertBefore(container,sort);
+}
 const summary=document.createElement('div');summary.className='scout-role-overview';
 summary.textContent='Ordem personalizada por posição original da carta · use os filtros para acessar cada grupo.';
 roles.insertAdjacentElement('afterend',summary);
