@@ -186,9 +186,8 @@ jobs:
           retention-days: 14
 
   release:
-    name: Publicar Release somente após CI GREEN + APK assinado
+    name: Publicar atualização Windows após CI GREEN
     needs: [validate, windows, android]
-    if: ${{ needs.android.outputs.signed == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -197,18 +196,15 @@ jobs:
         with:
           name: scout-pro-windows
           path: assets
-      - uses: actions/download-artifact@v4
-        with:
-          name: scout-pro-android-assinado
-          path: assets
-      - name: Verificação final dos arquivos
+      - name: Verificar instalador e manifesto de atualização Windows
+        shell: bash
         run: |
           set -euo pipefail
-          test -f assets/latest.yml
-          test -f assets/ScoutPRO-Android.apk
-          ls assets/ScoutPRO-Setup-*.exe >/dev/null
+          test -s assets/latest.yml
+          test "$(find assets -maxdepth 1 -name 'ScoutPRO-Setup-*.exe' -type f | wc -l)" -eq 1
+          grep -q "version: 1.1.${{ github.run_number }}" assets/latest.yml
           ls -lh assets
-      - name: Publicar versão estável para Windows e Android
+      - name: Publicar Windows para atualização automática
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.1.${{ github.run_number }}
@@ -219,6 +215,34 @@ jobs:
             assets/ScoutPRO-Setup-*.exe
             assets/*.blockmap
             assets/latest.yml
+          fail_on_unmatched_files: true
+
+  release_android:
+    name: Anexar APK oficial somente com assinatura permanente
+    needs: [validate, windows, android, release]
+    if: ${{ needs.android.outputs.signed == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: scout-pro-android-assinado
+          path: assets
+      - name: Verificar o APK assinado
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s assets/ScoutPRO-Android.apk
+          test -s assets/ScoutPRO-Android.apk.sha256
+          cd assets
+          sha256sum -c ScoutPRO-Android.apk.sha256
+      - name: Adicionar APK oficial à mesma versão publicada
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.1.${{ github.run_number }}
+          make_latest: true
+          files: |
             assets/ScoutPRO-Android.apk
             assets/ScoutPRO-Android.apk.sha256
           fail_on_unmatched_files: true
