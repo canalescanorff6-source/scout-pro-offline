@@ -19,7 +19,7 @@ for(const name of files){
  assert(!engine.record({...fake,name:'Outra edição'},d));
  assert(!engine.record({...fake,pp:65},d));
 }
-assert.equal(files.length,246);assert.equal(waiting,74);assert.equal(complete,172);
+assert.equal(files.length,246);assert.equal(waiting,64);assert.equal(complete,182);
 for(const position of ['CA','SA','MAT','MLG','VOL','ZG','LD','LE','GO','PTE','PTD']){
  for(const pp of [0,2,24,52,62,64,86,120,180,238]){
  const out=engine.suggest(pp,position,'Destruidor');
@@ -35,4 +35,4 @@ const lab=fs.readFileSync(path.resolve(__dirname,'../web/lab.js'),'utf8');
 assert(lab.includes("scoutpro:v81:pp:")&&lab.includes("scoutpro:pp-updated"));
 const review=fs.readFileSync(path.resolve(__dirname,'../web/performance-review-v80.js'),'utf8');
 assert(review.includes("scoutpro:v81:pp:")&&review.includes("scoutpro:pp-updated"));
-console.log('V82 OK: 246 fichas; 74 sem PP; 172 com PP no catálogo; 10 níveis informados sem builds inventadas.');
+console.log('V83 OK: 246 fichas; 64 sem PP; 182 com PP no catálogo; 20 níveis informados sem builds inventadas.');
