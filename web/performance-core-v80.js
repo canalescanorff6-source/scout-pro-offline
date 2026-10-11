@@ -7,7 +7,9 @@
  const categories=['Chute','Passe','Drible','Destreza','Força das pernas','Jogo aéreo','Defesa','Goleiro 1','Goleiro 2','Goleiro 3'];
  const cost=v=>v.reduce((total,n)=>{for(let i=0;i<n;i++)total+=1+Math.floor(i/4);return total},0);
  const valid=v=>Array.isArray(v)&&v.length===10&&v.every(x=>Number.isInteger(x)&&x>=0&&x<=20);
- const verified=d=>Number.isInteger(d.pp)&&d.pp>=0&&!d.pp_estimated&&valid(d.recommended_levels)&&cost(d.recommended_levels)===d.pp;
+ const verified=d=>Number.isInteger(d.pp)&&d.pp>=0&&!d.pp_estimated;
+// PP confirmados e build completa são evidências independentes.
+const hasPlan=d=>verified(d)&&valid(d.recommended_levels)&&cost(d.recommended_levels)===d.pp;
  const vectorKey=v=>v.join(',');
  function variants(d,l,custom){
   if(!verified(d))return [];
@@ -78,16 +80,17 @@
   const candidate=hasPP&&baseStats>0&&full&&opts.length>=2;
   const observed=comparisons(records,opts);
   let status='Dados pendentes';
-  if(hasPP)status='Build calculada';
+  if(hasPP)status=opts.length?'Build calculada':'PP confirmados · treino pendente';
   if(candidate)status='Build competitiva candidata';
   if(observed.length)status='Build validada em campo';
   const missing=[];
   if(!hasPP)missing.push('PP e progressão da carta devem ser confirmados');
+  else if(!opts.length)missing.push('PP registrados, mas a distribuição por atributo ainda não foi informada');
   if(!baseStats)missing.push('Atributos-base da edição ainda não registrados');
   if(!full)missing.push('Habilidades nativas incompletas');
   if(opts.length<2&&hasPP)missing.push('Precisamos de uma segunda distribuição diferente e com PP corretos');
   if(/pendente|n[aã]o confirmad|slot selecion[aá]vel/i.test(String(d.boost2||'')))missing.push('Segundo ímpeto não confirmado: não presumir bônus');
-  return {status,hasPP,opts,baseStats,nativeSkills:full,candidate,observed,missing,recorded:safeMatches(records,opts).length};
+  return {status,hasPP,hasPlan:hasPlan(d),opts,baseStats,nativeSkills:full,candidate,observed,missing,recorded:safeMatches(records,opts).length};
  }
- return {categories,cost,valid,verified,variants,metrics,contextKey,safeMatches,comparisons,review,vectorKey};
+ return {categories,cost,valid,verified,hasPlan,variants,metrics,contextKey,safeMatches,comparisons,review,vectorKey};
 });

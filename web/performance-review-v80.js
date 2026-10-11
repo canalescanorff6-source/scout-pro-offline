@@ -46,7 +46,7 @@
    (state.missing.length?'<ul>'+state.missing.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'<p>Critérios de cadastro atendidos. Confira bônus, posição ativada e comportamento real antes de gastar recursos.</p>')+
    '<p>A proposta mantém seu jogo central de Posse de Bola, mas permite registrar contra-ataque em testes separados.</p></article></div>'+
    '<details class="v80-record"><summary>Registrar partida real para comparar builds</summary>'+
-   (state.hasPP?'<form id="v80-form"><div class="v80-fields"><label>Treino usado<select name="build" required>'+
+   (state.hasPP&&builds.length?'<form id="v80-form"><div class="v80-fields"><label>Treino usado<select name="build" required>'+
       builds.map(b=>'<option value="'+esc(b.hash)+'">'+esc(b.name+(b.aliases.length>1?' (mesma distribuição: '+b.aliases.join(', ')+')':''))+'</option>').join('')+'</select></label>'+
       '<label>Técnico<input name="manager" required maxlength="100" placeholder="Ex.: técnico utilizado"></label>'+
       '<label>Formação<input name="formation" required maxlength="30" placeholder="Ex.: 4-3-1-2"></label>'+
@@ -57,7 +57,7 @@
       '<label>'+esc(metricB)+'<input type="number" name="metricB" min="0" max="100" step="1" required placeholder="Valor observado"></label>'+
       '</div><label class="v80-note">Observações da movimentação, skills e coberturas<textarea name="note" rows="2" maxlength="350" placeholder="Anote o que percebeu em campo; não confundir hipótese com fato."></textarea></label>'+
       '<button type="submit">Salvar partida observada</button></form>':
-      '<p>Sem PP confirmados, não é seguro comparar uma progressão numérica. Confira o nível e os pontos da carta no jogo antes.</p>')+
+      '<p>'+esc(state.hasPP?'PP confirmados. Defina um treino válido no Laboratório PRO antes de registrar partidas para comparação.':'Sem PP confirmados, não é seguro comparar uma progressão numérica. Confira o nível e os pontos da carta no jogo antes.')+'</p>')+
    '</details><div class="v80-observations"><h3>Comparação de desempenho</h3><p>'+
    (complete?'Você registrou pelo menos 5 partidas em duas builds distintas com contexto equivalente. Analise as médias e decida qual manter.':'Para comparar, registre no mínimo 5 partidas por distribuição, mantendo técnico, formação, estilo e faixa de adversário. Builds com níveis idênticos contam como uma só.')+
    '</p>'+

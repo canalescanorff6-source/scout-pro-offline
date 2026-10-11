@@ -9,7 +9,10 @@ for(const file of files){
  const get=id=>JSON.parse(s.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>','i'))?.[1]||'null');
  const d=get('scout-v68-data'),l=get('lab-data');assert(d&&l&&d.capture===Number(file.slice(0,3)),file);
  const v=core.review(d,l,[],null);
- if(v.hasPP){withPP++;assert.equal(v.status,v.candidate?'Build competitiva candidata':'Build calculada');assert(v.opts.length>0,'Treino sem build válida '+file)}
+ if(v.hasPP){withPP++;
+   assert.equal(v.status,v.candidate?'Build competitiva candidata':v.opts.length?'Build calculada':'PP confirmados · treino pendente');
+   if(d.recommended_levels===null)assert.equal(v.opts.length,0,'Não atribuir build fictícia '+file);
+ }
  else{withoutPP++;assert.equal(v.status,'Dados pendentes');assert.equal(v.opts.length,0)}
  if(v.baseStats)hasBase++;
  if(v.candidate){candidate++;assert(v.baseStats>0&&v.nativeSkills&&v.opts.length>=2)}
@@ -17,7 +20,7 @@ for(const file of files){
  if(v.status==='Dados pendentes')insufficient++;
  assert(!v.observed.length,'Ficha começa validada sem jogos: '+file);
 }
-assert.equal(withPP,162);assert.equal(withoutPP,84);assert.equal(hasBase,14);assert.equal(insufficient,84);
+assert.equal(withPP,172);assert.equal(withoutPP,74);assert.equal(hasBase,14);assert.equal(insufficient,74);
 assert(candidate>0&&candidate<=14,'Candidatas precisam ter atributos-base reais');
 const d={pp:8,pp_estimated:false,recommended_levels:[4,4,0,0,0,0,0,0,0,0],recommended_scenario:'A',
  alternate_scenarios:{A:[4,4,0,0,0,0,0,0,0,0],B:[4,4,0,0,0,0,0,0,0,0],C:[0,4,4,0,0,0,0,0,0,0]},base_stats_known:true,

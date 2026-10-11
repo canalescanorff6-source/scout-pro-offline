@@ -38,7 +38,7 @@ function render(){
  status.innerHTML='<h3>Subtotais previstos — cenário '+safe(active)+'</h3><p>Base cadastrada + treino ajustado + ímpetos fixos documentados + bônus direto do técnico. Não inclui todos os efeitos de proficiência/condição do jogo.</p><div class="lab-stat-grid">'+numeric.map(x=>'<div class="lab-stat"><small>'+safe(x.name)+'</small><b>'+x.value+'</b><em>base '+x.reference.base+' + treino '+x.level+' + ímpetos '+x.reference.boost+' + técnico '+x.reference.mgr+'</em><span class="'+(x.value>=90?'':'review')+'">'+(x.value>=95?'Referência 95+':x.value>=90?'Referência 90+':x.value>=85?'Referência 85+':'Abaixo de 85')+'</span></div>').join('')+'</div>';
 }
 document.querySelectorAll('.lab-preset').forEach(btn=>btn.addEventListener('click',()=>{const key=btn.dataset.load;if(Array.isArray(d[key])){active=key;current=d[key].slice();persist();render()}}));
-$('lab-restore').addEventListener('click',()=>{active='A';current=(d.A||Array(10).fill(0)).slice();persist();render()});
+$('lab-restore').addEventListener('click',()=>{active=Array.isArray(d.A)?'A':'personalizado';current=(d.A||Array(10).fill(0)).slice();persist();render()});
 $('lab-export').addEventListener('click',()=>{
  const lines=['SCOUT PRO V68 — '+d.name,'Card ID: '+d.id,'Posição: '+d.role,'Cenário: '+active,'PP: '+total(current)+' / '+(d.pp??'pendente'),...cat.map((c,i)=>c+': '+current[i]+' níveis ('+pps(current[i])+' PP)'), 'Subtotais não equivalem ao valor final em campo.'];
  const a=document.createElement('a'),u=URL.createObjectURL(new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'}));a.href=u;a.download='Scout_'+d.id+'_treino.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)
