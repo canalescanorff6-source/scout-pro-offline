@@ -1,0 +1,154 @@
+{
+  "revisao": "V72",
+  "origem": "Novas imagens enviadas pelo usuário; não utilizar prints anteriores",
+  "quantidade": 21,
+  "cartas": [
+    {
+      "ficha": 226,
+      "nome": "José María Giménez",
+      "arquivo": "CAP_226_Jos_Mar_a_Gim_nez_ORIGINAL.png",
+      "sha256": "3b2aa78a5bb7e2a8bce596401f8e58b3ef0f952fb6c66ef7889ae97a2fdb995c",
+      "bytes": 409115
+    },
+    {
+      "ficha": 227,
+      "nome": "Kenan Yıldız",
+      "arquivo": "CAP_227_Kenan_Y_ld_z_ORIGINAL.png",
+      "sha256": "a66f8ec83aa6ab6fbbf4430ebb3bd6829837411653a93fcd1c12459819418eed",
+      "bytes": 271620
+    },
+    {
+      "ficha": 228,
+      "nome": "Murilo",
+      "arquivo": "CAP_228_Murilo_ORIGINAL.png",
+      "sha256": "0125f7db057794177becace986bdc79e038b0141b513a19622c269373c0424f0",
+      "bytes": 477624
+    },
+    {
+      "ficha": 229,
+      "nome": "Zeki Çelik",
+      "arquivo": "CAP_229_Zeki_elik_ORIGINAL.png",
+      "sha256": "d5bc47779f448835db7a37f3a1d08a34abbb05e4f85d60c0232895d209e6e0f0",
+      "bytes": 256215
+    },
+    {
+      "ficha": 230,
+      "nome": "Pape Matar Sarr",
+      "arquivo": "CAP_230_Pape_Matar_Sarr_ORIGINAL.png",
+      "sha256": "5e7e635e00a90e922e74b7aa8c20aab934cabd73b3b674e4fb7ef6800645f96d",
+      "bytes": 257126
+    },
+    {
+      "ficha": 231,
+      "nome": "Guglielmo Vicario",
+      "arquivo": "CAP_231_Guglielmo_Vicario_ORIGINAL.png",
+      "sha256": "5145bc0a31dec6e9522f08657c50fa3fd06cb10ff6b6e513acdc7b32a177f42b",
+      "bytes": 261530
+    },
+    {
+      "ficha": 232,
+      "nome": "Aymeric Laporte",
+      "arquivo": "CAP_232_Aymeric_Laporte_ORIGINAL.png",
+      "sha256": "6af16b5821c619a0c365e05415bc49fd6078a7057e2374d55e698ff760e55592",
+      "bytes": 470130
+    },
+    {
+      "ficha": 233,
+      "nome": "Nicola Zalewski",
+      "arquivo": "CAP_233_Nicola_Zalewski_ORIGINAL.png",
+      "sha256": "d8f22d4b9b7edaeeffad32f0346cb8c6a9830b4b4be81c7f38f01f4eebf030cf",
+      "bytes": 405065
+    },
+    {
+      "ficha": 234,
+      "nome": "Kakita Yuki",
+      "arquivo": "CAP_234_Kakita_Yuki_ORIGINAL.png",
+      "sha256": "8b2a5604f89e454f41ffb81f377e14d5b084c50fbf4b33a11fa74434bf3f6f5d",
+      "bytes": 424643
+    },
+    {
+      "ficha": 235,
+      "nome": "Kumasaka Koki",
+      "arquivo": "CAP_235_Kumasaka_Koki_ORIGINAL.png",
+      "sha256": "11e71a19865bec01e029e9fd1e717e3a3fa7dfb30219472269882f128ee05e0a",
+      "bytes": 434351
+    },
+    {
+      "ficha": 236,
+      "nome": "Samuel Eto'o",
+      "arquivo": "CAP_236_Samuel_Eto_o_ORIGINAL.png",
+      "sha256": "63db4b4b1cba88b63a4d3069ee66759714fbe59d6c0000f06f92e45791fb63d6",
+      "bytes": 542360
+    },
+    {
+      "ficha": 237,
+      "nome": "Piero Hincapié",
+      "arquivo": "CAP_237_Piero_Hincapi_ORIGINAL.png",
+      "sha256": "be05c0e4a53d42ee32f96b4efdad5aad4db91af77d20ae1c36f5e66676d33913",
+      "bytes": 393509
+    },
+    {
+      "ficha": 238,
+      "nome": "Mateus Fernandes",
+      "arquivo": "CAP_238_Mateus_Fernandes_ORIGINAL.png",
+      "sha256": "6b3ce9b1d9302c77caddcafd19fe982babb685292da2210a3ee14217f2c2aaac",
+      "bytes": 373059
+    },
+    {
+      "ficha": 239,
+      "nome": "Alexander Isak",
+      "arquivo": "CAP_239_Alexander_Isak_ORIGINAL.png",
+      "sha256": "f99260dcf8eacd18c876a5b98262fcb032cb729965cd06b53c0a81c7973e3a9d",
+      "bytes": 379818
+    },
+    {
+      "ficha": 240,
+      "nome": "Gonçalo Ramos",
+      "arquivo": "CAP_240_Gon_alo_Ramos_ORIGINAL.png",
+      "sha256": "c1f9dd14c9a6f8667157996e8df6fdfa1ca4d8d8171a47562455da9ed6e1e8ef",
+      "bytes": 390619
+    },
+    {
+      "ficha": 241,
+      "nome": "Federico Valverde",
+      "arquivo": "CAP_241_Federico_Valverde_ORIGINAL.png",
+      "sha256": "aea39b5c5552d20d45218f2d0951b39efaa76c6cbb07fd8a534b904fa88dfbad",
+      "bytes": 374973
+    },
+    {
+      "ficha": 242,
+      "nome": "Maghnes Akliouche",
+      "arquivo": "CAP_242_Maghnes_Akliouche_ORIGINAL.png",
+      "sha256": "a71ecae75d6f0ed5be60e6c14a4e86b5f3552656fae7e5627c974d70dba63647",
+      "bytes": 385850
+    },
+    {
+      "ficha": 243,
+      "nome": "Anthony Gordon",
+      "arquivo": "CAP_243_Anthony_Gordon_ORIGINAL.png",
+      "sha256": "84b8ce9e71b6102553529bbd4253027299dc52e0de5923c51669463dd8343bf6",
+      "bytes": 375436
+    },
+    {
+      "ficha": 244,
+      "nome": "Edmond Tapsoba",
+      "arquivo": "CAP_244_Edmond_Tapsoba_ORIGINAL.png",
+      "sha256": "44c6d2d305530ac0bc4f3dcc4b481c8b0d1b3a325f0e70a50274006484ea7320",
+      "bytes": 374664
+    },
+    {
+      "ficha": 245,
+      "nome": "Justin Kluivert",
+      "arquivo": "CAP_245_Justin_Kluivert_ORIGINAL.png",
+      "sha256": "9c2b18ba29dabe47f76bc0c8651690f3b40280de74893aa1b73a685966e7010e",
+      "bytes": 413052
+    },
+    {
+      "ficha": 246,
+      "nome": "Eric Cantona",
+      "arquivo": "CAP_246_Eric_Cantona_ORIGINAL.png",
+      "sha256": "49533bcc80657dea72ca387e587a91797d0ec1870346804d8f213e93f7c619da",
+      "bytes": 501572
+    }
+  ]
+}

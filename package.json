@@ -1,0 +1,26 @@
+{
+  "name": "scout-pro-elite-offline",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Scout PRO v72 · eFootball 2027 · 246 cartas offline, Android e Windows com atualização segura.",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "check": "node scripts/check-content.cjs && node scripts/test-mobile-art.cjs && node scripts/verify-release-workflow.cjs",
+    "desktop:dev": "electron .",
+    "desktop:win": "electron-builder --win nsis --x64 --publish never",
+    "android:init": "npx cap add android",
+    "android:sync": "npx cap sync android",
+    "android:build:debug": "npx cap sync android && cd android && ./gradlew assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/android": "^8.0.0",
+    "electron-updater": "^6.6.2",
+    "@capacitor/browser": "^8.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0",
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  }
+}
