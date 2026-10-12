@@ -1,0 +1,42 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'../web');
+const audit=JSON.parse(fs.readFileSync(path.join(root,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const fichas=fs.readdirSync(path.join(root,'fichas')).filter(f=>/^\d{3}_.+\.html$/.test(f));
+assert.equal(fichas.length,246);assert.equal(audit.cards.length,246);
+assert.equal(audit.summary.with_pp,246);assert.equal(audit.summary.treinos_propostos_experimentais_v95,84);
+const pending=audit.cards.filter(c=>c.niveis===null);
+assert.equal(pending.length,84);
+const cost=v=>v.reduce((total,n)=>{for(let i=0;i<n;i++)total+=1+Math.floor(i/4);return total},0);
+let withPP=0;
+for(const c of pending){
+ const p=c.treino_proposta_v95;
+ assert(p,'Proposta ausente #'+c.numero);
+ assert.match(p.status,/experimental/);
+ assert(Array.isArray(p.niveis)&&p.niveis.length===10);
+ assert(p.niveis.every(n=>Number.isInteger(n)&&n>=0&&n<=20));
+ assert.equal(cost(p.niveis),c.pp,'PP incompletos #'+c.numero);
+ if(c.pp>0){withPP++;assert(p.niveis.some(n=>n>0),'Todos zero #'+c.numero)}
+ const html=fs.readFileSync(path.join(root,c.arquivo),'utf8');
+ const start=html.indexOf('id="lab-data"'),begin=html.indexOf('>',start),end=html.indexOf('</script>',begin);
+ assert(start>0&&begin>start&&end>begin,'JSON da ficha ausente '+c.numero);
+ const lab=JSON.parse(html.slice(begin+1,end));
+ assert.deepEqual(lab.draftA,p.niveis);
+ assert.equal(lab.draftStatus,'proposta experimental não aprovada');
+ assert.equal(lab.A,null);assert.equal(lab.B,null);assert.equal(lab.C,null);
+ assert.equal(lab.recommended,null);assert.equal(lab.pp,c.pp);
+ if(!['GO','GR'].includes(lab.role))assert(lab.draftA.slice(7).every(x=>x===0));
+ const entry=index.match(new RegExp('<a class="player-card"[^>]*data-cap="'+c.numero+'"[^>]*>[\\s\\S]*?<\\/a>'));
+ assert(entry,'Carta ausente no índice '+c.numero);
+ assert(entry[0].includes(c.pp===0?'0 PP confirmado':'Treino proposto · não validado'));
+}
+assert.equal(withPP,83);
+const eto=audit.cards.find(c=>c.numero===236);
+assert.equal(eto.pp,66);assert.deepEqual(eto.treino_proposta_v95.niveis,[12,4,4,12,7,0,0,0,0,0]);
+const kubo=audit.cards.find(c=>c.numero===211);
+assert.equal(kubo.pp,0);assert(kubo.treino_proposta_v95.niveis.every(n=>n===0));
+assert.equal(audit.cards.filter(c=>c.niveis!==null).length,162);
+const src=fs.readFileSync(path.join(root,'lab.js'),'utf8');
+for(const m of ['d.draftA.slice()','const oldEmpty=','TREINO PROPOSTO NA FICHA V95','Salvar como meu treino de teste'])assert(src.includes(m));
+console.log('V95 OK: 84 fichas com propostas reais em JSON, 83 PP completos, Kubo 0 e 162 anteriores intactas.');

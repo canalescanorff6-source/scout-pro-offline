@@ -19,9 +19,7 @@ for(const c of cards){
  const goalkeeper=['GR','GO'].includes(c.posicao);
  if(!goalkeeper)assert(build.vec.slice(7).every(n=>n===0),'Jogador de linha com treino GO #'+c.numero);
  const file=path.join(root,'web',c.arquivo),html=fs.readFileSync(file,'utf8');
- const match=html.match(/<script[^>]*id="scout-v68-data"[^>]*>([\s\S]*?)<\/script>/i);
- assert(match,'JSON de ficha ausente #'+c.numero);
- const model=JSON.parse(match[1]);
+ const model=JSON.parse(html.match(/<script[^>]*id="scout-v68-data"[^>]*>([\\s\\S]*?)<\\/script>/i)[1]);
  assert.equal(model.recommended_levels,null,'Não transformar heurística em build oficial #'+c.numero);
 }
 assert.equal(nonzero,83); 

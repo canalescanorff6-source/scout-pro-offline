@@ -69,7 +69,9 @@ const total=vec=>vec.reduce((s,n)=>s+pps(n),0);
 const GROUP={'Consciência ofensiva':3,'Finalização':0,'Força do chute':4,'Aceleração':3,'Velocidade':4,'Controle de bola':2,'Drible':2,'Posse apertada':2,'Equilíbrio':3,'Contato físico':5,'Passe rasteiro':1,'Passe alto':1,'Resistência':4,'Cabeceio':5,'Salto':5,'Consciência defensiva':6,'Desarme':6,'Dedicação defensiva':6,'Agressividade':6,'Talento de GO':7,'Consciência do goleiro':7,'Salto GO':7,'Reflexos de GO':9,'Alcance do GO':8,'Defesa do GO':8,'Firmeza do GO':9,'Reflexos':9,'Alcance':8};
 const hasDocumentedBuild=previewValid(d[d.recommended])||previewValid(d.A)||previewValid(d.B)||previewValid(d.C);
 const previewEligible=!hasDocumentedBuild&&Number.isInteger(d.pp)&&d.pp>=0;
-const generate=()=>suggestPreview(d.pp,d.role,d.style);
+const generate=()=>previewValid(d.draftA)&&previewCost(d.draftA)===d.pp
+ ? {vec:d.draftA.slice(),spent:d.pp,remaining:0,provisional:true,source:'Ficha individual V95'}
+ : suggestPreview(d.pp,d.role,d.style);
 const firstPreview=previewEligible?generate():null;
 let current=(previewValid(d[d.recommended])?d[d.recommended]:previewValid(d.A)?d.A:firstPreview?firstPreview.vec:Array(10).fill(0)).slice();
 let active=firstPreview?'prévia experimental':(d.recommended||'A');
@@ -78,7 +80,8 @@ const storageKey='scoutpro:v67:'+d.id+':'+d.card;
 try{
  const saved=JSON.parse(localStorage.getItem(storageKey)||'null');
  if(previewValid(saved?.train)&&d.pp!==null&&previewCost(saved.train)<=d.pp){
-  current=saved.train.slice();active='personalizado';
+  const oldEmpty=previewEligible&&d.pp>0&&saved.train.every(n=>n===0)&&!saved.source;
+  if(!oldEmpty){current=saved.train.slice();active='personalizado'}
  }
 }catch(e){}
 function persist(){
@@ -89,11 +92,11 @@ function persist(){
  }catch(e){return false}
 }
 if(previewEligible){
- const warning=document.createElement('section');warning.id='scout-preview-v94';warning.setAttribute('role','status');
+ const warning=document.createElement('section');warning.id='scout-preview-v95';warning.setAttribute('role','status');
  warning.style.cssText='padding:12px 14px;margin:10px 0;border:1px solid #3c7093;border-radius:12px;background:#102638;color:#e4f4ff;font-size:13px;line-height:1.5';
  const explain=document.createElement('p');explain.textContent=d.pp===0?
   'Esta carta tem 0 PP confirmados: não há pontos a distribuir.':
-  'PRÉVIA EXPERIMENTAL PARA POSSE · '+d.pp+' PP. Os níveis abaixo são uma sugestão por posição e estilo; ainda não constituem build confirmada. Confira atributos, skills e ímpetos antes de usar no eFootball.';
+  'TREINO PROPOSTO NA FICHA V95 · '+d.pp+'/'+d.pp+' PP. Proposta individual por posição e estilo para Posse de Bola, ainda não validada em campo. Confira atributos-base, habilidades e ímpetos antes de aprovar.';
  warning.appendChild(explain);
  if(d.pp>0){
   const button=document.createElement('button');button.type='button';button.id='scout-preview-save-v94';
@@ -108,7 +111,7 @@ if(previewEligible){
  const controls=document.getElementById('lab-controls');
  controls.parentNode.insertBefore(warning,controls);
  const restore=document.getElementById('lab-restore');
- if(restore)restore.textContent=d.pp===0?'Restaurar distribuição zerada':'Restaurar prévia experimental';
+ if(restore)restore.textContent=d.pp===0?'Restaurar distribuição zerada':'Carregar treino proposto da ficha';
 }
 function render(){
  box.innerHTML='';
@@ -122,7 +125,7 @@ function render(){
  const used=total(current); $('lab-budget').textContent=d.pp===null?'Sem orçamento':used+' / '+d.pp;
  const remaining=d.pp===null?null:d.pp-used; $('lab-remain').textContent=remaining===null?'—':remaining;
  $('lab-remain').className=remaining===null?'':remaining<0?'bad':'ok';
- $('lab-flag').textContent=d.pp===null?'Pendente':remaining<0?'PP excedidos':active==='prévia experimental'&&d.pp>0?'Prévia experimental':remaining===0?'Distribuição válida':'PP não alocados';
+ $('lab-flag').textContent=d.pp===null?'Pendente':remaining<0?'PP excedidos':active==='prévia experimental'&&d.pp>0?'Proposta · não aprovada':remaining===0?'Distribuição válida':'PP não alocados';
  $('lab-flag').className=d.pp===null?'':remaining<0?'bad':remaining===0?'ok':'';
  document.querySelectorAll('.lab-preset').forEach(b=>b.classList.toggle('active',active===b.dataset.load));
  if(!Object.keys(d.stats||{}).length){status.innerHTML='<h3>Atributos finais: pendentes</h3><p>Sem a base numérica da versão exata, não há como demonstrar os efeitos do treino nos atributos com segurança. Use os PP como hipótese e confirme a tela da carta antes de redefinir a progressão.</p>';return}
