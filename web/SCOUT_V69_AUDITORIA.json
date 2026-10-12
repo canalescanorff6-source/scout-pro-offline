@@ -270,21 +270,10 @@
       "max_level": 35,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          4,
-          8,
-          11,
-          4,
-          9,
-          0,
-          0,
-          0
-        ],
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/007_Sergi_Cardona.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -459,21 +448,10 @@
       "max_level": 31,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          11,
-          4,
-          4,
-          11,
-          7,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/012_Ruud_van_Nistelrooij.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -616,21 +594,10 @@
       "max_level": 27,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          0,
-          8,
-          8,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/016_Dayot_Upamecano.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -695,21 +662,10 @@
       "max_level": 32,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          11,
-          4,
-          4,
-          11,
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/018_Safee_Sali.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -1002,21 +958,10 @@
       "max_level": 31,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          11,
-          4,
-          4,
-          11,
-          7,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/026_Luis_Suarez.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -1960,21 +1905,10 @@
       "max_level": 29,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          4,
-          9,
-          8,
-          8,
-          8,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/050_Lionel_Messi.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -2492,21 +2426,10 @@
       "max_level": 19,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          8,
-          7,
-          7,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 36,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/064_Burchet.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -2535,21 +2458,10 @@
       "max_level": 29,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          2,
-          8,
-          9,
-          9,
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/065_Raphinha.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -2614,21 +2526,10 @@
       "max_level": 31,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          10,
-          9,
-          9,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/067_Antoine_Semenyo.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -2771,21 +2672,10 @@
       "max_level": 35,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          2,
-          8,
-          10,
-          10,
-          10,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/071_Ramadhan_Saifullah.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -2852,21 +2742,10 @@
       "max_level": 29,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          2,
-          9,
-          9,
-          8,
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/073_Andres_Iniesta.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -3345,21 +3224,10 @@
       "max_level": 33,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          9,
-          9,
-          7,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 64,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/086_Bruno_Fernandes.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -3389,21 +3257,10 @@
       "max_level": 32,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          1,
-          9,
-          9,
-          9,
-          8,
-          0,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/087_Giuliano_Simeone.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -3940,21 +3797,10 @@
       "max_level": 34,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          8,
-          8,
-          8,
-          0,
-          5,
-          0,
-          0,
-          0
-        ],
         "pp": 66,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/101_Darren_Fletcher.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4018,21 +3864,10 @@
       "max_level": 31,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          10,
-          8,
-          8,
-          8,
-          0,
-          5,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/103_Dominik_Szoboszlai.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4174,21 +4009,10 @@
       "max_level": 33,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          4,
-          0,
-          6,
-          4,
-          15,
-          0,
-          0,
-          0
-        ],
         "pp": 64,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/107_Aurelien_Tchouameni.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4257,21 +4081,10 @@
       "raridade_confirmada": "SHOW TIME",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          4,
-          0,
-          4,
-          4,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/109_Ruben_Neves.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4369,21 +4182,10 @@
       "max_level": 29,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          4,
-          0,
-          6,
-          4,
-          13,
-          0,
-          0,
-          0
-        ],
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/112_Amadou_Onana.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4485,21 +4287,10 @@
       "max_level": 28,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          4,
-          0,
-          5,
-          4,
-          13,
-          0,
-          0,
-          0
-        ],
         "pp": 54,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/115_Casemiro.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4527,21 +4318,10 @@
       "max_level": 35,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          10,
-          4,
-          4,
-          8,
-          5,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/116_Christian_Ordonez.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4569,21 +4349,10 @@
       "max_level": 33,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          4,
-          4,
-          8,
-          4,
-          13,
-          0,
-          0,
-          0
-        ],
         "pp": 64,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/117_Moises_Caicedo.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4611,21 +4380,10 @@
       "max_level": 35,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          10,
-          4,
-          4,
-          8,
-          5,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/118_Sandro_Tonali.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4657,21 +4415,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          10,
-          4,
-          4,
-          8,
-          5,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/119_Tyler_Adams.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4703,21 +4450,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          4,
-          2,
-          7,
-          4,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/120_Rodrigo_Bentancur.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -4929,21 +4665,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          4,
-          8,
-          11,
-          4,
-          9,
-          0,
-          0,
-          0
-        ],
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/126_Daniel_Munoz.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -5413,21 +5138,10 @@
       "max_level": 35,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          4,
-          8,
-          11,
-          4,
-          9,
-          0,
-          0,
-          0
-        ],
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/139_Noussair_Mazraoui.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -5455,21 +5169,10 @@
       "max_level": 33,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          5,
-          8,
-          9,
-          4,
-          9,
-          0,
-          0,
-          0
-        ],
         "pp": 64,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/140_Alejandro_Grimaldo.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -5501,21 +5204,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          5,
-          8,
-          12,
-          4,
-          10,
-          0,
-          0,
-          0
-        ],
         "pp": 76,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/141_Ian_Maatsen.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -5544,21 +5236,10 @@
       "max_level": 33,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          5,
-          8,
-          9,
-          4,
-          9,
-          0,
-          0,
-          0
-        ],
         "pp": 64,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/142_Andrew_Robertson.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -5872,21 +5553,10 @@
       "max_level": 27,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          0,
-          8,
-          8,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/151_Willian_Pacho.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -5914,21 +5584,10 @@
       "max_level": 27,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          0,
-          8,
-          8,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/152_Pierre_Kalulu.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -6028,21 +5687,10 @@
       "max_level": 25,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          0,
-          6,
-          8,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 48,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/155_Micky_van_de_Ven.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -6246,21 +5894,10 @@
       "max_level": 27,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          0,
-          8,
-          8,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/161_Ruben_Dias.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -6289,21 +5926,10 @@
       "max_level": 27,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          0,
-          8,
-          8,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/162_Pau_Torres.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -6368,21 +5994,10 @@
       "max_level": 29,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          1,
-          8,
-          9,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/164_Marc_Guehi.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -6488,21 +6103,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          0,
-          8,
-          8,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/167_Danilo.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -6531,21 +6135,10 @@
       "max_level": 29,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          8,
-          11,
-          11
-        ],
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/168_Petr_Cech.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -6614,21 +6207,10 @@
       "raridade_confirmada": "SHOW TIME",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          8,
-          10,
-          10
-        ],
         "pp": 50,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/170_Jan_Oblak.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -6692,21 +6274,10 @@
       "max_level": 24,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          8,
-          10,
-          9
-        ],
         "pp": 46,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/172_Thibaut_Courtois.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -6882,21 +6453,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          0,
-          0,
-          0,
-          2,
-          0,
-          0,
-          8,
-          11,
-          11
-        ],
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/177_Dean_Henderson.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -6958,21 +6518,10 @@
       "max_level": 29,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          11,
-          4,
-          4,
-          10,
-          6,
-          1,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/179_Victor_Osimhen.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7035,21 +6584,10 @@
       "max_level": 31,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          11,
-          4,
-          4,
-          11,
-          7,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/181_Serhou_Guirassy.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7111,21 +6649,10 @@
       "max_level": 32,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          11,
-          4,
-          4,
-          11,
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/183_P_E_Aubameyang.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7224,21 +6751,10 @@
       "max_level": 30,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          4,
-          10,
-          8,
-          8,
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 58,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/186_Neymar_Jr.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7343,21 +6859,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          10,
-          9,
-          9,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/189_Donyell_Malen.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7456,21 +6961,10 @@
       "max_level": 31,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          10,
-          9,
-          9,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/192_Jeremy_Doku.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7499,21 +6993,10 @@
       "max_level": 31,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          10,
-          9,
-          9,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/193_Allan_Saint_Maximin.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7543,21 +7026,10 @@
       "max_level": 29,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          2,
-          8,
-          9,
-          9,
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/194_Bruno_Henrique.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7587,21 +7059,10 @@
       "max_level": 28,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          9,
-          9,
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 54,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/195_Raphinha.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7742,21 +7203,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          2,
-          9,
-          9,
-          9,
-          9,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/199_Joao_Felix.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7830,21 +7280,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          2,
-          8,
-          10,
-          9,
-          9,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/201_Yan_Diomande.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7872,21 +7311,10 @@
       "max_level": 32,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          9,
-          9,
-          6,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/202_Cole_Palmer.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -7957,21 +7385,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          1,
-          9,
-          8,
-          8,
-          4,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 44,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/204_Xavi_Simons.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8179,21 +7596,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          9,
-          9,
-          6,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/210_Jamal_Musiala.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8223,21 +7629,10 @@
       "max_level": 1,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 0,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/211_Kubo_Takefusa.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8267,21 +7662,10 @@
       "max_level": 30,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          10,
-          8,
-          8,
-          8,
-          0,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 58,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/212_Luiz_Araujo.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8349,21 +7733,10 @@
       "max_level": 32,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          1,
-          9,
-          9,
-          9,
-          8,
-          0,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/214_Nico_Williams.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8513,21 +7886,10 @@
       "max_level": 32,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          11,
-          8,
-          8,
-          8,
-          1,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/218_Nicolo_Barella.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8597,21 +7959,10 @@
       "max_level": 32,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          8,
-          8,
-          7,
-          0,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/220_Luka_Modric.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8639,21 +7990,10 @@
       "max_level": 35,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          8,
-          8,
-          8,
-          0,
-          6,
-          0,
-          0,
-          0
-        ],
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/221_Khephren_Thuram.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8687,21 +8027,10 @@
       "max_level": 32,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          11,
-          8,
-          8,
-          8,
-          1,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/222_Gerson.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8730,21 +8059,10 @@
       "max_level": 28,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          7,
-          6,
-          6,
-          0,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 54,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/223_Frenkie_de_Jong.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8773,21 +8091,10 @@
       "max_level": 33,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          8,
-          8,
-          8,
-          0,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 64,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/224_Manu_Kone.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8852,21 +8159,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          0,
-          8,
-          8,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/226_Jose_Maria_Gimenez.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8898,21 +8194,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          9,
-          9,
-          5,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/227_Kenan_Yldz.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8944,21 +8229,10 @@
       "raridade_confirmada": "SHOW TIME",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          1,
-          8,
-          9,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/228_Murilo.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -8990,21 +8264,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          7,
-          4,
-          8,
-          10,
-          4,
-          8,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/229_Zeki_Celik.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9036,21 +8299,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          11,
-          8,
-          8,
-          8,
-          1,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/230_Pape_Matar_Sarr.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9082,21 +8334,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-          0,
-          8,
-          12,
-          11
-        ],
         "pp": 58,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/231_Guglielmo_Vicario.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9128,21 +8369,10 @@
       "raridade_confirmada": "SHOW TIME",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          5,
-          0,
-          0,
-          8,
-          10,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/232_Aymeric_Laporte.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9174,21 +8404,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          10,
-          10,
-          10,
-          8,
-          0,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 70,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/233_Nicola_Zalewski.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9219,21 +8438,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          11,
-          4,
-          4,
-          11,
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/234_Kakita_Yuki.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9264,21 +8472,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          4,
-          0,
-          6,
-          4,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 64,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/235_Kumasaka_Koki.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9310,21 +8507,10 @@
       "raridade_confirmada": "ÉPICA",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          12,
-          4,
-          4,
-          12,
-          7,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 66,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/236_Samuel_Eto_o.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9356,21 +8542,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          5,
-          8,
-          9,
-          4,
-          9,
-          0,
-          0,
-          0
-        ],
         "pp": 64,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/237_Piero_Hincapie.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9402,21 +8577,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          8,
-          8,
-          8,
-          0,
-          6,
-          0,
-          0,
-          0
-        ],
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/238_Mateus_Fernandes.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9448,21 +8612,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          11,
-          4,
-          4,
-          11,
-          7,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/239_Alexander_Isak.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9494,21 +8647,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          11,
-          4,
-          4,
-          11,
-          8,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/240_Goncalo_Ramos.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9540,21 +8682,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          10,
-          8,
-          8,
-          8,
-          0,
-          5,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/241_Federico_Valverde.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9587,21 +8718,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          1,
-          11,
-          8,
-          8,
-          8,
-          0,
-          4,
-          0,
-          0,
-          0
-        ],
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/242_Maghnes_Akliouche.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9634,21 +8754,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          8,
-          10,
-          9,
-          9,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/243_Anthony_Gordon.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9680,21 +8789,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          4,
-          0,
-          0,
-          8,
-          8,
-          12,
-          0,
-          0,
-          0
-        ],
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/244_Edmond_Tapsoba.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9725,21 +8823,10 @@
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          0,
-          12,
-          9,
-          9,
-          7,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 64,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/245_Justin_Kluivert.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     },
     {
@@ -9771,21 +8858,10 @@
       "raridade_confirmada": "ÉPICA",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
-        "niveis": [
-          8,
-          4,
-          7,
-          10,
-          8,
-          4,
-          0,
-          0,
-          0,
-          0
-        ],
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
-        "metodo": "posição e estilo de Posse de Bola, sem inferir atributos-base"
+        "fonte": "web/fichas/246_Eric_Cantona.html → lab-data.draftA",
+        "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       }
     }
   ],
