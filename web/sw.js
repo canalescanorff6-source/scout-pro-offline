@@ -1,5 +1,5 @@
-const CACHE='scout-pro-v98-1';
-const SHELL=['./','./index.html','./premium.css','./revisao-tatica-v98.html','./tactical-engine-v98.js','./revisao-tatica-v98.js','./SCOUT_V98_AUDITORIA_TATICA.json','./premium.js','./lab.js','./lab.css','./scout_v68.css','./app-bridge.css','./app-bridge.js','./scout-config.js','./assets/icon-192.png'];
+const CACHE='scout-pro-v101-1';
+const SHELL=['./','./index.html','./premium.css','./revisao-tatica-v98.html','./tactical-engine-v98.js','./revisao-tatica-v98.js','./SCOUT_V98_AUDITORIA_TATICA.json','./player-model-v101.html','./player-model-v101-core.js','./player-model-v101-ui.js','./SCOUT_V101_MODELO_CORPORAL.json','./premium.js','./lab.js','./lab.css','./scout_v68.css','./app-bridge.css','./app-bridge.js','./scout-config.js','./assets/icon-192.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET'||new URL(req.url).origin!==self.location.origin)return;
