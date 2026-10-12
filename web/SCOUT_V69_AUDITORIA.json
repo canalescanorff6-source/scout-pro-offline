@@ -3,14 +3,14 @@
   "method": "video-inspired competitive analysis; not attributed pro personal judgement",
   "summary": {
     "micro_pro": 73,
-    "with_pp": 202,
+    "with_pp": 212,
     "native_skills": 130,
     "processed": 246,
     "with_stats": 14,
-    "no_pp": 44,
+    "no_pp": 34,
     "adapt_alert": 55,
     "extra_confirmed": 16,
-    "level_user_entered": 40
+    "level_user_entered": 50
   },
   "cards": [
     {
@@ -6213,7 +6213,7 @@
       "posicao": "CA",
       "estilo_ataque": "Artilheiro",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6223,11 +6223,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/179_Victor_Osimhen.html"
+      "arquivo": "fichas/179_Victor_Osimhen.html",
+      "max_level": 29,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 180,
@@ -6271,7 +6272,7 @@
       "posicao": "CA",
       "estilo_ataque": "Artilheiro",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6281,12 +6282,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/181_Serhou_Guirassy.html"
+      "arquivo": "fichas/181_Serhou_Guirassy.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 182,
@@ -6330,7 +6332,7 @@
       "posicao": "CA",
       "estilo_ataque": "Artilheiro",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 62,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6340,11 +6342,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/183_P_E_Aubameyang.html"
+      "arquivo": "fichas/183_P_E_Aubameyang.html",
+      "max_level": 32,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 184,
@@ -6423,7 +6426,7 @@
       "posicao": "SA",
       "estilo_ataque": "Armador criativo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 58,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6433,11 +6436,12 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/186_Neymar_Jr.html"
+      "arquivo": "fichas/186_Neymar_Jr.html",
+      "max_level": 30,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 187,
@@ -6520,7 +6524,7 @@
       "posicao": "PTD",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6530,13 +6534,14 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central",
         "Raridade em conflito entre captura do jogo e banco externo"
       ],
-      "arquivo": "fichas/189_Donyell_Malen.html"
+      "arquivo": "fichas/189_Donyell_Malen.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 190,
@@ -6616,7 +6621,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6626,12 +6631,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/192_Jeremy_Doku.html"
+      "arquivo": "fichas/192_Jeremy_Doku.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 193,
@@ -6641,7 +6647,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6651,12 +6657,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/193_Allan_Saint_Maximin.html"
+      "arquivo": "fichas/193_Allan_Saint_Maximin.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 194,
@@ -6666,7 +6673,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6676,13 +6683,14 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/194_Bruno_Henrique.html"
+      "arquivo": "fichas/194_Bruno_Henrique.html",
+      "max_level": 29,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 195,
@@ -6692,7 +6700,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Lateral móvel",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 54,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6702,13 +6710,14 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/195_Raphinha.html"
+      "arquivo": "fichas/195_Raphinha.html",
+      "max_level": 28,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 196,
@@ -6825,7 +6834,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Armador criativo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 62,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6835,13 +6844,14 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central",
         "Raridade em conflito entre captura do jogo e banco externo"
       ],
-      "arquivo": "fichas/199_Joao_Felix.html"
+      "arquivo": "fichas/199_Joao_Felix.html",
+      "max_level": 32,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 200,
