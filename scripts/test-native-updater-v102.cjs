@@ -40,7 +40,7 @@ const smoke=fs.readFileSync(path.join(root,'.github/workflows/v101-validation.ym
 assert(smoke.includes('node scripts/install-native-updater-v102.cjs'),'Android PR must compile native plugin');
 for(const s of [
  'const nativeUpdater=()=>',
- "nativeUpdater().getInstalledInfo()",
+ "plugin.getInstalledInfo()",
  'native.download({url:androidDownload})',
  'native.installDownloaded()',
  'signature_mismatch',
