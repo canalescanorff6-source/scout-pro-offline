@@ -27,7 +27,7 @@ for(const card of audit.cards){
  assert(html.includes('PP REGISTRADOS · TREINO PENDENTE'));
 }
 assert.equal(count,10);assert.equal(audit.cards.length,246);
-assert.equal(audit.summary.with_pp,232);assert.equal(audit.summary.no_pp,14);assert.equal(audit.summary.level_user_entered,70);
+assert.ok(audit.summary.with_pp>=232,'Progressão V88 não pode regredir');assert.ok(audit.summary.no_pp<=14,'Cartas pendentes não podem aumentar');assert.ok(audit.summary.level_user_entered>=70,'Níveis V88 não podem regredir');
 const kubo=audit.cards.find(c=>c.numero===211);
 assert.equal(kubo.max_level,1);
 assert.equal(kubo.pp,0,'Zero é orçamento válido, não valor pendente');

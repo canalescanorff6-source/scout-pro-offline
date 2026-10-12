@@ -27,5 +27,5 @@ for(const card of audit.cards){
  assert(html.includes('PP REGISTRADOS · TREINO PENDENTE'),card.name+' visual desatualizado');
 }
 assert.equal(checked,10);assert.equal(audit.cards.length,246);
-assert.equal(audit.summary.with_pp,232);assert.equal(audit.summary.no_pp,14);assert.equal(audit.summary.level_user_entered,70);
+assert.ok(audit.summary.with_pp>=232,'Progressão V88 não pode regredir');assert.ok(audit.summary.no_pp<=14,'Cartas pendentes não podem aumentar');assert.ok(audit.summary.level_user_entered>=70,'Níveis V88 não podem regredir');
 console.log('V83 OK: 10 novas cartas com PP e níveis permanentes; 182 com PP, 64 pendentes; 246 cartas sem builds inventadas.');

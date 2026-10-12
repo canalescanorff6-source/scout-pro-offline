@@ -29,5 +29,5 @@ for(const card of audit.cards){
  assert(html.includes('PP REGISTRADOS · TREINO PENDENTE'));
 }
 assert.equal(checked,10);assert.equal(audit.cards.length,246);
-assert.equal(audit.summary.with_pp,232);assert.equal(audit.summary.no_pp,14);assert.equal(audit.summary.level_user_entered,70);
+assert.ok(audit.summary.with_pp>=232,'Progressão V88 não pode regredir');assert.ok(audit.summary.no_pp<=14,'Cartas pendentes não podem aumentar');assert.ok(audit.summary.level_user_entered>=70,'Níveis V88 não podem regredir');
 console.log('V86 OK: 10 novos níveis máximos e PP permanentes; 212 com PP, 34 pendentes, 246 preservadas sem builds fictícias.');
