@@ -62,6 +62,7 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run styles:ptbr
       - run: npx cap add android
+      - run: node scripts/install-native-updater-v102.cjs
       - run: npx cap sync android
       - name: Compilar APK de validação
         run: cd android && chmod +x gradlew && ./gradlew :app:assembleDebug --no-daemon

@@ -152,6 +152,7 @@ jobs:
       - name: Criar projeto Android e sincronizar catálogo offline
         run: |
           npx cap add android
+          node scripts/install-native-updater-v102.cjs
           npx cap sync android
           python3 scripts/install-android-icons.py
       - name: Versão nativa progressiva
