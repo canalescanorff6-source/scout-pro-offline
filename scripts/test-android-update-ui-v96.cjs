@@ -13,7 +13,9 @@ assert(js.includes("if(!confirm('Antes de instalar"),'Confirmar download e backu
 assert(js.includes("const selected=chooseAndroidRelease(releases)"),'Não pode oferecer instalador Windows como APK');
 assert(js.includes("asset:(r.assets||[]).find(a=>a?.name==='ScoutPRO-Android.apk'"),'Somente APK oficial assinado');
 assert(!js.includes("btn.textContent='Baixar APK Android'"),'O botão principal sempre deve abrir o painel');
-assert(!js.includes('if(!auto&&confirm('),'Não abrir instalador automaticamente');
+const nativeBranch=js.slice(js.indexOf('const selected=chooseAndroidRelease(releases);'),js.indexOf("const resp=await fetch('https://api.github.com/repos/'+repo+'/releases/latest'"));
+assert(nativeBranch.includes('setAndroidDownload(url)'),'Nova release Android precisa liberar download manual');
+assert(!nativeBranch.includes('if(!auto&&confirm('),'Não abrir instalador Android automaticamente');
 assert(css.includes('#scout-android-update-modal'));
 assert(flow.includes('secrets.ANDROID_KEYSTORE_BASE64'));
 assert(flow.includes('secrets.ANDROID_KEYSTORE_PASSWORD'));
