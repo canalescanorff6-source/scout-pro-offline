@@ -88,7 +88,7 @@ async function onlineUpdate(auto=false){
    const releases=await resp.json();
    const selected=chooseAndroidRelease(releases);
    if(!selected){
-    const msg='APK Android oficial ainda não publicado: builds de teste não atualizam o aplicativo instalado. Exige assinatura permanente.';
+    const msg='Ainda não há APK oficial Android publicado. Ative o segredo ANDROID_RELEASE_SECRET no GitHub e execute a CI para disponibilizar a primeira versão assinada. Faça backup antes da migração do APK de teste.';
     notify(msg);showAndroidStatus(msg);setAndroidDownload(null);
     return;
    }

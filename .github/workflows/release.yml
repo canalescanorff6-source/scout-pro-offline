@@ -35,6 +35,8 @@ jobs:
           node --check scripts/set-version.cjs
       - name: Conferir arquivos da compilação
         run: node scripts/verify-release-workflow.cjs
+      - name: Validar formato do certificado permanente (sem acesso à chave)
+        run: node scripts/official-android-sign-v99.cjs check
 
   windows:
     name: Windows | Instalador NSIS
@@ -103,6 +105,7 @@ jobs:
       - name: Verificar segredos da assinatura
         id: keys
         env:
+          MASTER: ${{ secrets.ANDROID_RELEASE_SECRET }}
           KEY64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           KSPASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEYALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
@@ -114,14 +117,20 @@ jobs:
           for value in "$KEY64" "$KSPASS" "$KEYALIAS" "$KEYPASS"; do
             if [[ -n "$value" ]]; then count=$((count+1)); fi
           done
-          if [[ "$count" -eq 4 ]]; then
+          if [[ -n "$MASTER" ]]; then
             echo 'signed=true' >> "$GITHUB_OUTPUT"
-            echo 'Assinatura persistente configurada: é possível publicar release atualizável.'
+            echo 'mode=master' >> "$GITHUB_OUTPUT"
+            echo 'Assinatura oficial V99 configurada com segredo mestre; certificado fixo será verificado.'
+          elif [[ "$count" -eq 4 ]]; then
+            echo 'signed=true' >> "$GITHUB_OUTPUT"
+            echo 'mode=legacy' >> "$GITHUB_OUTPUT"
+            echo 'Assinatura persistente legada configurada.'
           elif [[ "$count" -eq 0 ]]; then
             echo 'signed=false' >> "$GITHUB_OUTPUT"
-            echo 'Nenhum segredo configurado. Build DEMO de CI, NÃO será publicada em Releases.'
+            echo 'mode=none' >> "$GITHUB_OUTPUT"
+            echo 'Sem assinatura oficial: APK de QA não será publicado em Releases. Configure ANDROID_RELEASE_SECRET.'
           else
-            echo 'ERRO: configure os quatro segredos ANDROID_* antes de gerar uma release.' >&2
+            echo 'ERRO: configure ANDROID_RELEASE_SECRET ou os quatro segredos ANDROID_* legados.' >&2
             exit 1
           fi
       - name: Informar status de publicação Android
@@ -161,8 +170,14 @@ jobs:
         if: steps.keys.outputs.signed == 'true'
         shell: bash
         run: cd android && ./gradlew :app:assembleRelease --no-daemon
+      - name: Assinar APK oficial com identidade permanente V99
+        if: steps.keys.outputs.mode == 'master'
+        env:
+          ANDROID_RELEASE_SECRET: ${{ secrets.ANDROID_RELEASE_SECRET }}
+        shell: bash
+        run: node scripts/official-android-sign-v99.cjs sign
       - name: Assinar e verificar APK release
-        if: steps.keys.outputs.signed == 'true'
+        if: steps.keys.outputs.mode == 'legacy'
         shell: bash
         env:
           KEY64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
