@@ -210,7 +210,7 @@ if(androidPanel){
  installBtn.onclick=installReadyAPK;
  downloadBtn.onclick=async()=>{
   if(!androidDownload)return;
-  if(!confirm('Recomendado: faça backup em Meus dados. O download será feito dentro do Scout PRO; o Android confirmará a instalação. Continuar?'))return;
+  if(!confirm('Antes de instalar, faça backup em Meus dados. O download será feito dentro do Scout PRO; o Android confirmará a instalação. Continuar?'))return;
   const native=nativeUpdater();
   if(!native){showAndroidStatus('Seu aplicativo instalado não tem o componente nativo de atualização. É necessária uma migração única para uma versão com esse recurso. Faça backup antes.');return;}
   downloadBtn.disabled=true;progress.hidden=false;progress.value=0;percentage.textContent='Preparando download seguro…';
