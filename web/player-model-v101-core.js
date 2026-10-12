@@ -55,7 +55,7 @@
  function validObservation(o){
   if(!o||typeof o!=='object'||Array.isArray(o))return null;
   const form=['posse','normal','rapido'];const dims=['giro','primeiro_toque','aceleracao','protecao','cobertura'];
-  if(!form.includes(o.tatica)||typeof o.formacao!=='string'||!/^\d-\d-\d-\d|^\d-\d-\d$/.test(o.formacao)||o.formacao.length>24)return null;
+  if(!form.includes(o.tatica)||typeof o.formacao!=='string'||!/^\d-\d-\d(?:-\d)?$/.test(o.formacao)||o.formacao.length>24)return null;
   const result={tatica:o.tatica,formacao:o.formacao};
   for(const k of dims){if(!Number.isInteger(o[k])||o[k]<1||o[k]>5)return null;result[k]=o[k]}
   if(typeof o.nota!=='string'||o.nota.length>500)return null;
