@@ -23,3 +23,47 @@ jobs:
           node --check scripts/test-player-model-v101.cjs
       - name: Integridade do app completo
         run: npm run check
+
+  windows_smoke:
+    name: Compilar instalador Windows
+    needs: validate
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run styles:ptbr
+      - run: npm run brand:build
+      - run: node scripts/set-version.cjs 1.1.${{ github.run_number }} ${{ github.repository }}
+      - name: Empacotar Electron sem publicar
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: npm run desktop:win
+      - name: Verificar instalador Windows
+        shell: pwsh
+        run: |
+          $items = @(Get-ChildItem dist\ScoutPRO-Setup-*.exe -ErrorAction Stop)
+          if ($items.Count -ne 1) { throw 'Instalador Windows nao gerado' }
+  android_smoke:
+    name: Compilar Android debug sem assinar release
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm install --no-audit --no-fund
+      - run: npm run styles:ptbr
+      - run: npx cap add android
+      - run: npx cap sync android
+      - name: Compilar APK de validação
+        run: cd android && chmod +x gradlew && ./gradlew :app:assembleDebug --no-daemon
+      - name: Verificar APK gerado
+        run: test -s android/app/build/outputs/apk/debug/app-debug.apk
