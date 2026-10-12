@@ -4,7 +4,7 @@ const E=window.SCOUT_TACTICS_V98;
 if(!E){document.getElementById('counter').textContent='Motor tático indisponível.';return}
 const $=id=>document.getElementById(id);
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let all=[],visible=[],selected=0,confirmed={};
+let all=[],visible=[],selected=0,confirmed={},physicalByCap=new Map();
 const choicesKey='scoutpro:v98:tactical-reviews';
 try{confirmed=JSON.parse(localStorage.getItem(choicesKey)||'{}')||{}}catch(e){confirmed={}}
 const cost=E.cost;
@@ -36,7 +36,19 @@ function render(){
  const bullet=document.createElement('ul');
  card.pendencias.forEach(p=>{const li=document.createElement('li');li.textContent=p;bullet.appendChild(li)});
  checks.appendChild(bullet);
+
  $('profile').href=card.ficha;
+ $('physical-link').href='player-model-v101.html?cap='+encodeURIComponent(card.numero);
+ const core=window.SCOUT_MODELO_V101,evidence=physicalByCap.get(card.numero);
+ let custom=null;
+ if(core){try{custom=JSON.parse(localStorage.getItem(core.key(card))||'null')}catch(_){}}
+ const physical=core?core.combine(card,evidence,custom):null;
+ $('physical-summary').textContent=physical&&physical.verified?
+   'Biotipo documentado (PESDB, edição por Card ID): '+physical.fields.altura_cm+' cm · '+physical.fields.peso_kg+' kg · Pé '+physical.fields.pe_dominante+
+   ' · Perna modelo '+physical.fields.modelo_corporal.comprimento_perna+
+   '. Player ID, animações e rendimento seguem sujeitos a testes.':
+   'Biotipo/Player ID: dados incompletos nesta edição. Abra o laboratório para conferir origem, parâmetros e registrar observações reais.';
+
  const overview=E.comparison(card);
  $('previous').textContent=overview.previous?'Distribuição anteriormente registrada: '+E.names.map((n,i)=>overview.previous.levels[i]?n+' '+overview.previous.levels[i]:'').filter(Boolean).join(' · ')+' (PP '+overview.previous.used+'/'+card.pp+').':'Não há distribuição anterior aprovada. A proposta V95 permanece apenas experimental na ficha original.';
  const holder=$('tactics');holder.replaceChildren();
@@ -66,9 +78,13 @@ $('search').addEventListener('input',refresh);
 $('filter').addEventListener('change',refresh);
 $('prev').onclick=()=>{if(selected>0){selected--;render()}};
 $('next').onclick=()=>{if(selected<visible.length-1){selected++;render()}};
-fetch('SCOUT_V98_AUDITORIA_TATICA.json').then(r=>{if(!r.ok)throw Error('Arquivo de auditoria indisponível');return r.json()}).then(data=>{
+Promise.all([
+  fetch('SCOUT_V98_AUDITORIA_TATICA.json').then(r=>{if(!r.ok)throw Error('Arquivo de auditoria indisponível');return r.json()}),
+  fetch('SCOUT_V101_MODELO_CORPORAL.json').then(r=>{if(!r.ok)throw Error('Modelo físico indisponível');return r.json()}).catch(()=>null)
+ ]).then(([data,physical])=>{
  if(data.version!=='V98'||data.cartas.length!==246)throw Error('Auditoria incompleta');
  all=data.cartas;
+ if(physical?.cartas && window.SCOUT_MODELO_V101){for(const e of physical.cartas){const card=all.find(c=>c.numero===e.numero);if(window.SCOUT_MODELO_V101.match(card,e))physicalByCap.set(e.numero,e)}}
  const stats=[['Cartas',246],['Com PP',all.filter(c=>Number.isInteger(c.pp)).length],['Treinos anteriores',all.filter(c=>c.treino_anterior).length],['Propostas V95',all.filter(c=>!c.treino_anterior).length],['Base cadastrada',all.filter(c=>c.base_stats_known).length]];
  const box=$('metrics');stats.forEach(([name,num])=>{const m=document.createElement('div');m.className='metric';m.innerHTML='<b>'+num+'</b><small>'+name+'</small>';box.appendChild(m)});
  const requested=new URLSearchParams(location.search).get('c');
