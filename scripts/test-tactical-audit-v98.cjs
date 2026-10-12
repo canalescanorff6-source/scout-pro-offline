@@ -41,7 +41,7 @@ const html=fs.readFileSync(path.join(root,'revisao-tatica-v98.html'),'utf8');
 const ui=fs.readFileSync(path.join(root,'revisao-tatica-v98.js'),'utf8');
 assert(index.includes('href="revisao-tatica-v98.html"'));
 assert(html.includes('id="art"'));assert(html.includes('id="tactics"'));
-assert(ui.includes('Guardar hipótese para teste'));assert(ui.includes('revisao-tatica-v98'));
+assert(ui.includes('Guardar hipótese para teste'));assert(html.includes('src="revisao-tatica-v98.js"'));
 assert(!ui.includes('localStorage.setItem('+'scoutpro:v67'));
 assert.equal(fs.readdirSync(path.join(root,'cartas')).filter(n=>/^CAP_\d{3}_.+\.png$/.test(n)).length,246);
 assert.equal(fs.readdirSync(path.join(root,'fichas')).filter(n=>/^\d{3}_.+\.html$/.test(n)).length,246);

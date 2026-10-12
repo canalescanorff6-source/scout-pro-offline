@@ -19,7 +19,7 @@ const oldOrigin=()=>{try{return new URL(document.referrer).origin===location.ori
 backBtn.hidden=!inCard&&!oldOrigin();
 backBtn.onclick=()=>{if(history.length>1&&oldOrigin())history.back();else location.href=home+'#catalogo'};
 bar.querySelector('#scout-top').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
-if(!inCard)homeBtn.href='#catalogo';
+if(!inCard&&document.body.dataset.page==='catalog')homeBtn.href='#catalogo';
 
 const label=document.getElementById('scout-update-label'),btn=document.getElementById('scout-update');
 let scoutToastTimer;
