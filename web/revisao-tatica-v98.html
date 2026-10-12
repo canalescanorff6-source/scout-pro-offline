@@ -3,7 +3,7 @@
 <title>Auditoria Tática 246 · Scout PRO</title>
 <link rel="stylesheet" href="premium.css"/><link rel="stylesheet" href="scout-premium-v73.css"/><link rel="stylesheet" href="app-bridge.css"/>
 <link rel="manifest" href="manifest.webmanifest"/>
-<script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script><script defer src="tactical-engine-v98.js"></script><script defer src="revisao-tatica-v98.js"></script><script defer src="pwa.js"></script>
+<script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script><script defer src="tactical-engine-v98.js"></script><script defer src="player-model-v101-core.js"></script><script defer src="revisao-tatica-v98.js"></script><script defer src="pwa.js"></script>
 <style>
 :root{color-scheme:dark;background:#07111e;color:#eff5fc;font-family:system-ui,sans-serif}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
@@ -48,8 +48,8 @@ button:disabled{opacity:.4;cursor:default}.details{display:grid;grid-template-co
 <div class="topline"><span class="sub" id="counter">Carregando fichas…</span><div class="pager"><button id="prev" type="button">‹ Anterior</button><button id="next" type="button">Próxima ›</button></div></div>
 <div class="details"><figure class="cardart"><img id="art" alt="Carta original do jogador" width="208" height="293"/><figcaption id="art-caption"></figcaption></figure>
 <div><h2 id="player-name"></h2><p class="fact" id="edition"></p><p class="fact" id="identity"></p><p class="fact" id="style"></p><div class="status"><b>Estado dos dados</b><div id="checks"></div></div>
-<div class="actions"><a class="action" id="profile" href="index.html">Abrir ficha original ↗</a><a class="action" href="player-model-v101.html">Consultar Player ID e biotipo ↗</a></div></div></div>
-<div class="old" id="previous"></div>
+<div class="actions"><a class="action" id="profile" href="index.html">Abrir ficha original ↗</a><a class="action" id="physical-link" href="player-model-v101.html">Consultar Player ID e biotipo ↗</a></div></div></div>
+<div class="old" id="previous"></div><div class="old" id="physical-summary">Modelo corporal: consultando dados documentados…</div>
 <h2 style="font-size:17px;margin:16px 0 6px">Três cenários para comparar</h2>
 <p class="note">Os níveis são calculados por prioridades de posição/estilo e respeitam o custo progressivo dos PP. Sem atributos-base e testes equivalentes, não existe pontuação de desempenho confiável nem escolha automática de vencedor.</p>
 <div class="tactics" id="tactics"></div><p class="note" id="saved-status" role="status"></p>
