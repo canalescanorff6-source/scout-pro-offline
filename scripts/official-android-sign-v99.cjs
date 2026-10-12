@@ -68,11 +68,14 @@ function run(){
   const signerEnv={...process.env,SCOUT_SIGN_PASSWORD:password};
   cp.execFileSync(signer,['sign','--ks',keystore,'--ks-type','PKCS12','--ks-key-alias',enc.keyAlias,'--ks-pass','env:SCOUT_SIGN_PASSWORD','--key-pass','env:SCOUT_SIGN_PASSWORD','--out',out,temp],{env:signerEnv,stdio:'pipe'});
   const proof=cp.execFileSync(signer,['verify','--verbose','--print-certs',out],{encoding:'utf8',stdio:['ignore','pipe','pipe']});
-  const signerLine=proof.split(/\r?\n/).find(line=>/Signer\s*#1\s*certificate\s*SHA[- ]?256\s*digest\s*:/i.test(line));
-  const actualCertificate=signerLine?(signerLine.split(/digest\s*:/i)[1]||'').replace(/[^0-9a-f]/gi,'').toLowerCase():'';
+  // apksigner labels differ across build-tools versions; use the full public
+  // 32-byte digests in the verified output rather than relying on label text.
+  const reportedDigests=(proof.match(/(?:[a-f0-9]{2}:){31}[a-f0-9]{2}|[a-f0-9]{64}/gi)||[])
+    .map(value=>value.replace(/:/g,'').toLowerCase());
+  const actualCertificate=reportedDigests.includes(expectedCert)?expectedCert:'';
   if(actualCertificate!==expectedCert){
     fs.rmSync(out,{force:true});
-    const info=actualCertificate?'digit count '+actualCertificate.length+', prefix '+actualCertificate.slice(0,12):'certificate digest line not found';
+    const info='verified APK report digest count='+reportedDigests.length+', output length='+proof.length;
     throw Error('Android signing certificate validation failed ('+info+'). The signing check remains enforced.');
   }
   const sha=crypto.createHash('sha256').update(fs.readFileSync(out)).digest('hex');
