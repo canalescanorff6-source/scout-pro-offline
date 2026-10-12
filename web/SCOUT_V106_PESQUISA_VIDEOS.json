@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V109_RESEARCH",
+  "schema": "SCOUT_V110_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -19,15 +19,17 @@
     "Vídeo coletivo de pacote pode corresponder a múltiplos Card IDs APENAS com capítulos específicos verificáveis, pacote exatamente correspondente e registro de exceção explicita no teste V109. Não atribuir lances coletivos individuais sem inspeção.",
     "Divergência de tipo de carta entre cadastro e fonte externa (ex.: Highlight vs Show Time para mesmo Card ID) deve manter estado pendente e não autoriza edição silenciosa das 246 fichas.",
     "Links no YouTube são fontes de candidatos e treinos contextualizados, não certificação de Player ID, pro player de torneios ou build meta.",
-    "TikTok consultado mas resultados diretos não foram verificáveis por restrições de acesso; não inventar links TikTok."
+    "TikTok consultado mas resultados diretos não foram verificáveis por restrições de acesso; não inventar links TikTok.",
+    "O Raúl de pênaltis diários de agosto 2025 é candidato à versão Schalke 10-11; exigir Card ID em frame para confirmação.",
+    "Marco van Basten Netherlands 1988 existe em duas edições distintas; exigir Card ID 88033139494377."
   ],
   "summary": {
     "total": 246,
     "com_video_pacote_compativel": 33,
-    "com_apenas_candidatos": 12,
-    "sem_video": 201,
-    "total_videos": 67,
-    "total_videos_unicos": 58,
+    "com_apenas_candidatos": 13,
+    "sem_video": 200,
+    "total_videos": 71,
+    "total_videos_unicos": 62,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -89,9 +91,60 @@
       "nome": "Raúl",
       "edicao": "Epic — Schalke BW 10-11 (14 Aug 2025)",
       "card_id": "88036360649078",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=s7781c-O2-I",
+          "video_id": "s7781c-O2-I",
+          "criador": "KINGDIIAZ",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Gameplay mobile do Raúl Epic obtido no pênalti diário, publicado 16/08/2025; edição Schalke 10-11 é plausível mas Card ID não aparece na descrição.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Edição Schalke é hipótese pelo período, não validação por Card ID ou frame."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=wHP7bglxfZs",
+          "video_id": "wHP7bglxfZs",
+          "criador": "KINGDIIAZ",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Gameplay mobile do Epic Raúl gratuito publicado 29/08/2025; verificar visualmente Card ID antes de atribuir à carta #002.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Edição Schalke é hipótese pelo período, não validação por Card ID ou frame."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=p72t5kQIW00",
+          "video_id": "p72t5kQIW00",
+          "criador": "Breezy eFootball",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Treino sugerido para Epic Raúl Daily Penalty em 17/08/2025; não demonstra Card ID de modo verificável nos metadados.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Edição Schalke é hipótese pelo período, não validação por Card ID ou frame."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=DxtmLVKraAU",
+          "video_id": "DxtmLVKraAU",
+          "criador": "DJ Multigames",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "gameplay_individual",
+          "descricao_evidencia": "Estreia de Raúl obtido em pênalti diário, publicação 01/08/2026; possibilidade de gameplay, Card ID não identificado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Edição Schalke é hipótese pelo período, não validação por Card ID ou frame."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://ef-labo.com/efootball/raul-schalke-bw-10-11/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -334,7 +387,9 @@
       "card_id": "88036360719839",
       "estado": "pendente",
       "videos": [],
-      "referencias_da_carta": [],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/ruud-van-nistelrooij-88036360719839"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -586,7 +641,10 @@
       "card_id": "88033139494377",
       "estado": "pendente",
       "videos": [],
-      "referencias_da_carta": [],
+      "referencias_da_carta": [
+        "https://ef-labo.com/efootball/marco-van-basten-epic-4377/",
+        "https://pesdb.net/efootball/players/marco-van-basten-88033139494377"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -674,7 +732,9 @@
       "card_id": "88039581945284",
       "estado": "pendente",
       "videos": [],
-      "referencias_da_carta": [],
+      "referencias_da_carta": [
+        "https://ef-labo.com/efootball/filippo-inzaghi-piemonte-bn-99-00/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -815,7 +875,9 @@
       "card_id": "88036360723178",
       "estado": "pendente",
       "videos": [],
-      "referencias_da_carta": [],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/andriy-shevchenko-88036360723178"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -1337,7 +1399,9 @@
       "card_id": "89067152870864",
       "estado": "pendente",
       "videos": [],
-      "referencias_da_carta": [],
+      "referencias_da_carta": [
+        "https://ef-labo.com/efootball/ronaldinho-gaucho-big-time-19-nov-05/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -3892,5 +3956,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V109 — quarto lote incremental, 11 vídeos distintos vinculados a 16 cartas; os 47 vídeos V108 foram preservados."
+  "versao_historico": "V110 — evidência incremental sobre Raúl, preserva integralmente V106–V109"
 }
