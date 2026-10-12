@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V112_RESEARCH",
+  "schema": "SCOUT_V113_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -28,15 +28,18 @@
     "Yu-Gi-Oh! Dark Magician Neymar (#186) e Naruto Sasuke Kubo (#211) são campanhas separadas; não confundir com outras edições.",
     "Efeito visual Chidori não certifica Player ID nem superioridade de desempenho.",
     "Reviews do Maldini como CB podem usar o LB Italy 2000 fora de posição: verificar Card ID antes de atribuir exatidão.",
-    "TikTok: sem URLs individuais verificadas neste lote; não inventar fontes."
+    "TikTok: sem URLs individuais verificadas neste lote; não inventar fontes.",
+    "CAP023 Alaba, CAP036 Endrick e CAP079 Neymar com divergência de rótulo Highlight no catálogo versus Show Time no banco que resolve o mesmo Card ID: investigar sem correção automática.",
+    "Inzaghi Epic gratuito pode NÃO ser a edição Piemonte BN 99-00: permanecer candidato até prova visual de Card ID.",
+    "Vídeos de guia de progressão ou pack review não são validação do desempenho no campo, Player ID ou status de pro player torneio."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 39,
+    "com_video_pacote_compativel": 43,
     "com_apenas_candidatos": 14,
-    "sem_video": 193,
-    "total_videos": 92,
-    "total_videos_unicos": 83,
+    "sem_video": 189,
+    "total_videos": 105,
+    "total_videos_unicos": 96,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -619,9 +622,36 @@
       "nome": "David Alaba",
       "edicao": "Highlight — Starter Set 28 May '26",
       "card_id": "106777718857892",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=6wgxDHQxIcY",
+          "video_id": "6wgxDHQxIcY",
+          "criador": "MH Gaming",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Treinamento David Alaba Starter Set 28 May 2026. Pacote correspondente; o cadastro diz Highlight e a fonte por Card ID diz Show Time.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=OvIhrf1EYyQ",
+          "video_id": "OvIhrf1EYyQ",
+          "criador": "PES LEGEND AA",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_de_pacote",
+          "descricao_evidencia": "Guia conjunto de progressões de Alaba e Darwin Núñez Starter Set 2026, não é gameplay individual.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/david-alaba-106777718857892"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -773,10 +803,36 @@
       "nome": "Filippo Inzaghi",
       "edicao": "Epic — Piemonte BN 99-00",
       "card_id": "88039581945284",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=T8uCagIyWVM",
+          "video_id": "T8uCagIyWVM",
+          "criador": "CarvalhoPlay",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "gameplay_individual",
+          "descricao_evidencia": "Gameplay com Inzaghi Epic grátis em dezembro de 2025. Sem confirmação Piemonte BN 99-00, manter candidato.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=UeTWgCOiEnw",
+          "video_id": "UeTWgCOiEnw",
+          "criador": "PES TEACHER",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review e gameplay de Inzaghi Epic em dezembro de 2025; edição Piemonte BN 99-00 ainda não verificada.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        }
+      ],
       "referencias_da_carta": [
-        "https://ef-labo.com/efootball/filippo-inzaghi-piemonte-bn-99-00/"
+        "https://ef-labo.com/efootball/filippo-inzaghi-piemonte-bn-99-00/",
+        "https://pesdb.net/efootball/players/filippo-inzaghi-88039581945284"
       ],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -865,7 +921,7 @@
       "nome": "Endrick",
       "edicao": "Highlight — New Year's Gift 1 Jan '25",
       "card_id": "106735843043104",
-      "estado": "candidato_sem_versao_confirmada",
+      "estado": "encontrado_por_pacote",
       "videos": [
         {
           "plataforma": "youtube",
@@ -878,6 +934,54 @@
           "card_id_exibido_e_conferido_no_video": false,
           "desempenho_player_id_analisado": false,
           "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=oy2iB7jKmN8",
+          "video_id": "oy2iB7jKmN8",
+          "criador": "MS PES GAMING",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_de_pacote",
+          "descricao_evidencia": "Guia conjunto New Year's Gift 2025 com Endrick, Darwin e Zaïre-Emery; cadastro classifica Highlight, banco pelo ID diz Show Time.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=YPNZGHzoR8c",
+          "video_id": "YPNZGHzoR8c",
+          "criador": "Epic pes z",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia de PP da carta Endrick Show Time New Year's Gift 2025; sem comprovação de gameplay.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=PijPTmdJ65Y",
+          "video_id": "PijPTmdJ65Y",
+          "criador": "MS PES GAMING",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Treinamento individual de Endrick Show Time New Year's Gift; recomendações não validadas.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jX0YsJTZa10",
+          "video_id": "jX0YsJTZa10",
+          "criador": "PES GOAT",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review",
+          "descricao_evidencia": "Review da carta Endrick Show Time New Year's Gift, sem confirmação de habilidade de pro player de torneios.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
         }
       ],
       "referencias_da_carta": [
@@ -1701,9 +1805,36 @@
       "nome": "Neymar Jr",
       "edicao": "Highlight — Campaign Rewards Feb '26 — Neymar Jr",
       "card_id": "106770471099808",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=_nwCPeO-Fy8",
+          "video_id": "_nwCPeO-Fy8",
+          "criador": "TTKT Studio",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "comparacao_de_edicoes",
+          "descricao_evidencia": "Comparação da carta Neymar Campaign Rewards Feb '26 publicada 07/02/2026; o cadastro diz Highlight e fonte por Card ID diz Show Time.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=7QhsEv5sdq8",
+          "video_id": "7QhsEv5sdq8",
+          "criador": "TTKT Studio",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_de_melhoria",
+          "descricao_evidencia": "Vídeo de upgrade Neymar Campaign Rewards Feb '26 19/02/2026; sem gameplay competitivo evidenciado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/neymar-jr-106770471099808"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -2253,9 +2384,48 @@
       "nome": "Moisés Caicedo",
       "edicao": "Highlight — Mid-season MVPs 8 Jan '26 — Moisés Caicedo",
       "card_id": "105794708320092",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=kvAO23wbFYE",
+          "video_id": "kvAO23wbFYE",
+          "criador": "SPORTSTRUNK",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia PP para Moisés Caicedo Mid-season MVPs 08/01/2026, sem comprovação de partidas.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=59Q-Y1NC0Rg",
+          "video_id": "59Q-Y1NC0Rg",
+          "criador": "eFootball Nuts",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review Mid-season MVPs de 08/01/2026, seção Caicedo em 26:03, avaliação de pacote.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=QVj5mgGIVvQ",
+          "video_id": "QVj5mgGIVvQ",
+          "criador": "Boyek Gaming",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia Caicedo Mid-season MVPs 08/01/2026 DMF versus CMF; alegações de OVR não provam desempenho.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Identificação pelos metadados públicos; Card ID não verificado no vídeo. Comparações de desempenho ou PP NÃO aprovadas."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/moises-caicedo-105794708320092"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -4242,5 +4412,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V112 — 9 vídeos novos em Kubo Naruto, Neymar Mago Negro, Raphinha Captain Tsubasa e Maldini; link pré-existente do Raphinha não duplicado."
+  "versao_historico": "V113 — 13 fontes adicionais para Alaba, Endrick, Neymar Campaign, Caicedo e candidato Inzaghi; fonte anterior de Endrick preservada."
 }
