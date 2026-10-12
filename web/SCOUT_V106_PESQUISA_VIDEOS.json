@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V106_RESEARCH",
+  "schema": "SCOUT_V107_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -9,14 +9,18 @@
     "Não inferir Player ID, animações, treino final ou resultado em campo sem revisar frames ou partidas.",
     "Não aplicar treinamentos por Overall; somente recomendar hipóteses com prova e decisão final do usuário.",
     "Links de vídeo são evidência de pesquisa, não garantem resultado competitivo nem disponibilidade permanente.",
-    "Pesquisa TikTok ainda sem vídeos individuais verificáveis por restrição de acesso."
+    "Pesquisa TikTok ainda sem vídeos individuais verificáveis por restrição de acesso.",
+    "O mesmo vídeo pode servir para dois registros da mesma edição somente se o Card ID cadastrado for idêntico (ex.: Huijsen CAP144 e CAP153).",
+    "Conteúdo que só apresenta um pacote não pode ser interpretado como gameplay individual; registrar tipo_conteudo correspondente.",
+    "Diferenças de Card ID dentro do mesmo nome de campanha tornam a classificação de vídeo incerta; manter como candidato."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 8,
-    "com_apenas_candidatos": 4,
-    "sem_video": 234,
-    "total_videos": 22,
+    "com_video_pacote_compativel": 16,
+    "com_apenas_candidatos": 7,
+    "sem_video": 223,
+    "total_videos": 37,
+    "total_videos_unicos": 35,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -466,9 +470,25 @@
       "nome": "Darwin Núñez",
       "edicao": "Show Time — Starter Set 28 May '26",
       "card_id": "106777450514613",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=1ToDkl_vn3Q",
+          "video_id": "1ToDkl_vn3Q",
+          "criador": "Epic pes z",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Darwin Núñez Show Time do Starter Set de 28/05/2026; a descrição cita análise de estatísticas, teste de partidas, velocidade e posicionamento.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/darwin-nunez-106777450514613",
+        "https://www.reddit.com/r/eFootball/comments/1v7alpw/f2p_review_darwin_nunez/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -514,9 +534,24 @@
       "nome": "Gabriel Batistuta",
       "edicao": "Epic — Argentina 1998",
       "card_id": "88039045074390",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=fNRsm4rS-rI",
+          "video_id": "fNRsm4rS-rI",
+          "criador": "Mallu Pes Master",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Avaliação de um novo Epic Batistuta publicada em fevereiro de 2026, mas descrição não confirma Argentina 1998 nem Card ID 88039045074390.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/gabriel-batistuta-88039045074390"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -682,9 +717,49 @@
       "nome": "Mikel Oyarzabal",
       "edicao": "Show Time — Show Time 12 Feb '26",
       "card_id": "106771544911876",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=FNWZfM24ZmU",
+          "video_id": "FNWZfM24ZmU",
+          "criador": "Dhe Nong",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_tatico",
+          "descricao_evidencia": "Show Time Mikel Oyarzabal da loja de 15.000 pontos; discute suporte no ataque, segundo ímpeto e Posse/Contra-ataque.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=BtZ7iOavJpA",
+          "video_id": "BtZ7iOavJpA",
+          "criador": "MS PES GAMING",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Treinamento do Show Time Oyarzabal por 15.000 pontos eFootball; exibição da progressão.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=kIOSVg4iWmM",
+          "video_id": "kIOSVg4iWmM",
+          "criador": "eFootball Vault",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Show Time Oyarzabal 15.000 pontos com Visionary Pass: PP em 00:47, booster em 01:14, habilidades em 01:43, gameplay em 02:08.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://www.efootballmeta.com/players/106771544911876",
+        "https://gamingonphone.com/guides/efootball-2026-featured-set-show-time-mikel-oyarzabal-pack-review/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -841,8 +916,21 @@
       "nome": "Lionel Messi",
       "edicao": "Show Time — Skill Up 2026 — Lionel Messi",
       "card_id": "106747654053207",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=7XPBk3Cd2VE",
+          "video_id": "7XPBk3Cd2VE",
+          "criador": "KaiPlayz_09",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review",
+          "descricao_evidencia": "Vídeo rotulado Messi Show Time Skill Up 2026; há outra edição Skill Up no acervo e o vídeo não mostra ID na descrição.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1940,8 +2028,33 @@
       "nome": "Dean Huijsen",
       "edicao": "Show Time — New Year's Gift 2026 — Dean Huijsen",
       "card_id": "106766981558114",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=q4Iip8nJUA8",
+          "video_id": "q4Iip8nJUA8",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Show Time Dean Huijsen New Year's Gift 2026; build 16:31, gameplay mobile 17:42 e avaliação 30:00.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=RYczlaoi7Y8",
+          "video_id": "RYczlaoi7Y8",
+          "criador": "2wenty9ine",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review",
+          "descricao_evidencia": "Show Time Huijsen New Year's Gift 2026: revisão de altura, velocidade, posicionamento e perfil de zagueiro.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2048,8 +2161,33 @@
       "nome": "Dean Huijsen",
       "edicao": "Show Time — New Year's Gift 2026 — Dean Huijsen",
       "card_id": "106766981558114",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=q4Iip8nJUA8",
+          "video_id": "q4Iip8nJUA8",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Mesmo Card ID 106766981558114 do #144; Show Time Dean Huijsen New Year's Gift 2026; build 16:31, gameplay 17:42, parecer 30:00.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=RYczlaoi7Y8",
+          "video_id": "RYczlaoi7Y8",
+          "criador": "2wenty9ine",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review",
+          "descricao_evidencia": "Mesmo Card ID 106766981558114 do #144; review do Show Time Huijsen New Year's Gift 2026.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2072,9 +2210,24 @@
       "nome": "Micky van de Ven",
       "edicao": "Highlight — Speedsters 6 Nov '25 — Micky van de Ven",
       "card_id": "105794171442168",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=MIV4IsuxZlo",
+          "video_id": "MIV4IsuxZlo",
+          "criador": "Kubi efootball",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "short_gameplay",
+          "descricao_evidencia": "Demonstração em eFootball Mobile da carta Micky van de Ven Speedsters 2025; rótulo do pacote corresponde ao acervo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://gamingonphone.com/guides/efootball-2026-speedsters-november-2025-nominating-contract-review/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -2192,8 +2345,21 @@
       "nome": "Cristian Romero",
       "edicao": "Show Time — Tournament Stars 2026 — Cristian Romero",
       "card_id": "106787919475376",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=nCrqhfXsxco",
+          "video_id": "nCrqhfXsxco",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Show Time Cristian Romero Tournament Stars 2026: build 04:59, gameplay em 09:04, parecer 21:15; analisa Aerial Fort e Long-reach Tackle.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2228,8 +2394,21 @@
       "nome": "Petr Čech",
       "edicao": "Epic — Chelsea B 05-06 — Petr Čech",
       "card_id": "88045755829367",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=ySblbmxIVMQ",
+          "video_id": "ySblbmxIVMQ",
+          "criador": "ALBA PES",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "gameplay_de_adversario",
+          "descricao_evidencia": "Game de Divisão contra usuário com Petr Čech Epic 2026, mas edição Chelsea 05-06 não identificada no texto.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2808,9 +2987,25 @@
       "nome": "Jamal Musiala",
       "edicao": "Show Time — 1-2 Cut-in A 23 Apr '26 — Jamal Musiala",
       "card_id": "106773155552016",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=I_IjKnueXQQ",
+          "video_id": "I_IjKnueXQQ",
+          "criador": "Efootball Elite Stars",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "abertura_treino",
+          "descricao_evidencia": "Box Epic & Show Time 1-2 Cut-in A 23/04/2026: Gullit, Nedved, Gyökeres e Jamal Musiala; foco em progressão/abertura e não partidas de Musiala comprovadas.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/jamal-musiala-106773155552016",
+        "https://gamingonphone.com/guides/efootball-2026-epic-and-show-time-1-2-cut-in-a-gullit-nedved-pack-review-best-progression-builds-and-skills/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -2880,8 +3075,21 @@
       "nome": "Declan Rice",
       "edicao": "Show Time — Central Dominator 5 Jan '26",
       "card_id": "106763760282015",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=DK4oUfwuPDQ",
+          "video_id": "DK4oUfwuPDQ",
+          "criador": "KING OF PES",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review do pacote Central Dominator de 05/01/2026 com Show Time Declan Rice, Morgan Rogers e Tchouaméni; criador declara ranking alto em Divisão, sem gameplay individual certificado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e metadados do vídeo identificam nome/pacote quando disponível; Card ID ainda não conferido quadro a quadro. Não inferir jogabilidade final."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3272,5 +3480,6 @@
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
     }
-  ]
+  ],
+  "versao_historico": "V107 — lote incremental; registros V106 preservados."
 }
