@@ -1,0 +1,25 @@
+name: Scout PRO V101 | Validar dados físicos e Player ID
+on:
+  push:
+    branches: [feat/v101-player-model-evidence]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    name: Auditoria física e 246 cartas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Checagem de sintaxe
+        run: |
+          node --check web/player-model-v101-core.js
+          node --check web/player-model-v101-ui.js
+          node --check scripts/test-player-model-v101.cjs
+      - name: Integridade do app completo
+        run: npm run check
