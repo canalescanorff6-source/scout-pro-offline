@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V111_RESEARCH",
+  "schema": "SCOUT_V112_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -24,15 +24,19 @@
     "Marco van Basten Netherlands 1988 existe em duas edições distintas; exigir Card ID 88033139494377.",
     "Vídeos da carta Neymar Epic Booster Santos em 2023 não podem ser vinculados como edição exata de 2011 sem comparar Card ID.",
     "Distinguir Guirassy/Tonali já indexados na V109 de achados realmente novos; não duplicar links.",
-    "Identificar contradições de estilo em vídeos de Nico O'Reilly: Full-back Finisher vs Offensive Fullback até validação visual."
+    "Identificar contradições de estilo em vídeos de Nico O'Reilly: Full-back Finisher vs Offensive Fullback até validação visual.",
+    "Yu-Gi-Oh! Dark Magician Neymar (#186) e Naruto Sasuke Kubo (#211) são campanhas separadas; não confundir com outras edições.",
+    "Efeito visual Chidori não certifica Player ID nem superioridade de desempenho.",
+    "Reviews do Maldini como CB podem usar o LB Italy 2000 fora de posição: verificar Card ID antes de atribuir exatidão.",
+    "TikTok: sem URLs individuais verificadas neste lote; não inventar fontes."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 37,
+    "com_video_pacote_compativel": 39,
     "com_apenas_candidatos": 14,
-    "sem_video": 195,
-    "total_videos": 83,
-    "total_videos_unicos": 74,
+    "sem_video": 193,
+    "total_videos": 92,
+    "total_videos_unicos": 83,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -347,6 +351,30 @@
           "card_id_exibido_e_conferido_no_video": false,
           "desempenho_player_id_analisado": false,
           "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=BawdlbcWUEU",
+          "video_id": "BawdlbcWUEU",
+          "criador": "KING OF PES",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review do Epic Maldini Il Capitano publicado em 08/12/2025, focado em desempenho como zagueiro; possível edição Italy 2000 de 04/12, sem Card ID visível nos metadados.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e descrição pública do YouTube confirmados; edição/campanha indicada, mas Card ID e comportamento em vídeo completo ainda não auditados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=YmQEXYzVOqM",
+          "video_id": "YmQEXYzVOqM",
+          "criador": "Kaling",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review",
+          "descricao_evidencia": "Avaliação pessoal de Paolo Maldini Epic em 16/12/2025; próximo temporalmente ao pacote Italy 2000, porém Card ID não confirmado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e descrição pública do YouTube confirmados; edição/campanha indicada, mas Card ID e comportamento em vídeo completo ainda não auditados."
         }
       ],
       "referencias_da_carta": [
@@ -1458,10 +1486,23 @@
           "card_id_exibido_e_conferido_no_video": false,
           "desempenho_player_id_analisado": false,
           "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=1JO4K0LCb_Q",
+          "video_id": "1JO4K0LCb_Q",
+          "criador": "Gaming Tanay",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review",
+          "descricao_evidencia": "Review do Raphinha gratuito Captain Tsubasa publicado em 30/01/2025 no eFootball Mobile, mesmo pacote da carta #065; Card ID ainda não conferido nos frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e descrição pública do YouTube confirmados; edição/campanha indicada, mas Card ID e comportamento em vídeo completo ainda não auditados."
         }
       ],
       "referencias_da_carta": [
-        "https://www.konami.com/efootball/pt-br/page/v4/versioninfo_v4-20"
+        "https://www.konami.com/efootball/pt-br/page/v4/versioninfo_v4-20",
+        "https://pesdb.net/efootball/players/raphinha-105739947454516"
       ],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3314,9 +3355,49 @@
       "nome": "Neymar Jr",
       "edicao": "Highlight — Yu-Gi-Oh! Collaboration Campaign 25 Sep '25 — Neymar Jr × Dark Magician",
       "card_id": "105795513523616",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=Yoa8vw2YpKI",
+          "video_id": "Yoa8vw2YpKI",
+          "criador": "Yoghidj TV",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia de treino do Neymar × Dark Magician do evento Yu-Gi-Oh! em setembro de 2025; não comprova gameplay competitivo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e descrição pública do YouTube confirmados; edição/campanha indicada, mas Card ID e comportamento em vídeo completo ainda não auditados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=PvRge1wxyqE",
+          "video_id": "PvRge1wxyqE",
+          "criador": "Pes Sanjid 25",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia da edição Neymar × Dark Magician oferecida gratuitamente na campanha Yu-Gi-Oh! em 25/09/2025.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e descrição pública do YouTube confirmados; edição/campanha indicada, mas Card ID e comportamento em vídeo completo ainda não auditados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=UMeox41ftqU",
+          "video_id": "UMeox41ftqU",
+          "criador": "Braga PES",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Análise em gameplay da carta Neymar Mago Negro Yu-Gi-Oh! em setembro de 2025, com observações de drible e criação de jogadas.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e descrição pública do YouTube confirmados; edição/campanha indicada, mas Card ID e comportamento em vídeo completo ainda não auditados."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/neymar-jr-105795513523616",
+        "https://www.konami.com/efootball/pt-br/page/yugioh_collab"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -3655,9 +3736,49 @@
       "nome": "Kubo Takefusa",
       "edicao": "Highlight — NARUTO SHIPPUDEN Collaboration Campaign 2026 — Sasuke Uchiha × Takefusa Kubo",
       "card_id": "105840610761736",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=yZkttcb-ZYM",
+          "video_id": "yZkttcb-ZYM",
+          "criador": "Pixel Ace Gaming",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review coletivo da campanha Naruto/Sasuke abril-maio de 2026 incluindo Kubo com efeito Chidori; teste do conjunto, não prova de rendimento individual.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e descrição pública do YouTube confirmados; edição/campanha indicada, mas Card ID e comportamento em vídeo completo ainda não auditados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=FsM9F-JzIig",
+          "video_id": "FsM9F-JzIig",
+          "criador": "ALBA PES",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review e gameplay do conjunto Naruto 2026 (Kubo, Rafael Leão, Modrić e Pulisic); não extrapolar desempenho do pacote para um único atleta.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e descrição pública do YouTube confirmados; edição/campanha indicada, mas Card ID e comportamento em vídeo completo ainda não auditados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=OH4I3HHug0I",
+          "video_id": "OH4I3HHug0I",
+          "criador": "DM7 PRO",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "gameplay_individual",
+          "descricao_evidencia": "Gameplay online brasileiro com Kubo Sasuke/Chidori da colaboração Naruto 2026, sem comprovação de superioridade de Player ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título e descrição pública do YouTube confirmados; edição/campanha indicada, mas Card ID e comportamento em vídeo completo ainda não auditados."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/kubo-takefusa-105840610761736",
+        "https://www.konami.com/games/us/en/topics/3233/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -4121,5 +4242,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V111 — atualização incremental com 12 novos vídeos, inclusive gameplay e treinamento de Diouf, Mbappé, O'Reilly e Henderson"
+  "versao_historico": "V112 — 9 vídeos novos em Kubo Naruto, Neymar Mago Negro, Raphinha Captain Tsubasa e Maldini; link pré-existente do Raphinha não duplicado."
 }
