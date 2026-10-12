@@ -205,7 +205,11 @@ if(androidPanel){
  btn.setAttribute('aria-label','Verificar e baixar atualização APK Android');
  btn.onclick=()=>{try{openAndroidUpdater()}catch(e){notify('Não foi possível abrir o atualizador. Use Meus dados para backup e consulte a Release oficial no GitHub.')}};
  androidPanel.querySelector('#scout-android-installed').textContent=String(window.SCOUT_VERSION||'1.0.0');
- androidPanel.querySelector('#scout-android-close').onclick=()=>androidPanel.close();
+ androidPanel.querySelector('#scout-android-close').onclick=()=>{
+  try{androidPanel.close()}catch(e){}
+  androidPanel.removeAttribute('open');
+  androidPanel.classList.remove('scout-dialog-fallback');
+ };
  androidPanel.querySelector('#scout-android-backup').onclick=()=>{androidPanel.close();modal.showModal()};
  androidPanel.querySelector('#scout-android-check').onclick=()=>onlineUpdate(false);
  const installBtn=androidPanel.querySelector('#scout-android-install');
