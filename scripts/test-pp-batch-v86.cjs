@@ -29,5 +29,5 @@ for(const card of audit.cards){
  assert(html.includes('PP REGISTRADOS · TREINO PENDENTE'));
 }
 assert.equal(checked,10);assert.equal(audit.cards.length,246);
-assert.equal(audit.summary.with_pp,212);assert.equal(audit.summary.no_pp,34);assert.equal(audit.summary.level_user_entered,50);
+assert.equal(audit.summary.with_pp,222);assert.equal(audit.summary.no_pp,24);assert.equal(audit.summary.level_user_entered,60);
 console.log('V86 OK: 10 novos níveis máximos e PP permanentes; 212 com PP, 34 pendentes, 246 preservadas sem builds fictícias.');

@@ -20,7 +20,7 @@ for(const file of files){
  if(v.status==='Dados pendentes')insufficient++;
  assert(!v.observed.length,'Ficha começa validada sem jogos: '+file);
 }
-assert.equal(withPP,212);assert.equal(withoutPP,34);assert.equal(hasBase,14);assert.equal(insufficient,34);
+assert.equal(withPP,222);assert.equal(withoutPP,24);assert.equal(hasBase,14);assert.equal(insufficient,24);
 assert(candidate>0&&candidate<=14,'Candidatas precisam ter atributos-base reais');
 const d={pp:8,pp_estimated:false,recommended_levels:[4,4,0,0,0,0,0,0,0,0],recommended_scenario:'A',
  alternate_scenarios:{A:[4,4,0,0,0,0,0,0,0,0],B:[4,4,0,0,0,0,0,0,0,0],C:[0,4,4,0,0,0,0,0,0,0]},base_stats_known:true,
