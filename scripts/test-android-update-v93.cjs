@@ -20,7 +20,7 @@ assert.equal(chooseAndroidRelease([{...signed,prerelease:true},win]),null,'Pré-
 assert.equal(chooseAndroidRelease([{...signed,assets:[{name:'ScoutPRO-Android-TESTE.apk',browser_download_url:'https://github.com/example/a.apk'}]}]),null);
 assert(source.includes('nativeAndroid()'));
 assert(source.includes('document.addEventListener(\'visibilitychange\',checkWhenForeground)'));
-assert(source.includes('APK Android oficial ainda não publicado'));
+assert(source.includes('Ainda não há APK oficial Android publicado.'));
 assert(!source.includes('const url=(apk&&apk.browser_download_url)||data.html_url;'),'Fallback Windows proibido em Android');
 const wf=fs.readFileSync(path.join(root,'.github/workflows/release.yml'),'utf8');
 assert(wf.includes('secrets.ANDROID_KEYSTORE_BASE64'));
