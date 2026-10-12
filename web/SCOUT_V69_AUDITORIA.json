@@ -3,14 +3,14 @@
   "method": "video-inspired competitive analysis; not attributed pro personal judgement",
   "summary": {
     "micro_pro": 73,
-    "with_pp": 222,
+    "with_pp": 232,
     "native_skills": 130,
     "processed": 246,
     "with_stats": 14,
-    "no_pp": 24,
+    "no_pp": 14,
     "adapt_alert": 55,
     "extra_confirmed": 16,
-    "level_user_entered": 60
+    "level_user_entered": 70
   },
   "cards": [
     {
@@ -7572,7 +7572,7 @@
       "posicao": "MLG",
       "estilo_ataque": "Meia versátil",
       "estilo_defesa": "Meia versátil",
-      "pp": null,
+      "pp": 62,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7588,11 +7588,12 @@
         "Espírito guerreiro"
       ],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/222_Gerson.html"
+      "arquivo": "fichas/222_Gerson.html",
+      "max_level": 32,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 223,
@@ -7602,7 +7603,7 @@
       "posicao": "MLG",
       "estilo_ataque": "Orquestrador",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 54,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7612,12 +7613,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/223_Frenkie_de_Jong.html"
+      "arquivo": "fichas/223_Frenkie_de_Jong.html",
+      "max_level": 28,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 224,
@@ -7627,7 +7629,7 @@
       "posicao": "MLG",
       "estilo_ataque": "Meia versátil",
       "estilo_defesa": "Meia versátil",
-      "pp": null,
+      "pp": 64,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7637,12 +7639,13 @@
       "habilidades_nativas": null,
       "adicionais_candidatas": [],
       "pendencias": [
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/224_Manu_Kone.html"
+      "arquivo": "fichas/224_Manu_Kone.html",
+      "max_level": 33,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 225,
@@ -7686,7 +7689,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Básico",
       "estilo_defesa": "O destruidor",
-      "pp": null,
+      "pp": 52,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7697,11 +7700,12 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/226_Jose_Maria_Gimenez.html"
+      "arquivo": "fichas/226_Jose_Maria_Gimenez.html",
+      "max_level": 27,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 227,
@@ -7711,7 +7715,7 @@
       "posicao": "MAT",
       "estilo_ataque": "Jogador de infiltração",
       "estilo_defesa": "Interceptador de passe",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7722,12 +7726,13 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/227_Kenan_Yldz.html"
+      "arquivo": "fichas/227_Kenan_Yldz.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 228,
@@ -7737,7 +7742,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Básico",
       "estilo_defesa": "O destruidor",
-      "pp": null,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7748,12 +7753,13 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/228_Murilo.html"
+      "arquivo": "fichas/228_Murilo.html",
+      "max_level": 29,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 229,
@@ -7763,7 +7769,7 @@
       "posicao": "LD",
       "estilo_ataque": "Lateral defensivo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7774,12 +7780,13 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/229_Zeki_Celik.html"
+      "arquivo": "fichas/229_Zeki_Celik.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 230,
@@ -7789,7 +7796,7 @@
       "posicao": "MLG",
       "estilo_ataque": "Meia versátil",
       "estilo_defesa": "Meia versátil",
-      "pp": null,
+      "pp": 62,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7800,12 +7807,13 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/230_Pape_Matar_Sarr.html"
+      "arquivo": "fichas/230_Pape_Matar_Sarr.html",
+      "max_level": 32,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 231,
@@ -7815,7 +7823,7 @@
       "posicao": "GO",
       "estilo_ataque": "Básico",
       "estilo_defesa": "Goleiro ofensivo",
-      "pp": null,
+      "pp": 58,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7826,12 +7834,13 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/231_Guglielmo_Vicario.html"
+      "arquivo": "fichas/231_Guglielmo_Vicario.html",
+      "max_level": 30,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 232,
@@ -7841,7 +7850,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Defensor criativo",
       "estilo_defesa": "Cobertura",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7852,12 +7861,13 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/232_Aymeric_Laporte.html"
+      "arquivo": "fichas/232_Aymeric_Laporte.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 233,
