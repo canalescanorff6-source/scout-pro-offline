@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V107_RESEARCH",
+  "schema": "SCOUT_V108_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -12,15 +12,18 @@
     "Pesquisa TikTok ainda sem vídeos individuais verificáveis por restrição de acesso.",
     "O mesmo vídeo pode servir para dois registros da mesma edição somente se o Card ID cadastrado for idêntico (ex.: Huijsen CAP144 e CAP153).",
     "Conteúdo que só apresenta um pacote não pode ser interpretado como gameplay individual; registrar tipo_conteudo correspondente.",
-    "Diferenças de Card ID dentro do mesmo nome de campanha tornam a classificação de vídeo incerta; manter como candidato."
+    "Diferenças de Card ID dentro do mesmo nome de campanha tornam a classificação de vídeo incerta; manter como candidato.",
+    "Para Ronaldo, diferenciar Living Legends Big Time Portugal 23 Jun '26 de Portugal Premium Pack lançado em junho; não misturar.",
+    "Vídeos de abertura de pacote não constituem prova de gameplay, mesmo quando o pacote e a arte correspondem.",
+    "Manter fontes não audiovisuais apenas em referencias_da_carta, jamais somar como vídeo validado."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 16,
-    "com_apenas_candidatos": 7,
-    "sem_video": 223,
-    "total_videos": 37,
-    "total_videos_unicos": 35,
+    "com_video_pacote_compativel": 21,
+    "com_apenas_candidatos": 8,
+    "sem_video": 217,
+    "total_videos": 49,
+    "total_videos_unicos": 47,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -31,9 +34,48 @@
       "nome": "Daniele Massaro",
       "edicao": "Epic — AC Milan 91-92 (distribuída no Legends Assemble, Jul 2026)",
       "card_id": "88040387251729",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=YxLyXv-NSuM",
+          "video_id": "YxLyXv-NSuM",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review de 11 Legends Assemble; Daniele Massaro em 06:02, inclui segmento de desempenho e ranking; exatidão do Card ID não vista.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=6ZfiVv13ofY",
+          "video_id": "6ZfiVv13ofY",
+          "criador": "eFootball Vault",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Daniele Massaro Epic Legends Assemble 2026. Treino em 01:02, booster em 01:24, cinco skills adicionais em 01:56 e gameplay em 02:41.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=u1Bw7BXyXf4",
+          "video_id": "u1Bw7BXyXf4",
+          "criador": "Apex Ranks",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review de Massaro 103 Epic Legends Assemble, diz cobrir posicionamento, finalização, drible e gameplay; avaliação do criador, não prova do Player ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://www.efootballmeta.com/players/88040387251729"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -55,9 +97,36 @@
       "nome": "Mikel Merino",
       "edicao": "Show Time — The Football Festival Campaign 2026 (25 Jun 2026)",
       "card_id": "106785503548605",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=rYm7kTuJc1o",
+          "video_id": "rYm7kTuJc1o",
+          "criador": "AJ TACTICS",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Treinamento da carta gratuita Show Time Mikel Merino na Football Festival Campaign 2026; não comprova partidas pela descrição.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=qhVOjTawx6s",
+          "video_id": "qhVOjTawx6s",
+          "criador": "GRT_pipeGSW",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Análise da seleção National Stars Show Time 2026, incluindo Merino; guia de build e pontos fortes/fracos do pacote.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/mikel-merino-106785503548605"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -181,8 +250,33 @@
       "nome": "Paolo Maldini",
       "edicao": "Epic — Italy 2000 (4 Dec 2025)",
       "card_id": "88039045074370",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=qelcrn_B9wE",
+          "video_id": "qelcrn_B9wE",
+          "criador": "KING OF PES",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "abertura_treino",
+          "descricao_evidencia": "Abertura do pacote Epic Worldwide em 07/12/2025 com Paolo Maldini LB; pacote e habilidades Fortress/Aerial Fort compatíveis com a edição cadastrada, mas vídeo não oferece análise individual de desempenho.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=ZXhDswqB_v8",
+          "video_id": "ZXhDswqB_v8",
+          "criador": "PES G25",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "abertura_treino",
+          "descricao_evidencia": "Abertura do Epic Worldwide com Maldini, Raúl e Neymar, não confundir Raúl/Neymar do pacote com outras edições do acervo; não é gameplay competitivo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        }
+      ],
       "referencias_da_carta": [
         "https://pesdb.net/efootball/players/paolo-maldini-88039045074370"
       ],
@@ -312,9 +406,24 @@
       "nome": "Paul Scholes",
       "edicao": "Epic — England 2004 (Legends Assemble, 26 Jul 2026)",
       "card_id": "88040387251634",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=Lk68MYgVy0U",
+          "video_id": "Lk68MYgVy0U",
+          "criador": "LAST DESTINATION",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "short_apresentacao",
+          "descricao_evidencia": "Vídeo curto sobre o trio Legends Assemble grátis (Agüero, Paul Scholes e Rooney); compatível com campanha da carta, mas sem avaliação individual completa.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://efootballmeta.com/boxes/2026-07-26-legendsassemble"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -420,8 +529,45 @@
       "nome": "Cristiano Ronaldo",
       "edicao": "Big Time — Portugal 23 Jun '26",
       "card_id": "89138556572074",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=DQyVucdEc40",
+          "video_id": "DQyVucdEc40",
+          "criador": "Fan's boy YT",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review com treino e gameplay do Big Time Ronaldo Living Legends 2026, com três skills Bullet Header, Low Screamer e Phenomenal Finishing; correspondência forte ao pacote, Card ID não visto.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=sifruq9wYOo",
+          "video_id": "sifruq9wYOo",
+          "criador": "Ninja gaming",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review",
+          "descricao_evidencia": "Review Big Time Ronaldo citando a combinação distintiva Phenomenal Finishing, Bullet Header e Low Screamer; descrição não discrimina treinamento ou partidas.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=814mGz9MvfE",
+          "video_id": "814mGz9MvfE",
+          "criador": "E11POTW",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_da_edicao",
+          "descricao_evidencia": "Vídeo intitulado exatamente 'Big Time Portugal 23 Jun 26 Cristiano Ronaldo', confirmação de rótulo de edição, sem gameplay descrito.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        }
+      ],
       "referencias_da_carta": [
         "https://pesdb.net/efootball/players/cristiano-ronaldo-89138556572074"
       ],
@@ -2065,9 +2211,24 @@
       "nome": "Franz Beckenbauer",
       "edicao": "Epic — München RW 75-76",
       "card_id": "88039581945324",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=o_XrWKbE1KE",
+          "video_id": "o_XrWKbE1KE",
+          "criador": "WOLF Gaming",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia Epic European Club Guardians 2026 de Beckenbauer com Phenomenal Pass e Long Reach Tackle; skills batem com o Card ID #145, mas o vídeo não traz o identificador nem gameplay individual.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/franz-beckenbauer-88039581945324"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -3481,5 +3642,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V107 — lote incremental; registros V106 preservados."
+  "versao_historico": "V108 — terceiro lote incremental, com 12 URLs novas de 6 outras cartas; preservar V106/V107"
 }
