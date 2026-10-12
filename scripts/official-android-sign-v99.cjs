@@ -68,8 +68,13 @@ function run(){
   const signerEnv={...process.env,SCOUT_SIGN_PASSWORD:password};
   cp.execFileSync(signer,['sign','--ks',keystore,'--ks-type','PKCS12','--ks-key-alias',enc.keyAlias,'--ks-pass','env:SCOUT_SIGN_PASSWORD','--key-pass','env:SCOUT_SIGN_PASSWORD','--out',out,temp],{env:signerEnv,stdio:'pipe'});
   const proof=cp.execFileSync(signer,['verify','--verbose','--print-certs',out],{encoding:'utf8',stdio:['ignore','pipe','pipe']});
-  const signFingerprint=proof.match(/Signer #1 certificate SHA-256 digest:\s*([0-9a-f:]+)/i);
-  if(!signFingerprint||signFingerprint[1].replace(/:/g,'').toLowerCase()!==expectedCert){fs.rmSync(out,{force:true});throw Error('Assinatura do APK diverge do certificado permanente')}
+  const signerLine=proof.split(/\r?\n/).find(line=>/Signer\s*#1\s*certificate\s*SHA[- ]?256\s*digest\s*:/i.test(line));
+  const actualCertificate=signerLine?(signerLine.split(/digest\s*:/i)[1]||'').replace(/[^0-9a-f]/gi,'').toLowerCase():'';
+  if(actualCertificate!==expectedCert){
+    fs.rmSync(out,{force:true});
+    const info=actualCertificate?'digit count '+actualCertificate.length+', prefix '+actualCertificate.slice(0,12):'certificate digest line not found';
+    throw Error('Android signing certificate validation failed ('+info+'). The signing check remains enforced.');
+  }
   const sha=crypto.createHash('sha256').update(fs.readFileSync(out)).digest('hex');
   fs.writeFileSync(path.join(folder,'ScoutPRO-Android.apk.sha256'),sha+'  ScoutPRO-Android.apk\n');
   process.stdout.write('APK Android de release assinado com certificado permanente, SHA256 e verificação apksigner OK.\n');
