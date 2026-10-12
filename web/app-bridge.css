@@ -3,3 +3,17 @@
 #scout-app-bar .app-small{font-size:11px;color:#acbec7;display:block;max-width:450px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#scout-app-bar .app-actions{display:flex;gap:6px}
 body{padding-bottom:84px!important}@media(max-width:540px){#scout-app-bar{font-size:11px;padding:8px}.app-actions{flex-direction:column}#scout-app-bar button{padding:8px;font-size:11px}}
 #scout-backup-modal{border:1px solid #5d998e;border-radius:16px;background:#0c192b;color:white;padding:24px;max-width:530px;width:90%;box-shadow:0 20px 60px #000a}#scout-backup-modal::backdrop{background:#001a}#scout-backup-modal button{background:#71dec0;border:0;border-radius:8px;padding:10px 13px;margin:6px;color:#092132;font-weight:600;cursor:pointer}#scout-backup-modal p{line-height:1.5}
+
+/* V96 — atualização de APK específica do Android */
+#scout-android-update-modal{border:1px solid #5d998e;border-radius:16px;background:#0c192b;color:#f6fafc;padding:22px;width:min(94vw,510px);max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px #000b;font:14px/1.5 system-ui,Arial,sans-serif}
+#scout-android-update-modal::backdrop{background:rgba(0,0,0,.77)}
+#scout-android-update-modal h3{font-size:19px;color:#e9d39e;margin:0 0 14px}
+#scout-android-update-modal p{margin:9px 0;overflow-wrap:anywhere}
+#scout-android-update-modal #scout-android-status{padding:11px;background:#102d36;border:1px solid #3b6572;border-radius:8px}
+#scout-android-update-modal .scout-update-help{font-size:12px;color:#c3d2dc}
+#scout-android-update-modal .scout-update-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+#scout-android-update-modal button{background:#73ddbd;border:0;border-radius:9px;padding:11px 13px;color:#0c2330;font:600 13px system-ui;cursor:pointer}
+#scout-android-update-modal button[hidden]{display:none!important}
+#scout-android-update-modal button:disabled{opacity:.45;cursor:default}
+@media(max-width:540px){#scout-android-update-modal{padding:15px}#scout-android-update-modal .scout-update-actions button{flex:1 1 45%}}
+

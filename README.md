@@ -123,3 +123,9 @@ O botão **Atualizar** do aplicativo Android só apresenta arquivos chamados `Sc
 Para habilitar atualizações Android estáveis, configure os quatro segredos de assinatura `ANDROID_*` citados acima com **uma keystore privada e permanente**. Sem isso, a CI compila apenas APK de teste, cujo certificado pode variar entre máquinas/execuções. O certificado do APK instalado tem de coincidir com o da nova versão. Se o aplicativo foi instalado com chave de teste diferente, exporte **Meus dados** antes de desinstalar e instalar a primeira versão oficial. Nunca envie a keystore ou senhas na conversa nem no código do GitHub.
 
 Os PP de todas as 246 cartas estão registrados, mas 84 fichas ainda não possuem distribuição de atributos aprovada. Esses valores serão tratados em uma etapa específica, sem gravar heurísticas como builds confirmadas.
+
+## V96 — Atualizar APK no Android
+
+Dentro do APK, toque em **Atualizar APK**. O painel exibe a versão instalada, a versão oficial Android mais recente (quando publicada), o botão **Verificar atualização**, **Baixar APK oficial** (somente quando a release contém um APK oficial assinado) e **Fazer backup**. O usuário autoriza o download e a instalação. O programa Windows mantém seu atualizador independente.
+
+**Importante:** a assinatura oficial deve usar a mesma chave do APK Android já instalado para permitir atualização sobre a instalação existente. As quatro secrets (`ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`) precisam ser configuradas privadamente em GitHub Actions. Nunca compartilhe a keystore ou senhas no chat. Se a instalação atual usa certificado de teste diferente, faça backup e teste a restauração antes de qualquer reinstalação. APKs de teste dos artefatos da CI não são oferecidos pelo painel como atualizações.

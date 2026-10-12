@@ -53,36 +53,34 @@ const chooseAndroidRelease=(releases)=>{
 const nativeAndroid=()=>Boolean(window.Capacitor?.isNativePlatform?.()&&window.Capacitor?.getPlatform?.()==='android');
 let lastAutomaticCheck=0;
 async function onlineUpdate(auto=false){
- if(!repo||!/^[-\w.]+\/[-\w.]+$/.test(repo)){notify('Configure SCOUT_GITHUB_REPO no projeto.');return;}
- if(!navigator.onLine){notify('Sem internet: o Scout PRO continua funcionando offline.');return;}
+ if(!repo||!/^[-\w.]+\/[-\w.]+$/.test(repo)){notify('Configure SCOUT_GITHUB_REPO no projeto.');if(nativeAndroid())showAndroidStatus('Repositório de atualizações não configurado.');return;}
+ if(!navigator.onLine){notify('Sem internet: o Scout PRO continua funcionando offline.');if(nativeAndroid())showAndroidStatus('Sem internet. Conecte-se e toque em Verificar novamente.');return;}
  notify('Verificando versão do Scout PRO para este dispositivo…');
  const installed=String(window.SCOUT_VERSION||'1.0.0');
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
  try{
   if(nativeAndroid()){
-   const resp=await fetch('https://api.github.com/repos/'+repo+'/releases?per_page=30',{
+   const resp=await fetch('https://api.github.com/repos/'+repo+'/releases?per_page=100',{
     signal:controller.signal,headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
    if(!resp.ok)throw Error('GitHub HTTP '+resp.status);
    const releases=await resp.json();
    const selected=chooseAndroidRelease(releases);
    if(!selected){
-    btn.textContent='Verificar Android';
-    btn.onclick=()=>onlineUpdate(false);
-    notify('APK Android oficial ainda não publicado: builds de teste não atualizam o aplicativo instalado. Exige assinatura permanente.');
+    const msg='APK Android oficial ainda não publicado: builds de teste não atualizam o aplicativo instalado. Exige assinatura permanente.';
+    notify(msg);showAndroidStatus(msg);setAndroidDownload(null);
     return;
    }
    const newest=String(selected.release.tag_name).replace(/^v/,'');
+   setAndroidLatest(newest);
    if(cmpVersion(newest,installed)<=0){
-    btn.textContent='Verificar Android';btn.onclick=()=>onlineUpdate(false);
-    notify('Android oficial: versão '+installed+' atualizada. Os dados continuam disponíveis offline.');
+    const msg='Android oficial: versão '+installed+' atualizada. Os dados continuam disponíveis offline.';
+    notify(msg);showAndroidStatus(msg);setAndroidDownload(null);
     return;
    }
    const url=selected.asset.browser_download_url;
    notify('APK Android oficial '+newest+' disponível. Faça backup em Meus dados antes de instalar.');
-   btn.textContent='Baixar APK Android';
-   btn.onclick=()=>openReleaseLink(url).catch(e=>notify(e.message));
-   if(!auto&&confirm('Scout PRO Android '+newest+' disponível. Instalação exige autorização do Android e assinatura compatível. Faça backup primeiro. Abrir download?'))
-    openReleaseLink(url).catch(e=>notify(e.message));
+   showAndroidStatus('Nova versão '+newest+' disponível. Salve um backup em Meus dados antes de baixar. A instalação requer assinatura compatível e sua confirmação.');
+   setAndroidDownload(url);
    return;
   }
   const resp=await fetch('https://api.github.com/repos/'+repo+'/releases/latest',{
@@ -101,18 +99,74 @@ async function onlineUpdate(auto=false){
   }
  }catch(e){
   notify('Não foi possível consultar atualizações. O conteúdo offline permanece disponível.');
+  if(nativeAndroid()){showAndroidStatus('Não foi possível consultar o GitHub agora. Tente novamente com internet.');setAndroidDownload(null);}
  }finally{clearTimeout(timer);}
 }
-if(window.scoutDesktop){window.scoutDesktop.onUpdate(e=>notify(e.message));btn.onclick=async()=>{notify('Buscando atualizações…');const result=await window.scoutDesktop.checkUpdates();if(!result?.ok)notify(result?.message||'Verificação indisponível.')};}
-else{
- btn.onclick=()=>onlineUpdate(false);
- const checkWhenForeground=()=>{if(!nativeAndroid()||!navigator.onLine||document.hidden)return;
+const androidPanel=nativeAndroid()?document.createElement('dialog'):null;
+let androidDownload=null;
+const showAndroidStatus=message=>{
+ if(!androidPanel)return;
+ const node=androidPanel.querySelector('#scout-android-status');
+ if(node)node.textContent=message;
+};
+const setAndroidLatest=version=>{
+ if(androidPanel)androidPanel.querySelector('#scout-android-newest').textContent=version;
+};
+const setAndroidDownload=url=>{
+ androidDownload=url||null;
+ if(!androidPanel)return;
+ const link=androidPanel.querySelector('#scout-android-download');
+ link.hidden=!androidDownload;
+ link.disabled=!androidDownload;
+};
+if(androidPanel){
+ androidPanel.id='scout-android-update-modal';
+ androidPanel.setAttribute('aria-label','Atualizar APK Android do Scout PRO');
+ androidPanel.innerHTML='<h3>Atualizar Scout PRO Android</h3>'
+  +'<p>Versão instalada: <strong id="scout-android-installed"></strong></p>'
+  +'<p>Última versão oficial assinada: <strong id="scout-android-newest">Não disponível</strong></p>'
+  +'<p id="scout-android-status" role="status">Toque em Verificar atualização para consultar o GitHub.</p>'
+  +'<p class="scout-update-help">O aplicativo funciona offline. O download precisa de internet e a instalação depende da autorização do Android. As atualizações só instalam por cima do APK atual com a mesma assinatura e versionCode maior. APKs de teste não são atualizações oficiais.</p>'
+  +'<div class="scout-update-actions"><button id="scout-android-check" type="button">Verificar atualização</button>'
+  +'<button id="scout-android-download" type="button" hidden disabled>Baixar APK oficial</button>'
+  +'<button id="scout-android-backup" type="button">Fazer backup</button>'
+  +'<button id="scout-android-close" type="button">Fechar</button></div>';
+ document.body.appendChild(androidPanel);
+ androidPanel.querySelector('#scout-android-installed').textContent=String(window.SCOUT_VERSION||'1.0.0');
+ androidPanel.querySelector('#scout-android-close').onclick=()=>androidPanel.close();
+ androidPanel.querySelector('#scout-android-backup').onclick=()=>{androidPanel.close();modal.showModal()};
+ androidPanel.querySelector('#scout-android-check').onclick=()=>onlineUpdate(false);
+ androidPanel.querySelector('#scout-android-download').onclick=async()=>{
+  if(!androidDownload)return;
+  if(!confirm('Antes de instalar, faça backup em Meus dados. O Android verificará a assinatura do APK e pedirá sua autorização. Abrir download oficial?'))return;
+  try{await openReleaseLink(androidDownload)}catch(e){showAndroidStatus('Não foi possível abrir o download: '+e.message)}
+ };
+}
+function openAndroidUpdater(){
+ if(!androidPanel)return;
+ androidPanel.showModal();
+ setAndroidDownload(null);
+ showAndroidStatus('Verificando atualizações oficiais para Android…');
+ onlineUpdate(false);
+}
+if(window.scoutDesktop){
+ btn.textContent='Atualizar Windows';
+ window.scoutDesktop.onUpdate(e=>notify(e.message));
+ btn.onclick=async()=>{notify('Buscando atualizações…');const result=await window.scoutDesktop.checkUpdates();if(!result?.ok)notify(result?.message||'Verificação indisponível.')};
+}else if(nativeAndroid()){
+ btn.textContent='Atualizar APK';
+ btn.setAttribute('aria-label','Verificar e baixar atualização APK Android');
+ btn.onclick=openAndroidUpdater;
+ const checkWhenForeground=()=>{
+  if(!navigator.onLine||document.hidden)return;
   const now=Date.now();if(now-lastAutomaticCheck<4*60*60*1000)return;
   lastAutomaticCheck=now;onlineUpdate(true);
  };
  setTimeout(()=>{if(navigator.onLine){lastAutomaticCheck=Date.now();onlineUpdate(true)}},16000);
  document.addEventListener('visibilitychange',checkWhenForeground);
  window.addEventListener('online',checkWhenForeground);
+}else{
+ btn.onclick=()=>onlineUpdate(false);
 }
 const ppCss=document.createElement('link');ppCss.rel='stylesheet';ppCss.href=(inCard?'../':'')+'progress-v81.css';document.head.appendChild(ppCss);
 const ppScript=document.createElement('script');ppScript.src=(inCard?'../':'')+'progress-v81.js';document.body.appendChild(ppScript);
