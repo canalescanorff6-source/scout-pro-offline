@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Ímpetos das 246 cartas | Scout PRO</title>
+<link rel="stylesheet" href="premium.css"/><link rel="stylesheet" href="scout-premium-v73.css"/><link rel="stylesheet" href="app-bridge.css"/>
+<script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script><script defer src="booster-engine-v103.js"></script><script defer src="revisao-impetos-v103.js"></script>
+<style>
+:root{color-scheme:dark;background:#07111e;color:#e8f5fc;font-family:system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;padding-bottom:105px;background:linear-gradient(#081928,#080f1b)}
+main{max-width:1050px;margin:auto;padding:17px}h1{font-size:clamp(22px,4vw,32px);margin:16px 0 10px}h2{font-size:18px;margin:0 0 10px}
+p,.small{font-size:13px;line-height:1.55;color:#bed2df}.panel{background:#0c2032;border:1px solid #365c76;border-radius:16px;padding:16px;margin:14px 0}
+input,select,button{font:inherit}input,select{width:100%;margin-top:6px;min-height:42px;background:#0a1523;color:#e7f4fc;border:1px solid #4b6a81;border-radius:9px;padding:8px}
+button,.btn{border:1px solid #5a877f;background:#143342;color:#dbf4eb;border-radius:9px;padding:10px 12px;cursor:pointer;text-decoration:none;display:inline-block}
+button.primary{background:#70dfbe;color:#081d25;font-weight:800}button:disabled{opacity:.4;cursor:default}
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}label{color:#d8e6ee;font-size:12px;font-weight:650}
+.metric{color:#c8dded;display:flex;gap:11px;flex-wrap:wrap}.metric strong{color:#77e1bd}.pager{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:9px;margin:14px 0}
+.visual{display:grid;grid-template-columns:minmax(120px,225px) minmax(0,1fr);gap:18px}.visual img{width:100%;aspect-ratio:0.71;object-fit:contain;border-radius:12px;border:1px solid #536f86;background:#061321}
+.fact{font-size:13px;margin:7px 0;overflow-wrap:anywhere}.warn{color:#f1cb8d}.good{color:#94e4c3}
+.tactics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tactics article{background:#112c40;border:1px solid #436781;border-radius:11px;padding:12px}
+.tactics h3{font-size:14px;margin:0 0 9px}.tactics strong{font-size:17px;color:#83e7c2}
+.tactics p{font-size:12px}.foot{font-size:12px;color:#acc4d4}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+a{color:#85dfcc}
+@media(max-width:680px){main{padding:11px}.tools{grid-template-columns:1fr}.visual{grid-template-columns:minmax(102px,34%) 1fr;gap:10px}.visual h2{font-size:17px}.tactics{grid-template-columns:1fr}.panel{padding:12px}}
+</style></head><body data-page="boosters">
+<header class="topbar"><div class="wrap nav"><a class="brand" href="index.html"><img class="brand-logo-img" src="assets/scout-pro-icon-premium-original.png" alt="Scout PRO"><span class="brand-copy"><b>SCOUT PRO</b><small>IMPETOS V103</small></span></a><div class="nav-right"><a href="index.html#catalogo" class="nav-cta">Elenco →</a></div></div></header>
+<main><h1>Ímpeto ideal — auditoria das 246 cartas</h1>
+<p>Não substitui o ímpeto nativo nem inventa slots vazios. Indica alternativas para Posse de Bola, Contra-Ataque Normal e Rápido, conforme a função. Confirme no jogo se o slot extra está vazio ou ocupado. As recomendações são hipóteses, não resultados comprovados.</p>
+<section class="panel"><div id="metrics" class="metric" aria-live="polite">Carregando catálogo…</div></section>
+<section class="panel">
+<div class="tools"><label>Buscar por nome ou número<input id="search" type="search" placeholder="Ex.: Eto'o, Maldini, #104"></label>
+<label>Mostrar<select id="filter"><option value="all">246 cartas</option><option value="selecionavel">Slot adicional indicado</option><option value="possivel">Slot possivelmente selecionável</option><option value="nome_registrado">Ímpeto extra nomeado</option><option value="indefinido">Elegibilidade não confirmada</option></select></label>
+<label>Ir para a carta<select id="player"><option value="">Carregando…</option></select></label></div>
+<div class="pager"><span id="counter" class="small">Carregando…</span><span><button id="prev" type="button">‹ Anterior</button> <button id="next" type="button">Próxima ›</button></span></div>
+<div class="visual"><img id="art" alt="Arte original da carta" width="225" height="318"><div>
+<h2 id="player-name"></h2><p class="fact" id="identity"></p><p class="fact" id="fixed"></p><p class="fact" id="extra"></p><p class="fact warn" id="evidence"></p><p class="foot">Uma carta com segundo ímpeto identificado não prova que ele esteja equipado nesta conta. Não alteramos a carta original.</p>
+<div class="actions"><a id="ficha" class="btn" href="index.html">Abrir ficha original</a></div></div></div>
+</section>
+<section class="panel"><h2>Escolha competitiva por tática</h2><div id="tactics" class="tactics"></div>
+<p class="foot">O bônus é pensado pelos quatro atributos afetados, pela função e pelo estilo. Enquanto faltarem valores finais de treinamento, técnico e testes em campo, não há como garantir o melhor absoluto.</p></section>
+<section class="panel"><h2>Conferência no seu eFootball</h2>
+<p>Este formulário registra somente o que você verificar na sua conta. Salva localmente e entra no backup de “Meus dados”. Não altera o ímpeto no jogo ou os dados oficiais da ficha.</p>
+<div class="tools"><label>Estado real do espaço adicional<select id="actual"><option value="pendente">Ainda não conferi</option><option value="vazio">Confirmei: slot vazio</option><option value="ocupado">Confirmei: slot preenchido</option><option value="ausente">Confirmei: carta sem slot extra</option></select></label>
+<label>Ímpeto atual (se ocupado)<select id="equipped"><option value="">Não informado</option></select></label>
+<label>Observação opcional<input id="note" maxlength="150" placeholder="Ex.: trocar Physicality por Technique"></label></div>
+<div class="actions"><button id="save" class="primary" type="button">Salvar e avançar</button><button id="export" type="button">Exportar auditoria CSV</button><span id="feedback" class="small" role="status"></span></div>
+</section></main></body></html>
