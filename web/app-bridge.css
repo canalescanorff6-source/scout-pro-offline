@@ -171,3 +171,15 @@ body.scout-native-android #scout-app-bar [hidden]{
  body.scout-native-android #scout-app-bar a{min-height:38px}
  #scout-android-toast{bottom:60px}
 }
+
+/* V105: Android System WebView dialog fallback, never obscured by bottom controls. */
+#scout-android-update-modal.scout-dialog-fallback[open]{
+ position:fixed!important;
+ z-index:12005!important;
+ top:50%!important;
+ left:50%!important;
+ right:auto!important;
+ margin:0!important;
+ transform:translate(-50%,-50%)!important;
+ max-height:min(85vh,680px);
+}
