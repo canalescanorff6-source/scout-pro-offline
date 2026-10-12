@@ -1,7 +1,7 @@
 {
-  "version": "V91",
+  "version": "V92",
   "created_from_head": "d84c414be944a4d7c27bb62932dbd50717292c40",
-  "description": "Lista técnica de possíveis inconsistências: a revisão visual da raridade depende da confirmação do usuário. Nenhuma classificação foi alterada.",
+  "description": "56 raridades verificadas visualmente pelo usuário e registradas. A comparação com as descrições históricas de edição é apenas documental; não modifica Card IDs, atributos ou builds.",
   "total_catalogo": 246,
   "totais": {
     "divergencia": 33,
@@ -16,7 +16,11 @@
       "edicao_documentada": "Highlight — Starter Set 28 May '26",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_023_David_Alaba_OVR102_DC.png"
+      "imagem": "cartas/CAP_023_David_Alaba_OVR102_DC.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 35,
@@ -25,7 +29,11 @@
       "edicao_documentada": "Highlight — 900 Million Downloads Campaign",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_035_Robert_Lewandowski_OVR101_AC.png"
+      "imagem": "cartas/CAP_035_Robert_Lewandowski_OVR101_AC.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 36,
@@ -34,7 +42,11 @@
       "edicao_documentada": "Highlight — New Year's Gift 1 Jan '25",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_036_Endrick_OVR101_CA.png"
+      "imagem": "cartas/CAP_036_Endrick_OVR101_CA.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 41,
@@ -43,7 +55,11 @@
       "edicao_documentada": "Highlight — Arsenal FC Selection 21 May '26",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_041_Kai_Havertz_OVR100_CA.png"
+      "imagem": "cartas/CAP_041_Kai_Havertz_OVR100_CA.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 75,
@@ -52,7 +68,11 @@
       "edicao_documentada": "Highlight — Daily Bonus 2026 — Luis Díaz",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_075_Luis_Diaz_OVR89_PTE.png"
+      "imagem": "cartas/CAP_075_Luis_Diaz_OVR89_PTE.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 79,
@@ -61,7 +81,11 @@
       "edicao_documentada": "Highlight — Campaign Rewards Feb '26 — Neymar Jr",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_079_Neymar_Jr_OVR101_MAT.png"
+      "imagem": "cartas/CAP_079_Neymar_Jr_OVR101_MAT.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 80,
@@ -70,7 +94,11 @@
       "edicao_documentada": "Highlight — Extraordinary One 4 Dec '25 — Xavi Simons",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_080_Xavi_Simons_OVR101_MAT.png"
+      "imagem": "cartas/CAP_080_Xavi_Simons_OVR101_MAT.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 99,
@@ -79,7 +107,11 @@
       "edicao_documentada": "Highlight — Show Time 13 Nov '25 — Joelinton",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_099_Joelinton_OVR100_MLG.png"
+      "imagem": "cartas/CAP_099_Joelinton_OVR100_MLG.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 100,
@@ -88,16 +120,24 @@
       "edicao_documentada": "Highlight — Daily Bonus 2026 — Orkun Kökçü",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_100_Orkun_Kokcu_OVR100_MLG.png"
+      "imagem": "cartas/CAP_100_Orkun_Kokcu_OVR100_MLG.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 104,
       "nome": "Frank Rijkaard",
-      "raridade_atual": "DISTINGUIDO",
+      "raridade_atual": "SHOW TIME",
       "edicao_documentada": "Epic — Ajax — ID 88036360719848 (rótulo de pack/era não exposto de forma inequívoca)",
       "referencia_descritiva": "ÉPICA",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_104_Frank_Rijkaard_OVR103_VOL.png"
+      "imagem": "cartas/CAP_104_Frank_Rijkaard_OVR103_VOL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 108,
@@ -106,7 +146,11 @@
       "edicao_documentada": "Highlight — National Team Pack France 2026",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_108_N_Golo_Kante_OVR99_VOL.png"
+      "imagem": "cartas/CAP_108_N_Golo_Kante_OVR99_VOL.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 109,
@@ -115,7 +159,11 @@
       "edicao_documentada": "Highlight — National Teams Selection 13 Jul '26 — Rúben Neves",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_109_Ruben_Neves_OVR99_VOL.png"
+      "imagem": "cartas/CAP_109_Ruben_Neves_OVR99_VOL.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 114,
@@ -124,7 +172,11 @@
       "edicao_documentada": "CR Flamengo — versão treinável 2026",
       "referencia_descritiva": null,
       "grupo": "sem-classificacao",
-      "imagem": "cartas/CAP_114_Jorginho_OVR97_VOL.png"
+      "imagem": "cartas/CAP_114_Jorginho_OVR97_VOL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 119,
@@ -133,7 +185,11 @@
       "edicao_documentada": "Standard — Bournemouth RB — eFootball 2027",
       "referencia_descritiva": "PADRÃO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_119_Tyler_Adams_OVR84_VOL.png"
+      "imagem": "cartas/CAP_119_Tyler_Adams_OVR84_VOL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 120,
@@ -142,7 +198,11 @@
       "edicao_documentada": "Standard — Tottenham WB — eFootball 2027",
       "referencia_descritiva": "PADRÃO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_120_Rodrigo_Bentancur_OVR84_VOL.png"
+      "imagem": "cartas/CAP_120_Rodrigo_Bentancur_OVR84_VOL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 126,
@@ -151,7 +211,11 @@
       "edicao_documentada": "Trending — POTW National Teams 28 Mar '24 — Daniel Muñoz",
       "referencia_descritiva": "EM ALTA",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_126_Daniel_Munoz_OVR97_LD.png"
+      "imagem": "cartas/CAP_126_Daniel_Munoz_OVR97_LD.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 127,
@@ -160,7 +224,11 @@
       "edicao_documentada": "National Team Icons vol.3 — France",
       "referencia_descritiva": null,
       "grupo": "sem-classificacao",
-      "imagem": "cartas/CAP_127_Jules_Kounde_OVR97_LD.png"
+      "imagem": "cartas/CAP_127_Jules_Kounde_OVR97_LD.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 141,
@@ -169,7 +237,11 @@
       "edicao_documentada": "Standard — Aston RB — eFootball 2027",
       "referencia_descritiva": "PADRÃO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_141_Ian_Maatsen_OVR84_LE.png"
+      "imagem": "cartas/CAP_141_Ian_Maatsen_OVR84_LE.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 153,
@@ -178,7 +250,11 @@
       "edicao_documentada": "Show Time — New Year's Gift 2026 — Dean Huijsen",
       "referencia_descritiva": "SHOW TIME",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_153_Dean_Huijsen_OVR99_ZC.png"
+      "imagem": "cartas/CAP_153_Dean_Huijsen_OVR99_ZC.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 165,
@@ -187,7 +263,11 @@
       "edicao_documentada": "Show Time — Tournament Stars 2026 — Cristian Romero",
       "referencia_descritiva": "SHOW TIME",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_165_Cristian_Romero_OVR85_ZC.png"
+      "imagem": "cartas/CAP_165_Cristian_Romero_OVR85_ZC.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 167,
@@ -196,7 +276,11 @@
       "edicao_documentada": "Standard — Danilo — CB",
       "referencia_descritiva": "PADRÃO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_167_Danilo_OVR84_ZC.png"
+      "imagem": "cartas/CAP_167_Danilo_OVR84_ZC.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 170,
@@ -205,7 +289,11 @@
       "edicao_documentada": "Highlight — Extraordinary One 4 Dec '25 — Jan Oblak",
       "referencia_descritiva": "DISTINGUIDO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_170_Jan_Oblak_OVR103_GO.png"
+      "imagem": "cartas/CAP_170_Jan_Oblak_OVR103_GO.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 177,
@@ -214,7 +302,11 @@
       "edicao_documentada": "Standard — Dean Henderson — Crystal Palace RB",
       "referencia_descritiva": "PADRÃO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_177_Dean_Henderson_OVR83_GO.png"
+      "imagem": "cartas/CAP_177_Dean_Henderson_OVR83_GO.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 185,
@@ -223,7 +315,11 @@
       "edicao_documentada": "Standard — Pedro — CR Flamengo",
       "referencia_descritiva": "PADRÃO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_185_Pedro_OVR97_CA.png"
+      "imagem": "cartas/CAP_185_Pedro_OVR97_CA.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 189,
@@ -232,7 +328,11 @@
       "edicao_documentada": "Standard — Donyell Malen — Roma GR",
       "referencia_descritiva": "PADRÃO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_189_Donyell_Malen_OVR84_PTD.png"
+      "imagem": "cartas/CAP_189_Donyell_Malen_OVR84_PTD.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 198,
@@ -241,7 +341,11 @@
       "edicao_documentada": "Standard — Liverpool R — eFootball 2027",
       "referencia_descritiva": "PADRÃO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_198_Cody_Gakpo_OVR86_PTE.png"
+      "imagem": "cartas/CAP_198_Cody_Gakpo_OVR86_PTE.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 199,
@@ -250,7 +354,11 @@
       "edicao_documentada": "Standard — João Félix",
       "referencia_descritiva": "PADRÃO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_199_Joao_Felix_OVR85_PTE.png"
+      "imagem": "cartas/CAP_199_Joao_Felix_OVR85_PTE.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 200,
@@ -259,7 +367,11 @@
       "edicao_documentada": "Epic — CAF AFRICA CUP OF NATIONS 25 — Sadio Mané",
       "referencia_descritiva": "ÉPICA",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_200_Sadio_Mane_OVR84_PTE.png"
+      "imagem": "cartas/CAP_200_Sadio_Mane_OVR84_PTE.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 201,
@@ -268,7 +380,11 @@
       "edicao_documentada": "Standard — Yan Diomande",
       "referencia_descritiva": "PADRÃO",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_201_Yan_Diomande_OVR82_PTE.png"
+      "imagem": "cartas/CAP_201_Yan_Diomande_OVR82_PTE.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 204,
@@ -277,7 +393,11 @@
       "edicao_documentada": "Trending — POTW National Teams 27 Mar '25 — Xavi Simons",
       "referencia_descritiva": "EM ALTA",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_204_Xavi_Simons_OVR99_MAT.png"
+      "imagem": "cartas/CAP_204_Xavi_Simons_OVR99_MAT.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 208,
@@ -286,7 +406,11 @@
       "edicao_documentada": "Show Time — Pressure-Proof 2026 (30 Jul 2026)",
       "referencia_descritiva": "SHOW TIME",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_208_Michael_Olise_OVR87_MAT.png"
+      "imagem": "cartas/CAP_208_Michael_Olise_OVR87_MAT.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 210,
@@ -295,7 +419,11 @@
       "edicao_documentada": "Show Time — 1-2 Cut-in A 23 Apr '26 — Jamal Musiala",
       "referencia_descritiva": "SHOW TIME",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_210_Jamal_Musiala_OVR86_MAT.png"
+      "imagem": "cartas/CAP_210_Jamal_Musiala_OVR86_MAT.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 215,
@@ -304,7 +432,11 @@
       "edicao_documentada": "Show Time — The All-Rounders 26 Dec '24",
       "referencia_descritiva": "SHOW TIME",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_215_Raphinha_OVR98_MLE.png"
+      "imagem": "cartas/CAP_215_Raphinha_OVR98_MLE.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 216,
@@ -313,7 +445,11 @@
       "edicao_documentada": "Show Time — Central Dominator 5 Jan '26",
       "referencia_descritiva": "SHOW TIME",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_216_Declan_Rice_OVR100_MLG.png"
+      "imagem": "cartas/CAP_216_Declan_Rice_OVR100_MLG.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 217,
@@ -322,7 +458,11 @@
       "edicao_documentada": "Epic — World Player of the Year 2025",
       "referencia_descritiva": "ÉPICA",
       "grupo": "divergencia",
-      "imagem": "cartas/CAP_217_Vitinha_OVR100_MLG.png"
+      "imagem": "cartas/CAP_217_Vitinha_OVR100_MLG.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 226,
@@ -331,7 +471,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_226_Jos_Mar_a_Gim_nez_ORIGINAL.png"
+      "imagem": "cartas/CAP_226_Jos_Mar_a_Gim_nez_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 227,
@@ -340,7 +484,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_227_Kenan_Y_ld_z_ORIGINAL.png"
+      "imagem": "cartas/CAP_227_Kenan_Y_ld_z_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 228,
@@ -349,7 +497,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_228_Murilo_ORIGINAL.png"
+      "imagem": "cartas/CAP_228_Murilo_ORIGINAL.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 229,
@@ -358,7 +510,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_229_Zeki_elik_ORIGINAL.png"
+      "imagem": "cartas/CAP_229_Zeki_elik_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 230,
@@ -367,7 +523,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_230_Pape_Matar_Sarr_ORIGINAL.png"
+      "imagem": "cartas/CAP_230_Pape_Matar_Sarr_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 231,
@@ -376,7 +536,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_231_Guglielmo_Vicario_ORIGINAL.png"
+      "imagem": "cartas/CAP_231_Guglielmo_Vicario_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 232,
@@ -385,7 +549,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_232_Aymeric_Laporte_ORIGINAL.png"
+      "imagem": "cartas/CAP_232_Aymeric_Laporte_ORIGINAL.png",
+      "raridade_anterior": "SHOW TIME",
+      "raridade_confirmada": "SHOW TIME",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 233,
@@ -394,7 +562,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_233_Nicola_Zalewski_ORIGINAL.png"
+      "imagem": "cartas/CAP_233_Nicola_Zalewski_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 234,
@@ -403,7 +575,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_234_Kakita_Yuki_ORIGINAL.png"
+      "imagem": "cartas/CAP_234_Kakita_Yuki_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 235,
@@ -412,7 +588,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_235_Kumasaka_Koki_ORIGINAL.png"
+      "imagem": "cartas/CAP_235_Kumasaka_Koki_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 236,
@@ -421,7 +601,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_236_Samuel_Eto_o_ORIGINAL.png"
+      "imagem": "cartas/CAP_236_Samuel_Eto_o_ORIGINAL.png",
+      "raridade_anterior": "ÉPICA",
+      "raridade_confirmada": "ÉPICA",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 237,
@@ -430,7 +614,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_237_Piero_Hincapi_ORIGINAL.png"
+      "imagem": "cartas/CAP_237_Piero_Hincapi_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 238,
@@ -439,7 +627,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_238_Mateus_Fernandes_ORIGINAL.png"
+      "imagem": "cartas/CAP_238_Mateus_Fernandes_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 239,
@@ -448,7 +640,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_239_Alexander_Isak_ORIGINAL.png"
+      "imagem": "cartas/CAP_239_Alexander_Isak_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 240,
@@ -457,7 +653,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_240_Gon_alo_Ramos_ORIGINAL.png"
+      "imagem": "cartas/CAP_240_Gon_alo_Ramos_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 241,
@@ -466,7 +666,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_241_Federico_Valverde_ORIGINAL.png"
+      "imagem": "cartas/CAP_241_Federico_Valverde_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 242,
@@ -475,7 +679,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_242_Maghnes_Akliouche_ORIGINAL.png"
+      "imagem": "cartas/CAP_242_Maghnes_Akliouche_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 243,
@@ -484,7 +692,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_243_Anthony_Gordon_ORIGINAL.png"
+      "imagem": "cartas/CAP_243_Anthony_Gordon_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 244,
@@ -493,7 +705,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_244_Edmond_Tapsoba_ORIGINAL.png"
+      "imagem": "cartas/CAP_244_Edmond_Tapsoba_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 245,
@@ -502,7 +718,11 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_245_Justin_Kluivert_ORIGINAL.png"
+      "imagem": "cartas/CAP_245_Justin_Kluivert_ORIGINAL.png",
+      "raridade_anterior": "DISTINGUIDO",
+      "raridade_confirmada": "DISTINGUIDO",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     },
     {
       "numero": 246,
@@ -511,7 +731,18 @@
       "edicao_documentada": "PENDENTE — não inventar sem Card ID/tela de versão",
       "referencia_descritiva": null,
       "grupo": "edicao-pendente",
-      "imagem": "cartas/CAP_246_Eric_Cantona_ORIGINAL.png"
+      "imagem": "cartas/CAP_246_Eric_Cantona_ORIGINAL.png",
+      "raridade_anterior": "ÉPICA",
+      "raridade_confirmada": "ÉPICA",
+      "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "status_raridade": "confirmada"
     }
-  ]
+  ],
+  "confirmacoes": {
+    "total": 56,
+    "sem_alteracao": 55,
+    "alteradas": 1,
+    "aguardando": 0,
+    "origem": "usuario_inspecao_visual_2026-10-11"
+  }
 }

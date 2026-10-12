@@ -10,7 +10,8 @@
     "no_pp": 0,
     "adapt_alert": 55,
     "extra_confirmed": 16,
-    "level_user_entered": 84
+    "level_user_entered": 84,
+    "raridade_confirmada_pelo_usuario": 56
   },
   "cards": [
     {
@@ -822,9 +823,11 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/023_David_Alaba.html"
+      "arquivo": "fichas/023_David_Alaba.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 24,
@@ -1281,9 +1284,11 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/035_Robert_Lewandowski.html"
+      "arquivo": "fichas/035_Robert_Lewandowski.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 36,
@@ -1321,9 +1326,11 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/036_Endrick.html"
+      "arquivo": "fichas/036_Endrick.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 37,
@@ -1519,9 +1526,11 @@
       ],
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/041_Kai_Havertz.html"
+      "arquivo": "fichas/041_Kai_Havertz.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 42,
@@ -2739,9 +2748,11 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/075_Luis_Diaz.html"
+      "arquivo": "fichas/075_Luis_Diaz.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 76,
@@ -2891,9 +2902,11 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/079_Neymar_Jr.html"
+      "arquivo": "fichas/079_Neymar_Jr.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 80,
@@ -2929,9 +2942,11 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/080_Xavi_Simons.html"
+      "arquivo": "fichas/080_Xavi_Simons.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 81,
@@ -3627,9 +3642,11 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/099_Joelinton.html"
+      "arquivo": "fichas/099_Joelinton.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 100,
@@ -3666,9 +3683,11 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/100_Orkun_Kokcu.html"
+      "arquivo": "fichas/100_Orkun_Kokcu.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 101,
@@ -3792,9 +3811,11 @@
       ],
       "pendencias": [
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/104_Frank_Rijkaard.html"
+      "arquivo": "fichas/104_Frank_Rijkaard.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 105,
@@ -3929,9 +3950,11 @@
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/108_N_Golo_Kante.html"
+      "arquivo": "fichas/108_N_Golo_Kante.html",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 109,
@@ -3953,11 +3976,13 @@
       "pendencias": [
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/109_Ruben_Neves.html",
       "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 110,
@@ -4124,7 +4149,9 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/114_Jorginho.html"
+      "arquivo": "fichas/114_Jorginho.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 115,
@@ -4247,11 +4274,13 @@
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/119_Tyler_Adams.html",
       "max_level": 35,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 120,
@@ -4274,11 +4303,13 @@
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/120_Rodrigo_Bentancur.html",
       "max_level": 35,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 121,
@@ -4481,11 +4512,13 @@
       "pendencias": [
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/126_Daniel_Munoz.html",
       "max_level": 35,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 127,
@@ -4520,7 +4553,9 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/127_Jules_Kounde.html"
+      "arquivo": "fichas/127_Jules_Kounde.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 128,
@@ -4998,11 +5033,13 @@
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/141_Ian_Maatsen.html",
       "max_level": 39,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 142,
@@ -5398,9 +5435,11 @@
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/153_Dean_Huijsen.html"
+      "arquivo": "fichas/153_Dean_Huijsen.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 154,
@@ -5782,9 +5821,11 @@
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/165_Cristian_Romero.html"
+      "arquivo": "fichas/165_Cristian_Romero.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 166,
@@ -5843,11 +5884,13 @@
       "pendencias": [
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/167_Danilo.html",
       "max_level": 27,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 168,
@@ -5933,11 +5976,13 @@
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/170_Jan_Oblak.html",
       "max_level": 26,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 171,
@@ -6165,11 +6210,13 @@
       "pendencias": [
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/177_Dean_Henderson.html",
       "max_level": 29,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 178,
@@ -6414,9 +6461,11 @@
       "pendencias": [
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/185_Pedro.html"
+      "arquivo": "fichas/185_Pedro.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 186,
@@ -6537,11 +6586,13 @@
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/189_Donyell_Malen.html",
       "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 190,
@@ -6822,9 +6873,11 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/198_Cody_Gakpo.html"
+      "arquivo": "fichas/198_Cody_Gakpo.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 199,
@@ -6847,11 +6900,13 @@
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/199_Joao_Felix.html",
       "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 200,
@@ -6888,9 +6943,11 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/200_Sadio_Mane.html"
+      "arquivo": "fichas/200_Sadio_Mane.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 201,
@@ -6914,11 +6971,13 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/201_Yan_Diomande.html",
       "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 202,
@@ -7005,11 +7064,13 @@
       "pendencias": [
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/204_Xavi_Simons.html",
       "max_level": 23,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 205,
@@ -7146,9 +7207,11 @@
       ],
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/208_Michael_Olise.html"
+      "arquivo": "fichas/208_Michael_Olise.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 209,
@@ -7206,11 +7269,13 @@
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/210_Jamal_Musiala.html",
       "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 211,
@@ -7367,9 +7432,11 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/215_Raphinha.html"
+      "arquivo": "fichas/215_Raphinha.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 216,
@@ -7405,9 +7472,11 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/216_Declan_Rice.html"
+      "arquivo": "fichas/216_Declan_Rice.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 217,
@@ -7443,9 +7512,11 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Raridade em conflito entre captura do jogo e banco externo"
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "arquivo": "fichas/217_Vitinha.html"
+      "arquivo": "fichas/217_Vitinha.html",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 218,
@@ -7705,7 +7776,9 @@
       ],
       "arquivo": "fichas/226_Jose_Maria_Gimenez.html",
       "max_level": 27,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 227,
@@ -7732,7 +7805,9 @@
       ],
       "arquivo": "fichas/227_Kenan_Yldz.html",
       "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 228,
@@ -7759,7 +7834,9 @@
       ],
       "arquivo": "fichas/228_Murilo.html",
       "max_level": 29,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 229,
@@ -7786,7 +7863,9 @@
       ],
       "arquivo": "fichas/229_Zeki_Celik.html",
       "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 230,
@@ -7813,7 +7892,9 @@
       ],
       "arquivo": "fichas/230_Pape_Matar_Sarr.html",
       "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 231,
@@ -7840,7 +7921,9 @@
       ],
       "arquivo": "fichas/231_Guglielmo_Vicario.html",
       "max_level": 30,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 232,
@@ -7867,7 +7950,9 @@
       ],
       "arquivo": "fichas/232_Aymeric_Laporte.html",
       "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "SHOW TIME",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 233,
@@ -7894,7 +7979,9 @@
       ],
       "arquivo": "fichas/233_Nicola_Zalewski.html",
       "max_level": 36,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 234,
@@ -7920,7 +8007,9 @@
       ],
       "arquivo": "fichas/234_Kakita_Yuki.html",
       "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 235,
@@ -7946,7 +8035,9 @@
       ],
       "arquivo": "fichas/235_Kumasaka_Koki.html",
       "max_level": 33,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 236,
@@ -7973,7 +8064,9 @@
       ],
       "arquivo": "fichas/236_Samuel_Eto_o.html",
       "max_level": 34,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "ÉPICA",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 237,
@@ -8000,7 +8093,9 @@
       ],
       "arquivo": "fichas/237_Piero_Hincapie.html",
       "max_level": 33,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 238,
@@ -8027,7 +8122,9 @@
       ],
       "arquivo": "fichas/238_Mateus_Fernandes.html",
       "max_level": 35,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 239,
@@ -8054,7 +8151,9 @@
       ],
       "arquivo": "fichas/239_Alexander_Isak.html",
       "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 240,
@@ -8081,7 +8180,9 @@
       ],
       "arquivo": "fichas/240_Goncalo_Ramos.html",
       "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 241,
@@ -8108,7 +8209,9 @@
       ],
       "arquivo": "fichas/241_Federico_Valverde.html",
       "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 242,
@@ -8136,7 +8239,9 @@
       ],
       "arquivo": "fichas/242_Maghnes_Akliouche.html",
       "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 243,
@@ -8164,7 +8269,9 @@
       ],
       "arquivo": "fichas/243_Anthony_Gordon.html",
       "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 244,
@@ -8191,7 +8298,9 @@
       ],
       "arquivo": "fichas/244_Edmond_Tapsoba.html",
       "max_level": 27,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 245,
@@ -8217,7 +8326,9 @@
       ],
       "arquivo": "fichas/245_Justin_Kluivert.html",
       "max_level": 33,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     },
     {
       "numero": 246,
@@ -8244,7 +8355,9 @@
       ],
       "arquivo": "fichas/246_Eric_Cantona.html",
       "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11"
+      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "raridade_confirmada": "ÉPICA",
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
     }
   ],
   "photos": "246/246 imagens originais (225 recortes legados + 21 recuperadas da Biblioteca de 07/10/2026)",
