@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07101d"><title>Player ID e Biotipo • Scout PRO V101</title>
+<link rel="stylesheet" href="premium.css"><link rel="stylesheet" href="scout-premium-v73.css"><link rel="stylesheet" href="app-bridge.css">
+<link rel="manifest" href="manifest.webmanifest">
+<script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script><script defer src="player-model-v101-core.js"></script><script defer src="player-model-v101-ui.js"></script><script defer src="pwa.js"></script>
+<style>
+:root{color-scheme:dark;background:#07111e;color:#eaf3fc;font-family:system-ui,Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(150deg,#0c2032,#06101c);padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+main{max-width:1080px;margin:0 auto;padding:18px 15px 40px}
+h1{font-size:clamp(22px,5vw,34px);margin:12px 0 8px}h2{font-size:20px}h3{font-size:16px}
+p{line-height:1.6}.sub,.help{font-size:13px;color:#b8ccd9;line-height:1.5}
+.panel{margin:17px 0;border:1px solid #35566d;background:#112334;border-radius:17px;padding:16px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.stat{padding:11px;border:1px solid #38627a;border-radius:11px;background:#0b1e2e}.stat strong{font-size:22px;display:block}.stat small{color:#c4d5e3}
+.picker{display:flex;flex-wrap:wrap;gap:10px;align-items:end}.picker label{flex:1;min-width:170px}
+label{display:block;font-weight:600;color:#d0e1ee;font-size:12px}
+input,select,textarea{width:100%;min-height:41px;border:1px solid #42647b;border-radius:9px;background:#091c2c;color:#fff;padding:9px;margin-top:5px;font:inherit;font-size:14px}
+textarea{min-height:85px;resize:vertical}
+button,.button{background:#17384b;border:1px solid #44748a;color:#eef9ff;border-radius:10px;padding:10px 13px;cursor:pointer;font-weight:650;display:inline-block;text-decoration:none}
+button:disabled{opacity:.5;cursor:default}.primary{background:#75dfb9;color:#07281d;border-color:#75dfb9}
+.details{display:grid;grid-template-columns:minmax(100px,210px) 1fr;gap:17px}
+.art{width:100%;object-fit:contain;aspect-ratio:.7;border-radius:10px;background:#0d2635;border:1px solid #355b70}
+.detailtext h2{margin:0 0 7px}.detailtext p{font-size:13px;margin:6px 0}
+.tags{display:flex;flex-wrap:wrap;gap:7px}.tag{font-size:11px;border:1px solid #42718a;padding:5px 9px;border-radius:20px;color:#d1e5f4}
+.warn{color:#f1d18f}.ok{color:#85e4bd}.row-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.metric{border:1px solid #375c71;background:#0c1d2c;border-radius:10px;padding:9px;min-width:0}.metric b{display:block;font-size:18px;overflow-wrap:anywhere}.metric small{display:block;color:#acc6d6;font-size:11px}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.notice{border-left:3px solid #eac476;padding:10px 12px;background:#273044;color:#d8e6f2;font-size:12px}
+.feedback{font-size:13px;min-height:21px;color:#91e3c4}
+.record{background:#0a1e2b;padding:10px 12px;border-radius:8px;margin:9px 0;font-size:12px;line-height:1.5}
+@media(max-width:680px){main{padding:11px 10px 30px}.panel{padding:11px}.fields{grid-template-columns:1fr 1fr}.metrics{grid-template-columns:1fr 1fr}.details{grid-template-columns:110px 1fr;gap:10px}.detailtext h2{font-size:17px}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat{padding:8px}.stat strong{font-size:17px}}
+</style>
+</head><body data-page="player-model">
+<header class="topbar"><div class="wrap nav"><a href="index.html" class="brand"><img class="brand-logo-img" src="assets/scout-pro-icon-premium-original.png" alt="Scout PRO"><span class="brand-copy"><b>SCOUT PRO</b><small>PLAYER ID & BIOTIPO V101</small></span></a><div class="nav-right"><a class="nav-cta" href="index.html#catalogo">Elenco →</a></div></div></header>
+<main>
+<h1>Player ID, estatura e modelo corporal</h1><p class="sub">Auditoria competitiva por <b>edição exata e Card ID</b>. Identifica medidas documentadas, dados faltantes, observações reais e diferenças físicas relevantes. Não calcula falsos scores de Player ID. Funciona offline no Android e Windows depois de instalado.</p>
+<section class="stats" id="summary" aria-label="Cobertura do elenco"></section>
+<section class="panel" aria-label="Escolha da carta">
+<div class="picker"><label>Buscar carta<input id="search" type="search" placeholder="Nome, #039 ou Card ID"></label><label>Estado<select id="filter"><option value="all">Todas as 246</option><option value="pending">Dados físicos pendentes</option><option value="verified">Fonte externa conferida</option></select></label></div>
+<div class="picker"><label>Jogador<select id="player" aria-label="Selecionar uma carta"></select></label><button type="button" id="prev">← Anterior</button><button type="button" id="next">Próxima →</button></div>
+</section>
+<section class="panel" aria-label="Diagnóstico da carta"><div class="details"><img id="art" class="art" alt="Arte original da carta" width="210" height="298"><div class="detailtext"><h2 id="name"></h2><p id="identity"></p><p id="edition" class="sub"></p><p id="style"></p><div class="tags" id="tags"></div><div class="row-actions"><a id="card-link" class="button" href="index.html">Ficha original ↗</a><a id="source-link" class="button" href="#" target="_blank" rel="noopener noreferrer" hidden>Fonte da edição ↗</a></div></div></div>
+<h3>Estatura, perna ruim e parâmetros corporais</h3><div class="metrics" id="facts"></div><p id="evidence" class="notice"></p><p class="sub">Comprimento da perna é uma escala do modelo do jogo; alcance e largura de colisão são medidas <b>derivadas publicadas pelo banco de dados</b>, não uma prova de desarme mais rápido ou melhor Player ID.</p>
+</section>
+<section class="panel"><h2>Complementar ou corrigir dados da sua carta</h2><p class="sub">Dados inseridos por você ficam separados da evidência externa. Nenhum valor modifica os PP, habilidades ou treino da ficha original. Apenas anote o que conseguiu conferir.</p>
+<form id="body-form"><div class="fields">
+<label>Altura (cm)<input name="altura_cm" type="number" min="120" max="230" step="1"></label>
+<label>Peso (kg)<input name="peso_kg" type="number" min="35" max="180" step="1"></label>
+<label>Pé dominante<select name="pe_dominante"><option value="">Não confirmado</option><option value="direito">Direito</option><option value="esquerdo">Esquerdo</option></select></label>
+<label>Uso da perna ruim<select name="uso_perna_ruim"><option value="">Pendente</option><option value="raramente">Raramente</option><option value="ocasionalmente">Ocasionalmente</option><option value="regularmente">Regularmente</option><option value="frequentemente">Frequentemente</option></select></label>
+<label>Precisão da perna ruim<select name="precisao_perna_ruim"><option value="">Pendente</option><option value="baixa">Baixa</option><option value="média">Média</option><option value="alta">Alta</option><option value="muito alta">Muito alta</option></select></label>
+<label>Comprimento de perna (escala da base)<input name="comprimento_perna" type="number" min="0" max="20" step="1"></label>
+<label>Alcance perna derivado (cm)<input name="alcance_perna_cm" type="number" min="110" max="240" step=".01"></label>
+<label>Largura de colisão derivada (cm)<input name="colisao_tronco_cm" type="number" min="25" max="90" step=".01"></label>
+<label>Fonte usada<input name="fonte_usuario" maxlength="250" placeholder="Print do jogo ou URL da versão"></label>
+</div><label style="margin-top:10px">Observações do modelo corporal<textarea name="nota" maxlength="1500" placeholder="Descreva apenas o que verificou. Não confunda modelo com vantagem comprovada."></textarea></label>
+<div class="row-actions"><button class="primary" type="submit">Salvar dados desta carta</button><button type="button" id="clear-body">Reverter dados pessoais desta carta</button></div><p id="body-status" class="feedback" role="status"></p></form>
+</section>
+<section class="panel"><h2>Player ID na prática — registrar partidas</h2>
+<p class="notice"><b>Card ID ≠ Player ID.</b> O Card ID identifica a edição da carta. O Player ID, animações e responsividade exigem observação da jogabilidade. Não existem números oficiais de animação garantidos nesta auditoria.</p>
+<p class="sub">Registre partidas equivalentes (mesmo técnico, formação e faixa de adversário), alterando um jogador de cada vez. Estas notas são <b>avaliações suas</b>, não telemetria automática.</p>
+<form id="game-form"><div class="fields">
+<label>Estilo da equipe<select name="tatica"><option value="posse">Posse de Bola</option><option value="normal">Contra-Ataque Normal</option><option value="rapido">Contra-Ataque Rápido</option></select></label>
+<label>Formação<input name="formacao" required maxlength="24" placeholder="4-3-1-2" value="4-3-1-2"></label>
+<label>Giro e responsividade (1–5)<input name="giro" type="number" min="1" max="5" value="3" required></label>
+<label>Primeiro toque (1–5)<input name="primeiro_toque" type="number" min="1" max="5" value="3" required></label>
+<label>Aceleração percebida (1–5)<input name="aceleracao" type="number" min="1" max="5" value="3" required></label>
+<label>Proteção da bola (1–5)<input name="protecao" type="number" min="1" max="5" value="3" required></label>
+<label>Cobertura/posicionamento (1–5)<input name="cobertura" type="number" min="1" max="5" value="3" required></label>
+</div><label style="margin-top:10px">Observação de gameplay<textarea name="nota" maxlength="500" placeholder="Como girou, movimentou, dominou, disputou, marcou e foi afetado pela conexão."></textarea></label>
+<div class="row-actions"><button type="submit" class="primary">Registrar partida observada</button><button id="undo-game" type="button">Excluir último registro</button></div><p id="game-status" class="feedback" role="status"></p></form>
+<div id="history"></div>
+</section>
+<section class="panel"><h2>Backup e fontes</h2><p class="sub">Os dados pessoais e partidas são salvos neste dispositivo, com as chaves <code>scoutpro:</code>, incluídas na opção <b>Meus dados</b> da barra inferior. Use Exportar no Windows e Importar no Android para transferir as observações; não há sincronização automática entre dispositivos.</p>
+<p class="sub">Fontes: <a href="https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00" target="_blank" rel="noopener noreferrer">Konami — mudanças de movimento na v6.0.0</a> · <a href="https://pesdb.net/efootball/players/" target="_blank" rel="noopener noreferrer">PESDB 2027 — banco de dados independente</a>. A presença de um registro no PESDB não garante que a edição física no seu aparelho esteja idêntica após atualizações.</p>
+</section>
+</main></body></html>
