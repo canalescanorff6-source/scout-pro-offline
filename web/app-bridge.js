@@ -7,6 +7,18 @@ const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribut
 bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
+if(inCard){
+ const match=location.pathname.match(/\/fichas\/(\d{3})_/);
+ const cardView=document.querySelector('.profile-content');
+ if(match&&cardView&&!document.getElementById('scout-card-booster-shortcut')){
+  const shortcut=document.createElement('a');
+  shortcut.id='scout-card-booster-shortcut';
+  shortcut.href='../revisao-impetos-v103.html?c='+Number(match[1]);
+  shortcut.textContent='Consultar ímpeto selecionável desta carta ↗';
+  shortcut.style.cssText='display:inline-flex;align-items:center;min-height:40px;margin:0 0 12px;padding:9px 12px;border:1px solid #3d837a;border-radius:10px;background:#123846;color:#a4f4d3;font-weight:650;text-decoration:none;font-size:13px';
+  cardView.insertBefore(shortcut,cardView.firstChild);
+ }
+}
 if(!document.querySelector('link[href$="scout-premium-v73.css"]')){
  const premiumLink=document.createElement('link');premiumLink.rel='stylesheet';premiumLink.href=(inCard?'../':'')+'scout-premium-v73.css';document.head.appendChild(premiumLink);
 }
