@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V108_RESEARCH",
+  "schema": "SCOUT_V109_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -15,15 +15,19 @@
     "Diferenças de Card ID dentro do mesmo nome de campanha tornam a classificação de vídeo incerta; manter como candidato.",
     "Para Ronaldo, diferenciar Living Legends Big Time Portugal 23 Jun '26 de Portugal Premium Pack lançado em junho; não misturar.",
     "Vídeos de abertura de pacote não constituem prova de gameplay, mesmo quando o pacote e a arte correspondem.",
-    "Manter fontes não audiovisuais apenas em referencias_da_carta, jamais somar como vídeo validado."
+    "Manter fontes não audiovisuais apenas em referencias_da_carta, jamais somar como vídeo validado.",
+    "Vídeo coletivo de pacote pode corresponder a múltiplos Card IDs APENAS com capítulos específicos verificáveis, pacote exatamente correspondente e registro de exceção explicita no teste V109. Não atribuir lances coletivos individuais sem inspeção.",
+    "Divergência de tipo de carta entre cadastro e fonte externa (ex.: Highlight vs Show Time para mesmo Card ID) deve manter estado pendente e não autoriza edição silenciosa das 246 fichas.",
+    "Links no YouTube são fontes de candidatos e treinos contextualizados, não certificação de Player ID, pro player de torneios ou build meta.",
+    "TikTok consultado mas resultados diretos não foram verificáveis por restrições de acesso; não inventar links TikTok."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 21,
-    "com_apenas_candidatos": 8,
-    "sem_video": 217,
-    "total_videos": 49,
-    "total_videos_unicos": 47,
+    "com_video_pacote_compativel": 33,
+    "com_apenas_candidatos": 12,
+    "sem_video": 201,
+    "total_videos": 67,
+    "total_videos_unicos": 58,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -731,9 +735,24 @@
       "nome": "Robert Lewandowski",
       "edicao": "Highlight — 900 Million Downloads Campaign",
       "card_id": "106758391503938",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=XShUkXenMT4",
+          "video_id": "XShUkXenMT4",
+          "criador": "PES-HOD",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review e gameplay da versão Lewandowski Show Time 900 Million Downloads Campaign; Card ID externo coincide com a mesma campanha, mas cadastro local rotula Highlight — divergência de tipo pendente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/robert-lewandowski-106758391503938"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -743,9 +762,24 @@
       "nome": "Endrick",
       "edicao": "Highlight — New Year's Gift 1 Jan '25",
       "card_id": "106735843043104",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=FqrVKy87QUI",
+          "video_id": "FqrVKy87QUI",
+          "criador": "eFootball Galácticos",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia de treino Endrick Show Time New Year's Gift Jan 2025. Cartão do Card ID externo Show Time, mas registro local denomina Highlight. Marcar como divergência cadastral, sem edição comprovada em vídeo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/endrick-106735843043104"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -815,8 +849,21 @@
       "nome": "Ousmane Dembélé",
       "edicao": "Highlight — National Team Pack France 2026",
       "card_id": "105849469120546",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jQsgXix9AGs",
+          "video_id": "jQsgXix9AGs",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review completo do France National Team Pack 2026. Ousmane Dembélé: início da build 03:49; seleção de equipe 06:40; partida coletiva desde 07:56; resumo do pacote 18:25. Não prova atuação individual do jogador nos lances.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo conjunto do pacote França 2026; esta ficha tem trecho individual de treinamento. Não há Card ID visto em quadro e não se afirma participação contínua em campo."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -839,8 +886,21 @@
       "nome": "Kylian Mbappé",
       "edicao": "Highlight — Yu-Gi-Oh! Collaboration Campaign 25 Sep '25",
       "card_id": "105795513593982",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=54NvlOVSzGM",
+          "video_id": "54NvlOVSzGM",
+          "criador": "eFootball Mind",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Gameplay da carta Highlight Kylian Mbappé da colaboração France feat. Yu-Gi-Oh! (25/09/2025); edição compatível por campanha, Card ID sem conferência visual.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -939,8 +999,21 @@
       "nome": "Kylian Mbappé",
       "edicao": "Highlight — National Team Pack France 2026",
       "card_id": "105849469120638",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jQsgXix9AGs",
+          "video_id": "jQsgXix9AGs",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review completo do France National Team Pack 2026. Kylian Mbappé: início da build 05:31; seleção de equipe 06:40; partida coletiva desde 07:56; resumo do pacote 18:25. Não prova atuação individual do jogador nos lances.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo conjunto do pacote França 2026; esta ficha tem trecho individual de treinamento. Não há Card ID visto em quadro e não se afirma participação contínua em campo."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -987,9 +1060,36 @@
       "nome": "Lionel Messi",
       "edicao": "Show Time — The Football Festival Campaign 2026",
       "card_id": "106779866307927",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=d0R6IueV2zQ",
+          "video_id": "d0R6IueV2zQ",
+          "criador": "Dhe Nong",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review do Messi Show Time gratuito da campanha Football Festival 2026; criador compara AMF/SS e RWF com build, boosters e gameplay de Divisão. Resultados do vídeo não provam causalidade.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=kyUn-nQlBT8",
+          "video_id": "kyUn-nQlBT8",
+          "criador": "eFootball Vault",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Guia da carta Messi Show Time Football Festival 2026, perfil RWF Prolific Winger e Visionary Pass; PP 01:08, booster 01:25, skills 01:49, gameplay 02:35.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/lionel-messi-106779866307927"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -1099,8 +1199,21 @@
       "nome": "Michael Olise",
       "edicao": "Highlight — National Team Pack France 2026",
       "card_id": "105849469139289",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jQsgXix9AGs",
+          "video_id": "jQsgXix9AGs",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review completo do France National Team Pack 2026. Michael Olise: início da build 03:13; seleção de equipe 06:40; partida coletiva desde 07:56; resumo do pacote 18:25. Não prova atuação individual do jogador nos lances.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo conjunto do pacote França 2026; esta ficha tem trecho individual de treinamento. Não há Card ID visto em quadro e não se afirma participação contínua em campo."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1171,9 +1284,24 @@
       "nome": "Raphinha",
       "edicao": "Highlight — Captain Tsubasa Collaboration Campaign 30 Jan '25 — Raphinha",
       "card_id": "105739947454516",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=P678Sl0IQJM",
+          "video_id": "P678Sl0IQJM",
+          "criador": "eFootball GOAT",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review",
+          "descricao_evidencia": "Review/training eFootball 2025 do Raphinha 98 Captain Tsubasa lançado em 30/01/2025. Campanha correspondente, mas sem Card ID observado em quadros.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://www.konami.com/efootball/pt-br/page/v4/versioninfo_v4-20"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -1306,9 +1434,24 @@
       "nome": "Luis Díaz",
       "edicao": "Highlight — Daily Bonus 2026 — Luis Díaz",
       "card_id": "106780671726691",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=7diSzugrg6g",
+          "video_id": "7diSzugrg6g",
+          "criador": "Virtual Activ8",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia de booster e treinamento do Luis Díaz Show Time Daily Bonus 2026. Banco de dados externo indica Show Time para este Card ID; catálogo local chama Highlight. Não há gameplay confirmado na descrição.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/luis-diaz-106780671726691"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -1402,8 +1545,21 @@
       "nome": "Rayan Cherki",
       "edicao": "Highlight — National Team Pack France 2026 — Rayan Cherki",
       "card_id": "105849469143573",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jQsgXix9AGs",
+          "video_id": "jQsgXix9AGs",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review completo do France National Team Pack 2026. Rayan Cherki: início da build 02:28; seleção de equipe 06:40; partida coletiva desde 07:56; resumo do pacote 18:25. Não prova atuação individual do jogador nos lances.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo conjunto do pacote França 2026; esta ficha tem trecho individual de treinamento. Não há Card ID visto em quadro e não se afirma participação contínua em campo."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1570,9 +1726,24 @@
       "nome": "Sandro Tonali",
       "edicao": "Show Time — eFootball™ League Rewards Phase 5",
       "card_id": "106764565597595",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=P_Lopn5mmsw",
+          "video_id": "P_Lopn5mmsw",
+          "criador": "eFootball Vault",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Treinamento da carta Show Time Sandro Tonali, recompensa eFootball League Phase 5, Phenomenal Pass: PP 01:03, booster 01:28, habilidades 02:06, gameplay 02:40.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/sandro-tonali-106764565597595"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -1717,8 +1888,21 @@
       "nome": "N'Golo Kanté",
       "edicao": "Highlight — National Team Pack France 2026",
       "card_id": "105849469111254",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jQsgXix9AGs",
+          "video_id": "jQsgXix9AGs",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review completo do France National Team Pack 2026. N'Golo Kanté: início da build 04:55; seleção de equipe 06:40; partida coletiva desde 07:56; resumo do pacote 18:25. Não prova atuação individual do jogador nos lances.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo conjunto do pacote França 2026; esta ficha tem trecho individual de treinamento. Não há Card ID visto em quadro e não se afirma participação contínua em campo."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1741,8 +1925,21 @@
       "nome": "Aurélien Tchouaméni",
       "edicao": "Highlight — National Team Pack France 2026",
       "card_id": "105849469129702",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jQsgXix9AGs",
+          "video_id": "jQsgXix9AGs",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review completo do France National Team Pack 2026. Aurélien Tchouaméni: início da build 04:21; seleção de equipe 06:40; partida coletiva desde 07:56; resumo do pacote 18:25. Não prova atuação individual do jogador nos lances.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo conjunto do pacote França 2026; esta ficha tem trecho individual de treinamento. Não há Card ID visto em quadro e não se afirma participação contínua em campo."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2359,8 +2556,21 @@
       "nome": "Ibrahima Konaté",
       "edicao": "Highlight — National Team Pack France 2026 — Ibrahima Konaté",
       "card_id": "105849469124895",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jQsgXix9AGs",
+          "video_id": "jQsgXix9AGs",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review completo do France National Team Pack 2026. Ibrahima Konaté: início da build 01:49; seleção de equipe 06:40; partida coletiva desde 07:56; resumo do pacote 18:25. Não prova atuação individual do jogador nos lances.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo conjunto do pacote França 2026; esta ficha tem trecho individual de treinamento. Não há Card ID visto em quadro e não se afirma participação contínua em campo."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2679,8 +2889,21 @@
       "nome": "Mike Maignan",
       "edicao": "Highlight — National Team Pack France 2026",
       "card_id": "105849469070367",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jQsgXix9AGs",
+          "video_id": "jQsgXix9AGs",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review completo do France National Team Pack 2026. Mike Maignan: início da build 01:15; seleção de equipe 06:40; partida coletiva desde 07:56; resumo do pacote 18:25. Não prova atuação individual do jogador nos lances.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo conjunto do pacote França 2026; esta ficha tem trecho individual de treinamento. Não há Card ID visto em quadro e não se afirma participação contínua em campo."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2775,9 +2998,36 @@
       "nome": "Serhou Guirassy",
       "edicao": "Highlight — eFootball League Rewards Phase 9 — Serhou Guirassy",
       "card_id": "106769397419872",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=W4Kd0stOJpg",
+          "video_id": "W4Kd0stOJpg",
+          "criador": "eFootball Vault",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Vídeo Phase 9 Rewards Serhou Guirassy Show Time Bullet Header, PP 00:57, booster 01:21, habilidades 01:58, gameplay 02:32. Mesmo Card ID da fonte externa, porém catálogo V69 rotula Highlight; verificar divergência antes de validar edição.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=oenMcJyV3eY",
+          "video_id": "oenMcJyV3eY",
+          "criador": "ALBA PES",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Gameplays em duas partidas para Serhou Guirassy Show Time eFootball League Phase 9 (Divisão 1), build 00:52, jogos 01:30 e 03:36. Tipo Show Time difere do rótulo Highlight da ficha local.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/serhou-guirassy-106769397419872"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -3642,5 +3892,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V108 — terceiro lote incremental, com 12 URLs novas de 6 outras cartas; preservar V106/V107"
+  "versao_historico": "V109 — quarto lote incremental, 11 vídeos distintos vinculados a 16 cartas; os 47 vídeos V108 foram preservados."
 }
