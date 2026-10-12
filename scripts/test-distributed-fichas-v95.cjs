@@ -14,15 +14,17 @@ for(const c of pending){
  const p=c.treino_proposta_v95;
  assert(p,'Proposta ausente #'+c.numero);
  assert.match(p.status,/experimental/);
- assert(Array.isArray(p.niveis)&&p.niveis.length===10);
- assert(p.niveis.every(n=>Number.isInteger(n)&&n>=0&&n<=20));
- assert.equal(cost(p.niveis),c.pp,'PP incompletos #'+c.numero);
- if(c.pp>0){withPP++;assert(p.niveis.some(n=>n>0),'Todos zero #'+c.numero)}
+ assert.equal(p.pp,c.pp);
+ assert.equal(p.fonte,'web/'+c.arquivo+' → lab-data.draftA');
+ if(c.pp>0)withPP++;
  const html=fs.readFileSync(path.join(root,c.arquivo),'utf8');
  const start=html.indexOf('id="lab-data"'),begin=html.indexOf('>',start),end=html.indexOf('</script>',begin);
  assert(start>0&&begin>start&&end>begin,'JSON da ficha ausente '+c.numero);
  const lab=JSON.parse(html.slice(begin+1,end));
- assert.deepEqual(lab.draftA,p.niveis);
+ assert(Array.isArray(lab.draftA)&&lab.draftA.length===10);
+ assert(lab.draftA.every(n=>Number.isInteger(n)&&n>=0&&n<=20));
+ assert.equal(cost(lab.draftA),c.pp,'PP incompletos na ficha #'+c.numero);
+ if(c.pp>0)assert(lab.draftA.some(n=>n>0),'Treino zerado #'+c.numero);
  assert.equal(lab.draftStatus,'proposta experimental não aprovada');
  assert.equal(lab.A,null);assert.equal(lab.B,null);assert.equal(lab.C,null);
  assert.equal(lab.recommended,null);assert.equal(lab.pp,c.pp);
@@ -32,10 +34,11 @@ for(const c of pending){
  assert(entry[0].includes(c.pp===0?'0 PP confirmado':'Treino proposto · não validado'));
 }
 assert.equal(withPP,83);
+const draft=c=>{const html=fs.readFileSync(path.join(root,c.arquivo),'utf8');const a=html.indexOf('id="lab-data"'),b=html.indexOf('>',a),e=html.indexOf('</script>',b);return JSON.parse(html.slice(b+1,e)).draftA;};
 const eto=audit.cards.find(c=>c.numero===236);
-assert.equal(eto.pp,66);assert.deepEqual(eto.treino_proposta_v95.niveis,[12,4,4,12,7,0,0,0,0,0]);
+assert.equal(eto.pp,66);assert.deepEqual(draft(eto),[12,4,4,12,7,0,0,0,0,0]);
 const kubo=audit.cards.find(c=>c.numero===211);
-assert.equal(kubo.pp,0);assert(kubo.treino_proposta_v95.niveis.every(n=>n===0));
+assert.equal(kubo.pp,0);assert(draft(kubo).every(n=>n===0));
 assert.equal(audit.cards.filter(c=>c.niveis!==null).length,162);
 const src=fs.readFileSync(path.join(root,'lab.js'),'utf8');
 for(const m of ['d.draftA.slice()','const oldEmpty=','TREINO PROPOSTO NA FICHA V95','Salvar como meu treino de teste'])assert(src.includes(m));
