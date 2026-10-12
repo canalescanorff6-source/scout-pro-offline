@@ -73,7 +73,16 @@ const chooseAndroidRelease=(releases)=>{
  .sort((a,b)=>cmpVersion(b.release.tag_name.replace(/^v/,''),a.release.tag_name.replace(/^v/,'')))[0]||null;
 };
 const nativeAndroid=()=>Boolean(window.Capacitor?.isNativePlatform?.()&&window.Capacitor?.getPlatform?.()==='android');
-const nativeUpdater=()=>nativeAndroid()?window.Capacitor?.Plugins?.ScoutUpdater:null;
+let scoutNativeUpdaterBridge=null;
+const nativeUpdater=()=>{
+ if(!nativeAndroid())return null;
+ if(scoutNativeUpdaterBridge)return scoutNativeUpdaterBridge;
+ const capacitor=window.Capacitor;
+ scoutNativeUpdaterBridge=typeof capacitor?.registerPlugin==='function'
+   ?capacitor.registerPlugin('ScoutUpdater')
+   :capacitor?.Plugins?.ScoutUpdater;
+ return scoutNativeUpdaterBridge;
+};
 let lastAutomaticCheck=0;
 async function onlineUpdate(auto=false){
  if(!repo||!/^[-\w.]+\/[-\w.]+$/.test(repo)){notify('Configure SCOUT_GITHUB_REPO no projeto.');if(nativeAndroid())showAndroidStatus('Repositório de atualizações não configurado.');return;}
