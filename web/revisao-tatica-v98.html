@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Auditoria Tática 246 · Scout PRO</title>
+<link rel="stylesheet" href="premium.css"/><link rel="stylesheet" href="scout-premium-v73.css"/><link rel="stylesheet" href="app-bridge.css"/>
+<link rel="manifest" href="manifest.webmanifest"/>
+<script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script><script defer src="tactical-engine-v98.js"></script><script defer src="revisao-tatica-v98.js"></script><script defer src="pwa.js"></script>
+<style>
+:root{color-scheme:dark;background:#07111e;color:#eff5fc;font-family:system-ui,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;padding:0 0 calc(92px + env(safe-area-inset-bottom,0px));background:linear-gradient(#0a1726,#08101a)}
+main{max-width:1040px;padding:20px;margin:auto}
+.page-heading{margin:15px 0}.page-heading h1{font-size:clamp(22px,4vw,32px);margin:0 0 8px}.sub{color:#9fbed0;font-size:13px;line-height:1.6}
+.metrics{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0}
+.metric{background:#10273a;border:1px solid #2c526d;padding:10px 13px;border-radius:12px;min-width:115px;flex:1}
+.metric b{display:block;font-size:21px}.metric small{color:#bad3e2}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{font-size:12px;display:block;color:#c7d5e1;font-weight:700}
+input,select{display:block;width:100%;min-height:42px;margin-top:6px;padding:9px 12px;background:#0b1727;border:1px solid #3d5c76;border-radius:9px;color:#fff;font-size:14px}
+.panel{border:1px solid #35536e;background:#0c1d2e;border-radius:15px;padding:16px;margin:16px 0}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.pager{display:flex;gap:8px;align-items:center}.pager button,.action{background:#132d42;border:1px solid #49718b;color:#d9edf8;padding:9px 12px;border-radius:10px;cursor:pointer}
+button:disabled{opacity:.4;cursor:default}.details{display:grid;grid-template-columns:minmax(110px,208px) minmax(0,1fr);gap:18px;align-items:start}
+.cardart img{width:100%;height:auto;aspect-ratio:.709;object-fit:contain;border:1px solid #52708b;background:#102333}
+.cardart figcaption{font-size:11px;color:#a6c5d7;overflow-wrap:anywhere;text-align:center;margin:6px 0}
+.details h2{font-size:22px;margin:0 0 8px}.fact{font-size:13px;line-height:1.55;margin:5px 0}
+.warn{color:#e9c987}.fine{color:#8ee2bd}.status{color:#cfe0ed;font-size:13px}
+.status ul{margin:8px 0;padding-left:20px}.status li{margin:3px 0}
+.tactics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.tactic{border:1px solid #356481;background:#11273b;border-radius:11px;padding:12px;min-width:0}
+.tactic h3{margin:0 0 7px;font-size:15px}.tactic p{font-size:12px;color:#c3d4e0;line-height:1.5}
+.levels{font-variant-numeric:tabular-nums;font-size:12px;line-height:1.6}
+.tactic b{color:#87e6bf}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}.actions a{color:#8dddbb}
+.action.primary{background:#70ddba;color:#08202a;border-color:#70ddba;font-weight:700}
+.old{border-left:3px solid #e6c777;padding:8px 12px;background:#1c2934;margin:12px 0;font-size:12px}
+.note{font-size:12px;color:#bad0dc;line-height:1.5}
+@media(max-width:680px){main{padding:11px}.filters{grid-template-columns:1fr}.details{grid-template-columns:minmax(104px,34%) 1fr;gap:10px}.details h2{font-size:17px}.tactics{grid-template-columns:1fr}.topline{align-items:flex-start}.panel{padding:12px}.metric{min-width:90px}.page-heading{margin-top:12px}}
+</style></head>
+<body data-page="tactical-review">
+<header class="topbar"><div class="wrap nav"><a href="index.html" class="brand"><img class="brand-logo-img" src="assets/scout-pro-icon-premium-original.png" alt="Scout PRO"/><span class="brand-copy"><b>SCOUT PRO</b><small>AUDITORIA TÁTICA · V98</small></span></a><div class="nav-right"><a class="nav-cta" href="index.html#catalogo">Ver elenco →</a></div></div></header>
+<main>
+<section class="page-heading"><h1>Revisão competitiva das 246 cartas</h1>
+<p class="sub">Posse de Bola · Contra-Ataque Normal · Contra-Ataque Rápido. Três hipóteses por função, não três treinamentos comprovados. Não confundir cálculo de PP com desempenho real ou nível de atributo final.</p>
+<div class="metrics" id="metrics" aria-label="Resumo da auditoria"></div></section>
+<section class="panel" aria-label="Selecionar carta">
+<div class="filters"><label>Buscar jogador<input id="search" type="search" placeholder="Nome ou número da carta"/></label>
+<label>Fila de verificação<select id="filter"><option value="all">Todas as 246 cartas</option><option value="missing">Faltam atributos-base</option><option value="registered">162 distribuições anteriores</option><option value="preview">84 propostas experimentais</option><option value="complete">Atributos-base documentados</option></select></label></div>
+<div class="topline"><span class="sub" id="counter">Carregando fichas…</span><div class="pager"><button id="prev" type="button">‹ Anterior</button><button id="next" type="button">Próxima ›</button></div></div>
+<div class="details"><figure class="cardart"><img id="art" alt="Carta original do jogador" width="208" height="293"/><figcaption id="art-caption"></figcaption></figure>
+<div><h2 id="player-name"></h2><p class="fact" id="edition"></p><p class="fact" id="identity"></p><p class="fact" id="style"></p><div class="status"><b>Estado dos dados</b><div id="checks"></div></div>
+<div class="actions"><a class="action" id="profile" href="index.html">Abrir ficha original ↗</a></div></div></div>
+<div class="old" id="previous"></div>
+<h2 style="font-size:17px;margin:16px 0 6px">Três cenários para comparar</h2>
+<p class="note">Os níveis são calculados por prioridades de posição/estilo e respeitam o custo progressivo dos PP. Sem atributos-base e testes equivalentes, não existe pontuação de desempenho confiável nem escolha automática de vencedor.</p>
+<div class="tactics" id="tactics"></div><p class="note" id="saved-status" role="status"></p>
+</section></main></body></html>
