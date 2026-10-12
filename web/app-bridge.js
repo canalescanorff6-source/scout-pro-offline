@@ -38,24 +38,82 @@ async function openReleaseLink(raw){
    await browser.open({url:url.href}); // navegador de sistema; instalação autorizada pelo usuário
  } else window.open(url.href,'_blank','noopener,noreferrer');
 }
+const cmpVersion=(a,b)=>{
+ const A=String(a||'0.0.0').split('.').map(Number),B=String(b||'0.0.0').split('.').map(Number);
+ for(let i=0;i<3;i++){const x=Number.isFinite(A[i])?A[i]:0,y=Number.isFinite(B[i])?B[i]:0;if(x!==y)return x>y?1:-1;}
+ return 0;
+};
+const chooseAndroidRelease=(releases)=>{
+ if(!Array.isArray(releases))return null;
+ return releases.filter(r=>r&&!r.draft&&!r.prerelease)
+ .map(r=>({release:r,asset:(r.assets||[]).find(a=>a?.name==='ScoutPRO-Android.apk'&&/^https:\/\/github\.com\//.test(a.browser_download_url||''))}))
+ .filter(x=>x.asset&&/^v?\d+\.\d+\.\d+$/.test(x.release.tag_name||''))
+ .sort((a,b)=>cmpVersion(b.release.tag_name.replace(/^v/,''),a.release.tag_name.replace(/^v/,'')))[0]||null;
+};
+const nativeAndroid=()=>Boolean(window.Capacitor?.isNativePlatform?.()&&window.Capacitor?.getPlatform?.()==='android');
+let lastAutomaticCheck=0;
 async function onlineUpdate(auto=false){
- if(!repo||!/^[-\w.]+\/[-\w.]+$/.test(repo)){notify('Configure a variável SCOUT_GITHUB_REPO no projeto.');return;}
+ if(!repo||!/^[-\w.]+\/[-\w.]+$/.test(repo)){notify('Configure SCOUT_GITHUB_REPO no projeto.');return;}
  if(!navigator.onLine){notify('Sem internet: o Scout PRO continua funcionando offline.');return;}
- notify('Verificando nova versão no GitHub…');
- try{const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),10000);
- const resp=await fetch('https://api.github.com/repos/'+repo+'/releases/latest',{signal:controller.signal,headers:{Accept:'application/vnd.github+json'},cache:'no-store'});clearTimeout(timer);
- if(!resp.ok)throw Error('Não foi possível verificar (HTTP '+resp.status+').');const data=await resp.json();
- const installed=String(window.SCOUT_VERSION||'1.0.0'), newest=String(data.tag_name||'').replace(/^v/,'');
- const compare=(a,b)=>{const A=a.split('.').map(Number),B=b.split('.').map(Number);for(let i=0;i<3;i++){if((A[i]||0)!==(B[i]||0))return (A[i]||0)>(B[i]||0)?1:-1}return 0};
- if(compare(newest,installed)<=0){notify('Versão '+installed+' atualizada.');return;}
- const apk=(data.assets||[]).find(x=>/ScoutPRO-Android\.apk$/i.test(x.name));
- notify('Nova versão '+newest+' disponível! Instalação Android exige confirmação.');
- const url=(apk&&apk.browser_download_url)||data.html_url;
- if(url){if(auto){btn.textContent='Baixar versão';btn.onclick=()=>openReleaseLink(url).catch(e=>notify(e.message))}else if(confirm('Scout PRO '+newest+' disponível! Abrir a página do GitHub para instalar a nova versão?'))openReleaseLink(url).catch(e=>notify(e.message));}
- }catch(e){notify('Não foi possível consultar atualizações. Offline permanece disponível.');}
+ notify('Verificando versão do Scout PRO para este dispositivo…');
+ const installed=String(window.SCOUT_VERSION||'1.0.0');
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+ try{
+  if(nativeAndroid()){
+   const resp=await fetch('https://api.github.com/repos/'+repo+'/releases?per_page=30',{
+    signal:controller.signal,headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
+   if(!resp.ok)throw Error('GitHub HTTP '+resp.status);
+   const releases=await resp.json();
+   const selected=chooseAndroidRelease(releases);
+   if(!selected){
+    btn.textContent='Verificar Android';
+    btn.onclick=()=>onlineUpdate(false);
+    notify('APK Android oficial ainda não publicado: builds de teste não atualizam o aplicativo instalado. Exige assinatura permanente.');
+    return;
+   }
+   const newest=String(selected.release.tag_name).replace(/^v/,'');
+   if(cmpVersion(newest,installed)<=0){
+    btn.textContent='Verificar Android';btn.onclick=()=>onlineUpdate(false);
+    notify('Android oficial: versão '+installed+' atualizada. Os dados continuam disponíveis offline.');
+    return;
+   }
+   const url=selected.asset.browser_download_url;
+   notify('APK Android oficial '+newest+' disponível. Faça backup em Meus dados antes de instalar.');
+   btn.textContent='Baixar APK Android';
+   btn.onclick=()=>openReleaseLink(url).catch(e=>notify(e.message));
+   if(!auto&&confirm('Scout PRO Android '+newest+' disponível. Instalação exige autorização do Android e assinatura compatível. Faça backup primeiro. Abrir download?'))
+    openReleaseLink(url).catch(e=>notify(e.message));
+   return;
+  }
+  const resp=await fetch('https://api.github.com/repos/'+repo+'/releases/latest',{
+   signal:controller.signal,headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
+  if(!resp.ok)throw Error('GitHub HTTP '+resp.status);
+  const data=await resp.json();
+  const newest=String(data.tag_name||'').replace(/^v/,'');
+  if(cmpVersion(newest,installed)<=0){notify('Versão '+installed+' atualizada.');return;}
+  const url=data.html_url;
+  notify('Versão '+newest+' disponível no GitHub.');
+  if(url){
+   btn.textContent='Baixar versão';
+   btn.onclick=()=>openReleaseLink(url).catch(e=>notify(e.message));
+   if(!auto&&confirm('Scout PRO '+newest+' disponível. Abrir a página de atualização?'))
+    openReleaseLink(url).catch(e=>notify(e.message));
+  }
+ }catch(e){
+  notify('Não foi possível consultar atualizações. O conteúdo offline permanece disponível.');
+ }finally{clearTimeout(timer);}
 }
 if(window.scoutDesktop){window.scoutDesktop.onUpdate(e=>notify(e.message));btn.onclick=async()=>{notify('Buscando atualizações…');const result=await window.scoutDesktop.checkUpdates();if(!result?.ok)notify(result?.message||'Verificação indisponível.')};}
-else{btn.onclick=()=>onlineUpdate(false);setTimeout(()=>{if(navigator.onLine)onlineUpdate(true)},16000);}
+else{
+ btn.onclick=()=>onlineUpdate(false);
+ const checkWhenForeground=()=>{if(!nativeAndroid()||!navigator.onLine||document.hidden)return;
+  const now=Date.now();if(now-lastAutomaticCheck<4*60*60*1000)return;
+  lastAutomaticCheck=now;onlineUpdate(true);
+ };
+ setTimeout(()=>{if(navigator.onLine){lastAutomaticCheck=Date.now();onlineUpdate(true)}},16000);
+ document.addEventListener('visibilitychange',checkWhenForeground);
+ window.addEventListener('online',checkWhenForeground);
+}
 const ppCss=document.createElement('link');ppCss.rel='stylesheet';ppCss.href=(inCard?'../':'')+'progress-v81.css';document.head.appendChild(ppCss);
 const ppScript=document.createElement('script');ppScript.src=(inCard?'../':'')+'progress-v81.js';document.body.appendChild(ppScript);
 if(document.body?.dataset.page==='detail'){

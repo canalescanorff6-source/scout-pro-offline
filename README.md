@@ -115,3 +115,11 @@ Para gerar EXE local use Windows; para gerar APK local instale também JDK 21/An
 - `web/`: catálogo e 246 fichas/246 imagens, UI e barra de backup/atualização.
 - `scripts/`: validação dos arquivos, auditoria das 21 imagens, versionamento, metadados Windows.
 - `PUBLICAR_NO_GITHUB_WINDOWS.ps1`: publica somente no repositório Scout PRO correto.
+
+## Correção de atualização Android V93
+
+O botão **Atualizar** do aplicativo Android só apresenta arquivos chamados `ScoutPRO-Android.apk` publicados em GitHub Releases. Instaladores Windows e APKs de teste não podem ser usados como atualização oficial. A verificação ocorre ao abrir o aplicativo e ao retornar para ele após quatro horas; o download e a instalação dependem de confirmação do usuário.
+
+Para habilitar atualizações Android estáveis, configure os quatro segredos de assinatura `ANDROID_*` citados acima com **uma keystore privada e permanente**. Sem isso, a CI compila apenas APK de teste, cujo certificado pode variar entre máquinas/execuções. O certificado do APK instalado tem de coincidir com o da nova versão. Se o aplicativo foi instalado com chave de teste diferente, exporte **Meus dados** antes de desinstalar e instalar a primeira versão oficial. Nunca envie a keystore ou senhas na conversa nem no código do GitHub.
+
+Os PP de todas as 246 cartas estão registrados, mas 84 fichas ainda não possuem distribuição de atributos aprovada. Esses valores serão tratados em uma etapa específica, sem gravar heurísticas como builds confirmadas.

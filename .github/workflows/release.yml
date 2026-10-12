@@ -124,6 +124,14 @@ jobs:
             echo 'ERRO: configure os quatro segredos ANDROID_* antes de gerar uma release.' >&2
             exit 1
           fi
+      - name: Informar status de publicação Android
+        shell: bash
+        run: |
+          if [[ '${{ steps.keys.outputs.signed }}' == 'true' ]]; then
+            echo 'Android: assinatura persistente configurada; APK oficial será publicado após validação.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Android: somente APK DE TESTE; não é atualização instalável sobre versões assinadas com outra chave. Configure os quatro segredos ANDROID_* para futuras releases oficiais.' >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Instalar dependências
         run: npm install --no-audit --no-fund
       - name: Versão Android
