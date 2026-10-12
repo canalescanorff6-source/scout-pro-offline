@@ -1,6 +1,8 @@
 (()=>{'use strict';
 if(document.getElementById('scout-app-bar'))return;
 const repo=String(window.SCOUT_GITHUB_REPO||'').trim();
+const scoutNativeAndroid=Boolean(window.Capacitor?.isNativePlatform?.() && window.Capacitor?.getPlatform?.()==='android');
+if(scoutNativeAndroid)document.body.classList.add('scout-native-android');
 const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribute('aria-label','Gerenciamento do Scout PRO');
 bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
@@ -20,7 +22,27 @@ bar.querySelector('#scout-top').onclick=()=>window.scrollTo({top:0,behavior:'smo
 if(!inCard)homeBtn.href='#catalogo';
 
 const label=document.getElementById('scout-update-label'),btn=document.getElementById('scout-update');
-const notify=s=>{label.textContent=s;label.title=s};
+let scoutToastTimer;
+const scoutToast=scoutNativeAndroid?document.createElement('output'):null;
+if(scoutToast){
+ scoutToast.id='scout-android-toast';
+ scoutToast.setAttribute('role','status');
+ scoutToast.setAttribute('aria-live','polite');
+ scoutToast.hidden=true;
+ document.body.appendChild(scoutToast);
+ scoutToast.addEventListener('click',()=>{
+  clearTimeout(scoutToastTimer);
+  scoutToast.hidden=true;
+ });
+}
+const notify=s=>{
+ label.textContent=s;label.title=s;
+ if(!scoutToast)return;
+ scoutToast.textContent=s;
+ scoutToast.hidden=false;
+ clearTimeout(scoutToastTimer);
+ scoutToastTimer=setTimeout(()=>{scoutToast.hidden=true},5200);
+};
 const getKeys=()=>Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:'));
 const dl=(data,name)=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500)};
 const modal=document.createElement('dialog');modal.id='scout-backup-modal';modal.innerHTML='<h3>Backup das suas builds</h3><p>Exporta somente treinos personalizados e registros salvos neste dispositivo. Antes de trocar de celular, reinstalar ou limpar dados, faça backup.</p><button id="scout-export">Exportar meus dados</button><button id="scout-import">Importar backup</button><button id="scout-close">Fechar</button><input id="scout-pick" type="file" accept=".json,application/json" hidden><p id="scout-backup-status" role="status"></p>';document.body.appendChild(modal);
