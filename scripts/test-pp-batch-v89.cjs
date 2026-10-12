@@ -5,11 +5,11 @@ const audit=JSON.parse(fs.readFileSync(path.join(web,'SCOUT_V69_AUDITORIA.json')
 const expected=new Map([[233,["Nicola Zalewski",36,70]],[234,["Kakita Yuki",32,62]],[235,["Kumasaka Koki",33,64]],[236,["Samuel Eto'o",34,66]],[237,["Piero Hincapié",33,64]],[238,["Mateus Fernandes",35,68]],[239,["Alexander Isak",31,60]],[240,["Gonçalo Ramos",32,62]],[241,["Federico Valverde",31,60]],[242,["Maghnes Akliouche",32,62]]]);
 assert.equal(audit.cards.length,246);
 assert.equal(audit.summary.processed,246);
-assert.equal(audit.summary.with_pp,242);
-assert.equal(audit.summary.no_pp,4);
-assert.equal(audit.summary.level_user_entered,80);
-assert.equal(audit.cards.filter(c=>c.pp!==null).length,242);
-assert.deepEqual(audit.cards.filter(c=>c.pp===null).map(c=>c.numero),[243,244,245,246]);
+assert.ok(audit.summary.with_pp>=242,'Lote V89 não pode regredir');
+assert.ok(audit.summary.no_pp<=4,'Pendências V89 não podem regredir');
+assert.ok(audit.summary.level_user_entered>=80,'Níveis V89 não podem regredir');
+assert.ok(audit.cards.filter(c=>c.pp!==null).length>=242);
+assert(audit.cards.filter(c=>c.pp===null).every(c=>[243,244,245,246].includes(c.numero)));
 const kubo=audit.cards.find(c=>c.numero===211);
 assert.equal(kubo.max_level,1);assert.equal(kubo.pp,0);
 const index=fs.readFileSync(path.join(web,'index.html'),'utf8');

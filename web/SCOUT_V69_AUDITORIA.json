@@ -3,14 +3,14 @@
   "method": "video-inspired competitive analysis; not attributed pro personal judgement",
   "summary": {
     "micro_pro": 73,
-    "with_pp": 242,
+    "with_pp": 246,
     "native_skills": 130,
     "processed": 246,
     "with_stats": 14,
-    "no_pp": 4,
+    "no_pp": 0,
     "adapt_alert": 55,
     "extra_confirmed": 16,
-    "level_user_entered": 80
+    "level_user_entered": 84
   },
   "cards": [
     {
@@ -8146,7 +8146,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Pressão no ataque",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -8157,13 +8157,14 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/243_Anthony_Gordon.html"
+      "arquivo": "fichas/243_Anthony_Gordon.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 244,
@@ -8173,7 +8174,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Defensor criativo",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 52,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -8184,12 +8185,13 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/244_Edmond_Tapsoba.html"
+      "arquivo": "fichas/244_Edmond_Tapsoba.html",
+      "max_level": 27,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 245,
@@ -8199,7 +8201,7 @@
       "posicao": "MAT",
       "estilo_ataque": "Jogador de infiltração",
       "estilo_defesa": "Básico",
-      "pp": null,
+      "pp": 64,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -8210,11 +8212,12 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/245_Justin_Kluivert.html"
+      "arquivo": "fichas/245_Justin_Kluivert.html",
+      "max_level": 33,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     },
     {
       "numero": 246,
@@ -8224,7 +8227,7 @@
       "posicao": "CA",
       "estilo_ataque": "Atacante pivô",
       "estilo_defesa": "Saída ofensiva",
-      "pp": null,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -8235,12 +8238,13 @@
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "PP disponível e nível máximo",
         "Lista de habilidades nativas e 5 adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/246_Eric_Cantona.html"
+      "arquivo": "fichas/246_Eric_Cantona.html",
+      "max_level": 31,
+      "pp_origem": "informado_pelo_usuario_2026-10-11"
     }
   ],
   "photos": "246/246 imagens originais (225 recortes legados + 21 recuperadas da Biblioteca de 07/10/2026)",
