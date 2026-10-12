@@ -1,0 +1,9 @@
+SCOUT PRO PREMIUM V69 — IMAGENS ORIGINAIS RESTAURADAS
+
+246 fichas individuais, 246 imagens das cartas originais do usuário.
+Cartas 226–246 foram recuperadas de 21 fotos da Biblioteca de 7 de outubro de 2026, a partir dos nomes FONTE_VISUAL no catálogo mestre V64.
+A pasta cartas/ contém os recortes de cada foto. A pasta prints_originais_226_a_246/ contém as 21 imagens fotográficas originais, inalteradas.
+
+Abra index.html depois de extrair o ZIP inteiro.
+Nenhum Card ID, PP, atributo ou ímpeto não confirmado foi inventado.
+As builds do V68 foram preservadas sem modificação, pois esta correção resolve exclusivamente as imagens ausentes.

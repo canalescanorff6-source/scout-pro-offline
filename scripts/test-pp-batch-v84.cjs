@@ -1,0 +1,34 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const web=path.resolve(__dirname,'../web');
+const audit=JSON.parse(fs.readFileSync(path.join(web,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const expected=new Map([[117,["Moisés Caicedo",33,64]],[118,["Sandro Tonali",35,68]],[119,["Tyler Adams",35,68]],[120,["Rodrigo Bentancur",35,68]],[126,["Daniel Muñoz",35,68]],[139,["Noussair Mazraoui",35,68]],[140,["Alejandro Grimaldo",33,64]],[141,["Ian Maatsen",39,76]],[142,["Andrew Robertson",33,64]],[151,["Willian Pacho",27,52]]]);
+const index=fs.readFileSync(path.join(web,'index.html'),'utf8');
+const folder=path.join(web,'fichas'),files=fs.readdirSync(folder);
+let checked=0;
+for(const item of audit.cards){
+ if(!expected.has(item.numero))continue;
+ checked++;
+ const [name,level,pp]=expected.get(item.numero);
+ assert.equal(item.name,name);assert.equal(item.max_level,level);assert.equal(item.pp,pp);
+ assert.equal(item.niveis,null,'Build indevidamente atribuída: '+name);
+ assert.match(item.pp_origem,/usuario/);
+ const card=index.match(new RegExp('<a class="player-card"[^>]*data-cap="'+item.numero+'"[^>]*>[\\s\\S]*?<\\/a>'));
+ assert(card&&card[0].includes('<span class="pp">'+pp+' PP</span>'),'Catálogo divergente '+name);
+ assert(!card[0].includes('Aguardando PP'));
+ const filename=files.find(file=>file.startsWith(String(item.numero).padStart(3,'0')+'_'));
+ assert(filename,'Ficha não encontrada '+name);
+ const html=fs.readFileSync(path.join(folder,filename),'utf8');
+ const read=id=>JSON.parse(html.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>','i'))[1]);
+ const data=read('scout-v68-data'),lab=read('lab-data');
+ assert.equal(data.capture,item.numero);assert.equal(data.name,name);
+ assert.equal(data.max_level,level);assert.equal(data.pp,pp);assert.equal(pp,2*(level-1));
+ assert.equal(data.recommended_levels,null);assert.equal(data.recommended_scenario,null);
+ assert.equal(lab.pp,pp);assert.equal(lab.maxLevel,level);
+ assert.equal(lab.A,null);assert.equal(lab.B,null);assert.equal(lab.C,null);
+ assert(html.includes('PP REGISTRADOS · TREINO PENDENTE'));
+}
+assert.equal(checked,10);assert.equal(audit.cards.length,246);
+assert.ok(audit.summary.with_pp>=232,'Progressão V88 não pode regredir');assert.ok(audit.summary.no_pp<=14,'Cartas pendentes não podem aumentar');
+assert.ok(audit.summary.level_user_entered>=70,'Níveis V88 não podem regredir');
+console.log('V84 OK: 10 novos níveis máximos e PP no catálogo permanente; 192 confirmados, 54 pendentes, 246 preservadas.');

@@ -1,0 +1,28 @@
+SCOUT PRO V71 — Atualização das imagens das cartas 226 a 246
+
+Imagens substituídas por versões novas enviadas pelo usuário:
+226 José María Giménez
+227 Kenan Yıldız
+228 Murilo
+229 Zeki Çelik
+230 Pape Matar Sarr
+231 Guglielmo Vicario
+232 Aymeric Laporte
+233 Nicola Zalewski
+234 Kakita Yuki
+235 Kumasaka Koki
+236 Samuel Eto'o
+237 Piero Hincapié
+238 Mateus Fernandes
+239 Alexander Isak
+240 Gonçalo Ramos
+241 Federico Valverde
+242 Maghnes Akliouche
+243 Anthony Gordon
+244 Edmond Tapsoba
+245 Justin Kluivert
+246 Eric Cantona
+
+Observação:
+- As imagens antigas dessas 21 cartas foram preservadas em web/cartas/_backup_v70_old_226_246.
+- O restante da estrutura do projeto V70 foi mantido.

@@ -1,0 +1,38 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const web=path.resolve(__dirname,'../web');
+const audit=JSON.parse(fs.readFileSync(path.join(web,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const expected=new Map([[201,["Yan Diomande",32,62]],[202,["Cole Palmer",32,62]],[204,["Xavi Simons",23,44]],[210,["Jamal Musiala",32,62]],[211,["Kubo Takefusa",1,0]],[212,["Luiz Araújo",30,58]],[214,["Nico Williams",32,62]],[218,["Nicolò Barella",32,62]],[220,["Luka Modrić",32,62]],[221,["Khéphren Thuram",35,68]]]);
+const index=fs.readFileSync(path.join(web,'index.html'),'utf8');
+const dir=path.join(web,'fichas'),files=fs.readdirSync(dir).filter(f=>/^\d{3}_.+\.html$/.test(f));
+let count=0;
+for(const card of audit.cards){
+ if(!expected.has(card.numero))continue;
+ count++;const [name,level,pp]=expected.get(card.numero);
+ assert.equal(card.name,name);assert.equal(card.max_level,level);assert.equal(card.pp,pp);
+ assert.equal(card.niveis,null,'Não inventar distribuição: '+name);
+ assert.match(card.pp_origem,/usuario/);
+ const match=index.match(new RegExp('<a class="player-card"[^>]*data-cap="'+card.numero+'"[^>]*>[\\s\\S]*?<\\/a>'));
+ assert(match&&match[0].includes('<span class="pp">'+pp+' PP</span>'),name+' no índice');
+ assert(!match[0].includes('Aguardando PP'),name+' com PP aguardando incorretamente');
+ const f=files.find(x=>x.startsWith(String(card.numero).padStart(3,'0')+'_'));
+ assert(f,'Ficha inexistente: '+name);
+ const html=fs.readFileSync(path.join(dir,f),'utf8');
+ const parse=id=>JSON.parse(html.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>','i'))[1]);
+ const d=parse('scout-v68-data'),l=parse('lab-data');
+ assert.equal(d.capture,card.numero);assert.equal(d.name,name);
+ assert.equal(d.max_level,level);assert.equal(d.pp,pp);assert.equal(pp,2*(level-1));
+ assert.equal(d.recommended_levels,null);assert.equal(d.recommended_scenario,null);assert.deepEqual(d.alternate_scenarios,{});
+ assert.equal(l.pp,pp);assert.equal(l.maxLevel,level);assert.equal(l.A,null);assert.equal(l.B,null);assert.equal(l.C,null);
+ assert(html.includes('PP REGISTRADOS · TREINO PENDENTE'));
+}
+assert.equal(count,10);assert.equal(audit.cards.length,246);
+assert.ok(audit.summary.with_pp>=232,'Progressão V88 não pode regredir');assert.ok(audit.summary.no_pp<=14,'Cartas pendentes não podem aumentar');assert.ok(audit.summary.level_user_entered>=70,'Níveis V88 não podem regredir');
+const kubo=audit.cards.find(c=>c.numero===211);
+assert.equal(kubo.max_level,1);
+assert.equal(kubo.pp,0,'Zero é orçamento válido, não valor pendente');
+const core=require('../web/performance-core-v80.js');
+const kuboState=core.review({pp:0,pp_estimated:false,recommended_levels:null,has_native_skills:false,boost2:'PENDENTE'}, {A:null,B:null,C:null,stats:{}}, [],null);
+assert.equal(kuboState.hasPP,true);
+assert.equal(kuboState.status,'PP confirmados · treino pendente');
+console.log('V87 OK: 10 cartas adicionadas; Kubo 1/0 PP tratados como valor confirmado; 222 com PP, 24 pendentes, 246 cartas intactas.');

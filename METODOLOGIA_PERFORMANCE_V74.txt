@@ -1,0 +1,5 @@
+SCOUT PRO V74 - Performance por funcao
+
+Duas referencias de video: https://www.youtube.com/watch?v=5CfYWwPwxx4 e https://www.youtube.com/watch?v=U-szJMp4QAo. Ambos foram inspecionados visualmente por amostragem; audio nao transcrito integralmente, sem atribuir falas especificas ao criador. Playlist PLffI-Wb5CLmY ainda nao revisada integralmente.
+
+A V74 carrega dados proprios de cada uma das 246 fichas existentes, respeita os estilos e ID registrados, preserva PP e builds existentes, gera comparacao de cenarios por custos progressivos, destaca skills e impetos documentados e inclui orientacoes de Posse / Contra-ataque e protocolo de campo. Nao fabrica habilidades, status ou boosts. So ha base numerica cadastrada em 14 cartas; 84 nao possuem PP confirmado. Os cenarios existentes nao constituem resultado de homologacao fisica.

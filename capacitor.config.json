@@ -1,0 +1,11 @@
+{
+  "appId": "br.com.scoutpro.offline",
+  "appName": "Scout PRO",
+  "webDir": "web",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
