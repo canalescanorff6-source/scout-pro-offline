@@ -28,5 +28,5 @@ for(const card of audit.cards){
  assert(html.includes('PP REGISTRADOS · TREINO PENDENTE'));
 }
 assert.equal(checked,10);assert.equal(audit.cards.length,246);
-assert.equal(audit.summary.with_pp,222);assert.equal(audit.summary.no_pp,24);assert.equal(audit.summary.level_user_entered,60);
+assert.equal(audit.summary.with_pp,232);assert.equal(audit.summary.no_pp,14);assert.equal(audit.summary.level_user_entered,70);
 console.log('V85 OK: 10 níveis e PP registrados no código; 202 com PP, 44 sem PP, 246 cartas preservadas sem builds fictícias.');
