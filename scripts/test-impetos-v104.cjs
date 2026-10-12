@@ -5,12 +5,37 @@ const engine=require('../web/booster-engine-v103.js');
 const audit=JSON.parse(fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'));
 const visual=JSON.parse(fs.readFileSync(path.join(root,'web/SCOUT_V98_AUDITORIA_TATICA.json'),'utf8'));
 const expected=[
- 'Shooting','Free-kick Taking','Aerial','Passing','Ball-carrying','Technique',
- 'Defending','Duelling','Agility','Physicality','Goalkeeping',
- "Striker's Instinct",'Shutdown','Hard Worker','Saving','Crossing','Fantasista'
+ "Agility",
+ "Technique",
+ "Passing",
+ "Ball Protection",
+ "Ball-carrying",
+ "Striker's Instinct",
+ "Off the Ball",
+ "Offence Creator",
+ "Shooting",
+ "Aerial",
+ "Physicality",
+ "Accuracy",
+ "Regista",
+ "Rebuilding",
+ "Shutdown",
+ "Defending",
+ "Duelling",
+ "Stealing",
+ "Saving",
+ "Goalkeeping",
+ "Balancer",
+ "Breakthrough",
+ "Strength",
+ "Fantasista",
+ "Hard Worker",
+ "Counter",
+ "Crossing",
+ "Free-kick Taking"
 ];
-assert.deepEqual([...engine.CRAFTABLE],expected,'A lista de 17 ímpetos regulares deve ser fiel à Konami');
-assert.equal(new Set(engine.CRAFTABLE).size,17);
+assert.deepEqual([...engine.CRAFTABLE],expected,'A lista de 28 ímpetos selecionáveis da v5.2.0 deve ser fiel à Konami');
+assert.equal(new Set(engine.CRAFTABLE).size,28);
 const r=engine.audit(audit.cards);
 assert.equal(r.version,'V104');
 assert.equal(r.cards.length,246);
@@ -53,4 +78,4 @@ assert(html.includes('www.konami.com/efootball/'),'Fonte oficial ausente');
 const app=fs.readFileSync(path.join(root,'web/app-bridge.js'),'utf8');
 assert(app.includes('revisao-impetos-v103.html?c='),'Ficha sem atalho');
 assert(app.includes('scout-card-booster-shortcut'));
-console.log('V104 OK: 246 artes/fichas preservadas, 17 ímpetos craftáveis, três táticas e slots verificados sem assumir vazio.');
+console.log('V104 OK: 246 artes/fichas preservadas, 28 ímpetos craftáveis, três táticas e slots verificados sem assumir vazio.');
