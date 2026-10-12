@@ -1,4 +1,4 @@
-/* Scout PRO V104: recommendations only use the 17 regular selectable boosters confirmed by Konami. Natural/exclusive boosters remain evidence, never token options. */
+/* Scout PRO V104: use the 28 selectable boosters supported since Konami v5.2.0; slot eligibility remains edition-specific. */
 (function(host){
 'use strict';
 const BOOSTERS={
@@ -31,13 +31,9 @@ const BOOSTERS={
  'Crossing':['loft','curl','speed','stamina'],
  'Free-kick Taking':['finish','placekick','curl','power']
 };
-// Source: Konami v4.0.0, Booster Crafting, 17 regular selectable booster types.
-// Other names in BOOSTERS describe special/natural boosters; do NOT offer them for crafting.
-const CRAFTABLE=Object.freeze([
- 'Shooting','Free-kick Taking','Aerial','Passing','Ball-carrying','Technique',
- 'Defending','Duelling','Agility','Physicality','Goalkeeping',
- "Striker's Instinct",'Shutdown','Hard Worker','Saving','Crossing','Fantasista'
-]);
+// Konami v5.2.0: Select Booster Tokens can craft all 28 types, including Accuracy and Strength.
+// Natural booster values remain immutable; availability of the second slot is checked per card.
+const CRAFTABLE=Object.freeze(Object.keys(BOOSTERS));
 const ROLE={CA:{awareness:6,finish:7,accel:5,control:4,power:3,physical:2,speed:3,pass:2,balance:2,heading:1,jump:1,stamina:1},
 SA:{awareness:5,finish:4,accel:5,control:5,pass:5,dribble:4,tight:4,balance:4,speed:2,physical:2,stamina:2},
 MAT:{control:6,tight:5,dribble:5,pass:7,awareness:4,accel:4,balance:5,finish:3,stamina:2,power:2},
