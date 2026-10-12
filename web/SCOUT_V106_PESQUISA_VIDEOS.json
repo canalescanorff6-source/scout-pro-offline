@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V113_RESEARCH",
+  "schema": "SCOUT_V114_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -31,15 +31,19 @@
     "TikTok: sem URLs individuais verificadas neste lote; não inventar fontes.",
     "CAP023 Alaba, CAP036 Endrick e CAP079 Neymar com divergência de rótulo Highlight no catálogo versus Show Time no banco que resolve o mesmo Card ID: investigar sem correção automática.",
     "Inzaghi Epic gratuito pode NÃO ser a edição Piemonte BN 99-00: permanecer candidato até prova visual de Card ID.",
-    "Vídeos de guia de progressão ou pack review não são validação do desempenho no campo, Player ID ou status de pro player torneio."
+    "Vídeos de guia de progressão ou pack review não são validação do desempenho no campo, Player ID ou status de pro player torneio.",
+    "Park Ji-Sung Manchester United 08-09 possui várias variantes Epic com Card IDs diferentes, não inferir edição por nome e clube.",
+    "Neuer Captain Tsubasa (#175) e Neuer Living Legends (#011) são cartas diferentes, nunca compartilhar builds, treinos ou avaliações entre IDs.",
+    "Vídeos de pacote World Player of the Year não comprovam gameplay individual do Vitinha; diferenciar gameplay de review coletivo.",
+    "Nenhum vídeo de TikTok foi confirmado por URL individual neste lote; não inventar URLs."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 43,
-    "com_apenas_candidatos": 14,
-    "sem_video": 189,
-    "total_videos": 105,
-    "total_videos_unicos": 96,
+    "com_video_pacote_compativel": 46,
+    "com_apenas_candidatos": 15,
+    "sem_video": 185,
+    "total_videos": 113,
+    "total_videos_unicos": 104,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -2025,9 +2029,25 @@
       "nome": "Park Ji-Sung",
       "edicao": "Epic — Manchester United 08-09",
       "card_id": "88033407929774",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=pR8PR_baRLU",
+          "video_id": "pR8PR_baRLU",
+          "criador": "KINGDIIAZ",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "gameplay_individual",
+          "descricao_evidencia": "Criador informa gameplay do Park Ji-Sung Epic gratuito em agosto 2025, mas não demonstra Card ID 88033407929774 nem pacote Manchester United 08-09; edição pendente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo público identificado por título, data ou descrição; edição de pacote não é confirmação visual do Card ID, nem prova de pro player profissional."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/park-ji-sung-88033407929774",
+        "https://pesdb.net/efootball/players/park-ji-sung-87963883146670"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -2726,9 +2746,24 @@
       "nome": "Noussair Mazraoui",
       "edicao": "Show Time — Road to CAF AFCON 2027 — Noussair Mazraoui",
       "card_id": "106797935481937",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=i8rD41kbvBs",
+          "video_id": "i8rD41kbvBs",
+          "criador": "Bixoy Tech & Gaming",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia de progressão de Noussair Mazraoui Show Time Road to CAF AFCON 2027. Fonte menciona treino ao nível máximo; não comprova desempenho individual em partidas.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo público identificado por título, data ou descrição; edição de pacote não é confirmação visual do Card ID, nem prova de pro player profissional."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/noussair-mazraoui-106797935481937"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -3366,9 +3401,36 @@
       "nome": "Manuel Neuer",
       "edicao": "Highlight — Captain Tsubasa Collaboration Campaign 5 Dec '24 — Manuel Neuer",
       "card_id": "105723035943329",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=sN5zjYIsyEo",
+          "video_id": "sN5zjYIsyEo",
+          "criador": "eFootball GOAT",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review e treino do Neuer Captain Tsubasa no eFootball 2025 Mobile. Página menciona gameplay, mas Card ID da edição não foi conferido quadro a quadro.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo público identificado por título, data ou descrição; edição de pacote não é confirmação visual do Card ID, nem prova de pro player profissional."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=q3MDRa5WM00",
+          "video_id": "q3MDRa5WM00",
+          "criador": "Breezy eFootball",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia de treino do Neuer Captain Tsubasa, lançado em 12/12/2024; não confundir com Neuer Show Time Living Legends #011.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo público identificado por título, data ou descrição; edição de pacote não é confirmação visual do Card ID, nem prova de pro player profissional."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://www.konami.com/efootball/pt-br/page/v4/versioninfo_v4-20"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -4031,9 +4093,61 @@
       "nome": "Vitinha",
       "edicao": "Epic — World Player of the Year 2025",
       "card_id": "88040118816667",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=cBRDT9c7JFs",
+          "video_id": "cBRDT9c7JFs",
+          "criador": "ALBA PES",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Review e testes em partidas do Vitinha Epic World Player of the Year 2025 (Phenomenal Pass), incluindo passes, drible, builds e boosters; Card ID não inspecionado no vídeo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo público identificado por título, data ou descrição; edição de pacote não é confirmação visual do Card ID, nem prova de pro player profissional."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=6mqgRsnN8FI",
+          "video_id": "6mqgRsnN8FI",
+          "criador": "Guia eFootball",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Análise brasileira do pacote Epic World Player of the Year 2025 contendo Vitinha; é avaliação coletiva de pacote, não prova individual de jogabilidade.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo público identificado por título, data ou descrição; edição de pacote não é confirmação visual do Card ID, nem prova de pro player profissional."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=CztZkdqcNnM",
+          "video_id": "CztZkdqcNnM",
+          "criador": "okaP FOOTBALL KINGDOMS",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "short_avaliacao",
+          "descricao_evidencia": "Vídeo curto da edição Vitinha Epic World Player of the Year 2025; autor descreve avaliação pessoal in-game, não gameplay competitivo completo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo público identificado por título, data ou descrição; edição de pacote não é confirmação visual do Card ID, nem prova de pro player profissional."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=NOhY-8-Ksno",
+          "video_id": "NOhY-8-Ksno",
+          "criador": "Efootball Elite Stars",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_de_pacote",
+          "descricao_evidencia": "Apresentação de progressões/pacote Epic World Player of the Year 2025 com Vitinha, Dembélé e Yamal; não usar como teste isolado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo público identificado por título, data ou descrição; edição de pacote não é confirmação visual do Card ID, nem prova de pro player profissional."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/vitinha-88040118816667",
+        "https://gamingonphone.com/guides/efootball-2026-epic-world-player-of-the-year-2025-pack-review/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -4412,5 +4526,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V113 — 13 fontes adicionais para Alaba, Endrick, Neymar Campaign, Caicedo e candidato Inzaghi; fonte anterior de Endrick preservada."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113."
 }
