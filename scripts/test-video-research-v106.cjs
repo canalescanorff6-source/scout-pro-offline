@@ -6,7 +6,7 @@ const base=JSON.parse(fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.js
 const arts=JSON.parse(fs.readFileSync(path.join(root,'web/SCOUT_V98_AUDITORIA_TATICA.json'),'utf8'));
 const index=new Map(base.cards.map(c=>[c.numero,c]));
 const visual=new Map(arts.cartas.map(c=>[c.numero,c]));
-assert(['SCOUT_V106_RESEARCH','SCOUT_V107_RESEARCH','SCOUT_V108_RESEARCH','SCOUT_V109_RESEARCH'].includes(ledger.schema));
+assert(['SCOUT_V106_RESEARCH','SCOUT_V107_RESEARCH','SCOUT_V108_RESEARCH','SCOUT_V109_RESEARCH','SCOUT_V110_RESEARCH'].includes(ledger.schema));
 assert.equal(ledger.cards.length,246);
 assert.equal(index.size,246);assert.equal(visual.size,246);
 const nums=new Set(),seenVideos=new Map();let covered=0,candidates=0,none=0,clips=0;
@@ -49,8 +49,9 @@ for(const c of ledger.cards){
   assert.equal(video.desempenho_player_id_analisado,false);
  }
 }
-assert.deepEqual([covered,candidates,none,clips],[33,12,201,67]);
-assert.equal(seenVideos.size,58,'Unique videos count');
+assert.deepEqual([covered,candidates,none,clips],[33,13,200,71]);
+for(const id of ['s7781c-O2-I','wHP7bglxfZs','p72t5kQIW00','DxtmLVKraAU'])assert(ledger.cards.find(c=>c.numero===2).videos.some(v=>v.video_id===id && v.compatibilidade==='edicao_pendente'),'Raul gameplay candidate missing: '+id);
+assert.equal(seenVideos.size,62,'Unique videos count');
 assert.equal(ledger.cards.filter(c=>c.videos.some(v=>v.video_id===packId)).length,packCaps.length,'French pack references count must be exact');
 assert.equal(ledger.summary.com_video_pacote_compativel,covered);
 assert.equal(ledger.summary.com_apenas_candidatos,candidates);
@@ -66,4 +67,4 @@ for(const id of ['art','name','videos','details','filter','metrics','search','pr
 assert(js.includes('SCOUT_V106_PESQUISA_VIDEOS.json'));
 assert(js.includes('SCOUT_V98_AUDITORIA_TATICA.json'));
 assert(fs.readFileSync(path.join(root,'web/index.html'),'utf8').includes('pesquisa-videos-v106.html'));
-console.log('V109 OK: 246 cards, 67 CAP-video references (58 unique); 49 prior references protected; exact IDs/art intact; pack video shared only with 8 verified pack entries; no fictional Player ID validation.');
+console.log('V110 OK: 246 cards, 71 CAP-video links (62 unique), V106-V109 preserved, Raul video candidates unconfirmed, original IDs intact.');
