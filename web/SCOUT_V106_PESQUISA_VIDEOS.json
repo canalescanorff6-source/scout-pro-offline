@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V110_RESEARCH",
+  "schema": "SCOUT_V111_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -21,15 +21,18 @@
     "Links no YouTube são fontes de candidatos e treinos contextualizados, não certificação de Player ID, pro player de torneios ou build meta.",
     "TikTok consultado mas resultados diretos não foram verificáveis por restrições de acesso; não inventar links TikTok.",
     "O Raúl de pênaltis diários de agosto 2025 é candidato à versão Schalke 10-11; exigir Card ID em frame para confirmação.",
-    "Marco van Basten Netherlands 1988 existe em duas edições distintas; exigir Card ID 88033139494377."
+    "Marco van Basten Netherlands 1988 existe em duas edições distintas; exigir Card ID 88033139494377.",
+    "Vídeos da carta Neymar Epic Booster Santos em 2023 não podem ser vinculados como edição exata de 2011 sem comparar Card ID.",
+    "Distinguir Guirassy/Tonali já indexados na V109 de achados realmente novos; não duplicar links.",
+    "Identificar contradições de estilo em vídeos de Nico O'Reilly: Full-back Finisher vs Offensive Fullback até validação visual."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 33,
-    "com_apenas_candidatos": 13,
-    "sem_video": 200,
-    "total_videos": 71,
-    "total_videos_unicos": 62,
+    "com_video_pacote_compativel": 37,
+    "com_apenas_candidatos": 14,
+    "sem_video": 195,
+    "total_videos": 83,
+    "total_videos_unicos": 74,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -77,6 +80,18 @@
           "card_id_exibido_e_conferido_no_video": false,
           "desempenho_player_id_analisado": false,
           "observacao": "Link/título/descrição e nome do pacote verificados; não equivale a conferir o Card ID dentro do vídeo. Não aplicar builds automaticamente."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=d3QaDTY8180",
+          "video_id": "d3QaDTY8180",
+          "criador": "Epic pes z",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia de treinamento do Epic gratuito Daniele Massaro do pacote Legends Assemble 2026. Vídeo não comprova gameplay individual.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
         }
       ],
       "referencias_da_carta": [
@@ -861,9 +876,37 @@
       "nome": "El-Hadji Diouf",
       "edicao": "Epic — Senegal 2002",
       "card_id": "88039934308531",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=aNt9EXi7GzE",
+          "video_id": "aNt9EXi7GzE",
+          "criador": "ALBA PES",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Revisão com progressão 00:26 e gameplay 01:03 de El-Hadji Diouf Epic gratuito com Phenomenal Finishing da campanha de dezembro de 2025.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=1puRe7ejodM",
+          "video_id": "1puRe7ejodM",
+          "criador": "CarvalhoPlay",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "gameplay_individual",
+          "descricao_evidencia": "Gameplay online mobile de El-Hadji Diouf Epic gratuito em dezembro de 2025, edição Senegal 2002 provável; Card ID ainda não conferido.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/el-hadji-diouf-88039934308531",
+        "https://urlebird.com/video/how-to-train-epic-el-hadji-diouf-in-efootball-2026-el-hadji-dio-7582555815295470856/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -961,9 +1004,35 @@
           "card_id_exibido_e_conferido_no_video": false,
           "desempenho_player_id_analisado": false,
           "observacao": "Vídeo e pacote checados por título/metadados, não por exame quadro a quadro; eventuais divergências de tipo são mantidas sem modificar as cartas."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=9G27_uX96V4",
+          "video_id": "9G27_uX96V4",
+          "criador": "Voxzly Zt",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Review de Mbappé Highlight Yu-Gi-Oh colaboração setembro de 2025: treino em 00:57 e partidas de divisão em 02:30; Card ID em frames não confirmado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=VAAcbNbtA20",
+          "video_id": "VAAcbNbtA20",
+          "criador": "Turbo xp Game",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review de gameplay mobile da carta Mbappé Highlight 102 Yu-Gi-Oh França 2025; conteúdo descrito como drible, velocidade e finalização.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
         }
       ],
-      "referencias_da_carta": [],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/kylian-mbappe-105795513593982"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -1037,9 +1106,24 @@
       "nome": "Neymar Jr",
       "edicao": "Epic — Santos FC 2011",
       "card_id": "88029918174624",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=s3SNtiXgsvY",
+          "video_id": "s3SNtiXgsvY",
+          "criador": "AlexND",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review e gameplay em 2023 do Neymar Epic Booster Santos, CF Deep Lying Forward, obtido no Daily Challenge; embora a era seja Santos 2011, pode existir outra edição com Card ID diferente, portanto requer confirmação.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://ef-labo.com/efootball/neymar-jr-epic/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -1334,9 +1418,24 @@
       "nome": "Burchet",
       "edicao": "Epic — Master League Sprint 27 Aug '26",
       "card_id": "88043608522894",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=M-962xcMh-o",
+          "video_id": "M-962xcMh-o",
+          "criador": "Gaming Class",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_obtencao",
+          "descricao_evidencia": "Guia de obtenção do Epic Burchet no Master League Sprint em agosto de 2026, não é gameplay. Pacote identificado, Card ID não mostrado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/burchet-88043608522894"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -1916,9 +2015,36 @@
       "nome": "Jordan Henderson",
       "edicao": "Show Time — National Teams Selection 6 Nov '25",
       "card_id": "106762149600615",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=iACSOxefd7c",
+          "video_id": "iACSOxefd7c",
+          "criador": "eFootball Vault",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Treinamento Show Time Henderson da seleção gratuita National Teams de novembro de 2025, volante Anchor Man com Long Reach Tackle; PP 01:09, booster 01:44, skills 02:17 e gameplay 02:53.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=zea1_dxJAcc",
+          "video_id": "zea1_dxJAcc",
+          "criador": "Rodadovalezika",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia brasileiro para evoluir o Show Time Jordan Henderson de novembro de 2025 ao nível máximo; não confirma gameplay.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://www.pesmaster.com/jordan-henderson/efootball-2022/player/106762149600615/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -2278,9 +2404,48 @@
       "nome": "Nico O'Reilly",
       "edicao": "Show Time — Mobile 9th Anniversary Celebration",
       "card_id": "106780940205246",
-      "estado": "pendente",
-      "videos": [],
-      "referencias_da_carta": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=uJctiGPHmNg",
+          "video_id": "uJctiGPHmNg",
+          "criador": "NextStopXP",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Apresentação de progressões do Show Time gratuito do 9º aniversário (Kimmich, Nico O’Reilly, de Ligt e Ferdi), edição correspondente, sem teste individual garantido.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=tg1eDqlnvQA",
+          "video_id": "tg1eDqlnvQA",
+          "criador": "Ardhen 78",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "short_apresentacao",
+          "descricao_evidencia": "Short da carta Nico O'Reilly Show Time gratuita 9th Anniversary 2026; vídeo exibe campanha sem avaliação individual comprovada.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=nQwHm2T9Gxo",
+          "video_id": "nQwHm2T9Gxo",
+          "criador": "eFootball Vault",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Guia de Nico O'Reilly LB gratuito com Long Reach Tackle (build 01:12, skills 02:19, gameplay 03:10). Metadados o chamam Offensive Fullback enquanto registro Card ID indica Full-back Finisher; edição pendente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos verificados. Edição do pacote sugerida, mas Card ID não exibido ou conferido quadro a quadro. Revisão de vídeo e testes de jogador ficam pendentes."
+        }
+      ],
+      "referencias_da_carta": [
+        "https://www.pesmaster.com/nico-oreilly/efootball-2022/player/106780940205246/"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -3956,5 +4121,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V110 — evidência incremental sobre Raúl, preserva integralmente V106–V109"
+  "versao_historico": "V111 — atualização incremental com 12 novos vídeos, inclusive gameplay e treinamento de Diouf, Mbappé, O'Reilly e Henderson"
 }

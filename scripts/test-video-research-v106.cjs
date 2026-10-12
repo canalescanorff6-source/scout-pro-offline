@@ -6,13 +6,14 @@ const base=JSON.parse(fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.js
 const arts=JSON.parse(fs.readFileSync(path.join(root,'web/SCOUT_V98_AUDITORIA_TATICA.json'),'utf8'));
 const index=new Map(base.cards.map(c=>[c.numero,c]));
 const visual=new Map(arts.cartas.map(c=>[c.numero,c]));
-assert(['SCOUT_V106_RESEARCH','SCOUT_V107_RESEARCH','SCOUT_V108_RESEARCH','SCOUT_V109_RESEARCH','SCOUT_V110_RESEARCH'].includes(ledger.schema));
+assert(['SCOUT_V106_RESEARCH','SCOUT_V107_RESEARCH','SCOUT_V108_RESEARCH','SCOUT_V109_RESEARCH','SCOUT_V110_RESEARCH','SCOUT_V111_RESEARCH'].includes(ledger.schema));
 assert.equal(ledger.cards.length,246);
 assert.equal(index.size,246);assert.equal(visual.size,246);
 const nums=new Set(),seenVideos=new Map();let covered=0,candidates=0,none=0,clips=0;
 const frozenOriginal={5:['75T92Osqh9E'],8:['806wGTD7-jI','_z7pZZJJX8E'],11:['4n21m_yDlpM','imaTX9ksg8c'],13:['sI_v0-uRQRo','91nbzXAvlhY'],14:['gzMwwGjkf4Q'],54:['TQCxS8HLpO4','cGKrahoX1l8'],69:['07YW9c0DNlc'],104:['5-j6ltPc-wQ'],143:['1hM2VFFspPU','-bpFTL5azE0'],171:['v1jwycY0hoI','dGLGMYbB9HE','DTpqAQId0vk','bdt3C-Dan5I'],208:['7YFcuU6q8_Y','VrMyH7s5PiY'],246:['voLeIVINK5w','BL1n4E0UXCk']};
 const frozenV107={28:['1ToDkl_vn3Q'],32:['fNRsm4rS-rI'],46:['FNWZfM24ZmU','BtZ7iOavJpA','kIOSVg4iWmM'],57:['7XPBk3Cd2VE'],144:['q4Iip8nJUA8','RYczlaoi7Y8'],153:['q4Iip8nJUA8','RYczlaoi7Y8'],155:['MIV4IsuxZlo'],165:['nCrqhfXsxco'],168:['ySblbmxIVMQ'],210:['I_IjKnueXQQ'],216:['DK4oUfwuPDQ']};
 const frozenV108={1:['YxLyXv-NSuM','6ZfiVv13ofY','u1Bw7BXyXf4'],3:['rYm7kTuJc1o','qhVOjTawx6s'],10:['qelcrn_B9wE','ZXhDswqB_v8'],15:['Lk68MYgVy0U'],24:['DQyVucdEc40','sifruq9wYOo','814mGz9MvfE'],145:['o_XrWKbE1KE']};
+const frozenV110Full={"1":["YxLyXv-NSuM","6ZfiVv13ofY","u1Bw7BXyXf4"],"2":["s7781c-O2-I","wHP7bglxfZs","p72t5kQIW00","DxtmLVKraAU"],"3":["rYm7kTuJc1o","qhVOjTawx6s"],"5":["75T92Osqh9E"],"8":["806wGTD7-jI","_z7pZZJJX8E"],"10":["qelcrn_B9wE","ZXhDswqB_v8"],"11":["4n21m_yDlpM","imaTX9ksg8c"],"13":["sI_v0-uRQRo","91nbzXAvlhY"],"14":["gzMwwGjkf4Q"],"15":["Lk68MYgVy0U"],"24":["DQyVucdEc40","sifruq9wYOo","814mGz9MvfE"],"28":["1ToDkl_vn3Q"],"32":["fNRsm4rS-rI"],"35":["XShUkXenMT4"],"36":["FqrVKy87QUI"],"42":["jQsgXix9AGs"],"44":["54NvlOVSzGM"],"46":["FNWZfM24ZmU","BtZ7iOavJpA","kIOSVg4iWmM"],"49":["jQsgXix9AGs"],"53":["d0R6IueV2zQ","kyUn-nQlBT8"],"54":["TQCxS8HLpO4","cGKrahoX1l8"],"57":["7XPBk3Cd2VE"],"59":["jQsgXix9AGs"],"65":["P678Sl0IQJM"],"69":["07YW9c0DNlc"],"75":["7diSzugrg6g"],"83":["jQsgXix9AGs"],"97":["P_Lopn5mmsw"],"104":["5-j6ltPc-wQ"],"108":["jQsgXix9AGs"],"110":["jQsgXix9AGs"],"143":["1hM2VFFspPU","-bpFTL5azE0"],"144":["q4Iip8nJUA8","RYczlaoi7Y8"],"145":["o_XrWKbE1KE"],"153":["q4Iip8nJUA8","RYczlaoi7Y8"],"154":["jQsgXix9AGs"],"155":["MIV4IsuxZlo"],"165":["nCrqhfXsxco"],"168":["ySblbmxIVMQ"],"171":["v1jwycY0hoI","dGLGMYbB9HE","DTpqAQId0vk","bdt3C-Dan5I"],"173":["jQsgXix9AGs"],"181":["W4Kd0stOJpg","oenMcJyV3eY"],"208":["7YFcuU6q8_Y","VrMyH7s5PiY"],"210":["I_IjKnueXQQ"],"216":["DK4oUfwuPDQ"],"246":["voLeIVINK5w","BL1n4E0UXCk"]};
 const packCaps=[42,49,59,83,108,110,154,173];
 const packId='jQsgXix9AGs';
 for(const c of ledger.cards){
@@ -25,6 +26,7 @@ for(const c of ledger.cards){
  for(const old of frozenOriginal[c.numero]||[])assert(c.videos.some(v=>v.video_id===old),'Previously saved video lost from CAP '+c.numero+': '+old);
  for(const old of frozenV107[c.numero]||[])assert(c.videos.some(v=>v.video_id===old),'V107 video missing from CAP '+c.numero+': '+old);
  for(const old of frozenV108[c.numero]||[])assert(c.videos.some(v=>v.video_id===old),'V108 video missing from CAP '+c.numero+': '+old);
+ for(const old of frozenV110Full[c.numero]||[])assert(c.videos.some(v=>v.video_id===old),'V110 video missing from CAP '+c.numero+': '+old);
  assert.equal(c.player_id_validado,false,'Do not fabricate Player ID based on metadata');
  assert.equal(c.build_video_validada,false,'Do not claim completed build without inspecting footage');
  assert(['encontrado_por_pacote','candidato_sem_versao_confirmada','pendente'].includes(c.estado));
@@ -49,9 +51,11 @@ for(const c of ledger.cards){
   assert.equal(video.desempenho_player_id_analisado,false);
  }
 }
-assert.deepEqual([covered,candidates,none,clips],[33,13,200,71]);
+assert.deepEqual([covered,candidates,none,clips],[37,14,195,83]);
 for(const id of ['s7781c-O2-I','wHP7bglxfZs','p72t5kQIW00','DxtmLVKraAU'])assert(ledger.cards.find(c=>c.numero===2).videos.some(v=>v.video_id===id && v.compatibilidade==='edicao_pendente'),'Raul gameplay candidate missing: '+id);
-assert.equal(seenVideos.size,62,'Unique videos count');
+assert.equal(seenVideos.size,74,'Unique videos count');
+for(const id of ['aNt9EXi7GzE','1puRe7ejodM'])assert(ledger.cards.find(c=>c.numero===38).videos.some(v=>v.video_id===id),'Diouf video missing');
+assert(ledger.cards.find(c=>c.numero===47).videos.every(v=>v.compatibilidade==='edicao_pendente'),'Santos Neymar ID not verified');
 assert.equal(ledger.cards.filter(c=>c.videos.some(v=>v.video_id===packId)).length,packCaps.length,'French pack references count must be exact');
 assert.equal(ledger.summary.com_video_pacote_compativel,covered);
 assert.equal(ledger.summary.com_apenas_candidatos,candidates);
@@ -67,4 +71,4 @@ for(const id of ['art','name','videos','details','filter','metrics','search','pr
 assert(js.includes('SCOUT_V106_PESQUISA_VIDEOS.json'));
 assert(js.includes('SCOUT_V98_AUDITORIA_TATICA.json'));
 assert(fs.readFileSync(path.join(root,'web/index.html'),'utf8').includes('pesquisa-videos-v106.html'));
-console.log('V110 OK: 246 cards, 71 CAP-video links (62 unique), V106-V109 preserved, Raul video candidates unconfirmed, original IDs intact.');
+console.log('V111 OK: 246 cards, 83 CAP-video links (74 unique), every V110 reference preserved, 5 new CAPs, original IDs intact.');
