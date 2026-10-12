@@ -1,4 +1,4 @@
-/* Scout PRO V103: booster choices are hypotheses, not claims about equipped slots. */
+/* Scout PRO V104: recommendations only use the 17 regular selectable boosters confirmed by Konami. Natural/exclusive boosters remain evidence, never token options. */
 (function(host){
 'use strict';
 const BOOSTERS={
@@ -31,6 +31,13 @@ const BOOSTERS={
  'Crossing':['loft','curl','speed','stamina'],
  'Free-kick Taking':['finish','placekick','curl','power']
 };
+// Source: Konami v4.0.0, Booster Crafting, 17 regular selectable booster types.
+// Other names in BOOSTERS describe special/natural boosters; do NOT offer them for crafting.
+const CRAFTABLE=Object.freeze([
+ 'Shooting','Free-kick Taking','Aerial','Passing','Ball-carrying','Technique',
+ 'Defending','Duelling','Agility','Physicality','Goalkeeping',
+ "Striker's Instinct",'Shutdown','Hard Worker','Saving','Crossing','Fantasista'
+]);
 const ROLE={CA:{awareness:6,finish:7,accel:5,control:4,power:3,physical:2,speed:3,pass:2,balance:2,heading:1,jump:1,stamina:1},
 SA:{awareness:5,finish:4,accel:5,control:5,pass:5,dribble:4,tight:4,balance:4,speed:2,physical:2,stamina:2},
 MAT:{control:6,tight:5,dribble:5,pass:7,awareness:4,accel:4,balance:5,finish:3,stamina:2,power:2},
@@ -66,7 +73,7 @@ function rank(card,tactic){
  if(tactic==='rapido')for(const k of ['speed','accel','awareness','stamina'])bump(k,2);
  const natural=String(card.impeto_fixo||'').replace(/\s*\+\d+.*/,'').trim().toLowerCase();
  return Object.entries(BOOSTERS)
- .filter(([name])=>role==='GO'?name==='Saving'||name==='Goalkeeping':name!=='Saving'&&name!=='Goalkeeping')
+ .filter(([name])=>CRAFTABLE.includes(name)&&(role==='GO'?(name==='Saving'||name==='Goalkeeping'):(name!=='Saving'&&name!=='Goalkeeping')))
  .map(([name,stats])=>{
   const score=stats.reduce((sum,k)=>sum+(w[k]||0),0)-(natural===name.toLowerCase()?2:0);
   const focused=stats.slice().sort((a,b)=>(w[b]||0)-(w[a]||0));
@@ -86,9 +93,9 @@ function audit(cards){
  possivel:result.filter(c=>c.status_slot_fonte==='possivel').length,
  nome_registrado:result.filter(c=>c.status_slot_fonte==='nome_registrado').length,
  indefinido:result.filter(c=>c.status_slot_fonte==='indefinido').length};
- return {version:'V103',method:'hipóteses competitivas por posição, estilos e efeitos do ímpeto; não equivale a slot vazio comprovado, atributos finais ou desempenho validado',summary,cards:result};
+ return {version:'V104',method:'hipóteses competitivas por posição, estilos e efeitos do ímpeto; não equivale a slot vazio comprovado, atributos finais ou desempenho validado',summary,cards:result};
 }
-const api={BOOSTERS,ROLE,POS,tactics,slotStatus,rank,audit};
+const api={BOOSTERS,CRAFTABLE,ROLE,POS,tactics,slotStatus,rank,audit};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_BOOSTERS_V103=api;
 })(typeof window!=='undefined'?window:null);
