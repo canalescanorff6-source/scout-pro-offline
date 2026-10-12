@@ -8,7 +8,7 @@ const expected=['scout-native-android','scout-android-toast','scoutToastTimer','
 for(const token of expected)assert(js.includes(token),'Android behavior missing '+token);
 assert(js.includes("window.Capacitor?.getPlatform?.()==='android'"),'Native Android feature detection required');
 assert(js.includes("btn.textContent='Atualizar APK'"),'Update APK button must remain functional');
-assert(js.includes("btn.onclick=openAndroidUpdater"),'Android update panel must remain functional');
+assert(js.includes("btn.onclick=()=>{try{openAndroidUpdater()}"),'Android update panel must be connected before native initialization');
 assert(js.includes("bar.querySelector('#scout-top').onclick"),'Top navigation must be preserved');
 assert(js.includes("bar.querySelector('#scout-back')"),'Back navigation must be preserved');
 assert(css.includes('body.scout-native-android{'),'Android-only CSS required');
