@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V131_RESEARCH",
+  "schema": "SCOUT_V132_RESEARCH",
   "data_corte": "2026-10-13",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -78,15 +78,16 @@
     "V128: seis vídeos novos em cinco CAPs. Grimaldo: análise coletiva misturando English August e Summer Transfer. Outros reviews anunciam gameplay via metadados; nenhum Card ID ou Player ID conferido em frames. Não aplicar builds automaticamente.",
     "V129: 7 novas URLs para três cartas (#020 Rodri, #107 Tchouaméni, #180 Ekitiké). Rodri permanece candidato por falta de data/ID; outros dois têm pacote compatível por metadados. Guias de treino não comprovam build aprovada, e review de pacote não é gameplay individual. 207 URLs V128 preservadas.",
     "V130: sete URLs novas para CAP089, CAP112, CAP136 e CAP176. Kelleher sem data no título e dois vídeos de Mitchell sem pacote temporal são edição pendente. Shorts não são gameplays; review anunciado não equivale a filmagem inspecionada. Preservar as 214 URLs únicas da V129.",
-    "V131: quatro URLs inéditas para CAP087, CAP125 e CAP163. Preservadas as 221 URLs únicas V130; nenhum vídeo analisado quadro a quadro. Reviews coletivas e obtenção não são gameplay individual. Vídeos de outras edições do mesmo jogador foram descartados."
+    "V131: quatro URLs inéditas para CAP087, CAP125 e CAP163. Preservadas as 221 URLs únicas V130; nenhum vídeo analisado quadro a quadro. Reviews coletivas e obtenção não são gameplay individual. Vídeos de outras edições do mesmo jogador foram descartados.",
+    "V132: seis URLs inéditas para CAP225 Rodri Nominating Contract Back in the Game 14 Aug '25. Preservadas todas as 225 URLs únicas V131. Guia de treino não autoriza build, review de pacote não é gameplay, nem Card ID/Player ID foi visualmente confirmado. Jorginho de outro pacote não foi adicionado."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 110,
+    "com_video_pacote_compativel": 111,
     "com_apenas_candidatos": 39,
-    "sem_video": 97,
-    "total_videos": 234,
-    "total_videos_unicos": 225,
+    "sem_video": 96,
+    "total_videos": 240,
+    "total_videos_unicos": 231,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -5824,12 +5825,85 @@
       "nome": "Rodri",
       "edicao": "Highlight — Back in the Game 14 Aug '25 — Rodri",
       "card_id": "106780940205246",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=nmFBsZtOP14",
+          "video_id": "nmFBsZtOP14",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Vídeo 'Back in the Game Nominating Rodri Planning to Sign? efootball 2026 Mobile | Gameplay Review'. Título anuncia gameplay Mobile do Rodri do Nominating Contract Back in the Game; não houve revisão física de quadros para Card ID, Player ID ou desempenho.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V132: correspondência externa por título/pacote, nenhum frame inspecionado; pro-player, Player ID, PP e treino continuam não validados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=S0EfBZzdh3Q",
+          "video_id": "S0EfBZzdh3Q",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia 'How To Train Rodri in eFootball 2026 Mobile Max Level Training'. Descrição diz explicitamente NC Highlight Rodri do pacote Nominating Contract Back in the Game; sugestões não constituem distribuição de PP validada.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V132: correspondência externa por título/pacote, nenhum frame inspecionado; pro-player, Player ID, PP e treino continuam não validados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=hM_PxR__V8I",
+          "video_id": "hM_PxR__V8I",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_carta",
+          "descricao_evidencia": "Review 'Review Rodri DMF Anchor Man Back in the Game 14 Aug 25! - #efootball2026', com data exata da seleção cadastrada. Review anunciado, sem Card ID conferido quadro a quadro.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V132: correspondência externa por título/pacote, nenhum frame inspecionado; pro-player, Player ID, PP e treino continuam não validados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=BvCTU6ish70",
+          "video_id": "BvCTU6ish70",
+          "criador": "Virtual Activ8",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia 'Best Back in the Game 5* Nominating Contract Rodri Ultimate Training Guide In eFootball Mobile 2026' publicado em 17 ago 2025. Treinamento sugerido pelo criador, sem validação visual de PP ou resultado competitivo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V132: correspondência externa por título/pacote, nenhum frame inspecionado; pro-player, Player ID, PP e treino continuam não validados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=JDeFKidCJrk",
+          "video_id": "JDeFKidCJrk",
+          "criador": "OSC",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "Vídeo indonésio 'RACIKAN TERBAIK NOMINATING RODRI BACK IN THE GAME & HUIJSEN SUMMER TRANSFER EFOOTBALL 2026'. Dois jogadores de campanhas distintas citados; apenas o segmento nominal de Rodri é compatível, sem prova de build final do Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V132: correspondência externa por título/pacote, nenhum frame inspecionado; pro-player, Player ID, PP e treino continuam não validados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=ZGCasHriMzQ",
+          "video_id": "ZGCasHriMzQ",
+          "criador": "SonPog",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "analise_de_pacote",
+          "descricao_evidencia": "Vídeo de 14 ago 2025 'Best Nominating Contract Player Back in the Game eFootball 2026', com marcador #rodri na descrição. Analisa o pacote/seleção, não é gameplay individual nem confirmação visual do Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V132: correspondência externa por título/pacote, nenhum frame inspecionado; pro-player, Player ID, PP e treino continuam não validados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 226,
@@ -6109,5 +6183,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas. | V131 — quatro URLs novas para CAP087 Giuliano Simeone, CAP125 Nordi Mukiele e CAP163 Jérémy Jacquet; todas as 221 URLs V130 preservadas."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas. | V131 — quatro URLs novas para CAP087 Giuliano Simeone, CAP125 Nordi Mukiele e CAP163 Jérémy Jacquet; todas as 221 URLs V130 preservadas. | V132 — 6 URLs novas para CAP225 Rodri (Back in the Game 14 Aug '25), sem misturar National Teams Rodri; todos os 225 vídeos V131 preservados."
 }
