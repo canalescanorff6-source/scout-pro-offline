@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V129_RESEARCH",
+  "schema": "SCOUT_V130_RESEARCH",
   "data_corte": "2026-10-13",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -76,15 +76,16 @@
     "V126: não reatribuir o vídeo Japan Selection Jun 2026 à carta Doan National Team Selection Japan 10 Oct 2024 nem o Big Time Epic Spain 2010 ao Iniesta Epic Spain 2010, pois edições distintas podem compartilhar a temporada.",
     "V127: 3 novas URLs em CAP067, CAP093 e CAP219. O vídeo de CAP093 é revisão coletiva de 11 cartas com fonte espelhada; não indica capítulos de desempenho individual nem Card ID. CAP067 é short, não gameplay. CAP219 é treino anunciado, não build aprovada.",
     "V128: seis vídeos novos em cinco CAPs. Grimaldo: análise coletiva misturando English August e Summer Transfer. Outros reviews anunciam gameplay via metadados; nenhum Card ID ou Player ID conferido em frames. Não aplicar builds automaticamente.",
-    "V129: 7 novas URLs para três cartas (#020 Rodri, #107 Tchouaméni, #180 Ekitiké). Rodri permanece candidato por falta de data/ID; outros dois têm pacote compatível por metadados. Guias de treino não comprovam build aprovada, e review de pacote não é gameplay individual. 207 URLs V128 preservadas."
+    "V129: 7 novas URLs para três cartas (#020 Rodri, #107 Tchouaméni, #180 Ekitiké). Rodri permanece candidato por falta de data/ID; outros dois têm pacote compatível por metadados. Guias de treino não comprovam build aprovada, e review de pacote não é gameplay individual. 207 URLs V128 preservadas.",
+    "V130: sete URLs novas para CAP089, CAP112, CAP136 e CAP176. Kelleher sem data no título e dois vídeos de Mitchell sem pacote temporal são edição pendente. Shorts não são gameplays; review anunciado não equivale a filmagem inspecionada. Preservar as 214 URLs únicas da V129."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 104,
-    "com_apenas_candidatos": 38,
-    "sem_video": 104,
-    "total_videos": 223,
-    "total_videos_unicos": 214,
+    "com_video_pacote_compativel": 107,
+    "com_apenas_candidatos": 39,
+    "sem_video": 100,
+    "total_videos": 230,
+    "total_videos_unicos": 221,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -2520,12 +2521,25 @@
       "nome": "Iliman Ndiaye",
       "edicao": "Highlight — English League Selection 13 Aug '26",
       "card_id": "105873896779262",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=WlXrzAbnIgA",
+          "video_id": "WlXrzAbnIgA",
+          "criador": "Anang Ibnu",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "Short publicado em 24 ago 2026 'Iliman Ndiaye English League Selection August 13, 2026 #shorts #efootball27'. Data do pacote explicitamente igual à CAP089, mas short não é prova de gameplay individual nem Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V130: verificados título e metadados de página de vídeo, não frames. Nenhum treinamento, Card ID ou Player ID pode ser inferido ou aplicado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 90,
@@ -3025,12 +3039,25 @@
       "nome": "Amadou Onana",
       "edicao": "Highlight — National Teams Selection 8 Jan '26 — Amadou Onana",
       "card_id": "105802492952578",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=kCWcYyJH6Hg",
+          "video_id": "kCWcYyJH6Hg",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_carta",
+          "descricao_evidencia": "Página original do YouTube com título 'Review Amadou Onana DMF Anchor Man National Teams Selection 8 Jan 26! - #efootball2026'. O título confirma a campanha e data da CAP112; descrição caracteriza um review, sem comprovação de Card ID, Player ID ou gameplay.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V130: verificados título e metadados de página de vídeo, não frames. Nenhum treinamento, Card ID ou Player ID pode ser inferido ou aplicado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 113,
@@ -3519,12 +3546,61 @@
       "nome": "Tyrick Mitchell",
       "edicao": "Highlight — English League Selection 13 Aug '26",
       "card_id": "105873896771214",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=f5Em3t-iGVA",
+          "video_id": "f5Em3t-iGVA",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "Short do YouTube intitulado 'Tyrick Mitchell English League Selection August 13, 2026 #shorts #efootball27'. Correspondência explícita de pacote e data; não é gameplay.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V130: verificados título e metadados de página de vídeo, não frames. Nenhum treinamento, Card ID ou Player ID pode ser inferido ou aplicado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=4aBsmhjwuu4",
+          "video_id": "4aBsmhjwuu4",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "Vídeo do YouTube 'Efootball League Selection English Aug '26 - Tyrick Mitchell'. Nome e período do pacote coincidem com CAP136, mas o conteúdo é apenas apresentação por metadados, não há demonstração competitiva atestada.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V130: verificados título e metadados de página de vídeo, não frames. Nenhum treinamento, Card ID ou Player ID pode ser inferido ou aplicado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=zCdjwRRviIw",
+          "video_id": "zCdjwRRviIw",
+          "criador": "criador não confirmado",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_de_carta",
+          "descricao_evidencia": "Vídeo 'Finally A Defensive Left Back | Tyrick Mitchell English League Selection #efootball'. Relacionado a mesma família English League Selection mas sem data exata do pacote, identificação visual ou teste documentado; manter candidato.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V130: verificados título e metadados de página de vídeo, não frames. Nenhum treinamento, Card ID ou Player ID pode ser inferido ou aplicado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=6VSk7ZTTfzM",
+          "video_id": "6VSk7ZTTfzM",
+          "criador": "criador não confirmado",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Vídeo em português 'TESTEI O TYRICK MITCHELL NO eFOOTBALL!'. O autor declara gameplay completo e análise de velocidade, defesa e movimentação. Não informa edição ou Card ID nos metadados, então é candidato, não fonte da carta exata.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V130: verificados título e metadados de página de vídeo, não frames. Nenhum treinamento, Card ID ou Player ID pode ser inferido ou aplicado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 137,
@@ -4491,12 +4567,25 @@
       "nome": "Caoimhin Kelleher",
       "edicao": "Highlight — English League Selection 13 Aug '26",
       "card_id": "105873896750438",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=Vfiluvog3dY",
+          "video_id": "Vfiluvog3dY",
+          "criador": "Mason Gaming",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Vídeo original acessível intitulado 'Caoimhin Kelleher English League Selection Best Goalkeeper99Review GAMEPLAY In eFootball 2027 Mobile'. O título promete gameplay Mobile mas não cita 13 Aug '26; variante exata, Card ID e desempenho não foram verificados quadro a quadro.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V130: verificados título e metadados de página de vídeo, não frames. Nenhum treinamento, Card ID ou Player ID pode ser inferido ou aplicado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 177,
@@ -5968,5 +6057,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas."
 }
