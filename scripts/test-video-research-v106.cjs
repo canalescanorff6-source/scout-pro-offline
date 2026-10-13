@@ -96,8 +96,15 @@ for(const c of ledger.cards){
    assert.equal(video.tipo_conteudo,'review_de_pacote');
    assert(video.descricao_evidencia.includes('07:56'),'Collective gameplay must be described as such');
   }
+  if(video.video_id==='pMtPXz_mXAo'){
+   assert([93,162].includes(c.numero),'Shared V137 review only for CAP093 and CAP162');
+   assert(c.edicao.includes("English League Selection 13 Aug '26"),'Shared review requires matching English Aug 26 pack');
+   assert.equal(video.compatibilidade,'pacote_compativel');
+   assert.equal(video.tipo_conteudo,'guia_treino_de_pacote','Collective source cannot become individual gameplay');
+   assert(video.descricao_evidencia.includes(c.nome),'Video evidence must name this player: '+c.numero);
+  }
   if(seenVideos.has(video.video_id)){
-   assert(video.video_id===packId||seenVideos.get(video.video_id)===c.card_id,'Cannot share individual video across different Card IDs: '+video.video_id);
+   assert(video.video_id===packId||video.video_id==='pMtPXz_mXAo'||seenVideos.get(video.video_id)===c.card_id,'Cannot share individual video across different Card IDs: '+video.video_id);
   }else seenVideos.set(video.video_id,c.card_id);
   assert.equal(video.card_id_exibido_e_conferido_no_video,false);
   assert.equal(video.desempenho_player_id_analisado,false);
