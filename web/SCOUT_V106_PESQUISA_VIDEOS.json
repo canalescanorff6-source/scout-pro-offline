@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V120_RESEARCH",
+  "schema": "SCOUT_V121_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -52,15 +52,18 @@
     "V119: não atribuir Rivaldo Low Screamer a Rivaldo 88035555413454 ou Cafu Epic 105 a Cafu Roma GR 88033407929805 sem provar edição em quadros.",
     "V120: 6 URLs distintas em 3 CAPs antes pendentes: Akanji Show Time Daily Bonus (4), Guti Epic (1 candidato sem edição) e Cubarsí (1 candidato abertura de pacote). Preservar 141 URLs distintas V119.",
     "V120: no vídeo Mednasah os capítulos de Akanji são descritos como build, escalação e teste PvP; timestamps provêm da descrição, não da nossa revisão quadro a quadro. Criador verificado não equivale a pro-player de torneio.",
-    "V120: Cubarsí Spain 2026 Highlight #159 NÃO pode ser confundido com Show Time Spain 2026; abrir pacote não é teste individual. Guti 01-02 deve exigir prova do Card ID."
+    "V120: Cubarsí Spain 2026 Highlight #159 NÃO pode ser confundido com Show Time Spain 2026; abrir pacote não é teste individual. Guti 01-02 deve exigir prova do Card ID.",
+    "V121: sete URLs inéditas para cinco cartas #009 Chiellini, #157 Renato Veiga, #190 Rafael Leão, #200 Sadio Mané, #215 Raphinha. Todas as 147 URLs V120 preservadas, sem edições reclassificadas.",
+    "V121: Chiellini gameplay é edição pendente — não confundir com Epic National Guardians e Power Tackle. Mané PES-HOD 21 Jan 2026 é candidato por data anterior ao pack de 22 Jan; outros vídeos do mesmo pack são compatíveis, ainda sem Card ID confirmado em frame.",
+    "V121: eFootball Nuts Renato Veiga 03:46 é capítulo descrito pelo autor, não inspeção visual; Bixoy Raphinha é guia de obtenção, não teste competitivo. Fonte externa não muda ficha ou PP."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 62,
-    "com_apenas_candidatos": 32,
-    "sem_video": 152,
-    "total_videos": 156,
-    "total_videos_unicos": 147,
+    "com_video_pacote_compativel": 66,
+    "com_apenas_candidatos": 33,
+    "sem_video": 147,
+    "total_videos": 163,
+    "total_videos_unicos": 154,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -351,8 +354,21 @@
       "nome": "Giorgio Chiellini",
       "edicao": "Epic — Piemonte BN 14-15",
       "card_id": "88033407804051",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=Fmljh_w2aUA",
+          "video_id": "Fmljh_w2aUA",
+          "criador": "breezyefootball",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube 09/01/2026 'GAMEPLAY WITH GIORGIO CHIELLINI EPIC NO EFOOTBALL 2026'. Título afirma gameplay do Epic Chiellini, mas não especifica Piemonte BN 14-15; existem outras edições Epic (incluindo National Guardians e Power Tackle). CAP009 Card ID 88033407804051 e edição não confirmados em frames. Vídeo candidato.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos verificados; nenhuma confirmação visual de Card ID, Player ID ou sequência de PP. Atributos, build, nível competitivo e desempenho não auditados em frames."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3622,8 +3638,21 @@
       "nome": "Renato Veiga",
       "edicao": "Highlight — National Team Pack Portugal 2026",
       "card_id": "105848932292218",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=w7FiKXxlY4I",
+          "video_id": "w7FiKXxlY4I",
+          "criador": "eFootball Nuts",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "analise_de_pacote",
+          "descricao_evidencia": "YouTube 06/06/2026 'eFootball Pack Review: Portugal Premium (with Epic Ronaldo)'. A descrição enumera cada jogador do pack e identifica Renato Veiga na marca 03:46. Pacote National Team Pack Portugal 2026 é compatível com CAP157 ID 105848932292218. A marca é do autor; análise do trecho não foi assistida, PP/Player ID e ID em frame pendentes.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos verificados; nenhuma confirmação visual de Card ID, Player ID ou sequência de PP. Atributos, build, nível competitivo e desempenho não auditados em frames."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4228,8 +4257,21 @@
       "nome": "Rafael Leão",
       "edicao": "Highlight — Daily Bonus 2026 — Rafael Leão",
       "card_id": "105776186249585",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=k7Dqr3yqkvk",
+          "video_id": "k7Dqr3yqkvk",
+          "criador": "Virtual Activ8",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube 03/04/2026, descrição explícita: 'Best Daily Bonus Game Highlight Rafael Leao Max Training Guide In eFootball Mobile 2026'. Identifica Rafael Leão Highlight da campanha Daily Bonus 2026, compatível com #190 (Card ID 105776186249585). Título do resultado não foi disponibilizado; fonte é descrição. PP e ID não conferidos visualmente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos verificados; nenhuma confirmação visual de Card ID, Player ID ou sequência de PP. Atributos, build, nível competitivo e desempenho não auditados em frames."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4348,8 +4390,45 @@
       "nome": "Sadio Mané",
       "edicao": "Epic — CAF AFRICA CUP OF NATIONS 25 — Sadio Mané",
       "card_id": "89137029898200",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=Dx40qeApjtw",
+          "video_id": "Dx40qeApjtw",
+          "criador": "PES-HOD",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube 21/01/2026: 'Sadio Mane Bigtime 106 is UNSTOPPABLE' review com gameplay anunciado da carta AFCON. Registro datado um dia antes da listagem do pack CAF AFRICA CUP OF NATIONS 25 de 22/01/2026; comprovação de edição e Card ID 89137029898200 pendente, não validar partida/proficiência do criador.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos verificados; nenhuma confirmação visual de Card ID, Player ID ou sequência de PP. Atributos, build, nível competitivo e desempenho não auditados em frames."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=3yX_szKgSt0",
+          "video_id": "3yX_szKgSt0",
+          "criador": "CarvalhoPlay",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube 24/01/2026 'Gameplay with Sadio Mané Big Time in eFootball 26 Mobile'. Criador afirma utilizar carta Mané Epic Big Time 104 OVR; pack CAF AFRICA CUP OF NATIONS 25 (Epic - Big Time) coincide com ID externo 89137029898200, mas ID em frame, distribuição PP e desempenho não revisados.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos verificados; nenhuma confirmação visual de Card ID, Player ID ou sequência de PP. Atributos, build, nível competitivo e desempenho não auditados em frames."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=DjnT65jQIuM",
+          "video_id": "DjnT65jQIuM",
+          "criador": "PES Prodigy",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube 22/01/2026 '105 Rated Big Time Sadio Mané Best Training Guide', associa Mané à carta gratuita Big Time AFCON de janeiro de 2026. Mesmo jogador/evento que CAP200; nome 'Epic' no cadastro versus nomenclatura 'Big Time' da fonte é mantido sem alterar ficha. Card ID/PP ainda sem confirmação nos frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos verificados; nenhuma confirmação visual de Card ID, Player ID ou sequência de PP. Atributos, build, nível competitivo e desempenho não auditados em frames."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4622,8 +4701,21 @@
       "nome": "Raphinha",
       "edicao": "Show Time — The All-Rounders 26 Dec '24",
       "card_id": "106733963948084",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=G72IEZMPBqY",
+          "video_id": "G72IEZMPBqY",
+          "criador": "Bixoy Tech & Gaming",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_de_obtencao",
+          "descricao_evidencia": "YouTube 26/12/2024 'Trick To Get Showtime All Rounders | Showtime T. Alexander-Arnold, Raphinha | eFootball 2025'. Mesmo evento The All-Rounders 26 Dec '24 e Raphinha Show Time da CAP215 Card ID 106733963948084; apenas guia de obtenção/pack, NÃO gameplay ou treinamento validado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos verificados; nenhuma confirmação visual de Card ID, Player ID ou sequência de PP. Atributos, build, nível competitivo e desempenho não auditados em frames."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5092,5 +5184,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas."
 }
