@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V144B_RESEARCH",
+  "schema": "SCOUT_V145_RESEARCH",
   "data_corte": "2026-10-13",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -91,15 +91,16 @@
     "V141: duas URLs para CAP068 Ronaldinho Big Time 19 Nov '05. Review com data compatível e gameplay genérico de Big Time marcado edição pendente. Todos os 282 vídeos V140 preservados; Card ID e Player ID não confirmados.",
     "V142: oito vídeos novos, nove associações para oito CAPs; vídeo Savinho compartilhado somente porque CAP061 e CAP196 possuem Card ID idêntico. Review/abertura coletiva não são gameplay individual. Edições não comprovadas permanecem candidatas. 284 URLs V141 preservadas, sem inventar treinamentos.",
     "V143: seis URLs inéditas para CAP098 Thiago Alcantara Epic Spain 2021, CAP191 Gabriel Martinelli Brazil Selection e CAP205 Thiago Almada National Teams Campaign. Todas candidatas com edição pendente: Booster Crafting de Thiago e pack Argentina Show Time podem diferir de Card ID e raridade cadastrados. Preservar 292 vídeos V142 e não aplicar PP.",
-    "V144b: quatro vídeos candidatos novos CAP149 e CAP156; todas as 298 URLs anteriores preservadas. Revisão de Card ID pendente."
+    "V144b: quatro vídeos candidatos novos CAP149 e CAP156; todas as 298 URLs anteriores preservadas. Revisão de Card ID pendente.",
+    "V145: 4 URLs inéditas para CAP206 Zaniolo Newly Licensed Italian Clubs, porém Card ID 105793902985437 não foi visualmente conferido no vídeo. Quatro candidatos de edição pendente. 302 URLs únicas V144B preservadas."
   ],
   "summary": {
     "total": 246,
     "com_video_pacote_compativel": 119,
-    "com_apenas_candidatos": 75,
-    "sem_video": 52,
-    "total_videos": 318,
-    "total_videos_unicos": 302,
+    "com_apenas_candidatos": 76,
+    "sem_video": 51,
+    "total_videos": 322,
+    "total_videos_unicos": 306,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -5939,12 +5940,61 @@
       "nome": "Nicolò Zaniolo",
       "edicao": "Highlight — Udinese Calcio — Card ID exato; rótulo comercial do pack PENDENTE",
       "card_id": "105793902985437",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=iQP6FTa3eyU",
+          "video_id": "iQP6FTa3eyU",
+          "criador": "criador não confirmado",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review de pacote Newly Licensed Italian Clubs (Nominating Contracts): capítulo Nicolò Zaniolo 51:33, porém Card ID da CAP206 não visualmente conferido.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V145: campanha nominal por metadados, Card ID e raridade visual não confirmados. Não usar como treino aprovado ou prova de pro player."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=fOKMKQJpSoo",
+          "video_id": "fOKMKQJpSoo",
+          "criador": "criador não confirmado",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "analise_de_pacote",
+          "descricao_evidencia": "Vídeo Newly Licensed Italian Clubs think & sign (Nicolò Zaniolo), eFootball 2026 Mobile; correspondência por nome/campanha apenas.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V145: campanha nominal por metadados, Card ID e raridade visual não confirmados. Não usar como treino aprovado ou prova de pro player."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=eacUcqzL-ec",
+          "video_id": "eacUcqzL-ec",
+          "criador": "criador não confirmado",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_de_carta",
+          "descricao_evidencia": "Review Nicolò Zaniolo AMF Creative Playmaker Newly Licensed Italian Clubs 9 Oct 25, confirma campanha pelo título, mas Card ID não validado visualmente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V145: campanha nominal por metadados, Card ID e raridade visual não confirmados. Não usar como treino aprovado ou prova de pro player."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=5sWEX3JCr64",
+          "video_id": "5sWEX3JCr64",
+          "criador": "criador não confirmado",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_de_carta",
+          "descricao_evidencia": "Nicolo Zaniolo 9 Oct '25 New Nominating Contract Best 5 Star AMF Player Review eFootball 2026 Mobile. Identidade final da carta precisa de frame mostrando Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V145: campanha nominal por metadados, Card ID e raridade visual não confirmados. Não usar como treino aprovado ou prova de pro player."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 207,
@@ -7175,5 +7225,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas. | V131 — quatro URLs novas para CAP087 Giuliano Simeone, CAP125 Nordi Mukiele e CAP163 Jérémy Jacquet; todas as 221 URLs V130 preservadas. | V132 — 6 URLs novas para CAP225 Rodri (Back in the Game 14 Aug '25), sem misturar National Teams Rodri; todos os 225 vídeos V131 preservados. | V133 — 8 URLs novas para CAP088 e CAP099, 231 vídeos únicos V132 preservados; Messi duplicado foi rejeitado. | V134 — 5 vídeos novos como candidatos para CAP025, CAP048, CAP073; 239 URLs V133 preservadas e nenhuma correspondência de Card ID afirmada. | V135 — 13 URLs novas, 18 associações candidatas nas CAP237-CAP244, 244 URLs anteriores preservadas. | V136 — 10 vídeos novos e 10 associações candidatas em sete CAPs; todos os 257 vídeos V135 preservados. | V137 — 7 URLs inéditas, 1 associação de URL preexistente, CAP121 Belletti e CAP162 Pau Torres pack-compatible, CAP201 Yan Diomande candidato; todos os 267 IDs V136 mantidos. | V138 — 3 vídeos novos em 2 cartas candidatas, preservadas 274 URLs V137. | V139 — 2 novos vídeos candidatos para CAP189 e CAP198, 277 URLs V138 preservadas. | V140 — 3 vídeos candidatos novos para CAP114 CAP118 CAP166; congeladas 279 URLs da V139. | V141 — 2 novas URLs de Ronaldinho CAP068 (1 compatível por data, 1 candidata), 282 vídeos V140 preservados. | V142 — oito IDs novos para CAP7,22,61,122,132,187,194,196; 284 URLs V141 preservadas. | V143 — 6 vídeos e 6 associações candidatas em CAP098, CAP191, CAP205, 292 URLs V142 preservadas. | V144b — 4 vídeos candidatos CAP149 e CAP156, 298 URLs V143 mantidas."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas. | V131 — quatro URLs novas para CAP087 Giuliano Simeone, CAP125 Nordi Mukiele e CAP163 Jérémy Jacquet; todas as 221 URLs V130 preservadas. | V132 — 6 URLs novas para CAP225 Rodri (Back in the Game 14 Aug '25), sem misturar National Teams Rodri; todos os 225 vídeos V131 preservados. | V133 — 8 URLs novas para CAP088 e CAP099, 231 vídeos únicos V132 preservados; Messi duplicado foi rejeitado. | V134 — 5 vídeos novos como candidatos para CAP025, CAP048, CAP073; 239 URLs V133 preservadas e nenhuma correspondência de Card ID afirmada. | V135 — 13 URLs novas, 18 associações candidatas nas CAP237-CAP244, 244 URLs anteriores preservadas. | V136 — 10 vídeos novos e 10 associações candidatas em sete CAPs; todos os 257 vídeos V135 preservados. | V137 — 7 URLs inéditas, 1 associação de URL preexistente, CAP121 Belletti e CAP162 Pau Torres pack-compatible, CAP201 Yan Diomande candidato; todos os 267 IDs V136 mantidos. | V138 — 3 vídeos novos em 2 cartas candidatas, preservadas 274 URLs V137. | V139 — 2 novos vídeos candidatos para CAP189 e CAP198, 277 URLs V138 preservadas. | V140 — 3 vídeos candidatos novos para CAP114 CAP118 CAP166; congeladas 279 URLs da V139. | V141 — 2 novas URLs de Ronaldinho CAP068 (1 compatível por data, 1 candidata), 282 vídeos V140 preservados. | V142 — oito IDs novos para CAP7,22,61,122,132,187,194,196; 284 URLs V141 preservadas. | V143 — 6 vídeos e 6 associações candidatas em CAP098, CAP191, CAP205, 292 URLs V142 preservadas. | V144b — 4 vídeos candidatos CAP149 e CAP156, 298 URLs V143 mantidas. | V145 — 4 URLs candidatas CAP206 Zaniolo, todos os 302 vídeos V144B preservados."
 }
