@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V119_RESEARCH",
+  "schema": "SCOUT_V120_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -49,15 +49,18 @@
     "V119: sete novas URLs para #006, #080, #101, #127, #134, #148, #170; preservar as 134 URLs distintas da V118 e as 246 cartas.",
     "V119: Xavi Simons #080 e Jan Oblak #170 apresentam divergência de rótulo Highlight no cadastro vs Show Time em fontes; correspondência de pacote e ID textual externo não substitui revisão visual da carta; não alterar identidades.",
     "V119: vídeos coletivos Manchester United e Brazilian League e shorts não podem ser tratados como gameplay competitivo individual ou evidência Player ID; Koundé PS4 não valida comportamento mobile.",
-    "V119: não atribuir Rivaldo Low Screamer a Rivaldo 88035555413454 ou Cafu Epic 105 a Cafu Roma GR 88033407929805 sem provar edição em quadros."
+    "V119: não atribuir Rivaldo Low Screamer a Rivaldo 88035555413454 ou Cafu Epic 105 a Cafu Roma GR 88033407929805 sem provar edição em quadros.",
+    "V120: 6 URLs distintas em 3 CAPs antes pendentes: Akanji Show Time Daily Bonus (4), Guti Epic (1 candidato sem edição) e Cubarsí (1 candidato abertura de pacote). Preservar 141 URLs distintas V119.",
+    "V120: no vídeo Mednasah os capítulos de Akanji são descritos como build, escalação e teste PvP; timestamps provêm da descrição, não da nossa revisão quadro a quadro. Criador verificado não equivale a pro-player de torneio.",
+    "V120: Cubarsí Spain 2026 Highlight #159 NÃO pode ser confundido com Show Time Spain 2026; abrir pacote não é teste individual. Guti 01-02 deve exigir prova do Card ID."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 61,
-    "com_apenas_candidatos": 30,
-    "sem_video": 155,
-    "total_videos": 150,
-    "total_videos_unicos": 141,
+    "com_video_pacote_compativel": 62,
+    "com_apenas_candidatos": 32,
+    "sem_video": 152,
+    "total_videos": 156,
+    "total_videos_unicos": 147,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -2040,8 +2043,21 @@
       "nome": "Guti",
       "edicao": "Epic — Madrid Chamartin B 01-02",
       "card_id": "88029918268943",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=l4SUGVc3goA",
+          "video_id": "l4SUGVc3goA",
+          "criador": "breezyefootball",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube 20/10/2025: GAMEPLAY WITH GUTI NEW EPIC IN EFOOTBALL 2026. Mesmo jogador e raridade, mas metadados não citam Madrid Chamartin B 01-02 nem Card ID 88029918268943. Vídeo candidato, não há confirmação da variante.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte e metadados públicos verificáveis, sem revisão visual integral da filmagem. Nenhum Player ID, Card ID em frame, progressão PP, gameplay individual comprovado nem status de pro player de torneio validado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3346,8 +3362,57 @@
       "nome": "Manuel Akanji",
       "edicao": "Show Time — Daily Bonus 2026 — Manuel Akanji",
       "card_id": "106780671715908",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=KWKUicXhh_Q",
+          "video_id": "KWKUicXhh_Q",
+          "criador": "Mednasah",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube 01/05/2026, review Mobile dos jogadores gratuitos Show Time Daily Game 2026 (Manuel Akanji e Luis Diaz); capítulos de Akanji: 00:34 build, 01:48 team selection, 02:02 gameplay anunciado PvP, 07:57 teste aéreo e 11:58 review. Pacote compatível com #146, mas Card ID 106780671715908 e resultados não conferidos quadro a quadro. Criador verificado do YouTube NÃO significa pro-player de torneio.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte e metadados públicos verificáveis, sem revisão visual integral da filmagem. Nenhum Player ID, Card ID em frame, progressão PP, gameplay individual comprovado nem status de pro player de torneio validado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=5_09dJa8_nA",
+          "video_id": "5_09dJa8_nA",
+          "criador": "Kondan Sport",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "YouTube 26/05/2026. Review do Show Time Manuel Akanji gratuito eFootball Mobile 2026, com build, boosters, habilidades e teste em jogo anunciado. A descrição menciona Aerial Fort e zagueiro destruidor. Card ID e atribuições exatas de PP não conferidos visualmente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte e metadados públicos verificáveis, sem revisão visual integral da filmagem. Nenhum Player ID, Card ID em frame, progressão PP, gameplay individual comprovado nem status de pro player de torneio validado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=7Iakw3S9ayY",
+          "video_id": "7Iakw3S9ayY",
+          "criador": "PES LEGEND AA",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube 07/05/2026: Daily Game Free Show Time Manuel Akanji Best Training Guide. Tutorial individual de campanha Daily Bonus 2026; não é prova de desempenho, nem Card ID visto em frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte e metadados públicos verificáveis, sem revisão visual integral da filmagem. Nenhum Player ID, Card ID em frame, progressão PP, gameplay individual comprovado nem status de pro player de torneio validado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=Jz5qk-nqS6w",
+          "video_id": "Jz5qk-nqS6w",
+          "criador": "eFootball Legend",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube 08/05/2026: Daily Game Free Show Time Manuel Akanji Best Training Guide. Metadados associam edição gratuita Daily Bonus, mas ID e PP continuam sem auditoria visual. Não copiar builds automaticamente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte e metadados públicos verificáveis, sem revisão visual integral da filmagem. Nenhum Player ID, Card ID em frame, progressão PP, gameplay individual comprovado nem status de pro player de torneio validado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3581,8 +3646,21 @@
       "nome": "Pau Cubarsí",
       "edicao": "Highlight — Spain 2026 — Pau Cubarsí",
       "card_id": "105854569449280",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=lMAE7LqYur8",
+          "video_id": "lMAE7LqYur8",
+          "criador": "Rookie Melb eF",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "abertura_de_pacote",
+          "descricao_evidencia": "YouTube 11/07/2026: PACK OPENING! new Pau Cubarsí? | eFootball 2026. Apenas abertura de pacote; não comprova versão Highlight Spain 2026 do CAP159 (Card ID 105854569449280), nem gameplay individual. Não confundir com Show Time Spain 2026 de Cubarsi.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte e metadados públicos verificáveis, sem revisão visual integral da filmagem. Nenhum Player ID, Card ID em frame, progressão PP, gameplay individual comprovado nem status de pro player de torneio validado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5014,5 +5092,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119."
 }
