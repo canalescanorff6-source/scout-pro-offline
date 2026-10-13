@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V122_RESEARCH",
+  "schema": "SCOUT_V123_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -58,15 +58,18 @@
     "V121: eFootball Nuts Renato Veiga 03:46 é capítulo descrito pelo autor, não inspeção visual; Bixoy Raphinha é guia de obtenção, não teste competitivo. Fonte externa não muda ficha ou PP.",
     "V122: 4 URLs novas em 3 cartas anteriormente sem vídeo: #130 Reece James Step-up 2027, #223 Frenkie de Jong National Team Icons vol.3 (PS4), #209 Jamal Musiala National Team Rising Stars (guia Mobile e review coletiva). 154 vídeos da V121 intocados.",
     "V122: não associar vídeo Step-up Musiala à carta #209 Rising Stars; não associar National Team Icons Frenkie a Step-up Frenkie; outras versões claramente distintas descartadas.",
-    "V122: no guia Reece James, termos Show Time e OVR nas hashtags são ambíguos; respeitar classificação Highlight da ficha e não registrar builds/Ovr como validados."
+    "V122: no guia Reece James, termos Show Time e OVR nas hashtags são ambíguos; respeitar classificação Highlight da ficha e não registrar builds/Ovr como validados.",
+    "V123: 10 novas URLs distintas em 8 CAPs antes pendentes: #034 Stoichkov, #051 Maradona, #138 Theo, #142 Robertson (2), #158 Antonio Silva, #174 Rui Silva, #179 Osimhen, #220 Modric (2). Preservar todas as 158 URLs da V122.",
+    "V123: Stoichkov é walkout PS5, não Mobile; Andrew Robertson e Luka Modric possuem vídeos coletivos; Rui Silva/António Silva vêm de análises de pacote. Não inferir avaliação individual, PP ou pro player desses formatos.",
+    "V123: o vídeo do Maradona foi encontrado em índice de busca com clube/temporada 82-83, porém fetch da página YouTube não exibiu metadados completos; compatibilidade textual de pacote não é prova de Card ID visual."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 69,
+    "com_video_pacote_compativel": 77,
     "com_apenas_candidatos": 33,
-    "sem_video": 144,
-    "total_videos": 167,
-    "total_videos_unicos": 158,
+    "sem_video": 136,
+    "total_videos": 177,
+    "total_videos_unicos": 168,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -1036,8 +1039,21 @@
       "nome": "Hristo Stoichkov",
       "edicao": "Epic — Bulgaria 1994",
       "card_id": "88029649701165",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=-zM2ozf9Bm0",
+          "video_id": "-zM2ozf9Bm0",
+          "criador": "Criador não identificado no resultado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "YouTube com título confirmado e metadados de vídeo: 'eFootball 2024 - Hristo Stoichkov - Bulgaria 1994 - Epic Walkout'. O nome/país/ano/raridade do CAP034 Epic Bulgaria 1994 são compatíveis; é apresentação/walkout com tags PS5Share, NÃO gameplay Mobile. Card ID 88029649701165 não foi conferido nos frames, nem desempenho.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte pública de pesquisa e título verificados; sem inspeção integral dos quadros ou da partida. Card ID, Player ID, distribuição PP, credencial pro player e desempenho competitivo não auditados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1507,8 +1523,21 @@
       "nome": "Diego Maradona",
       "edicao": "Epic — FC Barcelona 82-83",
       "card_id": "88029918268911",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=Q3knkgITLy8",
+          "video_id": "Q3knkgITLy8",
+          "criador": "sikai_id",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_carta",
+          "descricao_evidencia": "YouTube resultado indexado 'Review D. Maradona SS Classic No. 10 FC Barcelona 82-83 Epic Worldwide! - eFootball 2024', @sikai_id. Clube, 82-83 e raridade Epic coincidem com CAP051, mas URL não expôs metadados completos no acesso direto. Nenhum Card ID 88029918268911 ou treino comprovado visualmente, sem assumir gameplay completo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte pública de pesquisa e título verificados; sem inspeção integral dos quadros ou da partida. Card ID, Player ID, distribuição PP, credencial pro player e desempenho competitivo não auditados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3218,8 +3247,21 @@
       "nome": "Théo Hernández",
       "edicao": "Highlight — National Team Pack France 2026",
       "card_id": "105849469121172",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=cUwxFZJ1IZo",
+          "video_id": "cUwxFZJ1IZo",
+          "criador": "Canal não identificado no resultado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "analise_de_pacote",
+          "descricao_evidencia": "YouTube 'France Pack is INSANE! Full Review | Mbappé, Dembélé & Deschamps | eFootball 2026'. A descrição indexada inclui Theo Hernández no France National Team Pack 2026. Review coletivo, não teste individual do CAP138, Card ID 105849469121172 não conferido no vídeo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte pública de pesquisa e título verificados; sem inspeção integral dos quadros ou da partida. Card ID, Player ID, distribuição PP, credencial pro player e desempenho competitivo não auditados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3281,8 +3323,33 @@
       "nome": "Andrew Robertson",
       "edicao": "Highlight — National Team Captains 11 Jun '26 — Andrew Robertson",
       "card_id": "105862354012836",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=3nFVAjIqF_g",
+          "video_id": "3nFVAjIqF_g",
+          "criador": "Canal não identificado no resultado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube título 'Nominating Contract National Team Captains', pacote correspondente a CAP142 11 Jun '26; descrição indexada inclui Andrew Robertson e capítulo 35:27 sobre ele. Horário publicado pelo criador, não verificado em frames. Não confirmar build nem Card ID 105862354012836.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte pública de pesquisa e título verificados; sem inspeção integral dos quadros ou da partida. Card ID, Player ID, distribuição PP, credencial pro player e desempenho competitivo não auditados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=XthOpB2Fj6E",
+          "video_id": "XthOpB2Fj6E",
+          "criador": "Canal não identificado no resultado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube resultado 'Andrew Robertson is BROKEN? Opening & Match ...', referente a National Team Captains Pack Review eFootball 2026. Anuncia partida com Robertson, mas não foi assistida; edição/card ID 105862354012836 ainda não confirmados por inspeção visual. Não inferir avaliação Player ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte pública de pesquisa e título verificados; sem inspeção integral dos quadros ou da partida. Card ID, Player ID, distribuição PP, credencial pro player e desempenho competitivo não auditados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3679,8 +3746,21 @@
       "nome": "António Silva",
       "edicao": "Highlight — National Team Pack Portugal 2026",
       "card_id": "105848932292145",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=0m7KnBF8HQw",
+          "video_id": "0m7KnBF8HQw",
+          "criador": "Canal não identificado no resultado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube 'Is The Portugal Premium Pack ACTUALLY Worth 2000...', Portugal National Team Premium Pack 2026; descrição pública identifica António Silva Review & Build em 01:55 e Rui Silva em 01:21. Atribuído apenas a CAP158 António Silva; capítulo/PP não auditados em vídeo. Card ID 105848932292145 pendente em frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte pública de pesquisa e título verificados; sem inspeção integral dos quadros ou da partida. Card ID, Player ID, distribuição PP, credencial pro player e desempenho competitivo não auditados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3987,8 +4067,21 @@
       "nome": "Rui Silva",
       "edicao": "Highlight — National Team Pack Portugal 2026",
       "card_id": "105848932186223",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=x3I34DwJA1E",
+          "video_id": "x3I34DwJA1E",
+          "criador": "Canal não identificado no resultado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "YouTube 'Racikan & Statistik Pack National Team Portugal 26 (PREMIUM)', descrição lista Rui Silva nominalmente. Pacote National Team Portugal 2026 corresponde a CAP174. É guia coletivo/estatísticas, não gameplay individual; Card ID 105848932186223/PP não inspecionados.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte pública de pesquisa e título verificados; sem inspeção integral dos quadros ou da partida. Card ID, Player ID, distribuição PP, credencial pro player e desempenho competitivo não auditados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4074,8 +4167,21 @@
       "nome": "Victor Osimhen",
       "edicao": "Highlight — CAF Africa Cup of Nations Selection 11 Dec '25 — Victor Osimhen",
       "card_id": "105823514783663",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=MMyvkfdS_rs",
+          "video_id": "MMyvkfdS_rs",
+          "criador": "Canal não identificado no resultado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "YouTube 'VICTOR OSIMHEN CAF AFRICA CUP OF NATIONS 25 ...', descrição indexada confirma HIGHLIGHT CARD EFOOTBALL 2026. Mesmo evento e raridade da CAP179 Highlight CAF Africa Cup Selection 11 Dec '25 (Card ID 105823514783663 em pesdb); sem Card ID visto em quadros nem gameplay verificado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte pública de pesquisa e título verificados; sem inspeção integral dos quadros ou da partida. Card ID, Player ID, distribuição PP, credencial pro player e desempenho competitivo não auditados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4880,8 +4986,33 @@
       "nome": "Luka Modrić",
       "edicao": "Highlight — National Team Captains 11 Jun '26",
       "card_id": "105862353945906",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=4VtMS5JEjwM",
+          "video_id": "4VtMS5JEjwM",
+          "criador": "Canal não identificado no resultado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "YouTube 'eFootball 2026 - MODRIĆ 99 OVR! ALL 10 NATIONAL ...', descrição identifica NATIONAL TEAM CAPTAINS 11 Jun '26 e Luka Modrić com outros jogadores. Pacote compatível com CAP220, mas 99 OVR é promessa da fonte, não progresso/PP validado. Card ID 105862353945906 não checado em frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte pública de pesquisa e título verificados; sem inspeção integral dos quadros ou da partida. Card ID, Player ID, distribuição PP, credencial pro player e desempenho competitivo não auditados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=gp8XLrYKThw",
+          "video_id": "gp8XLrYKThw",
+          "criador": "Canal não identificado no resultado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube 'Train Luka Modrić from 85 to 98 Overall in eFootball 2026'; metadados indexados citam explicitamente Luka Modrić National Team Captains. Guia individual associado ao pacote 11 Jun '26 do CAP220. Não validar números 85/98, PP ou Player ID sem revisar imagens e Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Fonte pública de pesquisa e título verificados; sem inspeção integral dos quadros ou da partida. Card ID, Player ID, distribuição PP, credencial pro player e desempenho competitivo não auditados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5238,5 +5369,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente."
 }
