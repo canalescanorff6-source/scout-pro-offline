@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V116_RESEARCH",
+  "schema": "SCOUT_V117_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -41,15 +41,17 @@
     "V115 rejeita associar vídeos de Iniesta Big Time Spain 2010 a Epic Spain 2010 sem identificação do Card ID.",
     "V116: 11 URLs novas em 8 cartas; preservadas as 111 URLs antigas e todas as identidades, habilidades, treinamentos e artes.",
     "V116 CAP100 Orkun Kökçü: divergência de raridade: cadastro Highlight e fonte externa Show Time para mesmo Card ID. Não corrigir sem revisão da identidade.",
-    "V116 CAP048 Jan Koller: vídeos de National Attackers e Treasure Link exibem versões possivelmente diferentes do Card ID 88029649833482; nenhum foi vinculado."
+    "V116 CAP048 Jan Koller: vídeos de National Attackers e Treasure Link exibem versões possivelmente diferentes do Card ID 88029649833482; nenhum foi vinculado.",
+    "V117: seis URLs novas para quatro CAPs pendentes; variantes ainda não confirmadas por Card ID. Guias de obtenção e testes comparativos não são gameplay individual.",
+    "V117: links Ruud van Nistelrooij 101 e Oliver Kahn 105 não foram catalogados por forte risco de edições diferentes das fichas #012 e #169."
   ],
   "summary": {
     "total": 246,
     "com_video_pacote_compativel": 51,
-    "com_apenas_candidatos": 23,
-    "sem_video": 172,
-    "total_videos": 131,
-    "total_videos_unicos": 122,
+    "com_apenas_candidatos": 27,
+    "sem_video": 168,
+    "total_videos": 137,
+    "total_videos_unicos": 128,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -585,8 +587,33 @@
       "nome": "Safee Sali",
       "edicao": "Epic — Malaysia 2011 — Safee Sali",
       "card_id": "88030455171360",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=7gZJKSixpBI",
+          "video_id": "7gZJKSixpBI",
+          "criador": "Bixoy Tech & Gaming",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia do Epic Safee Sali gratuito eFootball 2026 Mobile (13/11/2025). Campanha Malaysia 2011 e Card ID 88030455171360 não são identificados; existem outros Epic Safee Sali da mesma era.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos localizados, nenhum frame de Card ID analisado. Não confirma Player ID, PP, desempenho de partida ou participação em torneios profissionais."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=WYFUe8my1Nk",
+          "video_id": "WYFUe8my1Nk",
+          "criador": "MS PES GAMING",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_de_obtencao",
+          "descricao_evidencia": "Tutorial de obtenção do Epic Safee Sali gratuito eFootball 2026 Mobile (13/11/2025), não é gameplay individual e não comprova a edição Malaysia 2011/ID 88030455171360.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos localizados, nenhum frame de Card ID analisado. Não confirma Player ID, PP, desempenho de partida ou participação em torneios profissionais."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1541,8 +1568,33 @@
       "nome": "Dirk Kuyt",
       "edicao": "Epic — Liverpool R 08-09",
       "card_id": "88040655687168",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=J9IVU3iAJj4",
+          "video_id": "J9IVU3iAJj4",
+          "criador": "Niloy Games",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia de treino e nota máxima do Dirk Kuyt eFootball 2026 (25/02/2026), sem confirmação Liverpool R 08-09 ou Card ID 88040655687168.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos localizados, nenhum frame de Card ID analisado. Não confirma Player ID, PP, desempenho de partida ou participação em torneios profissionais."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=F7kslk_OeF4",
+          "video_id": "F7kslk_OeF4",
+          "criador": "Mr. piupiu 07",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Treino e booster Epic Dirk Kuyt 103 em 25/02/2026. A versão Liverpool R 08-09 e Card ID 88040655687168 não foram verificados em quadros.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos localizados, nenhum frame de Card ID analisado. Não confirma Player ID, PP, desempenho de partida ou participação em torneios profissionais."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2468,8 +2520,21 @@
       "nome": "Pep Guardiola",
       "edicao": "Epic — Spain 2000 — Pep Guardiola",
       "card_id": "88040387251639",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=UHcuJvU-ooU",
+          "video_id": "UHcuJvU-ooU",
+          "criador": "SPORTSTRUNK",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia Epic Pep Guardiola 106 da campanha 1 Billion Downloads (09/04/2026). A relação com Espanha 2000 e Card ID 88040387251639 ainda não está confirmada no vídeo; outros Epic Guardiola Spain 2000 existem.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos localizados, nenhum frame de Card ID analisado. Não confirma Player ID, PP, desempenho de partida ou participação em torneios profissionais."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3157,8 +3222,21 @@
       "nome": "Tony Adams",
       "edicao": "Epic — Arsenal FC 90-91",
       "card_id": "88032334054195",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=XJnvqNA1x0M",
+          "video_id": "XJnvqNA1x0M",
+          "criador": "eFootball Lab",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "teste_comparativo",
+          "descricao_evidencia": "Vídeo de experimento sobre Aceleração de defensores no eFootball v5.2.2. Descrição republicada identifica Tony Adams Epic em 00:54, Pacho 01:19 e Maldini 01:44; vídeo coletivo, sem comprovação de Arsenal FC 90-91 nem Card ID 88032334054195. URL YouTube não pôde ser inspecionada integralmente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos localizados, nenhum frame de Card ID analisado. Não confirma Player ID, PP, desempenho de partida ou participação em torneios profissionais."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4761,5 +4839,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas."
 }
