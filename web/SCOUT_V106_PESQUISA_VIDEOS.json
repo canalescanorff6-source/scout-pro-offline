@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V114_RESEARCH",
+  "schema": "SCOUT_V115_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -35,15 +35,18 @@
     "Park Ji-Sung Manchester United 08-09 possui várias variantes Epic com Card IDs diferentes, não inferir edição por nome e clube.",
     "Neuer Captain Tsubasa (#175) e Neuer Living Legends (#011) são cartas diferentes, nunca compartilhar builds, treinos ou avaliações entre IDs.",
     "Vídeos de pacote World Player of the Year não comprovam gameplay individual do Vitinha; diferenciar gameplay de review coletivo.",
-    "Nenhum vídeo de TikTok foi confirmado por URL individual neste lote; não inventar URLs."
+    "Nenhum vídeo de TikTok foi confirmado por URL individual neste lote; não inventar URLs.",
+    "V115: 7 novos vídeos para cinco CAPs, apenas evidências de pesquisa. Não equiparar metadados com validação do Card ID, Player ID, treinamento ou pro player de torneio.",
+    "Tuncay Şanlı: há informações públicas divergentes sobre OVR e treinabilidade; nenhuma build será aplicada até identificação visual inequívoca.",
+    "V115 rejeita associar vídeos de Iniesta Big Time Spain 2010 a Epic Spain 2010 sem identificação do Card ID."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 46,
-    "com_apenas_candidatos": 15,
-    "sem_video": 185,
-    "total_videos": 113,
-    "total_videos_unicos": 104,
+    "com_video_pacote_compativel": 48,
+    "com_apenas_candidatos": 18,
+    "sem_video": 180,
+    "total_videos": 120,
+    "total_videos_unicos": 111,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -578,8 +581,33 @@
       "nome": "İlhan Mansız",
       "edicao": "Epic — Türkiye 2002 (distribuição 30th Anniversary, 2026)",
       "card_id": "88040655732170",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=bGnvHQzTDsY",
+          "video_id": "bGnvHQzTDsY",
+          "criador": "Melih Yagiz",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "Vídeo publicado em 19/03/2026 apresenta o Epic İlhan Mansız gratuito (103 OVR); não menciona expressamente Türkiye 2002/30th Anniversary nem exibe Card ID na descrição.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, data e descrição pública verificados. Identidade por Card ID, Player ID, builds e status de profissional de torneio não validados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=5pK2eJ_mnow",
+          "video_id": "5pK2eJ_mnow",
+          "criador": "Hokage do Pes Mobile",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review anunciado como gameplay do Epic gratuito da Türkiye com İlhan Mansız em 19/03/2026; edição Türkiye 2002 e Card ID não comprovados por frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, data e descrição pública verificados. Identidade por Card ID, Player ID, builds e status de profissional de torneio não validados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -795,8 +823,33 @@
       "nome": "Tuncay Şanlı",
       "edicao": "Epic — Türkiye 2003",
       "card_id": "88040655557091",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=qjlM1XPLVg0",
+          "video_id": "qjlM1XPLVg0",
+          "criador": "PES Sevenler Birliği",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Vídeo de 05/03/2026 relata receber e evoluir Tuncay Şanlı Epic para OVR 104; não menciona explicitamente Card ID nem Türkiye 2003. Treinabilidade precisa ser confirmada.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, data e descrição pública verificados. Identidade por Card ID, Player ID, builds e status de profissional de torneio não validados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=XtNBkmCbwkE",
+          "video_id": "XtNBkmCbwkE",
+          "criador": "İsmail Özer",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Review com partidas do Tuncay Şanlı Epic 103 e habilidade Willpower em 05/03/2026, sem comprovação do Card ID Türkiye 2003.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, data e descrição pública verificados. Identidade por Card ID, Player ID, builds e status de profissional de torneio não validados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -874,8 +927,21 @@
       "nome": "Dimitar Berbatov",
       "edicao": "Epic — Manchester United 10-11",
       "card_id": "88039044941086",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=64LP1JEex_E",
+          "video_id": "64LP1JEex_E",
+          "criador": "ALBA PES™",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Vídeo do Berbatov Epic 1 Billion Downloads 2026: progressão às 00:32, gameplay em duas partidas às 01:08 e 02:01. ID Manchester United 10-11 não conferido.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, data e descrição pública verificados. Identidade por Card ID, Player ID, builds e status de profissional de torneio não validados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2156,8 +2222,21 @@
       "nome": "João Neves",
       "edicao": "Highlight — National Team Pack Portugal 2026",
       "card_id": "105848932298328",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=yR3iLYw7-iU",
+          "video_id": "yR3iLYw7-iU",
+          "criador": "Tarek Gameplay",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia individual João Neves Portugal Pack 2026 publicado em 13/07/2026; a referência ao pacote é compatível, mas progressão e Card ID não foram conferidos no quadro.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, data e descrição pública verificados. Identidade por Card ID, Player ID, builds e status de profissional de torneio não validados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2698,8 +2777,21 @@
       "nome": "Nuno Mendes",
       "edicao": "Highlight — National Team Pack Portugal 2026",
       "card_id": "105848932271764",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=i8XADiEAj20",
+          "video_id": "i8XADiEAj20",
+          "criador": "Saminur Pes Official",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia individual Nuno Mendes Portugal Pack 2026, publicado em 25/06/2026; referência a OVR 103, LB e treinamento. Sem confirmação visual do Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, data e descrição pública verificados. Identidade por Card ID, Player ID, builds e status de profissional de torneio não validados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4526,5 +4618,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores."
 }
