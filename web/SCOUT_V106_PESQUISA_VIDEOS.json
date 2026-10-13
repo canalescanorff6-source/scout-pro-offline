@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V130_RESEARCH",
+  "schema": "SCOUT_V131_RESEARCH",
   "data_corte": "2026-10-13",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -77,15 +77,16 @@
     "V127: 3 novas URLs em CAP067, CAP093 e CAP219. O vídeo de CAP093 é revisão coletiva de 11 cartas com fonte espelhada; não indica capítulos de desempenho individual nem Card ID. CAP067 é short, não gameplay. CAP219 é treino anunciado, não build aprovada.",
     "V128: seis vídeos novos em cinco CAPs. Grimaldo: análise coletiva misturando English August e Summer Transfer. Outros reviews anunciam gameplay via metadados; nenhum Card ID ou Player ID conferido em frames. Não aplicar builds automaticamente.",
     "V129: 7 novas URLs para três cartas (#020 Rodri, #107 Tchouaméni, #180 Ekitiké). Rodri permanece candidato por falta de data/ID; outros dois têm pacote compatível por metadados. Guias de treino não comprovam build aprovada, e review de pacote não é gameplay individual. 207 URLs V128 preservadas.",
-    "V130: sete URLs novas para CAP089, CAP112, CAP136 e CAP176. Kelleher sem data no título e dois vídeos de Mitchell sem pacote temporal são edição pendente. Shorts não são gameplays; review anunciado não equivale a filmagem inspecionada. Preservar as 214 URLs únicas da V129."
+    "V130: sete URLs novas para CAP089, CAP112, CAP136 e CAP176. Kelleher sem data no título e dois vídeos de Mitchell sem pacote temporal são edição pendente. Shorts não são gameplays; review anunciado não equivale a filmagem inspecionada. Preservar as 214 URLs únicas da V129.",
+    "V131: quatro URLs inéditas para CAP087, CAP125 e CAP163. Preservadas as 221 URLs únicas V130; nenhum vídeo analisado quadro a quadro. Reviews coletivas e obtenção não são gameplay individual. Vídeos de outras edições do mesmo jogador foram descartados."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 107,
+    "com_video_pacote_compativel": 110,
     "com_apenas_candidatos": 39,
-    "sem_video": 100,
-    "total_videos": 230,
-    "total_videos_unicos": 221,
+    "sem_video": 97,
+    "total_videos": 234,
+    "total_videos_unicos": 225,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -2497,12 +2498,37 @@
       "nome": "Giuliano Simeone",
       "edicao": "Show Time — Ranking Event Rewards 2027",
       "card_id": "106798388494170",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=L37afCAoSB4",
+          "video_id": "L37afCAoSB4",
+          "criador": "Zeeshan Bhatti 9",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_de_obtencao",
+          "descricao_evidencia": "Vídeo de 3 set 2026 'How To Get FREE Showtime Marc Guehi, Mike Maignan, Locatelli, Simeone & Oyarzabal in eFootball 2027'. Descrição cita explicitamente Giuliano Simeone e Ranking Event Rewards. Guia de obtenção/comparação coletiva, não gameplay individual.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V131: correspondência pelo título, descrição e comparação de campanha. Sem inspeção visual da carta/ID, sem prova de pro player, nem build validada."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=DLD_d1_A5ak",
+          "video_id": "DLD_d1_A5ak",
+          "criador": "megatfarisz",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_pacote",
+          "descricao_evidencia": "Vídeo de 7 set 2026 'Rank event reward 2027 #efootball #konami.Got guehi,oyarzabal,maignan,locatelli,gibbs white,simeone'. Nomes e evento são compatíveis com a seleção Ranking Event Rewards 2027. Título não comprova gameplay individual nem Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V131: correspondência pelo título, descrição e comparação de campanha. Sem inspeção visual da carta/ID, sem prova de pro player, nem build validada."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 88,
@@ -3285,12 +3311,25 @@
       "nome": "Nordi Mukiele",
       "edicao": "Highlight — English League Selection 13 Aug '26",
       "card_id": "105873896745385",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=2R4LWhUZTvo",
+          "video_id": "2R4LWhUZTvo",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "Página do YouTube com título 'Efootball League Selection English Aug '26 - Nordi Mukiele'. Pacote English Aug 2026 corresponde nominalmente a English League Selection 13 Aug '26 confirmado por listas externas; o título não demonstra gameplay nem Card ID em quadro.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V131: correspondência pelo título, descrição e comparação de campanha. Sem inspeção visual da carta/ID, sem prova de pro player, nem build validada."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 126,
@@ -4230,12 +4269,25 @@
       "nome": "Jérémy Jacquet",
       "edicao": "Highlight — Summer Transfer 13 Aug '26 — Jérémy Jacquet",
       "card_id": "105873091489528",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=5Srqhnd0GF0",
+          "video_id": "5Srqhnd0GF0",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Página do YouTube intitulada 'eFootball Pack Review: Summer Transfer 2026', com capítulo para Jérémy Jacquet em 00:23 anunciado na descrição. Os demais nomes Tzolis, Palestra, Manzambi e Andrey Santos conferem com pacote Summer Transfer 13 Aug '26. É review coletiva, não teste individual de desempenho.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V131: correspondência pelo título, descrição e comparação de campanha. Sem inspeção visual da carta/ID, sem prova de pro player, nem build validada."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 164,
@@ -6057,5 +6109,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas. | V131 — quatro URLs novas para CAP087 Giuliano Simeone, CAP125 Nordi Mukiele e CAP163 Jérémy Jacquet; todas as 221 URLs V130 preservadas."
 }
