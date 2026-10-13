@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V115_RESEARCH",
+  "schema": "SCOUT_V116_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -38,15 +38,18 @@
     "Nenhum vídeo de TikTok foi confirmado por URL individual neste lote; não inventar URLs.",
     "V115: 7 novos vídeos para cinco CAPs, apenas evidências de pesquisa. Não equiparar metadados com validação do Card ID, Player ID, treinamento ou pro player de torneio.",
     "Tuncay Şanlı: há informações públicas divergentes sobre OVR e treinabilidade; nenhuma build será aplicada até identificação visual inequívoca.",
-    "V115 rejeita associar vídeos de Iniesta Big Time Spain 2010 a Epic Spain 2010 sem identificação do Card ID."
+    "V115 rejeita associar vídeos de Iniesta Big Time Spain 2010 a Epic Spain 2010 sem identificação do Card ID.",
+    "V116: 11 URLs novas em 8 cartas; preservadas as 111 URLs antigas e todas as identidades, habilidades, treinamentos e artes.",
+    "V116 CAP100 Orkun Kökçü: divergência de raridade: cadastro Highlight e fonte externa Show Time para mesmo Card ID. Não corrigir sem revisão da identidade.",
+    "V116 CAP048 Jan Koller: vídeos de National Attackers e Treasure Link exibem versões possivelmente diferentes do Card ID 88029649833482; nenhum foi vinculado."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 48,
-    "com_apenas_candidatos": 18,
-    "sem_video": 180,
-    "total_videos": 120,
-    "total_videos_unicos": 111,
+    "com_video_pacote_compativel": 51,
+    "com_apenas_candidatos": 23,
+    "sem_video": 172,
+    "total_videos": 131,
+    "total_videos_unicos": 122,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -557,8 +560,21 @@
       "nome": "Jack Wilshere",
       "edicao": "Epic — Arsenal FC 10-11",
       "card_id": "88029918172866",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=ogWTZ4XIcxI",
+          "video_id": "ogWTZ4XIcxI",
+          "criador": "SDP MULTIVERSE",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia Epic Jack Wilshere de 26/01/2025; fonte não comprova Arsenal 10-11 nem Card ID 88029918172866.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1066,8 +1082,21 @@
       "nome": "Nihat Kahveci",
       "edicao": "Epic — Türkiye 2008",
       "card_id": "88042803217588",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=Mch5qXi61Y8",
+          "video_id": "Mch5qXi61Y8",
+          "criador": "DD ELECTROTEC GAMING",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia/abertura Epic Nihat Kahveci de 22/05/2026; Türkiye 2008 e Card ID 88042803217588 não aparecem nos metadados.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1118,8 +1147,21 @@
       "nome": "Andriy Shevchenko",
       "edicao": "Epic — Chelsea B 06-07",
       "card_id": "88036360723178",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=tSRdQk6VkNw",
+          "video_id": "tSRdQk6VkNw",
+          "criador": "Sikai",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Treino Epic Andriy Shevchenko Chelsea publicado 08/08/2026; a versão Chelsea B 06-07 e Card ID 88036360723178 não foram validados.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        }
+      ],
       "referencias_da_carta": [
         "https://pesdb.net/efootball/players/andriy-shevchenko-88036360723178"
       ],
@@ -1244,8 +1286,21 @@
       "nome": "Didier Drogba",
       "edicao": "Epic — Galatasaray SK 13-14",
       "card_id": "88032334188033",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=NiILWt59wB8",
+          "video_id": "NiILWt59wB8",
+          "criador": "Tática eFootball",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Gameplay em português do Epic Drogba do Galatasaray publicado 29/06/2025; não há prova visual de que seja a edição Galatasaray SK 13-14, Card ID 88032334188033.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1498,8 +1553,33 @@
       "nome": "Désiré Doué",
       "edicao": "Show Time — Daily Bonus 2026",
       "card_id": "106765639374176",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=SnaC9di4QKQ",
+          "video_id": "SnaC9di4QKQ",
+          "criador": "ALBA PES™",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Review Show Time Désiré Doué Blitz Curler Daily Game, 04/12/2025, treinamento 00:37 e review 01:14. Banco externo associa ao Daily Bonus 2026, ID 106765639374176, não confirmado por frame.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=Vi6-7XwyqBc",
+          "video_id": "Vi6-7XwyqBc",
+          "criador": "Kaling",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review",
+          "descricao_evidencia": "Review do Show Time Désiré Doué grátis publicado 28/12/2025; campanha provável Daily Bonus 2026, mas Card ID não inspecionado em vídeo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1987,8 +2067,45 @@
       "nome": "Minanda",
       "edicao": "Epic — Master League Sprint 28 May '26 — Minanda",
       "card_id": "88043608522885",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=kwu4wYtNiOg",
+          "video_id": "kwu4wYtNiOg",
+          "criador": "Marwadi_Maniac",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_de_obtencao",
+          "descricao_evidencia": "Guia de como reivindicar Epic Minanda Master League de 28/05/2026. Não mostra gameplay verificado nem comprova treinamento.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=e3gQaI1zrQo",
+          "video_id": "e3gQaI1zrQo",
+          "criador": "ThepH Mobile",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Teste individual Epic Minanda Master League no eFootball 2026 Mobile, 10/06/2026; resultado do teste não foi auditado em frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=-4KMZn-u9xw",
+          "video_id": "-4KMZn-u9xw",
+          "criador": "Boyek Gaming",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "Review de Minanda Master League 30/05/2026. Descrição afirma abordar PP, posicionamento e PvP Division, sem inspeção independente das partidas.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2059,8 +2176,21 @@
       "nome": "Serginho",
       "edicao": "Epic — AC Milan 02-03",
       "card_id": "88035823874881",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=32euB50OQ0A",
+          "video_id": "32euB50OQ0A",
+          "criador": "HGF EFootball (PES)",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "Short de 09/06/2025 sobre Serginho AC Milan 02-03 Daily Game Box; nome/era do pacote compatíveis, Card ID 88035823874881 não validado por frame.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2198,8 +2328,21 @@
       "nome": "Orkun Kökçü",
       "edicao": "Highlight — Daily Bonus 2026 — Orkun Kökçü",
       "card_id": "106747922604897",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=mw1sOJ0ps8w",
+          "video_id": "mw1sOJ0ps8w",
+          "criador": "Virtual Activ8",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia Daily Bonus 2026 Orkun Kökçü de 03/09/2025. DIVERGÊNCIA: fonte externa categoriza SHOW TIME com Card ID 106747922604897; cadastro atual indica HIGHLIGHT. Não corrigir silenciosamente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Link e metadados públicos consultados; sem inspeção quadro a quadro, análise de Player ID ou certificação de pro player oficial."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4618,5 +4761,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada."
 }
