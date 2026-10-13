@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V118_RESEARCH",
+  "schema": "SCOUT_V119_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -45,15 +45,19 @@
     "V117: seis URLs novas para quatro CAPs pendentes; variantes ainda não confirmadas por Card ID. Guias de obtenção e testes comparativos não são gameplay individual.",
     "V117: links Ruud van Nistelrooij 101 e Oliver Kahn 105 não foram catalogados por forte risco de edições diferentes das fichas #012 e #169.",
     "V118: 6 URLs novas, uma por carta #066, #074, #086, #096, #123, #202, preservando 128 vídeos V117. Status pacote_compativel não implica inspeção de Card ID, gameplay individual, Player ID ou participação profissional de torneio.",
-    "V118: vídeos coletivos de Portugal/England 2026 servem apenas como contexto de pacote para carta nominalmente citada; nunca atribuir uma mesma URL coletiva às outras cartas sem regra de exceção e evidência individual de capítulo."
+    "V118: vídeos coletivos de Portugal/England 2026 servem apenas como contexto de pacote para carta nominalmente citada; nunca atribuir uma mesma URL coletiva às outras cartas sem regra de exceção e evidência individual de capítulo.",
+    "V119: sete novas URLs para #006, #080, #101, #127, #134, #148, #170; preservar as 134 URLs distintas da V118 e as 246 cartas.",
+    "V119: Xavi Simons #080 e Jan Oblak #170 apresentam divergência de rótulo Highlight no cadastro vs Show Time em fontes; correspondência de pacote e ID textual externo não substitui revisão visual da carta; não alterar identidades.",
+    "V119: vídeos coletivos Manchester United e Brazilian League e shorts não podem ser tratados como gameplay competitivo individual ou evidência Player ID; Koundé PS4 não valida comportamento mobile.",
+    "V119: não atribuir Rivaldo Low Screamer a Rivaldo 88035555413454 ou Cafu Epic 105 a Cafu Roma GR 88033407929805 sem provar edição em quadros."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 57,
-    "com_apenas_candidatos": 27,
-    "sem_video": 162,
-    "total_videos": 143,
-    "total_videos_unicos": 134,
+    "com_video_pacote_compativel": 61,
+    "com_apenas_candidatos": 30,
+    "sem_video": 155,
+    "total_videos": 150,
+    "total_videos_unicos": 141,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -268,8 +272,21 @@
       "nome": "Sandro Tonali",
       "edicao": "Highlight — National Team Selection Italy 1 Sep '25 (28 Aug 2025)",
       "card_id": "105781823393179",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=thpXykibdRc",
+          "video_id": "thpXykibdRc",
+          "criador": "AIONEM.ɴᴇᴛ",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_de_obtencao",
+          "descricao_evidencia": "Vídeo publicado 11/06/2026 sobre trocar pontos e obter Sandro Tonali Highlight DMF da National Team Selection Italy 1 Sep '25, com tela de obtenção. Mesmo nome/pacote do CAP006; não é gameplay individual e não há Card ID 105781823393179 confirmado por inspeção de quadros. OVR 101 no título é declaração do criador, não treino aprovado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos do vídeo consultados. Nenhum Card ID verificado visualmente em frames; não confirma Player ID, PP, gameplay competitivo individual, nem credencial de pro player em torneio."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2074,8 +2091,21 @@
       "nome": "Xavi Simons",
       "edicao": "Highlight — Extraordinary One 4 Dec '25 — Xavi Simons",
       "card_id": "106766444664616",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=aji8xsQ92tM",
+          "video_id": "aji8xsQ92tM",
+          "criador": "okaP FOOTBALL KINGDOMS",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "avaliacao_curta",
+          "descricao_evidencia": "Short publicado 06/12/2025 intitulado Xavi Simons Show Time Extraordinary One, avaliação pessoal em jogo. Banco externo associa Card ID 106766444664616 ao Show Time; cadastro CAP080 diz Highlight. Divergência de raridade pendente, não alterar ficha e não equiparar short a gameplay competitivo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos do vídeo consultados. Nenhum Card ID verificado visualmente em frames; não confirma Player ID, PP, gameplay competitivo individual, nem credencial de pro player em torneio."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2459,8 +2489,21 @@
       "nome": "Darren Fletcher",
       "edicao": "Epic — Manchester United — identidade exata por Card ID 88039044945180",
       "card_id": "88039044945180",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=YarXJRRYIxk",
+          "video_id": "YarXJRRYIxk",
+          "criador": "Guia Efootball",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "abertura_de_pacote_com_live",
+          "descricao_evidencia": "Live brasileira de 11/10/2025 sobre abertura Epic Manchester United com Rooney, Ferdinand e Darren Fletcher; criador promete dicas/gameplay com elenco. Banco externo relaciona o Card ID 88039044945180 a Fletcher Manchester United 07-08, mas vídeo não fornece Card ID ou era exata; abertura coletiva não é teste individual.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos do vídeo consultados. Nenhum Card ID verificado visualmente em frames; não confirma Player ID, PP, gameplay competitivo individual, nem credencial de pro player em torneio."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2917,8 +2960,21 @@
       "nome": "Jules Koundé",
       "edicao": "National Team Icons vol.3 — France",
       "card_id": "105835242041536",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=yrw75fEt-mI",
+          "video_id": "yrw75fEt-mI",
+          "criador": "Fathan Universe",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "Vídeo de 21/07/2026, título identifica Jules Koundé Highlight National Team Icons vol.3 na versão PS4. Pacote corresponde ao CAP127 Card ID 105835242041536 em base de cartas; não comprova uso mobile, PP, gameplay completo ou ID visualizado em frame.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos do vídeo consultados. Nenhum Card ID verificado visualmente em frames; não confirma Player ID, PP, gameplay competitivo individual, nem credencial de pro player em torneio."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3040,8 +3096,21 @@
       "nome": "Mikaël Silvestre",
       "edicao": "Epic — Manchester United — ID 88036360587096 (rótulo do pack/era PENDENTE)",
       "card_id": "88036360587096",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=vsRizhntvn8",
+          "video_id": "vsRizhntvn8",
+          "criador": "Viktor Syskov",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "Vídeo de 01/09/2025 intitulado Mikaël Silvestre Epic Manchester United 02-03. Banco externo confirma essa era para Card ID cadastrado 88036360587096; identidade por URL/título/pacote compatível, sem confirmação do Card ID na gravação ou gameplay.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos do vídeo consultados. Nenhum Card ID verificado visualmente em frames; não confirma Player ID, PP, gameplay competitivo individual, nem credencial de pro player em torneio."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3314,8 +3383,21 @@
       "nome": "Vitão",
       "edicao": "Show Time — Brazilian League 2024 Season's Best — Vitão",
       "card_id": "106735306130248",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=kSDUvgb-5cg",
+          "video_id": "kSDUvgb-5cg",
+          "criador": "Efootball Elite Stars",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_pacote",
+          "descricao_evidencia": "Vídeo coletivo Show Time Brazilian League publicado 27/12/2024; título cita Vitão 103, Estêvão, Arrascaeta e Tiquinho. Fontes externas relacionam Vitão Show Time Brazilian League 2024 Season's Best ao CAP148, mas vídeo não é teste individual e Card ID 106735306130248 não foi inspecionado em frame.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos do vídeo consultados. Nenhum Card ID verificado visualmente em frames; não confirma Player ID, PP, gameplay competitivo individual, nem credencial de pro player em torneio."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3657,8 +3739,21 @@
       "nome": "Jan Oblak",
       "edicao": "Highlight — Extraordinary One 4 Dec '25 — Jan Oblak",
       "card_id": "106766444571720",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=tGV92Ac1f8E",
+          "video_id": "tGV92Ac1f8E",
+          "criador": "Epic pes z",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Vídeo de 03/12/2025 'How To train Jan Oblak Show Time Extraordinary One' eFootball 2026. Banco externo identifica CAP170 Card ID 106766444571720 como Show Time, mas ficha atual tem Highlight. Divergência de raridade pendente; não copiar build sem validar PP e ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Metadados públicos do vídeo consultados. Nenhum Card ID verificado visualmente em frames; não confirma Player ID, PP, gameplay competitivo individual, nem credencial de pro player em torneio."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4919,5 +5014,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada."
 }
