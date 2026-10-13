@@ -1,0 +1,30 @@
+{
+  "schema": "SCOUT_V157_LEADS_EXTERNOS",
+  "data_corte": "2026-10-13",
+  "proposito": "Guardar links TikTok obtidos em pesquisas públicas, ainda não validados e fora das contagens e UI de vídeo YouTube do catálogo oficial.",
+  "regra": "Não converter estes links em fontes comprovadas da edição do Card ID nem somá-los aos 374 vídeos YouTube; pesquisa apontou URLs, mas a tentativa de acesso direto retornou página de manutenção.",
+  "leads": [
+    {
+      "cap": 235,
+      "jogador": "Kumasaka Koki",
+      "plataforma": "tiktok",
+      "url": "https://www.tiktok.com/@taknamu_ch/video/7532854492501495048",
+      "titulos_publicados": "【実はガチスカ級】Jリーグショータイムガチャで取れる柏レイソル熊坂光希ST,EPIC級に強いwwwww",
+      "evidencia": "Vídeo indexado cita 熊坂光希 (Kumasaka Koki), Kashiwa Reysol e eFootball Show Time J-League; a edição do cartão do usuário e Card ID permanecem pendentes. Não inspecionado visualmente.",
+      "acesso_direto_validado": false,
+      "card_id_exibido_e_conferido": false,
+      "estado": "candidato_externo_nao_validado"
+    },
+    {
+      "cap": 185,
+      "jogador": "Pedro",
+      "plataforma": "tiktok",
+      "url": "https://www.tiktok.com/@teus.ef/video/7567015079976258837",
+      "titulos_publicados": "FICHA DO PEDRO #efootball #efootballmobile",
+      "evidencia": "Short indexado como ficha de Pedro do Flamengo em eFootball 2026; não foi confirmada a edição Standard 2027 do usuário, Card ID 111408 ou pontos de treinamento nos quadros.",
+      "acesso_direto_validado": false,
+      "card_id_exibido_e_conferido": false,
+      "estado": "candidato_externo_nao_validado"
+    }
+  ]
+}
