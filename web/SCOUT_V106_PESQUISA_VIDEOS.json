@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V123_RESEARCH",
+  "schema": "SCOUT_V124_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -61,15 +61,19 @@
     "V122: no guia Reece James, termos Show Time e OVR nas hashtags são ambíguos; respeitar classificação Highlight da ficha e não registrar builds/Ovr como validados.",
     "V123: 10 novas URLs distintas em 8 CAPs antes pendentes: #034 Stoichkov, #051 Maradona, #138 Theo, #142 Robertson (2), #158 Antonio Silva, #174 Rui Silva, #179 Osimhen, #220 Modric (2). Preservar todas as 158 URLs da V122.",
     "V123: Stoichkov é walkout PS5, não Mobile; Andrew Robertson e Luka Modric possuem vídeos coletivos; Rui Silva/António Silva vêm de análises de pacote. Não inferir avaliação individual, PP ou pro player desses formatos.",
-    "V123: o vídeo do Maradona foi encontrado em índice de busca com clube/temporada 82-83, porém fetch da página YouTube não exibiu metadados completos; compatibilidade textual de pacote não é prova de Card ID visual."
+    "V123: o vídeo do Maradona foi encontrado em índice de busca com clube/temporada 82-83, porém fetch da página YouTube não exibiu metadados completos; compatibilidade textual de pacote não é prova de Card ID visual.",
+    "V124: 11 URLs novas para 8 cartas antes pendentes: CAP027 Ronaldo (2), CAP043 Burak (2), CAP072 Atep (1), CAP129 Malo Gusto (2), CAP172 Courtois (1), CAP111 Kanté (1), CAP222 Gerson (1), CAP203 Raphinha (1); 168 URLs anteriores preservadas.",
+    "V124: CAP043 Burak e CAP072 Atep permanecem edição pendente: vídeos Blitz Curler podem pertencer a variantes diferentes de Epic Türkiye 2021/Indonesia 2007, mesmo com jogador e skill iguais.",
+    "V124: rejeitado vídeo de Raphinha New Season Campaign 2027 para CAP195 Advertisement Reward 2027 — são diferentes Card IDs, apesar do mesmo jogador. Nenhum vídeo associado a CAP195.",
+    "V124: títulos como '100 partidas', vídeos com capítulos de jogadores e testes a 60 FPS são alegações dos autores, NÃO resultados observados ou builds validadas; a decisão e os PP continuam do usuário."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 77,
-    "com_apenas_candidatos": 33,
-    "sem_video": 136,
-    "total_videos": 177,
-    "total_videos_unicos": 168,
+    "com_video_pacote_compativel": 83,
+    "com_apenas_candidatos": 35,
+    "sem_video": 128,
+    "total_videos": 188,
+    "total_videos_unicos": 179,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -858,8 +862,33 @@
       "nome": "Cristiano Ronaldo",
       "edicao": "Epic — Portugal 2026",
       "card_id": "88044950524330",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=KB_ZVQxWgp0",
+          "video_id": "KB_ZVQxWgp0",
+          "criador": "Prof BOF",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube 'Prof BOF Tests Epic RONALDO & R MARTINEZ From Portugal’26 Premium Pack' publicado na época do Pack Portugal 2026. Título e descrição identificam Epic Cristiano Ronaldo e o técnico R Martínez. O autor anuncia teste; não foram analisados frames de gameplay nem Card ID 88044950524330.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=i2FqlUwZY2s",
+          "video_id": "i2FqlUwZY2s",
+          "criador": "Isaac Vital",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_longo_prazo",
+          "descricao_evidencia": "YouTube '¿VALIÓ LA PENA EL PACK DE PORTUGAL CON CRISTIANO ÉPICO? - 100 PARTIDOS DESPUÉS - EFOOTBALL 2026'. Revisão declarada após 100 partidas com o Cristiano Epic de Portugal. Não foi conferida contagem real de partidas, PP nem Card ID em frames; 100 é alegação do vídeo, não observação independente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1307,8 +1336,33 @@
       "nome": "Burak Yılmaz",
       "edicao": "Epic — Türkiye 2021",
       "card_id": "88039044974638",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=gsxuLoE0Co4",
+          "video_id": "gsxuLoE0Co4",
+          "criador": "Criador não identificado nos metadados recuperados",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube 'Don't Miss Him - Blitz Curler Burak Yilmaz Blitz Curler Review in eFootball 26 Mobile'. Coincidem jogador e habilidade Blitz Curler da Epic Türkiye 2021 ID 88039044974638, porém não há temporada da edição nem ID exibido nos metadados. Gameplay/teste indicado pelo título; não validado visualmente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=TNlX42IqPtM",
+          "video_id": "TNlX42IqPtM",
+          "criador": "Criador não identificado nos metadados recuperados",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "teste_comparativo",
+          "descricao_evidencia": "YouTube 'ATEP RIZAL BLITZ CURLER VS BURAK YILMAZ WHO SHOULD YOU GO FOR?', comparação de duas cartas do mesmo evento/temporada eFootball 2026; não prova CAP043 Epic Türkiye 2021 Card ID 88039044974638 nem gameplay completo. Não usar como prova de build.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1991,8 +2045,21 @@
       "nome": "Atep",
       "edicao": "Epic — Indonesia 2007",
       "card_id": "88039045116846",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=D-rA2m3vZik",
+          "video_id": "D-rA2m3vZik",
+          "criador": "Criador não identificado nos metadados recuperados",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "treino_e_gameplay",
+          "descricao_evidencia": "YouTube 'NEW EPIC ATEP IS A BLITZ CURLER MONSTER! eFootball 2026 Review'. Descrição informa carta Epic Atep Blitz Curler em 50th Anniversary Box e promete gameplay/build; CAP072 é Epic Indonesia 2007 ID 88039045116846. A mesma edição exata não está comprovada; manter candidato, não validar performance/PP.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2780,8 +2847,21 @@
       "nome": "N'Golo Kanté",
       "edicao": "Highlight — Leo Messi Edition 2027 — N'Golo Kanté",
       "card_id": "105865038367702",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=uZm-ML8I_7k",
+          "video_id": "uZm-ML8I_7k",
+          "criador": "Criador em persa, nome de canal não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube vídeo persa 'Antes de comprar os packs Messi e Yamal, veja este vídeo' (comparação de packs eFootball 2027). Índice menciona expressamente Courtois e N'Golo Kanté na revisão do Messi Pack. Referência coletiva ao CAP111 Kanté Highlight Messi Edition 2027. Não inferir gameplay individual, PP nem ID 105865038367702.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3061,8 +3141,33 @@
       "nome": "Malo Gusto",
       "edicao": "Highlight — National Team Pack France 2026",
       "card_id": "105849469150860",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=71FBxvcsCq0",
+          "video_id": "71FBxvcsCq0",
+          "criador": "Criador não identificado nos metadados recuperados",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "YouTube 'eFootball Pack Review: France', France National Team Pack 2026. Metadados públicos apontam capítulo dedicado a Malo Gusto em 11:55; o horário é informado pelo autor. Pacote compatível com CAP129 Highlight France 2026, ID 105849469150860 não inspecionado em quadro; review coletivo não valida resultado individual.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=zZDMyxu768I",
+          "video_id": "zZDMyxu768I",
+          "criador": "Criador não identificado nos metadados recuperados",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube '¿VALE 1500 MONEDAS? PACK FRANCIA 2026 en eFootball | Mbappé, Dembélé y Olise'. Resultado de busca também lista Malo Gusto entre os jogadores do France Pack analisados. Vídeo coletivo não equivale a teste individual de Malo Gusto, e Card ID 105849469150860 não foi conferido.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4030,8 +4135,21 @@
       "nome": "Thibaut Courtois",
       "edicao": "Highlight — Leo Messi Edition 2027 — Thibaut Courtois",
       "card_id": "105865038310751",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=nusMJ8GKsGA",
+          "video_id": "nusMJ8GKsGA",
+          "criador": "Criador brasileiro, nome de canal não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube 'Vale a Pena Comprar o PACK do MESSI no efootball 2027'. Descrição indexada anuncia análise do pacote Messi 2027 com Kanté, Courtois e testes a 60 FPS; metadados indicam aquisição do pacote e fichas de seus jogadores. Associação CAP172 Thibaut Courtois Highlight Messi Edition 2027, não confirma build nem Card ID 105865038310751 em quadro.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4598,8 +4716,21 @@
       "nome": "Raphinha",
       "edicao": "Highlight — Brazil & England National Team Campaign 6 Nov '25",
       "card_id": "105821820268596",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=D-9MjBgfif0",
+          "video_id": "D-9MjBgfif0",
+          "criador": "HGF Football Game",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "YouTube Short de HGF Football Game, publicado 06/11/2025, título explícito 'eFootball 2026 | Highlight - Brazil & England - Raphinha'. Mesma campanha e raridade da CAP203 ID 105821820268596; apresentação de carta, não partida nem validação visual do Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5035,8 +5166,21 @@
       "nome": "Gerson",
       "edicao": "Highlight — Brazil & England National Team Campaign 6 Nov '25",
       "card_id": "105821820262479",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=NSYyOj6FvBU",
+          "video_id": "NSYyOj6FvBU",
+          "criador": "Canal espanhol de treinamentos eFootball, nome não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "YouTube '¿A QUIÉN ELEGIR? HIGHLIGHT DE BRASIL E INGLATERRA | ENTRENAMIENTOS Y TIER LIST | EFOOTBALL 2026'. Descrição indexada explicita Gerson, Savinho, Raphinha e outros do Brazil & England National Team Campaign 6 Nov 2025. Guia coletivo, não treino individual de CAP222 Gerson ID 105821820262479; não validar PP.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título/descrição pública foram localizados, sem revisão dos quadros do vídeo. Não comprova Card ID em frame, Player ID, PP ou desempenho competitivo, nem nível profissional do autor."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5369,5 +5513,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas."
 }
