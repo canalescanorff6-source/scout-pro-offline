@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V125_RESEARCH",
+  "schema": "SCOUT_V126_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -69,15 +69,19 @@
     "V125: 9 URLs novas em 7 cartas antes pendentes (#012 van Nistelrooij, #124 Szoboszlai 2, #182 Marcus Thuram, #221 Khéphren Thuram, #184 João Pedro 2, #052 Okazaki, #060 Luis García). 179 URLs V124 preservadas sem regressão.",
     "V125: Epic Ruud 01-02 é walkout, NÃO gameplay; ALBA PES Szoboszlai tem gameplay anunciado com foco em cruzamentos; não inferir adequação à posse central do usuário ou Player ID.",
     "V125: Okazaki Leicester 15-16 e Luis García Barcelona 03-04 não são identificados por temporada/card ID nos metadados; ficam `edicao_pendente`. Vídeos 'Elite Lineage' e Brasil 2026 coletivos não comprovam treino/PP individuais.",
-    "V125: não associar Treasure Link Jan Koller Czechia 2004 a CAP048 sem conferir Card ID (existem múltiplas versões Epic da mesma seleção/ano), nem Daily Game Aubameyang 2027 à carta Epic Barcelona 21-22."
+    "V125: não associar Treasure Link Jan Koller Czechia 2004 a CAP048 sem conferir Card ID (existem múltiplas versões Epic da mesma seleção/ano), nem Daily Game Aubameyang 2027 à carta Epic Barcelona 21-22.",
+    "V126: 10 vídeos inéditos em seis CAPs previamente sem links: #131 Foyth (1), #164 Marc Guéhi Tactical Defence (2), #193 Saint-Maximin Magical Dribbler (2), #197 Leandro Trossard Clutch Players (2), #213 Ethan Mbappé Role Changers (1), #214 Nico Williams Spanish League 2 Apr '26 (2). Preservar as 188 URLs da V125.",
+    "V126: Guéhi Tactical Defence CAP164 não pode ser confundido com Starter Set CAP160; as edições foram cruzadas por evento. O vídeo de Foyth é ranking coletivo, não demonstração individual.",
+    "V126: correspondência externa de pacote e Card ID é índice textual, NÃO confirmação visual dentro de frames de vídeo. Treinos e atributos continuam aguardando inspeção física e decisão do usuário.",
+    "V126: não reatribuir o vídeo Japan Selection Jun 2026 à carta Doan National Team Selection Japan 10 Oct 2024 nem o Big Time Epic Spain 2010 ao Iniesta Epic Spain 2010, pois edições distintas podem compartilhar a temporada."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 88,
+    "com_video_pacote_compativel": 94,
     "com_apenas_candidatos": 37,
-    "sem_video": 121,
-    "total_videos": 197,
-    "total_videos_unicos": 188,
+    "sem_video": 115,
+    "total_videos": 207,
+    "total_videos_unicos": 198,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -3271,8 +3275,21 @@
       "nome": "Juan Foyth",
       "edicao": "Highlight — Tactical Defence 13 Aug '26",
       "card_id": "105864769945293",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=Q6bDEDB_b3Y",
+          "video_id": "Q6bDEDB_b3Y",
+          "criador": "Criador não identificado nos metadados recuperados",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "analise_de_pacote",
+          "descricao_evidencia": "YouTube título verificado 'eFootball Tactical Defence — All 8 Ranked Worst to Best (Vinícius 102 & an 80 That's Faster)'. Descrição indexada classifica Juan Foyth Tactical Defence 13 Aug '26 (RB) entre os 8, pack correspondente a CAP131 Highlight. Ranking coletivo; Card ID 105864769945293 e gameplay individual não revisados visualmente. OVR anunciado não é avaliação validada.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título ou descrição indexada recuperados em fonte pública; não foi assistido quadro a quadro. Não confirma Card ID exibido, Player ID, PP, build válida, credencial de pro-player ou desempenho observado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4017,8 +4034,33 @@
       "nome": "Marc Guéhi",
       "edicao": "Highlight — Tactical Defence 13 Aug '26",
       "card_id": "105864769962198",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=fWjkKg1sVwk",
+          "video_id": "fWjkKg1sVwk",
+          "criador": "Virtual Activ8",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube 17/08/2026: 'Best 5 Star Nominating Contract Tactical Defence Highlight Marc Guehi Max Train eFootball Mobile 27'. Vídeo menciona exatamente campanha Tactical Defence 13 Aug '26 e Marc Guéhi. Corresponde ao CAP164; não confundir com Starter Set #160. Card ID 105864769962198 e PP não conferidos em quadros; nenhuma build aprovada.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título ou descrição indexada recuperados em fonte pública; não foi assistido quadro a quadro. Não confirma Card ID exibido, Player ID, PP, build válida, credencial de pro-player ou desempenho observado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=6-BIAK1nuog",
+          "video_id": "6-BIAK1nuog",
+          "criador": "Canal eFootball Pack Review (nome de autor não recuperado)",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube 14/08/2026 'eFootball Pack Review: Nominating Contract Tactical Defence Players'. Guia coletivo com capítulos por atleta e revisão de Marc Guéhi. Seleção contratual Tactical Defence 13 Aug '26 coincide com CAP164, porém não prova execução de treino, Player ID ou Card ID em vídeo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título ou descrição indexada recuperados em fonte pública; não foi assistido quadro a quadro. Não confirma Card ID exibido, Player ID, PP, build válida, credencial de pro-player ou desempenho observado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4652,8 +4694,33 @@
       "nome": "Allan Saint-Maximin",
       "edicao": "Highlight — Magical Dribbler 2 Apr '26 — Allan Saint-Maximin",
       "card_id": "105829067975814",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=dqAAygaJfcc",
+          "video_id": "dqAAygaJfcc",
+          "criador": "ALBA PES™",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube publicado 02/04/2026 'Magical Dribbler Saint-Maximin Review in eFootball 2026 Mobile'. Descrição afirma testar drible, velocidade, finalização e build, capítulo 00:32 progressão e 01:03 review. Campanha Magical Dribbler 2 Apr '26 coincide com CAP193 id 105829067975814; não foram vistos frames, não validar PP ou Player ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título ou descrição indexada recuperados em fonte pública; não foi assistido quadro a quadro. Não confirma Card ID exibido, Player ID, PP, build válida, credencial de pro-player ou desempenho observado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=NlgGVk00HIk",
+          "video_id": "NlgGVk00HIk",
+          "criador": "Criador não identificado nos metadados recuperados",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube 'THE BEST DRIBBLER IS HERE! | ALLAN SAINT MAXIMIN NOMINATING CONTRACT TRAINING | efootball 2026'. Fala da carta de contrato nomeado no mesmo evento Magical Dribbler 2 Apr '26 do CAP193. Sem confirmação visual de ID 105829067975814/PP e sem teste de partidas auditado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título ou descrição indexada recuperados em fonte pública; não foi assistido quadro a quadro. Não confirma Card ID exibido, Player ID, PP, build válida, credencial de pro-player ou desempenho observado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4700,8 +4767,33 @@
       "nome": "Leandro Trossard",
       "edicao": "Highlight — Clutch Players 4 Dec '25 — Leandro Trossard",
       "card_id": "105794439861140",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=RDTnvDZ-fwM",
+          "video_id": "RDTnvDZ-fwM",
+          "criador": "Criador não identificado nos metadados recuperados",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube 'LEANDRO TROSSARD BEST TRAINING GUIDE IN EFOOTBALL 2026'. Descrição explicita 'Leandro Trossard Clutch player'; campanha Clutch Players 4 Dec '25 compatível com CAP197 Highlight. Card ID 105794439861140 e distribuição de PP não conferidos em frames; nenhuma recomendação aprovada.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título ou descrição indexada recuperados em fonte pública; não foi assistido quadro a quadro. Não confirma Card ID exibido, Player ID, PP, build válida, credencial de pro-player ou desempenho observado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=yDmxxsqsKJQ",
+          "video_id": "yDmxxsqsKJQ",
+          "criador": "Criador de Pack Review (nome não recuperado)",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube 'eFootball Pack Review: Nominating Contract Clutch Players'. Fonte indexada traz capítulo Leandro Trossard 52:02 e Gonçalo Ramos 56:18; metadados automáticos confundem texto descritivo com Speedsters, mas título/capítulos correspondem ao Clutch Players 4 Dec '25. Review coletivo, Card ID 105794439861140 não verificado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título ou descrição indexada recuperados em fonte pública; não foi assistido quadro a quadro. Não confirma Card ID exibido, Player ID, PP, build válida, credencial de pro-player ou desempenho observado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5061,8 +5153,21 @@
       "nome": "Ethan Mbappé",
       "edicao": "Highlight — Role Changers 5 Mar 2026",
       "card_id": "105828799639282",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=tUNiYIQF2a4",
+          "video_id": "tUNiYIQF2a4",
+          "criador": "Criador de Pack Review (nome não recuperado)",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube 'eFootball Pack Review: Nominating Contract Role Changers', vídeo de eFootball 2026. Índice mostra Ethan Mbappé 00:26 e jogadores do pack Role Changers 5 Mar '26; o capítulo é informado pelo autor, não conferido em frames. CAP213 id 105828799639282 não confirmado visualmente nem houve avaliação individual validada.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título ou descrição indexada recuperados em fonte pública; não foi assistido quadro a quadro. Não confirma Card ID exibido, Player ID, PP, build válida, credencial de pro-player ou desempenho observado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5073,8 +5178,33 @@
       "nome": "Nico Williams",
       "edicao": "Highlight — Spanish League Selection 2 Apr '26",
       "card_id": "105801687641013",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=WewZhRRFYDU",
+          "video_id": "WewZhRRFYDU",
+          "criador": "Criador não identificado nos metadados recuperados",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube 'Spanish Pack Nico Williams Review — Insane Speed + Training Guide'. Descrição refere nova Spanish League Selection (campanha de 02/04/2026) e revisão com treino do Nico. Fonte de carta externa confirma CAP214 ID 105801687641013 nessa edição. Review/desempenho anunciado, sem Card ID visível conferido, sem PP auditado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título ou descrição indexada recuperados em fonte pública; não foi assistido quadro a quadro. Não confirma Card ID exibido, Player ID, PP, build válida, credencial de pro-player ou desempenho observado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=B1FSrsSjPVI",
+          "video_id": "B1FSrsSjPVI",
+          "criador": "Mason Gamings",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "abertura_de_pacote",
+          "descricao_evidencia": "YouTube 'Nico Williams Spanish League Selection 100 PACK OPENING + Review league In eFootball 2026 Mobile'. Lote Spanish League Selection 2 Apr '26 e atleta compatíveis com CAP214; abertura de pacote e review anunciado não prova gameplay individual. Card ID 105801687641013 e OVR 100 não inspecionados em frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título ou descrição indexada recuperados em fonte pública; não foi assistido quadro a quadro. Não confirma Card ID exibido, Player ID, PP, build válida, credencial de pro-player ou desempenho observado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5632,5 +5762,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados."
 }
