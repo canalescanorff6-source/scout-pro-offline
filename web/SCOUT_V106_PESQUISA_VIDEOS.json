@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V128_RESEARCH",
+  "schema": "SCOUT_V129_RESEARCH",
   "data_corte": "2026-10-13",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -75,15 +75,16 @@
     "V126: correspondência externa de pacote e Card ID é índice textual, NÃO confirmação visual dentro de frames de vídeo. Treinos e atributos continuam aguardando inspeção física e decisão do usuário.",
     "V126: não reatribuir o vídeo Japan Selection Jun 2026 à carta Doan National Team Selection Japan 10 Oct 2024 nem o Big Time Epic Spain 2010 ao Iniesta Epic Spain 2010, pois edições distintas podem compartilhar a temporada.",
     "V127: 3 novas URLs em CAP067, CAP093 e CAP219. O vídeo de CAP093 é revisão coletiva de 11 cartas com fonte espelhada; não indica capítulos de desempenho individual nem Card ID. CAP067 é short, não gameplay. CAP219 é treino anunciado, não build aprovada.",
-    "V128: seis vídeos novos em cinco CAPs. Grimaldo: análise coletiva misturando English August e Summer Transfer. Outros reviews anunciam gameplay via metadados; nenhum Card ID ou Player ID conferido em frames. Não aplicar builds automaticamente."
+    "V128: seis vídeos novos em cinco CAPs. Grimaldo: análise coletiva misturando English August e Summer Transfer. Outros reviews anunciam gameplay via metadados; nenhum Card ID ou Player ID conferido em frames. Não aplicar builds automaticamente.",
+    "V129: 7 novas URLs para três cartas (#020 Rodri, #107 Tchouaméni, #180 Ekitiké). Rodri permanece candidato por falta de data/ID; outros dois têm pacote compatível por metadados. Guias de treino não comprovam build aprovada, e review de pacote não é gameplay individual. 207 URLs V128 preservadas."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 102,
-    "com_apenas_candidatos": 37,
-    "sem_video": 107,
-    "total_videos": 216,
-    "total_videos_unicos": 207,
+    "com_video_pacote_compativel": 104,
+    "com_apenas_candidatos": 38,
+    "sem_video": 104,
+    "total_videos": 223,
+    "total_videos_unicos": 214,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -732,12 +733,25 @@
       "nome": "Rodri",
       "edicao": "Highlight — National Team Selection Spain 5 Sep '24 — Rodri",
       "card_id": "105684112879839",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=bVkxHlyp32M",
+          "video_id": "bVkxHlyp32M",
+          "criador": "Virtual Activ8",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Vídeo Mobile publicado em 10 nov 2024 'National Team Selection Spain Rodri Training Guide In eFootball Mobile'. Combina jogador e nome de pacote, porém não informa 5 Sep '24 nem exibe Card ID verificado; edição da CAP020 permanece pendente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V129: metadados públicos verificados, sem inspeção visual de Card ID ou Player ID. Não ativar treinos, skills ou classificar como pro player de torneio."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 21,
@@ -2899,12 +2913,25 @@
       "nome": "Aurélien Tchouaméni",
       "edicao": "Highlight — Spanish League Selection 2 Apr '26 — Aurélien Tchouaméni",
       "card_id": "105801687618534",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=bSsmBrT6tdU",
+          "video_id": "bSsmBrT6tdU",
+          "criador": "SrinivasanYT",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Vídeo publicado em 2 abr 2026 intitulado 'Spanish League Selection Aurelien Tchouameni Level Training, Additional Skills'. Nome da campanha e data correspondem ao Spanish League Selection 2 Apr '26; guia de atributos/habilidades, não gameplay ou validação de Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V129: metadados públicos verificados, sem inspeção visual de Card ID ou Player ID. Não ativar treinos, skills ou classificar como pro player de torneio."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 108,
@@ -4525,12 +4552,73 @@
       "nome": "Hugo Ekitiké",
       "edicao": "Highlight — Anticipated Standouts 25-26 — Hugo Ekitiké",
       "card_id": "105782897156511",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jyI95xmSUG8",
+          "video_id": "jyI95xmSUG8",
+          "criador": "eFootball Nuts",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "Review de 12 set 2025 do pacote Nominating Contract Anticipated Standouts 25-26, com capítulo de Hugo Ekitiké em 46:04 informado na descrição. O conteúdo reúne oito jogadores; capítulo não é inspeção individual de Card ID ou gameplay comprovado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V129: metadados públicos verificados, sem inspeção visual de Card ID ou Player ID. Não ativar treinos, skills ou classificar como pro player de torneio."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=sDO6JljtE9Q",
+          "video_id": "sDO6JljtE9Q",
+          "criador": "OPEN SHARING CHANNEL",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "Publicado 13 set 2025, análise coletiva da seleção de Nominating Contract Anticipated Standouts 25-26, citando explicitamente Ekitiké no título. O vídeo apresenta recomendações e montagem do pacote; não prova teste individual de Ekitiké.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V129: metadados públicos verificados, sem inspeção visual de Card ID ou Player ID. Não ativar treinos, skills ou classificar como pro player de torneio."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=856Kb5GjSGw",
+          "video_id": "856Kb5GjSGw",
+          "criador": "Bixoy Tech & Gaming",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Vídeo Mobile de 13 set 2025 com treinamento de Bryan Mbeumo e Hugo Ekitike por Nominating Contract do mesmo período. A descrição nomeia os dois e Anticipated Standouts; não comprova Card ID em quadro nem resultado em partidas.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V129: metadados públicos verificados, sem inspeção visual de Card ID ou Player ID. Não ativar treinos, skills ou classificar como pro player de torneio."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=CcXqoDG_bRA",
+          "video_id": "CcXqoDG_bRA",
+          "criador": "eFootball Galácticos",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia Mobile publicado em 11 set 2025 para Hugo Ekitiké, Nominating Contract Deep-Lying Forward, referente ao pacote Anticipated Standouts 25-26. Título e descrição confirmam a variante por campanha, não validação visual do Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V129: metadados públicos verificados, sem inspeção visual de Card ID ou Player ID. Não ativar treinos, skills ou classificar como pro player de torneio."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=f2mTHOheXbU",
+          "video_id": "f2mTHOheXbU",
+          "criador": "Sikai",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_carta",
+          "descricao_evidencia": "Review publicado em 11 out 2025 com título 'Review Hugo Ekitike CF Deep-Lying Forward Anticipated Standouts 25-26!'. Descrição indica distribuição de treino pelo criador, mas esse treino não é certificado nem aplicado sem revisão individual.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V129: metadados públicos verificados, sem inspeção visual de Card ID ou Player ID. Não ativar treinos, skills ou classificar como pro player de torneio."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 181,
@@ -5880,5 +5968,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128."
 }
