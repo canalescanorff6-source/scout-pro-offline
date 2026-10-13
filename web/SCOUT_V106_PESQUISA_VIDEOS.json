@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V136_RESEARCH",
+  "schema": "SCOUT_V137_RESEARCH",
   "data_corte": "2026-10-13",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -83,15 +83,16 @@
     "V133: oito URLs novas: CAP088 Václav Černý e CAP099 Joelinton (4 cada). Duas compatíveis por pacote em cada carta e duas com edição pendente em cada. CAP058 Messi Skill Up NÃO recebeu vídeo 7XPBk3Cd2VE: URL já pertence à CAP057 com Card ID distinto, sem evidência de igualdade. Nenhum Card ID validado quadro a quadro.",
     "V134: cinco URLs inéditas em três cartas CAP025 Van Basten Netherlands 1988, CAP048 Jan Koller Czechia 2004 e CAP073 Iniesta Spain 2010. Todas são candidatos por falta de Card ID; Koller Treasure Link de 2026 pode ser carta diferente da CAP048 (ID 88029649833482). Não transferir builds, skills, PP nem transformar replay em prova competitiva.",
     "V135: 13 IDs de vídeo inéditos, 18 associações nas oito cartas CAP237 a CAP244. Todos são candidatos com edição e Card ID pendentes. Vídeos de pacote coletivo não comprovam testes individuais; guias 101/102/106 referem-se ao conteúdo do vídeo, não à ficha do usuário. Não alterar progressões.",
-    "V136: 10 vídeos originais inéditos para CAP227, 229, 230, 231, 232, 236 e 245. TODOS apenas candidatos de edição pendente, sem Card ID cadastrado/visualmente confirmado. Vídeo Zeki nacional é de dezembro 2024; Sarr Festive Season e 81/101/104 Overalls não comprovam identidade do usuário. Não aplicar treinamentos automáticos nem identificar influenciadores como pro players de torneios."
+    "V136: 10 vídeos originais inéditos para CAP227, 229, 230, 231, 232, 236 e 245. TODOS apenas candidatos de edição pendente, sem Card ID cadastrado/visualmente confirmado. Vídeo Zeki nacional é de dezembro 2024; Sarr Festive Season e 81/101/104 Overalls não comprovam identidade do usuário. Não aplicar treinamentos automáticos nem identificar influenciadores como pro players de torneios.",
+    "V137: sete vídeos YouTube inéditos para CAP121 Belletti e CAP201 Yan Diomande, mais vínculo a CAP162 Pau Torres de vídeo coletivo já registrado. Belletti/Pau pacote compatível só por metadados, sem Card ID visual; Yan Diomande Standard permanece edição pendente, sem OVR/PP inferidos. As 267 URLs V136 congeladas e preservadas."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 113,
-    "com_apenas_candidatos": 57,
-    "sem_video": 76,
-    "total_videos": 281,
-    "total_videos_unicos": 267,
+    "com_video_pacote_compativel": 115,
+    "com_apenas_candidatos": 58,
+    "sem_video": 73,
+    "total_videos": 289,
+    "total_videos_unicos": 274,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -3391,12 +3392,73 @@
       "nome": "Belletti",
       "edicao": "Epic — European Clubs Special Selection Contract (Festive Season Campaign, Jan 2025)",
       "card_id": "88033407929867",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=SraiVhR-r_w",
+          "video_id": "SraiVhR-r_w",
+          "criador": "PesHighlights2023",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "comparativo_de_pacote",
+          "descricao_evidencia": "'Who is the Best Epic European Clubs Special David Villa or Belletti Festive Season - efootball 2025'. Compara Belletti e Villa e cita a campanha Festive Season, mas não apresenta Card ID verificado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V137: correspondência nominal de pacote/metadados, Card ID/Player ID ainda não verificados em quadros. Não aplicar PP, treino ou skills. Vídeo coletivo não prova desempenho individual."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=bOBOMnK1ONg",
+          "video_id": "bOBOMnK1ONg",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "'REVIEW BELLETTI, PEMAIN BANSOS KUALITAS ISTIMEWA..!!! GAMEPLAY eFootball 2025 Mobile'. Resultado de busca associa Epic European Clubs Special ao review de Belletti; gameplay anunciado no título e não inspecionado quadro a quadro.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V137: correspondência nominal de pacote/metadados, Card ID/Player ID ainda não verificados em quadros. Não aplicar PP, treino ou skills. Vídeo coletivo não prova desempenho individual."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=4ad615jefRI",
+          "video_id": "4ad615jefRI",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "comparativo_de_pacote",
+          "descricao_evidencia": "'Which Epic Player From European Clubs Special | David Villa or Belletti or Sneijder | eFootball 2025'. Comparação coletiva de seleção do Festive Season, sem gameplay individual validado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V137: correspondência nominal de pacote/metadados, Card ID/Player ID ainda não verificados em quadros. Não aplicar PP, treino ou skills. Vídeo coletivo não prova desempenho individual."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=1OQrvca9Qgg",
+          "video_id": "1OQrvca9Qgg",
+          "criador": "Killer Prabhu Gaming",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "comparativo_de_pacote",
+          "descricao_evidencia": "Outro vídeo com URL distinta 'Which Epic Player From European Clubs Special | David Villa or Belletti or Sneijder | eFootball 2025'. Metadados de seleção compatíveis, porém nenhuma inspeção do Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V137: correspondência nominal de pacote/metadados, Card ID/Player ID ainda não verificados em quadros. Não aplicar PP, treino ou skills. Vídeo coletivo não prova desempenho individual."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=hNu6eAuoyEI",
+          "video_id": "hNu6eAuoyEI",
+          "criador": "criador não confirmado",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "'Festive Season Campaign Free Epic Selection Guide and Progression Points eFootball 2025'. Guia sobre seleção Epic festiva que inclui Belletti conforme indexação externa; referência coletiva, sem distribuição de PP aprovada.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V137: correspondência nominal de pacote/metadados, Card ID/Player ID ainda não verificados em quadros. Não aplicar PP, treino ou skills. Vídeo coletivo não prova desempenho individual."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 122,
@@ -4423,12 +4485,25 @@
       "nome": "Pau Torres",
       "edicao": "Highlight — English League Selection 13 Aug '26 — Pau Torres",
       "card_id": "105873896751326",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=pMtPXz_mXAo",
+          "video_id": "pMtPXz_mXAo",
+          "criador": "Mr. eNtrenamientos",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "Vídeo já registrado para CAP093, 'LA MEJOR CAJA LEAGUE SELECTION ... ENTRENAMIENTOS Y TIER LIST EFOOTBALL 2027'. Sua descrição indexada menciona Pau Torres, Kelleher e Mukiele, pack English Aug '26; nova associação à CAP162, mesma URL reaproveitada sem inflar vídeos únicos.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V137: correspondência nominal de pacote/metadados, Card ID/Player ID ainda não verificados em quadros. Não aplicar PP, treino ou skills. Vídeo coletivo não prova desempenho individual."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 163,
@@ -5377,12 +5452,37 @@
       "nome": "Yan Diomande",
       "edicao": "Standard — Yan Diomande",
       "card_id": "176104",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=KtPhycwBXUU",
+          "video_id": "KtPhycwBXUU",
+          "criador": "criador não confirmado",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "'Train Yan Diomandé from 85 to 101 Overall in eFootball 2027! | Best Build'. A CAP201 é Standard, e o vídeo não fornece Card ID; variante do vídeo pode ser diferente, 101 não se aplica à ficha.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V137: correspondência nominal de pacote/metadados, Card ID/Player ID ainda não verificados em quadros. Não aplicar PP, treino ou skills. Vídeo coletivo não prova desempenho individual."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=wX24-PKlS3U",
+          "video_id": "wX24-PKlS3U",
+          "criador": "Mr. piupiu 07",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "'Yan Diomande 101 Best Training With Booster | Player Progression eFootball 2027'. O título não confirma carta Standard 176104 nem Card ID, logo somente candidato.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V137: correspondência nominal de pacote/metadados, Card ID/Player ID ainda não verificados em quadros. Não aplicar PP, treino ou skills. Vídeo coletivo não prova desempenho individual."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 202,
@@ -6699,5 +6799,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas. | V131 — quatro URLs novas para CAP087 Giuliano Simeone, CAP125 Nordi Mukiele e CAP163 Jérémy Jacquet; todas as 221 URLs V130 preservadas. | V132 — 6 URLs novas para CAP225 Rodri (Back in the Game 14 Aug '25), sem misturar National Teams Rodri; todos os 225 vídeos V131 preservados. | V133 — 8 URLs novas para CAP088 e CAP099, 231 vídeos únicos V132 preservados; Messi duplicado foi rejeitado. | V134 — 5 vídeos novos como candidatos para CAP025, CAP048, CAP073; 239 URLs V133 preservadas e nenhuma correspondência de Card ID afirmada. | V135 — 13 URLs novas, 18 associações candidatas nas CAP237-CAP244, 244 URLs anteriores preservadas. | V136 — 10 vídeos novos e 10 associações candidatas em sete CAPs; todos os 257 vídeos V135 preservados."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas. | V131 — quatro URLs novas para CAP087 Giuliano Simeone, CAP125 Nordi Mukiele e CAP163 Jérémy Jacquet; todas as 221 URLs V130 preservadas. | V132 — 6 URLs novas para CAP225 Rodri (Back in the Game 14 Aug '25), sem misturar National Teams Rodri; todos os 225 vídeos V131 preservados. | V133 — 8 URLs novas para CAP088 e CAP099, 231 vídeos únicos V132 preservados; Messi duplicado foi rejeitado. | V134 — 5 vídeos novos como candidatos para CAP025, CAP048, CAP073; 239 URLs V133 preservadas e nenhuma correspondência de Card ID afirmada. | V135 — 13 URLs novas, 18 associações candidatas nas CAP237-CAP244, 244 URLs anteriores preservadas. | V136 — 10 vídeos novos e 10 associações candidatas em sete CAPs; todos os 257 vídeos V135 preservados. | V137 — 7 URLs inéditas, 1 associação de URL preexistente, CAP121 Belletti e CAP162 Pau Torres pack-compatible, CAP201 Yan Diomande candidato; todos os 267 IDs V136 mantidos."
 }
