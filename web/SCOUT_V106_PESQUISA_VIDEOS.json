@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V124_RESEARCH",
+  "schema": "SCOUT_V125_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -65,15 +65,19 @@
     "V124: 11 URLs novas para 8 cartas antes pendentes: CAP027 Ronaldo (2), CAP043 Burak (2), CAP072 Atep (1), CAP129 Malo Gusto (2), CAP172 Courtois (1), CAP111 Kanté (1), CAP222 Gerson (1), CAP203 Raphinha (1); 168 URLs anteriores preservadas.",
     "V124: CAP043 Burak e CAP072 Atep permanecem edição pendente: vídeos Blitz Curler podem pertencer a variantes diferentes de Epic Türkiye 2021/Indonesia 2007, mesmo com jogador e skill iguais.",
     "V124: rejeitado vídeo de Raphinha New Season Campaign 2027 para CAP195 Advertisement Reward 2027 — são diferentes Card IDs, apesar do mesmo jogador. Nenhum vídeo associado a CAP195.",
-    "V124: títulos como '100 partidas', vídeos com capítulos de jogadores e testes a 60 FPS são alegações dos autores, NÃO resultados observados ou builds validadas; a decisão e os PP continuam do usuário."
+    "V124: títulos como '100 partidas', vídeos com capítulos de jogadores e testes a 60 FPS são alegações dos autores, NÃO resultados observados ou builds validadas; a decisão e os PP continuam do usuário.",
+    "V125: 9 URLs novas em 7 cartas antes pendentes (#012 van Nistelrooij, #124 Szoboszlai 2, #182 Marcus Thuram, #221 Khéphren Thuram, #184 João Pedro 2, #052 Okazaki, #060 Luis García). 179 URLs V124 preservadas sem regressão.",
+    "V125: Epic Ruud 01-02 é walkout, NÃO gameplay; ALBA PES Szoboszlai tem gameplay anunciado com foco em cruzamentos; não inferir adequação à posse central do usuário ou Player ID.",
+    "V125: Okazaki Leicester 15-16 e Luis García Barcelona 03-04 não são identificados por temporada/card ID nos metadados; ficam `edicao_pendente`. Vídeos 'Elite Lineage' e Brasil 2026 coletivos não comprovam treino/PP individuais.",
+    "V125: não associar Treasure Link Jan Koller Czechia 2004 a CAP048 sem conferir Card ID (existem múltiplas versões Epic da mesma seleção/ano), nem Daily Game Aubameyang 2027 à carta Epic Barcelona 21-22."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 83,
-    "com_apenas_candidatos": 35,
-    "sem_video": 128,
-    "total_videos": 188,
-    "total_videos_unicos": 179,
+    "com_video_pacote_compativel": 88,
+    "com_apenas_candidatos": 37,
+    "sem_video": 121,
+    "total_videos": 197,
+    "total_videos_unicos": 188,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -491,8 +495,21 @@
       "nome": "Ruud van Nistelrooij",
       "edicao": "Epic — Manchester United 01-02",
       "card_id": "88036360719839",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=4KH0h0FqXNc",
+          "video_id": "4KH0h0FqXNc",
+          "criador": "Criador não identificado na fonte recuperada",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "YouTube title checked: 'eFootball 2026 — Ruud van Nistelrooij — Manchester United 01-02 — Epic Walkout'. Same name, club, season and Epic label of CAP012, but walkout only, not match gameplay. Card ID 88036360719839 not inspected in frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo localizado por título/descrição pública, com verificação de URL; não foi assistido quadro a quadro. Não certifica Card ID, Player ID, PP, formação, nível profissional nem resultados competitivos."
+        }
+      ],
       "referencias_da_carta": [
         "https://pesdb.net/efootball/players/ruud-van-nistelrooij-88036360719839"
       ],
@@ -1602,8 +1619,21 @@
       "nome": "Okazaki Shinji",
       "edicao": "Epic — Leicester B 15-16",
       "card_id": "88031797197514",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=48RHxzVIHEI",
+          "video_id": "48RHxzVIHEI",
+          "criador": "ttktstudio7527",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_de_carta",
+          "descricao_evidencia": "Thai YouTube 'eFootball 2026 ... Shinji Okazaki free review'; confirms Okazaki card review exists, but fails to identify Leicester B 15-16 Epic and Card ID 88031797197514 in indexed title and description. Could be another free edition. Candidate only.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo localizado por título/descrição pública, com verificação de URL; não foi assistido quadro a quadro. Não certifica Card ID, Player ID, PP, formação, nível profissional nem resultados competitivos."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1828,8 +1858,21 @@
       "nome": "Luis García",
       "edicao": "Epic — FC Barcelona 03-04",
       "card_id": "88030455139856",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "candidato_sem_versao_confirmada",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=qZUcCf4lE8E",
+          "video_id": "qZUcCf4lE8E",
+          "criador": "bomzaghi4",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_de_carta",
+          "descricao_evidencia": "Thai YouTube 2024 'Review Luis Garcia Epic Barcelona', confirms Epic Barcelona and player identity but not FC Barcelona 03-04 version or Card ID 88030455139856. Another similar edition may exist. Edition pending; not verified game footage or PP.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo localizado por título/descrição pública, com verificação de URL; não foi assistido quadro a quadro. Não certifica Card ID, Player ID, PP, formação, nível profissional nem resultados competitivos."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -3068,8 +3111,33 @@
       "nome": "Dominik Szoboszlai",
       "edicao": "Highlight — Role Changers 5 Mar '26 — Dominik Szoboszlai",
       "card_id": "105828799610127",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=64O1YFgUG5k",
+          "video_id": "64O1YFgUG5k",
+          "criador": "ALBA PES™",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "YouTube 05/03/2026, 'Araujo as Striker & Szoboszlai Crossing Machine! | Roll Changer Review'. Description explicitly documents Dominik Szoboszlai RB from Role Changers 5 Mar '26, progression at 01:20 and 2 matches starting 01:45 and 03:18. Focuses on crossing from RB, not user's central possession style. Chapters from author, not footage inspection; Card ID 105828799610127 not confirmed in frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo localizado por título/descrição pública, com verificação de URL; não foi assistido quadro a quadro. Não certifica Card ID, Player ID, PP, formação, nível profissional nem resultados competitivos."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=exGlhqCHUqU",
+          "video_id": "exGlhqCHUqU",
+          "criador": "AIONEM.ɴᴇᴛ",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_pacote",
+          "descricao_evidencia": "YouTube 05/03/2026 mobile pack overview 'Role Changers! SZOBOSZLAI RB + LEÃO CF + ARAÚJO CF!'; description explicitly identifies Highlight Role Changers 5 Mar '26 Szoboszlai RB, same CAP124 event. Overview and acquisition, not individual match or PP proof; Card ID unverified in frame.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo localizado por título/descrição pública, com verificação de URL; não foi assistido quadro a quadro. Não certifica Card ID, Player ID, PP, formação, nível profissional nem resultados competitivos."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4361,8 +4429,21 @@
       "nome": "Marcus Thuram",
       "edicao": "Highlight — Elite Lineage 30 Apr '26 — Marcus Thuram",
       "card_id": "105829336458789",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=hugbL0ELxww",
+          "video_id": "hugbL0ELxww",
+          "criador": "ttktstudio7527",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Thai YouTube 'eFootball 2026 ... Marcus Thuram Elite Lineage 30 Apr '26', indexed as free acquisition and stat growth of Marcus Thuram. Exact pack and player match CAP182 Card ID 105829336458789 externally; no frame-by-frame PP or Card ID review. May be obtaining/training, not confirmed actual matches.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo localizado por título/descrição pública, com verificação de URL; não foi assistido quadro a quadro. Não certifica Card ID, Player ID, PP, formação, nível profissional nem resultados competitivos."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4385,8 +4466,33 @@
       "nome": "João Pedro",
       "edicao": "Highlight — National Team Selection Brazil Jun '26 — João Pedro",
       "card_id": "105850811314987",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=dz0NOiPMBZk",
+          "video_id": "dz0NOiPMBZk",
+          "criador": "ALBA PES™",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube published 08/06/2026: 'Raphinha Carries the Brazil Pack! Full Review | eFootball 2026 Mobile'. Description explicitly lists João Pedro review among Brazil National Team Selection Jun '26 players, plus squad showcase/gameplay described by creator. Collective clip not proof of individual João Pedro gameplay or Card ID 105850811314987 visually confirmed.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo localizado por título/descrição pública, com verificação de URL; não foi assistido quadro a quadro. Não certifica Card ID, Player ID, PP, formação, nível profissional nem resultados competitivos."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=mg2LhYf-pew",
+          "video_id": "mg2LhYf-pew",
+          "criador": "Nalish E Gaming",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube 09/06/2026, 'NO BIG TIME NEYMAR?! Brazil National Team Pack Review', publicly mirrored with chapter 10:11–12:45 analyzing João Pedro statistics and 12:45–19:30 Division matches. From creator description, not inspected footage. Same Jun 2026 Brazil selection event as CAP184; Card ID and behavior not validated.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo localizado por título/descrição pública, com verificação de URL; não foi assistido quadro a quadro. Não certifica Card ID, Player ID, PP, formação, nível profissional nem resultados competitivos."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5154,8 +5260,21 @@
       "nome": "Khéphren Thuram",
       "edicao": "Highlight — Elite Lineage 30 Apr '26 — Khéphren Thuram",
       "card_id": "105829336478106",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=ta5ILXrHQKI",
+          "video_id": "ta5ILXrHQKI",
+          "criador": "Criador não identificado na fonte recuperada",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "YouTube 'Racikan & Statistik Elite Lineage 30 Apr 2026 eFootball', public description includes #khephrenthuram and #marcusthuram. Collective training/stats for the same event as CAP221 Khéphren Thuram; Card ID 105829336478106 and individual PP not verified on video frames. Shared pack URL is associated only with CAP221 to avoid cross-ID duplicate.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo localizado por título/descrição pública, com verificação de URL; não foi assistido quadro a quadro. Não certifica Card ID, Player ID, PP, formação, nível profissional nem resultados competitivos."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5513,5 +5632,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores."
 }
