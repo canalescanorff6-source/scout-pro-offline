@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V117_RESEARCH",
+  "schema": "SCOUT_V118_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -43,15 +43,17 @@
     "V116 CAP100 Orkun Kökçü: divergência de raridade: cadastro Highlight e fonte externa Show Time para mesmo Card ID. Não corrigir sem revisão da identidade.",
     "V116 CAP048 Jan Koller: vídeos de National Attackers e Treasure Link exibem versões possivelmente diferentes do Card ID 88029649833482; nenhum foi vinculado.",
     "V117: seis URLs novas para quatro CAPs pendentes; variantes ainda não confirmadas por Card ID. Guias de obtenção e testes comparativos não são gameplay individual.",
-    "V117: links Ruud van Nistelrooij 101 e Oliver Kahn 105 não foram catalogados por forte risco de edições diferentes das fichas #012 e #169."
+    "V117: links Ruud van Nistelrooij 101 e Oliver Kahn 105 não foram catalogados por forte risco de edições diferentes das fichas #012 e #169.",
+    "V118: 6 URLs novas, uma por carta #066, #074, #086, #096, #123, #202, preservando 128 vídeos V117. Status pacote_compativel não implica inspeção de Card ID, gameplay individual, Player ID ou participação profissional de torneio.",
+    "V118: vídeos coletivos de Portugal/England 2026 servem apenas como contexto de pacote para carta nominalmente citada; nunca atribuir uma mesma URL coletiva às outras cartas sem regra de exceção e evidência individual de capítulo."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 51,
+    "com_video_pacote_compativel": 57,
     "com_apenas_candidatos": 27,
-    "sem_video": 168,
-    "total_videos": 137,
-    "total_videos_unicos": 128,
+    "sem_video": 162,
+    "total_videos": 143,
+    "total_videos_unicos": 134,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -1819,8 +1821,21 @@
       "nome": "Pedro Neto",
       "edicao": "Highlight — National Team Pack Portugal 2026",
       "card_id": "105848932256095",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=rMQGk8pybPk",
+          "video_id": "rMQGk8pybPk",
+          "criador": "Kachi efootball",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube 04/06/2026: review coletivo Portugal Premium Pack 2026 com primeira partida; descrição cita explicitamente Pedro Neto 99 RMF junto de Ronaldo, Vitinha e Bruno. Não comprova gameplay isolado de Pedro Neto e não mostra Card ID 105848932256095 conferido em frames.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e data confirmados por metadados do YouTube. Relacionado ao pacote correto, mas sem confirmação visual de Card ID/Player ID, PP, gameplay individual ou qualificação do criador como pro player de torneio. Vídeo coletivo não prova desempenho individual."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -1932,8 +1947,21 @@
       "nome": "João Félix",
       "edicao": "Highlight — National Team Pack Portugal 2026",
       "card_id": "105848932265344",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=wG0RMdleMhs",
+          "video_id": "wG0RMdleMhs",
+          "criador": "PES CREATIONS",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "review_de_pacote",
+          "descricao_evidencia": "YouTube 04/06/2026: análise de Portugal Premium Pack, da qual João Félix é citado entre os atletas destacados. Review coletivo sem evidência de teste próprio ou Card ID 105848932265344 verificado em quadro.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e data confirmados por metadados do YouTube. Relacionado ao pacote correto, mas sem confirmação visual de Card ID/Player ID, PP, gameplay individual ou qualificação do criador como pro player de torneio. Vídeo coletivo não prova desempenho individual."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2168,8 +2196,21 @@
       "nome": "Bruno Fernandes",
       "edicao": "Highlight — National Team Pack Portugal 2026 — Bruno Fernandes",
       "card_id": "105848932199520",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=BZlnYVOVrLA",
+          "video_id": "BZlnYVOVrLA",
+          "criador": "Dblackdread",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "analise_de_pacote",
+          "descricao_evidencia": "YouTube 05/06/2026: análise de Portugal 2026 Pack focada em composição e valor do elenco, com Bruno Fernandes nominalmente citado. Não há demonstração auditada de Card ID 105848932199520, nem gameplay individual comprovado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e data confirmados por metadados do YouTube. Relacionado ao pacote correto, mas sem confirmação visual de Card ID/Player ID, PP, gameplay individual ou qualificação do criador como pro player de torneio. Vídeo coletivo não prova desempenho individual."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2317,8 +2358,21 @@
       "nome": "Vitinha",
       "edicao": "Highlight — National Team Pack Portugal 2026",
       "card_id": "105848932274075",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=OsZHVSuDcKQ",
+          "video_id": "OsZHVSuDcKQ",
+          "criador": "Tarek Gameplay",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube 10/07/2026: 'Portugal Pack 102 Vitinha' guia de evolução de Vitinha do Portugal Pack 2026. Metadados do vídeo apontam pacote compatível com CAP096, mas Card ID 105848932274075 não foi conferido em frame; não validar PP, build ou performance.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e data confirmados por metadados do YouTube. Relacionado ao pacote correto, mas sem confirmação visual de Card ID/Player ID, PP, gameplay individual ou qualificação do criador como pro player de torneio. Vídeo coletivo não prova desempenho individual."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -2802,8 +2856,21 @@
       "nome": "João Cancelo",
       "edicao": "Highlight — National Team Pack Portugal 2026",
       "card_id": "105848932186795",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=ec-DeJkctTI",
+          "video_id": "ec-DeJkctTI",
+          "criador": "Saminur Pes Official",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "YouTube 19/06/2026: review e guia de treinamento de todos os atletas Portugal Premium Pack 2026; descrição lista nominalmente João Cancelo, entre outros. Referência coletiva de pacote, sem capítulo individual ou Card ID 105848932186795 conferido.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e data confirmados por metadados do YouTube. Relacionado ao pacote correto, mas sem confirmação visual de Card ID/Player ID, PP, gameplay individual ou qualificação do criador como pro player de torneio. Vídeo coletivo não prova desempenho individual."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4132,8 +4199,21 @@
       "nome": "Cole Palmer",
       "edicao": "Highlight — National Team Pack England 2026 — Cole Palmer",
       "card_id": "105849200712620",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=BRmHPXA44mI",
+          "video_id": "BRmHPXA44mI",
+          "criador": "PES-HOD",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino_de_pacote",
+          "descricao_evidencia": "YouTube 04/06/2026: guia conjunto Portugal + England 2026 Premium Packs de builds, boosters e PP; descrição identifica Cole Palmer do England pack. Não representa teste individual de Palmer nem Card ID 105849200712620 visualmente validado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Vídeo e data confirmados por metadados do YouTube. Relacionado ao pacote correto, mas sem confirmação visual de Card ID/Player ID, PP, gameplay individual ou qualificação do criador como pro player de torneio. Vídeo coletivo não prova desempenho individual."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4839,5 +4919,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores."
 }
