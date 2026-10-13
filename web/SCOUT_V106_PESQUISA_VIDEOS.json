@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V121_RESEARCH",
+  "schema": "SCOUT_V122_RESEARCH",
   "data_corte": "2026-10-12",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -55,15 +55,18 @@
     "V120: Cubarsí Spain 2026 Highlight #159 NÃO pode ser confundido com Show Time Spain 2026; abrir pacote não é teste individual. Guti 01-02 deve exigir prova do Card ID.",
     "V121: sete URLs inéditas para cinco cartas #009 Chiellini, #157 Renato Veiga, #190 Rafael Leão, #200 Sadio Mané, #215 Raphinha. Todas as 147 URLs V120 preservadas, sem edições reclassificadas.",
     "V121: Chiellini gameplay é edição pendente — não confundir com Epic National Guardians e Power Tackle. Mané PES-HOD 21 Jan 2026 é candidato por data anterior ao pack de 22 Jan; outros vídeos do mesmo pack são compatíveis, ainda sem Card ID confirmado em frame.",
-    "V121: eFootball Nuts Renato Veiga 03:46 é capítulo descrito pelo autor, não inspeção visual; Bixoy Raphinha é guia de obtenção, não teste competitivo. Fonte externa não muda ficha ou PP."
+    "V121: eFootball Nuts Renato Veiga 03:46 é capítulo descrito pelo autor, não inspeção visual; Bixoy Raphinha é guia de obtenção, não teste competitivo. Fonte externa não muda ficha ou PP.",
+    "V122: 4 URLs novas em 3 cartas anteriormente sem vídeo: #130 Reece James Step-up 2027, #223 Frenkie de Jong National Team Icons vol.3 (PS4), #209 Jamal Musiala National Team Rising Stars (guia Mobile e review coletiva). 154 vídeos da V121 intocados.",
+    "V122: não associar vídeo Step-up Musiala à carta #209 Rising Stars; não associar National Team Icons Frenkie a Step-up Frenkie; outras versões claramente distintas descartadas.",
+    "V122: no guia Reece James, termos Show Time e OVR nas hashtags são ambíguos; respeitar classificação Highlight da ficha e não registrar builds/Ovr como validados."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 66,
+    "com_video_pacote_compativel": 69,
     "com_apenas_candidatos": 33,
-    "sem_video": 147,
-    "total_videos": 163,
-    "total_videos_unicos": 154,
+    "sem_video": 144,
+    "total_videos": 167,
+    "total_videos_unicos": 158,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -3041,8 +3044,21 @@
       "nome": "Reece James",
       "edicao": "Highlight — Step-up 2027 — Reece James",
       "card_id": "105866649005150",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=PkdX_RuJgQI",
+          "video_id": "PkdX_RuJgQI",
+          "criador": "Your Assassin Pes",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube publicado 13/08/2026, título 'How To Train FREE Step Up Free Highlight Reece James To Maximum Rating! eFootball 2027', e descrição de treino Mobile. Campanha Step-up 2027 compatível com CAP130 Card ID 105866649005150 (fonte pesdb). Tags da descrição misturam palavras Show Time e OVR alto e não são fonte para alterar classificação/PP. ID e progressão não observados nos frames; não tratar como gameplay competitivo.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, publicação, plataforma e campanha conferidos em resultados públicos; sem revisão completa de quadros/partidas. Nenhum Card ID em frame, Player ID, PP, nível competitivo ou performance validado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4573,8 +4589,33 @@
       "nome": "Jamal Musiala",
       "edicao": "Highlight — National Team Rising Stars 2 Jul '26 — Germany",
       "card_id": "105863159356176",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=7ltL0eZL9eQ",
+          "video_id": "7ltL0eZL9eQ",
+          "criador": "Tarek Gameplay",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "YouTube publicado 20/07/2026, título 'National Team Rising Stars Jamal Musiala 100 Best training guide | Efootball 2026 #efootballmobile'. Campanha de 02/07/2026 corresponde ao CAP209 Highlight Germany ID 105863159356176, porém 100 no título não comprova Overall da carta nem treinamento válido. Sem Card ID verificado em quadros.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, publicação, plataforma e campanha conferidos em resultados públicos; sem revisão completa de quadros/partidas. Nenhum Card ID em frame, Player ID, PP, nível competitivo ou performance validado."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=2nIkA9MSaAA",
+          "video_id": "2nIkA9MSaAA",
+          "criador": "AXG",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "analise_de_pacote",
+          "descricao_evidencia": "YouTube publicado 03/07/2026, 'Who Should You Pick? These are the BEST FREE National Team Rising Stars', análise coletiva das 10 opções, com Musiala e Warren Zaïre-Emery citados expressamente. Correspondência de pacote para CAP209, não prova build da edição exata, teste individual ou credenciais de pro player de torneio. Não reatribuir a #219 que é edição Yu-Gi-Oh diferente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, publicação, plataforma e campanha conferidos em resultados públicos; sem revisão completa de quadros/partidas. Nenhum Card ID em frame, Player ID, PP, nível competitivo ou performance validado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -4875,8 +4916,21 @@
       "nome": "Frenkie de Jong",
       "edicao": "Highlight — National Team Icons vol.3",
       "card_id": "105835242039414",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=3kOuoZGkdNw",
+          "video_id": "3kOuoZGkdNw",
+          "criador": "Fathan Universe",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_carta",
+          "descricao_evidencia": "YouTube publicado 22/07/2026, título 'Highlight National Team Icons vol.3 Frenkie de Jong — eFootball 2026 (PS4 Version)'. Confirma nome/categoria/pacote iguais ao CAP223 ID 105835242039414 em catálogo externo, mas é referência de PS4, não Mobile; sem descrição, Card ID não visto no vídeo, PP e comportamento de posse não analisados.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "Título, publicação, plataforma e campanha conferidos em resultados públicos; sem revisão completa de quadros/partidas. Nenhum Card ID em frame, Player ID, PP, nível competitivo ou performance validado."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
@@ -5184,5 +5238,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121."
 }
