@@ -1,5 +1,5 @@
 {
-  "schema": "SCOUT_V132_RESEARCH",
+  "schema": "SCOUT_V133_RESEARCH",
   "data_corte": "2026-10-13",
   "objetivo": "Arquivo incremental de evidências públicas de gameplay por edição/card ID das 246 cartas, não um laudo final",
   "regras": [
@@ -79,15 +79,16 @@
     "V129: 7 novas URLs para três cartas (#020 Rodri, #107 Tchouaméni, #180 Ekitiké). Rodri permanece candidato por falta de data/ID; outros dois têm pacote compatível por metadados. Guias de treino não comprovam build aprovada, e review de pacote não é gameplay individual. 207 URLs V128 preservadas.",
     "V130: sete URLs novas para CAP089, CAP112, CAP136 e CAP176. Kelleher sem data no título e dois vídeos de Mitchell sem pacote temporal são edição pendente. Shorts não são gameplays; review anunciado não equivale a filmagem inspecionada. Preservar as 214 URLs únicas da V129.",
     "V131: quatro URLs inéditas para CAP087, CAP125 e CAP163. Preservadas as 221 URLs únicas V130; nenhum vídeo analisado quadro a quadro. Reviews coletivas e obtenção não são gameplay individual. Vídeos de outras edições do mesmo jogador foram descartados.",
-    "V132: seis URLs inéditas para CAP225 Rodri Nominating Contract Back in the Game 14 Aug '25. Preservadas todas as 225 URLs únicas V131. Guia de treino não autoriza build, review de pacote não é gameplay, nem Card ID/Player ID foi visualmente confirmado. Jorginho de outro pacote não foi adicionado."
+    "V132: seis URLs inéditas para CAP225 Rodri Nominating Contract Back in the Game 14 Aug '25. Preservadas todas as 225 URLs únicas V131. Guia de treino não autoriza build, review de pacote não é gameplay, nem Card ID/Player ID foi visualmente confirmado. Jorginho de outro pacote não foi adicionado.",
+    "V133: oito URLs novas: CAP088 Václav Černý e CAP099 Joelinton (4 cada). Duas compatíveis por pacote em cada carta e duas com edição pendente em cada. CAP058 Messi Skill Up NÃO recebeu vídeo 7XPBk3Cd2VE: URL já pertence à CAP057 com Card ID distinto, sem evidência de igualdade. Nenhum Card ID validado quadro a quadro."
   ],
   "summary": {
     "total": 246,
-    "com_video_pacote_compativel": 111,
+    "com_video_pacote_compativel": 113,
     "com_apenas_candidatos": 39,
-    "sem_video": 96,
-    "total_videos": 240,
-    "total_videos_unicos": 231,
+    "sem_video": 94,
+    "total_videos": 248,
+    "total_videos_unicos": 239,
     "card_ids_verificados_em_quadros_de_video": 0,
     "videos_pro_player_torneio_verificados": 0,
     "cobertura_completa": false
@@ -2536,12 +2537,61 @@
       "nome": "Václav Černý",
       "edicao": "Show Time — Trendyol Süper Lig Monthly MVPs Apr '26",
       "card_id": "106779061103582",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=U_UAmMeWSlY",
+          "video_id": "U_UAmMeWSlY",
+          "criador": "eFootball Elite Stars",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "apresentacao_de_pacote",
+          "descricao_evidencia": "Vídeo YouTube 'Show Time Trendyol Süper Lig Monthly MVPs | Ederson Moraes, Talisca and Václav Černý'. Cita os três jogadores e a campanha Trendyol; não comprova Card ID nem desempenho individual.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V133: revisão somente de títulos/descrições/datas e contexto de campanha, não de frames. Builds, Card IDs, Player IDs e pro players não verificados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=uaGr-uDZxp8",
+          "video_id": "uaGr-uDZxp8",
+          "criador": "Old Gamers",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "abertura_de_pacote",
+          "descricao_evidencia": "Vídeo turco 'KONAMI BİZİ ÇILDIRTTI! Son Coin ile Václav Černý | eFootball Süperlig Show Time Paket Açılımı'. Descrição nomeia Trendyol Süper Lig Monthly MVPs (Show Time), compatível por jogador/campanha; abertura de pacote não é gameplay.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V133: revisão somente de títulos/descrições/datas e contexto de campanha, não de frames. Builds, Card IDs, Player IDs e pro players não verificados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=pawYUjQcoyY",
+          "video_id": "pawYUjQcoyY",
+          "criador": "Mr. piupiu 07",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Guia 'Vaclav Cerny 103 Best Training With Booster | Player Progression eFootball 2026'. Menciona Cerny Show Time e treinamento, mas não diz Trendyol Monthly MVPs Apr 26 nem exibe Card ID verificado. Só candidato.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V133: revisão somente de títulos/descrições/datas e contexto de campanha, não de frames. Builds, Card IDs, Player IDs e pro players não verificados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=jsS_Hp9LaTY",
+          "video_id": "jsS_Hp9LaTY",
+          "criador": "Afanida",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Vídeo 'COBAIN POTM VACLAV CERNY DI PVP EFOOTBALL 2026 MOBILE'. Descrição informa review com gameplay PvP de uma versão POTM da Trendyol Super Lig; sem data Apr 26 e sem Card ID, logo edição pendente.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V133: revisão somente de títulos/descrições/datas e contexto de campanha, não de frames. Builds, Card IDs, Player IDs e pro players não verificados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 89,
@@ -2751,12 +2801,61 @@
       "nome": "Joelinton",
       "edicao": "Highlight — Show Time 13 Nov '25 — Joelinton",
       "card_id": "106761612796044",
-      "estado": "pendente",
-      "videos": [],
+      "estado": "encontrado_por_pacote",
+      "videos": [
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=l6tkemUQU9I",
+          "video_id": "l6tkemUQU9I",
+          "criador": "Dipayan's Game Zone",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_de_obtencao",
+          "descricao_evidencia": "Publicado 13 Nov 2025; 'eFootball 2026 : How To Get Free Show Time Joelinton & His Best Training Guide'. Descrição confirma Featured Set Show Time Joelinton via 15000 eFootball Points. Coincide data/campanha CAP099, mas sem prova visual do Card ID.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V133: revisão somente de títulos/descrições/datas e contexto de campanha, não de frames. Builds, Card IDs, Player IDs e pro players não verificados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=u5a04GVwct8",
+          "video_id": "u5a04GVwct8",
+          "criador": "SYL FC",
+          "compatibilidade": "pacote_compativel",
+          "tipo_conteudo": "guia_de_obtencao",
+          "descricao_evidencia": "Publicado 13 Nov 2025; 'How to Get FREE Show Time Joelinton in eFootball 2026 Mobile'. Descrição cobre 15000 eFootball Points, treino sugerido e Box-to-Box CMF. Campanha e data compatíveis; PP não verificado.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V133: revisão somente de títulos/descrições/datas e contexto de campanha, não de frames. Builds, Card IDs, Player IDs e pro players não verificados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=7yoVc-IyeG8",
+          "video_id": "7yoVc-IyeG8",
+          "criador": "criador não confirmado",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "review_com_partida",
+          "descricao_evidencia": "Vídeo 'Showtime JOELINTON Full Review + Gameplay ! New Shop Point Card is Good Or ... ?'. Descrição menciona novo Joelinton Show Time da Points Shop e gameplay, mas sem data de 13 Nov 2025 ou Card ID verificável; é candidato, não validação competitiva.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V133: revisão somente de títulos/descrições/datas e contexto de campanha, não de frames. Builds, Card IDs, Player IDs e pro players não verificados."
+        },
+        {
+          "plataforma": "youtube",
+          "url": "https://www.youtube.com/watch?v=0P2oFe11dsM",
+          "video_id": "0P2oFe11dsM",
+          "criador": "criador não confirmado",
+          "compatibilidade": "edicao_pendente",
+          "tipo_conteudo": "guia_treino",
+          "descricao_evidencia": "Vídeo 'Featured Set : Show Time Joelinton Best Training Guide | efootball 2026'. Guia do Joelinton free Show Time, porém não menciona data da edição ou Card ID; treino sugerido não autoriza distribuição PP.",
+          "card_id_exibido_e_conferido_no_video": false,
+          "desempenho_player_id_analisado": false,
+          "observacao": "V133: revisão somente de títulos/descrições/datas e contexto de campanha, não de frames. Builds, Card IDs, Player IDs e pro players não verificados."
+        }
+      ],
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-12"
+      "ultimo_rastreio": "2026-10-13"
     },
     {
       "numero": 100,
@@ -6183,5 +6282,5 @@
       "ultimo_rastreio": "2026-10-12"
     }
   ],
-  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas. | V131 — quatro URLs novas para CAP087 Giuliano Simeone, CAP125 Nordi Mukiele e CAP163 Jérémy Jacquet; todas as 221 URLs V130 preservadas. | V132 — 6 URLs novas para CAP225 Rodri (Back in the Game 14 Aug '25), sem misturar National Teams Rodri; todos os 225 vídeos V131 preservados."
+  "versao_historico": "V114 — 8 novas URLs para quatro CAPs (#094, #139, #175 e #217), preservando integralmente a V113. | V115 — 7 URLs novas para #019, #030, #033, #102 e #135, preservando as 104 anteriores. | V116 — 11 URLs inéditas nas cartas 017, 037, 039, 045, 056, 085, 091 e 100; V115 integralmente preservada. | V117 — 6 URLs novas para #018 Safee Sali, #055 Dirk Kuyt, #106 Pep Guardiola, #147 Tony Adams; 122 URLs únicas V116 preservadas. | V118 — 6 novos vídeos YouTube com pacotes Portugal/England 2026 para #066, #074, #086, #096, #123, #202; preservados os 128 vídeos únicos anteriores. | V119 — 7 novas URLs para #006, #080, #101, #127, #134, #148 e #170; V118 preservada. | V120 — 6 novos vídeos YouTube para #146, #078 e #159, preservados integralmente os 141 da V119. | V121 — 7 URLs inéditas para CAP009/157/190/200/215, com 2 vídeos de gameplay Mobile anunciados, 147 URLs anteriores protegidas. | V122 — quatro vídeos novos para CAP130/209/223, preservando todos os 154 URLs V121. | V123 — dez vídeos de oito CAPs, 158 URLs V122 preservadas integralmente. | V124 — 11 novas URLs em oito CAPs; todos os 168 vídeos V123 preservados, sem alterações de cartas. | V125 — nove URLs inéditas em sete cartas, preservadas integralmente as 179 URLs únicas anteriores. | V126 — 10 novas URLs em seis cartas com packs identificados; todos os 188 vídeos distintos V125 preservados. | V127 — 3 URLs inéditas para CAP067 Semenyo, CAP093 Matheus Cunha e CAP219 Warren Zaïre-Emery; todas as 198 URLs da V126 preservadas. | V128 — 6 novas URLs para CAP076, CAP082, CAP103, CAP140 e CAP150; todas as 201 URLs únicas e 210 associações da V127 preservadas. | V129 — 7 novos vídeos para CAP020 Rodri (edição pendente), CAP107 Tchouaméni e CAP180 Ekitiké; preservadas todas as 207 URLs únicas V128. | V130 — sete URLs novas para CAP089 Ndiaye, CAP112 Onana, CAP136 Mitchell e CAP176 Kelleher; 214 URLs únicas V129 preservadas. | V131 — quatro URLs novas para CAP087 Giuliano Simeone, CAP125 Nordi Mukiele e CAP163 Jérémy Jacquet; todas as 221 URLs V130 preservadas. | V132 — 6 URLs novas para CAP225 Rodri (Back in the Game 14 Aug '25), sem misturar National Teams Rodri; todos os 225 vídeos V131 preservados. | V133 — 8 URLs novas para CAP088 e CAP099, 231 vídeos únicos V132 preservados; Messi duplicado foi rejeitado."
 }
