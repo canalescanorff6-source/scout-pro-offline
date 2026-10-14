@@ -8017,7 +8017,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_242_Maghnes_Akliouche_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -8032,7 +8032,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://ef-labo.com/efootball/maghnes-akliouche-european-clubs-selection/"
     },
     {
       "numero": 243,
@@ -8045,7 +8046,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_243_Anthony_Gordon_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -8060,7 +8061,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://ef-labo.com/efootball/anthony-gordon-european-clubs-selection/"
     },
     {
       "numero": 244,

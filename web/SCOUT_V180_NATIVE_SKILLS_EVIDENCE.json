@@ -5,9 +5,9 @@
   "method": "Somente quando arte/posição/OVR-base/PP/pacote/nome coincidirem ou Card ID e edição exatos. Nunca importar por nome apenas. Se faltam identificadores, marcar pendente e preservar original.",
   "total_cards": 246,
   "known_before": 219,
-  "added": 13,
-  "known_after": 232,
-  "pending": 14,
+  "added": 15,
+  "known_after": 234,
+  "pending": 12,
   "matched_entries": [
     {
       "cap": 226,
@@ -382,6 +382,74 @@
       ]
     },
     {
+      "cap": 242,
+      "name": "Maghnes Akliouche",
+      "pos": "MLD",
+      "pp": 62,
+      "ovr": 82,
+      "source_id": null,
+      "source_url": "https://ef-labo.com/efootball/maghnes-akliouche-european-clubs-selection/",
+      "second_url": "https://pesdb.net/efootball/players/maghnes-akliouche-148172",
+      "edition": "Highlight — European Clubs Selection 24 Sep '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição MLD / RMF",
+        "PSG",
+        "OVR base 82",
+        "62 PP",
+        "European Clubs Selection Sep 2026",
+        "eFootball LABO informa lista nativa e diferencia habilidades adicionais"
+      ],
+      "skills": [
+        "Double Touch",
+        "Flip Flap",
+        "Cut Behind & Turn",
+        "Sole Control",
+        "One-touch Pass",
+        "Through Passing",
+        "Pinpoint Crossing",
+        "Outside Curler",
+        "Long-range Curler",
+        "First-time Shot"
+      ]
+    },
+    {
+      "cap": 243,
+      "name": "Anthony Gordon",
+      "pos": "PTE",
+      "pp": 60,
+      "ovr": 82,
+      "source_id": null,
+      "source_url": "https://ef-labo.com/efootball/anthony-gordon-european-clubs-selection/",
+      "second_url": "https://pesdb.net/efootball/players/anthony-gordon-119835",
+      "edition": "Highlight — European Clubs Selection 24 Sep '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição PTE / LWF",
+        "Barcelona",
+        "OVR base 82",
+        "60 PP",
+        "European Clubs Selection Sep 2026",
+        "eFootball LABO distingue originais de sugestões"
+      ],
+      "skills": [
+        "Double Touch",
+        "Cut Behind & Turn",
+        "Sole Control",
+        "One-touch Pass",
+        "Through Passing",
+        "Pinpoint Crossing",
+        "Long-range Curler",
+        "Long-range Shooting",
+        "Track Back",
+        "Fighting Spirit"
+      ]
+    },
+    {
       "cap": 244,
       "name": "Edmond Tapsoba",
       "pos": "ZC",
@@ -519,20 +587,6 @@
         "https://pesdb.net/efootball/players/samuel-eto-o-88045755827674"
       ],
       "additional_evidence": "Fontes Inter 09-10/10-11 divergem em posição, OVR e PP da carta informada. Não migrar habilidades sem identificar edição."
-    },
-    {
-      "cap": 242,
-      "name": "Maghnes Akliouche",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 243,
-      "name": "Anthony Gordon",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
     },
     {
       "cap": 245,

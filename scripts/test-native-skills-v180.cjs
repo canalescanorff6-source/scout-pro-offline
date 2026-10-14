@@ -3,10 +3,10 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const web=path.resolve(__dirname,'../web'),load=f=>JSON.parse(fs.readFileSync(path.join(web,f),'utf8'));
 const a=load('SCOUT_V69_AUDITORIA.json'),t=load('SCOUT_V98_AUDITORIA_TATICA.json'),ev=load('SCOUT_V180_NATIVE_SKILLS_EVIDENCE.json');
 assert.equal(a.cards.length,246);assert.equal(t.cartas.length,246);
-assert.equal(a.summary.native_skills,232);assert.equal(a.cards.filter(x=>x.habilidades_nativas).length,232);
-assert.equal(ev.matched_entries.length,13);assert.equal(ev.investigations.length,14);
+assert.equal(a.summary.native_skills,234);assert.equal(a.cards.filter(x=>x.habilidades_nativas).length,234);
+assert.equal(ev.matched_entries.length,15);assert.equal(ev.investigations.length,12);
 for(const c of ev.matched_entries){
- assert([226,227,229,230,231,234,235,237,238,239,240,241,244].includes(c.cap));assert.equal(c.status,'coincidencia_externa_multifatorial');assert.equal(c.card_id_confirmado_na_conta,false);
+ assert([226,227,229,230,231,234,235,237,238,239,240,241,242,243,244].includes(c.cap));assert.equal(c.status,'coincidencia_externa_multifatorial');assert.equal(c.card_id_confirmado_na_conta,false);
  const x=a.cards.find(x=>x.numero===c.cap);assert(x&&String(x.id).startsWith('PENDENTE'));
  assert.equal(x.habilidades_nativas,c.skills.join('; '));
  assert.equal(x.habilidades_nativas_origem?.status,'coincidencia_externa_multifatorial_sem_id_na_conta');
@@ -21,4 +21,4 @@ assert(app.includes('loadNativeEvidence().finally(()=>loadV180Evidence().finally
 assert(app.includes("!String(card.id||'').startsWith('PENDENTE')"),'Não reatribuir skills quando há outro Card ID');
 const sw=fs.readFileSync(path.join(web,'sw.js'),'utf8');
 assert(sw.includes('SCOUT_V180_NATIVE_SKILLS_EVIDENCE.json')&&sw.includes('v179-v180'),'Cache Android deve renovar');
-console.log('V180 OK: 232/246 com habilidades documentadas; 14 identificações sem prova continuam pendentes; IDs, PP e boosters preservados.');
+console.log('V180 OK: 234/246 com habilidades documentadas; 12 identificações sem prova continuam pendentes; IDs, PP e boosters preservados.');

@@ -4,7 +4,7 @@
   "summary": {
     "micro_pro": 73,
     "with_pp": 246,
-    "native_skills": 232,
+    "native_skills": 234,
     "processed": 246,
     "with_stats": 14,
     "no_pp": 0,
@@ -9511,11 +9511,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Flip Flap; Cut Behind & Turn; Sole Control; One-touch Pass; Through Passing; Pinpoint Crossing; Outside Curler; Long-range Curler; First-time Shot",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
@@ -9530,6 +9530,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/242_Maghnes_Akliouche.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "eFootball LABO",
+        "url": "https://ef-labo.com/efootball/maghnes-akliouche-european-clubs-selection/",
+        "card_id_externo_elegivel": null,
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9547,11 +9555,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Cut Behind & Turn; Sole Control; One-touch Pass; Through Passing; Pinpoint Crossing; Long-range Curler; Long-range Shooting; Track Back; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
@@ -9566,6 +9574,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/243_Anthony_Gordon.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "eFootball LABO",
+        "url": "https://ef-labo.com/efootball/anthony-gordon-european-clubs-selection/",
+        "card_id_externo_elegivel": null,
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
