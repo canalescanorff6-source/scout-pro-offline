@@ -4,7 +4,7 @@
   "summary": {
     "micro_pro": 73,
     "with_pp": 246,
-    "native_skills": 237,
+    "native_skills": 240,
     "processed": 246,
     "with_stats": 14,
     "no_pp": 0,
@@ -8943,11 +8943,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Heading; Low Lofted Pass; Man Marking; Interception; Blocker; Aerial Superiority; Sliding Tackle; Long-reach Tackle; Acrobatic Clearance; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -8961,6 +8961,15 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/228_Murilo.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/murilo-106798925332853",
+        "segunda_fonte": "https://efootball-world.com/player/106798925332853",
+        "card_id_externo_elegivel": "106798925332853",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9277,11 +9286,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Acceleration Burst; Long-range Curler; Rising Shot; Acrobatic Finishing; Heel Trick; First-time Shot; Outside Curler; Track Back; Attacking Surge",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9295,6 +9304,15 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/236_Samuel_Eto_o.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/samuel-eto-o-88045755827674",
+        "segunda_fonte": "https://efootball-world.com/player/88045755827674",
+        "card_id_externo_elegivel": "88045755827674",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9700,11 +9718,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Momentum Dribbling; Heading; Long-range Curler; Long-range Shooting; Acrobatic Finishing; First-time Shot; One-touch Pass; Through Passing; Outside Curler",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9718,6 +9736,15 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/246_Eric_Cantona.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/eric-cantona-88045755828961",
+        "segunda_fonte": "https://efootball-world.com/player/88045755828961",
+        "card_id_externo_elegivel": "88045755828961",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     }
   ],
