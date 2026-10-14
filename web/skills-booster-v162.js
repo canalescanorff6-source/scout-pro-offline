@@ -153,7 +153,10 @@ function draw(){
  section.querySelector('#v162-skills-status').textContent='Nativas cadastradas: '+result.knownNative+' · Adicionais informadas: '+result.alreadyEquippedProvided+'/5 · Restantes: '+remaining+'. '+(result.nativeKnown?'Recomendações sem duplicar habilidades nativas conhecidas.':'PROVISÓRIO: faltam as habilidades nativas desta edição; não gaste tokens sem conferir.');
  const ul=section.querySelector('#v162-skills');ul.replaceChildren();
  for(const s of proposed){const li=document.createElement('li'),b=document.createElement('strong'),p=document.createElement('p');b.textContent=s.name;p.textContent=s.why;li.append(b,p);ul.appendChild(li)}
- if(!proposed.length){const li=document.createElement('li');li.textContent=remaining===0?'Os 5 espaços adicionais foram informados. Confira as habilidades instaladas no jogo.':'Sem habilidades novas a propor com os dados presentes.';ul.appendChild(li)}
+ for(let i=proposed.length;i<remaining;i++){
+  const li=document.createElement('li');li.textContent='Vaga '+(result.alreadyEquippedProvided+i+1)+'/5 · Sem habilidade adicional segura nesta base; confirmar compatibilidade e skills atuais antes de preencher.';ul.appendChild(li);
+ }
+ if(!remaining){const li=document.createElement('li');li.textContent='Os cinco espaços adicionais já foram informados por você; confira no jogo.';ul.appendChild(li)}
  section.querySelector('#v162-alts').textContent='Prioridades por função, não instalação automática. '+(result.alternatives.length?'Alternativas: '+result.alternatives.map(x=>x.name).join(' · ')+'.':'Confira disponibilidade e compatibilidade no jogo.');
  const source=section.querySelector('#v162-source');source.replaceChildren();
  const line=(value)=>{const p=document.createElement('p');p.textContent=value;source.appendChild(p)};
