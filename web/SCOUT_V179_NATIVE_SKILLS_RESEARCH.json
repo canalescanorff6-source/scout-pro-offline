@@ -1,7 +1,7 @@
 {
   "schema": "SCOUT_V179_NATIVE_SKILLS_BY_ID",
   "created_at": "2026-10-14",
-  "status": "pesquisa_externa_94_ids",
+  "status": "pesquisa_externa_94_ids_com_alias_e_standard_validados",
   "records": [
     {
       "cap": 7,
@@ -678,9 +678,10 @@
         "Captaincy",
         "Fighting Spirit"
       ],
-      "status": "card_id_nome_parcial_ou_tipo_divergente",
+      "status": "card_id_nome_edicao",
       "source_type": "pesdb.net",
-      "evidence": "public_html_native_skills_by_exact_card_id"
+      "evidence": "public_html_native_skills_by_exact_card_id",
+      "review_note": "Carta Standard com título sem parênteses; Card ID e nome idênticos"
     },
     {
       "cap": 120,
@@ -700,9 +701,10 @@
         "Sliding Tackle",
         "Fighting Spirit"
       ],
-      "status": "card_id_nome_parcial_ou_tipo_divergente",
+      "status": "card_id_nome_edicao",
       "source_type": "pesdb.net",
-      "evidence": "public_html_native_skills_by_exact_card_id"
+      "evidence": "public_html_native_skills_by_exact_card_id",
+      "review_note": "Carta Standard com título sem parênteses; Card ID e nome idênticos"
     },
     {
       "cap": 122,
@@ -875,9 +877,10 @@
         "Dipping Shot",
         "Interception"
       ],
-      "status": "card_id_nome_parcial_ou_tipo_divergente",
+      "status": "card_id_nome_edicao",
       "source_type": "pesdb.net",
-      "evidence": "public_html_native_skills_by_exact_card_id"
+      "evidence": "public_html_native_skills_by_exact_card_id",
+      "review_note": "Carta Standard com título sem parênteses; Card ID e nome idênticos"
     },
     {
       "cap": 142,
@@ -1732,9 +1735,14 @@
         "Outside Curler",
         "Gamesmanship"
       ],
-      "status": "revisao_pendente",
+      "status": "card_id_nome_edicao",
       "source_type": "pesdb.net",
-      "evidence": "public_html_native_skills_by_exact_card_id"
+      "evidence": "public_html_native_skills_by_exact_card_id",
+      "identity_evidence": [
+        "https://efhub.com/players/105821820296614",
+        "https://www.mancity.com/citytv/mens/savinho-arrival-video-interview-63856916"
+      ],
+      "review_note": "Savinho=Sávio confirmado no clube e EFHub por Card ID"
     },
     {
       "cap": 197,

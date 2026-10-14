@@ -4039,7 +4039,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_119_Tyler_Adams_OVR84_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -4054,7 +4054,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/tyler-adams-123303"
     },
     {
       "numero": 120,
@@ -4067,7 +4068,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_120_Rodrigo_Bentancur_OVR84_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -4082,7 +4083,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/rodrigo-bentancur-105297"
     },
     {
       "numero": 121,
@@ -4789,7 +4791,7 @@
       "pp": 76,
       "imagem": "cartas/CAP_141_Ian_Maatsen_OVR84_LE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -4804,7 +4806,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/ian-maatsen-132386"
     },
     {
       "numero": 142,
@@ -6589,7 +6592,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_196_Savinho_OVR87_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6612,7 +6615,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/savio-105821820296614"
     },
     {
       "numero": 197,

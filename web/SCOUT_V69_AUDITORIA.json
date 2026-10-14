@@ -4,7 +4,7 @@
   "summary": {
     "micro_pro": 73,
     "with_pp": 246,
-    "native_skills": 215,
+    "native_skills": 219,
     "processed": 246,
     "with_stats": 14,
     "no_pp": 0,
@@ -4617,10 +4617,10 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE",
       "impeto_extra": "PENDENTE",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Rising Shot; One-touch Pass; Low Lofted Pass; Gamesmanship; Man Marking; Interception; Blocker; Acrobatic Clearance; Captaincy; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
@@ -4635,6 +4635,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/119_Tyler_Adams.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "documentado_em_base_externa",
+        "fonte": "pesdb.net",
+        "card_id": "123303",
+        "url": "https://pesdb.net/efootball/players/tyler-adams-123303",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -4652,10 +4660,10 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE",
       "impeto_extra": "PENDENTE",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Cut Behind & Turn; One-touch Pass; Weighted Pass; Outside Curler; Low Lofted Pass; Interception; Sliding Tackle; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
@@ -4670,6 +4678,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/120_Rodrigo_Bentancur.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "documentado_em_base_externa",
+        "fonte": "pesdb.net",
+        "card_id": "105297",
+        "url": "https://pesdb.net/efootball/players/rodrigo-bentancur-105297",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -5462,10 +5478,10 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE",
       "impeto_extra": "PENDENTE",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Scissors Feint; Double Touch; Sole Control; Dipping Shot; Interception",
       "adicionais_candidatas": [],
       "pendencias": [
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
@@ -5480,6 +5496,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/141_Ian_Maatsen.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "documentado_em_base_externa",
+        "fonte": "pesdb.net",
+        "card_id": "132386",
+        "url": "https://pesdb.net/efootball/players/ian-maatsen-132386",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -7635,14 +7659,22 @@
       ],
       "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
       "impeto_extra": "NENHUM BOOSTER NATIVO CONFIRMADO",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Scissors Feint; Double Touch; Sombrero; Cut Behind & Turn; Sole Control; Pinpoint Crossing; Outside Curler; Gamesmanship",
       "adicionais_candidatas": [],
       "pendencias": [
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/196_Savinho.html"
+      "arquivo": "fichas/196_Savinho.html",
+      "habilidades_nativas_origem": {
+        "status": "documentado_em_base_externa",
+        "fonte": "pesdb.net",
+        "card_id": "105821820296614",
+        "url": "https://pesdb.net/efootball/players/savio-105821820296614",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
+      }
     },
     {
       "numero": 197,
