@@ -4,14 +4,14 @@
   "summary": {
     "micro_pro": 73,
     "with_pp": 246,
-    "native_skills": 240,
+    "native_skills": 242,
     "processed": 246,
     "with_stats": 14,
     "no_pp": 0,
     "adapt_alert": 55,
     "extra_confirmed": 16,
     "level_user_entered": 84,
-    "raridade_confirmada_pelo_usuario": 56,
+    "raridade_confirmada_pelo_usuario": 58,
     "treinos_propostos_experimentais_v95": 84
   },
   "cards": [
@@ -2881,7 +2881,7 @@
     {
       "numero": 75,
       "name": "Luis Díaz",
-      "versao": "Highlight — Daily Bonus 2026 — Luis Díaz",
+      "versao": "Show Time — Daily Bonus 2026 — Luis Díaz",
       "id": "106780671726691",
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
@@ -2904,18 +2904,26 @@
       ],
       "impeto_fixo": "Breakthrough +3",
       "impeto_extra": "SLOT SELECIONÁVEL +1",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Marseille Turn; Sole Control; Acceleration Burst; Long-range Curler; Acrobatic Finishing; First-time Shot; Through Passing; Pinpoint Crossing; Outside Curler",
       "adicionais_candidatas": [],
       "pendencias": [
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
-        "Proficiência se for usar em uma posição central",
-        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
+        "Proficiência se for usar em uma posição central"
       ],
       "arquivo": "fichas/075_Luis_Diaz.html",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_confirmacao_textual_2026-10-14",
+      "habilidades_nativas_origem": {
+        "status": "documentado_em_base_externa",
+        "fonte": "pesdb.net",
+        "card_id": "106780671726691",
+        "url": "https://pesdb.net/efootball/players/luis-diaz-106780671726691",
+        "confirmacao_no_jogo": false,
+        "raridade_confirmada_pelo_usuario": true,
+        "data": "2026-10-14"
+      }
     },
     {
       "numero": 76,
@@ -5877,7 +5885,9 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/151_Willian_Pacho.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
-      }
+      },
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_confirmacao_textual_2026-10-14"
     },
     {
       "numero": 152,
@@ -6597,7 +6607,7 @@
     {
       "numero": 170,
       "name": "Jan Oblak",
-      "versao": "Highlight — Extraordinary One 4 Dec '25 — Jan Oblak",
+      "versao": "Show Time — Extraordinary One 4 Dec '25 — Jan Oblak",
       "id": "106766444571720",
       "posicao": "GO",
       "estilo_ataque": "Básico",
@@ -6609,24 +6619,32 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado nesta consolidação",
       "impeto_extra": "PENDENTE — não confirmado nesta consolidação",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "GK High Punt; GK Long Throw; GK Penalty Saver; GK Directing Defence; Captaincy",
       "adicionais_candidatas": [],
       "pendencias": [
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
-        "Segundo ímpeto realmente selecionado",
-        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
+        "Segundo ímpeto realmente selecionado"
       ],
       "arquivo": "fichas/170_Jan_Oblak.html",
       "max_level": 26,
       "pp_origem": "informado_pelo_usuario_2026-10-11",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "raridade_confirmacao_origem": "usuario_confirmacao_textual_2026-10-14",
       "treino_proposta_v95": {
         "pp": 50,
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/170_Jan_Oblak.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "documentado_em_base_externa",
+        "fonte": "pesdb.net",
+        "card_id": "106766444571720",
+        "url": "https://pesdb.net/efootball/players/jan-oblak-106766444571720",
+        "confirmacao_no_jogo": false,
+        "raridade_confirmada_pelo_usuario": true,
+        "data": "2026-10-14"
       }
     },
     {
@@ -7052,7 +7070,9 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/181_Serhou_Guirassy.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
-      }
+      },
+      "raridade_confirmada": "DISTINGUIDO",
+      "raridade_confirmacao_origem": "usuario_confirmacao_textual_2026-10-14"
     },
     {
       "numero": 182,

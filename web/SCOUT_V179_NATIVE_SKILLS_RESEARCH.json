@@ -288,7 +288,7 @@
       "cap": 75,
       "name": "Luis Díaz",
       "card_id": "106780671726691",
-      "edition_registered": "Highlight — Daily Bonus 2026 — Luis Díaz",
+      "edition_registered": "Show Time — Daily Bonus 2026 — Luis Díaz",
       "source_name": "Luis Díaz",
       "source_title": "Luis Díaz - Show Time (Daily Bonus 2026) | pesdb.net",
       "source_url": "https://pesdb.net/efootball/players/luis-diaz-106780671726691",
@@ -304,9 +304,11 @@
         "Pinpoint Crossing",
         "Outside Curler"
       ],
-      "status": "card_id_nome_parcial_ou_tipo_divergente",
+      "status": "card_id_nome_edicao",
       "source_type": "pesdb.net",
-      "evidence": "public_html_native_skills_by_exact_card_id"
+      "evidence": "public_html_native_skills_by_exact_card_id_plus_user_confirmed_rarity",
+      "raridade_confirmada_pelo_usuario": "2026-10-14",
+      "confirmacao_no_jogo": false
     },
     {
       "cap": 83,
@@ -1251,7 +1253,7 @@
       "cap": 170,
       "name": "Jan Oblak",
       "card_id": "106766444571720",
-      "edition_registered": "Highlight — Extraordinary One 4 Dec '25 — Jan Oblak",
+      "edition_registered": "Show Time — Extraordinary One 4 Dec '25 — Jan Oblak",
       "source_name": "Jan Oblak",
       "source_title": "Jan Oblak - Show Time (Extraordinary One 4 Dec '25) | pesdb.net",
       "source_url": "https://pesdb.net/efootball/players/jan-oblak-106766444571720",
@@ -1262,9 +1264,11 @@
         "GK Directing Defence",
         "Captaincy"
       ],
-      "status": "card_id_nome_parcial_ou_tipo_divergente",
+      "status": "card_id_nome_edicao",
       "source_type": "pesdb.net",
-      "evidence": "public_html_native_skills_by_exact_card_id"
+      "evidence": "public_html_native_skills_by_exact_card_id_plus_user_confirmed_rarity",
+      "raridade_confirmada_pelo_usuario": "2026-10-14",
+      "confirmacao_no_jogo": false
     },
     {
       "cap": 172,

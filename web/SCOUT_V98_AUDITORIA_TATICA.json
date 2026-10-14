@@ -2551,7 +2551,7 @@
     {
       "numero": 75,
       "nome": "Luis Díaz",
-      "edicao": "Highlight — Daily Bonus 2026 — Luis Díaz",
+      "edicao": "Show Time — Daily Bonus 2026 — Luis Díaz",
       "card_id": "106780671726691",
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
@@ -2559,7 +2559,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_075_Luis_Diaz_OVR89_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -2579,11 +2579,12 @@
       "ficha": "fichas/075_Luis_Diaz.html",
       "pendencias": [
         "Atributos-base da edição",
-        "Habilidades nativas",
+        "Conferência das habilidades externas na conta (pendente)",
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/luis-diaz-106780671726691"
     },
     {
       "numero": 76,
@@ -5751,7 +5752,7 @@
     {
       "numero": 170,
       "nome": "Jan Oblak",
-      "edicao": "Highlight — Extraordinary One 4 Dec '25 — Jan Oblak",
+      "edicao": "Show Time — Extraordinary One 4 Dec '25 — Jan Oblak",
       "card_id": "106766444571720",
       "posicao": "GO",
       "estilo_ataque": "Básico",
@@ -5759,7 +5760,7 @@
       "pp": 50,
       "imagem": "cartas/CAP_170_Jan_Oblak_OVR103_GO.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -5768,12 +5769,13 @@
       "ficha": "fichas/170_Jan_Oblak.html",
       "pendencias": [
         "Atributos-base da edição",
-        "Habilidades nativas",
+        "Conferência das habilidades externas na conta (pendente)",
         "Primeiro ímpeto",
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/jan-oblak-106766444571720"
     },
     {
       "numero": 171,

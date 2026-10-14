@@ -15,12 +15,12 @@
   "politica": "Auditoria sem transferir habilidades ou ímpetos entre edições, sem alterar cartas, Card IDs, atributos, PP, equipamentos ou boosters. Status da base ≠ confirmação direta no jogo.",
   "totais": {
     "cartas": 246,
-    "habilidades_cadastradas": 240,
-    "habilidades_sem_lista": 6,
+    "habilidades_cadastradas": 242,
+    "habilidades_sem_lista": 4,
     "por_proveniencia": {
       "legado_sem_proveniencia_individual": 130,
-      "base_externa_card_id": 89,
-      "pendente_identidade": 6,
+      "base_externa_card_id": 91,
+      "pendente_identidade": 4,
       "base_externa_multifatorial_id_nao_autenticado": 21
     },
     "slots_por_status_cadastrado": {
@@ -61,18 +61,6 @@
       "prova_necessaria": "Card ID e booster da carta original ou equivalência inequívoca de arte e edição"
     },
     {
-      "numero": 75,
-      "nome": "Luis Díaz",
-      "problema": "Cadastro Highlight vs fonte por ID Show Time",
-      "candidato": {
-        "id": "106780671726691",
-        "tipo": "Show Time",
-        "impeto": "Breakthrough +3",
-        "url": "https://pesdb.net/efootball/players/luis-diaz-106780671726691"
-      },
-      "prova_necessaria": "confirmar raridade da carta real"
-    },
-    {
       "numero": 151,
       "nome": "Willian Pacho",
       "problema": "Cadastro Highlight vs fonte por ID Show Time",
@@ -81,18 +69,6 @@
         "tipo": "Show Time",
         "impeto": "Defending +3",
         "url": "https://pesdb.net/efootball/players/willian-pacho-106776376791946"
-      },
-      "prova_necessaria": "confirmar raridade da carta real"
-    },
-    {
-      "numero": 170,
-      "nome": "Jan Oblak",
-      "problema": "Cadastro Highlight vs fonte por ID Show Time",
-      "candidato": {
-        "id": "106766444571720",
-        "tipo": "Show Time",
-        "impeto": "Goalkeeping +3",
-        "url": "https://pesdb.net/efootball/players/jan-oblak-106766444571720"
       },
       "prova_necessaria": "confirmar raridade da carta real"
     },
@@ -1245,16 +1221,17 @@
       "numero": 75,
       "jogador": "Luis Díaz",
       "card_id_registrado": "106780671726691",
-      "habilidades_nativas_quantidade": 0,
-      "habilidades_status": "pendente_identidade",
-      "habilidades_fonte": null,
+      "habilidades_nativas_quantidade": 10,
+      "habilidades_status": "base_externa_card_id",
+      "habilidades_fonte": "https://pesdb.net/efootball/players/luis-diaz-106780671726691",
       "habilidades_confirmadas_diretamente_na_conta": false,
       "impeto_fixo_registrado": "Breakthrough +3",
       "impeto_extra_registrado": "SLOT SELECIONÁVEL +1",
       "situacao_slot_na_base": "selecionavel_indicado_sem_homologacao",
       "situacao_slot_confirmada_na_conta": false,
       "ressalva_usuario": null,
-      "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes"
+      "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes",
+      "confirmacao_de_raridade": "usuario_confirmacao_textual_2026-10-14"
     },
     {
       "numero": 76,
@@ -2400,7 +2377,9 @@
       "situacao_slot_na_base": "indefinido",
       "situacao_slot_confirmada_na_conta": false,
       "ressalva_usuario": null,
-      "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes"
+      "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes",
+      "raridade_confirmada_pelo_usuario": "DISTINGUIDO",
+      "aviso_card_id": "ID atualmente cadastrado resolve Show Time na PESDB; nao copiar skills nem alterar ID automaticamente"
     },
     {
       "numero": 152,
@@ -2676,16 +2655,17 @@
       "numero": 170,
       "jogador": "Jan Oblak",
       "card_id_registrado": "106766444571720",
-      "habilidades_nativas_quantidade": 0,
-      "habilidades_status": "pendente_identidade",
-      "habilidades_fonte": null,
+      "habilidades_nativas_quantidade": 5,
+      "habilidades_status": "base_externa_card_id",
+      "habilidades_fonte": "https://pesdb.net/efootball/players/jan-oblak-106766444571720",
       "habilidades_confirmadas_diretamente_na_conta": false,
       "impeto_fixo_registrado": "PENDENTE — não confirmado nesta consolidação",
       "impeto_extra_registrado": "PENDENTE — não confirmado nesta consolidação",
       "situacao_slot_na_base": "indefinido",
       "situacao_slot_confirmada_na_conta": false,
       "ressalva_usuario": null,
-      "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes"
+      "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes",
+      "confirmacao_de_raridade": "usuario_confirmacao_textual_2026-10-14"
     },
     {
       "numero": 171,
@@ -2853,7 +2833,9 @@
       "situacao_slot_na_base": "indefinido",
       "situacao_slot_confirmada_na_conta": false,
       "ressalva_usuario": null,
-      "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes"
+      "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes",
+      "raridade_confirmada_pelo_usuario": "DISTINGUIDO",
+      "aviso_card_id": "ID atualmente cadastrado resolve Show Time na PESDB; nao copiar skills nem alterar ID automaticamente"
     },
     {
       "numero": 182,
@@ -3833,5 +3815,6 @@
       "ressalva_usuario": null,
       "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes"
     }
-  ]
+  ],
+  "revisao_v183": "Raridades #075/#170 Show Time e #151/#181 Distinguido confirmadas pelo usuário 2026-10-14. #075/#170 lista externa por Card ID, NÃO homologada no jogo. #151/#181 IDs divergentes da raridade mantidos pendentes."
 }
