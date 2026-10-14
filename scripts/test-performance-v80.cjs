@@ -11,7 +11,11 @@ for(const file of files){
  const v=core.review(d,l,[],null);
  if(v.hasPP){withPP++;
    assert.equal(v.status,v.candidate?'Build competitiva candidata':v.opts.length?'Build calculada':'PP confirmados · treino pendente');
-   if(d.recommended_levels===null)assert.equal(v.opts.length,0,'Não atribuir build fictícia '+file);
+   if(d.recommended_levels===null){
+     assert.equal(v.opts.length,1,'Ficha de teste deve ter só a proposta de PP verificáveis '+file);
+     assert.deepEqual(v.opts[0].levels,l.draftA,'A comparação deve usar a proposta original, sem inventar build '+file);
+     assert.equal(core.cost(v.opts[0].levels),d.pp,'Custo do treino precisa fechar '+file);
+   }
  }
  else{withoutPP++;assert.equal(v.status,'Dados pendentes');assert.equal(v.opts.length,0)}
  if(v.baseStats)hasBase++;
