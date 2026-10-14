@@ -20,6 +20,7 @@ public class MainActivity extends BridgeActivity {
 `;
 fs.writeFileSync(path.join(base,'MainActivity.java'),activity);
 fs.copyFileSync(path.join(root,'native/android/ScoutUpdaterPlugin.java'),path.join(base,'ScoutUpdaterPlugin.java'));
+fs.copyFileSync(path.join(root,'native/android/ScoutUpdateFileProvider.java'),path.join(base,'ScoutUpdateFileProvider.java'));
 const xml=path.join(android,'res/xml');fs.mkdirSync(xml,{recursive:true});
 fs.writeFileSync(path.join(xml,'scout_update_paths.xml'),
  `<?xml version="1.0" encoding="utf-8"?>
@@ -33,11 +34,15 @@ if(!manifest.includes('android.permission.REQUEST_INSTALL_PACKAGES')){
  manifest=manifest.replace(/(<application\b)/,
    '    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />\n\n    $1');
 }
-if(!manifest.includes('br.com.scoutpro.offline.scoutupdate.files')&&!manifest.includes('${applicationId}.scoutupdate.files')){
+const PROVIDER_AUTHORITY=app.appId+'.scoutupdate.files';
+const PROVIDER_CLASS=app.appId+'.ScoutUpdateFileProvider';
+// Classe distinta da usada pelo Capacitor (.fileprovider): o manifest merger
+// nunca deve fundir dois FileProviders do mesmo android:name.
+if(!manifest.includes(PROVIDER_AUTHORITY)){
  manifest=manifest.replace('</application>',
  `    <provider
-        android:name="androidx.core.content.FileProvider"
-        android:authorities="${app.appId}.scoutupdate.files"
+        android:name="${PROVIDER_CLASS}"
+        android:authorities="${PROVIDER_AUTHORITY}"
         android:exported="false"
         android:grantUriPermissions="true">
         <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
@@ -45,6 +50,7 @@ if(!manifest.includes('br.com.scoutpro.offline.scoutupdate.files')&&!manifest.in
     </provider>
   </application>`);
 }
-if(!manifest.includes('scout_update_paths')||!manifest.includes('REQUEST_INSTALL_PACKAGES'))throw Error('Native installer manifest incomplete');
+if(!manifest.includes('scout_update_paths')||!manifest.includes('REQUEST_INSTALL_PACKAGES')||!manifest.includes(PROVIDER_CLASS)||!manifest.includes(PROVIDER_AUTHORITY))
+ throw Error('Native installer manifest incomplete or FileProvider authority mismatch');
 fs.writeFileSync(file,manifest);
-console.log('V102: native updater, private FileProvider, install permission and MainActivity registered for '+app.appId);
+console.log('V167: dedicated ScoutUpdateFileProvider (authority '+PROVIDER_AUTHORITY+'), private APK paths and native updater registered for '+app.appId);

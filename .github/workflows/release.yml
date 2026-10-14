@@ -210,6 +210,11 @@ jobs:
           AAPT="$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1)"
           test -x "$AAPT" || { echo 'AAPT não encontrado' >&2; exit 1; }
           "$AAPT" dump badging "$APK" > /tmp/scout-apk-badging.txt
+          "$AAPT" dump xmltree "$APK" AndroidManifest.xml > /tmp/scout-apk-manifest.txt
+          grep -Fq 'br.com.scoutpro.offline.ScoutUpdateFileProvider' /tmp/scout-apk-manifest.txt
+          grep -Fq 'br.com.scoutpro.offline.scoutupdate.files' /tmp/scout-apk-manifest.txt
+          echo "FileProvider exclusivo e autoridade do atualizador presentes no APK assinado."
+
           grep -Fq "package: name='br.com.scoutpro.offline' versionCode='${{ github.run_number }}' versionName='1.1.${{ github.run_number }}'" /tmp/scout-apk-badging.txt
           echo "Pacote oficial legível por aapt: identificador e versão confirmados."
       - name: Arquivar APK de teste
