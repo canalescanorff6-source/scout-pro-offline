@@ -51,6 +51,22 @@ for(const finding of supplement.additional_conflicts) {
   assert.match(finding.source,/^https:\/\/pesdb\.net\/efootball\/players\//);
   assert.equal(finding.status,'CONFIRMED_EXTERNAL_LABEL_MISMATCH_NOT_APPLIED');
 }
+const consistency = supplement.cross_catalogue_type_consistency;
+assert(consistency && consistency.inspected_cards===246 && consistency.display_version_mismatches===33);
+const html = fs.readFileSync(path.join(root, 'web/index.html'), 'utf8');
+const blocks = [...html.matchAll(/<a class="player-card" data-cap="(\\d+)"[\\s\\S]*?(?=<a class="player-card"|<\\/section>|<\\/main>)/g)];
+assert.equal(blocks.length,246,'O catálogo visual deve ter 246 cartas');
+const aliases = {'ÉPICA':'Epic','DISTINGUIDO':'Highlight','SHOW TIME':'Show Time','BIG TIME':'Big Time'};
+const mismatches = [];
+for(const match of blocks) {
+  const cap = Number(match[1]), block=match[0];
+  const display=block.match(/data-rarity="([^"]+)"/)?.[1];
+  const version=block.match(/<div class="player-version">([^<]+)<\\/div>/)?.[1] || '';
+  const type=version.match(/^(Epic|Show Time|Highlight|Standard|Legendary|Big Time|Trending)/i)?.[1];
+  if(type && (aliases[display]||display)?.toLowerCase()!==type.toLowerCase()) mismatches.push(cap);
+}
+assert.deepEqual(mismatches, consistency.records.map(c=>c.cap));
+assert.equal(new Set(mismatches).size,33);
 const bentancur = cards.cartas.find(c=>c.numero===120);
 assert.equal(bentancur.pp, supplement.priority_cards.find(c=>c.cap===120).catalogue_pp_budget);
 const kakita = cards.cartas.find(c=>c.numero===234);
