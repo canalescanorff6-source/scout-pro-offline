@@ -65,14 +65,15 @@
       "numero": 75,
       "nome": "Luis Díaz",
       "raridade_atual": "SHOW TIME",
-      "edicao_documentada": "Highlight — Daily Bonus 2026 — Luis Díaz",
-      "referencia_descritiva": "DISTINGUIDO",
+      "edicao_documentada": "Show Time — Daily Bonus 2026 — Luis Díaz",
+      "referencia_descritiva": "SHOW TIME",
       "grupo": "divergencia",
       "imagem": "cartas/CAP_075_Luis_Diaz_OVR89_PTE.png",
       "raridade_anterior": "SHOW TIME",
       "raridade_confirmada": "SHOW TIME",
       "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
-      "status_raridade": "confirmada"
+      "status_raridade": "confirmada",
+      "ajuste_descricao_2026_10_14": "Raridade Show Time reconfirmada pelo usuario; historico de edicao alinhado ao Card ID"
     },
     {
       "numero": 79,
@@ -286,14 +287,15 @@
       "numero": 170,
       "nome": "Jan Oblak",
       "raridade_atual": "SHOW TIME",
-      "edicao_documentada": "Highlight — Extraordinary One 4 Dec '25 — Jan Oblak",
-      "referencia_descritiva": "DISTINGUIDO",
+      "edicao_documentada": "Show Time — Extraordinary One 4 Dec '25 — Jan Oblak",
+      "referencia_descritiva": "SHOW TIME",
       "grupo": "divergencia",
       "imagem": "cartas/CAP_170_Jan_Oblak_OVR103_GO.png",
       "raridade_anterior": "SHOW TIME",
       "raridade_confirmada": "SHOW TIME",
       "confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
-      "status_raridade": "confirmada"
+      "status_raridade": "confirmada",
+      "ajuste_descricao_2026_10_14": "Raridade Show Time reconfirmada pelo usuario; historico de edicao alinhado ao Card ID"
     },
     {
       "numero": 177,
