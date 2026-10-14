@@ -8,6 +8,7 @@ bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small"
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
 if(inCard){
+ const navScript=document.createElement('script');navScript.defer=true;navScript.src='../card-navigator-v161.js';document.body.appendChild(navScript);
  const match=location.pathname.match(/\/fichas\/(\d{3})_/);
  const cardView=document.querySelector('.profile-content');
  if(match&&cardView&&!document.getElementById('scout-card-booster-shortcut')){
