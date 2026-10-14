@@ -96,7 +96,8 @@
         "sources": [
           "https://pesdb.net/efootball/players/ian-maatsen-132386",
           "https://www.pesmaster.com/ian-maatsen/efootball-2022/player/132386/",
-          "https://efootballedge.com/pt-BR/cards/132386-ian-maatsen"
+          "https://efootballedge.com/pt-BR/cards/132386-ian-maatsen",
+          "https://boooost.jp/efootball-ian-maatsen/"
         ]
       },
       "registered_pp_budget": 76,
@@ -150,6 +151,13 @@
             "pp": null,
             "source_limitation": "Base independente com valor divergente",
             "url": "https://efootballedge.com/pt-BR/cards/132386-ian-maatsen"
+          },
+          {
+            "version": "Standard Ian Maatsen — eFootball LABO 2027",
+            "max_level": 41,
+            "pp": 80,
+            "source_limitation": "Referência editorial eFootball LABO que identifica edição Standard (base 2026->2027), mas sem exibir Card ID 132386 no mesmo trecho nem comprovar a foto original do usuário; divergente dos níveis 37/59 em outras bases. NÃO substituir treino do cadastro.",
+            "url": "https://boooost.jp/efootball-ian-maatsen/"
           }
         ],
         "separate_card_same_registered_pp": {
@@ -158,7 +166,7 @@
           "pp": 76,
           "url": "https://ef-labo.com/efootball/ian-maatsen-english-league-guardians/"
         },
-        "instruction": "Não aplicar 76 PP à Standard apenas por coincidência: fonte explícita registra 76 PP como Highlight; níveis Standard 37 e 59 divergem. Não ajustar até captura do cartão no jogo.",
+        "instruction": "O cadastro atual informa 76 PP, número associado à Highlight Lv39; fonte eFootball LABO específica da Standard aponta Lv41/80 PP, Game8 e PES Master apresentam níveis divergentes em outras bases. Confirmar tela do jogo da edição exata antes de redistribuir pontos; preservar builds atuais.",
         "player_card_frame_verified": false,
         "gameplay_verified": false
       }
@@ -328,5 +336,23 @@
     "registered_training_and_pp_unchanged": true,
     "source_provenance": "Páginas individuais indexadas em 13/10/2026; distinguem o pacote exato de outras cartas Kashiwa.",
     "status": "DOCUMENTARY_CORROBORATION_NOT_VIDEO_HOMOLOGATION"
+  },
+  "research_update_v175": {
+    "date": "2026-10-14",
+    "purpose": "Uma terceira referência externa Standard para CAP141 com PP explicitamente identificados, sem prova de fotograma.",
+    "source": "https://boooost.jp/efootball-ian-maatsen/",
+    "standard_max_level": 41,
+    "standard_pp": 80,
+    "competing_max_levels": [
+      37,
+      41,
+      59
+    ],
+    "registered_pp": 76,
+    "highlight_same_pp": 76,
+    "confidence": "SOURCE_ATTRIBUTED_NOT_GAME_VALIDATED",
+    "original_card_untouched": true,
+    "video_homologations_added": 0,
+    "video_candidates_added": 0
   }
 }
