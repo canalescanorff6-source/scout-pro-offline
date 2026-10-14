@@ -5,9 +5,10 @@
   "baseline": {
     "v106_blob": "75a5f5fb8712a6e057df414b7793dbbfc95e302e",
     "v98_blob": "609d127a15ae1d6641f610be126bdf1d9518768b",
-    "v101_blob": "157016311d4aeeeb4f345fc4af8d7280f5954767"
+    "v101_blob": "157016311d4aeeeb4f345fc4af8d7280f5954767",
+    "v157_leads_blob": "081e8f08ae9a5fcb2967d118357556a0fee880d4"
   },
-  "metodologia": "Auditoria estrutural de arquivos do projeto e rastreabilidade documental. NÃO certifica vídeos por fotogramas, precisão de stats extraídos de prints ou gameplay; não altera fichas nem valida builds.",
+  "metodologia": "Auditoria estrutural de arquivos do projeto e rastreabilidade documental. NÃO certifica vídeos por fotogramas, precisão de stats extraídos de prints ou gameplay; não altera fichas nem valida builds. Inclui os dois links TikTok da V157 (não validados), além dos 42 leads V159-V169.",
   "resumo": {
     "cartas": 246,
     "artes_referenciadas": 246,
@@ -16,8 +17,8 @@
     "cartas_pacote_compativel": 130,
     "cartas_apenas_candidatos": 111,
     "cartas_sem_video": 5,
-    "links_externos_reservados": 42,
-    "links_externos_distintos": 42,
+    "links_externos_reservados": 44,
+    "links_externos_distintos": 44,
     "card_ids_numericos": 224,
     "card_ids_pendentes": 22,
     "atributos_base_documentados": 14,
@@ -61,7 +62,7 @@
       {
         "num": 235,
         "nome": "Kumasaka Koki",
-        "candidatos": 7
+        "candidatos": 8
       }
     ],
     "card_id_pendente": [
@@ -4229,7 +4230,7 @@
       "card_id_numerico": true,
       "videos_catalogo": 1,
       "categoria_video": "candidato_sem_versao_confirmada",
-      "candidatos_em_quarentena": 0,
+      "candidatos_em_quarentena": 1,
       "video_da_edicao_exata_com_frame_verificado": false,
       "player_id_validado": false,
       "build_video_validada": false
@@ -5329,7 +5330,7 @@
       "card_id_numerico": false,
       "videos_catalogo": 0,
       "categoria_video": "pendente",
-      "candidatos_em_quarentena": 7,
+      "candidatos_em_quarentena": 8,
       "video_da_edicao_exata_com_frame_verificado": false,
       "player_id_validado": false,
       "build_video_validada": false
@@ -5576,5 +5577,10 @@
       "player_id_validado": false,
       "build_video_validada": false
     }
-  ]
+  ],
+  "origem_candidatos": {
+    "v157_tiktok": 2,
+    "v159_a_v169": 42,
+    "total": 44
+  }
 }
