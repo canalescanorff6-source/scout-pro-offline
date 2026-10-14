@@ -215,5 +215,249 @@
     "no_user_data_changed": true,
     "no_overall_optimization": true,
     "no_local_editions_changed": true
+  },
+  "cross_catalogue_type_consistency": {
+    "inspected_cards": 246,
+    "display_version_mismatches": 33,
+    "scope": "web/index.html data-rarity vs player-version text; textual consistency ONLY, not independent in-game ID proof. Prioritize each discrepancy for careful verification; no automatic mass change.",
+    "aliases_used": {
+      "ÉPICA": "Epic",
+      "DISTINGUIDO": "Highlight",
+      "SHOW TIME": "Show Time",
+      "BIG TIME": "Big Time"
+    },
+    "records": [
+      {
+        "cap": 23,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — Starter Set 28 May '26",
+        "confirmed_external_card_id_crosscheck": true,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 35,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — 900 Million Downloads Campaign",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 36,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — New Year's Gift 1 Jan '25",
+        "confirmed_external_card_id_crosscheck": true,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 41,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — Arsenal FC Selection 21 May '26",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 75,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — Daily Bonus 2026 — Luis Díaz",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 79,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — Campaign Rewards Feb '26 — Neymar Jr",
+        "confirmed_external_card_id_crosscheck": true,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 80,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — Extraordinary One 4 Dec '25 — Xavi Simons",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 99,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — Show Time 13 Nov '25 — Joelinton",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 100,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — Daily Bonus 2026 — Orkun Kökçü",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 104,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Epic — Ajax — ID 88036360719848 (rótulo de pack/era não exposto de forma inequívoca)",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 108,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — National Team Pack France 2026",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 109,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — National Teams Selection 13 Jul '26 — Rúben Neves",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 119,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Standard — Bournemouth RB — eFootball 2027",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 120,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Standard — Tottenham WB — eFootball 2027",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 126,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Trending — POTW National Teams 28 Mar '24 — Daniel Muñoz",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 141,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Standard — Aston RB — eFootball 2027",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 153,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Show Time — New Year's Gift 2026 — Dean Huijsen",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 165,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Show Time — Tournament Stars 2026 — Cristian Romero",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 167,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Standard — Danilo — CB",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 170,
+        "rarity_display": "SHOW TIME",
+        "version_catalogue": "Highlight — Extraordinary One 4 Dec '25 — Jan Oblak",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 177,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Standard — Dean Henderson — Crystal Palace RB",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 185,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Standard — Pedro — CR Flamengo",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 189,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Standard — Donyell Malen — Roma GR",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 198,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Standard — Liverpool R — eFootball 2027",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 199,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Standard — João Félix",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 200,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Epic — CAF AFRICA CUP OF NATIONS 25 — Sadio Mané",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 201,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Standard — Yan Diomande",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 204,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Trending — POTW National Teams 27 Mar '25 — Xavi Simons",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 208,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Show Time — Pressure-Proof 2026 (30 Jul 2026)",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 210,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Show Time — 1-2 Cut-in A 23 Apr '26 — Jamal Musiala",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 215,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Show Time — The All-Rounders 26 Dec '24",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 216,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Show Time — Central Dominator 5 Jan '26",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      },
+      {
+        "cap": 217,
+        "rarity_display": "DISTINGUIDO",
+        "version_catalogue": "Epic — World Player of the Year 2025",
+        "confirmed_external_card_id_crosscheck": false,
+        "classification": "STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW"
+      }
+    ]
   }
 }
