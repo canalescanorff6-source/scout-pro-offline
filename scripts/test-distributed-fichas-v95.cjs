@@ -41,5 +41,5 @@ const kubo=audit.cards.find(c=>c.numero===211);
 assert.equal(kubo.pp,0);assert(draft(kubo).every(n=>n===0));
 assert.equal(audit.cards.filter(c=>c.niveis!==null).length,162);
 const src=fs.readFileSync(path.join(root,'lab.js'),'utf8');
-for(const m of ['d.draftA.slice()','const oldEmpty=','TREINO PROPOSTO NA FICHA V95','Salvar como meu treino de teste'])assert(src.includes(m));
+for(const m of ['d.draftA.slice()','const oldEmpty=','TREINO FUNCIONAL · ','Salvar como meu treino de teste'])assert(src.includes(m));
 console.log('V95 OK: 84 fichas com propostas reais em JSON, 83 PP completos, Kubo 0 e 162 anteriores intactas.');
