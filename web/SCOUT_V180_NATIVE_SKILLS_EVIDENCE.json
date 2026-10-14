@@ -5,9 +5,9 @@
   "method": "Somente quando arte/posição/OVR-base/PP/pacote/nome coincidirem ou Card ID e edição exatos. Nunca importar por nome apenas. Se faltam identificadores, marcar pendente e preservar original.",
   "total_cards": 246,
   "known_before": 219,
-  "added": 7,
-  "known_after": 226,
-  "pending": 20,
+  "added": 13,
+  "known_after": 232,
+  "pending": 14,
   "matched_entries": [
     {
       "cap": 226,
@@ -225,6 +225,192 @@
         "Blocker",
         "Fighting Spirit"
       ]
+    },
+    {
+      "cap": 237,
+      "name": "Piero Hincapié",
+      "pos": "LE",
+      "pp": 64,
+      "source_id": "105873359905555",
+      "source_url": "https://pesdb.net/efootball/players/piero-hincapie-105873359905555",
+      "edition": "Highlight — European Clubs Selection 24 Sep '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição LE",
+        "clube Arsenal FC",
+        "OVR original 83",
+        "64 PP",
+        "conjunto único de seis cartas no pacote 24/09/2026"
+      ],
+      "skills": [
+        "Heading",
+        "One-touch Pass",
+        "Long Throw",
+        "Man Marking",
+        "Interception",
+        "Blocker",
+        "Aerial Superiority",
+        "Sliding Tackle",
+        "Acrobatic Clearance",
+        "Fighting Spirit"
+      ]
+    },
+    {
+      "cap": 238,
+      "name": "Mateus Fernandes",
+      "pos": "MLG",
+      "pp": 68,
+      "source_id": "105873359923147",
+      "source_url": "https://pesdb.net/efootball/players/mateus-fernandes-105873359923147",
+      "edition": "Highlight — European Clubs Selection 24 Sep '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição MLG",
+        "clube Tottenham WB",
+        "OVR original 82",
+        "68 PP",
+        "conjunto único de seis cartas no pacote 24/09/2026"
+      ],
+      "skills": [
+        "Sombrero",
+        "Long-range Shooting",
+        "One-touch Pass",
+        "Through Passing",
+        "Weighted Pass",
+        "Outside Curler",
+        "Gamesmanship",
+        "Interception",
+        "Blocker",
+        "Fighting Spirit"
+      ]
+    },
+    {
+      "cap": 239,
+      "name": "Alexander Isak",
+      "pos": "CA",
+      "pp": 60,
+      "source_id": "105873359880583",
+      "source_url": "https://pesdb.net/efootball/players/alexander-isak-105873359880583",
+      "edition": "Highlight — European Clubs Selection 24 Sep '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição CA",
+        "clube Liverpool R",
+        "OVR original 84",
+        "60 PP",
+        "conjunto único de seis cartas no pacote 24/09/2026"
+      ],
+      "skills": [
+        "Double Touch",
+        "Flip Flap",
+        "Cut Behind & Turn",
+        "Sole Control",
+        "Long-range Curler",
+        "Long-range Shooting",
+        "First-time Shot",
+        "One-touch Pass",
+        "Outside Curler",
+        "Fighting Spirit"
+      ]
+    },
+    {
+      "cap": 240,
+      "name": "Gonçalo Ramos",
+      "pos": "CA",
+      "pp": 62,
+      "source_id": "105873359900298",
+      "source_url": "https://pesdb.net/efootball/players/goncalo-ramos-105873359900298",
+      "edition": "Highlight — European Clubs Selection 24 Sep '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição CA",
+        "clube AC Milan",
+        "OVR original 82",
+        "62 PP",
+        "conjunto único de seis cartas no pacote 24/09/2026"
+      ],
+      "skills": [
+        "Heading",
+        "Long-range Curler",
+        "Long-range Shooting",
+        "First-time Shot",
+        "One-touch Pass",
+        "Outside Curler",
+        "Track Back",
+        "Aerial Superiority",
+        "Super-sub",
+        "Fighting Spirit"
+      ]
+    },
+    {
+      "cap": 241,
+      "name": "Federico Valverde",
+      "pos": "MLG",
+      "pp": 60,
+      "source_id": "105873359879415",
+      "source_url": "https://pesdb.net/efootball/players/federico-valverde-105873359879415",
+      "edition": "Highlight — European Clubs Selection 24 Sep '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição MLG",
+        "clube Madrid Chamartin B",
+        "OVR original 84",
+        "60 PP",
+        "conjunto único de seis cartas no pacote 24/09/2026"
+      ],
+      "skills": [
+        "Long-range Curler",
+        "Long-range Shooting",
+        "Acrobatic Finishing",
+        "One-touch Pass",
+        "Through Passing",
+        "Outside Curler",
+        "Low Lofted Pass",
+        "Interception",
+        "Blocker",
+        "Fighting Spirit"
+      ]
+    },
+    {
+      "cap": 244,
+      "name": "Edmond Tapsoba",
+      "pos": "ZC",
+      "pp": 52,
+      "source_id": "105873359893929",
+      "source_url": "https://pesdb.net/efootball/players/edmond-tapsoba-105873359893929",
+      "edition": "Highlight — European Clubs Selection 24 Sep '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição ZC",
+        "clube Bayer 04 Leverkusen",
+        "OVR original 84",
+        "52 PP",
+        "conjunto único de seis cartas no pacote 24/09/2026"
+      ],
+      "skills": [
+        "Heading",
+        "First-time Shot",
+        "Low Lofted Pass",
+        "Penalty Specialist",
+        "Man Marking",
+        "Interception",
+        "Blocker",
+        "Aerial Superiority",
+        "Sliding Tackle",
+        "Acrobatic Clearance"
+      ]
     }
   ],
   "investigations": [
@@ -335,41 +521,6 @@
       "additional_evidence": "Fontes Inter 09-10/10-11 divergem em posição, OVR e PP da carta informada. Não migrar habilidades sem identificar edição."
     },
     {
-      "cap": 237,
-      "name": "Piero Hincapié",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 238,
-      "name": "Mateus Fernandes",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 239,
-      "name": "Alexander Isak",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 240,
-      "name": "Gonçalo Ramos",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 241,
-      "name": "Federico Valverde",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
       "cap": 242,
       "name": "Maghnes Akliouche",
       "card_id_registered": "PENDENTE — não inferido",
@@ -379,13 +530,6 @@
     {
       "cap": 243,
       "name": "Anthony Gordon",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 244,
-      "name": "Edmond Tapsoba",
       "card_id_registered": "PENDENTE — não inferido",
       "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
       "status": "pendente_de_identificacao"

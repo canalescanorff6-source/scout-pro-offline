@@ -7872,7 +7872,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_237_Piero_Hincapi_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7887,7 +7887,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/piero-hincapie-105873359905555"
     },
     {
       "numero": 238,
@@ -7900,7 +7901,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_238_Mateus_Fernandes_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7915,7 +7916,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/mateus-fernandes-105873359923147"
     },
     {
       "numero": 239,
@@ -7928,7 +7930,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_239_Alexander_Isak_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7943,7 +7945,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/alexander-isak-105873359880583"
     },
     {
       "numero": 240,
@@ -7956,7 +7959,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_240_Gon_alo_Ramos_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7971,7 +7974,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/goncalo-ramos-105873359900298"
     },
     {
       "numero": 241,
@@ -7984,7 +7988,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_241_Federico_Valverde_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7999,7 +8003,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/federico-valverde-105873359879415"
     },
     {
       "numero": 242,
@@ -8068,7 +8073,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_244_Edmond_Tapsoba_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -8083,7 +8088,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/edmond-tapsoba-105873359893929"
     },
     {
       "numero": 245,
