@@ -1,0 +1,204 @@
+{
+  "schema": "SCOUT_V172_FOUR_VIDEO_RESEARCH_CLOSURE",
+  "as_of": "2026-10-14",
+  "repository": "canalescanorff6-source/scout-pro-offline",
+  "baseline_main": "a07be1069bb1d1fb8954b08e543deb7cc9b895ee",
+  "scope": [
+    120,
+    141,
+    234,
+    235
+  ],
+  "methodology": "Conclusão de busca de fontes documentais para quatro casos prioritários. Não houve acesso a frames YouTube nesta sessão; não habilitar qualquer prova de edição ou PP via vídeo. Links permanecem como candidatos e não são somados ao catálogo oficial.",
+  "research_phase": "ENCERRADA_COM_DOCUMENTACAO",
+  "video_homologation_phase": "PENDENTE_SEM_QUADROS",
+  "verified_video_exact_editions": 0,
+  "new_official_associations": 0,
+  "existing_catalogue": {
+    "cards": 246,
+    "unique_videos": 377,
+    "associations": 393,
+    "without_official_video": 5,
+    "quarantined_leads": 44
+  },
+  "cases": [
+    {
+      "cap": 120,
+      "name": "Rodrigo Bentancur",
+      "edition": "Standard — Tottenham WB — eFootball 2027",
+      "card_id_registered": "105297",
+      "art": "web/cartas/CAP_120_Rodrigo_Bentancur_OVR84_VOL.png",
+      "external_identification": {
+        "class": "Standard",
+        "card_id": "105297",
+        "club": "Tottenham WB",
+        "sources": [
+          "https://pesdb.net/efootball/players/rodrigo-bentancur-105297",
+          "https://www.pesmaster.com/rodrigo-bentancur/efootball-2022/player/105297/"
+        ]
+      },
+      "registered_pp_budget": 68,
+      "external_level_pp": {
+        "pesmaster_max_level": 32,
+        "pesdb_unallocated_pp_website_default": 62,
+        "conflict": "68 PP na ficha contra 62 PP na configuração de referência PESDB. Não extrapolar nível ou substituir."
+      },
+      "video_leads": [
+        {
+          "url": "https://www.youtube.com/watch?v=tlFX9K3S25Q",
+          "kind": "ANALISE_STANDARD_EFOOTBALL_2025",
+          "label": "Análise individual Standard — edição do eFootball 2025",
+          "reason": "A etiqueta da versão 2025 impede validar a carta 2027; sem quadro de Card ID.",
+          "verified_exact_edition": false
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=xIFwSj15lqg",
+          "kind": "ELENCO_TOTTENHAM_2027",
+          "label": "Galeria do Tottenham — eFootball 2027",
+          "reason": "Vídeo de elenco em 2027; carta Standard 105297 não vista individualmente.",
+          "verified_exact_edition": false
+        }
+      ],
+      "missing_to_homologate": "Fotograma do vídeo com Standard 105297 e detalhe de progressão da carta cadastrada, incluindo nível/PP."
+    },
+    {
+      "cap": 141,
+      "name": "Ian Maatsen",
+      "edition": "Standard — Aston RB — eFootball 2027",
+      "card_id_registered": "132386",
+      "art": "web/cartas/CAP_141_Ian_Maatsen_OVR84_LE.png",
+      "external_identification": {
+        "class": "Standard",
+        "card_id": "132386",
+        "club": "Aston RB",
+        "sources": [
+          "https://pesdb.net/efootball/players/ian-maatsen-132386",
+          "https://www.pesmaster.com/ian-maatsen/efootball-2022/player/132386/",
+          "https://efootballedge.com/pt-BR/cards/132386-ian-maatsen"
+        ]
+      },
+      "registered_pp_budget": 76,
+      "external_level_pp": {
+        "levels_found": [
+          37,
+          41,
+          59
+        ],
+        "per_sources": [
+          "eFootball Edge mostra 37",
+          "eFootball LABO V168 cita 41",
+          "PES Master mostra 59"
+        ],
+        "pesdb_public_default_pp": 0,
+        "conflict": "Níveis 37/41/59 incompatíveis nas fontes; PP 76 consta da ficha e não valida nível máximo; PESDB PP=0 pode ser ausência de configuração."
+      },
+      "video_leads": [
+        {
+          "url": "https://www.youtube.com/watch?v=wmomrOqGlTE",
+          "kind": "ANALISE_INDIVIDUAL_EFOOTBALL_2025",
+          "label": "Análise individual Maatsen — eFootball 2025",
+          "reason": "Edição de 2025; não equivale à Standard 132386 atual.",
+          "verified_exact_edition": false
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=yN9MEwQqWg0",
+          "kind": "ELENCO_ASTON_VILLA_2027",
+          "label": "Galeria Aston Villa — eFootball 2027",
+          "reason": "Metadados de elenco; não foi localizado quadro individual de Maatsen com Card ID.",
+          "verified_exact_edition": false
+        }
+      ],
+      "missing_to_homologate": "Captura do nível máximo e PP da carta Standard do usuário e quadro de vídeo com arte/ID 132386."
+    },
+    {
+      "cap": 234,
+      "name": "Kakita Yuki",
+      "edition": "Highlight — Ricardo Rodríguez Manager Pack 01/10/2026 (correspondência externa da arte)",
+      "card_id_registered": null,
+      "art": "web/cartas/CAP_234_Kakita_Yuki_ORIGINAL.png",
+      "external_identification": {
+        "class": "Highlight",
+        "card_id_external_only": "105903424658357",
+        "club": "Kashiwa Reysol",
+        "sources": [
+          "https://pesdb.net/efootball/players/kakita-yuki-105903424658357",
+          "https://efootball-world.com/player/105903424658357",
+          "https://game8.jp/efootball/821684"
+        ]
+      },
+      "registered_pp_budget": 62,
+      "external_level_pp": {
+        "level": 32,
+        "pp": 62,
+        "scope": "Concordância com ficha externa; não é demonstração em vídeo nem Card ID do inventário do usuário."
+      },
+      "video_leads": [
+        {
+          "url": "https://www.youtube.com/watch?v=vdOYEtgVaBU",
+          "kind": "GUIA_QUATRO_HIGHLIGHT_MANAGER_PACK_2027",
+          "label": "Guia do pacote Ricardo Rodríguez — quatro Highlight",
+          "reason": "Título e indexação oferecem contexto forte, mas não foi possível inspecionar segmento de Kakita nem níveis/PP em vídeo.",
+          "verified_exact_edition": false
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=P4NodBzvOvs",
+          "kind": "OBTENCAO_E_PACOTE",
+          "label": "Vídeo de aquisição do pacote — contextual",
+          "reason": "Aquisição do Manager Pack não demonstra build individual de Kakita.",
+          "verified_exact_edition": false
+        }
+      ],
+      "missing_to_homologate": "Fotograma do vídeo exibindo Kakita individualmente e treino, comparado à arte original; ID externo não é automaticamente ID in-game do usuário."
+    },
+    {
+      "cap": 235,
+      "name": "Kumasaka Koki",
+      "edition": "Highlight — Ricardo Rodríguez Manager Pack 01/10/2026 (correspondência externa da arte)",
+      "card_id_registered": null,
+      "art": "web/cartas/CAP_235_Kumasaka_Koki_ORIGINAL.png",
+      "external_identification": {
+        "class": "Highlight",
+        "card_id_external_only": "105903424704710",
+        "club": "Kashiwa Reysol",
+        "sources": [
+          "https://pesdb.net/efootball/players/kumasaka-koki-105903424704710",
+          "https://efootball-world.com/player/105903424704710",
+          "https://game8.jp/efootball/821684"
+        ]
+      },
+      "registered_pp_budget": 64,
+      "external_level_pp": {
+        "level": 33,
+        "pp": 64,
+        "scope": "Concordância com ficha externa; não prova quadro ou ID da carta do usuário."
+      },
+      "video_leads": [
+        {
+          "url": "https://www.youtube.com/watch?v=vdOYEtgVaBU",
+          "kind": "GUIA_QUATRO_HIGHLIGHT_MANAGER_PACK_2027",
+          "label": "Guia dos quatro Highlight — referência coletiva",
+          "reason": "Mesma referência do Kakita; não contar duas provas independentes nem assumir PP visível.",
+          "verified_exact_edition": false
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=P4NodBzvOvs",
+          "kind": "OBTENCAO_E_PACOTE",
+          "label": "Aquisição do pacote — contexto 2027",
+          "reason": "Vídeo de pack opening; sem quadro de treinamento individual verificado.",
+          "verified_exact_edition": false
+        }
+      ],
+      "missing_to_homologate": "Fotograma do vídeo exibindo Kumasaka com arte e progressão e captura original para ID in-game; não confundir com carta Show Time ou outra Highlight."
+    }
+  ],
+  "policies": {
+    "preserve_246_cards": true,
+    "no_auto_promote_candidate_videos": true,
+    "no_assume_frames_or_timestamps": true,
+    "no_pp_override": true,
+    "no_user_card_id_override": true,
+    "no_changes_to_gameplay_builds": true,
+    "no_overall_optimization": true,
+    "require_user_card_screenshot_for_version_specific_disputes": true
+  }
+}
