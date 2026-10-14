@@ -34,7 +34,14 @@ assert.equal(b.integrity_alert.verified_public_standard_reference.max_level,32);
 assert.equal(b.integrity_alert.separate_card_same_registered_pp.pp,68);
 assert.equal(m.integrity_alert.separate_card_same_registered_pp.pp,76);
 assert.equal(m.integrity_alert.separate_card_same_registered_pp.max_level,39);
-assert.deepEqual(m.integrity_alert.verified_public_standard_references.map(x=>x.max_level),[59,37]);
+assert.deepEqual(m.integrity_alert.verified_public_standard_references.slice(0,2).map(x=>x.max_level),[59,37]);
+assert.deepEqual(m.integrity_alert.verified_public_standard_references.map(x=>x.max_level),[59,37,41]);
+const e=m.integrity_alert.verified_public_standard_references[2];
+assert.equal(e.pp,80);
+assert.equal(e.url,'https://boooost.jp/efootball-ian-maatsen/');
+assert.equal(m.registered_pp_budget,76);
+assert.equal(info.research_update_v175.video_homologations_added,0);
+assert.equal(info.research_update_v175.original_card_untouched,true);
 for(const cap of [234,235]){
  const c=byCap[cap],ctx=c.pack_video_context;
  assert(ctx.title_verified_by_direct_youtube_page_fetch===true);
