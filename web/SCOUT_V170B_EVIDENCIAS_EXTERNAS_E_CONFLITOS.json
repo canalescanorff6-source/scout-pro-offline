@@ -151,6 +151,30 @@
   ],
   "additional_conflicts": [
     {
+      "cap": 23,
+      "name": "David Alaba",
+      "id": "106777718857892",
+      "local_label": "Highlight — Starter Set 28 May '26",
+      "external_label": "Show Time — Starter Set 28 May '26",
+      "source": "https://pesdb.net/efootball/players/david-alaba-106777718857892",
+      "original": "web/cartas/CAP_023_David_Alaba_OVR102_DC.png",
+      "original_sha": "5c49b47bf3954667c5187e4f9cbcac3899a8935e",
+      "impact": "Tipo de carta divergente apesar de Card ID numérico idêntico; arte visual de booster duplo corrobora revisão sem alterar PP e habilidades.",
+      "status": "CONFIRMED_EXTERNAL_LABEL_MISMATCH_NOT_APPLIED"
+    },
+    {
+      "cap": 79,
+      "name": "Neymar Jr",
+      "id": "106770471099808",
+      "local_label": "Highlight — Campaign Rewards Feb '26 — Neymar Jr",
+      "external_label": "Show Time — Campaign Rewards Feb '26 — Neymar Jr",
+      "source": "https://pesdb.net/efootball/players/neymar-jr-106770471099808",
+      "original": "web/cartas/CAP_079_Neymar_Jr_OVR101_MAT.png",
+      "original_sha": "c98ead8a83410c776486072ca7255e0de0247419",
+      "impact": "Tipo de carta divergente apesar de Card ID numérico idêntico; arte visual de booster duplo corrobora revisão sem alterar PP e habilidades.",
+      "status": "CONFIRMED_EXTERNAL_LABEL_MISMATCH_NOT_APPLIED"
+    },
+    {
       "cap": 36,
       "name": "Endrick",
       "id": "106735843043104",
@@ -189,6 +213,7 @@
     "no_video_catalogue_mutated": true,
     "no_art_changed": true,
     "no_user_data_changed": true,
-    "no_overall_optimization": true
+    "no_overall_optimization": true,
+    "no_local_editions_changed": true
   }
 }
