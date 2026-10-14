@@ -176,7 +176,8 @@
         "sources": [
           "https://pesdb.net/efootball/players/kakita-yuki-105903424658357",
           "https://efootball-world.com/player/105903424658357",
-          "https://game8.jp/efootball/821684"
+          "https://game8.jp/efootball/821684",
+          "https://boooost.jp/efootball-kakita-yuki-r-rodriguez-26-27/"
         ]
       },
       "registered_pp_budget": 62,
@@ -213,6 +214,20 @@
         "exact_id_verified_in_frame": false,
         "training_distribution_verified_in_frame": false,
         "conclusion": "Vídeo documental correspondente ao pacote (fonte forte), não gameplay/treino individual certificado."
+      },
+      "new_specialist_reference_v174": {
+        "url": "https://boooost.jp/efootball-kakita-yuki-r-rodriguez-26-27/",
+        "source": "eFootball LABO / boooost.jp",
+        "published_date": "2026-10-13",
+        "scope": "Análise escrita individual da carta Highlight R. Rodriguez 26-27, incluindo estilo, atributos e simulador de treino",
+        "max_level_reported": 32,
+        "pp_budget_derived_from_level": 62,
+        "matches_registered_pp": true,
+        "verified_video_of_card": false,
+        "frame_inspected": false,
+        "training_used_in_game_verified": false,
+        "source_role": "CORROBORATION_OF_EDITION_AND_LEVEL_ONLY",
+        "policy": "Referência editorial externa, não imagem da carta do usuário nem pro player. Não copiar treinamento simulado ou Overall para ficha sem validação de competências."
       }
     },
     {
@@ -228,7 +243,8 @@
         "sources": [
           "https://pesdb.net/efootball/players/kumasaka-koki-105903424704710",
           "https://efootball-world.com/player/105903424704710",
-          "https://game8.jp/efootball/821684"
+          "https://game8.jp/efootball/821684",
+          "https://boooost.jp/efootball-kumasaka-koki-r-rodriguez-26-27/"
         ]
       },
       "registered_pp_budget": 64,
@@ -265,6 +281,20 @@
         "exact_id_verified_in_frame": false,
         "training_distribution_verified_in_frame": false,
         "conclusion": "Vídeo documental correspondente ao pacote (fonte forte), não gameplay/treino individual certificado."
+      },
+      "new_specialist_reference_v174": {
+        "url": "https://boooost.jp/efootball-kumasaka-koki-r-rodriguez-26-27/",
+        "source": "eFootball LABO / boooost.jp",
+        "published_date": "2026-10-13",
+        "scope": "Análise escrita individual da carta Highlight R. Rodriguez 26-27, incluindo estilo, atributos e simulador de treino",
+        "max_level_reported": 33,
+        "pp_budget_derived_from_level": 64,
+        "matches_registered_pp": true,
+        "verified_video_of_card": false,
+        "frame_inspected": false,
+        "training_used_in_game_verified": false,
+        "source_role": "CORROBORATION_OF_EDITION_AND_LEVEL_ONLY",
+        "policy": "Referência editorial externa, não imagem da carta do usuário nem pro player. Não copiar treinamento simulado ou Overall para ficha sem validação de competências."
       }
     }
   ],
@@ -285,5 +315,18 @@
     "changed_original_gameplay": false,
     "changed_video_official_catalogue": false,
     "source_count": 6
+  },
+  "research_update_v174": {
+    "date": "2026-10-14",
+    "new_specific_card_sources": 2,
+    "card_nums": [
+      234,
+      235
+    ],
+    "new_videos_found": 0,
+    "video_associations_unchanged": true,
+    "registered_training_and_pp_unchanged": true,
+    "source_provenance": "Páginas individuais indexadas em 13/10/2026; distinguem o pacote exato de outras cartas Kashiwa.",
+    "status": "DOCUMENTARY_CORROBORATION_NOT_VIDEO_HOMOLOGATION"
   }
 }
