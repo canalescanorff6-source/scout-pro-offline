@@ -67,5 +67,5 @@ assert(!js.includes('fetch("http'));
 assert(index.includes('href="meu-time-posse-4312.html"'));
 for(const f of ['meu-time-posse-4312.html','meu-time-posse-4312.js','SCOUT_V176_POSSE_4312.json','SCOUT_V69_AUDITORIA.json'])
  assert(sw.includes("'./"+f+"'"));
-assert(sw.includes("scout-pro-v176-1"));
+assert(/scout-pro-v17[67]-1/.test(sw),'Cache deve ser V176 ou posterior, preservando a formação V176');
 console.log('V176 OK: 246 cartas verificadas; 11 titulares + 12 reservas; 11 posições corretas; 0 stats/PP/skills inventados; editor local e recursos offline.');
