@@ -50,6 +50,36 @@ if(inCard){
    }
   }catch(e){console.warn('Scout V179: acervo de habilidades indisponível, sem alteração dos dados originais')}
  };
+ // V180: duas cartas do pacote R. Rodríguez identificadas por correspondência de
+ // arte original, jogador, posição, OVR-base, PP, equipe e edição.
+ const loadV180Evidence=async()=>{
+  const node=document.getElementById('scout-v68-data');if(!node)return;
+  let card;try{card=JSON.parse(node.textContent)}catch(e){return}
+  if(card.has_native_skills&&card.native_skills)return;
+  try{
+   const response=await fetch('../SCOUT_V180_NATIVE_SKILLS_EVIDENCE.json');
+   if(!response.ok)return;
+   const evidence=await response.json();
+   const item=Array.isArray(evidence.matched_entries)?evidence.matched_entries.find(x=>x.cap===Number(card.capture)):null;
+   if(!item||item.status!=='coincidencia_externa_multifatorial'||item.card_id_confirmado_na_conta!==false)return;
+   if(String(card.name)!==String(item.name)||String(card.shown_position)!==String(item.pos)||Number(card.pp)!==Number(item.pp))return;
+   if(!String(card.id||'').startsWith('PENDENTE')||!Array.isArray(item.skills)||item.skills.length<1||item.skills.length>10)return;
+   card.has_native_skills=true;card.native_skills=item.skills.join('; ');
+   card.native_skills_source={status:'coincidencia_externa_sem_id_na_conta',url:item.source_url,in_game_verified:false,external_card_id:item.source_id};
+   node.textContent=JSON.stringify(card);
+   const label=[...document.querySelectorAll('.fieldlabel')].find(n=>n.textContent.trim()==='Habilidades nativas');
+   const cloud=label?.nextElementSibling;
+   if(cloud?.classList.contains('skill-cloud')){
+    cloud.replaceChildren();
+    for(const skill of item.skills){const span=document.createElement('span');span.className='skill';span.textContent=skill;cloud.appendChild(span)}
+    label.textContent='Habilidades nativas · edição identificada externamente';
+    const a=document.createElement('a');a.href=item.source_url;a.target='_blank';a.rel='noopener noreferrer';
+    a.textContent='Fonte externa · confirmar Card ID no jogo ↗';a.style.cssText='display:block;color:#8dd8f7;font-size:12px;margin-top:8px';
+    cloud.insertAdjacentElement('afterend',a);
+   }
+   for(const li of document.querySelectorAll('details li'))if(li.textContent.trim()==='Lista de habilidades nativas e 5 adicionais equipadas')li.textContent='Confirmar Card ID da conta e habilidades adicionais equipadas';
+  }catch(e){console.warn('Scout V180: evidências não carregaram, ficha original preservada')}
+ };
  const startRecommendations=()=>{
  const v162Boost=document.createElement('script');
  v162Boost.src='../booster-engine-v103.js';
@@ -62,7 +92,7 @@ if(inCard){
  v162Boost.onerror=showSkillsUnavailable;
  document.body.appendChild(v162Boost);
  };
- loadNativeEvidence().finally(startRecommendations);
+ loadNativeEvidence().finally(()=>loadV180Evidence().finally(startRecommendations));
  const navScript=document.createElement('script');navScript.defer=true;navScript.src='../card-navigator-v161.js';document.body.appendChild(navScript);
  const match=location.pathname.match(/\/fichas\/(\d{3})_/);
  const cardView=document.querySelector('.profile-content');

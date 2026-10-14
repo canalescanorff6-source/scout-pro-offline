@@ -7781,7 +7781,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_234_Kakita_Yuki_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7796,7 +7796,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/kakita-yuki-105903424658357"
     },
     {
       "numero": 235,
@@ -7809,7 +7810,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_235_Kumasaka_Koki_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7824,7 +7825,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/kumasaka-koki-105903424704710"
     },
     {
       "numero": 236,

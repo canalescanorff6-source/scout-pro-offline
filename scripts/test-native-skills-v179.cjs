@@ -8,8 +8,8 @@ assert.equal(tactic.cartas.length,246);
 assert.equal(source.records.length,94);
 const confirmed=source.records.filter(c=>c.status==='card_id_nome_edicao');
 assert.equal(confirmed.length,89);
-assert.equal(audit.summary.native_skills,219);
-assert.equal(audit.cards.filter(c=>c.habilidades_nativas).length,219);
+assert.equal(audit.summary.native_skills,221);
+assert.equal(audit.cards.filter(c=>c.habilidades_nativas).length,221);
 for(const c of confirmed){
  const card=audit.cards.find(x=>x.numero===c.cap);
  assert(card&&String(card.id)===String(c.card_id));
@@ -31,4 +31,4 @@ assert(app.includes("String(item.card_id)!==String(current.id)"));
 const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
 assert(sw.includes('SCOUT_V179_NATIVE_SKILLS_RESEARCH.json'));
 assert(sw.includes('scout-pro-v177-1-v178-skills-v179'));
-console.log('V179 OK: 89 novas edições documentadas; 219/246 com habilidades nativas, 27 pendentes; nenhuma habilidade inventada.');
+console.log('V179 OK: 89 novas edições documentadas; 221/246 com habilidades nativas, 25 pendentes; nenhuma habilidade inventada.');

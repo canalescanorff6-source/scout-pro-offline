@@ -4,7 +4,7 @@
   "summary": {
     "micro_pro": 73,
     "with_pp": 246,
-    "native_skills": 219,
+    "native_skills": 221,
     "processed": 246,
     "with_stats": 14,
     "no_pp": 0,
@@ -9137,11 +9137,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Heading; Long-range Curler; Long-range Shooting; Acrobatic Finishing; First-time Shot; One-touch Pass; Track Back; Aerial Superiority; Super-sub; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/234_Kakita_Yuki.html",
@@ -9154,6 +9154,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/234_Kakita_Yuki.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/kakita-yuki-105903424658357",
+        "card_id_externo_elegivel": "105903424658357",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9171,11 +9179,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Sole Control; Long-range Shooting; One-touch Pass; Through Passing; Weighted Pass; Outside Curler; Interception; Blocker; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/235_Kumasaka_Koki.html",
@@ -9188,6 +9196,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/235_Kumasaka_Koki.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/kumasaka-koki-105903424704710",
+        "card_id_externo_elegivel": "105903424704710",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {

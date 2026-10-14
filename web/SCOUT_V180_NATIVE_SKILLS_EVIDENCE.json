@@ -1,0 +1,297 @@
+{
+  "version": "V180",
+  "date": "2026-10-14",
+  "type": "native_skill_strict_evidence",
+  "method": "Somente quando arte/posição/OVR-base/PP/pacote/nome coincidirem ou Card ID e edição exatos. Nunca importar por nome apenas. Se faltam identificadores, marcar pendente e preservar original.",
+  "total_cards": 246,
+  "known_before": 219,
+  "added": 2,
+  "known_after": 221,
+  "pending": 25,
+  "matched_entries": [
+    {
+      "cap": 234,
+      "name": "Kakita Yuki",
+      "pos": "CA",
+      "pp": 62,
+      "source_id": "105903424658357",
+      "source_url": "https://pesdb.net/efootball/players/kakita-yuki-105903424658357",
+      "second_url": "https://www.pesmaster.com/efootball-2022/player/featured/?date=2026-10-01",
+      "edition": "Highlight — Manager Pack 1 Oct '26 — R. Rodríguez 26-27 (Aug)",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posicao CA",
+        "OVR original 78",
+        "62 PP",
+        "clube Kashiwa Reysol",
+        "manager pack em 01/10/2026"
+      ],
+      "skills": [
+        "Heading",
+        "Long-range Curler",
+        "Long-range Shooting",
+        "Acrobatic Finishing",
+        "First-time Shot",
+        "One-touch Pass",
+        "Track Back",
+        "Aerial Superiority",
+        "Super-sub",
+        "Fighting Spirit"
+      ]
+    },
+    {
+      "cap": 235,
+      "name": "Kumasaka Koki",
+      "pos": "VOL",
+      "pp": 64,
+      "source_id": "105903424704710",
+      "source_url": "https://pesdb.net/efootball/players/kumasaka-koki-105903424704710",
+      "second_url": "https://efootball-world.com/player/105903424704710",
+      "edition": "Highlight — Manager Pack 1 Oct '26 — R. Rodríguez 26-27 (Aug)",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posicao VOL",
+        "OVR original 78",
+        "64 PP",
+        "clube Kashiwa Reysol",
+        "manager pack em 01/10/2026",
+        "segunda base publica com mesma lista de habilidades"
+      ],
+      "skills": [
+        "Sole Control",
+        "Long-range Shooting",
+        "One-touch Pass",
+        "Through Passing",
+        "Weighted Pass",
+        "Outside Curler",
+        "Interception",
+        "Blocker",
+        "Fighting Spirit"
+      ]
+    }
+  ],
+  "investigations": [
+    {
+      "cap": 50,
+      "name": "Lionel Messi",
+      "card_id_registered": "PENDENTE - associação anterior invalidada pelo usuário",
+      "edition_registered": "Show Time - edição exata a confirmar (CAP050)",
+      "status": "pendente_de_identificacao",
+      "reason": "Duas edições Show Time Skill Up 2027 SS usam o mesmo nome/estilo; falta evidência de ID.",
+      "candidates": [
+        "https://pesdb.net/efootball/players/lionel-messi-106803488628055",
+        "https://pesdb.net/efootball/players/lionel-messi-106784966581591"
+      ]
+    },
+    {
+      "cap": 75,
+      "name": "Luis Díaz",
+      "card_id_registered": "106780671726691",
+      "edition_registered": "Highlight — Daily Bonus 2026 — Luis Díaz",
+      "status": "pendente_de_identificacao",
+      "reason": "Card ID numérico coincide com fonte Show Time, mas o catálogo registra Highlight. Não alterar raridade sem confronto dentro do jogo.",
+      "candidates": [
+        "https://pesdb.net/efootball/players/luis-diaz-106780671726691"
+      ]
+    },
+    {
+      "cap": 151,
+      "name": "Willian Pacho",
+      "card_id_registered": "106776376791946",
+      "edition_registered": "Highlight — Ligue 1 McDonald’s Selection 2 Mar '26 — Willian Pacho",
+      "status": "pendente_de_identificacao",
+      "reason": "Card ID numérico coincide com Show Time, mas cadastro registra Highlight.",
+      "candidates": [
+        "https://pesdb.net/efootball/players/willian-pacho-106776376791946"
+      ]
+    },
+    {
+      "cap": 170,
+      "name": "Jan Oblak",
+      "card_id_registered": "106766444571720",
+      "edition_registered": "Highlight — Extraordinary One 4 Dec '25 — Jan Oblak",
+      "status": "pendente_de_identificacao",
+      "reason": "Card ID numérico coincide com Show Time, mas cadastro registra Highlight.",
+      "candidates": [
+        "https://pesdb.net/efootball/players/jan-oblak-106766444571720"
+      ]
+    },
+    {
+      "cap": 181,
+      "name": "Serhou Guirassy",
+      "card_id_registered": "106769397419872",
+      "edition_registered": "Highlight — eFootball League Rewards Phase 9 — Serhou Guirassy",
+      "status": "pendente_de_identificacao",
+      "reason": "Card ID numérico coincide com Show Time, mas cadastro registra Highlight.",
+      "candidates": [
+        "https://pesdb.net/efootball/players/serhou-guirassy-106769397419872"
+      ]
+    },
+    {
+      "cap": 225,
+      "name": "Rodri",
+      "card_id_registered": "106780940205246",
+      "edition_registered": "Highlight — Back in the Game 14 Aug '25 — Rodri",
+      "status": "pendente_de_identificacao",
+      "reason": "Card ID atual resolve Nico O'Reilly. Fonte da edição correta Rodri do mesmo pacote: ID candidato 105779675902175; não substituir sem autenticar.",
+      "candidates": [
+        "https://pesdb.net/efootball/players/rodri-105779675902175",
+        "https://pesdb.net/efootball/players/nico-o-reilly-106780940205246"
+      ]
+    },
+    {
+      "cap": 226,
+      "name": "José María Giménez",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 227,
+      "name": "Kenan Yıldız",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 228,
+      "name": "Murilo",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 229,
+      "name": "Zeki Çelik",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 230,
+      "name": "Pape Matar Sarr",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 231,
+      "name": "Guglielmo Vicario",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 232,
+      "name": "Aymeric Laporte",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 233,
+      "name": "Nicola Zalewski",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 236,
+      "name": "Samuel Eto'o",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao",
+      "reason": "Inter Epic Eto'o possui versões diferentes (CA 10-11 e RMF 09-10, habilidades distintas). Falta ID da conta.",
+      "candidates": [
+        "https://pesdb.net/efootball/players/samuel-eto-o-88036360586714",
+        "https://pesdb.net/efootball/players/samuel-eto-o-88045755827674"
+      ]
+    },
+    {
+      "cap": 237,
+      "name": "Piero Hincapié",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 238,
+      "name": "Mateus Fernandes",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 239,
+      "name": "Alexander Isak",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 240,
+      "name": "Gonçalo Ramos",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 241,
+      "name": "Federico Valverde",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 242,
+      "name": "Maghnes Akliouche",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 243,
+      "name": "Anthony Gordon",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 244,
+      "name": "Edmond Tapsoba",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 245,
+      "name": "Justin Kluivert",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao"
+    },
+    {
+      "cap": 246,
+      "name": "Eric Cantona",
+      "card_id_registered": "PENDENTE — não inferido",
+      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "status": "pendente_de_identificacao",
+      "reason": "Cantona tem versões Epic França e Manchester United com habilidades diferentes; falta ID da conta.",
+      "candidates": [
+        "https://pesdb.net/efootball/players/eric-cantona-88045755828961",
+        "https://pesdb.net/efootball/players/eric-cantona-88033407797985"
+      ]
+    }
+  ],
+  "preservation": {
+    "card_ids_unchanged": true,
+    "art_unchanged": true,
+    "training_unchanged": true,
+    "boosters_unchanged": true,
+    "native_skills_previously_confirmed_unchanged": true
+  }
+}
