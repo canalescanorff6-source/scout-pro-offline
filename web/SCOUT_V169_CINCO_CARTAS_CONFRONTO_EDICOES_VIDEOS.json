@@ -1,0 +1,104 @@
+{
+  "schema": "SCOUT_V169_CINCO_CARTAS_CONFRONTO_EDICOES_VIDEOS",
+  "date": "2026-10-14",
+  "purpose": "Mapear os cinco vídeos de pesquisa mais próximos das edições ORIGINAIS das cartas do usuário, distinguir coincidência de pacote vs prova de quadro e bloquear conclusões falsas.",
+  "source_repo": "canalescanorff6-source/scout-pro-offline",
+  "official_catalogue_preserved": {
+    "total_cards": 246,
+    "unique_videos": 377,
+    "associations": 393,
+    "cards_without_official_video": 5,
+    "verified_card_ids_in_video_frames": 0
+  },
+  "prior_quarantined_leads": 41,
+  "new_research_links": 1,
+  "total_quarantined_leads": 42,
+  "new_link": {
+    "url": "https://www.youtube.com/shorts/quScNiWiASc",
+    "title": "BEST FREE SHOWTIME MESSI | WELCOME TO eFOOTBALL 2027",
+    "reason": "título/descrição explícitos Welcome to eFootball 2027; não verificado card id ou treinamento em quadro",
+    "already_checked_for_duplicates": true,
+    "exact_card_verified": false
+  },
+  "missing_video_cases": [
+    {
+      "num": 50,
+      "name": "Lionel Messi",
+      "original_art": "web/cartas/CAP_050_Lionel_Messi_OVR103_SA.png",
+      "art_observation": "Messi com uniforme da seleção argentina, 103 SA na arte original; dois ícones de booster visíveis",
+      "strong_edition_hypothesis": "Show Time Welcome to eFootball 2027, original disponibilizado em 13 agosto 2026, Classic No.10, Lv29 e PP56 conforme fonte externa e histórico do card no projeto",
+      "edition_evidence": [
+        "https://game8.jp/efootball/807096",
+        "https://ef-labo.com/efootball/lionel-messi-welcome-to-efootball/",
+        "https://www.konami.com/efootball/pt-br/topic/news/5905"
+      ],
+      "important_difference": "Konami confirmou mudança na oferta do Messi Show Time Welcome a partir de 08/10/2026; não misturar a versão posteriormente disponibilizada com a original Aug Lv29/56.",
+      "best_existing_video": "https://www.youtube.com/watch?v=2wcSE0gEeak",
+      "secondary_existing_video": "https://salda.ws/video.php?id=a1B_p4KIVlw",
+      "new_research_lead": "https://www.youtube.com/shorts/quScNiWiASc",
+      "evidence_confidence": "alta para campanha com base em data/PP e arte; vídeo ainda não auditado em frames",
+      "status": "CAMPANHA_FORTEMENTE_COMPATIVEL_FRAME_INDIVIDUAL_AINDA_NAO_CONFERIDO"
+    },
+    {
+      "num": 120,
+      "name": "Rodrigo Bentancur",
+      "original_art": "web/cartas/CAP_120_Rodrigo_Bentancur_OVR84_VOL.png",
+      "art_observation": "84 VOL na arte do usuário, uniforme branco, identidade Tottenham WB",
+      "catalogue_card_id": "105297",
+      "card_type": "Standard Tottenham WB",
+      "card_id_source": "https://pesdb.net/efootball/players/rodrigo-bentancur-105297",
+      "best_existing_video": "https://www.youtube.com/watch?v=tlFX9K3S25Q",
+      "second_video": "https://www.youtube.com/watch?v=xIFwSj15lqg",
+      "caution": "Análise individual japonesa diz jogador Standard mas indexada eFootball 2025; vídeo de elenco 2027 não tem individual/ID demonstrado.",
+      "status": "STANDARD_2027_VIDEO_EXATO_NAO_COMPROVADO"
+    },
+    {
+      "num": 141,
+      "name": "Ian Maatsen",
+      "original_art": "web/cartas/CAP_141_Ian_Maatsen_OVR84_LE.png",
+      "art_observation": "84 LE na arte do usuário, camisa vermelho escuro / azul claro, identidade Aston RB",
+      "catalogue_card_id": "132386",
+      "card_type": "Standard Aston RB",
+      "card_id_source": "https://pesdb.net/efootball/players/ian-maatsen-132386",
+      "best_existing_video": "https://www.youtube.com/watch?v=wmomrOqGlTE",
+      "second_video": "https://www.youtube.com/watch?v=yN9MEwQqWg0",
+      "caution": "Vídeo japonês de análise individual é eFootball 2025; vídeo de elenco 2027 não comprova a presença da carta. Divergência de nível/PP documentada na V168.",
+      "status": "STANDARD_2027_VIDEO_EXATO_NAO_COMPROVADO"
+    },
+    {
+      "num": 234,
+      "name": "Kakita Yuki",
+      "original_art": "web/cartas/CAP_234_Kakita_Yuki_ORIGINAL.png",
+      "art_observation": "78 CA, arte do Kashiwa Reysol e mesma pose/fundo do card Highlight do Manager Pack 1 Oct 2026",
+      "strong_edition_hypothesis": "Highlight Manager Pack Ricardo Rodríguez 01/10/2026",
+      "external_card_id": "105903424658357",
+      "external_card_source": "https://pesdb.net/efootball/players/kakita-yuki-105903424658357",
+      "best_existing_video": "https://www.youtube.com/watch?v=vdOYEtgVaBU",
+      "caution": "Vídeo aborda os quatro jogadores Highlight do Manager Pack e suas propostas de treino, mas o quadro individual de Kakita e seus PP não foram inspecionados; não atribuir ID externo à carta.",
+      "status": "PACOTE_E_ARTE_FORTEMENTE_COMPATIVEIS_VIDEO_QUADRO_NAO_CONFERIDO"
+    },
+    {
+      "num": 235,
+      "name": "Kumasaka Koki",
+      "original_art": "web/cartas/CAP_235_Kumasaka_Koki_ORIGINAL.png",
+      "art_observation": "78 VOL, arte do Kashiwa Reysol e mesma pose/fundo do card Highlight do Manager Pack 1 Oct 2026",
+      "strong_edition_hypothesis": "Highlight Manager Pack Ricardo Rodríguez 01/10/2026",
+      "external_card_id": "105903424704710",
+      "external_card_source": "https://pesdb.net/efootball/players/kumasaka-koki-105903424704710",
+      "best_existing_video": "https://www.youtube.com/watch?v=vdOYEtgVaBU",
+      "second_video": "https://www.youtube.com/watch?v=P4NodBzvOvs",
+      "caution": "O mesmo vídeo coletivo pode abordar Kumasaka, mas sem inspeção de frames não há validação individual/PP. O vídeo adicional é de aquisição de pacote, não treino.",
+      "status": "PACOTE_E_ARTE_FORTEMENTE_COMPATIVEIS_VIDEO_QUADRO_NAO_CONFERIDO"
+    }
+  ],
+  "requirements_before_completion": [
+    "Ver quadro individual da carta nos vídeos e comparar arte, tipo, campanha e Card ID quando exibido.",
+    "Para Messi CAP050, usar a edição com Lv29 e PP56 como comparação; não confundir mudança 08/10/2026 com entrega antiga.",
+    "Para Kakita e Kumasaka verificar o mesmo vídeo coletivo do Manager Pack por timestamps específicos; não contar como 2 evidências independentes.",
+    "Para Bentancur e Maatsen encontrar 2027 Standard com ID/arte conferidos, não apenas replay de 2025 ou galeria genérica.",
+    "Sem frames auditados nenhuma das cinco cartas recebe status de vídeo exato confirmado.",
+    "Não alocar PP nem sugerir habilidades/ímpetos sem dados verdadeiros; não priorizar OVR.",
+    "Não alterar catálogo principal, cartas/arte/identidades, aplicações Android e Windows."
+  ],
+  "youtube_frame_automation_note": "A tentativa de navegação e inspeção automática do vídeo do Manager Pack em 2026-10-14 não iniciou por limite de saldo no serviço externo TinyFish; não houve inspeção de frames. Busca e metadados públicos foram conferidos por outras fontes."
+}
