@@ -3,8 +3,8 @@
   "date": "2026-10-14",
   "goal": "Habilidades nativas corretas, sem imitação, sem alteração da identidade original",
   "total": 246,
-  "documentadas_na_base": 237,
-  "pendentes": 9,
+  "documentadas_na_base": 240,
+  "pendentes": 6,
   "rule": "A lista só será promovida quando a edição exata for identificada. Habilidades adicionais e sugestões não contam como habilidades nativas.",
   "sources": [
     "web/SCOUT_V179_NATIVE_SKILLS_RESEARCH.json",
@@ -135,57 +135,7 @@
         "fonte": "https://pesdb.net/efootball/players/rodri-105779675902175",
         "acao": "não substituir dados originais automaticamente"
       }
-    },
-    {
-      "cap": 228,
-      "name": "Murilo",
-      "card_id_registrado": "PENDENTE — não inferido",
-      "edicao_registrada": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "imagem_original": "web/cartas/CAP_228",
-      "status": "BLOQUEADO_SEM_CORRESPONDENCIA_INEQUIVOCA",
-      "motivo": "Card ID exato não confirmado na carta do usuário",
-      "candidatos_nao_promovidos": [],
-      "confirmacao_exigida": "Tela da edição real no eFootball, incluindo Player ID e habilidades nativas, ou evidência externa inequivocamente igual à arte, edição e ID",
-      "habilidades_importadas": [],
-      "comparacao": {
-        "observacao": "Arte original Palmeiras, carta especial; não identificar a edição somente pelo retrato"
-      }
-    },
-    {
-      "cap": 236,
-      "name": "Samuel Eto'o",
-      "card_id_registrado": "PENDENTE — não inferido",
-      "edicao_registrada": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "imagem_original": "web/cartas/CAP_236",
-      "status": "BLOQUEADO_SEM_CORRESPONDENCIA_INEQUIVOCA",
-      "motivo": "Inter Epic Eto'o possui versões diferentes (CA 10-11 e RMF 09-10, habilidades distintas). Falta ID da conta.",
-      "candidatos_nao_promovidos": [
-        "https://pesdb.net/efootball/players/samuel-eto-o-88036360586714",
-        "https://pesdb.net/efootball/players/samuel-eto-o-88045755827674"
-      ],
-      "confirmacao_exigida": "Tela da edição real no eFootball, incluindo Player ID e habilidades nativas, ou evidência externa inequivocamente igual à arte, edição e ID",
-      "habilidades_importadas": [],
-      "comparacao": {
-        "observacao": "Arte original Inter de Milão; há múltiplas edições Épicas de Eto'o, não intercambiar habilidades"
-      }
-    },
-    {
-      "cap": 246,
-      "name": "Eric Cantona",
-      "card_id_registrado": "PENDENTE — não inferido",
-      "edicao_registrada": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "imagem_original": "web/cartas/CAP_246",
-      "status": "BLOQUEADO_SEM_CORRESPONDENCIA_INEQUIVOCA",
-      "motivo": "Cantona tem versões Epic França e Manchester United com habilidades diferentes; falta ID da conta.",
-      "candidatos_nao_promovidos": [
-        "https://pesdb.net/efootball/players/eric-cantona-88045755828961",
-        "https://pesdb.net/efootball/players/eric-cantona-88033407797985"
-      ],
-      "confirmacao_exigida": "Tela da edição real no eFootball, incluindo Player ID e habilidades nativas, ou evidência externa inequivocamente igual à arte, edição e ID",
-      "habilidades_importadas": [],
-      "comparacao": {
-        "observacao": "Arte original França; 85 OVR-base informado não coincide com candidato França 1992 de 84 OVR-base"
-      }
     }
-  ]
+  ],
+  "note_v181": "Murilo #228, Samuel Eto'o #236 e Eric Cantona #246 documentados na V181 do PR #84 por correspondência externa multifatorial, sem Card ID confirmado na conta; não são nativas verificadas por captura de tela interna."
 }
