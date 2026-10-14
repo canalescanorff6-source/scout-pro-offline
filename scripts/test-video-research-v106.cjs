@@ -53,7 +53,13 @@ for(const c of ledger.cards){
  assert(!nums.has(c.numero),'CAP number duplicated');nums.add(c.numero);
  const src=index.get(c.numero),v=visual.get(c.numero);assert(src,'CAP missing '+c.numero);assert(v?.imagem.startsWith('cartas/CAP_'));
  assert.equal(c.card_id,src.id,'Card ID must remain exact');
- assert.equal(c.edicao,src.versao,'Edition must remain exact');
+ if(c.numero===75 || c.numero===170){
+  // V106 é histórico: a confirmação do usuário em V183 corrigiu apenas o catálogo atual.
+  const antigo=c.numero===75?'Highlight — Daily Bonus 2026 — Luis Díaz':"Highlight — Extraordinary One 4 Dec '25 — Jan Oblak";
+  const corrigido=c.numero===75?'Show Time — Daily Bonus 2026 — Luis Díaz':"Show Time — Extraordinary One 4 Dec '25 — Jan Oblak";
+  assert.equal(c.edicao,antigo,'Preservar etiqueta histórica V106');
+  assert.equal(src.versao,corrigido,'Aplicar raridade V183 no catálogo atual');
+ }else assert.equal(c.edicao,src.versao,'Edition must remain exact');
  assert.equal(c.nome,src.name,'Name must remain exact');
  assert(Array.isArray(c.videos));
  for(const old of frozenOriginal[c.numero]||[])assert(c.videos.some(v=>v.video_id===old),'Previously saved video lost from CAP '+c.numero+': '+old);
