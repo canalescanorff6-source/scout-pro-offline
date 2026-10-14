@@ -49,18 +49,26 @@ for(const finding of supplement.additional_conflicts) {
   assert.equal(original.edicao,finding.local_label);
   assert.match(finding.external_label,/Show Time/);
   assert.match(finding.source,/^https:\/\/pesdb\.net\/efootball\/players\//);
-  assert.equal(finding.status,'CONFIRMED_EXTERNAL_LABEL_MISMATCH_NOT_APPLIED');
+  assert.equal(finding.status,'V92_USER_RARITY_CONFIRMED_LEGACY_DESCRIPTION');
 }
 const consistency = supplement.cross_catalogue_type_consistency;
 assert(consistency && consistency.inspected_cards===246 && consistency.display_version_mismatches===33);
 assert.equal(consistency.records.length,33);
 const caps = consistency.records.map(x=>x.cap);
 assert.equal(new Set(caps).size,33,'Nenhuma divergência pode duplicar uma carta');
+assert.equal(consistency.v92_confirmation.rarities_confirmed_by_user,56);
+assert.equal(consistency.v92_confirmation.description_conflicts_known_and_resolved,33);
+assert.equal(consistency.v92_confirmation.do_not_override_user_rarity,true);
+const v92=load('web/SCOUT_V91_RARIDADE_REVISAO.json');
+const historical=v92.cartas.filter(x=>x.grupo==='divergencia');
+assert.deepEqual(historical.map(x=>x.numero),caps);
+assert(historical.every(x=>x.raridade_atual===x.raridade_confirmada));
+
 for(const finding of consistency.records) {
   assert(Number.isInteger(finding.cap) && finding.cap>=1 && finding.cap<=246);
   assert(byId.has(finding.cap),'Carta divergente ausente no catálogo');
   assert(finding.rarity_display && finding.version_catalogue,'Edição divergente sem documentação');
-  assert.equal(finding.classification,'STRING_MISMATCH_REQUIRES_CARD_SPECIFIC_REVIEW');
+  assert.equal(finding.classification,'V92_USER_RARITY_CONFIRMED_HISTORICAL_EDITION_TEXT');
 }
 const bentancur = cards.cartas.find(c=>c.numero===120);
 assert.equal(bentancur.pp, supplement.priority_cards.find(c=>c.cap===120).catalogue_pp_budget);
