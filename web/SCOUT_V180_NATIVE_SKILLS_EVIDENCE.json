@@ -85,7 +85,9 @@
       "candidates": [
         "https://pesdb.net/efootball/players/lionel-messi-106803488628055",
         "https://pesdb.net/efootball/players/lionel-messi-106784966581591"
-      ]
+      ],
+      "additional_evidence": "ID candidato 106784966581591 corresponde a Show Time SS Skill Up 2027 com 56 PP. Outra edição 106803488628055 tem 58 PP. Ainda falta conferir booster/ID no jogo; nenhuma skill foi importada.",
+      "prioritized_candidate": "https://pesdb.net/efootball/players/lionel-messi-106784966581591"
     },
     {
       "cap": 75,
@@ -141,7 +143,9 @@
       "candidates": [
         "https://pesdb.net/efootball/players/rodri-105779675902175",
         "https://pesdb.net/efootball/players/nico-o-reilly-106780940205246"
-      ]
+      ],
+      "additional_evidence": "Rodri Highlight 'Back in the Game 14 Aug 2025' da fonte tem 52 PP, igual à carta cadastrada; ID candidato 105779675902175, porém o campo ID atual aponta para outro jogador. Preservar ID original até conferir na conta.",
+      "prioritized_candidate": "https://pesdb.net/efootball/players/rodri-105779675902175"
     },
     {
       "cap": 226,
@@ -209,7 +213,8 @@
       "candidates": [
         "https://pesdb.net/efootball/players/samuel-eto-o-88036360586714",
         "https://pesdb.net/efootball/players/samuel-eto-o-88045755827674"
-      ]
+      ],
+      "additional_evidence": "Fontes Inter 09-10/10-11 divergem em posição, OVR e PP da carta informada. Não migrar habilidades sem identificar edição."
     },
     {
       "cap": 237,
@@ -284,7 +289,9 @@
       "candidates": [
         "https://pesdb.net/efootball/players/eric-cantona-88045755828961",
         "https://pesdb.net/efootball/players/eric-cantona-88033407797985"
-      ]
+      ],
+      "additional_evidence": "Cantona França 1992 tem 60 PP, mas OVR-base 84 na fonte versus 85 na arte enviada; candidatura não fecha identidade.",
+      "prioritized_candidate": "https://pesdb.net/efootball/players/eric-cantona-88045755828961"
     }
   ],
   "preservation": {
