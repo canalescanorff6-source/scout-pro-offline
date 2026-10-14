@@ -4,7 +4,7 @@
   "summary": {
     "micro_pro": 73,
     "with_pp": 246,
-    "native_skills": 221,
+    "native_skills": 226,
     "processed": 246,
     "with_stats": 14,
     "no_pp": 0,
@@ -8858,11 +8858,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Heading; Man Marking; Interception; Blocker; Aerial Superiority; Sliding Tackle; Acrobatic Clearance; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/226_Jose_Maria_Gimenez.html",
@@ -8875,6 +8875,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/226_Jose_Maria_Gimenez.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/jose-maria-gimenez-105859938051543",
+        "card_id_externo_elegivel": "105859938051543",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -8892,11 +8900,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Cut Behind & Turn; Sole Control; Long-range Curler; Dipping Shot; Long-range Shooting; One-touch Pass; Through Passing; Pinpoint Crossing; Super-sub",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -8910,6 +8918,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/227_Kenan_Yldz.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/kenan-yildiz-105877386462237",
+        "card_id_externo_elegivel": "105877386462237",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -8962,11 +8978,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "One-touch Pass; Outside Curler; Low Lofted Pass; Long Throw; Man Marking; Interception; Blocker; Sliding Tackle; Acrobatic Clearance; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -8980,6 +8996,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/229_Zeki_Celik.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/zeki-celik-105877386420504",
+        "card_id_externo_elegivel": "105877386420504",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -8997,11 +9021,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Rising Shot; Long-range Shooting; Acrobatic Finishing; First-time Shot; One-touch Pass; Man Marking; Interception; Blocker; Acrobatic Clearance; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9015,6 +9039,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/230_Pape_Matar_Sarr.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/pape-matar-sarr-105877386437993",
+        "card_id_externo_elegivel": "105877386437993",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9032,11 +9064,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "GK Low Punt; GK High Punt; GK Long Throw; GK Penalty Saver",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9050,6 +9082,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/231_Guglielmo_Vicario.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/guglielmo-vicario-105877386413826",
+        "card_id_externo_elegivel": "105877386413826",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {

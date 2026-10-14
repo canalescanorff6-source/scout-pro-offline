@@ -5,10 +5,163 @@
   "method": "Somente quando arte/posição/OVR-base/PP/pacote/nome coincidirem ou Card ID e edição exatos. Nunca importar por nome apenas. Se faltam identificadores, marcar pendente e preservar original.",
   "total_cards": 246,
   "known_before": 219,
-  "added": 2,
-  "known_after": 221,
-  "pending": 25,
+  "added": 7,
+  "known_after": 226,
+  "pending": 20,
   "matched_entries": [
+    {
+      "cap": 226,
+      "name": "José María Giménez",
+      "pos": "ZC",
+      "pp": 52,
+      "source_id": "105859938051543",
+      "source_url": "https://pesdb.net/efootball/players/jose-maria-gimenez-105859938051543",
+      "second_url": "https://pesdb.net/efootball/players/jose-maria-gimenez-105859938051543",
+      "edition": "Highlight — National Teams Selection Guardians 25 May '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "Uruguai",
+        "posição ZC",
+        "OVR base 82",
+        "52 PP",
+        "arte original de seleção",
+        "tipo Highlight"
+      ],
+      "skills": [
+        "Heading",
+        "Man Marking",
+        "Interception",
+        "Blocker",
+        "Aerial Superiority",
+        "Sliding Tackle",
+        "Acrobatic Clearance",
+        "Fighting Spirit"
+      ]
+    },
+    {
+      "cap": 227,
+      "name": "Kenan Yıldız",
+      "pos": "MAT",
+      "pp": 60,
+      "source_id": "105877386462237",
+      "source_url": "https://pesdb.net/efootball/players/kenan-yildiz-105877386462237",
+      "second_url": "https://www.pesmaster.com/efootball-2022/player/featured/?date=2026-10-01",
+      "edition": "Highlight — Piemonte BN Selection 5 Oct '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição MAT",
+        "OVR base 83",
+        "60 PP",
+        "emblema Piemonte BN",
+        "pacote 05/10/2026"
+      ],
+      "skills": [
+        "Double Touch",
+        "Cut Behind & Turn",
+        "Sole Control",
+        "Long-range Curler",
+        "Dipping Shot",
+        "Long-range Shooting",
+        "One-touch Pass",
+        "Through Passing",
+        "Pinpoint Crossing",
+        "Super-sub"
+      ]
+    },
+    {
+      "cap": 229,
+      "name": "Zeki Çelik",
+      "pos": "LD",
+      "pp": 60,
+      "source_id": "105877386420504",
+      "source_url": "https://pesdb.net/efootball/players/zeki-celik-105877386420504",
+      "second_url": "https://www.efootmeta.com/pt",
+      "edition": "Highlight — Piemonte BN Selection 5 Oct '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição LD",
+        "OVR base 82",
+        "60 PP",
+        "emblema Piemonte BN",
+        "pacote 05/10/2026"
+      ],
+      "skills": [
+        "One-touch Pass",
+        "Outside Curler",
+        "Low Lofted Pass",
+        "Long Throw",
+        "Man Marking",
+        "Interception",
+        "Blocker",
+        "Sliding Tackle",
+        "Acrobatic Clearance",
+        "Fighting Spirit"
+      ]
+    },
+    {
+      "cap": 230,
+      "name": "Pape Matar Sarr",
+      "pos": "MLG",
+      "pp": 62,
+      "source_id": "105877386437993",
+      "source_url": "https://pesdb.net/efootball/players/pape-matar-sarr-105877386437993",
+      "second_url": "https://www.efootmeta.com/pt",
+      "edition": "Highlight — Piemonte BN Selection 5 Oct '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição MLG",
+        "OVR base 81",
+        "62 PP",
+        "emblema Piemonte BN",
+        "pacote 05/10/2026"
+      ],
+      "skills": [
+        "Rising Shot",
+        "Long-range Shooting",
+        "Acrobatic Finishing",
+        "First-time Shot",
+        "One-touch Pass",
+        "Man Marking",
+        "Interception",
+        "Blocker",
+        "Acrobatic Clearance",
+        "Fighting Spirit"
+      ]
+    },
+    {
+      "cap": 231,
+      "name": "Guglielmo Vicario",
+      "pos": "GO",
+      "pp": 58,
+      "source_id": "105877386413826",
+      "source_url": "https://pesdb.net/efootball/players/guglielmo-vicario-105877386413826",
+      "second_url": "https://www.efootmeta.com/pt",
+      "edition": "Highlight — Piemonte BN Selection 5 Oct '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição GO",
+        "OVR base 82",
+        "58 PP",
+        "emblema Piemonte BN",
+        "pacote 05/10/2026"
+      ],
+      "skills": [
+        "GK Low Punt",
+        "GK High Punt",
+        "GK Long Throw",
+        "GK Penalty Saver"
+      ]
+    },
     {
       "cap": 234,
       "name": "Kakita Yuki",
@@ -148,43 +301,8 @@
       "prioritized_candidate": "https://pesdb.net/efootball/players/rodri-105779675902175"
     },
     {
-      "cap": 226,
-      "name": "José María Giménez",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 227,
-      "name": "Kenan Yıldız",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
       "cap": 228,
       "name": "Murilo",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 229,
-      "name": "Zeki Çelik",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 230,
-      "name": "Pape Matar Sarr",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 231,
-      "name": "Guglielmo Vicario",
       "card_id_registered": "PENDENTE — não inferido",
       "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
       "status": "pendente_de_identificacao"

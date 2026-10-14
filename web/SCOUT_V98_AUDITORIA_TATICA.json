@@ -7557,7 +7557,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_226_Jos_Mar_a_Gim_nez_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7572,7 +7572,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/jose-maria-gimenez-105859938051543"
     },
     {
       "numero": 227,
@@ -7585,7 +7586,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_227_Kenan_Y_ld_z_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7600,7 +7601,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/kenan-yildiz-105877386462237"
     },
     {
       "numero": 228,
@@ -7641,7 +7643,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_229_Zeki_elik_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7656,7 +7658,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/zeki-celik-105877386420504"
     },
     {
       "numero": 230,
@@ -7669,7 +7672,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_230_Pape_Matar_Sarr_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7684,7 +7687,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/pape-matar-sarr-105877386437993"
     },
     {
       "numero": 231,
@@ -7697,7 +7701,7 @@
       "pp": 58,
       "imagem": "cartas/CAP_231_Guglielmo_Vicario_ORIGINAL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7712,7 +7716,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/guglielmo-vicario-105877386413826"
     },
     {
       "numero": 232,
