@@ -96,7 +96,7 @@ if(previewEligible){
  warning.style.cssText='padding:12px 14px;margin:10px 0;border:1px solid #3c7093;border-radius:12px;background:#102638;color:#e4f4ff;font-size:13px;line-height:1.5';
  const explain=document.createElement('p');explain.textContent=d.pp===0?
   'Esta carta tem 0 PP confirmados: não há pontos a distribuir.':
-  'TREINO PROPOSTO NA FICHA V95 · '+d.pp+'/'+d.pp+' PP. Proposta individual por posição e estilo para Posse de Bola, ainda não validada em campo. Confira atributos-base, habilidades e ímpetos antes de aprovar.';
+  'TREINO FUNCIONAL · '+d.pp+'/'+d.pp+' PP conferidos. É uma hipótese de rendimento a testar em campo; confira atributos, habilidades e ímpetos antes de adotar.';
  warning.appendChild(explain);
  if(d.pp>0){
   const button=document.createElement('button');button.type='button';button.id='scout-preview-save-v94';
@@ -125,7 +125,7 @@ function render(){
  const used=total(current); $('lab-budget').textContent=d.pp===null?'Sem orçamento':used+' / '+d.pp;
  const remaining=d.pp===null?null:d.pp-used; $('lab-remain').textContent=remaining===null?'—':remaining;
  $('lab-remain').className=remaining===null?'':remaining<0?'bad':'ok';
- $('lab-flag').textContent=d.pp===null?'Pendente':remaining<0?'PP excedidos':active==='prévia experimental'&&d.pp>0?'Proposta · não aprovada':remaining===0?'Distribuição válida':'PP não alocados';
+ $('lab-flag').textContent=d.pp===null?'Pendente':remaining<0?'PP excedidos':(active==='prévia experimental'||active==='prévia de cenário')&&d.pp>0?'PP corretos · testar em campo':remaining===0?'Distribuição válida':'PP não alocados';
  $('lab-flag').className=d.pp===null?'':remaining<0?'bad':remaining===0?'ok':'';
  document.querySelectorAll('.lab-preset').forEach(b=>b.classList.toggle('active',active===b.dataset.load));
  if(!Object.keys(d.stats||{}).length){status.innerHTML='<h3>Atributos finais: pendentes</h3><p>Sem a base numérica da versão exata, não há como demonstrar os efeitos do treino nos atributos com segurança. Use os PP como hipótese e confirme a tela da carta antes de redefinir a progressão.</p>';return}
@@ -146,6 +146,10 @@ const historyKey='scoutpro:v67:test:'+d.id+':'+d.card;
 let history=[];try{history=JSON.parse(localStorage.getItem(historyKey)||'[]')}catch(e){}
 function showHistory(){$('lab-history').innerHTML=history.slice(-5).reverse().map(x=>'<div class="lab-history-item"><b>'+safe(x.result)+'</b> · '+safe(x.when)+' · '+safe(x.plan)+' · '+x.goals+' '+safe(d.measureName.toLowerCase())+'<br>'+safe(x.note)+'</div>').join('')||'<p>Nenhuma partida registrada neste navegador.</p>'}
 $('lab-save').addEventListener('click',()=>{const obs=$('lab-note').value.trim().slice(0,400),goals=Math.min(20,Math.max(0,Number($('lab-goals').value)||0));history.push({when:new Date().toLocaleDateString('pt-BR'),result:$('lab-result').value,goals,plan:active,note:obs});history=history.slice(-30);try{localStorage.setItem(historyKey,JSON.stringify(history))}catch(e){}$('lab-note').value='';showHistory()});
+window.addEventListener('scoutpro:training-load-v160',e=>{
+ if(e.detail?.cap!==cardCap||!previewValid(e.detail.levels)||previewCost(e.detail.levels)!==d.pp)return;
+ current=e.detail.levels.slice();active='prévia de cenário';render();
+});
 window.addEventListener('scoutpro:pp-updated',e=>{
  if(e.detail?.cap!==cardCap)return;
  if(Number.isInteger(e.detail.pp)){d.pp=e.detail.pp;if(previewEligible&&active==='prévia experimental')current=generate().vec.slice();}

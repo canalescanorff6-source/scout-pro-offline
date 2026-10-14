@@ -303,6 +303,11 @@ const ppScript=document.createElement('script');ppScript.src=(inCard?'../':'')+'
 if(document.body?.dataset.page==='detail'){
  const css=document.createElement('link');css.rel='stylesheet';css.href='../scout-engine-v74.css';document.head.appendChild(css);
  const script=document.createElement('script');script.src='../scout-engine-v74.js';document.body.appendChild(script);
+ const css160=document.createElement('link');css160.rel='stylesheet';css160.href='../training-review-v160.css';document.head.appendChild(css160);
+ const tac160=document.createElement('script');tac160.src='../tactical-engine-v98.js';
+ tac160.onload=()=>{const review160=document.createElement('script');review160.src='../training-review-v160.js';document.body.appendChild(review160)};
+ tac160.onerror=()=>console.warn('Scout V160: motor tático não carregado');
+ document.body.appendChild(tac160);
  // V80: auditoria por carta + experimento offline; não substitui as builds existentes.
  const reviewCss=document.createElement('link');reviewCss.rel='stylesheet';reviewCss.href='../performance-review-v80.css';document.head.appendChild(reviewCss);
  const core=document.createElement('script');core.src='../performance-core-v80.js';

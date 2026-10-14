@@ -38,6 +38,7 @@ const verifiedID=/^\d{8,}$/.test(String(d.id||'')),pp=Number.isInteger(d.pp)&&d.
 const cost=v=>v.reduce((sum,n)=>{for(let i=0;i<n;i++)sum+=1+Math.floor(i/4);return sum},0);
 const valid=v=>Array.isArray(v)&&v.length===10&&v.every(x=>Number.isInteger(x)&&x>=0&&x<=20);
 const plans=Object.fromEntries(['A','B','C','P'].filter(k=>valid(l[k])).map(k=>[k,l[k]]));
+if(Object.keys(plans).length===0&&pp!==null&&valid(l.draftA)&&cost(l.draftA)===pp)plans.P=l.draftA;
 const preferred=plans[d.recommended_scenario]?d.recommended_scenario:Object.keys(plans)[0];
 const allValid=pp!==null&&preferred&&cost(plans[preferred])===pp&&!d.pp_estimated;
 const missing=[];

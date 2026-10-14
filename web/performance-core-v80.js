@@ -17,6 +17,7 @@ const hasPlan=d=>verified(d)&&valid(d.recommended_levels)&&cost(d.recommended_le
   const catalog={...(d.alternate_scenarios||{})};
   for(const k of ['A','B','C','P'])if(valid(l[k]))catalog[k]=l[k];
   if(valid(d.recommended_levels))catalog[d.recommended_scenario||'Recomendada']=d.recommended_levels;
+  if(valid(l.draftA)&&cost(l.draftA)===d.pp)catalog['Treino funcional calculado (V95)']=l.draftA;
   if(valid(custom))catalog['Personalizada']=custom;
   for(const [name,levels] of Object.entries(catalog)){
    if(!valid(levels)||cost(levels)!==d.pp)continue;

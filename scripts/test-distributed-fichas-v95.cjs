@@ -31,7 +31,7 @@ for(const c of pending){
  if(!['GO','GR'].includes(lab.role))assert(lab.draftA.slice(7).every(x=>x===0));
  const entry=index.match(new RegExp('<a class="player-card"[^>]*data-cap="'+c.numero+'"[^>]*>[\\s\\S]*?<\\/a>'));
  assert(entry,'Carta ausente no índice '+c.numero);
- assert(entry[0].includes(c.pp===0?'0 PP confirmado':'Treino proposto · não validado'));
+ assert(entry[0].includes(c.pp===0?'0 PP confirmado':'PP conferidos · treino por função'));
 }
 assert.equal(withPP,83);
 const draft=c=>{const html=fs.readFileSync(path.join(root,c.arquivo),'utf8');const a=html.indexOf('id="lab-data"'),b=html.indexOf('>',a),e=html.indexOf('</script>',b);return JSON.parse(html.slice(b+1,e)).draftA;};
