@@ -4,7 +4,7 @@
   "summary": {
     "micro_pro": 73,
     "with_pp": 246,
-    "native_skills": 219,
+    "native_skills": 237,
     "processed": 246,
     "with_stats": 14,
     "no_pp": 0,
@@ -8858,11 +8858,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Heading; Man Marking; Interception; Blocker; Aerial Superiority; Sliding Tackle; Acrobatic Clearance; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/226_Jose_Maria_Gimenez.html",
@@ -8875,6 +8875,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/226_Jose_Maria_Gimenez.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/jose-maria-gimenez-105859938051543",
+        "card_id_externo_elegivel": "105859938051543",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -8892,11 +8900,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Cut Behind & Turn; Sole Control; Long-range Curler; Dipping Shot; Long-range Shooting; One-touch Pass; Through Passing; Pinpoint Crossing; Super-sub",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -8910,6 +8918,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/227_Kenan_Yldz.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/kenan-yildiz-105877386462237",
+        "card_id_externo_elegivel": "105877386462237",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -8962,11 +8978,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "One-touch Pass; Outside Curler; Low Lofted Pass; Long Throw; Man Marking; Interception; Blocker; Sliding Tackle; Acrobatic Clearance; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -8980,6 +8996,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/229_Zeki_Celik.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/zeki-celik-105877386420504",
+        "card_id_externo_elegivel": "105877386420504",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -8997,11 +9021,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Rising Shot; Long-range Shooting; Acrobatic Finishing; First-time Shot; One-touch Pass; Man Marking; Interception; Blocker; Acrobatic Clearance; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9015,6 +9039,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/230_Pape_Matar_Sarr.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/pape-matar-sarr-105877386437993",
+        "card_id_externo_elegivel": "105877386437993",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9032,11 +9064,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "GK Low Punt; GK High Punt; GK Long Throw; GK Penalty Saver",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9050,6 +9082,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/231_Guglielmo_Vicario.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/guglielmo-vicario-105877386413826",
+        "card_id_externo_elegivel": "105877386413826",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9067,11 +9107,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "One-touch Pass; Through Passing; Weighted Pass; Phenomenal Pass; Low Lofted Pass; Man Marking; Interception; Blocker; Aerial Superiority; Sliding Tackle",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9085,6 +9125,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/232_Aymeric_Laporte.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/aymeric-laporte-106799193700770",
+        "card_id_externo_elegivel": "106799193700770",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9102,11 +9150,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Marseille Turn; Chop Turn; Scotch Move; Long-range Curler; Pinpoint Crossing; Gamesmanship",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
@@ -9120,6 +9168,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/233_Nicola_Zalewski.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/nicola-zalewski-105833094587644",
+        "card_id_externo_elegivel": "105833094587644",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9137,11 +9193,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Heading; Long-range Curler; Long-range Shooting; Acrobatic Finishing; First-time Shot; One-touch Pass; Track Back; Aerial Superiority; Super-sub; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/234_Kakita_Yuki.html",
@@ -9154,6 +9210,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/234_Kakita_Yuki.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/kakita-yuki-105903424658357",
+        "card_id_externo_elegivel": "105903424658357",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9171,11 +9235,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Sole Control; Long-range Shooting; One-touch Pass; Through Passing; Weighted Pass; Outside Curler; Interception; Blocker; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/235_Kumasaka_Koki.html",
@@ -9188,6 +9252,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/235_Kumasaka_Koki.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/kumasaka-koki-105903424704710",
+        "card_id_externo_elegivel": "105903424704710",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9240,11 +9312,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Heading; One-touch Pass; Long Throw; Man Marking; Interception; Blocker; Aerial Superiority; Sliding Tackle; Acrobatic Clearance; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9258,6 +9330,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/237_Piero_Hincapie.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/piero-hincapie-105873359905555",
+        "card_id_externo_elegivel": "105873359905555",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9275,11 +9355,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Sombrero; Long-range Shooting; One-touch Pass; Through Passing; Weighted Pass; Outside Curler; Gamesmanship; Interception; Blocker; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9293,6 +9373,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/238_Mateus_Fernandes.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/mateus-fernandes-105873359923147",
+        "card_id_externo_elegivel": "105873359923147",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9310,11 +9398,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Flip Flap; Cut Behind & Turn; Sole Control; Long-range Curler; Long-range Shooting; First-time Shot; One-touch Pass; Outside Curler; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9328,6 +9416,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/239_Alexander_Isak.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/alexander-isak-105873359880583",
+        "card_id_externo_elegivel": "105873359880583",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9345,11 +9441,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Heading; Long-range Curler; Long-range Shooting; First-time Shot; One-touch Pass; Outside Curler; Track Back; Aerial Superiority; Super-sub; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9363,6 +9459,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/240_Goncalo_Ramos.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/goncalo-ramos-105873359900298",
+        "card_id_externo_elegivel": "105873359900298",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9380,11 +9484,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Long-range Curler; Long-range Shooting; Acrobatic Finishing; One-touch Pass; Through Passing; Outside Curler; Low Lofted Pass; Interception; Blocker; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9398,6 +9502,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/241_Federico_Valverde.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/federico-valverde-105873359879415",
+        "card_id_externo_elegivel": "105873359879415",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9415,11 +9527,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Flip Flap; Cut Behind & Turn; Sole Control; One-touch Pass; Through Passing; Pinpoint Crossing; Outside Curler; Long-range Curler; First-time Shot",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
@@ -9434,6 +9546,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/242_Maghnes_Akliouche.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "eFootball LABO",
+        "url": "https://ef-labo.com/efootball/maghnes-akliouche-european-clubs-selection/",
+        "card_id_externo_elegivel": null,
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9451,11 +9571,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Cut Behind & Turn; Sole Control; One-touch Pass; Through Passing; Pinpoint Crossing; Long-range Curler; Long-range Shooting; Track Back; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
@@ -9470,6 +9590,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/243_Anthony_Gordon.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "eFootball LABO",
+        "url": "https://ef-labo.com/efootball/anthony-gordon-european-clubs-selection/",
+        "card_id_externo_elegivel": null,
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9487,11 +9615,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Heading; First-time Shot; Low Lofted Pass; Penalty Specialist; Man Marking; Interception; Blocker; Aerial Superiority; Sliding Tackle; Acrobatic Clearance",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9505,6 +9633,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/244_Edmond_Tapsoba.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/edmond-tapsoba-105873359893929",
+        "card_id_externo_elegivel": "105873359893929",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9522,11 +9658,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Flip Flap; Chop Turn; Cut Behind & Turn; Sole Control; Long-range Curler; Long-range Shooting; Pinpoint Crossing; Outside Curler; Penalty Specialist",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/245_Justin_Kluivert.html",
@@ -9539,6 +9675,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/245_Justin_Kluivert.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/justin-kluivert-105832826126493",
+        "card_id_externo_elegivel": "105832826126493",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
