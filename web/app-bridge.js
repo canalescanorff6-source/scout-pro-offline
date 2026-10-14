@@ -8,6 +8,12 @@ bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small"
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
 if(inCard){
+ // V162: carregar o catálogo de ímpetos antes das recomendações dentro de cada ficha.
+ const v162Boost=document.createElement('script');
+ v162Boost.src='../booster-engine-v103.js';
+ v162Boost.onload=()=>{const v162=document.createElement('script');v162.src='../skills-booster-v162.js';document.body.appendChild(v162)};
+ v162Boost.onerror=()=>console.warn('Scout PRO V162: motor de ímpetos indisponível');
+ document.body.appendChild(v162Boost);
  const navScript=document.createElement('script');navScript.defer=true;navScript.src='../card-navigator-v161.js';document.body.appendChild(navScript);
  const match=location.pathname.match(/\/fichas\/(\d{3})_/);
  const cardView=document.querySelector('.profile-content');
