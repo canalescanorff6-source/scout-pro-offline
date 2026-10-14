@@ -68,3 +68,14 @@ jobs:
         run: cd android && chmod +x gradlew && ./gradlew :app:assembleDebug --no-daemon
       - name: Verificar APK gerado
         run: test -s android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Confirmar FileProvider exclusivo no manifesto compilado
+        shell: bash
+        run: |
+          set -euo pipefail
+          AAPT="$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1)"
+          test -x "$AAPT"
+          "$AAPT" dump xmltree android/app/build/outputs/apk/debug/app-debug.apk AndroidManifest.xml > /tmp/scout-provider-manifest.txt
+          grep -Fq 'br.com.scoutpro.offline.ScoutUpdateFileProvider' /tmp/scout-provider-manifest.txt
+          grep -Fq 'br.com.scoutpro.offline.scoutupdate.files' /tmp/scout-provider-manifest.txt
+          echo 'OK: classe e autoridade específicas do atualizador presentes no APK.'
+
