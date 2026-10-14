@@ -9,10 +9,23 @@ document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
 if(inCard){
  // V162: carregar o catálogo de ímpetos antes das recomendações dentro de cada ficha.
+ const showSkillsUnavailable=()=>{
+  if(document.getElementById('scout-v162')||document.getElementById('scout-v178-load-warning'))return;
+  const target=document.querySelector('.profile-content');if(!target)return;
+  const note=document.createElement('aside');note.id='scout-v178-load-warning';note.setAttribute('role','alert');
+  note.style.cssText='padding:14px;margin:12px 0;border:1px solid #cf9d55;border-radius:12px;background:#39271b;color:#ffebca';
+  note.textContent='As recomendações de habilidades/ímpetos não carregaram nesta instalação. Confira a atualização do aplicativo; seus dados das cartas permanecem intactos.';
+  target.prepend(note);
+ };
  const v162Boost=document.createElement('script');
  v162Boost.src='../booster-engine-v103.js';
- v162Boost.onload=()=>{const v162=document.createElement('script');v162.src='../skills-booster-v162.js';document.body.appendChild(v162)};
- v162Boost.onerror=()=>console.warn('Scout PRO V162: motor de ímpetos indisponível');
+ v162Boost.onload=()=>{
+  const v162=document.createElement('script');v162.src='../skills-booster-v162.js';
+  v162.onload=()=>setTimeout(()=>{if(!document.getElementById('scout-v162'))showSkillsUnavailable()},0);
+  v162.onerror=showSkillsUnavailable;
+  document.body.appendChild(v162);
+ };
+ v162Boost.onerror=showSkillsUnavailable;
  document.body.appendChild(v162Boost);
  const navScript=document.createElement('script');navScript.defer=true;navScript.src='../card-navigator-v161.js';document.body.appendChild(navScript);
  const match=location.pathname.match(/\/fichas\/(\d{3})_/);
