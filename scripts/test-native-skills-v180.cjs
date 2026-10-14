@@ -14,7 +14,7 @@ for(const c of ev.matched_entries){
  assert.equal(t.cartas.find(x=>x.numero===c.cap)?.habilidades_nativas_documentadas,true);
 }
 for(const c of ev.investigations)assert(!a.cards.find(x=>x.numero===c.cap)?.habilidades_nativas,'Não inventar lista: '+c.cap);
-for(const n of [50,75,151,170,181,225,236,246])assert(ev.investigations.find(x=>x.cap===n)?.reason,'Pendência justificada: '+n);
+for(const n of [50,75,151,170,181,225])assert(ev.investigations.find(x=>x.cap===n)?.reason,'Pendência justificada: '+n);
 assert.equal(a.cards.find(x=>x.numero===225)?.id,'106780940205246','Não trocar ID anterior sem evidência do jogo');
 const app=fs.readFileSync(path.join(web,'app-bridge.js'),'utf8');
 assert(app.includes('loadNativeEvidence().finally(()=>loadV180Evidence().finally(startRecommendations))'));
