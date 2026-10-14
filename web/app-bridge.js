@@ -17,6 +17,40 @@ if(inCard){
   note.textContent='As recomendações de habilidades/ímpetos não carregaram nesta instalação. Confira a atualização do aplicativo; seus dados das cartas permanecem intactos.';
   target.prepend(note);
  };
+ // V179: completar a ficha visual pelo Card ID exato antes de iniciar o motor V162.
+ const loadNativeEvidence=async()=>{
+  const element=document.getElementById('scout-v68-data');if(!element)return;
+  let current;try{current=JSON.parse(element.textContent)}catch(e){return}
+  if(current.has_native_skills&&current.native_skills)return;
+  try{
+   const response=await fetch('../SCOUT_V179_NATIVE_SKILLS_RESEARCH.json');
+   if(!response.ok)return;
+   const data=await response.json();
+   const cap=Number(current.capture);
+   const item=Array.isArray(data.records)?data.records.find(c=>c.cap===cap):null;
+   if(!item||item.status!=='card_id_nome_edicao'||String(item.card_id)!==String(current.id)||!Array.isArray(item.skills)||!item.skills.length)return;
+   current.has_native_skills=true;current.native_skills=item.skills.join('; ');
+   current.native_skills_source={status:'external_card_id_matched',url:item.source_url,in_game_verified:false};
+   current.verify=(current.verify||[]).map(v=>v==='Lista de habilidades nativas e 5 adicionais equipadas'?'Cinco habilidades adicionais equipadas na conta (a confirmar)':v);
+   element.textContent=JSON.stringify(current);
+   const label=[...document.querySelectorAll('.fieldlabel')].find(n=>n.textContent.trim()==='Habilidades nativas');
+   const cloud=label?.nextElementSibling;
+   if(cloud?.classList.contains('skill-cloud')){
+    cloud.replaceChildren();
+    for(const skill of item.skills){const span=document.createElement('span');span.className='skill';span.textContent=skill;cloud.appendChild(span)}
+    label.textContent='Habilidades nativas · pesquisadas por Card ID';
+    const source=document.createElement('a');
+    source.href=item.source_url;source.target='_blank';source.rel='noopener noreferrer';
+    source.textContent='Ver fonte externa da edição ↗';
+    source.style.cssText='display:block;color:#8dd8f7;font-size:12px;margin-top:8px';
+    cloud.insertAdjacentElement('afterend',source);
+   }
+   for(const li of document.querySelectorAll('details li')){
+    if(li.textContent.trim()==='Lista de habilidades nativas e 5 adicionais equipadas')li.textContent='Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)';
+   }
+  }catch(e){console.warn('Scout V179: acervo de habilidades indisponível, sem alteração dos dados originais')}
+ };
+ const startRecommendations=()=>{
  const v162Boost=document.createElement('script');
  v162Boost.src='../booster-engine-v103.js';
  v162Boost.onload=()=>{
@@ -27,6 +61,8 @@ if(inCard){
  };
  v162Boost.onerror=showSkillsUnavailable;
  document.body.appendChild(v162Boost);
+ };
+ loadNativeEvidence().finally(startRecommendations);
  const navScript=document.createElement('script');navScript.defer=true;navScript.src='../card-navigator-v161.js';document.body.appendChild(navScript);
  const match=location.pathname.match(/\/fichas\/(\d{3})_/);
  const cardView=document.querySelector('.profile-content');

@@ -234,7 +234,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_007_Sergi_Cardona_OVR98_DE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -246,7 +246,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/sergi-cardona-105827994319227"
     },
     {
       "numero": 8,
@@ -532,7 +533,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_016_Dayot_Upamecano_OVR98_DC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -544,7 +545,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/dayot-upamecano-105802492921775"
     },
     {
       "numero": 17,
@@ -593,7 +595,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_018_Safee_Sali_OVR98_AC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -605,7 +607,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/safee-sali-88030455171360"
     },
     {
       "numero": 19,
@@ -654,7 +657,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_020_Rodri_OVR98_MDF.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -677,7 +680,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/rodri-105684112879839"
     },
     {
       "numero": 21,
@@ -1843,7 +1847,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_054_Lamine_Yamal_OVR103_PTD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -1868,7 +1872,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/lamine-yamal-106757854755138"
     },
     {
       "numero": 55,
@@ -1953,7 +1958,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_057_Lionel_Messi_OVR101_PTD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -1977,7 +1982,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/lionel-messi-106747654053207"
     },
     {
       "numero": 58,
@@ -1990,7 +1996,7 @@
       "pp": 48,
       "imagem": "cartas/CAP_058_Lionel_Messi_OVR101_PTD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -2014,7 +2020,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/lionel-messi-106731279490391"
     },
     {
       "numero": 59,
@@ -2133,7 +2140,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_062_Doan_Ritsu_OVR99_PTD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -2156,7 +2163,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/doan-ritsu-105709345807873"
     },
     {
       "numero": 63,
@@ -2229,7 +2237,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_065_Raphinha_OVR96_PTD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -2241,7 +2249,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/raphinha-105739947454516"
     },
     {
       "numero": 66,
@@ -2289,7 +2298,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_067_Antoine_Semenyo_OVR87_PTD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -2301,7 +2310,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/antoine-semenyo-105873896760682"
     },
     {
       "numero": 68,
@@ -2422,7 +2432,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_071_Ramadhan_Saifullah_OVR98_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -2436,7 +2446,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/ramadhan-saifullah-106783624532586"
     },
     {
       "numero": 72,
@@ -2485,7 +2496,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_073_Andres_Iniesta_OVR99_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -2499,7 +2510,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/andres-iniesta-88032334057449"
     },
     {
       "numero": 74,
@@ -2835,7 +2847,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_083_Rayan_Cherki_OVR100_MAT.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -2858,7 +2870,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/rayan-cherki-105849469143573"
     },
     {
       "numero": 84,
@@ -2907,7 +2920,7 @@
       "pp": 36,
       "imagem": "cartas/CAP_085_Minanda_OVR94_MAT.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -2931,7 +2944,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/minanda-88043608522885"
     },
     {
       "numero": 86,
@@ -2944,7 +2958,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_086_Bruno_Fernandes_OVR91_MAT.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -2958,7 +2972,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/bruno-fernandes-105848932199520"
     },
     {
       "numero": 87,
@@ -2971,7 +2986,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_087_Giuliano_Simeone_OVR104_MLD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -2985,7 +3000,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/giuliano-simeone-106798388494170"
     },
     {
       "numero": 88,
@@ -3525,7 +3541,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_103_Dominik_Szoboszlai_OVR87_MLG.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -3537,7 +3553,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/dominik-szoboszlai-105873896766735"
     },
     {
       "numero": 104,
@@ -3656,7 +3673,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_107_Aurelien_Tchouameni_OVR100_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -3668,7 +3685,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/aurelien-tchouameni-105801687618534"
     },
     {
       "numero": 108,
@@ -3681,7 +3699,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_108_N_Golo_Kante_OVR99_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -3706,7 +3724,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/n-golo-kante-105849469111254"
     },
     {
       "numero": 109,
@@ -3719,7 +3738,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_109_Ruben_Neves_OVR99_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -3731,7 +3750,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/ruben-neves-105858864355084"
     },
     {
       "numero": 110,
@@ -3780,7 +3800,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_111_N_Golo_Kante_OVR99_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -3803,7 +3823,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/n-golo-kante-105865038367702"
     },
     {
       "numero": 112,
@@ -3816,7 +3837,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_112_Amadou_Onana_OVR97_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -3828,7 +3849,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/amadou-onana-105802492952578"
     },
     {
       "numero": 113,
@@ -3841,7 +3863,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_113_Bruno_Guimaraes_OVR99_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -3864,7 +3886,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/bruno-guimaraes-105806787889465"
     },
     {
       "numero": 114,
@@ -3912,7 +3935,7 @@
       "pp": 54,
       "imagem": "cartas/CAP_115_Casemiro_OVR97_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -3924,7 +3947,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/casemiro-105804908766893"
     },
     {
       "numero": 116,
@@ -3937,7 +3961,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_116_Christian_Ordonez_OVR96_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -3949,7 +3973,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/christian-ordonez-105793903024013"
     },
     {
       "numero": 117,
@@ -3962,7 +3987,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_117_Moises_Caicedo_OVR88_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -3974,7 +3999,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/moises-caicedo-105794708320092"
     },
     {
       "numero": 118,
@@ -3987,7 +4013,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_118_Sandro_Tonali_OVR86_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -3999,7 +4025,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/sandro-tonali-105750148009371"
     },
     {
       "numero": 119,
@@ -4105,7 +4132,7 @@
       "pp": 72,
       "imagem": "cartas/CAP_122_Cafu_OVR102_LD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -4129,7 +4156,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/cafu-88033407929805"
     },
     {
       "numero": 123,
@@ -4178,7 +4206,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_124_Dominik_Szoboszlai_OVR99_LD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -4201,7 +4229,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/dominik-szoboszlai-105828799610127"
     },
     {
       "numero": 125,
@@ -4249,7 +4278,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_126_Daniel_Munoz_OVR97_LD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -4261,7 +4290,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/daniel-munoz-52868363179440"
     },
     {
       "numero": 127,
@@ -4310,7 +4340,7 @@
       "pp": 88,
       "imagem": "cartas/CAP_128_Matteo_Darmian_OVR97_LD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -4333,7 +4363,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/matteo-darmian-105782628618516"
     },
     {
       "numero": 129,
@@ -4631,7 +4662,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_137_Marc_Cucurella_OVR97_LE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -4654,7 +4685,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/marc-cucurella-105859132802911"
     },
     {
       "numero": 138,
@@ -4703,7 +4735,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_139_Noussair_Mazraoui_OVR88_LE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -4717,7 +4749,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/noussair-mazraoui-106797935481937"
     },
     {
       "numero": 140,
@@ -4730,7 +4763,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_140_Alejandro_Grimaldo_OVR86_LE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -4742,7 +4775,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/alejandro-grimaldo-105873091431106"
     },
     {
       "numero": 141,
@@ -4783,7 +4817,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_142_Andrew_Robertson_OVR84_LE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -4797,7 +4831,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/andrew-robertson-105862354012836"
     },
     {
       "numero": 143,
@@ -4918,7 +4953,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_146_Manuel_Akanji_OVR101_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -4941,7 +4976,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/manuel-akanji-106780671715908"
     },
     {
       "numero": 147,
@@ -4989,7 +5025,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_148_Vitao_OVR98_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -5013,7 +5049,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/vitao-106735306130248"
     },
     {
       "numero": 149,
@@ -5123,7 +5160,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_152_Pierre_Kalulu_OVR99_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -5135,7 +5172,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/pierre-kalulu-105810814439757"
     },
     {
       "numero": 153,
@@ -5148,7 +5186,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_153_Dean_Huijsen_OVR99_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -5172,7 +5210,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/dean-huijsen-106766981558114"
     },
     {
       "numero": 154,
@@ -5185,7 +5224,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_154_Ibrahima_Konate_OVR98_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -5209,7 +5248,8 @@
         "Primeiro ímpeto",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/ibrahima-konate-105849469124895"
     },
     {
       "numero": 155,
@@ -5222,7 +5262,7 @@
       "pp": 48,
       "imagem": "cartas/CAP_155_Micky_van_de_Ven_OVR98_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -5234,7 +5274,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/micky-van-de-ven-105794171442168"
     },
     {
       "numero": 156,
@@ -5247,7 +5288,7 @@
       "pp": 38,
       "imagem": "cartas/CAP_156_Ibrahima_Konate_OVR98_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -5270,7 +5311,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/ibrahima-konate-105708003639583"
     },
     {
       "numero": 157,
@@ -5355,7 +5397,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_159_Pau_Cubarsi_OVR89_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -5378,7 +5420,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/pau-cubarsi-105854569449280"
     },
     {
       "numero": 160,
@@ -5428,7 +5471,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_161_Ruben_Dias_OVR86_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -5442,7 +5485,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/ruben-dias-105884634166456"
     },
     {
       "numero": 162,
@@ -5455,7 +5499,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_162_Pau_Torres_OVR85_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -5469,7 +5513,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/pau-torres-105873896751326"
     },
     {
       "numero": 163,
@@ -5482,7 +5527,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_163_Jeremy_Jacquet_OVR85_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -5507,7 +5552,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/jeremy-jacquet-105873091489528"
     },
     {
       "numero": 164,
@@ -5544,7 +5590,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_165_Cristian_Romero_OVR85_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -5568,7 +5614,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/cristian-romero-106787919475376"
     },
     {
       "numero": 166,
@@ -5618,7 +5665,7 @@
       "pp": 52,
       "imagem": "cartas/CAP_167_Danilo_OVR84_ZC.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -5631,7 +5678,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/danilo-43989"
     },
     {
       "numero": 168,
@@ -5644,7 +5692,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_168_Petr_Cech_OVR108_GO.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -5658,7 +5706,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/petr-cech-88045755829367"
     },
     {
       "numero": 169,
@@ -5770,7 +5819,7 @@
       "pp": 46,
       "imagem": "cartas/CAP_172_Thibaut_Courtois_OVR101_GO.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -5782,7 +5831,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/thibaut-courtois-105865038310751"
     },
     {
       "numero": 173,
@@ -5867,7 +5917,7 @@
       "pp": 40,
       "imagem": "cartas/CAP_175_Manuel_Neuer_OVR98_GO.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -5890,7 +5940,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/manuel-neuer-105723035943329"
     },
     {
       "numero": 176,
@@ -5938,7 +5989,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_177_Dean_Henderson_OVR83_GO.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -5951,7 +6002,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/dean-henderson-111450"
     },
     {
       "numero": 178,
@@ -5964,7 +6016,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_178_Romelu_Lukaku_OVR99_CA.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -5987,7 +6039,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/romelu-lukaku-105727599353018"
     },
     {
       "numero": 179,
@@ -6000,7 +6053,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_179_Victor_Osimhen_OVR99_CA.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -6012,7 +6065,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/victor-osimhen-105823514783663"
     },
     {
       "numero": 180,
@@ -6025,7 +6079,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_180_Hugo_Ekitike_OVR99_CA.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6048,7 +6102,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/hugo-ekitike-105782897156511"
     },
     {
       "numero": 181,
@@ -6088,7 +6143,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_182_Marcus_Thuram_OVR98_CA.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6111,7 +6166,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/marcus-thuram-105829336458789"
     },
     {
       "numero": 183,
@@ -6124,7 +6180,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_183_P_E_Aubameyang_OVR98_CA.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -6136,7 +6192,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/p-e-aubameyang-105812156521859"
     },
     {
       "numero": 184,
@@ -6149,7 +6206,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_184_Joao_Pedro_OVR97_CA.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6172,7 +6229,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/joao-pedro-105850811314987"
     },
     {
       "numero": 185,
@@ -6185,7 +6243,7 @@
       "pp": 76,
       "imagem": "cartas/CAP_185_Pedro_OVR97_CA.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6209,7 +6267,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/pedro-111408"
     },
     {
       "numero": 186,
@@ -6222,7 +6281,7 @@
       "pp": 58,
       "imagem": "cartas/CAP_186_Neymar_Jr_OVR98_SA.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -6234,7 +6293,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/neymar-jr-105795513523616"
     },
     {
       "numero": 187,
@@ -6247,7 +6307,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_187_Gonzalo_Plata_OVR97_PTD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6270,7 +6330,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/gonzalo-plata-105816451581405"
     },
     {
       "numero": 188,
@@ -6319,7 +6380,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_189_Donyell_Malen_OVR84_PTD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -6332,7 +6393,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/donyell-malen-117932"
     },
     {
       "numero": 190,
@@ -6345,7 +6407,7 @@
       "pp": 50,
       "imagem": "cartas/CAP_190_Rafael_Leao_OVR99_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6368,7 +6430,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/rafael-leao-105776186249585"
     },
     {
       "numero": 191,
@@ -6381,7 +6444,7 @@
       "pp": 66,
       "imagem": "cartas/CAP_191_Gabriel_Martinelli_OVR99_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6404,7 +6467,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/gabriel-martinelli-105850811319718"
     },
     {
       "numero": 192,
@@ -6417,7 +6481,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_192_Jeremy_Doku_OVR99_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -6429,7 +6493,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/jeremy-doku-105800613884444"
     },
     {
       "numero": 193,
@@ -6442,7 +6507,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_193_Allan_Saint_Maximin_OVR97_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -6454,7 +6519,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/allan-saint-maximin-105829067975814"
     },
     {
       "numero": 194,
@@ -6467,7 +6533,7 @@
       "pp": 56,
       "imagem": "cartas/CAP_194_Bruno_Henrique_OVR97_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -6481,7 +6547,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/bruno-henrique-105816451555441"
     },
     {
       "numero": 195,
@@ -6494,7 +6561,7 @@
       "pp": 54,
       "imagem": "cartas/CAP_195_Raphinha_OVR87_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -6508,7 +6575,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/raphinha-105863964635188"
     },
     {
       "numero": 196,
@@ -6557,7 +6625,7 @@
       "pp": 54,
       "imagem": "cartas/CAP_197_Leandro_Trossard_OVR86_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6580,7 +6648,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/leandro-trossard-105794439861140"
     },
     {
       "numero": 198,
@@ -6593,7 +6662,7 @@
       "pp": 66,
       "imagem": "cartas/CAP_198_Cody_Gakpo_OVR86_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -6619,7 +6688,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/cody-gakpo-122012"
     },
     {
       "numero": 199,
@@ -6632,7 +6702,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_199_Joao_Felix_OVR85_PTE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -6645,7 +6715,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/joao-felix-126336"
     },
     {
       "numero": 200,
@@ -6720,7 +6791,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_202_Cole_Palmer_OVR100_MAT.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -6732,7 +6803,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/cole-palmer-105849200712620"
     },
     {
       "numero": 203,
@@ -6782,7 +6854,7 @@
       "pp": 44,
       "imagem": "cartas/CAP_204_Xavi_Simons_OVR99_MAT.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -6794,7 +6866,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/xavi-simons-52882858710824"
     },
     {
       "numero": 205,
@@ -6807,7 +6880,7 @@
       "pp": 54,
       "imagem": "cartas/CAP_205_Thiago_Almada_OVR98_MAT.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6830,7 +6903,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/thiago-almada-105831752396173"
     },
     {
       "numero": 206,
@@ -6843,7 +6917,7 @@
       "pp": 60,
       "imagem": "cartas/CAP_206_Nicolo_Zaniolo_OVR98_MAT.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6866,7 +6940,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/nicolo-zaniolo-105793902985437"
     },
     {
       "numero": 207,
@@ -6879,7 +6954,7 @@
       "pp": 70,
       "imagem": "cartas/CAP_207_James_Rodriguez_OVR95_MAT.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -6902,7 +6977,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/james-rodriguez-105836047278701"
     },
     {
       "numero": 208,
@@ -6950,7 +7026,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_209_Jamal_Musiala_OVR87_MAT.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "anterior",
@@ -6975,7 +7051,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/jamal-musiala-105863159356176"
     },
     {
       "numero": 210,
@@ -6988,7 +7065,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_210_Jamal_Musiala_OVR86_MAT.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7002,7 +7079,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/jamal-musiala-106773155552016"
     },
     {
       "numero": 211,
@@ -7015,7 +7093,7 @@
       "pp": 0,
       "imagem": "cartas/CAP_211_Kubo_Takefusa_OVR99_MLD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7029,7 +7107,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/kubo-takefusa-105840610761736"
     },
     {
       "numero": 212,
@@ -7042,7 +7121,7 @@
       "pp": 58,
       "imagem": "cartas/CAP_212_Luiz_Araujo_OVR97_MLD.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7056,7 +7135,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/luiz-araujo-105817256868579"
     },
     {
       "numero": 213,
@@ -7104,7 +7184,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_214_Nico_Williams_OVR100_MLE.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7118,7 +7198,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/nico-williams-105801687641013"
     },
     {
       "numero": 215,
@@ -7239,7 +7320,7 @@
       "pp": 62,
       "imagem": "cartas/CAP_218_Nicolo_Barella_OVR99_MLG.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -7251,7 +7332,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/nicolo-barella-105856716870918"
     },
     {
       "numero": 219,
@@ -7327,7 +7409,7 @@
       "pp": 68,
       "imagem": "cartas/CAP_221_Khephren_Thuram_OVR97_MLG.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "experimental-v95",
@@ -7339,7 +7421,8 @@
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/khephren-thuram-105829336478106"
     },
     {
       "numero": 222,
@@ -7378,7 +7461,7 @@
       "pp": 54,
       "imagem": "cartas/CAP_223_Frenkie_de_Jong_OVR86_MLG.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7392,7 +7475,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/frenkie-de-jong-105835242039414"
     },
     {
       "numero": 224,
@@ -7405,7 +7489,7 @@
       "pp": 64,
       "imagem": "cartas/CAP_224_Manu_Kone_OVR85_MLG.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": false,
       "impeto_extra_confirmado": false,
       "referencia": "experimental-v95",
@@ -7419,7 +7503,8 @@
         "Segundo ímpeto e bônus aplicado",
         "Posição de ativação do estilo no Plano de Jogo",
         "Partidas comparativas nas três táticas"
-      ]
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/manu-kone-105858595943762"
     },
     {
       "numero": 225,
