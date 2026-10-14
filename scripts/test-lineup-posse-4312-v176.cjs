@@ -1,0 +1,71 @@
+'use strict';
+/* V176: projeto tático editável — nenhuma habilidade, carta ou desempenho inferido. */
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'..');
+const txt=p=>fs.readFileSync(path.join(root,p),'utf8');
+const json=p=>JSON.parse(txt(p));
+const plan=json('web/SCOUT_V176_POSSE_4312.json');
+const roster=json('web/SCOUT_V69_AUDITORIA.json').cards;
+const audits=json('web/SCOUT_V98_AUDITORIA_TATICA.json').cartas;
+const video=json('web/SCOUT_V106_PESQUISA_VIDEOS.json');
+const byCap=new Map(roster.map(c=>[c.numero,c]));
+const byAudit=new Map(audits.map(c=>[c.numero,c]));
+const normalize={GR:'GO',GO:'GO',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',ZG:'ZG',MDF:'VOL',VOL:'VOL',MC:'MLG',ME:'MLG',MLG:'MLG',MO:'MAT',MAT:'MAT',AC:'CA',CA:'CA',SA:'SA'};
+const slots={go:'GO',le:'LE',ld:'LD',zge:'ZG',zgd:'ZG',vol:'VOL',mlge:'MLG',mlgd:'MLG',mat:'MAT',sa:'SA',ca:'CA'};
+assert.equal(plan.schema,'SCOUT_V176_POSSE_4312');
+assert.equal(plan.status,'PROPOSTA_INICIAL_TESTAVEL_NAO_HOMOLOGADA_GAMEPLAY');
+assert.equal(plan.formation,'4-3-1-2');assert.equal(plan.style,'posse');
+assert.equal(roster.length,246);assert.equal(audits.length,246);
+assert.equal(video.cards.length,246);assert.equal(plan.total_cards_compared,246);
+assert.equal(plan.starter_slots.length,11);assert.equal(plan.bench.length,12);
+assert.deepEqual(new Set(plan.starter_slots.map(s=>s.slot)),new Set(Object.keys(slots)));
+const members=[...plan.starter_slots,...plan.bench];
+assert.equal(new Set(members.map(m=>m.cap)).size,23);
+for(const s of plan.starter_slots){
+ const c=byCap.get(s.cap),audit=byAudit.get(s.cap);
+ assert(c, 'missing card '+s.cap);
+ assert.equal(s.nome,c.name);
+ assert.equal(s.card_id,c.id);
+ assert.equal(s.edition,c.versao);
+ assert.equal(s.original_position,c.posicao);
+ assert.equal(s.estilo_ataque,c.estilo_ataque);
+ assert.equal(s.estilo_defesa,c.estilo_defesa);
+ assert.equal(s.pp_registered,c.pp);
+ assert.equal(s.art,audit.imagem);
+ assert.equal(s.card_page,c.arquivo);
+ assert.equal(s.base_stats_documented,!!c.base_stats_known);
+ assert.equal(s.native_skills_documented,!!c.habilidades_nativas);
+ assert.equal(normalize[c.posicao],slots[s.slot],s.cap+' fora da posição original');
+ assert(['alta','media'].includes(s.confidence));
+ assert(s.reason.length>25&&s.individual_instruction.length>25);
+ assert(c.habilidades_nativas.includes(s.native_skill_evidence),'skill inexistente '+s.cap+': '+s.native_skill_evidence);
+}
+for(const sub of plan.bench){
+ const c=byCap.get(sub.cap);
+ assert(c,'bench carta inexistente: '+sub.cap);
+ assert.equal(sub.nome,c.name);
+ assert.equal(sub.pp_registered,c.pp);
+ assert.equal(sub.card_id,c.id);
+ assert.equal(sub.art,byAudit.get(sub.cap).imagem);
+ assert(sub.use.length>15);
+}
+assert.equal(plan.limits.video_card_ids_reviewed,0);
+assert.equal(plan.limits.pro_player_gameplay_validated,false);
+assert.equal(plan.limits.no_card_training_changed,true);
+assert.equal(plan.limits.no_added_skill_assumed_installed,true);
+assert.equal(plan.limits.no_optional_booster_assumed_selected,true);
+assert.equal(plan.limits.no_original_art_replaced,true);
+assert.equal(plan.gameplan.fluid_formation.includes('Não habilitada automaticamente'),true);
+for(const a of plan.alternatives)assert(byCap.has(a.cap));
+const html=txt('web/meu-time-posse-4312.html'),js=txt('web/meu-time-posse-4312.js'),index=txt('web/index.html'),sw=txt('web/sw.js');
+assert(html.includes('id="pitch"')&&html.includes('id="bench"')&&html.includes('id="picker"')&&html.includes('id="reset-team"'));
+assert(html.includes('meta name="viewport"')&&html.includes('@media(max-width:520px)'));
+assert(js.includes("localStorage.setItem(STORAGE_KEY")&&js.includes("rp.starter_slots.length!==11"));
+assert(js.includes("new Set(Object.values(vals)).size===11")&&js.includes("A carta #"));
+assert(js.includes('canPick(')&&js.includes("show-all")&&js.includes('A carta #'));
+assert(!js.includes('fetch("http'));
+assert(index.includes('href="meu-time-posse-4312.html"'));
+for(const f of ['meu-time-posse-4312.html','meu-time-posse-4312.js','SCOUT_V176_POSSE_4312.json','SCOUT_V69_AUDITORIA.json'])
+ assert(sw.includes("'./"+f+"'"));
+assert(sw.includes("scout-pro-v176-1"));
+console.log('V176 OK: 246 cartas verificadas; 11 titulares + 12 reservas; 11 posições corretas; 0 stats/PP/skills inventados; editor local e recursos offline.');
