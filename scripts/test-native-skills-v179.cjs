@@ -25,7 +25,8 @@ for(const c of source.records.filter(r=>r.status!=='card_id_nome_edicao')){
 assert(!audit.cards.find(x=>x.numero===225).habilidades_nativas,'#225 conflito grave Card ID vs nome');
 assert(!audit.cards.find(x=>x.numero===75).habilidades_nativas,'#075 conflito de edição');
 const app=fs.readFileSync(path.join(root,'app-bridge.js'),'utf8');
-assert(app.includes('loadNativeEvidence().finally(startRecommendations)'));
+assert(app.includes('loadNativeEvidence().finally(()=>loadV180Evidence().finally(startRecommendations))'));
+assert(app.includes("item.status!=='card_id_nome_edicao'"),'V179 deve barrar cartas sem coincidência exata');
 assert(app.includes("item.status!=='card_id_nome_edicao'"));
 assert(app.includes("String(item.card_id)!==String(current.id)"));
 const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
