@@ -69,6 +69,7 @@ assert.equal(sum.cobertura_completa, categories.pendente===0 &&
   'Cobertura completa não pode ser apenas quantidade de links');
 
 const additional = [
+ ['web/SCOUT_V157_LEADS_EXTERNOS.json','leads'],
  ['web/SCOUT_V159_LEADS_VIDEOS_PENDENTES.json','leads'],
  ['web/SCOUT_V159_LEADS_CARTAS_SEM_VIDEO.json','candidates'],
  ['web/SCOUT_V160_LEADS_RESTANTES.json','references'],
@@ -105,7 +106,7 @@ for (const [rel,key] of additional) {
     if(confirmed.length) danger('Candidato em quarentena marcado confirmado sem promoção auditada: '+v.url);
   }
 }
-if(quarantine.size < 42) danger('Reservas da V159-V169 foram removidas: '+quarantine.size);
+if(quarantine.size < 44) danger('Reservas V157 e V159-V169 foram removidas: '+quarantine.size);
 
 const unknownIds=ledger.cards.filter(c=>!/^\d+$/.test(String(c.card_id))).map(c=>c.numero);
 const missing=ledger.cards.filter(c=>c.videos.length===0).map(c=>c.numero);
