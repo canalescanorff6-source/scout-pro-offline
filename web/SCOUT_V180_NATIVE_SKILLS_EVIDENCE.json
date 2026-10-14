@@ -5,9 +5,9 @@
   "method": "Somente quando arte/posição/OVR-base/PP/pacote/nome coincidirem ou Card ID e edição exatos. Nunca importar por nome apenas. Se faltam identificadores, marcar pendente e preservar original.",
   "total_cards": 246,
   "known_before": 219,
-  "added": 18,
-  "known_after": 237,
-  "pending": 9,
+  "added": 21,
+  "known_after": 240,
+  "pending": 6,
   "matched_entries": [
     {
       "cap": 226,
@@ -70,6 +70,38 @@
         "Through Passing",
         "Pinpoint Crossing",
         "Super-sub"
+      ]
+    },
+    {
+      "cap": 228,
+      "name": "Murilo",
+      "pos": "ZC",
+      "pp": 56,
+      "source_id": "106798925332853",
+      "source_url": "https://pesdb.net/efootball/players/murilo-106798925332853",
+      "second_url": "https://efootball-world.com/player/106798925332853",
+      "edition": "Show Time — Ranking Event Rewards 2027",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "Palmeiras",
+        "posição ZC",
+        "Overall exibido 85 após boost Total Package +3",
+        "56 PP",
+        "um ímpeto embutido e um espaço opcional na arte"
+      ],
+      "skills": [
+        "Heading",
+        "Low Lofted Pass",
+        "Man Marking",
+        "Interception",
+        "Blocker",
+        "Aerial Superiority",
+        "Sliding Tackle",
+        "Long-reach Tackle",
+        "Acrobatic Clearance",
+        "Fighting Spirit"
       ]
     },
     {
@@ -286,6 +318,38 @@
         "Interception",
         "Blocker",
         "Fighting Spirit"
+      ]
+    },
+    {
+      "cap": 236,
+      "name": "Samuel Eto'o",
+      "pos": "CA",
+      "pp": 66,
+      "source_id": "88045755827674",
+      "source_url": "https://pesdb.net/efootball/players/samuel-eto-o-88045755827674",
+      "second_url": "https://efootball-world.com/player/88045755827674",
+      "edition": "Epic — Internazionale Milano 10-11",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "Inter",
+        "posição CA",
+        "Overall exibido 85 com Agility +4",
+        "66 PP",
+        "ícone de ímpeto embutido e segundo espaço vazio"
+      ],
+      "skills": [
+        "Double Touch",
+        "Acceleration Burst",
+        "Long-range Curler",
+        "Rising Shot",
+        "Acrobatic Finishing",
+        "Heel Trick",
+        "First-time Shot",
+        "Outside Curler",
+        "Track Back",
+        "Attacking Surge"
       ]
     },
     {
@@ -574,6 +638,39 @@
         "Outside Curler",
         "Penalty Specialist"
       ]
+    },
+    {
+      "cap": 246,
+      "name": "Eric Cantona",
+      "pos": "CA",
+      "pp": 60,
+      "source_id": "88045755828961",
+      "source_url": "https://pesdb.net/efootball/players/eric-cantona-88045755828961",
+      "second_url": "https://efootball-world.com/player/88045755828961",
+      "edition": "Epic — France 1992",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "seleção France",
+        "posição CA / CF",
+        "Overall exibido 85 com Physicality +4",
+        "60 PP",
+        "ícone de ímpeto embutido e outro slot possível",
+        "Pivô / Deep-lying Forward"
+      ],
+      "skills": [
+        "Double Touch",
+        "Momentum Dribbling",
+        "Heading",
+        "Long-range Curler",
+        "Long-range Shooting",
+        "Acrobatic Finishing",
+        "First-time Shot",
+        "One-touch Pass",
+        "Through Passing",
+        "Outside Curler"
+      ]
     }
   ],
   "investigations": [
@@ -648,40 +745,6 @@
       ],
       "additional_evidence": "Rodri Highlight 'Back in the Game 14 Aug 2025' da fonte tem 52 PP, igual à carta cadastrada; ID candidato 105779675902175, porém o campo ID atual aponta para outro jogador. Preservar ID original até conferir na conta.",
       "prioritized_candidate": "https://pesdb.net/efootball/players/rodri-105779675902175"
-    },
-    {
-      "cap": 228,
-      "name": "Murilo",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 236,
-      "name": "Samuel Eto'o",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao",
-      "reason": "Inter Epic Eto'o possui versões diferentes (CA 10-11 e RMF 09-10, habilidades distintas). Falta ID da conta.",
-      "candidates": [
-        "https://pesdb.net/efootball/players/samuel-eto-o-88036360586714",
-        "https://pesdb.net/efootball/players/samuel-eto-o-88045755827674"
-      ],
-      "additional_evidence": "Fontes Inter 09-10/10-11 divergem em posição, OVR e PP da carta informada. Não migrar habilidades sem identificar edição."
-    },
-    {
-      "cap": 246,
-      "name": "Eric Cantona",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao",
-      "reason": "Cantona tem versões Epic França e Manchester United com habilidades diferentes; falta ID da conta.",
-      "candidates": [
-        "https://pesdb.net/efootball/players/eric-cantona-88045755828961",
-        "https://pesdb.net/efootball/players/eric-cantona-88033407797985"
-      ],
-      "additional_evidence": "Cantona França 1992 tem 60 PP, mas OVR-base 84 na fonte versus 85 na arte enviada; candidatura não fecha identidade.",
-      "prioritized_candidate": "https://pesdb.net/efootball/players/eric-cantona-88045755828961"
     }
   ],
   "preservation": {
