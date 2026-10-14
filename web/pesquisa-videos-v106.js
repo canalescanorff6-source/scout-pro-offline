@@ -26,6 +26,18 @@ function renderReservedVideos(card){
  const ed=document.createElement('p');ed.textContent='Referência da edição: '+item.edition;body.appendChild(ed);
  const external=document.createElement('p');external.textContent='Card ID: '+(item.card_id_registered||'Pendente no inventário; somente ID externo identificado');body.appendChild(external);
  const pp=document.createElement('p');pp.textContent='Orçamento PP cadastrado: '+item.registered_pp_budget+' • números externos são referências, não treino validado por vídeo.';body.appendChild(pp);
+ if(item.integrity_alert){
+  const warning=document.createElement('div');warning.className='research-integrity-alert';
+  const warningTitle=document.createElement('strong');warningTitle.textContent='CONFLITO DE EDIÇÃO / PP — conferir antes de treinar';warning.appendChild(warningTitle);
+  const explanation=document.createElement('p');explanation.textContent=item.integrity_alert.instruction;warning.appendChild(explanation);
+  const competing=item.integrity_alert.separate_card_same_registered_pp;
+  const other=document.createElement('p');other.textContent='Mesmo orçamento em OUTRA carta: '+competing.version+' • Lv'+competing.max_level+' / '+competing.pp+' PP';warning.appendChild(other);
+  const otherLink=document.createElement('a');otherLink.href=competing.url;otherLink.rel='noopener noreferrer';otherLink.target='_blank';otherLink.textContent='Ver fonte da outra edição ↗';warning.appendChild(otherLink);
+  body.appendChild(warning);
+ }
+ if(item.pack_video_context){
+  const info=document.createElement('p');info.className='research-state';info.textContent='Vídeo do pacote confirmado por título original do YouTube — frames e PP individuais não verificados';body.appendChild(info);
+ }
  if(item.external_level_pp?.conflict){const note=document.createElement('p');note.className='note';note.textContent=item.external_level_pp.conflict;body.appendChild(note)}
  for(const video of item.video_leads){
   const div=document.createElement('div');div.className='video';
