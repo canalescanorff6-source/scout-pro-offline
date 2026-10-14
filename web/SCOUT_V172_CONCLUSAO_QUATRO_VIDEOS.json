@@ -59,7 +59,29 @@
           "verified_exact_edition": false
         }
       ],
-      "missing_to_homologate": "Fotograma do vídeo com Standard 105297 e detalhe de progressão da carta cadastrada, incluindo nível/PP."
+      "missing_to_homologate": "Fotograma do vídeo com Standard 105297 e detalhe de progressão da carta cadastrada, incluindo nível/PP.",
+      "integrity_alert": {
+        "code": "SUSPEITA_PP_DE_OUTRA_EDICAO",
+        "severity": "high",
+        "registered_version": "Standard — 105297",
+        "registered_budget": 68,
+        "verified_public_standard_reference": {
+          "version": "Standard Tottenham WB",
+          "max_level": 32,
+          "pp": 62,
+          "url": "https://game8.jp/efootball/475720",
+          "published_source_as_of": "2026-09-11"
+        },
+        "separate_card_same_registered_pp": {
+          "version": "Highlight English League Guardians 09/07/2026",
+          "max_level": 35,
+          "pp": 68,
+          "url": "https://game8.jp/efootball/813967"
+        },
+        "instruction": "Não considerar 68 PP validação da Standard: a fonte Game8 associa 62 PP à Standard e 68 PP à Highlight. Manter cadastro atual sem substituir até conferir a tela da carta do usuário.",
+        "player_card_frame_verified": false,
+        "gameplay_verified": false
+      }
     },
     {
       "cap": 141,
@@ -108,7 +130,38 @@
           "verified_exact_edition": false
         }
       ],
-      "missing_to_homologate": "Captura do nível máximo e PP da carta Standard do usuário e quadro de vídeo com arte/ID 132386."
+      "missing_to_homologate": "Captura do nível máximo e PP da carta Standard do usuário e quadro de vídeo com arte/ID 132386.",
+      "integrity_alert": {
+        "code": "SUSPEITA_PP_DE_OUTRA_EDICAO",
+        "severity": "high",
+        "registered_version": "Standard — 132386",
+        "registered_budget": 76,
+        "verified_public_standard_references": [
+          {
+            "version": "Standard 132386",
+            "max_level": 59,
+            "pp": null,
+            "source_limitation": "Max level exibido com aviso de correção sugerida; não implica PP validados",
+            "url": "https://www.pesmaster.com/ian-maatsen/efootball-2022/player/132386/"
+          },
+          {
+            "version": "Standard 132386",
+            "max_level": 37,
+            "pp": null,
+            "source_limitation": "Base independente com valor divergente",
+            "url": "https://efootballedge.com/pt-BR/cards/132386-ian-maatsen"
+          }
+        ],
+        "separate_card_same_registered_pp": {
+          "version": "Highlight — English League Guardians 07/09/2026",
+          "max_level": 39,
+          "pp": 76,
+          "url": "https://ef-labo.com/efootball/ian-maatsen-english-league-guardians/"
+        },
+        "instruction": "Não aplicar 76 PP à Standard apenas por coincidência: fonte explícita registra 76 PP como Highlight; níveis Standard 37 e 59 divergem. Não ajustar até captura do cartão no jogo.",
+        "player_card_frame_verified": false,
+        "gameplay_verified": false
+      }
     },
     {
       "cap": 234,
@@ -148,7 +201,19 @@
           "verified_exact_edition": false
         }
       ],
-      "missing_to_homologate": "Fotograma do vídeo exibindo Kakita individualmente e treino, comparado à arte original; ID externo não é automaticamente ID in-game do usuário."
+      "missing_to_homologate": "Fotograma do vídeo exibindo Kakita individualmente e treino, comparado à arte original; ID externo não é automaticamente ID in-game do usuário.",
+      "pack_video_context": {
+        "url": "https://www.youtube.com/watch?v=vdOYEtgVaBU",
+        "publicly_retrieved_title": "【神更新】リカルドロドリゲス&槙野監督パック登場！正直買うべき？ブースター&リンクアップ解説！ハイライト4選手のおすすめ育成&過去版比較紹介！",
+        "title_verified_by_direct_youtube_page_fetch": true,
+        "source_retrieval_scope": "Open Graph title e descrição apenas. Não foram extraídos frames nem timestamps.",
+        "official_pack_roster_reference": "https://game8.jp/efootball/821684",
+        "pack_players_include_this_card": true,
+        "individual_frame_reviewed": false,
+        "exact_id_verified_in_frame": false,
+        "training_distribution_verified_in_frame": false,
+        "conclusion": "Vídeo documental correspondente ao pacote (fonte forte), não gameplay/treino individual certificado."
+      }
     },
     {
       "cap": 235,
@@ -188,7 +253,19 @@
           "verified_exact_edition": false
         }
       ],
-      "missing_to_homologate": "Fotograma do vídeo exibindo Kumasaka com arte e progressão e captura original para ID in-game; não confundir com carta Show Time ou outra Highlight."
+      "missing_to_homologate": "Fotograma do vídeo exibindo Kumasaka com arte e progressão e captura original para ID in-game; não confundir com carta Show Time ou outra Highlight.",
+      "pack_video_context": {
+        "url": "https://www.youtube.com/watch?v=vdOYEtgVaBU",
+        "publicly_retrieved_title": "【神更新】リカルドロドリゲス&槙野監督パック登場！正直買うべき？ブースター&リンクアップ解説！ハイライト4選手のおすすめ育成&過去版比較紹介！",
+        "title_verified_by_direct_youtube_page_fetch": true,
+        "source_retrieval_scope": "Open Graph title e descrição apenas. Não foram extraídos frames nem timestamps.",
+        "official_pack_roster_reference": "https://game8.jp/efootball/821684",
+        "pack_players_include_this_card": true,
+        "individual_frame_reviewed": false,
+        "exact_id_verified_in_frame": false,
+        "training_distribution_verified_in_frame": false,
+        "conclusion": "Vídeo documental correspondente ao pacote (fonte forte), não gameplay/treino individual certificado."
+      }
     }
   ],
   "policies": {
@@ -200,5 +277,13 @@
     "no_changes_to_gameplay_builds": true,
     "no_overall_optimization": true,
     "require_user_card_screenshot_for_version_specific_disputes": true
+  },
+  "research_update_v173": {
+    "date": "2026-10-14",
+    "scope": "PP de Standard versus outras versões do mesmo jogador e confirmação de metadados do vídeo coletivo",
+    "changed_card_values": false,
+    "changed_original_gameplay": false,
+    "changed_video_official_catalogue": false,
+    "source_count": 6
   }
 }
