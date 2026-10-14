@@ -62,7 +62,7 @@ assert(html.includes('id="pitch"')&&html.includes('id="bench"')&&html.includes('
 assert(html.includes('meta name="viewport"')&&html.includes('@media(max-width:520px)'));
 assert(js.includes("localStorage.setItem(STORAGE_KEY")&&js.includes("plan.starter_slots.length!==11"));
 assert(js.includes("new Set(Object.values(vals)).size===11")&&js.includes('already'));
-assert(js.includes('canPick(')&&js.includes("show-all"));
+assert(js.includes('canPick(')&&js.includes("show-all")&&js.includes('A carta #'));
 assert(!js.includes('fetch("http'));
 assert(index.includes('href="meu-time-posse-4312.html"'));
 for(const f of ['meu-time-posse-4312.html','meu-time-posse-4312.js','SCOUT_V176_POSSE_4312.json','SCOUT_V69_AUDITORIA.json'])
