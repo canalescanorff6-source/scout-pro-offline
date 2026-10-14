@@ -4,7 +4,7 @@
   "summary": {
     "micro_pro": 73,
     "with_pp": 246,
-    "native_skills": 235,
+    "native_skills": 237,
     "processed": 246,
     "with_stats": 14,
     "no_pp": 0,
@@ -9107,11 +9107,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "One-touch Pass; Through Passing; Weighted Pass; Phenomenal Pass; Low Lofted Pass; Man Marking; Interception; Blocker; Aerial Superiority; Sliding Tackle",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
@@ -9125,6 +9125,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/232_Aymeric_Laporte.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/aymeric-laporte-106799193700770",
+        "card_id_externo_elegivel": "106799193700770",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {
@@ -9142,11 +9150,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Marseille Turn; Chop Turn; Scotch Move; Long-range Curler; Pinpoint Crossing; Gamesmanship",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
@@ -9160,6 +9168,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/233_Nicola_Zalewski.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/nicola-zalewski-105833094587644",
+        "card_id_externo_elegivel": "105833094587644",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {

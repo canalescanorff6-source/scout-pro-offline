@@ -5,9 +5,9 @@
   "method": "Somente quando arte/posição/OVR-base/PP/pacote/nome coincidirem ou Card ID e edição exatos. Nunca importar por nome apenas. Se faltam identificadores, marcar pendente e preservar original.",
   "total_cards": 246,
   "known_before": 219,
-  "added": 16,
-  "known_after": 235,
-  "pending": 11,
+  "added": 18,
+  "known_after": 237,
+  "pending": 9,
   "matched_entries": [
     {
       "cap": 226,
@@ -160,6 +160,68 @@
         "GK High Punt",
         "GK Long Throw",
         "GK Penalty Saver"
+      ]
+    },
+    {
+      "cap": 232,
+      "name": "Aymeric Laporte",
+      "pos": "ZC",
+      "pp": 60,
+      "source_id": "106799193700770",
+      "source_url": "https://pesdb.net/efootball/players/aymeric-laporte-106799193700770",
+      "second_url": "https://efootball-world.com/player/106799193700770",
+      "edition": "Show Time — International Match Campaign Sep '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição ZC / CB",
+        "seleção Espanha",
+        "OVR base 85",
+        "60 PP",
+        "ícone ímpeto embutido azul na arte",
+        "edição Show Time Sep 2026"
+      ],
+      "skills": [
+        "One-touch Pass",
+        "Through Passing",
+        "Weighted Pass",
+        "Phenomenal Pass",
+        "Low Lofted Pass",
+        "Man Marking",
+        "Interception",
+        "Blocker",
+        "Aerial Superiority",
+        "Sliding Tackle"
+      ]
+    },
+    {
+      "cap": 233,
+      "name": "Nicola Zalewski",
+      "pos": "MLE",
+      "pp": 70,
+      "source_id": "105833094587644",
+      "source_url": "https://pesdb.net/efootball/players/nicola-zalewski-105833094587644",
+      "second_url": "https://efhub.com/players/105833094587644",
+      "edition": "Highlight — National Teams Selection Midfielders 30 Mar '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição MLE / LMF",
+        "seleção Polônia",
+        "OVR base 81",
+        "70 PP",
+        "segundo site externo com mesmo ID e estilo"
+      ],
+      "skills": [
+        "Double Touch",
+        "Marseille Turn",
+        "Chop Turn",
+        "Scotch Move",
+        "Long-range Curler",
+        "Pinpoint Crossing",
+        "Gamesmanship"
       ]
     },
     {
@@ -590,20 +652,6 @@
     {
       "cap": 228,
       "name": "Murilo",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 232,
-      "name": "Aymeric Laporte",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
-    },
-    {
-      "cap": 233,
-      "name": "Nicola Zalewski",
       "card_id_registered": "PENDENTE — não inferido",
       "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
       "status": "pendente_de_identificacao"
