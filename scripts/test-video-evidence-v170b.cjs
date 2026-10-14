@@ -41,10 +41,16 @@ for (const c of supplement.priority_cards) {
   assert(main && main.videos.length===0 && main.estado==='pendente', 'CAP candidata promovida indevidamente '+c.cap);
 }
 const byId = new Map(videos.cards.map(c=>[c.numero,c]));
-const endrick = byId.get(36);
-assert.equal(endrick.card_id, supplement.additional_conflicts[0].id);
-assert.equal(endrick.edicao, supplement.additional_conflicts[0].local_label);
-assert.match(supplement.additional_conflicts[0].external_label, /Show Time/);
+assert.deepEqual(supplement.additional_conflicts.map(x=>x.cap).sort((a,b)=>a-b), [23,36,79]);
+for(const finding of supplement.additional_conflicts) {
+  const original=byId.get(finding.cap);
+  assert(original, 'Carta conflitante ausente '+finding.cap);
+  assert.equal(original.card_id,finding.id);
+  assert.equal(original.edicao,finding.local_label);
+  assert.match(finding.external_label,/Show Time/);
+  assert.match(finding.source,/^https:\/\/pesdb\.net\/efootball\/players\//);
+  assert.equal(finding.status,'CONFIRMED_EXTERNAL_LABEL_MISMATCH_NOT_APPLIED');
+}
 const bentancur = cards.cartas.find(c=>c.numero===120);
 assert.equal(bentancur.pp, supplement.priority_cards.find(c=>c.cap===120).catalogue_pp_budget);
 const kakita = cards.cartas.find(c=>c.numero===234);
