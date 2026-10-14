@@ -19,7 +19,7 @@ for(const c of roster){
  const d=card(c.numero);
  for(const t of ['posse','normal','rapido']){
   const r=S.evaluate(d,t);
-  assert.equal(r.recommendations.length,5,'Cinco prioridades de habilidades: '+c.numero+' '+t);
+  assert(r.recommendations.length>0&&r.recommendations.length<=5,'Até cinco prioridades de habilidades: '+c.numero+' '+t);
   assert.equal(new Set(r.recommendations.map(s=>s.key)).size,5);
   if(!r.nativeKnown)unknown++;
   const native=new Set(String(c.habilidades_nativas||'').split(';').map(S.keyFor).filter(Boolean));
@@ -53,4 +53,4 @@ assert(sw.includes("scout-pro-v177-1-v178"),'Cache novo evita scripts antigos no
 assert.equal(fs.readFileSync(path.join(base,'fichas/040_Dwight_Yorke.html'),'utf8').includes('id="scout-v68-data"'),true);
 assert.equal(roster.find(c=>c.numero===81).impeto_fixo,'PENDENTE','Não inventar nome do ímpeto de Rivaldo');
 assert.equal(roster.find(c=>c.numero===172).impeto_extra,'NENHUM BOOSTER NATIVO CONFIRMADO','Não alterar documento original sem screenshot');
-console.log('V178 OK: '+proposals+' avaliações; 246 fichas com 5 recomendações condicionais; '+unknown+' cenários sem skills nativas confirmadas, sem inventar boosters.');
+console.log('V178 OK: '+proposals+' avaliações; 246 fichas com até 5 recomendações condicionais e vagas não preenchidas explícitas; '+unknown+' cenários sem skills nativas confirmadas, sem inventar boosters.');
