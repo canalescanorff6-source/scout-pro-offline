@@ -20,7 +20,7 @@ for(const c of roster){
  for(const t of ['posse','normal','rapido']){
   const r=S.evaluate(d,t);
   assert(r.recommendations.length>0&&r.recommendations.length<=5,'Até cinco prioridades de habilidades: '+c.numero+' '+t);
-  assert.equal(new Set(r.recommendations.map(s=>s.key)).size,5);
+  assert.equal(new Set(r.recommendations.map(s=>s.key)).size,r.recommendations.length,'Sem habilidades duplicadas');
   if(!r.nativeKnown)unknown++;
   const native=new Set(String(c.habilidades_nativas||'').split(';').map(S.keyFor).filter(Boolean));
   for(const skill of r.recommendations)assert(!native.has(skill.key),'Duplicou nativa: '+c.numero+' '+skill.name);
