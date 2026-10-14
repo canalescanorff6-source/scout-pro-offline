@@ -4,7 +4,7 @@
   "summary": {
     "micro_pro": 73,
     "with_pp": 246,
-    "native_skills": 234,
+    "native_skills": 235,
     "processed": 246,
     "with_stats": 14,
     "no_pp": 0,
@@ -9642,11 +9642,11 @@
       "niveis": null,
       "impeto_fixo": "PENDENTE — não confirmado",
       "impeto_extra": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Double Touch; Flip Flap; Chop Turn; Cut Behind & Turn; Sole Control; Long-range Curler; Long-range Shooting; Pinpoint Crossing; Outside Curler; Penalty Specialist",
       "adicionais_candidatas": [],
       "pendencias": [
         "Card ID exato da edição",
-        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/245_Justin_Kluivert.html",
@@ -9659,6 +9659,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/245_Justin_Kluivert.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_sem_id_na_conta",
+        "fonte": "pesdb.net",
+        "url": "https://pesdb.net/efootball/players/justin-kluivert-105832826126493",
+        "card_id_externo_elegivel": "105832826126493",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-14"
       }
     },
     {

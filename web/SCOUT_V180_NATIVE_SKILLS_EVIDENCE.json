@@ -5,9 +5,9 @@
   "method": "Somente quando arte/posição/OVR-base/PP/pacote/nome coincidirem ou Card ID e edição exatos. Nunca importar por nome apenas. Se faltam identificadores, marcar pendente e preservar original.",
   "total_cards": 246,
   "known_before": 219,
-  "added": 15,
-  "known_after": 234,
-  "pending": 12,
+  "added": 16,
+  "known_after": 235,
+  "pending": 11,
   "matched_entries": [
     {
       "cap": 226,
@@ -479,6 +479,39 @@
         "Sliding Tackle",
         "Acrobatic Clearance"
       ]
+    },
+    {
+      "cap": 245,
+      "name": "Justin Kluivert",
+      "pos": "MAT",
+      "pp": 64,
+      "source_id": "105832826126493",
+      "source_url": "https://pesdb.net/efootball/players/justin-kluivert-105832826126493",
+      "second_url": "https://boooost.jp/efootball-justin-kluivert-national-teams-selection-attackers-23-mar-26/",
+      "edition": "Highlight — National Teams Selection Attackers 23 Mar '26",
+      "status": "coincidencia_externa_multifatorial",
+      "card_id_confirmado_na_conta": false,
+      "matching_factors": [
+        "nome",
+        "posição MAT / AMF",
+        "Holanda 19",
+        "OVR base 81",
+        "64 PP",
+        "seleção Netherlands e pacote National Teams Selection Attackers",
+        "segunda base externa concorda em edição, data, overall e estilo"
+      ],
+      "skills": [
+        "Double Touch",
+        "Flip Flap",
+        "Chop Turn",
+        "Cut Behind & Turn",
+        "Sole Control",
+        "Long-range Curler",
+        "Long-range Shooting",
+        "Pinpoint Crossing",
+        "Outside Curler",
+        "Penalty Specialist"
+      ]
     }
   ],
   "investigations": [
@@ -587,13 +620,6 @@
         "https://pesdb.net/efootball/players/samuel-eto-o-88045755827674"
       ],
       "additional_evidence": "Fontes Inter 09-10/10-11 divergem em posição, OVR e PP da carta informada. Não migrar habilidades sem identificar edição."
-    },
-    {
-      "cap": 245,
-      "name": "Justin Kluivert",
-      "card_id_registered": "PENDENTE — não inferido",
-      "edition_registered": "PENDENTE — não inventar sem Card ID/tela de versão",
-      "status": "pendente_de_identificacao"
     },
     {
       "cap": 246,
