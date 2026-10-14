@@ -21,8 +21,12 @@ const style=document.createElement('style');style.textContent=`
 `;document.head.appendChild(style);
 const nav=document.createElement('nav');nav.id='scout-card-navigator';nav.setAttribute('aria-label','Navegar entre fichas');
 nav.innerHTML='<span class="scout-nav-count">Carta '+String(current).padStart(3,'0')+' de 246</span><button type="button" data-move="-1" aria-label="Carta anterior">← Anterior</button><button type="button" id="scout-card-jump">⌕ Ir para carta</button><button type="button" data-move="1" aria-label="Próxima carta">Próxima →</button>';
-const anchor=document.querySelector('.breadcrumbs')||document.querySelector('.profile')||document.querySelector('main');
-if(anchor?.parentElement)anchor.insertAdjacentElement('afterend',nav);else document.body.prepend(nav);
+const cardContent=document.querySelector('.profile-content');
+const mobileProfile=cardContent?.querySelector('.mobile-profile');
+// Sempre dentro da ficha aberta: após a arte no Android e no topo da coluna da ficha no Windows.
+if(mobileProfile)mobileProfile.insertAdjacentElement('afterend',nav);
+else if(cardContent)cardContent.prepend(nav);
+else (document.querySelector('main')||document.body).prepend(nav);
 const overlay=document.createElement('div');overlay.id='scout-card-search';overlay.hidden=true;
 overlay.innerHTML='<section class="scout-search-panel" role="dialog" aria-modal="true" aria-label="Escolher carta"><div class="scout-search-top"><strong>Ir para uma carta</strong><button type="button" id="scout-search-close">✕ Fechar</button></div><input type="search" id="scout-search-input" placeholder="Nome ou número (ex.: 050, Messi)" aria-label="Buscar carta"/><div class="scout-results" id="scout-search-results" aria-live="polite"></div></section>';
 document.body.appendChild(overlay);
