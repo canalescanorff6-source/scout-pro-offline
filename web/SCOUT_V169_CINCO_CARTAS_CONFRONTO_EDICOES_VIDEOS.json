@@ -18,7 +18,9 @@
     "title": "BEST FREE SHOWTIME MESSI | WELCOME TO eFOOTBALL 2027",
     "reason": "título/descrição explícitos Welcome to eFootball 2027; não verificado card id ou treinamento em quadro",
     "already_checked_for_duplicates": true,
-    "exact_card_verified": false
+    "exact_card_verified": false,
+    "cap": 50,
+    "card_status": "CANDIDATO_SHOWTIME_WELCOME_2027_SEM_CARD_ID_VALIDADO"
   },
   "missing_video_cases": [
     {
