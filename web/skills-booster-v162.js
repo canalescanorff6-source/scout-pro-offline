@@ -1,0 +1,149 @@
+/* Scout PRO V162 — sugestões competitivas por edição/função, não confirmação de equipamento. */
+(function(host){
+'use strict';
+const ENTRIES=[
+ ['onepass','Passe de primeira',['One-touch Pass','One Touch Pass','Passe de primeira'],'Acelera tabelas e devoluções curtas.'],
+ ['through','Passe em profundidade',['Through Passing','Passe em profundidade','Passe a rasgar'],'Melhora a opção de passe para a infiltração pelo centro.'],
+ ['double','Toque duplo',['Double Touch','Toque duplo'],'Amplia as saídas curtas do marcador com a bola dominada.'],
+ ['sole','Controle com a sola',['Sole Control','Controle com a sola'],'Facilita recepção e giro sob pressão.'],
+ ['heel','Passe de calcanhar',['Heel Trick','Toque de calcanhar','Passe de calcanhar'],'Oferece devoluções rápidas quando o corpo não está de frente.'],
+ ['weighted','Passe ponderado',['Weighted Pass','Passe ponderado'],'Dá opção de passe com peso controlado em transições e apoio.'],
+ ['fighting','Espírito guerreiro',['Fighting Spirit','Espírito guerreiro'],'Ajuda a manter ações competitivas sob pressão e cansaço.'],
+ ['intercept','Interceptação',['Interception','Interceptação'],'Fortalece a leitura e o corte de linhas de passe.'],
+ ['blocker','Bloqueador',['Blocker','Bloqueador'],'Apoia bloqueios de passes e finalizações em cobertura.'],
+ ['mark','Marcação individual',['Man Marking','Marcação individual'],'Apoia acompanhamento defensivo quando a função exigir.'],
+ ['aerial','Superioridade aérea',['Aerial Superiority','Superioridade aérea'],'Aumenta recursos nos duelos aéreos.'],
+ ['heading','Cabeceio',['Heading','Cabeceio'],'Melhora o recurso de cabeceio para atacantes que recebem bola alta.'],
+ ['firstshot','Finalização de primeira',['First-time Shot','First Time Shot','Finalização de primeira'],'Permite finalizar mais rapidamente após a tabela.'],
+ ['acrobatic','Finalização acrobática',['Acrobatic Finishing','Finalização acrobática'],'Oferece finalizações em posições difíceis dentro da área.'],
+ ['longshot','Chute de longa distância',['Long-range Shooting','Long Range Shooting','Long-Range Shooting','Finalização de longa distância','Chute de longa distância'],'Cria alternativa quando a defesa fecha a área.'],
+ ['curler','Chute colocado de longa distância',['Long-range Curler','Long-Range Curler','Chute colocado de longa distância'],'Oferece curva em finalizações de média e longa distância.'],
+ ['trackback','Recuar para marcar',['Track Back','Track-back','Recuar para marcar'],'Ajuda o jogador ofensivo a recompor quando perde a bola.'],
+ ['sliding','Carrinho',['Sliding Tackle','Carrinho'],'Amplia alternativa de desarme com cuidado para não cometer faltas.'],
+ ['clear','Corte acrobático',['Acrobatic Clearance','Corte acrobático'],'Ajuda a afastar bolas difíceis em situações defensivas.'],
+ ['lowloft','Passe aéreo baixo',['Low Lofted Pass','Passe meio levantado','Passe aéreo baixo'],'Oferece uma saída aérea mais rápida quando o passe curto é bloqueado.'],
+ ['cutturn','Corte para trás e giro',['Cut Behind & Turn','Cut Behind Turn','Cut Behind And Turn','Puxada de letra'],'Recurso de giro curto para escapar da marcação.'],
+ ['gklow','Lançamento rasteiro de goleiro',['GK Low Punt','Lançamento rasteiro de goleiro'],'Ajuda a repor a bola rapidamente em zonas mais baixas.'],
+ ['gkhigh','Lançamento alto de goleiro',['GK High Punt','Lançamento alto de goleiro'],'Amplia a reposição com os pés quando o passe curto não é seguro.'],
+ ['gklong','Lançamento longo de goleiro',['GK Long Throw','Lançamento longo de goleiro'],'Permite iniciar jogadas com lançamentos manuais longos.'],
+ ['gkpenalty','Defesa de pênalti',['GK Penalty Saver','Defesa de pênalti'],'Adiciona recurso nas cobranças de pênalti.'],
+ ['captain','Capitão',['Captaincy','Liderança','Capitão'],'Contribui com o papel de liderança da equipe.'],
+ ['supersub','Super reserva',['Super Sub','Super-sub','Super reserva'],'Alternativa para quem normalmente entra na segunda etapa.']
+];
+const SKILLS=Object.fromEntries(ENTRIES.map(x=>[x[0],Object.freeze({key:x[0],name:x[1],aliases:x[2],why:x[3]})]));
+const normal=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+const aliasMap=new Map;
+for(const e of ENTRIES)for(const alias of [e[1],...e[2]])aliasMap.set(normal(alias),e[0]);
+const keyFor=s=>aliasMap.get(normal(s))||'';
+const splitSkills=s=>Array.isArray(s)?s:String(s||'').split(/[;\n,]+/).map(x=>x.trim()).filter(Boolean);
+const POSITION={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',ZG:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA'};
+const POOLS={
+ CA:['firstshot','onepass','through','sole','heel','acrobatic','longshot','fighting','heading','aerial','double','curler','supersub','weighted'],
+ SA:['onepass','through','double','sole','firstshot','heel','longshot','fighting','curler','weighted','cutturn','acrobatic','trackback','supersub'],
+ MAT:['onepass','through','sole','double','heel','weighted','fighting','longshot','curler','cutturn','firstshot','intercept','trackback'],
+ MLG:['onepass','through','weighted','sole','intercept','fighting','double','heel','blocker','mark','lowloft','cutturn','longshot','trackback'],
+ VOL:['intercept','blocker','onepass','through','fighting','mark','aerial','weighted','sliding','clear','sole','lowloft','heading'],
+ ZG:['blocker','intercept','mark','aerial','fighting','onepass','clear','heading','sliding','weighted','through','sole','lowloft'],
+ LD:['intercept','blocker','onepass','fighting','mark','aerial','through','sliding','weighted','sole','clear','trackback','lowloft'],
+ LE:['intercept','blocker','onepass','fighting','mark','aerial','through','sliding','weighted','sole','clear','trackback','lowloft'],
+ ALA:['double','sole','onepass','through','fighting','heel','firstshot','cutturn','longshot','trackback','weighted','curler','supersub'],
+ GO:['gklow','gklong','gkhigh','gkpenalty','fighting','captain','weighted','lowloft','onepass']
+};
+function roleOf(d){return POSITION[d.shown_position]||POSITION[d.role_used]||POSITION[d.posicao]||null}
+function evaluate(d,tactic,manualEquipped){
+ if(!['posse','normal','rapido'].includes(tactic))throw Error('Tática inválida');
+ const role=roleOf(d);if(!role)return {role:null,recommendations:[],nativeKnown:false,missing:['Posição da carta não cadastrada']};
+ const native=splitSkills(d.native_skills||d.habilidades_nativas);
+ const nativeKnown=Boolean(native.length);
+ const equipped=splitSkills(manualEquipped);
+ const used=new Set([...native,...equipped].map(keyFor).filter(Boolean));
+ const previous=splitSkills(d.additional_candidates||d.adicionais_candidatas);
+ const prevSet=new Set(previous.map(keyFor).filter(Boolean));
+ const style=normal([d.playing_style,d.attack_style,d.defence_style,d.estilo_ataque,d.estilo_defesa].filter(Boolean).join(' '));
+ const pool=POOLS[role];const scorer=new Map;
+ pool.forEach((key,i)=>scorer.set(key,200-i*10));
+ const bump=(names,amount)=>names.forEach(k=>{if(scorer.has(k))scorer.set(k,scorer.get(k)+amount)});
+ if(tactic==='posse')bump(['onepass','through','sole','double','heel','intercept','blocker'],22);
+ if(tactic==='normal')bump(['intercept','fighting','weighted','blocker','through'],16);
+ if(tactic==='rapido')bump(['through','firstshot','double','longshot','fighting','intercept'],18);
+ if(/pivo|homem de area|target/.test(style))bump(['heading','aerial','onepass','heel'],34);
+ if(/infiltr|puxa marcacao|arrastar defesa|matador|artilheiro|oportunista/.test(style))bump(['firstshot','through','onepass','acrobatic'],18);
+ if(/armador|orquestrador|classico|criativo/.test(style))bump(['onepass','through','weighted','sole','heel'],23);
+ if(/destruidor|primeiro volante|lateral defensivo|defensor criativo/.test(style))bump(['intercept','blocker','mark','onepass'],22);
+ if(/versatil|todo o terreno/.test(style))bump(['fighting','onepass','intercept'],18);
+ if(/goleiro ofensivo/.test(style))bump(['gklow','gklong'],25);
+ for(const key of prevSet)if(scorer.has(key))scorer.set(key,scorer.get(key)+8);
+ const ranked=[...scorer.entries()].filter(([key])=>!used.has(key)).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([key,score])=>({...SKILLS[key],score}));
+ return {role,nativeKnown,knownNative:native.length,alreadyEquippedProvided:equipped.length,recommendations:ranked.slice(0,5),alternatives:ranked.slice(5,8),missing:nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']};
+}
+function booster(d,tactic,engine){
+ const value=String(d.boost2||d.impeto_extra||'');
+ const status=engine?.slotStatus?engine.slotStatus(value):(/^SLOT SELECION[AÁ]VEL/i.test(value)?'selecionavel':'indefinido');
+ const position=d.shown_position||d.role_used||d.posicao;
+ const natural=String(d.boost1||d.impeto_fixo||'').replace(/\s*\+\d+.*/,'').trim();
+ const extra=String(value).replace(/\s*\+\d+.*/,'').trim();
+ const validBooster=s=>engine&&Object.keys(engine.BOOSTERS||{}).find(x=>normal(x)===normal(s));
+ const knownExtra=validBooster(extra);
+ const able=status==='selecionavel'||status==='possivel';
+ const existing=knownExtra||'';
+ let ranked=[];
+ if(engine&&typeof engine.rank==='function'){
+  try{ranked=engine.rank({posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo},tactic).filter(x=>normal(x.nome)!==normal(natural)&&normal(x.nome)!==normal(existing));}catch(e){ranked=[]}
+ }
+ return {status,able,knownExtra:existing,natural,primary:able?ranked[0]||null:null,alternatives:able?ranked.slice(1,3):[],note:able?'Indicação de slot selecionável, mas o ímpeto equipado e a disponibilidade nesta conta ainda precisam de confirmação.':existing?'Já há nome de ímpeto adicional registrado; não recomendo substituição sem verificar o slot e comparar atributos.':'Ainda não há evidência confiável de slot selecionável nesta edição. Não gastar tokens antes de conferir.'};
+}
+const api={SKILLS,ENTRIES,POSITION,POOLS,keyFor,roleOf,evaluate,booster};
+if(typeof module==='object'&&module.exports)module.exports=api;
+if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
+if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;
+const ds=document.getElementById('scout-v68-data');if(!ds)return;
+let d;try{d=JSON.parse(ds.textContent)}catch(e){return}
+const container=document.querySelector('.profile-content');if(!container)return;
+const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const css=document.createElement('style');css.textContent=
+'#scout-v162{border:1px solid #326a85;background:linear-gradient(150deg,#102b40,#0e2132);border-radius:18px;padding:18px;margin:16px 0 20px;color:#e9f5ff;scroll-margin-top:15px}'+
+'#scout-v162 h2{margin:4px 0 8px;font-size:clamp(18px,3vw,24px)}#scout-v162 p{font-size:13px;line-height:1.55;margin:7px 0}'+
+'#scout-v162 .v162-meta{font-size:11px;letter-spacing:.08em;color:#a6d9e8;font-weight:800}'+
+'#scout-v162 .v162-modes{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}'+
+'#scout-v162 button{background:#1a475f;border:1px solid #4c819a;border-radius:9px;color:white;cursor:pointer;min-height:42px;padding:8px 12px;font-size:13px;font-weight:700}'+
+'#scout-v162 button[aria-pressed=true]{background:#0b8b84;border-color:#81e2d4;color:#fff}'+
+'#scout-v162 .v162-list{display:grid;gap:8px;padding:0;list-style:none;margin:12px 0}'+
+'#scout-v162 .v162-list li{border:1px solid #31536b;background:#11293c;border-radius:10px;padding:10px 12px}'+
+'#scout-v162 .v162-list li p{margin:3px 0 0;color:#b7d6e5}'+
+'#scout-v162 .v162-panels{display:grid;grid-template-columns:1fr 1fr;gap:12px}'+
+'#scout-v162 .v162-panel{border:1px solid #33556b;border-radius:12px;padding:12px;background:#0b1e2d;min-width:0}'+
+'#scout-v162 .v162-note{color:#d3caa5}#scout-v162 textarea{box-sizing:border-box;width:100%;min-height:62px;background:#081e2d;border:1px solid #5b829a;border-radius:8px;color:white;font-size:14px;padding:10px}'+
+'#scout-v162 .v162-foot{font-size:12px;color:#b9d3dc;border-top:1px solid #35566a;padding-top:10px;margin-top:12px}'+
+'@media(max-width:750px){#scout-v162 .v162-panels{grid-template-columns:1fr}#scout-v162{padding:12px}}';
+document.head.appendChild(css);
+const section=document.createElement('section');section.id='scout-v162';section.setAttribute('aria-label','Recomendações de habilidades e ímpetos por carta');
+section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA V162</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
+'<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button></div>'+
+'<div class="v162-panels"><article class="v162-panel"><h3>Até 5 habilidades prioritárias</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpeto adicional da edição</h3><div id="v162-booster"></div></article></div>'+
+'<details><summary>Já equipou habilidades nesta carta? Informar para excluir duplicatas</summary><p>Opcional. Separe os nomes por ponto e vírgula. Este registro fica apenas neste dispositivo; não modifica a carta do jogo.</p><textarea id="v162-equipped" aria-label="Habilidades adicionais já equipadas" placeholder="Ex.: Passe de primeira; Toque duplo"></textarea><button id="v162-save" type="button">Salvar e recalcular</button><p id="v162-feedback" aria-live="polite"></p></details>'+
+'<p class="v162-foot">Recomendações teóricas baseadas nas habilidades registradas, no estilo e na função da carta. Não são testes comprovados em partidas; verifique habilidades nativas, compatibilidade e slot antes de usar tokens. Nenhuma escolha é aplicada automaticamente.</p>';
+const after=container.querySelector('#scout-card-navigator')||container.querySelector('.detail-header')||container.querySelector('.mobile-profile');
+if(after)after.insertAdjacentElement('afterend',section);else container.prepend(section);
+const side=document.querySelector('.side-nav');if(side){const link=document.createElement('a');link.href='#scout-v162';link.textContent='★ Habilidades e ímpetos PRO';side.prepend(link)}
+const storage='scoutpro:v162:equipped:'+String(d.capture)+':'+String(d.id||'unknown');
+let extra='';try{extra=localStorage.getItem(storage)||''}catch(e){}
+const ta=section.querySelector('#v162-equipped');ta.value=extra;
+let tactic='posse';
+function draw(){
+ const result=evaluate(d,tactic,extra);const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103);
+ section.querySelectorAll('[data-tactic]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tactic===tactic)));
+ section.querySelector('#v162-skills-status').textContent=result.nativeKnown?'Habilidades nativas cadastradas: '+result.knownNative+'. Recomendações não repetem as documentadas.':'Lista provisória: ainda faltam as habilidades nativas desta edição; confirme antes de adicionar.';
+ const ul=section.querySelector('#v162-skills');ul.replaceChildren();
+ for(const s of result.recommendations){const li=document.createElement('li'),b=document.createElement('strong'),p=document.createElement('p');b.textContent=s.name;p.textContent=s.why;li.append(b,p);ul.appendChild(li)}
+ if(!result.recommendations.length){const li=document.createElement('li');li.textContent='Nenhuma habilidade nova segura para recomendar com os dados disponíveis.';ul.appendChild(li)}
+ section.querySelector('#v162-alts').textContent=result.alternatives.length?'Alternativas: '+result.alternatives.map(x=>x.name).join(' · ')+'.':'Se já possui as habilidades indicadas, confirme no jogo as alternativas elegíveis.';
+ const panel=section.querySelector('#v162-booster');panel.replaceChildren();
+ const title=document.createElement('p');title.style.fontWeight='800';title.textContent=boost.primary?'★ '+boost.primary.nome+' +1':boost.knownExtra?'Já registrado: '+boost.knownExtra:'Slot adicional não confirmado';panel.appendChild(title);
+ if(boost.primary){const why=document.createElement('p');why.textContent=boost.primary.motivo;panel.appendChild(why);const atr=document.createElement('p');atr.textContent='Atributos associados: '+boost.primary.atributos.join(', ')+'.';panel.appendChild(atr);if(boost.alternatives.length){const alt=document.createElement('p');alt.textContent='Alternativas: '+boost.alternatives.map(x=>x.nome).join(' / ')+'.';panel.appendChild(alt)}}
+ const note=document.createElement('p');note.className='v162-note';note.textContent=boost.note;panel.appendChild(note);
+ const jump=document.createElement('a');jump.href='../revisao-impetos-v103.html?c='+Number(d.capture);jump.textContent='Conferir o slot e as alternativas no painel de ímpetos ↗';jump.style.color='#8dd8f7';jump.style.fontWeight='700';panel.appendChild(jump);
+}
+section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',()=>{tactic=b.dataset.tactic;draw()}));
+section.querySelector('#v162-save').addEventListener('click',()=>{extra=ta.value.trim().slice(0,700);try{localStorage.setItem(storage,extra);section.querySelector('#v162-feedback').textContent='Registro salvo neste dispositivo; recomendações recalculadas.'}catch(e){section.querySelector('#v162-feedback').textContent='Sem permissão para salvar neste dispositivo.'}draw()});
+draw();
+})(typeof window!=='undefined'?window:null);
