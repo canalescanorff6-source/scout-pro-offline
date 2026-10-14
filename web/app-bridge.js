@@ -183,7 +183,9 @@ const setAndroidDownload=url=>{
  if(!androidPanel)return;
  const link=androidPanel.querySelector('#scout-android-download');
  const install=androidPanel.querySelector('#scout-android-install');
+ const external=androidPanel.querySelector('#scout-android-external');
  link.hidden=!androidDownload;link.disabled=!androidDownload;
+ external.hidden=!androidDownload;external.disabled=!androidDownload;
  install.hidden=true;install.disabled=true;
  const progress=androidPanel.querySelector('#scout-android-progress');
  if(progress){progress.hidden=true;progress.value=0}
@@ -198,12 +200,13 @@ if(androidPanel){
   +'<p>Versão instalada: <strong id="scout-android-installed"></strong></p>'
   +'<p>Última versão oficial assinada: <strong id="scout-android-newest">Não disponível</strong></p>'
   +'<p id="scout-android-status" role="status">Toque em Verificar atualização para consultar o GitHub.</p>'
-  +'<p class="scout-update-help">O arquivo oficial é baixado e conferido dentro do app (SHA256), sem Chrome. O Android solicitará confirmação da instalação. Se o APK anterior tiver assinatura diferente, não será possível instalar por cima: salve um backup antes de qualquer migração.</p>'
+  +'<p class="scout-update-help">O arquivo oficial é baixado e conferido dentro do app (SHA256), sem Chrome. O Android solicitará confirmação da instalação. Se o APK anterior tiver assinatura diferente, não será possível instalar por cima: salve um backup antes de qualquer migração. Se aparecer “Problema ao analisar o pacote”, use a alternativa de baixar a mesma versão pelo navegador — nunca desinstale sem backup.</p>'
   +'<progress id="scout-android-progress" max="100" value="0" hidden aria-label="Progresso do download do APK"></progress>'
   +'<p id="scout-android-percent" aria-live="polite"></p>'
   +'<div class="scout-update-actions"><button id="scout-android-check" type="button">Verificar atualização</button>'
   +'<button id="scout-android-download" type="button" hidden disabled>Baixar APK oficial no app</button>'
   +'<button id="scout-android-install" type="button" hidden disabled>Instalar APK baixado</button>'
+  +'<button id="scout-android-external" type="button" hidden disabled>Alternativa: baixar no navegador</button>'
   +'<button id="scout-android-backup" type="button">Fazer backup</button>'
   +'<button id="scout-android-close" type="button">Fechar</button></div>';
  document.body.appendChild(androidPanel);
@@ -221,6 +224,12 @@ if(androidPanel){
  androidPanel.querySelector('#scout-android-check').onclick=()=>onlineUpdate(false);
  const installBtn=androidPanel.querySelector('#scout-android-install');
  const downloadBtn=androidPanel.querySelector('#scout-android-download');
+ const externalBtn=androidPanel.querySelector('#scout-android-external');
+ externalBtn.onclick=()=>{
+  if(!androidDownload)return;
+  showAndroidStatus('Abrindo o APK oficial no navegador para instalação manual. Não desinstale o Scout PRO; faça backup antes de qualquer migração.');
+  openReleaseLink(androidDownload).catch(e=>showAndroidStatus('Não foi possível abrir o APK oficial: '+(e.message||String(e))));
+ };
  const progress=androidPanel.querySelector('#scout-android-progress');
  const percentage=androidPanel.querySelector('#scout-android-percent');
  try{
@@ -251,7 +260,7 @@ if(androidPanel){
    }
    if(result.status==='version_not_newer'){showAndroidStatus('O APK baixado não é superior à versão já instalada. Nenhuma alteração foi feita.');return;}
    if(result.status==='permission_required'){showAndroidStatus('O Android abriu a permissão “Instalar apps desconhecidos”. Autorize apenas o Scout PRO, volte ao app e toque Instalar APK baixado.');return;}
-   if(result.status==='installer_opened'){showAndroidStatus('Pacote validado. Confirme a instalação/atualização na tela oficial do Android. Seus dados serão mantidos se a atualização for aceita.');return;}
+   if(result.status==='installer_opened'){showAndroidStatus('Instalador do Android aberto com o APK verificado. Se aparecer erro de análise do pacote, volte e use “Alternativa: baixar no navegador”. Nenhuma instalação foi confirmada pelo aplicativo.');return;}
    showAndroidStatus('Estado de instalação: '+String(result.status||'indisponível'));
   }catch(e){showAndroidStatus('Instalação não iniciada: '+(e.message||String(e)));}
  }

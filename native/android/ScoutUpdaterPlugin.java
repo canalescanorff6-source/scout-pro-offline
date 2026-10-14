@@ -1,11 +1,14 @@
 package br.com.scoutpro.offline;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.provider.Settings;
 import androidx.core.content.FileProvider;
 import com.getcapacitor.JSObject;
@@ -191,12 +194,41 @@ public class ScoutUpdaterPlugin extends Plugin {
                 settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);getContext().startActivity(settings);
                 output.put("status","permission_required");call.resolve(output);return;
             }
+            // V166: o hash e as assinaturas foram verificados; confirmar também que
+            // o FileProvider consegue abrir os mesmos bytes que o instalador receberá.
             Uri uri=FileProvider.getUriForFile(getContext(),getContext().getPackageName()+".scoutupdate.files",apk);
-            Intent install=new Intent(Intent.ACTION_VIEW);
-            install.setDataAndType(uri,"application/vnd.android.package-archive");
+            try(ParcelFileDescriptor fd=getContext().getContentResolver().openFileDescriptor(uri,"r")){
+                if(fd==null)throw new IOException("URI privada indisponível para o instalador");
+                long readable=fd.getStatSize();
+                if(readable>=0&&readable!=apk.length())
+                    throw new IOException("Tamanho da URI diferente do APK verificado");
+            }
+            // ACTION_VIEW puro com URI privada pode exibir "Problema ao analisar pacote"
+            // em instaladores que não propagam o grant até o parser de APK.
+            // ClipData + ACTION_INSTALL_PACKAGE transferem explicitamente a leitura.
+            Intent install=new Intent(Intent.ACTION_INSTALL_PACKAGE);
+            install.setData(uri);
+            install.setClipData(ClipData.newUri(getContext().getContentResolver(),APK_NAME,uri));
             install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            getContext().startActivity(install);
-            output.put("status","installer_opened");call.resolve(output);
+            // Alguns instaladores OEM abrem um componente secundário. Se ele estiver
+            // visível ao PackageManager, conceder a permissão também ao pacote alvo.
+            for(ResolveInfo handler:pm.queryIntentActivities(install,PackageManager.MATCH_DEFAULT_ONLY)){
+                if(handler.activityInfo!=null&&handler.activityInfo.packageName!=null)
+                    getContext().grantUriPermission(handler.activityInfo.packageName,uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+            try{
+                getContext().startActivity(install);
+            }catch(android.content.ActivityNotFoundException noInstaller){
+                // Compatibilidade com ROMs que só anunciam VIEW de application/vnd.android.package-archive.
+                Intent fallback=new Intent(Intent.ACTION_VIEW);
+                fallback.setDataAndType(uri,"application/vnd.android.package-archive");
+                fallback.setClipData(ClipData.newUri(getContext().getContentResolver(),APK_NAME,uri));
+                fallback.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                getContext().startActivity(fallback);
+            }
+            output.put("status","installer_opened");
+            output.put("delivery","content_uri_with_read_grant");
+            call.resolve(output);
         }catch(Exception e){call.reject("Não foi possível iniciar a instalação: "+e.getMessage());}
     }
 }

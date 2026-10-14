@@ -199,6 +199,19 @@ jobs:
           "$APKSIGNER" verify --verbose release-out/ScoutPRO-Android.apk
           (cd release-out && sha256sum ScoutPRO-Android.apk > ScoutPRO-Android.apk.sha256)
           rm -f release-out/scout-aligned.apk
+      - name: Verificar estrutura instalável do APK oficial
+        if: steps.keys.outputs.signed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="release-out/ScoutPRO-Android.apk"
+          test -s "$APK"
+          unzip -t "$APK" >/dev/null
+          AAPT="$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1)"
+          test -x "$AAPT" || { echo 'AAPT não encontrado' >&2; exit 1; }
+          "$AAPT" dump badging "$APK" > /tmp/scout-apk-badging.txt
+          grep -Fq "package: name='br.com.scoutpro.offline' versionCode='${{ github.run_number }}' versionName='1.1.${{ github.run_number }}'" /tmp/scout-apk-badging.txt
+          echo "Pacote oficial legível por aapt: identificador e versão confirmados."
       - name: Arquivar APK de teste
         uses: actions/upload-artifact@v4
         with:
