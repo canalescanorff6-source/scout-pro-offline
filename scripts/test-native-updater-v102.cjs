@@ -25,7 +25,21 @@ for(const word of [
  'Intent.FLAG_GRANT_READ_URI_PERMISSION',
  'Installer' .slice(0,0) // empty string harmless
 ])assert(java.includes(word),'Missing native safety property: '+word);
-assert(java.includes('ACTION_VIEW'),'Must request system confirmation');
+// V166: o problema de leitura do URI não é coberto apenas pelo hash do download.
+for(const safety of [
+ 'Intent.ACTION_INSTALL_PACKAGE',
+ 'ClipData.newUri',
+ 'install.setClipData(',
+ 'Intent.FLAG_GRANT_READ_URI_PERMISSION',
+ 'getContext().grantUriPermission(',
+ 'getContentResolver().openFileDescriptor(uri,"r")',
+ 'fd.getStatSize()',
+ 'getContext().startActivity(install)',
+ 'ActivityNotFoundException',
+ 'fallback.setClipData('
+])assert(java.includes(safety),'V166: o instalador precisa receber APK por URI legível: '+safety);
+assert(java.indexOf('install.setClipData(')<java.indexOf('getContext().startActivity(install)'));
+assert(java.includes('ACTION_VIEW'),'Must retain OEM compatibility fallback');
 assert(!java.includes('ACTION_DELETE'),'Cannot silently uninstall existing user app');
 assert(!java.includes('ACTION_UNINSTALL_PACKAGE'),'Migration requires explicit user backup');
 assert(!java.includes('deletePackage'),'App should never delete an installation');
@@ -51,6 +65,8 @@ for(const s of [
  'scout-android-progress',
  'scout-android-install',
  'Baixar APK oficial no app',
+ 'scout-android-external',
+ 'Alternativa: baixar no navegador',
  'Faça backup'
 ])assert(bridge.includes(s),'UI native update step missing '+s);
 assert(!bridge.includes('await openReleaseLink(androidDownload)'),'Android must not jump to Chrome for APK download');
