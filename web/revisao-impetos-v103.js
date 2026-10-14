@@ -22,7 +22,13 @@ $('player-name').textContent='#'+c.numero+' · '+c.nome;
 $('identity').textContent='Card ID: '+c.card_id+' · Posição: '+c.posicao+' · Estilo: '+c.estilo_ataque;
 $('fixed').textContent='Ímpeto nativo registrado: '+c.impeto_fixo;
 $('extra').textContent='Segundo ímpeto no banco: '+c.impeto_extra;
-$('evidence').textContent=statusText(c);
+const reports={
+ 24:'Relato do usuário: Cristiano Ronaldo Big Time com dois ímpetos embutidos, sem edição.',
+ 81:'Relato do usuário: Rivaldo Big Time com um ímpeto fixo. O nome está pendente.',
+ 172:'Relato do usuário: Courtois possui um slot opcional. O cadastro ainda não comprova a disponibilidade.',
+ 236:"Relato do usuário: Eto'o possui ímpeto fixo + slot selecionável; nomes aguardam identificação."
+};
+$('evidence').textContent=statusText(c)+(reports[c.numero]?' '+reports[c.numero]:'');
 const saved=read(c);
 const realStatus=({pendente:'Não conferido',vazio:'CONFIRMADO VAZIO por você',ocupado:'CONFIRMADO OCUPADO por você',ausente:'Confirmado sem slot por você'})[saved.status]||'Não conferido';
 $('slot-saved').textContent='Estado registrado nesta conta: '+realStatus+(saved.equipped?' · Atual: '+saved.equipped:'')+'.';
@@ -45,7 +51,9 @@ $('comparison').textContent=!hasEvidence?
  saved.status==='vazio'?
  'Você confirmou um slot vazio. Compare os atributos finais, o técnico e a função antes de escolher '+recommendations[0].nome+'.' :
  'Você confirmou slot ocupado ('+equippedName+'). A recomendação é uma ALTERNATIVA DE TESTE, não autorização para substituir. Compare os quatro atributos e mantenha o atual se já atender melhor à build.';
-$('choose-posse').disabled=saved.status==='ausente';
+$('choose-posse').disabled=saved.status==='ausente'||c.status_slot_fonte==='nome_registrado';
+$('planned').disabled=c.status_slot_fonte==='nome_registrado';
+if(c.status_slot_fonte==='nome_registrado')$('comparison').textContent='Já existe segundo ímpeto nomeado. Não presuma que ele seja selecionável ou substituível. Confira a edição na tela do jogo.';
 $('feedback').textContent=saved.updated?'Verificação salva neste dispositivo.':'Ainda sem verificação local deste slot.';
 }
 function applyFilter(){

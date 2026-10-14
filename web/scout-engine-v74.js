@@ -46,7 +46,7 @@ if(!verifiedID)missing.push('Card ID da edição');
 if(pp===null)missing.push('PP e nível máximo');
 if(!native.length)missing.push('habilidades nativas e adicionais');
 if(!d.base_stats_known)missing.push('atributos-base');
-const hasBoost=x=>typeof x==='string'&&!/pendente|n[aã]o confirmad|n[aã]o exibido|n[aã]o inferido/i.test(x)&&x.trim();
+const hasBoost=x=>typeof x==='string'&&/\S/.test(x)&&!/(pendente|n[aã]o confirmad|n[aã]o exibido|n[aã]o inferido|^slot selecion[aá]vel|^—$)/i.test(x.trim());
 if(!hasBoost(d.boost1))missing.push('primeiro ímpeto');
 if(!hasBoost(d.boost2))missing.push('segundo ímpeto ou existência do slot');
 const rows=Object.entries(plans).map(([k,v])=>'<tr><th>'+escape(k+(k===preferred?' ★':''))+'</th><td>'+cost(v)+' / '+(pp===null?'?':pp)+'</td><td>'+(pp===null?'PP pendente':cost(v)===pp?'Custo conferido':'Conferir orçamento')+'</td></tr>').join('');
