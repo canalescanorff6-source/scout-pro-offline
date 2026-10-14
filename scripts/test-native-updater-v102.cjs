@@ -5,6 +5,15 @@ const java=fs.readFileSync(path.join(root,'native/android/ScoutUpdaterPlugin.jav
 const bridge=fs.readFileSync(path.join(web,'app-bridge.js'),'utf8');
 const installer=fs.readFileSync(path.join(root,'scripts/install-native-updater-v102.cjs'),'utf8');
 const pkg=JSON.parse(fs.readFileSync(path.join(root,'capacitor.config.json'),'utf8'));
+const provider=fs.readFileSync(path.join(root,'native/android/ScoutUpdateFileProvider.java'),'utf8');
+assert.match(provider,/class ScoutUpdateFileProvider extends FileProvider/,'Provider exclusivo ausente');
+assert(!/class ScoutUpdaterPlugin extends FileProvider/.test(java),'O plugin não é o FileProvider');
+assert(installer.includes("native/android/ScoutUpdateFileProvider.java"),'Provider exclusivo precisa ser copiado para o projeto Android');
+assert(installer.includes("PROVIDER_CLASS=app.appId+'.ScoutUpdateFileProvider'"),'Classe de provider distinta ausente');
+assert(installer.includes("PROVIDER_AUTHORITY=app.appId+'.scoutupdate.files'"),'Autoridade de provider customizado ausente');
+assert(!installer.includes('android:name="androidx.core.content.FileProvider"'),'Nunca registrar duas instâncias diretas do provider do Capacitor');
+assert(java.includes('getContext().getPackageName()+".scoutupdate.files"'),'Plugin deve usar a mesma autoridade do manifesto');
+
 assert.equal(pkg.appId,'br.com.scoutpro.offline');
 for(const word of [
  '@CapacitorPlugin(name="ScoutUpdater")',
