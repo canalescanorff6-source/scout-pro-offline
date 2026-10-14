@@ -61,7 +61,7 @@ const html=txt('web/meu-time-posse-4312.html'),js=txt('web/meu-time-posse-4312.j
 assert(html.includes('id="pitch"')&&html.includes('id="bench"')&&html.includes('id="picker"')&&html.includes('id="reset-team"'));
 assert(html.includes('meta name="viewport"')&&html.includes('@media(max-width:520px)'));
 assert(js.includes("localStorage.setItem(STORAGE_KEY")&&js.includes("rp.starter_slots.length!==11"));
-assert(js.includes("new Set(Object.values(vals)).size===11")&&js.includes('already'));
+assert(js.includes("new Set(Object.values(vals)).size===11")&&js.includes("A carta #"));
 assert(js.includes('canPick(')&&js.includes("show-all")&&js.includes('A carta #'));
 assert(!js.includes('fetch("http'));
 assert(index.includes('href="meu-time-posse-4312.html"'));
