@@ -9,7 +9,7 @@ const paths=[
  'scout-profile-v188.js','scout-profile-v188.css','scout-ui-v189.js','scout-ui-v189.css',
  'skills-booster-v162.js','booster-engine-v103.js','SCOUT_V69_AUDITORIA.json',
  'SCOUT_V101_MODELO_CORPORAL.json','SCOUT_V184_EFHUB_241_COMPLETE.json',
- 'SCOUT_V188_EFHUB_BOOSTERS_241.json'
+ 'SCOUT_V188_EFHUB_BOOSTERS_241.json','SCOUT_V189_CORPO_EXTRAS.json'
 ];
 const contentHash=crypto.createHash('sha256');
 for(const name of paths){
