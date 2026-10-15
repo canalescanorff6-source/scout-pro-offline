@@ -56,6 +56,14 @@ cp.execFileSync(process.execPath,[path.join(root,'scripts/stamp-bundle-v189.cjs'
 const stamp2=load('scout-build-info.json');
 assert.deepEqual(stamp1,stamp2,'Fingerprint precisa ser determinística');
 assert(/^[a-f0-9]{20}$/.test(stamp1.bundle_fingerprint));
-assert.equal(stamp1.source_count,15);
+assert.equal(stamp1.source_count,16);
+const morphology=load('SCOUT_V189_CORPO_EXTRAS.json');
+assert.equal(morphology.entries.length,1);
+assert.equal(morphology.entries[0].cap,1);
+assert.equal(morphology.entries[0].dimensions.shoulder_width,8);
+assert.equal(morphology.entries[0].dimensions.neck_length,7);
+assert.equal(morphology.entries[0].dimensions.leg_length,11);
+assert(ui.includes('SCOUT_V189_CORPO_EXTRAS.json'));
+assert(sw.includes('./SCOUT_V189_CORPO_EXTRAS.json'));
 assert.equal(stamp1.version,JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version);
 console.log('V189 OK: visual responsivo, acessibilidade, 246 fichas/241 prints intactos, 15 biotipos por ID + 15 observações, build determinístico, paridade Windows Android antes da release.');
