@@ -9,9 +9,9 @@ document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
 if(inCard){
  const posseSheet=document.createElement('script');
- posseSheet.src='../scout-posse-v187.js';posseSheet.defer=true;document.head.appendChild(posseSheet);
+ posseSheet.src='../scout-profile-v188.js';posseSheet.defer=true;document.head.appendChild(posseSheet);
  const posseStyle=document.createElement('link');
- posseStyle.rel='stylesheet';posseStyle.href='../scout-posse-v187.css';document.head.appendChild(posseStyle);
+ posseStyle.rel='stylesheet';posseStyle.href='../scout-profile-v188.css';document.head.appendChild(posseStyle);
 }
 
 // V186: os templates animados estão disponíveis nas 246 cartas em Windows e Android.
@@ -159,7 +159,7 @@ if(inCard){
  v162Boost.src='../booster-engine-v103.js';
  v162Boost.onload=()=>{
   const v162=document.createElement('script');v162.src='../skills-booster-v162.js';
-  v162.onload=()=>setTimeout(()=>{if(!document.getElementById('scout-v162'))showSkillsUnavailable()},0);
+  v162.onload=()=>{document.dispatchEvent(new CustomEvent('scoutpro:recommendations-ready'));setTimeout(()=>{if(!document.getElementById('scout-v162'))showSkillsUnavailable()},0)};
   v162.onerror=showSkillsUnavailable;
   document.body.appendChild(v162);
  };
