@@ -7,6 +7,13 @@ const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribut
 bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
+if(inCard){
+ const posseSheet=document.createElement('script');
+ posseSheet.src='../scout-posse-v187.js';posseSheet.defer=true;document.head.appendChild(posseSheet);
+ const posseStyle=document.createElement('link');
+ posseStyle.rel='stylesheet';posseStyle.href='../scout-posse-v187.css';document.head.appendChild(posseStyle);
+}
+
 // V186: os templates animados estão disponíveis nas 246 cartas em Windows e Android.
 // CSS/JS externos mantêm o app original e permitem respeitar acessibilidade e bateria.
 const scoutMotionRoot=inCard?'../':'';
