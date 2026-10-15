@@ -155,7 +155,11 @@ section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA 
 // V192: mostrar as cinco habilidades dentro da ficha PRINCIPAL, sem cópia do painel.
 const principal=container.querySelector('#scout-v188-principal');
 const anatomical=principal?.querySelector('.scout-v188-body');
-if(anatomical)anatomical.insertAdjacentElement('beforebegin',section);
+if(anatomical){
+ anatomical.insertAdjacentElement('beforebegin',section);
+ // V193: esconder o atalho redundante apenas quando o painel de habilidades já está visível.
+ principal.classList?.add('scout-v193-skills-integrated');
+}
 else {
  const after=principal||container.querySelector('#scout-card-navigator')||container.querySelector('.detail-header')||container.querySelector('.mobile-profile');
  if(after)after.insertAdjacentElement('afterend',section);else container.prepend(section);

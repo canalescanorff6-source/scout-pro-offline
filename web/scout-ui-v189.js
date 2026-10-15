@@ -25,6 +25,8 @@ function render(){
  function el(tag,cls,text){const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e}
  function getJson(path){return fetch(prefix+path).then(r=>{if(!r.ok)throw Error('Dados indisponíveis');return r.json()})}
  function showVersion(){
+  const edition=doc.querySelector('.topbar .edition');
+  if(edition)edition.textContent='PREMIUM · OFFLINE';
   const target=doc.querySelector('.brand-copy small');
   if(target){target.textContent='POSSE DE BOLA · ELITE';}
   const bar=doc.getElementById('scout-app-bar');if(!bar)return;
@@ -35,6 +37,10 @@ function render(){
   const first=bar.querySelector('div:first-child');
   if(first)first.appendChild(status);
   getJson('scout-build-info.json').then(info=>{
+   if(edition&&/^\d+\.\d+\.\d+$/.test(String(info.version||''))){
+    edition.textContent='v'+info.version+' · PREMIUM';
+    edition.title='Versão oficial instalada neste dispositivo';
+   }
    const shortHash=String(info.bundle_fingerprint||'').slice(0,10);
    status.textContent='v'+info.version+' · '+platform+' · '+String(info.git_revision||'?').slice(0,7)+(shortHash?' · '+shortHash:'');
    status.title='Revisão '+String(info.git_revision)+' | Interface '+info.bundle_fingerprint+' | Android e Windows devem indicar a mesma revisão na mesma release.';
