@@ -36,7 +36,7 @@ function home(){
  const links=nodes.filter(n=>n.tag==='a'&&n.className==='scout-v189-tile');
  assert.equal(links.length,4,'Manter quatro atalhos essenciais');
  const other=nodes.find(n=>n.className==='scout-v189-extra-links');
- assert(other.children.some(n=>n.attributes.href==='revisao-tatica-v98.html'),'Não perder ferramentas avançadas');
+ assert(other.children.some(n=>n.href==='revisao-tatica-v98.html'),'Não perder ferramentas avançadas');
  assert.equal(brand.textContent,'Meu elenco');
 }
 function mobileDetail(){
