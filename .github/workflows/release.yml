@@ -230,7 +230,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: scout-pro-android-teste
-          path: build-demo/ScoutPRO-Android-TESTE.apk
+          path: |
+            build-demo/ScoutPRO-Android-TESTE.apk
+            build-demo/scout-build-info.json
           if-no-files-found: error
           retention-days: 7
       - name: Arquivar APK de atualização assinado
