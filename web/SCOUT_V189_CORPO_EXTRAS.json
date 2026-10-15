@@ -1,0 +1,44 @@
+{
+  "schema": "scout_v189_visual_anatomy_verified_transcription",
+  "scope": "observacao_de_print_eFHUB_nao_Player_ID_oculto",
+  "source_file": "Daniele_Massaro_efhub.jpg",
+  "source_archive": "Screenshots.rar",
+  "card_id_numeric_in_screenshot": false,
+  "entries": [
+    {
+      "cap": 1,
+      "player": "Daniele Massaro",
+      "screenshot": "Daniele_Massaro_efhub.jpg",
+      "edition_match": "arte AC Milan eFootball; identificação numérica não visível no print",
+      "state": "transcrito_visualmente_conferir_em_edicao",
+      "height_cm": 179,
+      "weight_kg": 74,
+      "weak_foot_usage": "Eventualmente",
+      "weak_foot_accuracy": "Muito alta",
+      "form": "Estável",
+      "injury_resistance": "Média",
+      "dimensions": {
+        "arm_length": 8,
+        "shoulder_width": 8,
+        "neck_length": 7,
+        "chest": 7,
+        "neck_size": 9,
+        "shoulder_height": 6,
+        "leg_length": 11,
+        "thigh_size": 9,
+        "waist_size": 8,
+        "arm_size": 9,
+        "calf_size": 9
+      },
+      "derived_measurements": {
+        "leg_coverage_cm": 174.9,
+        "arm_coverage_cm": 163.7,
+        "jump_height_cm": 265.4,
+        "torso_collision_cm": 50.3,
+        "standing_base_cm": 183
+      },
+      "player_id_confirmed": false
+    }
+  ],
+  "note": "Parâmetros declarados na interface eFHUB; não são animações ocultas confirmadas. Não preencher ausências das demais cartas com números genéricos."
+}
