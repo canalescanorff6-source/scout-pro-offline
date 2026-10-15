@@ -56,7 +56,11 @@ cp.execFileSync(process.execPath,[path.join(root,'scripts/stamp-bundle-v189.cjs'
 const stamp2=load('scout-build-info.json');
 assert.deepEqual(stamp1,stamp2,'Fingerprint precisa ser determinística');
 assert(/^[a-f0-9]{20}$/.test(stamp1.bundle_fingerprint));
-assert.equal(stamp1.source_count,17);
+assert.equal(stamp1.source_count,18);
+const premium192=fs.readFileSync(path.join(web,'scout-premium-v192.css'),'utf8');
+assert(bridge.includes("v192Css.href=v189Root+'scout-premium-v192.css'"),'Android e Windows devem receber V192');
+assert(sw.includes("'./scout-premium-v192.css'"),'V192 precisa ser offline');
+assert(premium192.includes('@media(max-width:720px)')&&premium192.includes('@media(min-width:1025px)'),'V192 precisa ser responsiva');
 const morphology=load('SCOUT_V189_CORPO_EXTRAS.json');
 assert.equal(morphology.entries.length,1);
 assert.equal(morphology.entries[0].cap,1);
