@@ -6,29 +6,29 @@ const ENTRIES=[
  ['through','Passe em profundidade',['Through Passing','Passe em profundidade','Passe a rasgar'],'Melhora a opção de passe para a infiltração pelo centro.'],
  ['double','Toque duplo',['Double Touch','Toque duplo'],'Amplia as saídas curtas do marcador com a bola dominada.'],
  ['sole','Controle com a sola',['Sole Control','Controle com a sola'],'Facilita recepção e giro sob pressão.'],
- ['heel','Passe de calcanhar',['Heel Trick','Toque de calcanhar','Passe de calcanhar'],'Oferece devoluções rápidas quando o corpo não está de frente.'],
- ['weighted','Passe ponderado',['Weighted Pass','Passe ponderado'],'Dá opção de passe com peso controlado em transições e apoio.'],
+ ['heel','Toque de calcanhar',['Heel Trick','Passe de calcanhar','Toque de calcanhar'],'Oferece devoluções rápidas quando o corpo não está de frente.'],
+ ['weighted','Passe na medida',['Weighted Pass','Passe ponderado','Passe na medida'],'Dá opção de passe com peso controlado em transições e apoio.'],
  ['fighting','Espírito guerreiro',['Fighting Spirit','Espírito guerreiro'],'Ajuda a manter ações competitivas sob pressão e cansaço.'],
  ['intercept','Interceptação',['Interception','Interceptação'],'Fortalece a leitura e o corte de linhas de passe.'],
  ['blocker','Bloqueador',['Blocker','Bloqueador'],'Apoia bloqueios de passes e finalizações em cobertura.'],
  ['mark','Marcação individual',['Man Marking','Marcação individual'],'Apoia acompanhamento defensivo quando a função exigir.'],
  ['aerial','Superioridade aérea',['Aerial Superiority','Superioridade aérea'],'Aumenta recursos nos duelos aéreos.'],
- ['heading','Cabeceio',['Heading','Cabeceio'],'Melhora o recurso de cabeceio para atacantes que recebem bola alta.'],
- ['firstshot','Finalização de primeira',['First-time Shot','First Time Shot','Finalização de primeira'],'Permite finalizar mais rapidamente após a tabela.'],
+ ['heading','Cabeçada',['Heading','Cabeceio','Cabeçada'],'Melhora o recurso de cabeceio para atacantes que recebem bola alta.'],
+ ['firstshot','Chute de primeira',['First-time Shot','First Time Shot','Finalização de primeira','Chute de primeira'],'Permite finalizar mais rapidamente após a tabela.'],
  ['acrobatic','Finalização acrobática',['Acrobatic Finishing','Finalização acrobática'],'Oferece finalizações em posições difíceis dentro da área.'],
- ['longshot','Chute de longa distância',['Long-range Shooting','Long Range Shooting','Long-Range Shooting','Finalização de longa distância','Chute de longa distância'],'Cria alternativa quando a defesa fecha a área.'],
- ['curler','Chute colocado de longa distância',['Long-range Curler','Long-Range Curler','Chute colocado de longa distância'],'Oferece curva em finalizações de média e longa distância.'],
- ['trackback','Recuar para marcar',['Track Back','Track-back','Recuar para marcar'],'Ajuda o jogador ofensivo a recompor quando perde a bola.'],
+ ['longshot','Precisão à distância',['Long-range Shooting','Long Range Shooting','Long-Range Shooting','Finalização de longa distância','Chute de longa distância','Precisão à distância'],'Cria alternativa quando a defesa fecha a área.'],
+ ['curler','Efeito de longe',['Long-range Curler','Long-Range Curler','Chute colocado de longa distância','Efeito de longe'],'Oferece curva em finalizações de média e longa distância.'],
+ ['trackback','Volta para marcar',['Track Back','Track-back','Recuar para marcar','Volta para marcar'],'Ajuda o jogador ofensivo a recompor quando perde a bola.'],
  ['sliding','Carrinho',['Sliding Tackle','Carrinho'],'Amplia alternativa de desarme com cuidado para não cometer faltas.'],
- ['clear','Corte acrobático',['Acrobatic Clearance','Corte acrobático'],'Ajuda a afastar bolas difíceis em situações defensivas.'],
+ ['clear','Afastamento acrobático',['Acrobatic Clearance','Corte acrobático','Afastamento acrobático'],'Ajuda a afastar bolas difíceis em situações defensivas.'],
  ['lowloft','Passe aéreo baixo',['Low Lofted Pass','Passe meio levantado','Passe aéreo baixo'],'Oferece uma saída aérea mais rápida quando o passe curto é bloqueado.'],
- ['cutturn','Corte para trás e giro',['Cut Behind & Turn','Cut Behind Turn','Cut Behind And Turn','Puxada de letra'],'Recurso de giro curto para escapar da marcação.'],
- ['gklow','Lançamento rasteiro de goleiro',['GK Low Punt','Lançamento rasteiro de goleiro'],'Ajuda a repor a bola rapidamente em zonas mais baixas.'],
+ ['cutturn','Puxada de letra',['Cut Behind & Turn','Cut Behind Turn','Cut Behind And Turn','Corte para trás e giro','Puxada de letra'],'Recurso de giro curto para escapar da marcação.'],
+ ['gklow','Reposição baixa do GO',['GK Low Punt','Lançamento rasteiro de goleiro','Repos. baixa do GO'],'Ajuda a repor a bola rapidamente em zonas mais baixas.'],
  ['gkhigh','Lançamento alto de goleiro',['GK High Punt','Lançamento alto de goleiro'],'Amplia a reposição com os pés quando o passe curto não é seguro.'],
- ['gklong','Lançamento longo de goleiro',['GK Long Throw','Lançamento longo de goleiro'],'Permite iniciar jogadas com lançamentos manuais longos.'],
- ['gkpenalty','Defesa de pênalti',['GK Penalty Saver','Defesa de pênalti'],'Adiciona recurso nas cobranças de pênalti.'],
- ['captain','Capitão',['Captaincy','Liderança','Capitão'],'Contribui com o papel de liderança da equipe.'],
- ['supersub','Super reserva',['Super Sub','Super-sub','Super reserva'],'Alternativa para quem normalmente entra na segunda etapa.']
+ ['gklong','Arremesso longo do GO',['GK Long Throw','Lançamento longo de goleiro','Arrem. longo do GO'],'Permite iniciar jogadas com lançamentos manuais longos.'],
+ ['gkpenalty','Pegador de pênaltis',['GK Penalty Saver','Defesa de pênalti','Pegador de pênaltis'],'Adiciona recurso nas cobranças de pênalti.'],
+ ['captain','Liderança',['Captaincy','Liderança','Capitão'],'Contribui com o papel de liderança da equipe.'],
+ ['supersub','Super substituto',['Super Sub','Super-sub','Super reserva','Super substituto'],'Alternativa para quem normalmente entra na segunda etapa.']
 ];
 const SKILLS=Object.fromEntries(ENTRIES.map(x=>[x[0],Object.freeze({key:x[0],name:x[1],aliases:x[2],why:x[3]})]));
 const normal=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -36,13 +36,16 @@ const aliasMap=new Map;
 for(const e of ENTRIES)for(const alias of [e[1],...e[2]])aliasMap.set(normal(alias),e[0]);
 // Alias adicionais derivados das grafias portuguesas encontradas nos prints eFHUB.
 for(const [raw,key] of Object.entries({
- 'chute de primeira':'firstshot','chute de longe':'longshot','precisao a distancia':'longshot',
- 'efeito de longe':'curler','cabeçada':'heading','cabecada':'heading',
- 'afastamento acrobatico':'clear','reposicao alta do go':'gkhigh',
+ 'chute de primeira':'firstshot','finalizacao de primeira':'firstshot',
+ 'chute de longa distancia':'longshot','finalizacao de longa distancia':'longshot','precisao a distancia':'longshot',
+ 'efeito de longe':'curler','chute colocado de longa distancia':'curler','chute de longe':'curler',
+ 'cabeçada':'heading','cabecada':'heading',
+ 'afastamento acrobatico':'clear','corte acrobatico':'clear','reposicao alta do go':'gkhigh',
  'arremesso longo do go':'gklong','pegador de penaltis':'gkpenalty',
  'comandante da defesa go':'captain','controle com a sola':'sole',
  'passe de primeira':'onepass','passe em profundidade':'through',
- 'passe a rasgar':'through','bloqueador':'blocker',
+ 'passe a rasgar':'through','passe ponderado':'weighted','recuar para marcar':'trackback',
+ 'corte para tras e giro':'cutturn','super reserva':'supersub','capitao':'captain','bloqueador':'blocker',
  'superioridade aerea':'aerial','interceptacao':'intercept'
 
 }))if(!aliasMap.has(normal(raw)))aliasMap.set(normal(raw),key);
