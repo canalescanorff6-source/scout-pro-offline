@@ -99,6 +99,7 @@ def run():
                 page.wait_for_timeout(650)
                 detail = metrics(page, SCREENS_SELECTORS["detail"])
                 detail["errors"] = list(errors)
+                detail["direct_children"] = page.evaluate("""() => [...document.querySelectorAll(".profile-content > *")].map(e=>({id:e.id||"",className:typeof e.className==="string"?e.className:"",visible:getComputedStyle(e).display!=="none"}))""")
                 detail["guide_count"] = page.locator("#scout-v194-focus, #scout-v194-gameplay").count()
                 detail["skills_panels"] = page.locator("#scout-v162").count()
                 if detail["guide_count"] != 2 or detail["skills_panels"] != 1:
@@ -109,9 +110,10 @@ def run():
                     dock = detail.get("dock") or {}
                     if dock.get("height", 999) > 90 or dock.get("direction") != "row" or dock.get("bottomGap", 999) > 35:
                         problems.append(f"{name}: dock inferior desproporcional: {dock}")
-                if page.locator("#scout-performance-v80").count() and page.locator("body.scout-v188-compact").count():
-                    if page.locator("#scout-performance-v80").is_visible():
-                        problems.append(f"{name}: laboratório V80 apareceu antes da ficha principal compacta")
+                for legacy in ("#scout-performance-v80", "#scout-v74"):
+                    if page.locator(legacy).count() and page.locator("body.scout-v188-compact").count():
+                        if page.locator(legacy).is_visible():
+                            problems.append(f"{name}: laboratório antigo {legacy} apareceu antes da ficha principal compacta")
                 page.screenshot(path=str(OUT / f"{name}_profile_header.png"), full_page=False, animations="disabled")
                 page.locator("#scout-v194-gameplay").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_profile_gameplay.png"), full_page=False, animations="disabled")
