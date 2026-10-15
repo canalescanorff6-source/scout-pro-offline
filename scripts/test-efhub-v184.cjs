@@ -54,5 +54,5 @@ assert(app.includes("fetch('../SCOUT_V184_EFHUB_SCREENSHOT_EVIDENCE.json')"));
 assert(app.includes("fetch('../SCOUT_V184_EFHUB_241_COMPLETE.json')"));
 assert(app.includes('Selecione uma versão para consultar'));
 assert(app.includes("select.addEventListener('change'"));
-assert(app.includes('Níveis e PP originais do Scout PRO preservados.'));
+assert(app.includes('Não substitui o nível nem os PP já cadastrados no Scout PRO.'));
 console.log('V184 OK: 241 prints e 2243 skills na base GitHub, 185 candidatos únicos pelo nome, 15 perfis detalhados; 246 níveis/PP/IDs originais preservados.');
