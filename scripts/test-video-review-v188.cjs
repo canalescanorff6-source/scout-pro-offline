@@ -26,7 +26,8 @@ for(const row of boosters.observations){
  const old=archive.image_manifest.find(m=>m.filename===row.filename);
  assert(old&&old.sha256===row.sha256,'Fonte visual divergente '+row.filename);
 }
-assert.equal(hashes.size,241);
+assert.equal(hashes.size,240,'Dois arquivos Sandro Tonali têm o mesmo SHA256');
+assert.equal(sourceCandidates(0,[]).length,0);
 for(const item of evidence.observations){
  const target=boosters.observations.find(x=>x.filename===item.file);
  if(!target)continue;
@@ -34,6 +35,9 @@ for(const item of evidence.observations){
  audited++;
 }
 assert.equal(audited,15);
+const tonali=boosters.observations.filter(x=>x.filename.startsWith('Sandro_Tonali_'));
+assert.equal(tonali.length,2);assert.equal(new Set(tonali.map(x=>x.sha256)).size,1);
+assert.equal(sourceCandidates(tonali[0].candidate_caps[0],tonali).length,1);
 const massaro=sourceCandidates(1,boosters.observations);
 assert.equal(massaro.length,1);
 assert.deepEqual([massaro[0].booster_1_print,massaro[0].booster_2_print],['Fisicalidade +3','Instinto artilheiro +1']);
