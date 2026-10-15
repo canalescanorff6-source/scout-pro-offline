@@ -303,3 +303,47 @@ body[data-page="detail"] .scout-v194-guide-source{
  body[data-page="detail"] .scout-v194-guide .focus-banner,
  body[data-page="detail"] .scout-v194-guide .gameplay-tip{font-size:14px;line-height:1.55}
 }
+
+/* V195 — bugs comprovados por screenshot: dock vertical e laboratório antigo antes da ficha. */
+body.scout-v188-compact[data-page="detail"] .profile-content > #scout-performance-v80,
+body.scout-v188-compact[data-page="detail"] .profile-content > #scout-posse-main,
+body.scout-v188-compact[data-page="detail"] .profile-content > #scout-v184-evidence{
+ display:none!important;
+}
+@media(max-width:720px){
+ body[data-page="detail"] #scout-app-bar{
+  position:fixed!important;display:flex!important;flex-direction:row!important;
+  flex-wrap:nowrap!important;align-items:stretch!important;justify-content:space-between!important;
+  box-sizing:border-box!important;left:50%!important;right:auto!important;
+  transform:translateX(-50%)!important;
+  bottom:max(7px,env(safe-area-inset-bottom,0px))!important;
+  width:calc(100% - 18px)!important;max-width:530px!important;
+  height:auto!important;min-height:0!important;max-height:70px!important;
+  padding:6px!important;gap:5px!important;overflow:visible!important;
+ }
+ body[data-page="detail"] #scout-app-bar .scout-page-actions,
+ body[data-page="detail"] #scout-app-bar .app-actions{display:contents!important}
+ body[data-page="detail"] #scout-app-bar #scout-back,
+ body[data-page="detail"] #scout-app-bar #scout-home,
+ body[data-page="detail"] #scout-app-bar #scout-update{
+  display:flex!important;justify-content:center!important;align-items:center!important;
+  box-sizing:border-box!important;flex:1 1 0!important;min-width:0!important;
+  width:auto!important;min-height:46px!important;max-height:52px!important;
+  margin:0!important;padding:5px 3px!important;
+  white-space:normal!important;text-align:center!important;line-height:1.15!important;
+ }
+ body[data-page="detail"] #scout-app-bar .scout-v189-dock-more{
+  display:block!important;flex:1 1 0!important;min-width:0!important;
+ }
+ body[data-page="detail"] #scout-app-bar .scout-v189-dock-more>summary{
+  min-height:46px!important;max-height:52px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body.scout-v188-compact[data-page="detail"] .profile-content > .scout-motion-controls{
+  display:none!important;
+ }
+}
+
+/* O painel V74 também é laboratório técnico; não deve preceder a ficha principal. */
+body.scout-v188-compact[data-page="detail"] .profile-content > #scout-v74{display:none!important}

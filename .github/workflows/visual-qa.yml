@@ -1,0 +1,54 @@
+name: Scout PRO | QA visual Android e Windows
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'scripts/qa-visual-v195.py'
+      - '.github/workflows/visual-qa.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'scripts/qa-visual-v195.py'
+      - '.github/workflows/visual-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    name: Capturas visuais 360px 390px 1366px
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preparar Chromium controlado
+        run: |
+          python -m pip install --disable-pip-version-check playwright==1.56.0
+          if ! command -v google-chrome >/dev/null 2>&1 && ! command -v chromium >/dev/null 2>&1; then
+            python -m playwright install --with-deps chromium
+          fi
+      - name: Renderizar as fichas e coletar métricas
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8765 --bind 127.0.0.1 --directory web >/tmp/scout-visual-http.log 2>&1 &
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8765/index.html >/dev/null; then break; fi
+            sleep 1
+          done
+          python scripts/qa-visual-v195.py
+      - name: Anexar screenshots e relatório para inspeção
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scout-pro-visual-qa
+          path: artifacts/visual-qa/
+          if-no-files-found: warn
+          retention-days: 14
