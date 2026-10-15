@@ -7,6 +7,16 @@ const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribut
 bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
+// V186: os templates animados estão disponíveis nas 246 cartas em Windows e Android.
+// CSS/JS externos mantêm o app original e permitem respeitar acessibilidade e bateria.
+const scoutMotionRoot=inCard?'../':'';
+const scoutMotionCss=document.createElement('link');
+scoutMotionCss.rel='stylesheet';scoutMotionCss.href=scoutMotionRoot+'card-motion-v186.css';
+document.head.appendChild(scoutMotionCss);
+const scoutMotionJs=document.createElement('script');
+scoutMotionJs.src=scoutMotionRoot+'card-motion-v186.js';scoutMotionJs.defer=true;
+document.head.appendChild(scoutMotionJs);
+
 /* V184 — 241 prints eFHUB: somente consulta, sem sobreposição de IDs/PP/skills autenticadas. */
 if(inCard){
  const showScreenshotEvidence=async()=>{
