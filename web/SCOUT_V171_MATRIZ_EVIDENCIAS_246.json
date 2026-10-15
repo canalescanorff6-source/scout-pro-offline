@@ -5016,7 +5016,7 @@
       "cap": 225,
       "name": "Rodri",
       "edition_registered": "Highlight — Back in the Game 14 Aug '25 — Rodri",
-      "card_id_registered": "106780940205246",
+      "card_id_registered": "105779675902175",
       "card_id_numeric": true,
       "art": "cartas/CAP_225_Rodri_OVR100_VOL.png",
       "source_category": "encontrado_por_pacote",
@@ -5024,7 +5024,7 @@
       "video_metadata_gameplay_refs": 1,
       "additional_candidate_refs": 0,
       "base_stats_registered": false,
-      "native_skills_registered": false,
+      "native_skills_registered": true,
       "body_model_evidence": false,
       "frame_verified_videos": 0,
       "gameplay_verified_videos": 0,
@@ -5032,7 +5032,9 @@
       "competitive_pro_verified_videos": 0,
       "evidence_grade": "PACKAGE_METADATA_ONLY",
       "priority": "P2",
-      "next_action": "Comparar quadro do vídeo com arte original e ID; checar build e partida apenas se visíveis"
+      "next_action": "Comparar quadro do vídeo com arte original e ID; checar build e partida apenas se visíveis",
+      "card_id_confirmed_in_game": false,
+      "external_identity_evidence": "web/SCOUT_V185_RODRI_225_EVIDENCE.json"
     },
     {
       "cap": 226,

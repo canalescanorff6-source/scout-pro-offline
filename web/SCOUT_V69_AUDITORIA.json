@@ -4,7 +4,7 @@
   "summary": {
     "micro_pro": 73,
     "with_pp": 246,
-    "native_skills": 242,
+    "native_skills": 243,
     "processed": 246,
     "with_stats": 14,
     "no_pp": 0,
@@ -8833,7 +8833,7 @@
       "numero": 225,
       "name": "Rodri",
       "versao": "Highlight — Back in the Game 14 Aug '25 — Rodri",
-      "id": "106780940205246",
+      "id": "105779675902175",
       "posicao": "VOL",
       "estilo_ataque": "Primeiro volante",
       "estilo_defesa": "Primeiro volante",
@@ -8855,13 +8855,30 @@
       ],
       "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
       "impeto_extra": "NENHUM BOOSTER NATIVO CONFIRMADO",
-      "habilidades_nativas": null,
+      "habilidades_nativas": "Sole Control; Rising Shot; Long-range Shooting; One-touch Pass; Through Passing; Low Lofted Pass; Man Marking; Interception; Aerial Superiority; Fighting Spirit",
       "adicionais_candidatas": [],
       "pendencias": [
-        "Lista de habilidades nativas e 5 adicionais equipadas",
-        "Atributos-base desta versão para cálculo de status finais"
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Card ID externamente identificado; conferência numérica diretamente na conta ainda não realizada"
       ],
-      "arquivo": "fichas/225_Rodri.html"
+      "arquivo": "fichas/225_Rodri.html",
+      "habilidades_nativas_origem": {
+        "status": "coincidencia_externa_multifatorial_nome_pacote_arte_pp_skills_sem_id_lido_na_conta",
+        "fonte": "pesdb.net + PESMaster + screenshot eFHUB do usuario",
+        "card_id": "105779675902175",
+        "url": "https://pesdb.net/efootball/players/rodri-105779675902175",
+        "print": "Rodri_efhub_0.jpg",
+        "confirmacao_no_jogo": false,
+        "data": "2026-10-15"
+      },
+      "card_id_validacao": {
+        "status": "convergencia_externa_sem_verificacao_na_conta",
+        "old_id_errado": "106780940205246",
+        "verified_external_id": "105779675902175",
+        "proof_in_game": false,
+        "record": "web/SCOUT_V185_RODRI_225_EVIDENCE.json"
+      }
     },
     {
       "numero": 226,

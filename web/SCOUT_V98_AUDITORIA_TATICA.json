@@ -7516,14 +7516,14 @@
       "numero": 225,
       "nome": "Rodri",
       "edicao": "Highlight — Back in the Game 14 Aug '25 — Rodri",
-      "card_id": "106780940205246",
+      "card_id": "105779675902175",
       "posicao": "VOL",
       "estilo_ataque": "Primeiro volante",
       "estilo_defesa": "Primeiro volante",
       "pp": 52,
       "imagem": "cartas/CAP_225_Rodri_OVR100_VOL.png",
       "base_stats_known": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "referencia": "anterior",
@@ -7543,10 +7543,12 @@
       "ficha": "fichas/225_Rodri.html",
       "pendencias": [
         "Atributos-base da edição",
-        "Habilidades nativas",
+        "Habilidades externas documentadas: verificar no jogo",
         "Posição de ativação do estilo no Plano de Jogo",
-        "Partidas comparativas nas três táticas"
-      ]
+        "Partidas comparativas nas três táticas",
+        "Card ID da conta ainda não lido diretamente; correspondência externa V185"
+      ],
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/rodri-105779675902175"
     },
     {
       "numero": 226,

@@ -7315,7 +7315,7 @@
       "numero": 225,
       "nome": "Rodri",
       "edicao": "Highlight — Back in the Game 14 Aug '25 — Rodri",
-      "card_id": "106780940205246",
+      "card_id": "105779675902175",
       "estado": "encontrado_por_pacote",
       "videos": [
         {
@@ -7394,7 +7394,8 @@
       "referencias_da_carta": [],
       "player_id_validado": false,
       "build_video_validada": false,
-      "ultimo_rastreio": "2026-10-13"
+      "ultimo_rastreio": "2026-10-13",
+      "card_id_evidence": "V185 eFHUB + PESDB multi-factor, numeric ID not visually confirmed in-game"
     },
     {
       "numero": 226,

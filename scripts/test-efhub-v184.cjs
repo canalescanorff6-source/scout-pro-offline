@@ -20,7 +20,8 @@ assert.equal(complete.image_manifest.filter(x=>Array.isArray(x.skills_ptbr_trans
 assert.equal(complete.summary.manually_transcribed_screens,241);
 assert.equal(complete.summary.skill_total_occurrences,2243);
 assert.equal(complete.image_manifest.filter(x=>x.scout_roster_matching?.status==='unambiguous_name_only_no_id').length,185);
-assert.equal(complete.image_manifest.filter(x=>x.scout_roster_matching?.status==='multiple_versions_or_cards_no_edition_binding').length,55);
+assert.equal(complete.image_manifest.filter(x=>x.scout_roster_matching?.status==='multiple_versions_or_cards_no_edition_binding').length,53);
+assert.equal(complete.image_manifest.filter(x=>x.scout_roster_matching?.status==='external_edition_multifactor_no_in_game_id').length,1);
 assert.equal(new Set(v.observations.map(x=>x.file)).size,15);
 assert(v.rules.preserve_project_level_pp_training && !v.rules.may_modify_master_card_id);
 for(const o of v.observations){
@@ -42,7 +43,7 @@ for(const n of [151,181]){
  assert.equal(older.cartas.find(x=>x.numero===n).habilidades_status,'pendente_identidade');
 }
 const rodri=roster.cards.find(x=>x.numero===225);
-assert.equal(rodri.id,'106780940205246','Não substituir ID por candidato sem confirmação na conta');
+assert.equal(rodri.id,'105779675902175','Corrigir ID Rodri por cotejo fonte/print, sem reivindicar leitura no jogo');
 assert.equal(v.observations.find(x=>x.cap===225).player,'Rodri');
 assert.notDeepEqual(v.observations.find(x=>x.cap===20).skills,v.observations.find(x=>x.cap===225).skills);
 const sw=fs.readFileSync(path.join(web,'sw.js'),'utf8');
@@ -55,4 +56,4 @@ assert(app.includes("fetch('../SCOUT_V184_EFHUB_241_COMPLETE.json')"));
 assert(app.includes('Selecione uma versão para consultar'));
 assert(app.includes("select.addEventListener('change'"));
 assert(app.includes('Não substitui o nível nem os PP já cadastrados no Scout PRO.'));
-console.log('V184 OK: 241 prints e 2243 skills na base GitHub, 185 candidatos únicos pelo nome, 15 perfis detalhados; 246 níveis/PP/IDs originais preservados.');
+console.log('V185 OK: 241 prints e 2243 skills; Rodri 225 vinculado externamente por pacote/arte/skills, 246 PP/treinos preservados.');

@@ -48,9 +48,12 @@
     "snapshot_crosswalk_note": "Unambiguous name-only means unique roster name and single screenshot, NOT authenticated edition or Card ID. Multiple versions never autoassigned.",
     "screenshot_matching_statuses": {
       "unambiguous_name_only_no_id": 185,
-      "multiple_versions_or_cards_no_edition_binding": 55,
-      "name_fuzzy_uncertain": 1
-    }
+      "multiple_versions_or_cards_no_edition_binding": 53,
+      "name_fuzzy_uncertain": 1,
+      "image_spanish_card_not_compatible_with_cap225_id_unresolved_for_020": 1,
+      "external_edition_multifactor_no_in_game_id": 1
+    },
+    "updated_binding_v185": "Rodri_efhub_0.jpg associado externamente ao CAP225 via fonte/arte/skills; Rodri_efhub.jpg (Espanha) não homologado CAP020."
   },
   "visual_observations": [
     {
@@ -7797,12 +7800,12 @@
       "scout_roster_matching": {
         "candidate_cap": null,
         "candidate_caps": [
-          20,
-          225
+          20
         ],
         "matched_name": "Rodri",
         "score": 1,
-        "status": "multiple_versions_or_cards_no_edition_binding"
+        "status": "image_spanish_card_not_compatible_with_cap225_id_unresolved_for_020",
+        "note": "This Spain print has Blocker and no Rising Shot; differs from the PESDB skills for CAP020 currently registered. Do not automatically import."
       }
     },
     {
@@ -7815,7 +7818,7 @@
       ],
       "source": "Screenshots.rar / eFHUB",
       "card_id_visible": false,
-      "exact_card_binding": "not_automatically_verified",
+      "exact_card_binding": "source_consistent_ID_105779675902175_but_no_numeric_id_in_eFHUB_screenshot",
       "visual_review_status": "habilidades_transcritas_visualmente",
       "skills_ptbr_transcribed": [
         "Controle com a sola",
@@ -7833,14 +7836,14 @@
       "skills_evidence": "eFHUB screenshot supplied by user; card ID not visible; no automatic binding to account card",
       "additional_metadata_reviewed": true,
       "scout_roster_matching": {
-        "candidate_cap": null,
+        "candidate_cap": 225,
         "candidate_caps": [
-          20,
           225
         ],
         "matched_name": "Rodri",
         "score": 1,
-        "status": "multiple_versions_or_cards_no_edition_binding"
+        "status": "external_edition_multifactor_no_in_game_id",
+        "evidence_json": "SCOUT_V185_RODRI_225_EVIDENCE.json"
       }
     },
     {

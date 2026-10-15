@@ -8,8 +8,8 @@ assert.equal(tactic.cartas.length,246);
 assert.equal(source.records.length,94);
 const confirmed=source.records.filter(c=>c.status==='card_id_nome_edicao');
 assert.equal(confirmed.length,91);
-assert.equal(audit.summary.native_skills,242);
-assert.equal(audit.cards.filter(c=>c.habilidades_nativas).length,242);
+assert.equal(audit.summary.native_skills,243);
+assert.equal(audit.cards.filter(c=>c.habilidades_nativas).length,243);
 for(const c of confirmed){
  const card=audit.cards.find(x=>x.numero===c.cap);
  assert(card&&String(card.id)===String(c.card_id));
@@ -19,10 +19,14 @@ for(const c of confirmed){
  assert(c.skills.length>0&&c.skills.length<=12);
  assert.equal(tactic.cartas.find(x=>x.numero===c.cap).habilidades_nativas_documentadas,true);
 }
-for(const c of source.records.filter(r=>r.status!=='card_id_nome_edicao')){
+for(const c of source.records.filter(r=>r.status!=='card_id_nome_edicao'&&r.cap!==225)){
  assert(!audit.cards.find(x=>x.numero===c.cap).habilidades_nativas,'Não promover conflito '+c.cap);
 }
-assert(!audit.cards.find(x=>x.numero===225).habilidades_nativas,'#225 conflito grave Card ID vs nome');
+const rodri=audit.cards.find(x=>x.numero===225);
+assert.equal(rodri.id,'105779675902175');
+assert.equal(rodri.habilidades_nativas.split(';').length,10);
+assert.equal(rodri.habilidades_nativas_origem.confirmacao_no_jogo,false);
+assert.equal(source.records.find(x=>x.cap===225).resolucao_v185.skills_nico_must_never_promote,true);
 for(const n of [75,170])assert(audit.cards.find(x=>x.numero===n).habilidades_nativas_origem?.confirmacao_no_jogo===false,'Skill externa nao homologada na conta: '+n);
 for(const n of [151,181])assert(!audit.cards.find(x=>x.numero===n).habilidades_nativas,'Não importar habilidades Show Time para Distinguido: '+n);
 const app=fs.readFileSync(path.join(root,'app-bridge.js'),'utf8');
@@ -33,4 +37,4 @@ assert(app.includes("String(item.card_id)!==String(current.id)"));
 const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
 assert(sw.includes('SCOUT_V179_NATIVE_SKILLS_RESEARCH.json'));
 assert(sw.includes('scout-pro-v177-1-v178-skills-v179'));
-console.log('V183 OK: 91 listas externas por ID/edicao, 242/246 documentadas, 4 pendentes; nenhum dado inventado.');
+console.log('V183 OK: 91 listas externas por ID/edicao, 243/246 documentadas, 3 pendentes; nenhum dado inventado.');
