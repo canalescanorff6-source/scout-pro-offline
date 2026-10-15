@@ -7,6 +7,42 @@ const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribut
 bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
+/* V184 — mostra evidência independente do eFHUB sem alterar a ficha canônica. */
+if(inCard){
+ const showScreenshotEvidence=async()=>{
+  const node=document.getElementById('scout-v68-data');
+  const host=document.querySelector('.profile-content');
+  if(!node||!host)return;
+  let current;try{current=JSON.parse(node.textContent)}catch(e){return}
+  const response=await fetch('../SCOUT_V184_EFHUB_SCREENSHOT_EVIDENCE.json');
+  if(!response.ok)return;
+  const all=await response.json();
+  const item=(all.observations||[]).find(x=>Number(x.cap)===Number(current.capture));
+  if(!item||document.getElementById('scout-v184-evidence'))return;
+  const section=document.createElement('section');
+  section.id='scout-v184-evidence';
+  section.style.cssText='padding:16px;margin:14px 0;border:1px solid #527b9b;background:#0d2130;border-radius:14px;color:#f1f5fb';
+  const h=document.createElement('h3');h.textContent='V184 · Evidência visual do eFHUB';h.style.cssText='margin:0 0 9px;color:#9fe9e4;font-size:16px';section.appendChild(h);
+  const provenance=document.createElement('p');
+  provenance.textContent='Print: '+item.file+' · Edição apenas candidata; Card ID numérico não aparece na imagem. Não substitui a ficha oficial.';
+  provenance.style.cssText='font-size:12px;line-height:1.45;margin:0 0 11px';section.appendChild(provenance);
+  if(item.rarity_user){
+   const rarity=document.createElement('p');rarity.textContent='Raridade confirmada por você: '+item.rarity_user;section.appendChild(rarity);
+  }
+  const label=document.createElement('p');label.textContent='Habilidades mostradas no print ('+item.skills.length+') — documentação visual, não habilitações adicionais equipadas';label.style.fontWeight='700';section.appendChild(label);
+  const list=document.createElement('ul');list.style.cssText='display:flex;flex-wrap:wrap;gap:7px;list-style:none;padding:0;margin:10px 0';
+  for(const skill of item.skills){const li=document.createElement('li');li.textContent=skill;li.style.cssText='padding:5px 9px;background:#173b4e;border:1px solid #2a6579;border-radius:9px;font-size:12px';list.appendChild(li)}
+  section.appendChild(list);
+  if(item.model){const p=document.createElement('p');p.textContent='Modelo no eFHUB — raio pernas '+item.model.leg+' · braços '+item.model.arm+' · salto '+item.model.jump+' · colisão '+item.model.collision+'; não comprova a edição no jogo.';p.style.fontSize='12px';section.appendChild(p)}
+  const info=document.createElement('p');info.textContent='Ímpetos exibidos no simulador: '+item.boosters_eFHUB.join(' / ')+'. Não é prova de ímpeto nativo, slot livre ou ímpeto equipado na conta.';info.style.fontSize='12px';section.appendChild(info);
+  const notice=document.createElement('p');notice.textContent='Níveis e PP originais do Scout PRO preservados. O nível visto no eFHUB ('+item.level_in_eFHUB+') não é aplicado à ficha.';notice.style.fontSize='12px';section.appendChild(notice);
+  if(item.identity_note){const p=document.createElement('p');p.textContent='ATENÇÃO: '+item.identity_note;p.style.cssText='font-size:12px;font-weight:bold;color:#ffd391';section.appendChild(p)}
+  const here=host.querySelector('.detail-header');
+  if(here)here.insertAdjacentElement('afterend',section);else host.prepend(section);
+ };
+ showScreenshotEvidence().catch(()=>{});
+}
+
 if(inCard){
  // V162: carregar o catálogo de ímpetos antes das recomendações dentro de cada ficha.
  const showSkillsUnavailable=()=>{
