@@ -162,6 +162,7 @@ function render(){
   const body=el('div','scout-v189-dock-options');
   bar.appendChild(overflow);overflow.append(summary,body);
   body.append(top,backup);
+  body.appendChild(el('span','scout-v189-build','Versão '+String(root.SCOUT_VERSION||'local')+' · '+(root.scoutDesktop?'Windows':root.Capacitor?.isNativePlatform?.()?'Android':'Web')));
   summary.setAttribute('aria-label','Mais opções de navegação e backup');
   const label=doc.getElementById('scout-update-label');
   if(label)label.title='Verifique a versão instalada no Android e no Windows. Dados pessoais editados localmente não são sincronizados automaticamente.';
