@@ -2171,9 +2171,15 @@
         "Aerial Superiority",
         "Long-reach Tackle"
       ],
-      "status": "revisao_pendente",
+      "status": "registro_incorreto_quarentena_historica_resolvido_v185",
       "source_type": "pesdb.net",
-      "evidence": "public_html_native_skills_by_exact_card_id"
+      "evidence": "public_html_native_skills_by_exact_card_id",
+      "resolucao_v185": {
+        "wrong_id_of_nico": "106780940205246",
+        "actual_rodri_id": "105779675902175",
+        "evidence": "web/SCOUT_V185_RODRI_225_EVIDENCE.json",
+        "skills_nico_must_never_promote": true
+      }
     }
   ],
   "strict_rule": "Only statuses card_id_nome_edicao are eligible for automated promotion, no inference by player-name alone",
