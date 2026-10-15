@@ -87,19 +87,23 @@ function run(){
  let expanded=false;try{expanded=host.localStorage.getItem(OLD_DETAILS_KEY)==='1'}catch(e){}
  more.addEventListener('click',()=>details(more.getAttribute('aria-expanded')!=='true'));
  details(expanded);
- Promise.all([
-  fetch('../SCOUT_V188_EFHUB_BOOSTERS_241.json').then(r=>{if(!r.ok)throw Error('boosters unavailable');return r.json()}),
-  fetch('../SCOUT_V184_EFHUB_241_COMPLETE.json').then(r=>{if(!r.ok)throw Error('physical unavailable');return r.json()})
- ]).then(([boosts,archive])=>{
-  const rows=sourceCandidates(cap,boosts.observations);
-  selectPhoto(rows);
-  const visual=(archive.visual_observations||[]).filter(x=>Number(x.candidate_cap)===cap);
-  const model=q('v188-model');
-  if(visual.length===1&&rows.length===1){
-   const m=visual[0],body=m.model_measures||{};
-   model.textContent='Altura '+(m.height_cm??'?')+' cm · peso '+(m.weight_kg??'?')+' kg · pé fraco: uso '+(m.weak_foot_usage||'?')+', precisão '+(m.weak_foot_accuracy||'?')+' · forma '+(m.form||'?')+' · lesão '+(m.injury_resistance||'?')+' · alcance de pernas '+(body.leg_coverage_radius??'?')+' cm · braços '+(body.arm_coverage_radius??'?')+' cm · colisão do tronco '+(body.trunk_collision??'?')+' cm. Valores observados, não Player ID oculto.';
-  }else model.textContent='As medidas desta edição ainda não foram transcritas com vínculo confiável. O print foi mantido para consulta, sem inventar ombro, pescoço ou alcance.';
- }).catch(()=>{showImage(null);q('v188-model').textContent='Dados adicionais indisponíveis offline nesta instalação. O PP e a ficha original permanecem preservados.'});
+ // V190: não deixar uma base física indisponível bloquear os DOIS ímpetos.
+ fetch('../SCOUT_V188_EFHUB_BOOSTERS_241.json')
+  .then(r=>{if(!r.ok)throw Error('boosters unavailable');return r.json()})
+  .then(boosts=>{selectPhoto(sourceCandidates(cap,boosts.observations))})
+  .catch(()=>{showImage(null);src.textContent='Base de prints indisponível nesta instalação; consulte a versão do aplicativo.'});
+ fetch('../SCOUT_V184_EFHUB_241_COMPLETE.json')
+  .then(r=>{if(!r.ok)throw Error('physical unavailable');return r.json()})
+  .then(archive=>{
+    const rows=(archive.visual_observations||[]).filter(x=>Number(x.candidate_cap)===cap);
+    const model=q('v188-model');
+    if(rows.length===1){
+     const m=rows[0],body=m.model_measures||{};
+     model.textContent='Altura '+(m.height_cm??'?')+' cm · peso '+(m.weight_kg??'?')+' kg · pé fraco: uso '+(m.weak_foot_usage||'?')+', precisão '+(m.weak_foot_accuracy||'?')+' · forma '+(m.form||'?')+' · lesão '+(m.injury_resistance||'?')+' · alcance de pernas '+(body.leg_coverage_radius??'?')+' cm · braços '+(body.arm_coverage_radius??'?')+' cm · colisão do tronco '+(body.trunk_collision??'?')+' cm. Valores observados, não Player ID oculto.';
+    }else model.textContent='As medidas desta edição ainda não foram transcritas com vínculo confiável. Os prints permanecem disponíveis; nenhuma medida foi inventada.';
+  }).catch(()=>{q('v188-model').textContent='Medidas físicas não disponíveis nesta instalação. O treinamento e os ímpetos permanecem independentes.'});
+ // Informa a qualquer módulo complementar que os elementos desta ficha existem.
+ document.dispatchEvent(new CustomEvent('scoutpro:profile-ready',{detail:{capture:cap}}));
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});
 else run();
