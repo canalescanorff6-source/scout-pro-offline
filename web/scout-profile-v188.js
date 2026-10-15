@@ -12,7 +12,34 @@ const shown=(n)=>PT[n]||n;
 function sourceCandidates(cap,rows){const matched=(rows||[]).filter(x=>Array.isArray(x.candidate_caps)&&x.candidate_caps.includes(Number(cap)));return [...new Map(matched.map(x=>[x.sha256||x.filename,x])).values()] }
 function boosterView(d,engine,rec,slotLocked){const r=rec?.booster?rec.booster(d,'posse',engine,slotLocked?'ausente':undefined):null;return {recommend:r?.primary||null,canEquip:r?.able===true&&!slotLocked,slotLocked:!!slotLocked,status:r?.equipStatus||'indisponivel'};}
 function progression(d){return LABELS.map((label,i)=>({label,level:Number(d.recommended_levels?.[i]||0)}));}
-if(typeof module!=='undefined'&&module.exports)module.exports={PT,norm,shown,sourceCandidates,boosterView,progression};
+/* V194 — move as orientações já cadastradas na ficha; não gera fatos nem duplica texto. */
+function moveGuideContent(doc,panel,holder){
+ const done={focus:false,gameplay:false};
+ if(!doc||!panel||!holder)return done;
+ const tasks=[
+  {source:'#foco .focus-banner',target:'.scout-v188-progress',title:'Foco da build',name:'focus',id:'scout-v194-focus',old:'#foco'},
+  {source:'#jogar .gameplay-tip',target:'.scout-v188-more',title:'Como jogar com esta carta',name:'gameplay',id:'scout-v194-gameplay',old:'#jogar'}
+ ];
+ for(const task of tasks){
+  const source=holder.querySelector(task.source),target=panel.querySelector(task.target);
+  if(!source||!target||!String(source.textContent||'').trim()||panel.querySelector('#'+task.id))continue;
+  const section=doc.createElement('section');section.id=task.id;section.className='scout-v194-guide scout-v194-'+task.name;
+  const title=doc.createElement('h3');title.textContent=task.title;
+  section.appendChild(title);
+  section.appendChild(source); // Reposiciona o nó original, preservando seu texto e identidade.
+  if(task.name==='gameplay'){
+   const note=doc.createElement('p');note.className='scout-v194-guide-source';
+   note.textContent='Orientação já registrada nesta ficha. Teste em partidas antes de considerar comprovado.';
+   section.appendChild(note);
+  }
+  target.insertAdjacentElement('beforebegin',section);
+  const navigation=holder.querySelector('.side-nav a[href="'+task.old+'"]');
+  if(navigation)navigation.setAttribute('href','#'+task.id);
+  done[task.name]=true;
+ }
+ return done;
+}
+if(typeof module!=='undefined'&&module.exports)module.exports={PT,norm,shown,sourceCandidates,boosterView,progression,moveGuideContent};
 const document=host?.document;if(!document||document.body?.dataset.page!=='detail')return;
 function run(){
  const holder=document.querySelector('.profile-content');
@@ -24,7 +51,7 @@ function run(){
  const panel=document.createElement('section');panel.id='scout-v188-principal';panel.className='scout-v188-principal';panel.setAttribute('aria-label','Ficha principal de Posse de Bola');
  panel.innerHTML=
  '<div class="scout-v188-head"><div><span class="scout-v188-kicker">SCOUT PRO · SUA CARTA</span><h2>Ficha principal · Posse de Bola</h2></div><span class="scout-v188-pp"></span></div>'+
- '<p class="scout-v188-intro">Primeiro o treino e os ímpetos da carta. Abaixo, suas cinco habilidades adicionais. Os relatórios técnicos ficam no final.</p>'+
+ '<p class="scout-v188-intro">Foco e treino da carta, ímpetos documentados e habilidades adicionais. Biotipo e orientações de uso vêm em seguida; relatórios completos são opcionais.</p>'+
  '<div class="scout-v188-progress"><h3>Treino registrado no Scout PRO</h3><div id="v188-train" class="scout-v188-train"></div></div>'+
  '<div class="scout-v188-boost"><h3>Ímpetos mostrados na sua captura</h3><p class="scout-v188-evidence">Dados vistos no eFHUB, não confirmação de qual ímpeto está equipado na conta.</p><div id="v188-choice" class="scout-v188-choice" hidden></div><div class="scout-v188-tiles"><div><small>ÍMPETO 1 · PRINT</small><strong id="v188-b1">Consultando print…</strong></div><div><small>ÍMPETO 2 · PRINT</small><strong id="v188-b2">Consultando print…</strong></div></div><p id="v188-source" class="scout-v188-source"></p>'+
  '<div class="scout-v188-best"><small>MELHOR COMPLEMENTO SUGERIDO · POSSE</small><strong id="v188-top-rec">Calculando…</strong><p id="v188-reason">A função, o estilo e o ímpeto registrado entram na avaliação.</p></div>'+
@@ -34,6 +61,7 @@ function run(){
  '<button type="button" class="scout-v188-more" aria-expanded="false">Mostrar análises avançadas (opcional)</button>';
  const header=holder.querySelector('.detail-header')||holder.querySelector('.mobile-profile');
  if(header)header.insertAdjacentElement('afterend',panel);else holder.prepend(panel);
+ moveGuideContent(document,panel,holder);
  const q=id=>panel.querySelector('#'+id);
  panel.querySelector('.scout-v188-pp').textContent=Number(d.pp)+' PP · '+String(d.shown_position||d.role_used||'Carta');
  const train=q('v188-train');
