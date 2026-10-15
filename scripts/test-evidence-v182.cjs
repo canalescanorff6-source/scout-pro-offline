@@ -12,8 +12,8 @@ assert.equal(a.cards.length,246);
 assert.equal(v.cartas.length,246);
 assert.deepEqual(v.totais.por_proveniencia,{
   legado_sem_proveniencia_individual:130,
-  base_externa_card_id:91,
-  pendente_identidade:4,
+  base_externa_card_id:92,
+  pendente_identidade:3,
   base_externa_multifatorial_id_nao_autenticado:21
 });
 assert.deepEqual(v.totais.slots_por_status_cadastrado,{
@@ -41,8 +41,8 @@ for(const c of v.cartas){
  else assert.notEqual(c.habilidades_status,'pendente_identidade');
 }
 assert.equal(seen.size,246);
-assert.deepEqual(v.pendencias_habilidades.map(x=>x.numero),[50,151,181,225]);
-for(const n of [50,151,181,225])
+assert.deepEqual(v.pendencias_habilidades.map(x=>x.numero),[50,151,181]);
+for(const n of [50,151,181])
  assert(!auditByNo.get(n).habilidades_nativas,'Sem promoção indevida de habilidades da carta '+n);
 const r24=v.cartas.find(x=>x.numero===24);
 assert.equal(r24.impeto_fixo_registrado,"Striker's Instinct +4");
@@ -54,4 +54,4 @@ assert.equal(r81.impeto_fixo_registrado,'PENDENTE');
 for(const x of v.pendencias_habilidades){
  assert(!('skills' in x),'Não transportar habilidades candidatas para comprovadas');
 }
-console.log('V183 OK: 246 cartas auditadas; 242 listas documentadas (130 legado, 91 ID externo, 21 multifator); 4 pendentes; slots e boosters separados de confirmação direta.');
+console.log('V183 OK: 246 cartas auditadas; 243 listas documentadas (130 legado, 92 ID externo, 21 multifator); 3 pendentes; slots e boosters separados de confirmação direta.');
