@@ -15,9 +15,12 @@ OUT = ROOT / "artifacts" / "visual-qa"
 OUT.mkdir(parents=True, exist_ok=True)
 URL = os.environ.get("SCOUT_VISUAL_BASE", "http://127.0.0.1:8765").rstrip("/")
 SCREENS = [
+    ("mobile_320", 320, 700, True),
     ("mobile_360", 360, 800, True),
     ("mobile_390", 390, 844, True),
+    ("mobile_412", 412, 915, True),
     ("windows_1366", 1366, 768, False),
+    ("windows_1920", 1920, 1080, False),
 ]
 SCREENS_SELECTORS = {
     "catalog": [
@@ -27,6 +30,7 @@ SCREENS_SELECTORS = {
     ],
     "detail": [
         "body[data-page='detail']", ".mobile-profile",
+        "#scout-card-navigator", "#scout-v197-edition", ".detail-header",
         "#scout-v188-principal", "#scout-v194-focus",
         "#scout-v162", "#scout-v189-biotype", "#scout-v194-gameplay",
     ],
@@ -89,6 +93,9 @@ def run():
                     problems.append(f"{name}: home precisa de 4 atalhos, recebeu {shortcuts}")
                 if home["horizontalOverflow"] > 8:
                     problems.append(f"{name}: catálogo com overflow horizontal de {home['horizontalOverflow']} px")
+                library = home["elements"].get("#catalogo") or {}
+                if mobile and library.get("y", 9999) > (700 if width <= 340 else 645):
+                    problems.append(f"{name}: catálogo começa muito abaixo da primeira tela: y={library.get('y')}")
                 page.screenshot(path=str(OUT / f"{name}_catalog.png"), full_page=False, animations="disabled")
 
                 errors.clear()
@@ -107,8 +114,22 @@ def run():
                         problems.append(f"{name}: habilidade PT-BR não exibida: {expected}")
                 if "Heading" in names or "Long-Range Curler" in names:
                     problems.append(f"{name}: inglês legado ainda visível na lista principal")
+                page.wait_for_selector("#scout-v197-edition", state="attached", timeout=15000)
+                is_collapsed = page.locator("#scout-v197-edition").evaluate("(e) => !e.open")
+                if mobile and not is_collapsed:
+                    problems.append(f"{name}: edição deve começar recolhida no celular")
+                if not mobile and is_collapsed:
+                    problems.append(f"{name}: origem e campanha devem aparecer no Windows")
+                if mobile:
+                    page.locator("#scout-v197-edition > summary").click()
+                    if not page.locator("#scout-v197-edition").evaluate("(e) => e.open && !!e.querySelector('.detail-sub')"):
+                        problems.append(f"{name}: a origem da carta desapareceu ao expandir")
+                    page.locator("#scout-v197-edition > summary").click()
+                    page.evaluate("window.scrollTo(0, 0)")
                 page.wait_for_timeout(650)
                 detail = metrics(page, SCREENS_SELECTORS["detail"])
+                detail["edition_collapsed_by_default"] = is_collapsed
+                detail["navigator_buttons"] = page.locator("#scout-card-navigator button").count()
                 detail["native_skills_ptbr"] = names
                 detail["errors"] = list(errors)
                 detail["direct_children"] = page.evaluate("""() => [...document.querySelectorAll(".profile-content > *")].map(e=>({id:e.id||"",className:typeof e.className==="string"?e.className:"",visible:getComputedStyle(e).display!=="none"}))""")
@@ -118,6 +139,17 @@ def run():
                     problems.append(f"{name}: guia / habilidades não unificados na ficha")
                 if detail["horizontalOverflow"] > 8:
                     problems.append(f"{name}: ficha com overflow horizontal de {detail['horizontalOverflow']} px")
+                if detail["navigator_buttons"] != 3:
+                    problems.append(f"{name}: navegação entre cartas precisa de 3 controles")
+                main = detail["elements"].get("#scout-v188-principal") or {}
+                nav = detail["elements"].get("#scout-card-navigator") or {}
+                if mobile and main.get("y", 9999) > (640 if width <= 340 else 590):
+                    problems.append(f"{name}: ficha principal começa muito abaixo: y={main.get('y')}")
+                if mobile and nav.get("height", 9999) > 94:
+                    problems.append(f"{name}: navegador de cartas excessivamente alto: {nav.get('height')} px")
+                focus = detail["elements"].get("#scout-v194-focus") or {}
+                if mobile and focus.get("y", 9999) > (740 if width <= 340 else 710):
+                    problems.append(f"{name}: foco competitivo não aparece cedo: y={focus.get('y')}")
                 if mobile:
                     dock = detail.get("dock") or {}
                     if dock.get("height", 999) > 90 or dock.get("direction") != "row" or dock.get("bottomGap", 999) > 35:

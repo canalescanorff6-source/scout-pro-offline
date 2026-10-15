@@ -15,6 +15,9 @@ const v189Js=document.createElement('script');v189Js.src=v189Root+'scout-ui-v189
 const v190Css=document.createElement('link');v190Css.rel='stylesheet';v190Css.href=v189Root+'scout-polish-v190.css';document.head.appendChild(v190Css);
 // V192: acabamento aprovado sobre a base V189/V190, na mesma web/ das duas plataformas.
 const v192Css=document.createElement('link');v192Css.rel='stylesheet';v192Css.href=v189Root+'scout-visual-v192.css';document.head.appendChild(v192Css);
+// V197: mesma primeira tela premium em Android e Windows, preservando dados originais.
+const v197Css=document.createElement('link');v197Css.rel='stylesheet';v197Css.href=v189Root+'scout-finish-v197.css';document.head.appendChild(v197Css);
+const v197Js=document.createElement('script');v197Js.src=v189Root+'scout-finish-v197.js';document.head.appendChild(v197Js);
 // V196: renderizar nomes oficiais PT-BR sem modificar dados das cartas nem o motor.
 const v196Skills=document.createElement('script');v196Skills.src=v189Root+'skill-names-v196.js';document.head.appendChild(v196Skills);
 if(inCard){
