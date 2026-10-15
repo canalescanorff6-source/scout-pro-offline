@@ -35,13 +35,19 @@ function render(){
   const first=bar.querySelector('div:first-child');
   if(first)first.appendChild(status);
   getJson('scout-build-info.json').then(info=>{
-   status.textContent='v'+info.version+' · '+platform+' · '+String(info.git_revision||'?').slice(0,7);
+   const shortHash=String(info.bundle_fingerprint||'').slice(0,10);
+   status.textContent='v'+info.version+' · '+platform+' · '+String(info.git_revision||'?').slice(0,7)+(shortHash?' · '+shortHash:'');
    status.title='Revisão '+String(info.git_revision)+' | Interface '+info.bundle_fingerprint+' | Android e Windows devem indicar a mesma revisão na mesma release.';
    const chip=doc.querySelector('.scout-v189-build');
    if(chip)chip.textContent=status.textContent;
    if(desktop&&typeof root.scoutDesktop.version==='function'){
     root.scoutDesktop.version().then(actual=>{
-     if(String(actual)!==String(info.version)){status.title+=' | AVISO: pacote Windows '+actual+' não corresponde à interface '+info.version;status.dataset.mismatch='true'}
+     if(String(actual)!==String(info.version)){
+      status.title+=' | AVISO: pacote Windows '+actual+' não corresponde à interface '+info.version;
+      status.dataset.mismatch='true';
+      status.textContent+=' · Versões divergentes';
+      const build=doc.querySelector('.scout-v189-build');if(build)build.textContent=status.textContent;
+     }
     }).catch(()=>{});
    }
   }).catch(()=>{});
@@ -104,10 +110,18 @@ function render(){
   const body=el('div','scout-v189-measures','Carregando registros disponíveis…');
   const legend=el('p','scout-v189-legend','Medidas físicas não confirmam um Player ID oculto ou movimentos exclusivos.');
   area.append(h,body,legend);before.appendChild(area);
-  Promise.all([getJson('SCOUT_V101_MODELO_CORPORAL.json'),getJson('SCOUT_V184_EFHUB_241_COMPLETE.json'),getJson('SCOUT_V189_CORPO_EXTRAS.json')])
-  .then(([base,archive,extra])=>{
+  // V191: uma fonte física ausente não deve apagar registros válidos das outras.
+  Promise.allSettled([getJson('SCOUT_V101_MODELO_CORPORAL.json'),getJson('SCOUT_V184_EFHUB_241_COMPLETE.json'),getJson('SCOUT_V189_CORPO_EXTRAS.json')])
+  .then(results=>{
+    const [base,archive,extra]=results.map(r=>r.status==='fulfilled'?r.value:null);
+    const loaded=results.filter(r=>r.status==='fulfilled').length;
     const data=physicalInfo(c,base,archive);
     body.replaceChildren();
+    if(loaded<3){
+     body.appendChild(el('p','scout-v189-notrans',loaded?
+      'Algumas fontes físicas estão indisponíveis. Exibindo somente os registros carregados, sem completar medidas por suposição.':
+      'As três fontes físicas estão indisponíveis nesta instalação. Treino e ímpetos permanecem independentes.'));
+    }
     const renderGroup=(title,items,source)=>{
       const panel=el('section','scout-v189-measure-group');
       panel.appendChild(el('strong','',title));
@@ -123,7 +137,7 @@ function render(){
     if(data.verified){
      const e=data.verified,m=e.modelo_corporal||{};
      renderGroup('Medidas associadas ao Card ID',[
-      ['Altura',e.altura_cm+' cm'],['Peso',e.peso_kg+' kg'],['Pé principal',e.pe_dominante],
+      ['Altura',e.altura_cm==null?null:e.altura_cm+' cm'],['Peso',e.peso_kg==null?null:e.peso_kg+' kg'],['Pé principal',e.pe_dominante],
       ['Perna',m.comprimento_perna],['Alcance da perna',m.alcance_perna_cm==null?null:m.alcance_perna_cm+' cm'],
       ['Colisão tronco',m.colisao_tronco_cm==null?null:m.colisao_tronco_cm+' cm'],
       ['Uso pé fraco',e.uso_perna_ruim],['Precisão pé fraco',e.precisao_perna_ruim]
@@ -141,7 +155,7 @@ function render(){
       ['Colisão tronco',m.trunk_collision==null?null:m.trunk_collision+' cm']
      ],'Fonte: '+o.filename+' · a edição não é confirmada apenas pelo nome.');
     }
-    const extended=(extra.entries||[]).find(x=>Number(x.cap)===Number(c.capture));
+    const extended=(extra?.entries||[]).find(x=>Number(x.cap)===Number(c.capture)&&normal(x.player)===normal(c.name));
     if(extended){
       const dims=extended.dimensions||{},derived=extended.derived_measurements||{};
       renderGroup('Anatomia detalhada observada no eFHUB',[
