@@ -45,3 +45,19 @@ body[data-page="catalog"] .search-input,body[data-page="catalog"] .select{border
 @media(prefers-reduced-motion:reduce){
  body[data-page="catalog"] .scout-v189-tile:active{transform:none}
 }
+
+/* Ficha definitiva: arte existente -> treino -> 2 impetos -> 5 skills -> biotipo. */
+body[data-page="detail"] .scout-v192-unified-skills #scout-v162{margin:12px 0;padding:13px;border:1px solid var(--scout-192-line);background:#0b2535;border-radius:13px;scroll-margin-top:80px}
+body[data-page="detail"] .scout-v192-unified-skills #scout-v162>h2{font-size:17px}
+body[data-page="detail"] .scout-v192-unified-skills #scout-v162 .v162-list{grid-template-columns:1fr}
+body[data-page="detail"] .scout-v192-unified-skills #scout-v162 .v162-list li{padding:11px 12px;border-radius:11px}
+body[data-page="detail"] .scout-v192-unified-skills .scout-v188-skills-link{display:none}
+body[data-page="detail"] .scout-v192-unified-skills #scout-v162 .v162-modes button{min-height:44px}
+@media(min-width:1025px){
+ body[data-page="detail"] .scout-v192-unified-skills #scout-v162 .v162-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+ body[data-page="detail"] .scout-v192-unified-skills #scout-v162{padding:11px;margin:10px 0}
+ body[data-page="detail"] .scout-v192-unified-skills #scout-v162 .v162-list{grid-template-columns:1fr}
+ body[data-page="detail"] .scout-v192-unified-skills #scout-v162 .v162-modes button{flex:1 1 120px}
+}
