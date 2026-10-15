@@ -43,8 +43,8 @@ for(const [raw,key] of Object.entries({
  'comandante da defesa go':'captain','controle com a sola':'sole',
  'passe de primeira':'onepass','passe em profundidade':'through',
  'passe a rasgar':'through','bloqueador':'blocker',
- 'superioridade aerea':'aerial','interceptacao':'intercept',
- 'chute ascendente':'longshot'
+ 'superioridade aerea':'aerial','interceptacao':'intercept'
+
 }))if(!aliasMap.has(normal(raw)))aliasMap.set(normal(raw),key);
 const keyFor=s=>aliasMap.get(normal(s))||'';
 const splitSkills=s=>Array.isArray(s)?s:String(s||'').split(/[;\n,]+/).map(x=>x.trim()).filter(Boolean);
