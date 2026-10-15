@@ -4,7 +4,7 @@
 O usuário enviou um vídeo de cerca de 104 segundos (480×1068, 31 fps) mostrando o aplicativo Android V187. A carta demonstrada é **#001 Daniele Massaro**. A interface começava com um quadro abstrato «Minha ficha principal · Posse de Bola» e informações de ímpetos/habilidades reapareciam em módulos V162, V74, V68, V98 e laboratório. A arte e o nome só apareciam após longa navegação. Havia referências ao segundo «SLOT SELECIONÁVEL +1» apesar de **o print da carta mostrar «Fisicalidade +3» e «Instinto artilheiro +1»**.
 
 ## Origem e tratamento correto dos boosters
-O arquivo `Screenshots.rar` contém 241 imagens JPEG eFHUB. Todas têm **dois campos visíveis na faixa de ímpetos**. Foi feita leitura por recorte padronizado das duas caixas e transcrição automática, com checagens contra as 15 observações V184 antes publicadas e inspeção visual amostral dos casos especiais. O arquivo `web/SCOUT_V188_EFHUB_BOOSTERS_241.json` contém **241 pares (482 campos)**, nome do arquivo e SHA256, candidatos de associação e estado de revisão.
+O arquivo `Screenshots.rar` contém 241 imagens JPEG eFHUB. Todas têm **dois campos visíveis na faixa de ímpetos**. Existem 241 arquivos e 240 hashes distintos: `Sandro_Tonali_efhub.jpg` e `Sandro_Tonali_efhub_0.jpg` são cópias idênticas, desduplicadas na interface. Foi feita leitura por recorte padronizado das duas caixas e transcrição automática, com checagens contra as 15 observações V184 antes publicadas e inspeção visual amostral dos casos especiais. O arquivo `web/SCOUT_V188_EFHUB_BOOSTERS_241.json` contém **241 pares (482 campos)**, nome do arquivo e SHA256, candidatos de associação e estado de revisão.
 
 * **Massaro #001:** `Fisicalidade +3` + `Instinto artilheiro +1`.
 * **Oblak Show Time #170:** `Goleiro +3` + `Goleiro +1`.
