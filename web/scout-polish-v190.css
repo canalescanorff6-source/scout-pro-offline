@@ -1,0 +1,84 @@
+/* SCOUT PRO V190 — refinamento premium responsivo compartilhado entre Electron, Capacitor e Web.
+   Apenas apresentacao: preserva DOM, links, dados e acessibilidade do V189/V188. */
+:root{
+ --scout-190-border:rgba(138,216,218,.20);
+ --scout-190-top:#102c40;
+ --scout-190-bottom:#091c2d;
+ --scout-190-strong:#effcff;
+ --scout-190-soft:#accbd5;
+ --scout-190-primary:#a4efd5;
+ --scout-190-gold:#f0d499;
+}
+body{font-feature-settings:"tnum" 1;-webkit-tap-highlight-color:transparent}
+a,button,summary,select,input{touch-action:manipulation}
+a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,input:focus-visible{
+ outline:3px solid #f4d591;outline-offset:2px;
+}
+.scout-v189-measure-group,.scout-v188-progress,.scout-v188-boost,.scout-v188-body{
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+}
+.scout-v189-measure-grid{align-items:stretch}
+.scout-v189-measure-item b{line-height:1.48}
+#scout-v188-principal .scout-v188-kicker{letter-spacing:.075em}
+#scout-v188-principal .scout-v188-intro{max-width:67ch}
+#scout-v188-principal .scout-v188-tiles strong{line-height:1.36}
+#scout-v188-principal .scout-v188-best{position:relative;overflow:hidden}
+#scout-v188-principal .scout-v188-best:before{
+ content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(#f3d995,#78e7cb);
+}
+#scout-v162 .v162-list li{transition:border-color .15s ease,background-color .15s ease}
+#scout-v162 .v162-list li:focus-within{border-color:#8cddd5}
+.scout-v189-tile,.player-card{transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+ .scout-v189-tile:hover,.player-card:hover{transform:translateY(-2px);border-color:rgba(139,236,209,.6);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+}
+@media(min-width:1025px){
+ body[data-page="catalog"] .hero{border-radius:24px}
+ body[data-page="catalog"] .player-card{border-radius:17px}
+ body[data-page="detail"] .profile-sidebar .side-card,
+ body[data-page="detail"] .profile-content>.detail-header{
+  border-radius:18px;
+ }
+ body[data-page="detail"] #scout-v188-principal{padding:20px;border-color:#3b7482}
+ body[data-page="detail"] #scout-v188-principal .scout-v188-train{gap:9px}
+ body[data-page="detail"] .scout-v189-measure-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:720px){
+ body[data-page="catalog"] .hero{background:linear-gradient(145deg,#12394c 0%,#0d2436 68%,#0c1d30 100%)}
+ body[data-page="catalog"] .scout-v189-home{margin-top:7px}
+ body[data-page="catalog"] .scout-v189-tile{
+  min-height:72px;align-items:center;background:linear-gradient(145deg,#183e4c,#102b3d);
+  border-color:rgba(152,218,220,.30);
+ }
+ body[data-page="catalog"] .scout-v189-quick{gap:8px}
+ body[data-page="catalog"] .scout-v189-intro{color:#b8d7df}
+ body[data-page="catalog"] .scout-v189-extra summary{background:rgba(12,37,51,.66)}
+ body[data-page="catalog"] .player-card{background:linear-gradient(155deg,#112b3d,#0b1a2b)}
+ body[data-page="catalog"] .player-main{min-width:0}
+ body[data-page="catalog"] .player-name{overflow-wrap:anywhere}
+ body[data-page="catalog"] .cards{gap:11px}
+ body[data-page="catalog"] .filterline{-webkit-overflow-scrolling:touch}
+ body[data-page="detail"] .mobile-profile{overflow:hidden}
+ body[data-page="detail"] .profile-content>.detail-header{margin-top:2px}
+ body[data-page="detail"] #scout-v188-principal{padding:13px}
+ body[data-page="detail"] #scout-v188-principal h2{font-size:18px}
+ body[data-page="detail"] .scout-v188-train-chip{min-height:27px;display:inline-flex;align-items:center}
+ body[data-page="detail"] .scout-v188-tiles>div{padding:10px 9px}
+ body[data-page="detail"] .scout-v188-best{margin-top:9px}
+ body[data-page="detail"] .scout-v188-body{margin-bottom:10px}
+ body[data-page="detail"] .scout-v189-measure-grid{gap:6px}
+ body[data-page="detail"] .scout-v189-measure-item{padding:9px}
+ #scout-app-bar{backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+ #scout-app-bar .scout-v189-dock-more>summary{border:1px solid #426e77}
+}
+@media(max-width:390px){
+ body[data-page="catalog"] .scout-v189-tile{padding:10px 7px}
+ body[data-page="catalog"] .scout-v189-tile strong{font-size:11px}
+ body[data-page="catalog"] .scout-v189-tile small{font-size:9px}
+ body[data-page="detail"] .scout-v188-tiles{gap:6px}
+ body[data-page="detail"] .scout-v188-tiles strong{font-size:12px}
+ #scout-v188-principal .scout-v188-best strong{font-size:17px}
+}
+@media(prefers-reduced-motion:reduce){
+ .scout-v189-tile,.player-card,#scout-v162 .v162-list li{transition:none!important;transform:none!important}
+}
