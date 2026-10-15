@@ -6,6 +6,8 @@ on:
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -41,6 +43,7 @@ jobs:
   windows:
     name: Windows | Instalador NSIS
     needs: validate
+    if: github.event_name != 'pull_request'
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -87,6 +90,7 @@ jobs:
   android:
     name: Android | APK e assinatura persistente
     needs: validate
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     outputs:
       signed: ${{ steps.keys.outputs.signed }}
