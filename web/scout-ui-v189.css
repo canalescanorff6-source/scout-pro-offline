@@ -1,0 +1,90 @@
+/* Scout PRO V189 — premium mobile-first, preservando a grade rica no desktop. */
+:root{--scout-v189-ink:#ebf7f9;--scout-v189-muted:#a5c1d0;--scout-v189-accent:#88efd3;--scout-v189-gold:#edc986;--scout-v189-surface:#102739}
+.scout-v189-home{display:none}
+.scout-v189-dock-more{display:contents}
+.scout-v189-dock-options{display:contents}
+.scout-v189-dock-more>summary{display:none}
+.scout-v189-measure-group{background:rgba(9,24,38,.7);padding:11px 12px;border:1px solid #315666;border-radius:11px;margin:9px 0}
+.scout-v189-measure-group>strong{color:var(--scout-v189-accent);font-size:12px}
+.scout-v189-measure-group>p,.scout-v189-notrans,.scout-v189-legend{font-size:10px;line-height:1.55;color:#a9c6d6;margin:8px 0 0}
+.scout-v189-measure-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:9px}
+.scout-v189-measure-item{border-radius:8px;border:1px solid #33576b;background:#0a2030;padding:9px 7px;min-width:0}
+.scout-v189-measure-item small{display:block;color:#a4c2cb;font-size:10px}
+.scout-v189-measure-item b{display:block;font-size:12px;margin-top:4px;color:#e8f5fb;overflow-wrap:anywhere}
+.scout-v189-biotipo h4{font-size:13px;margin:10px 0;color:#a6f2db}
+.scout-v189-version{display:block;color:#90b0bd;font-size:10px;margin-top:3px}
+.scout-v189-build{font-size:10px;color:#a1c9cc}
+/* Interface de entrada compacta, sem eliminar funcionalidades nem esconder informação no PC. */
+@media(max-width:720px){
+ body[data-page="catalog"]{background:radial-gradient(circle at 20% 0%,#143f4b 0%,transparent 38%),linear-gradient(#071624,#0b1927 26%,#091724)}
+ body[data-page="catalog"] .wrap{padding-inline:15px}
+ body[data-page="catalog"] .hero{display:block;background:linear-gradient(151deg,#173b4b,#0d2538);border:1px solid #36616e;min-height:0;border-radius:20px;margin:11px 0 14px;box-shadow:0 8px 32px #0004;overflow:hidden}
+ body[data-page="catalog"] .hero-text{padding:17px 16px 14px}
+ body[data-page="catalog"] .hero .eyebrow{display:none}
+ body[data-page="catalog"] .hero h1{font-size:clamp(24px,7vw,30px);margin:1px 0 4px;letter-spacing:-.035em;max-width:none}
+ body[data-page="catalog"] .hero h1 br{display:none}
+ body[data-page="catalog"] .hero h1 em{font-style:normal;color:#a8efd8}
+ body[data-page="catalog"] .hero-text>p,.hero-text>.hero-actions{display:none!important}
+ .scout-v189-home{display:block}
+ .scout-v189-eyebrow{font-size:10px;letter-spacing:.09em;color:#a6e5d8;font-weight:900;margin-top:10px}
+ .scout-v189-intro{color:#bcd5e0;font-size:12px!important;line-height:1.55;margin:8px 0 12px!important;max-width:490px}
+ .scout-v189-quick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:8px 0}
+ .scout-v189-tile{display:flex;gap:10px;align-items:center;min-height:71px;padding:11px 9px;background:linear-gradient(140deg,#133949,#102d3f);border:1px solid #386776;border-radius:13px;text-decoration:none;box-shadow:inset 0 1px #ffffff10}
+ .scout-v189-mark{width:30px;height:33px;display:grid;place-items:center;border-radius:10px;color:#d4ffe9;background:linear-gradient(150deg,#27776a,#185346);font-size:17px;flex:0 0 auto}
+ .scout-v189-tile-content{min-width:0;display:block}
+ .scout-v189-tile strong{font-size:12px;display:block;color:#f2fbff;line-height:1.25;overflow-wrap:anywhere}
+ .scout-v189-tile small{display:block;color:#a0c1c9;font-size:10px;line-height:1.35;margin-top:4px}
+ .scout-v189-extra{margin-top:11px;border-top:1px solid #3a5b67;padding-top:11px;color:#a9d9d4}
+ .scout-v189-extra summary{list-style:none;cursor:pointer;padding:10px 8px;border:1px solid #446e77;border-radius:11px;font-size:12px;font-weight:800;color:#ccece1;text-align:center}
+ .scout-v189-extra summary::-webkit-details-marker{display:none}
+ .scout-v189-extra-links{display:grid;gap:8px;margin:12px 0}
+ .scout-v189-extra-links a{color:#cce9f2;background:#103448;border:1px solid #2b566c;border-radius:9px;padding:11px;text-decoration:none;font-size:12px}
+ .scout-v189-about{display:block;margin:10px auto 2px;padding:5px 8px;background:transparent;border:0;font-size:11px;text-decoration:underline;text-underline-offset:4px;color:#96baba;cursor:pointer}
+ body[data-page="catalog"] .hero-visual,.stats-strip,.lab-intro,.v68-method{display:none!important}
+ body.scout-v189-method-open .stats-strip{display:grid!important}
+ body.scout-v189-method-open .lab-intro{display:flex!important}
+ body.scout-v189-method-open .v68-method{display:block!important}
+ body[data-page="catalog"] .toolbar{padding-top:13px}
+ body[data-page="catalog"] .section-top{gap:5px;margin-bottom:13px}
+ body[data-page="catalog"] .section-desc{font-size:11px;line-height:1.45}
+ body[data-page="catalog"] .tools{gap:7px}
+ body[data-page="catalog"] .filterline{gap:5px;overflow-x:auto;padding-bottom:7px;scrollbar-width:thin}
+ body[data-page="catalog"] .filterline button{flex-shrink:0}
+ body[data-page="catalog"] .cards{gap:10px;grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-page="catalog"] .player-card{border-radius:15px;overflow:hidden;box-shadow:0 7px 17px #0005}
+ body[data-page="catalog"] .card-art{height:clamp(152px,41vw,197px)}
+ body[data-page="catalog"] .card-art img{max-height:92%;max-width:90%}
+ body[data-page="catalog"] .player-main{padding:11px 10px 12px}
+ body[data-page="catalog"] .player-name{font-size:13px}
+ body[data-page="catalog"] .player-version{font-size:10px}
+ body[data-page="catalog"] .player-bottom{margin-top:10px}
+ body[data-page="detail"] .profile-content > .detail-header{padding:6px 0 10px}
+ body[data-page="detail"] .detail-header h1{font-size:26px;margin:10px 0}
+ body[data-page="detail"] .detail-sub{font-size:11px;line-height:1.5}
+ body[data-page="detail"] .mobile-profile{padding:10px;border:1px solid #396576;border-radius:17px;background:linear-gradient(120deg,#183848,#0e2332);box-shadow:0 7px 24px #0004}
+ body[data-page="detail"] .detail-lead{margin-top:8px}
+ body[data-page="detail"] .hero-kpi{min-width:0;flex:1;padding:9px 7px}
+ body[data-page="detail"] .scout-v188-principal{border-radius:18px;padding:14px}
+ body[data-page="detail"] #scout-v188-principal{background:linear-gradient(145deg,#123342,#102638 70%,#102b3e);border-color:#3a7b82;box-shadow:0 10px 26px #0004}
+ body[data-page="detail"] .scout-v188-progress,body[data-page="detail"] .scout-v188-boost,body[data-page="detail"] .scout-v188-body{border-radius:13px;background:#0a2333}
+ body[data-page="detail"] .scout-v188-best{background:linear-gradient(125deg,#1b4b42,#103347);border:1px solid #66ad98}
+ body[data-page="detail"] .scout-v188-skills-link,body[data-page="detail"] .scout-v188-more{border-radius:12px}
+ .scout-v189-measure-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #scout-v189-version{display:none}
+ /* Dock com quatro ações principais e duas ações preservadas no menu Mais. */
+ #scout-app-bar{box-sizing:border-box;width:calc(100% - 18px)!important;max-width:530px;border-radius:16px;padding:6px!important;gap:5px!important;background:#091a2bf5;border-color:#477786;box-shadow:0 8px 24px #0008;z-index:12000}
+ #scout-app-bar>div:first-child{display:none!important}
+ #scout-app-bar .scout-page-actions,#scout-app-bar .app-actions{display:contents!important}
+ #scout-app-bar #scout-top,#scout-app-bar #scout-backup{display:block!important;width:100%!important;min-height:43px}
+ #scout-app-bar .scout-v189-dock-more{display:block;flex:1 1 0;min-width:0;position:relative;align-self:stretch}
+ #scout-app-bar .scout-v189-dock-more>summary{list-style:none;display:flex;justify-content:center;align-items:center;width:100%;height:100%;min-height:46px;box-sizing:border-box;padding:7px 4px;background:#254354;border-radius:10px;color:#e4f7f3;font-size:11px;font-weight:800;cursor:pointer}
+ #scout-app-bar .scout-v189-dock-more>summary::-webkit-details-marker{display:none}
+ #scout-app-bar .scout-v189-dock-options{display:none}
+ #scout-app-bar .scout-v189-dock-more[open] .scout-v189-dock-options{display:grid!important;gap:7px;position:absolute;bottom:calc(100% + 10px);right:0;width:min(220px,80vw);padding:9px;background:#10293a;border:1px solid #467583;border-radius:12px;box-shadow:0 9px 30px #0009}
+ #scout-app-bar .scout-v189-dock-options button{background:#25465b!important;color:#eef6ff!important}
+ #scout-app-bar #scout-back,#scout-app-bar #scout-home,#scout-app-bar #scout-update{flex:1 1 0;min-width:0;min-height:46px}
+ body{padding-bottom:calc(94px + env(safe-area-inset-bottom,0px))!important}
+}
+@media(min-width:721px) and (max-width:1024px){.scout-v189-measure-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:360px){.scout-v189-tile{padding:9px 6px;gap:6px}.scout-v189-mark{width:25px;font-size:15px}.scout-v189-tile strong{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.scout-v189-tile{animation:none!important}}
