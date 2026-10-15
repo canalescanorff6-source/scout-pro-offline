@@ -735,15 +735,15 @@
     {
       "cap": 225,
       "name": "Rodri",
-      "card_id_registered": "106780940205246",
+      "card_id_registered": "105779675902175",
       "edition_registered": "Highlight — Back in the Game 14 Aug '25 — Rodri",
-      "status": "pendente_de_identificacao",
-      "reason": "Card ID atual resolve Nico O'Reilly. Fonte da edição correta Rodri do mesmo pacote: ID candidato 105779675902175; não substituir sem autenticar.",
+      "status": "resolvido_v185_por_correspondencia_externa_nao_verificado_in_game",
+      "reason": "V185: Card ID anterior pertencia a Nico O'Reilly. Card ID 105779675902175 identificado por arte Manchester B, skills, 190cm, pacote Back in the Game e 52 PP. Ainda sem leitura numérica no jogo.",
       "candidates": [
         "https://pesdb.net/efootball/players/rodri-105779675902175",
         "https://pesdb.net/efootball/players/nico-o-reilly-106780940205246"
       ],
-      "additional_evidence": "Rodri Highlight 'Back in the Game 14 Aug 2025' da fonte tem 52 PP, igual à carta cadastrada; ID candidato 105779675902175, porém o campo ID atual aponta para outro jogador. Preservar ID original até conferir na conta.",
+      "additional_evidence": "Rodri Highlight 'Back in the Game 14 Aug 2025' da fonte tem 52 PP, igual à carta cadastrada; ID candidato 105779675902175, porém o campo ID atual aponta para outro jogador. Preservar ID original até conferir na conta. Resolvido no banco do projeto por cruzamento de print eFHUB com PESDB/PESMaster, preservado o estado original do registro na fonte histórica.",
       "prioritized_candidate": "https://pesdb.net/efootball/players/rodri-105779675902175"
     }
   ],
