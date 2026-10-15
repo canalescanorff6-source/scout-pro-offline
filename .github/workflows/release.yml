@@ -265,8 +265,19 @@ jobs:
           set -euo pipefail
           test -s assets/scout-build-info.json
           test -s android-verify/scout-build-info.json
-          cmp assets/scout-build-info.json android-verify/scout-build-info.json
-          echo 'PARIDADE CONFIRMADA: Android e Windows possuem a mesma versão, commit e fingerprint da interface.'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          windows=json.loads(Path('assets/scout-build-info.json').read_text(encoding='utf-8-sig'))
+          android=json.loads(Path('android-verify/scout-build-info.json').read_text(encoding='utf-8-sig'))
+          keys=('schema','version','git_revision','bundle_fingerprint','source_count')
+          different=[key for key in keys if windows.get(key)!=android.get(key)]
+          if different:
+              raise SystemExit('PARIDADE INVALIDA: divergencias em '+', '.join(different))
+          if windows.get('git_revision') != '${{ github.sha }}':
+              raise SystemExit('PARIDADE INVALIDA: commit de origem nao corresponde ao build.')
+          print('PARIDADE CONFIRMADA: Windows e Android sao',windows['version'],windows['git_revision'][:12],windows['bundle_fingerprint'])
+          PY
       - name: Verificar instalador e manifesto de atualização Windows
         shell: bash
         run: |

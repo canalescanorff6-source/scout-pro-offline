@@ -47,7 +47,7 @@ const capacitor=JSON.parse(fs.readFileSync(path.join(root,'capacitor.config.json
 assert.equal(capacitor.webDir,'web');
 const wf=fs.readFileSync(path.join(root,'.github/workflows/release.yml'),'utf8');
 assert.equal((wf.match(/run: npm run bundle:stamp/g)||[]).length,2,'Stamp deve rodar Windows e Android');
-assert(wf.includes('cmp assets/scout-build-info.json android-verify/scout-build-info.json'),'CI deve impedir publicação de builds diferentes');
+assert(wf.includes("keys=('schema','version','git_revision','bundle_fingerprint','source_count')")&&wf.includes('different=[key for key in keys'),'CI deve impedir publicação de builds com diferenças sem confundir quebra de linha');
 assert(wf.includes('scout-pro-android-teste')&&wf.includes('dist/scout-build-info.json'));
 assert(!wf.includes('windows-only-ui'),'Não permitir branches de UI por OS');
 cp.execFileSync(process.execPath,[path.join(root,'scripts/stamp-bundle-v189.cjs')],{cwd:root,stdio:'pipe'});
