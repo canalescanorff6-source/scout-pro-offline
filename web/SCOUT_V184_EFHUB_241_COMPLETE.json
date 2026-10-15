@@ -48,9 +48,12 @@
     "snapshot_crosswalk_note": "Unambiguous name-only means unique roster name and single screenshot, NOT authenticated edition or Card ID. Multiple versions never autoassigned.",
     "screenshot_matching_statuses": {
       "unambiguous_name_only_no_id": 185,
-      "multiple_versions_or_cards_no_edition_binding": 55,
-      "name_fuzzy_uncertain": 1
-    }
+      "multiple_versions_or_cards_no_edition_binding": 53,
+      "name_fuzzy_uncertain": 1,
+      "image_spanish_card_not_compatible_with_cap225_id_unresolved_for_020": 1,
+      "external_edition_multifactor_no_in_game_id": 1
+    },
+    "updated_binding_v185": "Rodri_efhub_0.jpg associado externamente ao CAP225 via fonte/arte/skills; Rodri_efhub.jpg (Espanha) não homologado CAP020."
   },
   "visual_observations": [
     {
