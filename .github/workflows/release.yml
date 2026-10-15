@@ -55,12 +55,17 @@ jobs:
         run: npm run brand:build
       - name: Definir versão
         run: node scripts/set-version.cjs 1.1.${{ github.run_number }} ${{ github.repository }}
+      - name: Carimbar fingerprint idêntico do código web Windows
+        run: npm run bundle:stamp
       - name: Gerar instalador Windows
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
         run: npm run desktop:win
       - name: Garantir metadados SHA512 mesmo sem publicar antes do CI GREEN
         run: node scripts/ensure-windows-update-manifest.cjs
+      - name: Incluir identificação da interface no artefato Windows
+        shell: pwsh
+        run: Copy-Item web/scout-build-info.json dist/scout-build-info.json
       - name: Verificar instalador e metadados de atualização
         shell: pwsh
         run: |
@@ -75,6 +80,7 @@ jobs:
             dist/ScoutPRO-Setup-*.exe
             dist/*.blockmap
             dist/latest.yml
+            dist/scout-build-info.json
           if-no-files-found: error
           retention-days: 14
 
@@ -149,6 +155,8 @@ jobs:
         run: npm run styles:ptbr
       - name: Gerar ícones premium Android
         run: npm run brand:build
+      - name: Carimbar fingerprint idêntico do código web Android
+        run: npm run bundle:stamp
       - name: Criar projeto Android e sincronizar catálogo offline
         run: |
           npx cap add android
@@ -167,6 +175,7 @@ jobs:
           ./gradlew :app:assembleDebug --no-daemon
           mkdir -p ../build-demo
           cp app/build/outputs/apk/debug/app-debug.apk ../build-demo/ScoutPRO-Android-TESTE.apk
+          cp ../web/scout-build-info.json ../build-demo/scout-build-info.json
       - name: Compilar APK release para assinatura
         if: steps.keys.outputs.signed == 'true'
         shell: bash
@@ -246,6 +255,18 @@ jobs:
         with:
           name: scout-pro-windows
           path: assets
+      - uses: actions/download-artifact@v4
+        with:
+          name: scout-pro-android-teste
+          path: android-verify
+      - name: Garantir a mesma interface no Android e no Windows
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s assets/scout-build-info.json
+          test -s android-verify/scout-build-info.json
+          cmp assets/scout-build-info.json android-verify/scout-build-info.json
+          echo 'PARIDADE CONFIRMADA: Android e Windows possuem a mesma versão, commit e fingerprint da interface.'
       - name: Verificar instalador e manifesto de atualização Windows
         shell: bash
         run: |
