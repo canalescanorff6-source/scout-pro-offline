@@ -51,6 +51,14 @@ def metrics(page, selectors):
         page: document.body.dataset.page
     })""")
     result["elements"] = {name: rectangle(page, name) for name in selectors}
+    result["dock"] = page.evaluate("""() => {
+      const e=document.getElementById('scout-app-bar');
+      if(!e)return null;
+      const b=e.getBoundingClientRect(), st=getComputedStyle(e);
+      return {x:Math.round(b.x),y:Math.round(b.y),width:Math.round(b.width),
+        height:Math.round(b.height),display:st.display,direction:st.flexDirection,
+        position:st.position,bottomGap:Math.round(innerHeight-b.bottom)};
+    }""")
     return result
 
 def run():
@@ -97,6 +105,13 @@ def run():
                     problems.append(f"{name}: guia / habilidades não unificados na ficha")
                 if detail["horizontalOverflow"] > 8:
                     problems.append(f"{name}: ficha com overflow horizontal de {detail['horizontalOverflow']} px")
+                if mobile:
+                    dock = detail.get("dock") or {}
+                    if dock.get("height", 999) > 90 or dock.get("direction") != "row" or dock.get("bottomGap", 999) > 35:
+                        problems.append(f"{name}: dock inferior desproporcional: {dock}")
+                if page.locator("#scout-performance-v80").count() and page.locator("body.scout-v188-compact").count():
+                    if page.locator("#scout-performance-v80").is_visible():
+                        problems.append(f"{name}: laboratório V80 apareceu antes da ficha principal compacta")
                 page.screenshot(path=str(OUT / f"{name}_profile_header.png"), full_page=False, animations="disabled")
                 page.locator("#scout-v194-gameplay").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_profile_gameplay.png"), full_page=False, animations="disabled")
