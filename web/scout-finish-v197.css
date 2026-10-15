@@ -128,3 +128,21 @@ body[data-page="detail"] .scout-v197-edition .detail-sub{padding:10px 2px 2px;ma
  body[data-page="detail"] .scout-v197-edition>summary{display:none}
  body[data-page="detail"] .scout-v197-edition .detail-sub{display:block!important}
 }
+
+/* O resumo de metodologia repete o índice de seções no celular; no PC permanece integral.
+   Prioridade mobile: mostrar já na primeira tela o foco competitivo da carta. */
+@media(max-width:720px){
+ body[data-page="detail"] #scout-v188-principal .scout-v188-head{
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;gap:9px!important
+ }
+ body[data-page="detail"] #scout-v188-principal .scout-v188-head>div{min-width:0}
+ body[data-page="detail"] #scout-v188-principal .scout-v188-head h2{
+  font-size:18px!important;line-height:1.15!important;margin:4px 0 0!important
+ }
+ body[data-page="detail"] #scout-v188-principal .scout-v188-head .scout-v188-pp{
+  margin:0!important;align-self:center;white-space:nowrap;
+  padding:7px 8px!important;font-size:11px!important
+ }
+ body[data-page="detail"] #scout-v188-principal>.scout-v188-intro{display:none!important}
+}
