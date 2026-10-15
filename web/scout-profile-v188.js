@@ -9,7 +9,7 @@ const PT=Object.freeze({"Striker's Instinct":"Instinto artilheiro","Off the Ball
 const LABELS=['Chute','Passe','Drible','Destreza','Força das pernas','Jogo aéreo','Defesa','Goleiro 1','Goleiro 2','Goleiro 3'];
 const norm=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
 const shown=(n)=>PT[n]||n;
-function sourceCandidates(cap,rows){return (rows||[]).filter(x=>Array.isArray(x.candidate_caps)&&x.candidate_caps.includes(Number(cap)))}
+function sourceCandidates(cap,rows){const matched=(rows||[]).filter(x=>Array.isArray(x.candidate_caps)&&x.candidate_caps.includes(Number(cap)));return [...new Map(matched.map(x=>[x.sha256||x.filename,x])).values()] }
 function boosterView(d,engine,rec,slotLocked){const r=rec?.booster?rec.booster(d,'posse',engine,slotLocked?'ausente':undefined):null;return {recommend:r?.primary||null,canEquip:r?.able===true&&!slotLocked,slotLocked:!!slotLocked,status:r?.equipStatus||'indisponivel'};}
 function progression(d){return LABELS.map((label,i)=>({label,level:Number(d.recommended_levels?.[i]||0)}));}
 if(typeof module!=='undefined'&&module.exports)module.exports={PT,norm,shown,sourceCandidates,boosterView,progression};
