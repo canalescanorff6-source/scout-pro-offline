@@ -1,0 +1,12 @@
+{
+  "schema": "scout_v189_shared_web_bundle",
+  "version": "1.1.0",
+  "git_revision": "source-unbuilt",
+  "bundle_fingerprint": "pending-build",
+  "common_web_dir": "web",
+  "source_count": 16,
+  "mobile_web_container": "Capacitor webDir=web",
+  "desktop_web_container": "Electron electron-builder files=web/**/*",
+  "generated_from": "repository_placeholder_replaced_during_packaging",
+  "note": "Instalações independentes. Dados locais não são sincronizados automaticamente."
+}
