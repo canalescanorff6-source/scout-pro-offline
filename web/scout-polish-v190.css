@@ -82,3 +82,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 @media(prefers-reduced-motion:reduce){
  .scout-v189-tile,.player-card,#scout-v162 .v162-list li{transition:none!important;transform:none!important}
 }
+
+/* V191 — ergonomia Android: busca sem zoom forçado e feedback de foco/touch. */
+@media(max-width:720px){
+ body[data-page="catalog"] .search-input{min-height:48px;font-size:16px;line-height:1.4}
+ body[data-page="catalog"] .tools .select{min-height:44px;max-width:100%}
+ body[data-page="catalog"] .scout-v189-tile:focus-visible{outline:3px solid #f4d591;outline-offset:2px}
+ body[data-page="detail"] #scout-v189-biotype .scout-v189-notrans{line-height:1.55}
+ #scout-app-bar .scout-v189-dock-more[open]>summary{background:#285b62;color:#f5fffc}
+}
+@media(max-width:380px){
+ body[data-page="catalog"] .scout-v189-quick{gap:7px}
+ body[data-page="catalog"] .scout-v189-tile{min-width:0}
+}
