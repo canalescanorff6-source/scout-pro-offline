@@ -24,7 +24,7 @@ if(inCard){
   const matches=(archive.image_manifest||[]).filter(m=>(m.scout_roster_matching?.candidate_caps||[]).includes(cap));
   if(!matches.length||document.getElementById('scout-v184-evidence'))return;
   const extras=new Map((details.observations||[]).map(x=>[x.file,x]));
-  const secureSingle=matches.length===1&&matches[0].scout_roster_matching?.status==='unambiguous_name_only_no_id';
+  const secureSingle=matches.length===1&&['unambiguous_name_only_no_id','external_edition_multifactor_no_in_game_id'].includes(matches[0].scout_roster_matching?.status);
   const section=document.createElement('section');
   section.id='scout-v184-evidence';
   section.style.cssText='padding:16px;margin:14px 0;border:1px solid #527b9b;background:#0d2130;border-radius:14px;color:#f1f5fb';
@@ -36,7 +36,7 @@ if(inCard){
   const render=(image)=>{
    content.replaceChildren();
    const extra=extras.get(image.filename);
-   const p=document.createElement('p');p.textContent='Fonte: '+image.filename+' · '+(image.scout_roster_matching?.status==='unambiguous_name_only_no_id'?'nome único, edição ainda não homologada':'múltiplas edições possíveis; consultar sem atribuição à carta');p.style.fontSize='12px';content.appendChild(p);
+   const p=document.createElement('p');p.textContent='Fonte: '+image.filename+' · '+(image.scout_roster_matching?.status==='unambiguous_name_only_no_id'?'nome único, edição ainda não homologada':'cotejo externo de edição; número não lido no jogo');p.style.fontSize='12px';content.appendChild(p);
    if(extra?.rarity_user){const label=document.createElement('p');label.textContent='Raridade informada por você: '+extra.rarity_user;label.style.fontWeight='700';content.appendChild(label)}
    const skills=image.skills_ptbr_transcribed||[];
    const title=document.createElement('p');title.textContent='Habilidades transcritas no eFHUB ('+skills.length+') — NÃO confirmadas por Card ID desta conta';title.style.fontWeight='700';content.appendChild(title);
