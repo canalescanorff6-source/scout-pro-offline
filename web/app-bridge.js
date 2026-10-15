@@ -7,6 +7,62 @@ const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribut
 bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
+/* V184 — 241 prints eFHUB: somente consulta, sem sobreposição de IDs/PP/skills autenticadas. */
+if(inCard){
+ const showScreenshotEvidence=async()=>{
+  const node=document.getElementById('scout-v68-data');
+  const host=document.querySelector('.profile-content');
+  if(!node||!host)return;
+  let current;try{current=JSON.parse(node.textContent)}catch(e){return}
+  const response=await Promise.all([
+   fetch('../SCOUT_V184_EFHUB_SCREENSHOT_EVIDENCE.json'),
+   fetch('../SCOUT_V184_EFHUB_241_COMPLETE.json')
+  ]);
+  if(!response.every(r=>r.ok))return;
+  const [details,archive]=await Promise.all(response.map(r=>r.json()));
+  const cap=Number(current.capture);
+  const matches=(archive.image_manifest||[]).filter(m=>(m.scout_roster_matching?.candidate_caps||[]).includes(cap));
+  if(!matches.length||document.getElementById('scout-v184-evidence'))return;
+  const extras=new Map((details.observations||[]).map(x=>[x.file,x]));
+  const secureSingle=matches.length===1&&matches[0].scout_roster_matching?.status==='unambiguous_name_only_no_id';
+  const section=document.createElement('section');
+  section.id='scout-v184-evidence';
+  section.style.cssText='padding:16px;margin:14px 0;border:1px solid #527b9b;background:#0d2130;border-radius:14px;color:#f1f5fb';
+  const h=document.createElement('h3');h.textContent='V184 · Evidências dos seus prints eFHUB';h.style.cssText='margin:0 0 9px;color:#9fe9e4;font-size:16px';section.appendChild(h);
+  const intro=document.createElement('p');intro.style.cssText='font-size:12px;line-height:1.5;margin:0 0 12px';
+  intro.textContent=matches.length+' print(s) candidato(s) deste jogador. Níveis, PP, Card ID e ímpetos equipados continuam vindo da ficha oficial; os prints não exibem ID numérico.';
+  section.appendChild(intro);
+  const content=document.createElement('div');section.appendChild(content);
+  const render=(image)=>{
+   content.replaceChildren();
+   const extra=extras.get(image.filename);
+   const p=document.createElement('p');p.textContent='Fonte: '+image.filename+' · '+(image.scout_roster_matching?.status==='unambiguous_name_only_no_id'?'nome único, edição ainda não homologada':'múltiplas edições possíveis; consultar sem atribuição à carta');p.style.fontSize='12px';content.appendChild(p);
+   if(extra?.rarity_user){const label=document.createElement('p');label.textContent='Raridade informada por você: '+extra.rarity_user;label.style.fontWeight='700';content.appendChild(label)}
+   const skills=image.skills_ptbr_transcribed||[];
+   const title=document.createElement('p');title.textContent='Habilidades transcritas no eFHUB ('+skills.length+') — NÃO confirmadas por Card ID desta conta';title.style.fontWeight='700';content.appendChild(title);
+   const ul=document.createElement('ul');ul.style.cssText='display:flex;flex-wrap:wrap;gap:7px;list-style:none;padding:0;margin:10px 0';
+   for(const v of skills){const li=document.createElement('li');li.textContent=v;li.style.cssText='padding:5px 9px;background:#173b4e;border:1px solid #2a6579;border-radius:9px;font-size:12px';ul.appendChild(li)}
+   content.appendChild(ul);
+   if(extra?.model){const model=document.createElement('p');model.textContent='Modelo físico eFHUB — raio pernas '+extra.model.leg+' · braços '+extra.model.arm+' · salto '+extra.model.jump+' · colisão '+extra.model.collision;model.style.fontSize='12px';content.appendChild(model)}
+   if(extra?.boosters_eFHUB){const boosts=document.createElement('p');boosts.textContent='Ímpetos exibidos APENAS no simulador: '+extra.boosters_eFHUB.join(' / ')+'. Não são prova de slot ou equipamento da sua conta.';boosts.style.fontSize='12px';content.appendChild(boosts)}
+   if(extra?.level_in_eFHUB!==undefined){const level=document.createElement('p');level.textContent='Nível exibido no print: '+extra.level_in_eFHUB+'. Não substitui o nível nem os PP já cadastrados no Scout PRO.';level.style.fontSize='12px';content.appendChild(level)}
+   if(extra?.identity_note){const note=document.createElement('p');note.textContent='ATENÇÃO: '+extra.identity_note;note.style.cssText='font-size:12px;font-weight:bold;color:#ffd391';content.appendChild(note)}
+  };
+  if(secureSingle)render(matches[0]);
+  else {
+   const caution=document.createElement('p');caution.textContent='Há versões não distinguidas pelo Card ID. Escolha um print apenas para comparar; a escolha NÃO registra esta edição como sua carta.';caution.style.cssText='color:#ffd391;font-size:12px';section.insertBefore(caution,content);
+   const select=document.createElement('select');select.setAttribute('aria-label','Escolher print eFHUB para comparação');
+   select.style.cssText='background:#153345;color:#fff;max-width:100%;min-height:40px;padding:8px;border:1px solid #4e7b9c;border-radius:9px;margin:8px 0 12px';
+   const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Selecione uma versão para consultar';select.appendChild(placeholder);
+   matches.forEach((m,i)=>{const op=document.createElement('option');op.value=String(i);op.textContent=m.filename;select.appendChild(op)});
+   select.addEventListener('change',()=>{if(select.value!=='')render(matches[Number(select.value)])});
+   section.insertBefore(select,content);
+  }
+  const here=host.querySelector('.detail-header');if(here)here.insertAdjacentElement('afterend',section);else host.prepend(section);
+ };
+ showScreenshotEvidence().catch(()=>{});
+}
+
 if(inCard){
  // V162: carregar o catálogo de ímpetos antes das recomendações dentro de cada ficha.
  const showSkillsUnavailable=()=>{
