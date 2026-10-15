@@ -40,7 +40,7 @@ function runUI(profileBefore){
  const doc={body,readyState:'complete',
   createElement:el,
   addEventListener:(name,cb)=>{events[name]=cb},
-  getElementById:(name)=>name==='scout-v68-data'?{textContent:JSON.stringify({capture:1,id:'88040387251729'})}:name==='scout-v188-principal'&&profile?section:null,
+  getElementById:(name)=>name==='scout-v68-data'?{textContent:JSON.stringify({capture:1,id:'88040387251729'})}:name==='scout-v189-biotype'?before.children.find(x=>x.id==='scout-v189-biotype')||null:name==='scout-v188-principal'&&profile?section:null,
   querySelector:()=>null
  };
  const window={document:doc};
