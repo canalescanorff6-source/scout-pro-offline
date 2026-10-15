@@ -10,11 +10,11 @@ const index=fs.readFileSync(path.join(web,'index.html'),'utf8');
 const expected=new Map([[75,'SHOW TIME'],[151,'DISTINGUIDO'],[170,'SHOW TIME'],[181,'DISTINGUIDO']]);
 const editions=new Map([[75,'Show Time — Daily Bonus 2026 — Luis Díaz'],[170,"Show Time — Extraordinary One 4 Dec '25 — Jan Oblak"]]);
 assert.equal(roster.cards.length,246);assert.equal(tactic.cartas.length,246);
-assert.equal(roster.summary.native_skills,242);
+assert.equal(roster.summary.native_skills,243);
 assert.equal(roster.summary.raridade_confirmada_pelo_usuario,58);
-assert.equal(evidence.totais.habilidades_cadastradas,242);
-assert.equal(evidence.totais.habilidades_sem_lista,4);
-assert.deepEqual(evidence.pendencias_habilidades.map(x=>x.numero),[50,151,181,225]);
+assert.equal(evidence.totais.habilidades_cadastradas,243);
+assert.equal(evidence.totais.habilidades_sem_lista,3);
+assert.deepEqual(evidence.pendencias_habilidades.map(x=>x.numero),[50,151,181]);
 for(const [cap,rarity] of expected){
  const card=roster.cards.find(x=>x.numero===cap);
  const html=fs.readFileSync(path.join(web,card.arquivo),'utf8');
@@ -37,7 +37,7 @@ for(const [cap,rarity] of expected){
  }
 }
 const rodri=roster.cards.find(x=>x.numero===225);
-assert.equal(rodri.id,'106780940205246','ID Rodri não pode ser trocado sem confirmação inequívoca da carta original');
-assert(!rodri.habilidades_nativas,'Skills de Nico O\'Reilly nunca podem ser importadas para Rodri');
+assert.equal(rodri.id,'105779675902175','Rodri agora tem ID associado por concordância externa');
+assert(rodri.habilidades_nativas.includes('Rising Shot')&&!rodri.habilidades_nativas.includes('Long-reach Tackle'),'Habilidades Nico O\'Reilly nao podem entrar no Rodri');
 assert.equal(evidence.totais.slot_livre_confirmado_diretamente_no_repositorio,0);
-console.log('V183 OK: 4 raridades confirmadas, #075/#170 documentadas externamente, 4 bloqueios preservados, Rodri pendente, 246 cartas intactas.');
+console.log('V183 OK: 4 raridades confirmadas, #075/#170 documentadas externamente, 3 bloqueios preservados, Rodri com identificação externa e conferência na conta pendente, 246 cartas intactas.');
