@@ -104,8 +104,8 @@ function render(){
   const body=el('div','scout-v189-measures','Carregando registros disponíveis…');
   const legend=el('p','scout-v189-legend','Medidas físicas não confirmam um Player ID oculto ou movimentos exclusivos.');
   area.append(h,body,legend);before.appendChild(area);
-  Promise.all([getJson('SCOUT_V101_MODELO_CORPORAL.json'),getJson('SCOUT_V184_EFHUB_241_COMPLETE.json')])
-  .then(([base,archive])=>{
+  Promise.all([getJson('SCOUT_V101_MODELO_CORPORAL.json'),getJson('SCOUT_V184_EFHUB_241_COMPLETE.json'),getJson('SCOUT_V189_CORPO_EXTRAS.json')])
+  .then(([base,archive,extra])=>{
     const data=physicalInfo(c,base,archive);
     body.replaceChildren();
     const renderGroup=(title,items,source)=>{
@@ -141,7 +141,24 @@ function render(){
       ['Colisão tronco',m.trunk_collision==null?null:m.trunk_collision+' cm']
      ],'Fonte: '+o.filename+' · a edição não é confirmada apenas pelo nome.');
     }
-    if(!data.verified&&!data.observed){body.appendChild(el('p','scout-v189-notrans','Ainda não há medidas completas verificadas nesta edição. A captura permanece arquivada; não vamos inventar pescoço, ombros ou antebraço.'));}
+    const extended=(extra.entries||[]).find(x=>Number(x.cap)===Number(c.capture));
+    if(extended){
+      const dims=extended.dimensions||{},derived=extended.derived_measurements||{};
+      renderGroup('Anatomia detalhada observada no eFHUB',[
+       ['Comprimento do braço',dims.arm_length],['Largura dos ombros',dims.shoulder_width],
+       ['Comprimento do pescoço',dims.neck_length],['Tórax (Chest)',dims.chest],
+       ['Tamanho do pescoço',dims.neck_size],['Altura do ombro',dims.shoulder_height],
+       ['Comprimento da perna',dims.leg_length],['Tamanho da coxa',dims.thigh_size],
+       ['Tamanho da cintura',dims.waist_size],['Tamanho do braço',dims.arm_size],
+       ['Tamanho da panturrilha',dims.calf_size],
+       ['Raio perna',derived.leg_coverage_cm==null?null:derived.leg_coverage_cm+' cm'],
+       ['Raio braço',derived.arm_coverage_cm==null?null:derived.arm_coverage_cm+' cm'],
+       ['Altura do salto',derived.jump_height_cm==null?null:derived.jump_height_cm+' cm'],
+       ['Colisão do tronco',derived.torso_collision_cm==null?null:derived.torso_collision_cm+' cm'],
+       ['Base em pé',derived.standing_base_cm==null?null:derived.standing_base_cm+' cm']
+      ],'Fonte: '+extended.screenshot+' · valores da tela eFHUB, não Player ID oculto; edição a conferir.');
+    }
+    if(!data.verified&&!data.observed&&!extended){body.appendChild(el('p','scout-v189-notrans','Ainda não há medidas completas verificadas nesta edição. A captura permanece arquivada; não vamos inventar pescoço, ombros ou antebraço.'));}
     if(data.ambiguous)body.appendChild(el('p','scout-v189-notrans','Existem vários prints do jogador: nenhuma geometria ambígua foi atribuída automaticamente.'));
     body.appendChild(el('p','scout-v189-notrans','Pescoço, largura de ombros, braço e antebraço só serão detalhados quando esses campos forem transcritos e identificados para esta edição.'));
   }).catch(()=>{body.textContent='Registros locais indisponíveis. A ficha original não foi alterada.'});
