@@ -5096,14 +5096,14 @@
     {
       "numero": 225,
       "nome": "Rodri",
-      "card_id_cadastro": "106780940205246",
+      "card_id_cadastro": "105779675902175",
       "edicao_cadastro": "Highlight — Back in the Game 14 Aug '25 — Rodri",
       "imagem_original": "cartas/CAP_225_Rodri_OVR100_VOL.png",
       "pp_orcamento_cadastrado": 52,
       "pp_uma_proposta_experimental": false,
       "treino_anterior_documentado": true,
       "atributos_base_documentados": false,
-      "habilidades_nativas_documentadas": false,
+      "habilidades_nativas_documentadas": true,
       "impeto_fixo_documentado": true,
       "impeto_extra_confirmado": true,
       "modelo_corporal_com_evidencia": false,
@@ -5113,7 +5113,9 @@
       "candidatos_em_quarentena": 0,
       "video_da_edicao_exata_com_frame_verificado": false,
       "player_id_validado": false,
-      "build_video_validada": false
+      "build_video_validada": false,
+      "card_id_confirmado_diretamente_na_conta": false,
+      "fonte_corrigida_v185": "web/SCOUT_V185_RODRI_225_EVIDENCE.json"
     },
     {
       "numero": 226,
