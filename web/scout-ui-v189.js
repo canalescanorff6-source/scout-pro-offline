@@ -117,11 +117,14 @@ function render(){
   if(!before)return;
   let area=doc.getElementById('scout-v189-biotype');
   if(area)return;
-  area=el('div','scout-v189-biotipo');area.id='scout-v189-biotype';
-  const h=el('h4','','Modelo corporal · dados com fonte');
+  // V192: painel de biotipo acessível e recolhível em telas compactas.
+  area=el('details','scout-v189-biotipo');area.id='scout-v189-biotype';
+  const h=el('summary','scout-v192-bio-summary','Biotipo e medidas verificadas');
   const body=el('div','scout-v189-measures','Carregando registros disponíveis…');
   const legend=el('p','scout-v189-legend','Medidas físicas não confirmam um Player ID oculto ou movimentos exclusivos.');
-  area.append(h,body,legend);before.appendChild(area);
+  area.append(h,body,legend);
+  if(typeof root.matchMedia!=='function'||!root.matchMedia('(max-width:720px)').matches)area.open=true;
+  before.appendChild(area);
   // V191: uma fonte física ausente não deve apagar registros válidos das outras.
   Promise.allSettled([getJson('SCOUT_V101_MODELO_CORPORAL.json'),getJson('SCOUT_V184_EFHUB_241_COMPLETE.json'),getJson('SCOUT_V189_CORPO_EXTRAS.json')])
   .then(results=>{
