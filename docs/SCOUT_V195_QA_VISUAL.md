@@ -13,3 +13,9 @@ Este fluxo **não prova** que Android e Windows são pixel a pixel idênticos ao
 
 ## Limites
 Chromium simulando viewport não é captura do Capacitor instalado nem do Electron em Windows físico. Comparação de pixel depende de recuperar a imagem exata aprovada anteriormente, usar tamanho de referência igual, e revisar os screenshots. Este workflow facilita o diagnóstico sem alterar cartas ou funções.
+
+## Defeitos encontrados na primeira execução (15/10/2026)
+- Capturas mobile da ficha em 360 e 390 px mostraram barra de ações empilhada verticalmente, cobrindo parte do conteúdo. Foi acrescentada uma regra explícita de dock horizontal e compacta em `web/scout-visual-v192.css`.
+- Captura Windows 1366 px exibiu o laboratório antigo V80 antes da ficha V188, contrariando a hierarquia escolhida. O modo compacto agora oculta V80, o resumo legado V187 e evidência opcional V184 até o usuário abrir as análises avançadas.
+- Capturas originais ficam nos artefatos do GitHub Actions; a CI agora falha se o dock mobile tiver mais de 90 px de altura, não for horizontal ou se o V80 ficar visível em modo compacto.
+- O conteúdo das cartas, habilidades, ímpetos e escolhas locais não foi alterado.
