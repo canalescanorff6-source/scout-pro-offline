@@ -54,7 +54,7 @@
     });
     if(!visible)return;
     event.preventDefault();
-    visible.scrollIntoView?.({behavior:host.matchMedia?.('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+    visible.scrollIntoView?.({behavior:host.matchMedia?.('(prefers-reduced-motion:reduce)')?.matches?'auto':'smooth',block:'start'});
    });
   }
  }
