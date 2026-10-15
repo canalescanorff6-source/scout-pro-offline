@@ -42,8 +42,9 @@ if(inCard){
   if(!matches.length||document.getElementById('scout-v184-evidence'))return;
   const extras=new Map((details.observations||[]).map(x=>[x.file,x]));
   const secureSingle=matches.length===1&&['unambiguous_name_only_no_id','external_edition_multifactor_no_in_game_id'].includes(matches[0].scout_roster_matching?.status);
-  const section=document.createElement('section');
+  const section=document.createElement('details');
   section.id='scout-v184-evidence';
+  const summary=document.createElement('summary');summary.textContent='Consultar informações complementares dos prints eFHUB (opcional)';summary.style.cssText='cursor:pointer;color:#9fe9e4;font-weight:800;margin:0 0 8px';section.appendChild(summary);
   section.style.cssText='padding:16px;margin:14px 0;border:1px solid #527b9b;background:#0d2130;border-radius:14px;color:#f1f5fb';
   const h=document.createElement('h3');h.textContent='V184 · Evidências dos seus prints eFHUB';h.style.cssText='margin:0 0 9px;color:#9fe9e4;font-size:16px';section.appendChild(h);
   const intro=document.createElement('p');intro.style.cssText='font-size:12px;line-height:1.5;margin:0 0 12px';
