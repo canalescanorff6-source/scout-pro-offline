@@ -51,7 +51,7 @@ function run(){
  const panel=document.createElement('section');panel.id='scout-v188-principal';panel.className='scout-v188-principal';panel.setAttribute('aria-label','Ficha principal de Posse de Bola');
  panel.innerHTML=
  '<div class="scout-v188-head"><div><span class="scout-v188-kicker">SCOUT PRO · SUA CARTA</span><h2>Ficha principal · Posse de Bola</h2></div><span class="scout-v188-pp"></span></div>'+
- '<p class="scout-v188-intro">Primeiro o treino e os ímpetos da carta. Abaixo, suas cinco habilidades adicionais. Os relatórios técnicos ficam no final.</p>'+
+ '<p class="scout-v188-intro">Foco e treino da carta, ímpetos documentados e habilidades adicionais. Biotipo e orientações de uso vêm em seguida; relatórios completos são opcionais.</p>'+
  '<div class="scout-v188-progress"><h3>Treino registrado no Scout PRO</h3><div id="v188-train" class="scout-v188-train"></div></div>'+
  '<div class="scout-v188-boost"><h3>Ímpetos mostrados na sua captura</h3><p class="scout-v188-evidence">Dados vistos no eFHUB, não confirmação de qual ímpeto está equipado na conta.</p><div id="v188-choice" class="scout-v188-choice" hidden></div><div class="scout-v188-tiles"><div><small>ÍMPETO 1 · PRINT</small><strong id="v188-b1">Consultando print…</strong></div><div><small>ÍMPETO 2 · PRINT</small><strong id="v188-b2">Consultando print…</strong></div></div><p id="v188-source" class="scout-v188-source"></p>'+
  '<div class="scout-v188-best"><small>MELHOR COMPLEMENTO SUGERIDO · POSSE</small><strong id="v188-top-rec">Calculando…</strong><p id="v188-reason">A função, o estilo e o ímpeto registrado entram na avaliação.</p></div>'+
