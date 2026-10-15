@@ -344,3 +344,6 @@ body.scout-v188-compact[data-page="detail"] .profile-content > #scout-v184-evide
   display:none!important;
  }
 }
+
+/* O painel V74 também é laboratório técnico; não deve preceder a ficha principal. */
+body.scout-v188-compact[data-page="detail"] .profile-content > #scout-v74{display:none!important}
