@@ -16,6 +16,8 @@ A aprovação de CI anterior comprovava **ausência de overflow**, mas não que 
 ## Ajustes V197
 - Android: arte original permanece visível e proporcional, usando menos altura para antecipar a ficha principal.
 - Navegador de cartas Anterior / Ir para carta / Próxima permanece dentro da ficha, agora compacto, três botões com tamanho de toque e contador.
+- O resumo introdutório redundante da ficha principal fica oculto somente no Android; seu conteúdo integral continua visível no Windows, sem remoção do código.
+- Cabeçalho do plano competitivo e etiqueta de PP compartilham uma mesma linha compacta na tela pequena, antecipando o **Foco da build**.
 - Metadados de edição, procedência e campanha são **movidos**, sem copiar, para um controle `<details>` acessível: inicia recolhido no celular e expandido no Windows.
 - Nome, raridade, Card ID na arte e KPIs (PP, função, treino) permanecem visíveis.
 - Home compacta (texto introdutório reduzido, quatro atalhos mantidos, busca em evidência, ferramentas extras expansíveis).
@@ -25,6 +27,6 @@ A aprovação de CI anterior comprovava **ausência de overflow**, mas não que 
 ## Critérios verificáveis de aceite
 `npm run check` inclui `scripts/test-ui-v197.cjs`, que comprova idempotência da reorganização, preservação dos metadados, abertura inicial adequada por plataforma, 246 fichas, acessibilidade e fingerprint comum.
 
-`scripts/qa-visual-v195.py` agora testa 320×700, 360×800, 390×844, 412×915, 1366×768 e 1920×1080; mede posição da ficha e do catálogo, botões de navegação, comportamento do painel expansível, exibição de habilidades V196, ausência de overflow e dock Android.
+`scripts/qa-visual-v195.py` agora testa 320×700, 360×800, 390×844, 412×915, 1366×768 e 1920×1080; mede posição da ficha, do foco da build e do catálogo, botões de navegação, comportamento do painel expansível, exibição de habilidades V196, ausência de overflow e dock Android.
 
 **Não declarar equivalência pixel a pixel ao mockup premium sem a imagem original aprovada e comparação lado a lado.** As capturas em Chromium simulam dimensões, não comprovam o instalador rodando em aparelho físico. A publicação depende de CI GREEN e assinatura permanente do APK.
