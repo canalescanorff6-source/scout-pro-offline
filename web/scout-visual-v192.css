@@ -219,3 +219,15 @@ body[data-page="detail"] .detail-header{border-bottom-color:rgba(144,214,211,.2)
  body[data-page="catalog"] .scout-v189-tile,
  body[data-page="catalog"] .player-card{transition:none!important;animation:none!important;transform:none!important}
 }
+
+/* Dados avançados permanecem acessíveis, mas não estendem a ficha mobile à toa. */
+body[data-page="detail"] #scout-v189-biotype{border:1px solid #355f69;border-radius:12px;padding:11px;background:#102b3b;margin:8px 0}
+body[data-page="detail"] #scout-v189-biotype>summary{
+ cursor:pointer;list-style:none;min-height:36px;display:flex;align-items:center;justify-content:space-between;
+ color:#d5f4ee;font-size:13px;font-weight:850;
+}
+body[data-page="detail"] #scout-v189-biotype>summary::-webkit-details-marker{display:none}
+body[data-page="detail"] #scout-v189-biotype>summary:after{content:"⌄";color:#9ce8cf;font-size:18px;transition:transform .16s ease}
+body[data-page="detail"] #scout-v189-biotype[open]>summary:after{transform:rotate(180deg)}
+body[data-page="detail"] #scout-v189-biotype .scout-v189-measures{margin-top:8px}
+body[data-page="detail"] #scout-v189-biotype>summary:focus-visible{outline:3px solid #e5c78d;outline-offset:3px}
