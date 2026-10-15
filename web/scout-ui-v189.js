@@ -91,7 +91,19 @@ function render(){
    about.setAttribute('aria-expanded',String(opened));
    about.textContent=opened?'Ocultar metodologia':'Como funciona a análise';
   });
-  panel.append(indicator,caption,actions,details,about);
+  // V192: usar o campo REAL de busca na abertura — mesmos listeners e filtros do catálogo.
+  const search=doc.getElementById('search');
+  if(search){
+   const searchBlock=el('div','scout-v192-search-block');
+   const label=el('label','scout-v192-search-label','Encontrar jogador');
+   label.setAttribute('for','search');
+   const shell=el('div','scout-v192-search-shell');
+   const glass=el('span','scout-v192-search-icon','⌕');
+   glass.setAttribute('aria-hidden','true');
+   shell.append(glass,search);
+   searchBlock.append(label,shell,el('p','scout-v192-search-tip','Nome, edição, raridade ou Card ID · filtros completos logo abaixo'));
+   panel.append(indicator,caption,searchBlock,actions,details,about);
+  }else panel.append(indicator,caption,actions,details,about);
   hero.appendChild(panel);
   const brand=doc.querySelector('.topbar .nav-cta');
   if(brand)brand.textContent='Meu elenco';
