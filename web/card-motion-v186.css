@@ -1,0 +1,94 @@
+/* Scout PRO V186 — animação CSS por raridade, com pausa fora da tela.
+   Não contém animações ou arquivos de movimento proprietários da Konami. */
+.scout-motion-art{
+  position:relative;
+  isolation:isolate;
+  --scout-fx-main:100,211,244;
+  --scout-fx-alt:249,207,136;
+}
+.scout-motion-art[data-scout-motion-rarity="show"]{--scout-fx-main:100,203,255;--scout-fx-alt:201,143,255}
+.scout-motion-art[data-scout-motion-rarity="epic"]{--scout-fx-main:247,199,112;--scout-fx-alt:255,239,185}
+.scout-motion-art[data-scout-motion-rarity="big"]{--scout-fx-main:255,112,90;--scout-fx-alt:255,211,106}
+.scout-motion-art[data-scout-motion-rarity="highlight"]{--scout-fx-main:93,230,212;--scout-fx-alt:133,199,249}
+.scout-motion-art > img{position:relative;z-index:1}
+.scout-motion-art .scout-motion-layer{
+  position:absolute;inset:5%;z-index:3;
+  overflow:hidden;border-radius:12px;pointer-events:none;opacity:0;
+  mix-blend-mode:screen;transition:opacity .23s ease;
+  transform:translateZ(0);
+}
+.scout-motion-art .scout-motion-layer::before,
+.scout-motion-art .scout-motion-layer::after{
+  content:"";position:absolute;inset:-25%;pointer-events:none;
+  will-change:transform,opacity;
+  animation-play-state:paused;
+}
+.scout-motion-art .scout-motion-layer::before{
+  background:
+    radial-gradient(circle at 18% 20%,rgba(var(--scout-fx-alt),.95) 0 1px,transparent 3px),
+    radial-gradient(circle at 72% 13%,rgba(var(--scout-fx-main),.82) 0 2px,transparent 5px),
+    radial-gradient(circle at 86% 73%,rgba(var(--scout-fx-alt),.95) 0 1px,transparent 4px),
+    radial-gradient(circle at 12% 78%,rgba(var(--scout-fx-main),.92) 0 1px,transparent 4px),
+    conic-gradient(from 20deg at 50% 45%,transparent 0deg,rgba(var(--scout-fx-main),.19) 60deg,transparent 106deg,rgba(var(--scout-fx-alt),.25) 204deg,transparent 278deg);
+  -webkit-mask-image:radial-gradient(ellipse 58% 54% at 50% 48%,transparent 30%,#000 90%);
+  mask-image:radial-gradient(ellipse 58% 54% at 50% 48%,transparent 30%,#000 90%);
+}
+.scout-motion-art .scout-motion-layer::after{
+  background:linear-gradient(108deg,transparent 32%,rgba(var(--scout-fx-alt),.10) 40%,rgba(var(--scout-fx-main),.45) 48%,rgba(255,255,255,.33) 50%,transparent 55%);
+  -webkit-mask-image:radial-gradient(ellipse 55% 61% at 50% 50%,transparent 30%,#000 95%);
+  mask-image:radial-gradient(ellipse 55% 61% at 50% 50%,transparent 30%,#000 95%);
+  transform:translateX(-80%);
+}
+body.scout-motion-on .scout-motion-art[data-scout-motion-active="true"] .scout-motion-layer{opacity:1}
+body.scout-motion-on .scout-motion-art[data-scout-motion-active="true"] .scout-motion-layer::before{
+  animation:scout-v186-aura 7.8s linear infinite,scout-v186-pulse 3.4s ease-in-out infinite;
+  animation-play-state:running;
+}
+body.scout-motion-on .scout-motion-art[data-scout-motion-active="true"] .scout-motion-layer::after{
+  animation:scout-v186-sweep 6.8s ease-in-out infinite;animation-play-state:running;
+}
+body.scout-motion-on .scout-motion-art[data-scout-motion-rarity="show"][data-scout-motion-active="true"] .scout-motion-layer::before{
+  animation-duration:5.1s,2.5s;
+}
+body.scout-motion-on .scout-motion-art[data-scout-motion-rarity="show"][data-scout-motion-active="true"] .scout-motion-layer::after{animation-duration:4.3s}
+body.scout-motion-on .scout-motion-art[data-scout-motion-rarity="big"][data-scout-motion-active="true"] .scout-motion-layer::before{animation-duration:3.9s,1.9s}
+body.scout-motion-on .scout-motion-art[data-scout-motion-rarity="big"][data-scout-motion-active="true"] .scout-motion-layer::after{animation-duration:3.3s}
+body.scout-motion-on .scout-motion-art[data-scout-motion-rarity="epic"][data-scout-motion-active="true"] .scout-motion-layer::before{animation-duration:12s,5.8s}
+body.scout-motion-on .scout-motion-art[data-scout-motion-rarity="epic"][data-scout-motion-active="true"] .scout-motion-layer::after{animation-duration:10.5s}
+body.scout-motion-on .scout-motion-art[data-scout-motion-rarity="highlight"][data-scout-motion-active="true"] .scout-motion-layer::before{animation-duration:13s,6.1s}
+body.scout-motion-on .scout-motion-art[data-scout-motion-rarity="highlight"][data-scout-motion-active="true"] .scout-motion-layer::after{animation-duration:12s}
+body.scout-motion-on .scout-motion-art[data-scout-motion-active="true"]::after{
+  border-radius:12px;
+}
+body.scout-motion-on .card-art.scout-motion-art[data-scout-motion-active="true"],
+body.scout-motion-on .side-art.scout-motion-art[data-scout-motion-active="true"]{
+  box-shadow:inset 0 0 24px rgba(var(--scout-fx-main),.08);
+}
+.card-art.scout-motion-art .mini-cap,
+.card-art.scout-motion-art .mini-rarity{z-index:4}
+@keyframes scout-v186-aura{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.07)}100%{transform:rotate(360deg) scale(1)}}
+@keyframes scout-v186-pulse{0%,100%{opacity:.68}50%{opacity:1}}
+@keyframes scout-v186-sweep{0%,12%{transform:translateX(-85%);opacity:0}20%{opacity:1}48%{transform:translateX(65%);opacity:.85}58%,100%{transform:translateX(80%);opacity:0}}
+.scout-mobile-art{width:116px;max-width:100%;min-width:0;display:grid;place-items:center;position:relative}
+.scout-mobile-art img{width:100%;height:auto;max-height:165px;object-fit:contain}
+.scout-motion-controls{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:9px 0 14px;min-width:0;
+}
+.profile-content > .scout-motion-controls{padding:0 0 13px}
+.scout-motion-toggle{
+  cursor:pointer;border:1px solid rgba(102,214,208,.47);
+  border-radius:12px;padding:10px 13px;
+  background:linear-gradient(145deg,#153748,#13263b);
+  color:#ddfff7;font-weight:800;font-size:12px;
+  letter-spacing:.01em;min-height:40px;
+}
+.scout-motion-toggle[aria-pressed="true"]{border-color:rgba(248,198,108,.75);color:#ffe1a6;background:linear-gradient(130deg,#34331d,#182e40)}
+.scout-motion-toggle:focus-visible{outline:3px solid #8edccc;outline-offset:2px}
+.scout-motion-toggle:disabled{opacity:.7;cursor:not-allowed}
+.scout-motion-caption{font-size:11px;color:#a4bac8}
+@media(max-width:680px){.scout-motion-controls{padding:10px 0}.scout-motion-toggle{font-size:11px}.scout-motion-caption{font-size:10px}.scout-mobile-art{width:116px}}
+@media print{.scout-motion-layer,.scout-motion-controls{display:none!important}}
+@media(prefers-reduced-motion:reduce){
+ .scout-motion-layer,.scout-motion-layer::before,.scout-motion-layer::after{animation:none!important;transition:none!important;opacity:0!important}
+}
