@@ -49,7 +49,7 @@ const posseCss=fs.readFileSync(path.join(web,'scout-posse-v187.css'),'utf8');
 const sw=fs.readFileSync(path.join(web,'sw.js'),'utf8');
 const rarity=fs.readFileSync(path.join(web,'raridade-cadastro-v91.html'),'utf8');
 const skills=fs.readFileSync(path.join(web,'skills-booster-v162.js'),'utf8');
-assert(bridge.includes("scout-posse-v187.js")&&bridge.includes("scout-posse-v187.css"));
+assert(bridge.includes("scout-profile-v188.js")&&bridge.includes("scout-profile-v188.css"),"Layout unico V188 substitui o painel redundante V187");
 assert(sw.includes("./scout-posse-v187.js")&&sw.includes("./scout-posse-v187.css"));
 assert(sw.includes('v187-posse'));
 assert(main.includes("localStorage.getItem(KEY)"),'Preferencia da ficha tem que persistir');
