@@ -188,7 +188,12 @@ function render(){
   });
  }
  if(inCatalog)catalog();
- if(inDetail)details();
+ // V190: a ficha V188 é carregada dinamicamente. Na primeira passagem ela pode
+ // ainda não existir; ouvir o evento evita perder o painel de biotipo no Android.
+ if(inDetail){
+  doc.addEventListener('scoutpro:profile-ready',details);
+  details();
+ }
  cleanDock();
  showVersion();
 }
