@@ -7,8 +7,8 @@ const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const ui=read('web/scout-ui-v189.js'),skills=read('web/skills-booster-v162.js'),
       css=read('web/scout-visual-v192.css'),bridge=read('web/app-bridge.js'),
       sw=read('web/sw.js'),stamp=read('scripts/stamp-bundle-v189.cjs');
-function el(tag='',text=''){
- return {tag,children:[],id:'',className:'',textContent:text,style:{},attributes:{},
+function el(tag='',cls='',text=''){
+ return {tag,children:[],id:'',className:cls,textContent:text,style:{},attributes:{},
   append(...children){this.children.push(...children);for(const ch of children)ch.parent=this},
   appendChild(child){this.append(child);return child},
   setAttribute(k,v){this.attributes[k]=v},
