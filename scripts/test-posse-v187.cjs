@@ -45,6 +45,7 @@ const none=S.booster({shown_position:'VOL',boost1:'PENDENTE',boost2:'PENDENTE'},
 assert(none.primary);assert.equal(none.able,false);assert.equal(none.equipStatus,'impossivel_na_conta');
 const bridge=fs.readFileSync(path.join(web,'app-bridge.js'),'utf8');
 const main=fs.readFileSync(path.join(web,'scout-posse-v187.js'),'utf8');
+const posseCss=fs.readFileSync(path.join(web,'scout-posse-v187.css'),'utf8');
 const sw=fs.readFileSync(path.join(web,'sw.js'),'utf8');
 const rarity=fs.readFileSync(path.join(web,'raridade-cadastro-v91.html'),'utf8');
 const skills=fs.readFileSync(path.join(web,'skills-booster-v162.js'),'utf8');
@@ -52,7 +53,7 @@ assert(bridge.includes("scout-posse-v187.js")&&bridge.includes("scout-posse-v187
 assert(sw.includes("./scout-posse-v187.js")&&sw.includes("./scout-posse-v187.css"));
 assert(sw.includes('v187-posse'));
 assert(main.includes("localStorage.getItem(KEY)"),'Preferencia da ficha tem que persistir');
-assert(main.includes("section.topic"),'Seções antigas devem recolher e continuar acessíveis');
+assert(posseCss.includes('section.topic')&&main.includes('Ver análises detalhadas'),'Seções antigas devem recolher e continuar acessíveis');
 assert(main.includes('compactModel')&&main.includes('get(x.arm'),'Biotipo só onde houver evidência');
 assert(skills.includes('Melhor ímpeto sugerido para'));
 assert(skills.includes('não uma opção para substituir'));
