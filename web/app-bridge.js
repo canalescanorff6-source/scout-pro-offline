@@ -7,6 +7,10 @@ const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribut
 bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
+// V189: mesmo design e bundle responsivo em Android, Windows e navegador.
+const v189Root=inCard?'../':'';
+const v189Css=document.createElement('link');v189Css.rel='stylesheet';v189Css.href=v189Root+'scout-ui-v189.css';document.head.appendChild(v189Css);
+const v189Js=document.createElement('script');v189Js.src=v189Root+'scout-ui-v189.js';v189Js.defer=true;document.head.appendChild(v189Js);
 if(inCard){
  const posseSheet=document.createElement('script');
  posseSheet.src='../scout-profile-v188.js';posseSheet.defer=true;document.head.appendChild(posseSheet);
