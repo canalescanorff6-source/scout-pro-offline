@@ -13,6 +13,8 @@ const v189Css=document.createElement('link');v189Css.rel='stylesheet';v189Css.hr
 const v189Js=document.createElement('script');v189Js.src=v189Root+'scout-ui-v189.js';v189Js.defer=true;document.head.appendChild(v189Js);
 // V190: uma única folha de acabamento responsivo é empacotada pelos dois instaladores.
 const v190Css=document.createElement('link');v190Css.rel='stylesheet';v190Css.href=v189Root+'scout-polish-v190.css';document.head.appendChild(v190Css);
+// V192: acabamento aprovado sobre a base V189/V190, na mesma web/ das duas plataformas.
+const v192Css=document.createElement('link');v192Css.rel='stylesheet';v192Css.href=v189Root+'scout-visual-v192.css';document.head.appendChild(v192Css);
 if(inCard){
  const posseSheet=document.createElement('script');
  posseSheet.src='../scout-profile-v188.js';posseSheet.defer=true;document.head.appendChild(posseSheet);

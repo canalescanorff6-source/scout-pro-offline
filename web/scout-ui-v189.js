@@ -91,7 +91,19 @@ function render(){
    about.setAttribute('aria-expanded',String(opened));
    about.textContent=opened?'Ocultar metodologia':'Como funciona a análise';
   });
-  panel.append(indicator,caption,actions,details,about);
+  // V192: usar o campo REAL de busca na abertura — mesmos listeners e filtros do catálogo.
+  const search=doc.getElementById('search');
+  if(search){
+   const searchBlock=el('div','scout-v192-search-block');
+   const label=el('label','scout-v192-search-label','Encontrar jogador');
+   label.setAttribute('for','search');
+   const shell=el('div','scout-v192-search-shell');
+   const glass=el('span','scout-v192-search-icon','⌕');
+   glass.setAttribute('aria-hidden','true');
+   shell.append(glass,search);
+   searchBlock.append(label,shell,el('p','scout-v192-search-tip','Nome, edição, raridade ou Card ID · filtros completos logo abaixo'));
+   panel.append(indicator,caption,searchBlock,actions,details,about);
+  }else panel.append(indicator,caption,actions,details,about);
   hero.appendChild(panel);
   const brand=doc.querySelector('.topbar .nav-cta');
   if(brand)brand.textContent='Meu elenco';
@@ -105,11 +117,14 @@ function render(){
   if(!before)return;
   let area=doc.getElementById('scout-v189-biotype');
   if(area)return;
-  area=el('div','scout-v189-biotipo');area.id='scout-v189-biotype';
-  const h=el('h4','','Modelo corporal · dados com fonte');
+  // V192: painel de biotipo acessível e recolhível em telas compactas.
+  area=el('details','scout-v189-biotipo');area.id='scout-v189-biotype';
+  const h=el('summary','scout-v192-bio-summary','Biotipo e medidas verificadas');
   const body=el('div','scout-v189-measures','Carregando registros disponíveis…');
   const legend=el('p','scout-v189-legend','Medidas físicas não confirmam um Player ID oculto ou movimentos exclusivos.');
-  area.append(h,body,legend);before.appendChild(area);
+  area.append(h,body,legend);
+  if(typeof root.matchMedia!=='function'||!root.matchMedia('(max-width:720px)').matches)area.open=true;
+  before.appendChild(area);
   // V191: uma fonte física ausente não deve apagar registros válidos das outras.
   Promise.allSettled([getJson('SCOUT_V101_MODELO_CORPORAL.json'),getJson('SCOUT_V184_EFHUB_241_COMPLETE.json'),getJson('SCOUT_V189_CORPO_EXTRAS.json')])
   .then(results=>{
