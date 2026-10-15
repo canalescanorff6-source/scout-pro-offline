@@ -2,9 +2,9 @@
 
 ## Origem e alcance
 
-O usuário enviou `Screenshots.rar`, com **241 imagens JPEG do eFHUB**, em 15 de outubro de 2026. Foram feitas a extração e leitura visual das 241 listas de habilidades em português. A planilha `Scout_PRO_V184_eFHUB_241_Cartas.xlsx` e o JSON `Scout_PRO_V184_eFHUB_auditoria_241.json` foram entregues como arquivos anexos no chat; **esses dois arquivos completos NÃO foram adicionados a este repositório**.
+O usuário enviou `Screenshots.rar`, com **241 imagens JPEG do eFHUB**, em 15 de outubro de 2026. Foram feitas a extração e leitura visual das 241 listas de habilidades em português. A planilha `Scout_PRO_V184_eFHUB_241_Cartas.xlsx` e o JSON `Scout_PRO_V184_eFHUB_auditoria_241.json` foram entregues como arquivos anexos no chat. **O JSON completo de 241 imagens, 2.243 habilidades, 15 observações físicas e associações candidatas também foi integrado ao repositório em `web/SCOUT_V184_EFHUB_241_COMPLETE.json`.** A planilha XLSX continua disponível como anexo no chat.
 
-**No GitHub:** `web/SCOUT_V184_EFHUB_SCREENSHOT_EVIDENCE.json` guarda **15 observações prioritárias** para exibição na ficha (incluindo dados do modelo de jogador quando legíveis). São evidências visuais do eFHUB, e não Card IDs autenticados da conta.
+**No GitHub:** `web/SCOUT_V184_EFHUB_241_COMPLETE.json` reúne as **241 listas**, por print e hash; `web/SCOUT_V184_EFHUB_SCREENSHOT_EVIDENCE.json` complementa com **15 observações prioritárias** para exibição na ficha (incluindo dados do modelo de jogador quando legíveis). São evidências visuais do eFHUB, e não Card IDs autenticados da conta.
 
 ### Contagem da coleta
 
@@ -49,6 +49,6 @@ As duas listas permanecem **evidência do print** até validar o Card ID da vers
 
 ## Implementação
 
-O `web/app-bridge.js` carrega `SCOUT_V184_EFHUB_SCREENSHOT_EVIDENCE.json` e acrescenta um painel de evidência separado na ficha aplicável. O painel lista habilidades, boosters e modelo físico da captura, com alertas claros sobre não homologação no jogo, e não altera `scout-v68-data`, distribuição de PP ou dados de equipamento. `web/sw.js` inclui o JSON no cache e troca a versão, para os dispositivos receberem os textos atualizados. O teste `scripts/test-efhub-v184.cjs` verifica as 15 observações, as raridades, a proteção dos bloqueios #151/#181 e a manutenção do ID principal #225 até prova segura.
+O `web/app-bridge.js` carrega tanto `SCOUT_V184_EFHUB_241_COMPLETE.json` quanto `SCOUT_V184_EFHUB_SCREENSHOT_EVIDENCE.json` e acrescenta um painel de evidência separado em cada ficha com captura candidata. O painel lista habilidades das 241 capturas e, quando a observação detalhada existe, também boosters e modelo físico, com alertas sobre não homologação no jogo. Quando há várias edições possíveis, exige seleção explícita do print pelo usuário; não altera `scout-v68-data`, distribuição de PP ou dados de equipamento. `web/sw.js` inclui o JSON no cache e troca a versão, para os dispositivos receberem os textos atualizados. O teste `scripts/test-efhub-v184.cjs` verifica as 15 observações, as raridades, a proteção dos bloqueios #151/#181 e a manutenção do ID principal #225 até prova segura.
 
 **Status:** CI/release apenas se for aprovada no GitHub. Sem afirmar instalação concluída no dispositivo.
