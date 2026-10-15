@@ -96,8 +96,20 @@ def run():
                 page.locator("#scout-v194-focus").wait_for(timeout=25000)
                 page.locator("#scout-v194-gameplay").wait_for(timeout=25000)
                 page.locator("#scout-v162").wait_for(timeout=25000)
+                # V196: assegurar que o renderizador traduziu os nomes nativos conhecidos.
+                page.wait_for_function("""() =>
+                    window.SCOUT_SKILL_NAMES_V196 &&
+                    [...document.querySelectorAll('.skill-cloud .skill')].some(x=>x.textContent.trim()==='Cabeçada')
+                """, timeout=20000)
+                names = [x.strip() for x in page.locator(".skill-cloud .skill").all_text_contents()]
+                for expected in ("Cabeçada", "Efeito de longe", "Folha seca", "Chute ascendente", "Precisão à distância", "Chute de primeira"):
+                    if expected not in names:
+                        problems.append(f"{name}: habilidade PT-BR não exibida: {expected}")
+                if "Heading" in names or "Long-Range Curler" in names:
+                    problems.append(f"{name}: inglês legado ainda visível na lista principal")
                 page.wait_for_timeout(650)
                 detail = metrics(page, SCREENS_SELECTORS["detail"])
+                detail["native_skills_ptbr"] = names
                 detail["errors"] = list(errors)
                 detail["direct_children"] = page.evaluate("""() => [...document.querySelectorAll(".profile-content > *")].map(e=>({id:e.id||"",className:typeof e.className==="string"?e.className:"",visible:getComputedStyle(e).display!=="none"}))""")
                 detail["guide_count"] = page.locator("#scout-v194-focus, #scout-v194-gameplay").count()
