@@ -4,10 +4,12 @@
 function enhance(doc,mobile){
  if(!doc||doc.body?.dataset.page!=='detail')return null;
  const header=doc.querySelector('.profile-content > .detail-header');
- const edition=header?.querySelector('.detail-sub');
- if(!header||!edition)return null;
+ if(!header)return null;
+ // Idempotência mesmo após mover a origem para dentro do painel recolhível.
  let disclosure=header.querySelector('#scout-v197-edition');
  if(disclosure)return disclosure;
+ const edition=header.querySelector('.detail-sub');
+ if(!edition)return null;
  disclosure=doc.createElement('details');
  disclosure.id='scout-v197-edition';
  disclosure.className='scout-v197-edition';
