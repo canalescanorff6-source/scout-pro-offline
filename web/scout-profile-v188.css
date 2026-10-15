@@ -1,0 +1,34 @@
+/* Scout V188: hierarquia aprovada pelo vídeo do aplicativo Android: carta > treino > ímpetos > habilidades > laboratório */
+#scout-v188-principal{background:linear-gradient(155deg,#0b2434,#0a1d2d);border:1px solid #2d726c;color:#e9f8f9;border-radius:16px;padding:14px;margin:13px 0}
+.scout-v188-head{display:flex;justify-content:space-between;align-items:start;gap:9px;flex-wrap:wrap}
+.scout-v188-kicker{color:#84e1c7;font-size:10px;font-weight:800;letter-spacing:.08em}
+#scout-v188-principal h2{font-size:19px;line-height:1.25;margin:5px 0}
+#scout-v188-principal h3{font-size:13px;margin:0 0 8px;color:#c1eae6}
+.scout-v188-pp{display:inline-block;border:1px solid #3b7769;background:#184334;padding:7px 9px;border-radius:9px;font-weight:800;font-size:11px}
+.scout-v188-intro,.scout-v188-evidence,.scout-v188-source,#v188-reason,.scout-v188-allowed{font-size:11px;line-height:1.5;color:#bcd3de;margin:7px 0}
+.scout-v188-progress,.scout-v188-boost,.scout-v188-body{padding:12px;border:1px solid #254e5a;background:#0d2838;border-radius:11px;margin:12px 0}
+.scout-v188-train{display:flex;gap:7px;flex-wrap:wrap}
+.scout-v188-train-chip{padding:7px 10px;background:#163d4f;border:1px solid #286377;border-radius:9px;color:#d7eff4;font-size:12px;font-weight:700}
+.scout-v188-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}
+.scout-v188-tiles>div{background:#0c1825;border:1px solid #337376;border-radius:10px;padding:11px;min-width:0}
+.scout-v188-tiles small,.scout-v188-best small{display:block;font-size:10px;color:#98cfd0;font-weight:800;letter-spacing:.04em}
+.scout-v188-tiles strong{display:block;color:#e7f7f3;font-size:15px;margin-top:8px;overflow-wrap:anywhere;line-height:1.45}
+.scout-v188-best{background:linear-gradient(115deg,#123d35,#162b3d);border:1px solid #529e7f;border-radius:11px;padding:12px;margin-top:11px}
+.scout-v188-best strong{display:block;color:#a8f7d1;font-size:clamp(16px,3.5vw,21px);margin-top:7px;line-height:1.35;overflow-wrap:anywhere}
+.scout-v188-lock{font-size:11px;display:flex;align-items:center;gap:9px;color:#d8e8ef;margin-top:12px;line-height:1.55;cursor:pointer}
+.scout-v188-lock input{width:18px;height:18px;flex-shrink:0;accent-color:#36ba9c}
+.scout-v188-choice label{display:block;font-size:11px;color:#e4d9bb;font-weight:700;margin:10px 0}
+.scout-v188-choice select{display:block;min-height:42px;max-width:100%;width:100%;background:#153a4a;color:white;border:1px solid #4b8391;border-radius:9px;padding:8px;margin-top:5px}
+.scout-v188-body p{font-size:11px;line-height:1.7;margin:6px 0;color:#bed3df}
+.scout-v188-skills-link,.scout-v188-more{display:flex;align-items:center;justify-content:center;max-width:100%;box-sizing:border-box;min-height:44px;text-align:center;border-radius:11px;border:1px solid #318f7b;background:#165643;color:#d3fff3;text-decoration:none;font-weight:800;font-size:12px;padding:10px 12px;margin-top:9px;cursor:pointer}
+.scout-v188-more{background:#183044;border-color:#365e78;width:100%;color:#daeaf5}
+.scout-v188-more:focus-visible,.scout-v188-skills-link:focus-visible{outline:3px solid #ffd694;outline-offset:2px}
+body.scout-v188-compact .profile-content > section.topic{display:none!important}
+body.scout-v188-compact .profile-content > #scout-card-booster-shortcut{display:none!important}
+body.scout-v188-compact #scout-v162 .v162-panels{grid-template-columns:1fr!important}
+body.scout-v188-compact #scout-v162 .v162-panel:nth-child(2){display:none!important}
+body.scout-v188-compact #scout-v162 .v162-meta{display:none!important}
+body.scout-v188-compact #scout-v162 h2{font-size:16px!important}
+body.scout-v188-compact #scout-v162{margin:12px 0;padding:12px}
+@media(max-width:640px){.scout-v188-tiles strong{font-size:13px}.scout-v188-train-chip{font-size:11px}}
+@media print{body.scout-v188-compact .profile-content>section.topic{display:block!important}}
