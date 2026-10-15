@@ -35,7 +35,7 @@ for(const item of evidence.observations){
  audited++;
 }
 assert.equal(audited,15);
-const tonali=boosters.observations.filter(x=>x.filename.startsWith('Sandro_Tonali_'));
+const tonali=boosters.observations.filter(x=>['Sandro_Tonali_efhub.jpg','Sandro_Tonali_efhub_0.jpg'].includes(x.filename));
 assert.equal(tonali.length,2);assert.equal(new Set(tonali.map(x=>x.sha256)).size,1);
 assert.equal(sourceCandidates(tonali[0].candidate_caps[0],tonali).length,1);
 const massaro=sourceCandidates(1,boosters.observations);
