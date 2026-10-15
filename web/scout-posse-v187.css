@@ -1,0 +1,16 @@
+/* Scout V187: página com uma ficha prioritária, preservando a navegação antiga. */
+.scout-posse-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.scout-posse-fact{min-width:0;border:1px solid #2d5868;border-radius:11px;background:#092435;padding:11px}
+.scout-posse-fact small{display:block;font-size:10px;color:#a7cbd2;letter-spacing:.03em}
+.scout-posse-fact strong{display:block;font-size:13px;line-height:1.5;margin-top:6px;overflow-wrap:anywhere}
+.scout-posse-body{padding:12px;border:1px solid #235c65;background:#0c2c36;border-radius:11px;margin-top:12px}
+.scout-posse-body > strong{font-size:13px;color:#9ef1d4}
+.scout-posse-body p{font-size:12px;line-height:1.6;margin:7px 0}
+.scout-posse-actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:12px}
+.scout-posse-actions a,.scout-posse-all{display:inline-flex;justify-content:center;align-items:center;text-decoration:none;border-radius:10px;border:1px solid #5db99a;background:#155547;color:#f3fffa;padding:11px 13px;font-size:12px;font-weight:800;min-height:42px;cursor:pointer}
+.scout-posse-all{background:#132d41;border-color:#52758f;color:#cce5f5}
+.scout-posse-actions a:focus-visible,.scout-posse-all:focus-visible{outline:3px solid #f7d191;outline-offset:2px}
+body.scout-posse-compact .profile-content > section.topic{display:none!important}
+body.scout-posse-compact .profile-content > .scout-v68{display:none!important}
+@media(max-width:680px){.scout-posse-facts{grid-template-columns:1fr}.scout-posse-body{padding:10px}}
+@media print{body.scout-posse-compact .profile-content > section.topic{display:block!important}.scout-posse-actions{display:none!important}}

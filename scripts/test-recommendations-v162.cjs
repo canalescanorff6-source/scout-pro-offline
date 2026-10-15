@@ -27,7 +27,7 @@ for(const c of data){
    assert(booster.primary&&B.CRAFTABLE.includes(booster.primary.nome),'Ímpeto selecionável '+c.numero);
    assert.notStrictEqual(booster.primary.nome.toLowerCase(),String(c.impeto_fixo||'').replace(/\s*\+\d+.*/,'').trim().toLowerCase(),'Não repetir o ímpeto nativo');
    if(tactic==='posse')boostEligible++;
-  }else assert(!booster.primary,'Slot não comprovado não autoriza escolha '+c.numero);
+  }else {assert(booster.primary&&B.CRAFTABLE.includes(booster.primary.nome),'O ranking consultivo deve existir mesmo quando o slot não foi confirmado: '+c.numero);assert.notEqual(booster.equipStatus,'condicionado_a_slot');}
   inspected++;if(tactic==='posse'){haveRecommendations++;if(!rec.nativeKnown)unknownNative++;if(rec.recommendations.length<5)fewerThanFive++;}
  }
 }
@@ -38,7 +38,10 @@ const check=E.evaluate({shown_position:'CA',native_skills:'One Touch Pass; First
 for(const name of ['onepass','firstshot','double','through','sole'])assert(!check.recommendations.some(x=>x.key===name),'Não repetir habilidade já equipada: '+name);
 assert.strictEqual(E.keyFor('Passe de primeira'),E.keyFor('One-touch Pass'),'Aliases PT-BR/EN');
 assert.strictEqual(E.keyFor('Finalização de primeira'),E.keyFor('First-time Shot'),'Aliases variantes');
-assert.strictEqual(E.booster({shown_position:'CA',boost2:'PENDENTE',boost1:'Physicality +3'},'posse',B).primary,null,'Não liberar slot sem evidência');
+const unknownSlot=E.booster({shown_position:'CA',boost2:'PENDENTE',boost1:'Physicality +3'},'posse',B);
+assert(unknownSlot.primary,'Ranking de posse deve sempre informar a primeira escolha');
+assert.equal(unknownSlot.able,false,'Recomendação consultiva não confere slot');
+assert.equal(unknownSlot.equipStatus,'slot_nao_verificado');
 const bridge=fs.readFileSync(path.join(base,'app-bridge.js'),'utf8');
 assert(bridge.includes('skills-booster-v162.js')&&bridge.includes('booster-engine-v103.js'),'Recomendador precisa aparecer em todas as fichas');
-console.log('PASSOU V162: '+inspected+' avaliações, '+haveRecommendations+' cartas, '+boostEligible+' slots com sugestão de ímpeto, '+unknownNative+' cartas com habilidades nativas pendentes, '+fewerThanFive+' com menos de 5 novas habilidades elegíveis.');
+console.log('PASSOU V162: '+inspected+' avaliações, '+haveRecommendations+' cartas, '+boostEligible+' slots indicados pela fonte (os demais recebem sugestão consultiva), '+unknownNative+' cartas com habilidades nativas pendentes, '+fewerThanFive+' com menos de 5 novas habilidades elegíveis.');

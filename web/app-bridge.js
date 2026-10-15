@@ -7,6 +7,13 @@ const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribut
 bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
+if(inCard){
+ const posseSheet=document.createElement('script');
+ posseSheet.src='../scout-posse-v187.js';posseSheet.defer=true;document.head.appendChild(posseSheet);
+ const posseStyle=document.createElement('link');
+ posseStyle.rel='stylesheet';posseStyle.href='../scout-posse-v187.css';document.head.appendChild(posseStyle);
+}
+
 // V186: os templates animados estão disponíveis nas 246 cartas em Windows e Android.
 // CSS/JS externos mantêm o app original e permitem respeitar acessibilidade e bateria.
 const scoutMotionRoot=inCard?'../':'';
@@ -35,8 +42,9 @@ if(inCard){
   if(!matches.length||document.getElementById('scout-v184-evidence'))return;
   const extras=new Map((details.observations||[]).map(x=>[x.file,x]));
   const secureSingle=matches.length===1&&['unambiguous_name_only_no_id','external_edition_multifactor_no_in_game_id'].includes(matches[0].scout_roster_matching?.status);
-  const section=document.createElement('section');
+  const section=document.createElement('details');
   section.id='scout-v184-evidence';
+  const summary=document.createElement('summary');summary.textContent='Consultar informações complementares dos prints eFHUB (opcional)';summary.style.cssText='cursor:pointer;color:#9fe9e4;font-weight:800;margin:0 0 8px';section.appendChild(summary);
   section.style.cssText='padding:16px;margin:14px 0;border:1px solid #527b9b;background:#0d2130;border-radius:14px;color:#f1f5fb';
   const h=document.createElement('h3');h.textContent='V184 · Evidências dos seus prints eFHUB';h.style.cssText='margin:0 0 9px;color:#9fe9e4;font-size:16px';section.appendChild(h);
   const intro=document.createElement('p');intro.style.cssText='font-size:12px;line-height:1.5;margin:0 0 12px';

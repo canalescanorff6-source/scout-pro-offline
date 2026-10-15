@@ -25,19 +25,23 @@ for(const c of roster){
   const native=new Set(String(c.habilidades_nativas||'').split(';').map(S.keyFor).filter(Boolean));
   for(const skill of r.recommendations)assert(!native.has(skill.key),'Duplicou nativa: '+c.numero+' '+skill.name);
   const boost=S.booster(d,t,B);
-  if(boost.primary){assert(boost.able);assert(B.CRAFTABLE.includes(boost.primary.nome))}
+  if(boost.primary){assert(B.CRAFTABLE.includes(boost.primary.nome));if(!boost.able)assert(boost.equipStatus!=='condicionado_a_slot')}
   proposals++;
  }
 }
 const Ronaldo=S.booster(card(24),'posse',B);
 assert.equal(Ronaldo.able,false,'Big Time Ronaldo possui segundo ímpeto nomeado');
-assert.equal(Ronaldo.primary,null,'Não propor terceiro ímpeto ao Ronaldo');
-assert.equal(S.booster(card(81),'posse',B).primary,null,'Big Time Rivaldo sem slot comprovado');
-assert.equal(S.booster(card(172),'posse',B).primary,null,'Courtois sem confirmação local não pode assumir slot');
+assert(Ronaldo.primary,'Ranking consultivo para Ronaldo sem terceiro slot');
+assert.equal(Ronaldo.equipStatus,'comparacao_segundo_fixo');
+assert(S.booster(card(81),'posse',B).primary,'Rivaldo recebe indicação teórica sem comprovar slot');
+assert.equal(S.booster(card(81),'posse',B).able,false);
+assert(S.booster(card(172),'posse',B).primary,'Courtois recebe sugestão consultiva');
+assert.equal(S.booster(card(172),'posse',B).able,false);
 const CourtoisConfirmado=S.booster(card(172),'posse',B,'vazio');
 assert(CourtoisConfirmado.primary,'Após confirmação do usuário, sugerir ímpeto do Courtois');
 assert(['Saving','Goalkeeping'].includes(CourtoisConfirmado.primary.nome));
-assert.equal(S.booster(card(172),'posse',B,'ausente').primary,null,'A confirmação de ausência impede recomendação');
+assert.equal(S.booster(card(172),'posse',B,'ausente').able,false,'Ausência impede equipar');
+assert.equal(S.booster(card(172),'posse',B,'ausente').equipStatus,'impossivel_na_conta');
 assert(S.booster(card(236),'posse',B).primary,'Slot de Eto\'o consta selecionável no catálogo');
 assert.equal(S.evaluate(card(40),'posse').nativeKnown,true);
 const Yorke=S.evaluate(card(40),'posse').recommendations.map(x=>x.key);

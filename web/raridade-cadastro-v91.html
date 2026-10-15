@@ -26,11 +26,11 @@ button:disabled{opacity:.4;cursor:not-allowed}.pager{display:flex;justify-conten
 <header><div><h1>Cadastro visual · Raridades V92</h1><div class="hint">Uma carta por vez · Original à esquerda · Correção manual</div></div><div class="counter"><span id="done">0</span>/<span id="max">56</span><small>Preenchidas</small></div></header>
 <div class="bar"><div id="barfill"></div></div>
 <div class="controls"><label>Tipo de revisão<select id="group">
-<option value="divergencia">Divergências de metadados (33)</option>
-<option value="edicao-pendente">Edição a confirmar (21)</option>
-<option value="sem-classificacao">Descrição inconclusiva (2)</option>
-<option value="todas">Todas as cartas (56)</option>
-</select></label>
+<option value="por-enviar">Somente mudanças ainda não enviadas</option>
+<option value="todas">Histórico das 56 raridades registradas</option>
+<option value="divergencia">Ver divergências antigas (histórico)</option>
+<option value="edicao-pendente">Edições em pesquisa (histórico)</option>
+<option value="sem-classificacao">Descrição inconclusiva (histórico)</option></select></label>
 <label>Selecione o jogador<select id="player"></select></label></div>
 <section class="layout"><div class="figure">
 <img id="art" alt="Arte original da carta" src="" width="210" height="296" loading="eager"/>
@@ -51,7 +51,7 @@ button:disabled{opacity:.4;cursor:not-allowed}.pager{display:flex;justify-conten
 <p class="note">As 56 raridades foram confirmadas visualmente e salvas no GitHub. Diferenças entre a descrição histórica da edição e a raridade confirmada continuam documentadas, sem alterar Card IDs. Você ainda pode corrigir qualquer carta.</p>
 <div id="saved" class="pills"></div>
 <button id="submit" class="send" disabled>Enviar cartas para salvar no GitHub · 0 selecionadas</button>
-<p class="note" id="footer">56 raridades já registradas no repositório. Somente novas correções serão copiadas para envio ao ChatGPT; alterações locais não modificam o GitHub automaticamente.</p>
+<p class="note" id="footer">As 56 raridades desta lista já estão registradas no projeto. Alterações que você fez só neste aparelho continuam locais; use “Enviar correções” para copiá-las e pedir a atualização do GitHub.</p>
 </main>
 <script>
 (()=>{
@@ -62,9 +62,16 @@ const $=id=>document.getElementById(id);
 const confirmed=Object.fromEntries(candidates.filter(c=>c.raridade_confirmada).map(c=>[c.numero,{raridade:c.raridade_confirmada}]));
 let saved={...confirmed};
 try{saved={...saved,...(JSON.parse(localStorage.getItem(key)||"{}")||{})}}catch(_e){saved={...confirmed}}
-let activeGroup="divergencia",visible=[],position=0;
+let activeGroup="por-enviar",visible=[],position=0;
 function active(){return visible[position]}
-function show(i){const c=active();if(!c)return;
+function show(i){const c=active();if(!c){
+ $("heading").textContent="Raridades desta revisão: tudo registrado";
+ $("caption").textContent="Sem mudanças locais pendentes de envio.";
+ $("art").hidden=true;$("imageError").hidden=true;
+ $("form").hidden=true;$("prev").disabled=true;$("next").disabled=true;
+ $("step").textContent="0/0";renderStatus();return;
+ }
+ $("art").hidden=false;$("form").hidden=false;
 $("heading").textContent="#"+c.numero+" — "+c.nome;
 $("caption").textContent="#"+c.numero+" · "+c.nome;
 $("art").src=c.imagem;$("art").alt="Arte original de "+c.nome;
@@ -88,15 +95,18 @@ $("done").textContent=entries.length;$("max").textContent=candidates.length;
 $("barfill").style.width=(100*entries.length/candidates.length)+"%";
 const changes=candidates.filter(c=>saved[c.numero]?.raridade&&saved[c.numero].raridade!==c.raridade_confirmada);
 $("submit").disabled=changes.length===0;
-$("submit").textContent="Enviar "+changes.length+" alteração(ões) adicionais para o GitHub — copiar registros";
+$("submit").textContent=changes.length?"Copiar "+changes.length+" nova(s) correção(ões) para enviar ao GitHub":"Nenhuma correção nova para enviar";
 Array.from($("player").options).forEach((opt,i)=>opt.textContent="#"+visible[i].numero+" — "+visible[i].nome+(saved[visible[i].numero]?.raridade?" ✓":""));
 const list=$("saved");list.replaceChildren();
-candidates.filter(c=>saved[c.numero]?.raridade).forEach(c=>{
+candidates.filter(c=>saved[c.numero]?.raridade&&saved[c.numero].raridade!==c.raridade_confirmada).forEach(c=>{
  const btn=document.createElement("button");btn.type="button";btn.textContent="✓ #"+c.numero+" · "+saved[c.numero].raridade;
  btn.onclick=()=>{activeGroup="todas";$("group").value=activeGroup;refresh();position=visible.findIndex(v=>v.numero===c.numero);show(position)};
  list.appendChild(btn);
 });}
-function refresh(){visible=candidates.filter(c=>activeGroup==="todas"||c.grupo===activeGroup);position=0;
+function refresh(){visible=candidates.filter(c=>{
+ if(activeGroup==="por-enviar")return !!saved[c.numero]?.raridade && saved[c.numero].raridade!==c.raridade_confirmada;
+ return activeGroup==="todas"||c.grupo===activeGroup;
+ });position=0;
  const s=$("player");s.replaceChildren();visible.forEach((c,i)=>{const opt=document.createElement("option");opt.value=String(i);s.appendChild(opt)});
  show(0)}
 $("group").onchange=()=>{activeGroup=$("group").value;refresh()};
@@ -111,6 +121,7 @@ $("form").onsubmit=e=>{
  if(!answer){$("other").focus();return}
  saved[c.numero]={raridade:answer};
  try{localStorage.setItem(key,JSON.stringify(saved))}catch(_e){}
+ if(activeGroup==="por-enviar"){refresh();return;}
  if(position<visible.length-1)position++;
  show(position);
 };

@@ -34,6 +34,18 @@ const SKILLS=Object.fromEntries(ENTRIES.map(x=>[x[0],Object.freeze({key:x[0],nam
 const normal=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const aliasMap=new Map;
 for(const e of ENTRIES)for(const alias of [e[1],...e[2]])aliasMap.set(normal(alias),e[0]);
+// Alias adicionais derivados das grafias portuguesas encontradas nos prints eFHUB.
+for(const [raw,key] of Object.entries({
+ 'chute de primeira':'firstshot','chute de longe':'longshot','precisao a distancia':'longshot',
+ 'efeito de longe':'curler','cabeçada':'heading','cabecada':'heading',
+ 'afastamento acrobatico':'clear','reposicao alta do go':'gkhigh',
+ 'arremesso longo do go':'gklong','pegador de penaltis':'gkpenalty',
+ 'comandante da defesa go':'captain','controle com a sola':'sole',
+ 'passe de primeira':'onepass','passe em profundidade':'through',
+ 'passe a rasgar':'through','bloqueador':'blocker',
+ 'superioridade aerea':'aerial','interceptacao':'intercept'
+
+}))if(!aliasMap.has(normal(raw)))aliasMap.set(normal(raw),key);
 const keyFor=s=>aliasMap.get(normal(s))||'';
 const splitSkills=s=>Array.isArray(s)?s:String(s||'').split(/[;\n,]+/).map(x=>x.trim()).filter(Boolean);
 const POSITION={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',ZG:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA'};
@@ -49,7 +61,7 @@ const POOLS={
  ALA:['double','sole','onepass','through','fighting','heel','firstshot','cutturn','longshot','trackback','weighted','curler','supersub'],
  GO:['gklow','gklong','gkhigh','gkpenalty','fighting','captain','weighted','lowloft','onepass']
 };
-function roleOf(d){return POSITION[d.shown_position]||POSITION[d.role_used]||POSITION[d.posicao]||null}
+function roleOf(d){return POSITION[d.role_used]||POSITION[d.shown_position]||POSITION[d.posicao]||null}
 function evaluate(d,tactic,manualEquipped){
  if(!['posse','normal','rapido'].includes(tactic))throw Error('Tática inválida');
  const role=roleOf(d);if(!role)return {role:null,recommendations:[],nativeKnown:false,missing:['Posição da carta não cadastrada']};
@@ -72,14 +84,15 @@ function evaluate(d,tactic,manualEquipped){
  if(/destruidor|primeiro volante|lateral defensivo|defensor criativo/.test(style))bump(['intercept','blocker','mark','onepass'],22);
  if(/versatil|todo o terreno/.test(style))bump(['fighting','onepass','intercept'],18);
  if(/goleiro ofensivo/.test(style))bump(['gklow','gklong'],25);
- for(const key of prevSet)if(scorer.has(key))scorer.set(key,scorer.get(key)+8);
+ // O histórico de sugestões genéricas não aumenta a nota da carta.
+ // Prioridade depende apenas da função, da tática e do estilo, não do OVR.
  const ranked=[...scorer.entries()].filter(([key])=>!used.has(key)).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([key,score])=>({...SKILLS[key],score}));
  return {role,nativeKnown,knownNative:native.length,alreadyEquippedProvided:equipped.length,recommendations:ranked.slice(0,5),alternatives:ranked.slice(5,8),missing:nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']};
 }
 function booster(d,tactic,engine,verifiedSlot){
  const value=String(d.boost2||d.impeto_extra||'');
  const status=engine?.slotStatus?engine.slotStatus(value):(/^SLOT SELECION[AÁ]VEL/i.test(value)?'selecionavel':'indefinido');
- const position=d.shown_position||d.role_used||d.posicao;
+ const position=POSITION[d.role_used]?d.role_used:d.shown_position||d.role_used||d.posicao;
  const natural=String(d.boost1||d.impeto_fixo||'').replace(/\s*\+\d+.*/,'').trim();
  const extra=String(value).replace(/\s*\+\d+.*/,'').trim();
  const validBooster=s=>engine&&Object.keys(engine.BOOSTERS||{}).find(x=>normal(x)===normal(s));
@@ -97,7 +110,11 @@ function booster(d,tactic,engine,verifiedSlot){
  verifiedSlot==='vazio'?'Você confirmou slot vazio neste dispositivo; confira o bônus final antes de gastar tokens.':
  able?'Slot selecionável indicado no catálogo; confirmação no Plano de Jogo ainda necessária.':
  'Não existe prova documental suficiente de um slot selecionável. Confira no jogo antes de aplicar tokens.';
- return {status,verifiedSlot,able,knownExtra:existing,natural,primary:able?ranked[0]||null:null,alternatives:able?ranked.slice(1,3):[],note};
+ // O ranking da carta deve existir independentemente da disponibilidade do slot.
+ // "primary" é uma prioridade competitiva, NÃO algo equipado ou autorizado.
+ return {status,verifiedSlot,able,knownExtra:existing,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
+  confidence:engine&&ranked.length?'heuristica_funcao_estilo_posse_sem_testes_de_partida':'sem_base_para_ranquear',
+  equipStatus:verifiedSlot==='ausente'?'impossivel_na_conta':status==='nome_registrado'?'comparacao_segundo_fixo':able?'condicionado_a_slot':'slot_nao_verificado'};
 }
 const USER_SLOT_NOTES=Object.freeze({
  24:'Cristiano Ronaldo Big Time #024: o usuário relata dois ímpetos embutidos, sem edição; preservar ambos.',
@@ -132,10 +149,10 @@ document.head.appendChild(css);
 const section=document.createElement('section');section.id='scout-v162';section.setAttribute('aria-label','Recomendações de habilidades e ímpetos por carta');
 section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA V162</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
 '<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button></div>'+
-'<div class="v162-panels"><article class="v162-panel"><h3>5 habilidades adicionais · plano</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
-'<details><summary>Já equipou habilidades nesta carta? Informar para excluir duplicatas</summary><p>Opcional. Separe os nomes por ponto e vírgula. Este registro fica apenas neste dispositivo; não modifica a carta do jogo.</p><textarea id="v162-equipped" aria-label="Habilidades adicionais já equipadas" placeholder="Ex.: Passe de primeira; Toque duplo"></textarea><button id="v162-save" type="button">Salvar e recalcular</button><p id="v162-feedback" aria-live="polite"></p></details>'+
+'<div class="v162-panels"><article class="v162-panel"><h3>5 habilidades adicionais · prioridade na Posse</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
+'<details><summary>Opcional: informar habilidades já equipadas para refinar a lista</summary><p>Opcional. Separe os nomes por ponto e vírgula. Este registro fica apenas neste dispositivo; não modifica a carta do jogo.</p><textarea id="v162-equipped" aria-label="Habilidades adicionais já equipadas" placeholder="Ex.: Passe de primeira; Toque duplo"></textarea><button id="v162-save" type="button">Salvar e recalcular</button><p id="v162-feedback" aria-live="polite"></p></details>'+
 '<p class="v162-foot">Recomendações teóricas baseadas nas habilidades registradas, no estilo e na função da carta. Não são testes comprovados em partidas; verifique habilidades nativas, compatibilidade e slot antes de usar tokens. Nenhuma escolha é aplicada automaticamente.</p>';
-const after=container.querySelector('#scout-card-navigator')||container.querySelector('.detail-header')||container.querySelector('.mobile-profile');
+const after=container.querySelector('#scout-posse-main')||container.querySelector('#scout-card-navigator')||container.querySelector('.detail-header')||container.querySelector('.mobile-profile');
 if(after)after.insertAdjacentElement('afterend',section);else container.prepend(section);
 const side=document.querySelector('.side-nav');if(side){const link=document.createElement('a');link.href='#scout-v162';link.textContent='★ Habilidades e ímpetos PRO';side.prepend(link)}
 const storage='scoutpro:v162:equipped:'+String(d.capture)+':'+String(d.id||'unknown');
@@ -150,7 +167,7 @@ function draw(){
  const remaining=Math.max(0,5-result.alreadyEquippedProvided);
  const proposed=result.recommendations.slice(0,remaining);
  section.querySelectorAll('[data-tactic]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tactic===tactic)));
- section.querySelector('#v162-skills-status').textContent='Nativas cadastradas: '+result.knownNative+' · Adicionais informadas: '+result.alreadyEquippedProvided+'/5 · Restantes: '+remaining+'. '+(result.nativeKnown?'Recomendações sem duplicar habilidades nativas conhecidas.':'PROVISÓRIO: faltam as habilidades nativas desta edição; não gaste tokens sem conferir.');
+ section.querySelector('#v162-skills-status').textContent='Nativas catalogadas: '+result.knownNative+' · Adicionais informadas: '+result.alreadyEquippedProvided+'/5 · Vagas a planejar: '+remaining+'. '+(result.nativeKnown?'Ordem calculada para função e tática, excluindo nativas e adicionais informadas.':'EDIÇÃO SEM NATIVAS AUTENTICADAS: sugestões provisórias; não gaste tokens sem conferir.');
  const ul=section.querySelector('#v162-skills');ul.replaceChildren();
  for(const s of proposed){const li=document.createElement('li'),b=document.createElement('strong'),p=document.createElement('p');b.textContent=s.name;p.textContent=s.why;li.append(b,p);ul.appendChild(li)}
  for(let i=proposed.length;i<remaining;i++){
@@ -167,8 +184,14 @@ function draw(){
  line('Estado de sua conta: '+verifiedLabel+(manuallyVerified.equipped?' · '+manuallyVerified.equipped:''));
  if(USER_SLOT_NOTES[Number(d.capture)])line('Relato seu (a confirmar na tela do jogo): '+USER_SLOT_NOTES[Number(d.capture)]);
  const panel=section.querySelector('#v162-booster');panel.replaceChildren();
- const title=document.createElement('p');title.style.fontWeight='800';title.textContent=boost.primary?'Sugestão condicional: '+boost.primary.nome+' +1':named?'Segundo ímpeto nomeado; sem indicação de slot livre':'Ímpeto selecionável não confirmado';panel.appendChild(title);
- if(boost.primary){const why=document.createElement('p');why.textContent=boost.primary.motivo;panel.appendChild(why);const atr=document.createElement('p');atr.textContent='Atributos associados: '+boost.primary.atributos.join(', ')+'.';panel.appendChild(atr);if(boost.alternatives.length){const alt=document.createElement('p');alt.textContent='Alternativas: '+boost.alternatives.map(x=>x.nome).join(' / ')+'.';panel.appendChild(alt)}}
+ const title=document.createElement('p');title.style.fontWeight='800';title.textContent=boost.primary?'Melhor ímpeto sugerido para '+(tactic==='posse'?'Posse de Bola':tactic==='normal'?'Contra-Ataque Normal':'Contra-Ataque Rápido')+': '+boost.primary.nome+' +1':'Sem ímpeto calculável para esta função';panel.appendChild(title);
+ const applicability=document.createElement('p');applicability.style.fontWeight='700';
+ applicability.textContent=boost.equipStatus==='impossivel_na_conta'?'Sua conferência indica que esta carta não possui slot: a escolha é somente comparativa.':
+ boost.equipStatus==='comparacao_segundo_fixo'?'Há segundo ímpeto fixo registrado: esta é apenas a melhor alternativa teórica, não uma opção para substituir.':
+ boost.equipStatus==='condicionado_a_slot'?'Indicação para o segundo slot, somente se estiver realmente disponível e não comprometido.':
+ 'Recomendação pronta; falta confirmar se esta edição possui segundo slot selecionável. Não exige que você insira um ímpeto para descobrir qual seria o melhor.';
+ panel.appendChild(applicability);
+ if(boost.primary){const why=document.createElement('p');why.textContent='Por quê nesta função: '+boost.primary.motivo+' (priorização heurística, não resultado medido em partidas).';panel.appendChild(why);const atr=document.createElement('p');atr.textContent='Atributos associados: '+boost.primary.atributos.join(', ')+'.';panel.appendChild(atr);if(boost.alternatives.length){const alt=document.createElement('p');alt.textContent='Alternativas: '+boost.alternatives.map(x=>x.nome).join(' / ')+'.';panel.appendChild(alt)}}
  const note=document.createElement('p');note.className='v162-note';note.textContent=boost.note;panel.appendChild(note);
  const jump=document.createElement('a');jump.href='../revisao-impetos-v103.html?c='+Number(d.capture);jump.textContent='Confirmar o slot, o ímpeto equipado e as opções desta carta ↗';jump.style.color='#8dd8f7';jump.style.fontWeight='700';panel.appendChild(jump);
 }
