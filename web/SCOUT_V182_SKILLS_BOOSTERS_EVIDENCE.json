@@ -15,12 +15,12 @@
   "politica": "Auditoria sem transferir habilidades ou ímpetos entre edições, sem alterar cartas, Card IDs, atributos, PP, equipamentos ou boosters. Status da base ≠ confirmação direta no jogo.",
   "totais": {
     "cartas": 246,
-    "habilidades_cadastradas": 242,
-    "habilidades_sem_lista": 4,
+    "habilidades_cadastradas": 243,
+    "habilidades_sem_lista": 3,
     "por_proveniencia": {
       "legado_sem_proveniencia_individual": 130,
-      "base_externa_card_id": 91,
-      "pendente_identidade": 4,
+      "base_externa_card_id": 92,
+      "pendente_identidade": 3,
       "base_externa_multifatorial_id_nao_autenticado": 21
     },
     "slots_por_status_cadastrado": {
@@ -83,20 +83,6 @@
         "url": "https://pesdb.net/efootball/players/serhou-guirassy-106769397419872"
       },
       "prova_necessaria": "confirmar raridade da carta real"
-    },
-    {
-      "numero": 225,
-      "nome": "Rodri",
-      "problema": "Card ID registrado 106780940205246 pertence a Nico O'Reilly na PESDB; provável Rodri Highlight tem outra ID",
-      "candidato": {
-        "id": "105779675902175",
-        "tipo": "Highlight",
-        "pacote": "Back in the Game 14 Aug '25",
-        "pp_candidato": 52,
-        "url": "https://pesdb.net/efootball/players/rodri-105779675902175"
-      },
-      "contraprova": "https://pesdb.net/efootball/players/nico-o-reilly-106780940205246",
-      "prova_necessaria": "confirmar ID diretamente na ficha do Rodri; nunca atribuir habilidades de Nico O'Reilly"
     }
   ],
   "booter_indicacoes_evidencia": "booster externo do candidato serve somente para desambiguar identidade, nunca para substituir os ímpetos cadastrados",
@@ -3485,17 +3471,18 @@
     {
       "numero": 225,
       "jogador": "Rodri",
-      "card_id_registrado": "106780940205246",
-      "habilidades_nativas_quantidade": 0,
-      "habilidades_status": "pendente_identidade",
-      "habilidades_fonte": null,
+      "card_id_registrado": "105779675902175",
+      "habilidades_nativas_quantidade": 10,
+      "habilidades_status": "base_externa_card_id",
+      "habilidades_fonte": "https://pesdb.net/efootball/players/rodri-105779675902175",
       "habilidades_confirmadas_diretamente_na_conta": false,
       "impeto_fixo_registrado": "NENHUM BOOSTER NATIVO CONFIRMADO",
       "impeto_extra_registrado": "NENHUM BOOSTER NATIVO CONFIRMADO",
       "situacao_slot_na_base": "indefinido",
       "situacao_slot_confirmada_na_conta": false,
       "ressalva_usuario": null,
-      "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes"
+      "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes",
+      "card_id_validacao": "convergencia_externa_por_pack_arte_pp_habilidades_sem_id_exibido_no_jogo"
     },
     {
       "numero": 226,
@@ -3816,5 +3803,6 @@
       "regra": "cadastro não é prova de slot livre, nem de booster efetivamente equipado; preserva dados existentes"
     }
   ],
-  "revisao_v183": "Raridades #075/#170 Show Time e #151/#181 Distinguido confirmadas pelo usuário 2026-10-14. #075/#170 lista externa por Card ID, NÃO homologada no jogo. #151/#181 IDs divergentes da raridade mantidos pendentes."
+  "revisao_v183": "Raridades #075/#170 Show Time e #151/#181 Distinguido confirmadas pelo usuário 2026-10-14. #075/#170 lista externa por Card ID, NÃO homologada no jogo. #151/#181 IDs divergentes da raridade mantidos pendentes.",
+  "revisao_v185": "Rodri #225 agora com ID externo 105779675902175 validado por pacote/arte/PP/habilidades, nao por ID exibido na conta. Pacho, Guirassy, Messi continuam sem listas certificadas."
 }
