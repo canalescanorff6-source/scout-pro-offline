@@ -100,8 +100,9 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const extra=String(value).replace(/\s*\+\d+.*/,'').trim();
  const validBooster=s=>engine&&Object.keys(engine.BOOSTERS||{}).find(x=>normal(x)===normal(s));
  const knownExtra=validBooster(extra);
- const manual=verifiedSlot==='vazio'||verifiedSlot==='ocupado';
- const able=status!=='nome_registrado'&&verifiedSlot!=='ausente'&&manual;
+ // Apenas um slot confirmado VAZIO pode receber um novo ímpeto.
+ // 'ocupado' autoriza comparação, nunca marca a carta como equipável.
+ const able=status!=='nome_registrado'&&verifiedSlot==='vazio';
  const existing=knownExtra||'';
  const equippedName=validBooster(verifiedEquipped)||'';
  let ranked=[];
@@ -119,7 +120,7 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  return {status,verifiedSlot,able,knownExtra:existing,confirmedEquipped:equippedName||null,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
   confidence:ranked[0]?.confianca||'sem_base_para_ranquear',
   spread:ranked.length>1?Number((ranked[0].score-ranked[1].score).toFixed(2)):null,
-  equipStatus:verifiedSlot==='ausente'?'impossivel_na_conta':status==='nome_registrado'?'comparacao_segundo_fixo':able?'condicionado_a_slot':'slot_nao_verificado'};
+  equipStatus:verifiedSlot==='ausente'?'impossivel_na_conta':status==='nome_registrado'?'comparacao_segundo_fixo':verifiedSlot==='ocupado'?'ocupado_na_conta':able?'condicionado_a_slot':'slot_nao_verificado'};
 }
 const USER_SLOT_NOTES=Object.freeze({
  24:'Cristiano Ronaldo Big Time #024: o usuário relata dois ímpetos embutidos, sem edição; preservar ambos.',
@@ -203,6 +204,7 @@ function draw(){
  const applicability=document.createElement('p');applicability.style.fontWeight='700';
  applicability.textContent=boost.equipStatus==='impossivel_na_conta'?'Sua conferência indica que esta carta não possui slot: a escolha é somente comparativa.':
  boost.equipStatus==='comparacao_segundo_fixo'?'Há segundo ímpeto fixo registrado: esta é apenas a melhor alternativa teórica, não uma opção para substituir.':
+ boost.equipStatus==='ocupado_na_conta'?'Você confirmou que o segundo slot está ocupado: comparação informativa, sem possibilidade de equipar outro ímpeto.':
  boost.equipStatus==='condicionado_a_slot'?'Indicação para o segundo slot, somente se estiver realmente disponível e não comprometido.':
  'Recomendação pronta; falta confirmar se esta edição possui segundo slot selecionável. Não exige que você insira um ímpeto para descobrir qual seria o melhor.';
  panel.appendChild(applicability);
