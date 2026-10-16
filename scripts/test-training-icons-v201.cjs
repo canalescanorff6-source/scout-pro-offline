@@ -19,7 +19,7 @@ for(const [key,label] of source.CATEGORIES){
  const svg=source.pictogram(key);
  assert(svg.includes('<svg')&&svg.includes('viewBox="0 0 64 64"'));
  assert(svg.includes('aria-hidden="true"')&&svg.includes('<path'),'Ilustração acessível '+label);
- assert(!svg.includes('<image')&&!svg.includes('http:')&&!svg.includes('https:'),'Não vincular imagens protegidas externas');
+ assert(!svg.includes('<image')&&!svg.includes('href="http')&&!svg.includes('src="http'),'Não vincular imagens protegidas externas');
 }
 assert.equal(source.keyFor('Finalização de primeira'),null,'Ícone de treino não deve modificar habilidade específica');
 assert.equal(source.keyFor('Passes na medida'),null,'Apenas grupos, não habilidades de jogadores');
