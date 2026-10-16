@@ -4,6 +4,8 @@
  */
 (function(host){
 'use strict';
+// A letra do cabeçalho é uma identidade VISUAL fixa. Cenário salvo permanece em state.scenario.
+const DISPLAY_SCENARIO='A';
 const CATEGORIES=Object.freeze([
  ['chute','Chute'],['passe','Passe'],['drible','Drible'],
  ['destreza','Destreza'],['pernas','Força das pernas'],
@@ -61,7 +63,7 @@ function render(doc){
  header.id='scout-v208-heading';header.classList.add('scout-v208-heading');
  header.replaceChildren();
  const prefix=doc.createElement('span');prefix.className='scout-v208-scenario';
- prefix.textContent=state.scenario+' - ';
+ prefix.textContent=DISPLAY_SCENARIO+' - ';
  const title=doc.createElement('span');title.textContent='Posse central';
  header.append(prefix,title);
  const table=doc.createElement('table');
@@ -105,7 +107,7 @@ function render(doc){
  table.insertAdjacentElement('afterend',note);
  return true;
 }
-const api=Object.freeze({CATEGORIES,SHAPES,ppCost,validLevels,resolveTraining,svg,render});
+const api=Object.freeze({DISPLAY_SCENARIO,CATEGORIES,SHAPES,ppCost,validLevels,resolveTraining,svg,render});
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(!host?.document)return;
 function boot(){

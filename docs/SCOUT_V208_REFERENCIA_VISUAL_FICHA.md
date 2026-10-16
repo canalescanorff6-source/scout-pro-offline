@@ -6,3 +6,6 @@ A tabela real usa sempre os níveis e PP da respectiva carta. O código mantém 
 162 builds registradas, 84 fichas pendentes e seus arquivos originais não foram alterados. Uma distribuição draftA pode ser exibida como prévia experimental (nunca validada automaticamente). Sem distribuição, níveis mostram travessões, e não zeros inventados. A tabela estática não substitui os controles editáveis do Laboratório.
 
 Android e Windows usam a mesma base JS/CSS e cache offline. A estética foi reproduzida estruturalmente e com desenhos SVG originais; não se afirma identidade pixel a pixel dos pictogramas rasterizados da referência. QA exige seis resoluções e build GREEN antes do merge.
+
+## V209 — atualização autorizada do cabeçalho visual
+Por solicitação explícita do usuário, toda tabela exibe o cabeçalho **A - Posse central**, independentemente da letra interna do treino. É mudança exclusivamente de apresentação: `state.scenario` permanece A/B/C/P real, inclusive para a escolha de um draft, e distribuição, PP, habilidades e ímpetos não se alteram. Teste Node confirma títulos uniformes com cenários internos preservados; Chromium verifica Massaro (P interno) mostrando A visual, todas as resoluções e 246 cartas.

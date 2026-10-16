@@ -393,8 +393,8 @@ def run():
                   };
                 }""")
                 detail["v208_reference"]=reference
-                if reference["title"]!="P - Posse central":
-                    problems.append(f"{name}: V208 deve mostrar cenário P real de Massaro")
+                if reference["title"]!="A - Posse central":
+                    problems.append(f"{name}: V209 cabeçalho fora do modelo fixo A - Posse central")
                 if reference["names"]!=["Chute","Passe","Drible","Destreza","Força das pernas","Jogo aéreo","Defesa","Goleiro 1","Goleiro 2","Goleiro 3"]:
                     problems.append(f"{name}: V208 categoria ou ordem incorreta")
                 if reference["icons"]!=10 or not reference["hiddenFallback"]:
