@@ -209,6 +209,8 @@ def run():
                         if page.locator(legacy).is_visible():
                             problems.append(f"{name}: laboratório antigo {legacy} apareceu antes da ficha principal compacta")
                 page.screenshot(path=str(OUT / f"{name}_profile_header.png"), full_page=False, animations="disabled")
+                page.locator(".scout-v188-best").scroll_into_view_if_needed()
+                page.screenshot(path=str(OUT / f"{name}_profile_impeto.png"), full_page=False, animations="disabled")
                 page.locator("#scout-v194-gameplay").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_profile_gameplay.png"), full_page=False, animations="disabled")
                 results[name] = {"catalog": home, "detail": detail}
