@@ -1,0 +1,6442 @@
+{
+  "schema": "scout_v213_card_by_card_evidence_audit",
+  "source": "SCOUT_V69_AUDITORIA.json",
+  "total": 246,
+  "duplicate_groups": 20,
+  "duplicate_cards": 56,
+  "body_records": 15,
+  "policy": "Somente leitura; preservar todas as builds, PP, IDs, habilidades e ímpetos; nunca aprovar alteração sem atributos e evidência por edição",
+  "cards": [
+    {
+      "numero": 1,
+      "nome": "Daniele Massaro",
+      "card_id": "88040387251729",
+      "edicao": "Epic — AC Milan 91-92 (distribuída no Legends Assemble, Jul 2026)",
+      "pp": 62,
+      "treino_registrado": [
+        10,
+        5,
+        5,
+        8,
+        8,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "CA|matador|62|10,5,5,8,8,6,0,0,0,0",
+        "peers": [
+          32
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 2,
+      "nome": "Raúl",
+      "card_id": "88036360649078",
+      "edicao": "Epic — Schalke BW 10-11 (14 Aug 2025)",
+      "pp": 64,
+      "treino_registrado": [
+        5,
+        8,
+        10,
+        12,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 3,
+      "nome": "Mikel Merino",
+      "card_id": "106785503548605",
+      "edicao": "Show Time — The Football Festival Campaign 2026 (25 Jun 2026)",
+      "pp": 64,
+      "treino_registrado": [
+        8,
+        8,
+        8,
+        9,
+        8,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 4,
+      "nome": "David Beckham",
+      "card_id": "88035555413425",
+      "edicao": "Epic — Madrid Chamartin B 03-04",
+      "pp": 64,
+      "treino_registrado": [
+        4,
+        10,
+        8,
+        8,
+        8,
+        0,
+        5,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MLG|orquestrador|64|4,10,8,8,8,0,5,0,0,0",
+        "peers": [
+          17,
+          96
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 5,
+      "nome": "Steven Gerrard",
+      "card_id": "88044145348020",
+      "edicao": "Epic — England 2006 (4 Jun 2026)",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        0,
+        7,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 6,
+      "nome": "Sandro Tonali",
+      "card_id": "105781823393179",
+      "edicao": "Highlight — National Team Selection Italy 1 Sep '25 (28 Aug 2025)",
+      "pp": 68,
+      "treino_registrado": [
+        0,
+        8,
+        6,
+        4,
+        8,
+        6,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 7,
+      "nome": "Sergi Cardona",
+      "card_id": "105827994319227",
+      "edicao": "Highlight — Spanish League Selection Guardians 23 Feb '26 — Sergi Cardona",
+      "pp": 68,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 8,
+      "nome": "Rio Ferdinand",
+      "card_id": "88044145214260",
+      "edicao": "Epic — England 2006 (23 Jul 2026)",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        1,
+        8,
+        9,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 9,
+      "nome": "Giorgio Chiellini",
+      "card_id": "88033407804051",
+      "edicao": "Epic — Piemonte BN 14-15",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        1,
+        8,
+        9,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|basico|56|0,4,0,1,8,9,12,0,0,0",
+        "peers": [
+          148,
+          157
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 10,
+      "nome": "Paolo Maldini",
+      "card_id": "88039045074370",
+      "edicao": "Epic — Italy 2000 (4 Dec 2025)",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        4,
+        4,
+        7,
+        8,
+        7,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 11,
+      "nome": "Manuel Neuer",
+      "card_id": "106788187832737",
+      "edicao": "Show Time — Living Legends 2026 (26 Jul 2026)",
+      "pp": 54,
+      "treino_registrado": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        10,
+        12
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 12,
+      "nome": "Ruud van Nistelrooij",
+      "card_id": "88036360719839",
+      "edicao": "Epic — Manchester United 01-02",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 13,
+      "nome": "David Villa",
+      "card_id": "88044145220884",
+      "edicao": "Epic — Spain 2010 (16 Jul 2026)",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        4,
+        8,
+        10,
+        8,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 14,
+      "nome": "Dani Olmo",
+      "card_id": "106787651039542",
+      "edicao": "Show Time — Spain 2026 (20 Jul 2026)",
+      "pp": 62,
+      "treino_registrado": [
+        1,
+        9,
+        8,
+        8,
+        8,
+        4,
+        5,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 15,
+      "nome": "Paul Scholes",
+      "card_id": "88040387251634",
+      "edicao": "Epic — England 2004 (Legends Assemble, 26 Jul 2026)",
+      "pp": 62,
+      "treino_registrado": [
+        0,
+        8,
+        8,
+        8,
+        10,
+        4,
+        4,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 16,
+      "nome": "Dayot Upamecano",
+      "card_id": "105802492921775",
+      "edicao": "Highlight — National Teams Selection 8 Jan '26 — Dayot Upamecano",
+      "pp": 52,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 17,
+      "nome": "Jack Wilshere",
+      "card_id": "88029918172866",
+      "edicao": "Epic — Arsenal FC 10-11",
+      "pp": 64,
+      "treino_registrado": [
+        4,
+        10,
+        8,
+        8,
+        8,
+        0,
+        5,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MLG|orquestrador|64|4,10,8,8,8,0,5,0,0,0",
+        "peers": [
+          4,
+          96
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 18,
+      "nome": "Safee Sali",
+      "card_id": "88030455171360",
+      "edicao": "Epic — Malaysia 2011 — Safee Sali",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 19,
+      "nome": "İlhan Mansız",
+      "card_id": "88040655732170",
+      "edicao": "Epic — Türkiye 2002 (distribuição 30th Anniversary, 2026)",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        8,
+        4,
+        8,
+        8,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 20,
+      "nome": "Rodri",
+      "card_id": "105684112879839",
+      "edicao": "Highlight — National Team Selection Spain 5 Sep '24 — Rodri",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        4,
+        4,
+        4,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 21,
+      "nome": "Aaron Wan-Bissaka",
+      "card_id": "105807593193660",
+      "edicao": "Highlight — European Clubs Selection 9 Oct '25",
+      "pp": 78,
+      "treino_registrado": [
+        0,
+        7,
+        4,
+        8,
+        8,
+        6,
+        14,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 22,
+      "nome": "Eric García",
+      "card_id": "105803298237825",
+      "edicao": "Highlight — Spanish League Selection 16 Oct '25",
+      "pp": 58,
+      "treino_registrado": [
+        0,
+        7,
+        4,
+        4,
+        8,
+        4,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 23,
+      "nome": "David Alaba",
+      "card_id": "106777718857892",
+      "edicao": "Highlight — Starter Set 28 May '26",
+      "pp": 60,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        2,
+        8,
+        10,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 24,
+      "nome": "Cristiano Ronaldo",
+      "card_id": "89138556572074",
+      "edicao": "Big Time — Portugal 23 Jun '26",
+      "pp": 62,
+      "treino_registrado": [
+        8,
+        4,
+        8,
+        10,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 25,
+      "nome": "Marco van Basten",
+      "card_id": "88033139494377",
+      "edicao": "Epic — Netherlands 1988",
+      "pp": 62,
+      "treino_registrado": [
+        8,
+        5,
+        6,
+        8,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 26,
+      "nome": "Luis Suárez",
+      "card_id": "88045755861057",
+      "edicao": "Epic — Madrid Rosas RB 20-21",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 27,
+      "nome": "Cristiano Ronaldo",
+      "card_id": "88044950524330",
+      "edicao": "Epic — Portugal 2026",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        4,
+        7,
+        10,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 28,
+      "nome": "Darwin Núñez",
+      "card_id": "106777450514613",
+      "edicao": "Show Time — Starter Set 28 May '26",
+      "pp": 68,
+      "treino_registrado": [
+        8,
+        4,
+        8,
+        12,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 29,
+      "nome": "P. E. Aubameyang",
+      "card_id": "88045755866499",
+      "edicao": "Epic — FC Barcelona 21-22",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        4,
+        5,
+        12,
+        8,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 30,
+      "nome": "Tuncay Şanlı",
+      "card_id": "88040655557091",
+      "edicao": "Epic — Türkiye 2003",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        3,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "CA|oportunista|60|8,3,6,11,8,4,0,0,0,0",
+        "peers": [
+          31,
+          34
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 31,
+      "nome": "Filippo Inzaghi",
+      "card_id": "88039581945284",
+      "edicao": "Epic — Piemonte BN 99-00",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        3,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "CA|oportunista|60|8,3,6,11,8,4,0,0,0,0",
+        "peers": [
+          30,
+          34
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 32,
+      "nome": "Gabriel Batistuta",
+      "card_id": "88039045074390",
+      "edicao": "Epic — Argentina 1998",
+      "pp": 62,
+      "treino_registrado": [
+        10,
+        5,
+        5,
+        8,
+        8,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "CA|matador|62|10,5,5,8,8,6,0,0,0,0",
+        "peers": [
+          1
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 33,
+      "nome": "Dimitar Berbatov",
+      "card_id": "88039044941086",
+      "edicao": "Epic — Manchester United 10-11",
+      "pp": 62,
+      "treino_registrado": [
+        8,
+        8,
+        7,
+        8,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 34,
+      "nome": "Hristo Stoichkov",
+      "card_id": "88029649701165",
+      "edicao": "Epic — Bulgaria 1994",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        3,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "CA|oportunista|60|8,3,6,11,8,4,0,0,0,0",
+        "peers": [
+          30,
+          31
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 35,
+      "nome": "Robert Lewandowski",
+      "card_id": "106758391503938",
+      "edicao": "Highlight — 900 Million Downloads Campaign",
+      "pp": 52,
+      "treino_registrado": [
+        8,
+        5,
+        6,
+        8,
+        8,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 36,
+      "nome": "Endrick",
+      "card_id": "106735843043104",
+      "edicao": "Highlight — New Year's Gift 1 Jan '25",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        4,
+        6,
+        8,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 37,
+      "nome": "Nihat Kahveci",
+      "card_id": "88042803217588",
+      "edicao": "Epic — Türkiye 2008",
+      "pp": 62,
+      "treino_registrado": [
+        9,
+        2,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "CA|artilheiro|62|9,2,6,11,8,4,0,0,0,0",
+        "peers": [
+          38
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 38,
+      "nome": "El-Hadji Diouf",
+      "card_id": "88039934308531",
+      "edicao": "Epic — Senegal 2002",
+      "pp": 62,
+      "treino_registrado": [
+        9,
+        2,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "CA|artilheiro|62|9,2,6,11,8,4,0,0,0,0",
+        "peers": [
+          37
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 39,
+      "nome": "Andriy Shevchenko",
+      "card_id": "88036360723178",
+      "edicao": "Epic — Chelsea B 06-07",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        2,
+        8,
+        10,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 40,
+      "nome": "Dwight Yorke",
+      "card_id": "88029918268889",
+      "edicao": "Epic — Manchester United FC 99-00",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        3,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "CA|artilheiro|60|8,3,6,11,8,4,0,0,0,0",
+        "peers": [
+          43,
+          182
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 41,
+      "nome": "Kai Havertz",
+      "card_id": "105837389528906",
+      "edicao": "Highlight — Arsenal FC Selection 21 May '26",
+      "pp": 50,
+      "treino_registrado": [
+        8,
+        6,
+        4,
+        8,
+        5,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 42,
+      "nome": "Ousmane Dembélé",
+      "card_id": "105849469120546",
+      "edicao": "Highlight — National Team Pack France 2026",
+      "pp": 62,
+      "treino_registrado": [
+        8,
+        5,
+        8,
+        10,
+        8,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 43,
+      "nome": "Burak Yılmaz",
+      "card_id": "88039044974638",
+      "edicao": "Epic — Türkiye 2021",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        3,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "CA|artilheiro|60|8,3,6,11,8,4,0,0,0,0",
+        "peers": [
+          40,
+          182
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 44,
+      "nome": "Kylian Mbappé",
+      "card_id": "105795513593982",
+      "edicao": "Highlight — Yu-Gi-Oh! Collaboration Campaign 25 Sep '25",
+      "pp": 36,
+      "treino_registrado": [
+        8,
+        4,
+        4,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 45,
+      "nome": "Didier Drogba",
+      "card_id": "88032334188033",
+      "edicao": "Epic — Galatasaray SK 13-14",
+      "pp": 62,
+      "treino_registrado": [
+        8,
+        8,
+        5,
+        8,
+        8,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 46,
+      "nome": "Mikel Oyarzabal",
+      "card_id": "106771544911876",
+      "edicao": "Show Time — Show Time 12 Feb '26",
+      "pp": 52,
+      "treino_registrado": [
+        8,
+        4,
+        4,
+        8,
+        6,
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 47,
+      "nome": "Neymar Jr",
+      "card_id": "88029918174624",
+      "edicao": "Epic — Santos FC 2011",
+      "pp": 70,
+      "treino_registrado": [
+        8,
+        7,
+        8,
+        8,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 48,
+      "nome": "Jan Koller",
+      "card_id": "88029649833482",
+      "edicao": "Epic — Czechia 2004",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        6,
+        4,
+        8,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 49,
+      "nome": "Kylian Mbappé",
+      "card_id": "105849469120638",
+      "edicao": "Highlight — National Team Pack France 2026",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        4,
+        8,
+        10,
+        8,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 50,
+      "nome": "Lionel Messi",
+      "card_id": "PENDENTE - associação anterior invalidada pelo usuário",
+      "edicao": "Show Time - edição exata a confirmar (CAP050)",
+      "pp": 56,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Raridade em conflito entre captura do jogo e banco externo",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 51,
+      "nome": "Diego Maradona",
+      "card_id": "88029918268911",
+      "edicao": "Epic — FC Barcelona 82-83",
+      "pp": 58,
+      "treino_registrado": [
+        5,
+        8,
+        8,
+        12,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 52,
+      "nome": "Okazaki Shinji",
+      "card_id": "88031797197514",
+      "edicao": "Epic — Leicester B 15-16",
+      "pp": 64,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        12,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 53,
+      "nome": "Lionel Messi",
+      "card_id": "106779866307927",
+      "edicao": "Show Time — The Football Festival Campaign 2026",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        7,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 54,
+      "nome": "Lamine Yamal",
+      "card_id": "106757854755138",
+      "edicao": "Show Time — The Football Festival Campaign 2026",
+      "pp": 60,
+      "treino_registrado": [
+        4,
+        6,
+        9,
+        11,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 55,
+      "nome": "Dirk Kuyt",
+      "card_id": "88040655687168",
+      "edicao": "Epic — Liverpool R 08-09",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        4,
+        10,
+        12,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "PTD|ala produtivo|62|4,4,10,12,8,0,0,0,0,0",
+        "peers": [
+          187
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 56,
+      "nome": "Désiré Doué",
+      "card_id": "106765639374176",
+      "edicao": "Show Time — Daily Bonus 2026",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        7,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 57,
+      "nome": "Lionel Messi",
+      "card_id": "106747654053207",
+      "edicao": "Show Time — Skill Up 2026 — Lionel Messi",
+      "pp": 56,
+      "treino_registrado": [
+        4,
+        4,
+        9,
+        11,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 58,
+      "nome": "Lionel Messi",
+      "card_id": "106731279490391",
+      "edicao": "Show Time — Skill Up — Lionel Messi",
+      "pp": 48,
+      "treino_registrado": [
+        4,
+        6,
+        8,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 59,
+      "nome": "Michael Olise",
+      "card_id": "105849469139289",
+      "edicao": "Highlight — National Team Pack France 2026",
+      "pp": 60,
+      "treino_registrado": [
+        5,
+        8,
+        10,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 60,
+      "nome": "Luis García",
+      "card_id": "88030455139856",
+      "edicao": "Epic — FC Barcelona 03-04",
+      "pp": 56,
+      "treino_registrado": [
+        5,
+        6,
+        10,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 61,
+      "nome": "Savinho",
+      "card_id": "105821820296614",
+      "edicao": "Highlight — Brazil & England National Team Campaign 6 Nov '25",
+      "pp": 56,
+      "treino_registrado": [
+        4,
+        4,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "PTD|ala produtivo|56|4,4,10,10,8,0,0,0,0,0",
+        "peers": [
+          63
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 62,
+      "nome": "Doan Ritsu",
+      "card_id": "105709345807873",
+      "edicao": "Highlight — National Team Selection Japan 10 Oct '24 — Ritsu Doan",
+      "pp": 68,
+      "treino_registrado": [
+        4,
+        4,
+        12,
+        12,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 63,
+      "nome": "Estêvão",
+      "card_id": "105705587772671",
+      "edicao": "Highlight — SE Palmeiras Selection 13 Sep '24",
+      "pp": 56,
+      "treino_registrado": [
+        4,
+        4,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "PTD|ala produtivo|56|4,4,10,10,8,0,0,0,0,0",
+        "peers": [
+          61
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 64,
+      "nome": "Burchet",
+      "card_id": "88043608522894",
+      "edicao": "Epic — Master League Sprint 27 Aug '26",
+      "pp": 36,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 65,
+      "nome": "Raphinha",
+      "card_id": "105739947454516",
+      "edicao": "Highlight — Captain Tsubasa Collaboration Campaign 30 Jan '25 — Raphinha",
+      "pp": 56,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 66,
+      "nome": "Pedro Neto",
+      "card_id": "105848932256095",
+      "edicao": "Highlight — National Team Pack Portugal 2026",
+      "pp": 60,
+      "treino_registrado": [
+        4,
+        6,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 67,
+      "nome": "Antoine Semenyo",
+      "card_id": "105873896760682",
+      "edicao": "Highlight — English League Selection 13 Aug '26 — Antoine Semenyo",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 68,
+      "nome": "Ronaldinho Gaúcho",
+      "card_id": "89067152870864",
+      "edicao": "Big Time — 19 Nov '05",
+      "pp": 56,
+      "treino_registrado": [
+        4,
+        4,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 69,
+      "nome": "Eden Hazard",
+      "card_id": "88045755863174",
+      "edicao": "Epic — Chelsea B 16-17",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        7,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 70,
+      "nome": "Denílson",
+      "card_id": "88039045074440",
+      "edicao": "Epic — Brazil 1997",
+      "pp": 60,
+      "treino_registrado": [
+        4,
+        6,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "PTE|ala produtivo|60|4,6,10,10,8,0,0,0,0,0",
+        "peers": [
+          72,
+          76
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 71,
+      "nome": "Ramadhan Saifullah",
+      "card_id": "106783624532586",
+      "edicao": "Show Time — Liga Super Malaysia 25-26 Season's Best — Ramadhan Saifullah",
+      "pp": 68,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 72,
+      "nome": "Atep",
+      "card_id": "88039045116846",
+      "edicao": "Epic — Indonesia 2007",
+      "pp": 60,
+      "treino_registrado": [
+        4,
+        6,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "PTE|ala produtivo|60|4,6,10,10,8,0,0,0,0,0",
+        "peers": [
+          70,
+          76
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 73,
+      "nome": "Andrés Iniesta",
+      "card_id": "88032334057449",
+      "edicao": "Epic — Spain 2010 — Andrés Iniesta",
+      "pp": 56,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 74,
+      "nome": "João Félix",
+      "card_id": "105848932265344",
+      "edicao": "Highlight — National Team Pack Portugal 2026",
+      "pp": 60,
+      "treino_registrado": [
+        5,
+        8,
+        10,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 75,
+      "nome": "Luis Díaz",
+      "card_id": "106780671726691",
+      "edicao": "Show Time — Daily Bonus 2026 — Luis Díaz",
+      "pp": 60,
+      "treino_registrado": [
+        4,
+        6,
+        9,
+        11,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 76,
+      "nome": "K. Kvaratskhelia",
+      "card_id": "105880876086992",
+      "edicao": "Highlight — Anticipated Standouts 26-27",
+      "pp": 60,
+      "treino_registrado": [
+        4,
+        6,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "PTE|ala produtivo|60|4,6,10,10,8,0,0,0,0,0",
+        "peers": [
+          70,
+          72
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 77,
+      "nome": "Rivaldo",
+      "card_id": "88035555413454",
+      "edicao": "Epic — FC Barcelona 98-99",
+      "pp": 68,
+      "treino_registrado": [
+        4,
+        12,
+        12,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 78,
+      "nome": "Guti",
+      "card_id": "88029918268943",
+      "edicao": "Epic — Madrid Chamartin B 01-02",
+      "pp": 60,
+      "treino_registrado": [
+        2,
+        9,
+        11,
+        10,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 79,
+      "nome": "Neymar Jr",
+      "card_id": "106770471099808",
+      "edicao": "Highlight — Campaign Rewards Feb '26 — Neymar Jr",
+      "pp": 60,
+      "treino_registrado": [
+        4,
+        10,
+        9,
+        9,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MAT|armador criativo|60|4,10,9,9,6,0,0,0,0,0",
+        "peers": [
+          84
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 80,
+      "nome": "Xavi Simons",
+      "card_id": "106766444664616",
+      "edicao": "Highlight — Extraordinary One 4 Dec '25 — Xavi Simons",
+      "pp": 58,
+      "treino_registrado": [
+        7,
+        8,
+        8,
+        10,
+        5,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 81,
+      "nome": "Rivaldo",
+      "card_id": "89072253144526",
+      "edicao": "Big Time — 17 Jun '01",
+      "pp": 60,
+      "treino_registrado": [
+        4,
+        11,
+        9,
+        8,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 82,
+      "nome": "Cole Palmer",
+      "card_id": "105873896774572",
+      "edicao": "Highlight — English League Selection 13 Aug '26",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        12,
+        8,
+        8,
+        7,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MAT|armador criativo|62|4,12,8,8,7,0,0,0,0,0",
+        "peers": [
+          208,
+          209
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 83,
+      "nome": "Rayan Cherki",
+      "card_id": "105849469143573",
+      "edicao": "Highlight — National Team Pack France 2026 — Rayan Cherki",
+      "pp": 64,
+      "treino_registrado": [
+        4,
+        12,
+        8,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 84,
+      "nome": "Franck Ribéry",
+      "card_id": "88036360594345",
+      "edicao": "Epic — München RW 13-14",
+      "pp": 60,
+      "treino_registrado": [
+        4,
+        10,
+        9,
+        9,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MAT|armador criativo|60|4,10,9,9,6,0,0,0,0,0",
+        "peers": [
+          79
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 85,
+      "nome": "Minanda",
+      "card_id": "88043608522885",
+      "edicao": "Epic — Master League Sprint 28 May '26 — Minanda",
+      "pp": 36,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        4,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 86,
+      "nome": "Bruno Fernandes",
+      "card_id": "105848932199520",
+      "edicao": "Highlight — National Team Pack Portugal 2026 — Bruno Fernandes",
+      "pp": 64,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 87,
+      "nome": "Giuliano Simeone",
+      "card_id": "106798388494170",
+      "edicao": "Show Time — Ranking Event Rewards 2027",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 88,
+      "nome": "Václav Černý",
+      "card_id": "106779061103582",
+      "edicao": "Show Time — Trendyol Süper Lig Monthly MVPs Apr '26",
+      "pp": 68,
+      "treino_registrado": [
+        3,
+        11,
+        8,
+        8,
+        8,
+        0,
+        6,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 89,
+      "nome": "Iliman Ndiaye",
+      "card_id": "105873896779262",
+      "edicao": "Highlight — English League Selection 13 Aug '26",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        2,
+        6,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MLD|jogador de infiltracao|62|4,8,8,8,8,2,6,0,0,0",
+        "peers": [
+          213
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 90,
+      "nome": "Neymar Jr",
+      "card_id": "88039044980128",
+      "edicao": "Epic — Brazil 2016",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        2,
+        6,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MLE|jogador de infiltracao|62|4,8,8,8,8,2,6,0,0,0",
+        "peers": [
+          93
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 91,
+      "nome": "Serginho",
+      "card_id": "88035823874881",
+      "edicao": "Epic — AC Milan 02-03",
+      "pp": 62,
+      "treino_registrado": [
+        0,
+        8,
+        8,
+        8,
+        10,
+        4,
+        4,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 92,
+      "nome": "Denílson",
+      "card_id": "88030723575304",
+      "edicao": "Epic — Brazil 1997 (Hole Player)",
+      "pp": 64,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        4,
+        6,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 93,
+      "nome": "Matheus Cunha",
+      "card_id": "105873896755947",
+      "edicao": "Highlight — English League Selection 13 Aug '26",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        2,
+        6,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MLE|jogador de infiltracao|62|4,8,8,8,8,2,6,0,0,0",
+        "peers": [
+          90
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 94,
+      "nome": "Park Ji-Sung",
+      "card_id": "88033407929774",
+      "edicao": "Epic — Manchester United 08-09",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        8,
+        8,
+        10,
+        2,
+        6,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 95,
+      "nome": "Frank Lampard",
+      "card_id": "88040387251676",
+      "edicao": "Epic — England 2006",
+      "pp": 64,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        0,
+        8,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": true,
+      "repeticao": {
+        "group": "MLG|meia versatil|64|4,8,8,8,8,0,8,0,0,0",
+        "peers": [
+          99,
+          102,
+          216
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 96,
+      "nome": "Vitinha",
+      "card_id": "105848932274075",
+      "edicao": "Highlight — National Team Pack Portugal 2026",
+      "pp": 64,
+      "treino_registrado": [
+        4,
+        10,
+        8,
+        8,
+        8,
+        0,
+        5,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MLG|orquestrador|64|4,10,8,8,8,0,5,0,0,0",
+        "peers": [
+          4,
+          17
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 97,
+      "nome": "Sandro Tonali",
+      "card_id": "106764565597595",
+      "edicao": "Show Time — eFootball™ League Rewards Phase 5",
+      "pp": 62,
+      "treino_registrado": [
+        2,
+        8,
+        8,
+        8,
+        8,
+        0,
+        8,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 98,
+      "nome": "Thiago Alcantara",
+      "card_id": "88045755867302",
+      "edicao": "Epic — Spain 2021",
+      "pp": 90,
+      "treino_registrado": [
+        4,
+        12,
+        12,
+        8,
+        8,
+        2,
+        8,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 99,
+      "nome": "Joelinton",
+      "card_id": "106761612796044",
+      "edicao": "Highlight — Show Time 13 Nov '25 — Joelinton",
+      "pp": 64,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        0,
+        8,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MLG|meia versatil|64|4,8,8,8,8,0,8,0,0,0",
+        "peers": [
+          95,
+          102,
+          216
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 100,
+      "nome": "Orkun Kökçü",
+      "card_id": "106747922604897",
+      "edicao": "Highlight — Daily Bonus 2026 — Orkun Kökçü",
+      "pp": 70,
+      "treino_registrado": [
+        4,
+        10,
+        8,
+        8,
+        8,
+        0,
+        8,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 101,
+      "nome": "Darren Fletcher",
+      "card_id": "88039044945180",
+      "edicao": "Epic — Manchester United — identidade exata por Card ID 88039044945180",
+      "pp": 66,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 102,
+      "nome": "João Neves",
+      "card_id": "105848932298328",
+      "edicao": "Highlight — National Team Pack Portugal 2026",
+      "pp": 64,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        0,
+        8,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MLG|meia versatil|64|4,8,8,8,8,0,8,0,0,0",
+        "peers": [
+          95,
+          99,
+          216
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 103,
+      "nome": "Dominik Szoboszlai",
+      "card_id": "105873896766735",
+      "edicao": "Highlight — English League Selection 13 Aug '26 — Dominik Szoboszlai",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 104,
+      "nome": "Frank Rijkaard",
+      "card_id": "88036360719848",
+      "edicao": "Epic — Ajax — ID 88036360719848 (rótulo de pack/era não exposto de forma inequívoca)",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        6,
+        4,
+        6,
+        6,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 105,
+      "nome": "Jordan Henderson",
+      "card_id": "106762149600615",
+      "edicao": "Show Time — National Teams Selection 6 Nov '25",
+      "pp": 68,
+      "treino_registrado": [
+        0,
+        10,
+        5,
+        4,
+        6,
+        6,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 106,
+      "nome": "Pep Guardiola",
+      "card_id": "88040387251639",
+      "edicao": "Epic — Spain 2000 — Pep Guardiola",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        9,
+        7,
+        4,
+        7,
+        4,
+        11,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 107,
+      "nome": "Aurélien Tchouaméni",
+      "card_id": "105801687618534",
+      "edicao": "Highlight — Spanish League Selection 2 Apr '26 — Aurélien Tchouaméni",
+      "pp": 64,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 108,
+      "nome": "N'Golo Kanté",
+      "card_id": "105849469111254",
+      "edicao": "Highlight — National Team Pack France 2026",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        4,
+        8,
+        6,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "VOL|meia versatil|64|0,8,4,4,8,6,12,0,0,0",
+        "peers": [
+          111
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 109,
+      "nome": "Rúben Neves",
+      "card_id": "105858864355084",
+      "edicao": "Highlight — National Teams Selection 13 Jul '26 — Rúben Neves",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 110,
+      "nome": "Aurélien Tchouaméni",
+      "card_id": "105849469129702",
+      "edicao": "Highlight — National Team Pack France 2026",
+      "pp": 58,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        4,
+        5,
+        6,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 111,
+      "nome": "N'Golo Kanté",
+      "card_id": "105865038367702",
+      "edicao": "Highlight — Leo Messi Edition 2027 — N'Golo Kanté",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        4,
+        8,
+        6,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "VOL|meia versatil|64|0,8,4,4,8,6,12,0,0,0",
+        "peers": [
+          108
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 112,
+      "nome": "Amadou Onana",
+      "card_id": "105802492952578",
+      "edicao": "Highlight — National Teams Selection 8 Jan '26 — Amadou Onana",
+      "pp": 56,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 113,
+      "nome": "Bruno Guimarães",
+      "card_id": "105806787889465",
+      "edicao": "Highlight — European Clubs Selection Guardians 3 Nov '25 — Bruno Guimarães",
+      "pp": 60,
+      "treino_registrado": [
+        0,
+        8,
+        8,
+        4,
+        6,
+        5,
+        10,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 114,
+      "nome": "Jorginho",
+      "card_id": "105842221312066",
+      "edicao": "CR Flamengo — versão treinável 2026",
+      "pp": 68,
+      "treino_registrado": [
+        0,
+        10,
+        8,
+        4,
+        7,
+        5,
+        10,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 115,
+      "nome": "Casemiro",
+      "card_id": "105804908766893",
+      "edicao": "Highlight — Manchester United Pack 25-26 — Casemiro",
+      "pp": 54,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 116,
+      "nome": "Christian Ordóñez",
+      "card_id": "105793903024013",
+      "edicao": "Highlight — Newly Licensed Italian Clubs 9 Oct '25",
+      "pp": 68,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 117,
+      "nome": "Moisés Caicedo",
+      "card_id": "105794708320092",
+      "edicao": "Highlight — Mid-season MVPs 8 Jan '26 — Moisés Caicedo",
+      "pp": 64,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 118,
+      "nome": "Sandro Tonali",
+      "card_id": "105750148009371",
+      "edicao": "Highlight — National Team Pack Italy '25 — Sandro Tonali",
+      "pp": 68,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 119,
+      "nome": "Tyler Adams",
+      "card_id": "123303",
+      "edicao": "Standard — Bournemouth RB — eFootball 2027",
+      "pp": 68,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 120,
+      "nome": "Rodrigo Bentancur",
+      "card_id": "105297",
+      "edicao": "Standard — Tottenham WB — eFootball 2027",
+      "pp": 68,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 121,
+      "nome": "Belletti",
+      "card_id": "88033407929867",
+      "edicao": "Epic — European Clubs Special Selection Contract (Festive Season Campaign, Jan 2025)",
+      "pp": 72,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        8,
+        9,
+        6,
+        11,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 122,
+      "nome": "Cafu",
+      "card_id": "88033407929805",
+      "edicao": "Epic — Roma GR 00-01 — Cafu",
+      "pp": 72,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        7,
+        10,
+        4,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 123,
+      "nome": "João Cancelo",
+      "card_id": "105848932186795",
+      "edicao": "Highlight — National Team Pack Portugal 2026",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        6,
+        8,
+        4,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 124,
+      "nome": "Dominik Szoboszlai",
+      "card_id": "105828799610127",
+      "edicao": "Highlight — Role Changers 5 Mar '26 — Dominik Szoboszlai",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        6,
+        9,
+        4,
+        11,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "LD|lateral ofensivo|64|0,8,4,6,9,4,11,0,0,0",
+        "peers": [
+          129
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 125,
+      "nome": "Nordi Mukiele",
+      "card_id": "105873896745385",
+      "edicao": "Highlight — English League Selection 13 Aug '26",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        4,
+        8,
+        6,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 126,
+      "nome": "Daniel Muñoz",
+      "card_id": "52868363179440",
+      "edicao": "Trending — POTW National Teams 28 Mar '24 — Daniel Muñoz",
+      "pp": 68,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 127,
+      "nome": "Jules Koundé",
+      "card_id": "105835242041536",
+      "edicao": "National Team Icons vol.3 — France",
+      "pp": 60,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        4,
+        8,
+        4,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 128,
+      "nome": "Matteo Darmian",
+      "card_id": "105782628618516",
+      "edicao": "Highlight — Italian League Selection Guardians 8 Sep '25 — Matteo Darmian",
+      "pp": 88,
+      "treino_registrado": [
+        0,
+        8,
+        5,
+        8,
+        10,
+        6,
+        14,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 129,
+      "nome": "Malo Gusto",
+      "card_id": "105849469150860",
+      "edicao": "Highlight — National Team Pack France 2026",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        6,
+        9,
+        4,
+        11,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "LD|lateral ofensivo|64|0,8,4,6,9,4,11,0,0,0",
+        "peers": [
+          124
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 130,
+      "nome": "Reece James",
+      "card_id": "105866649005150",
+      "edicao": "Highlight — Step-up 2027 — Reece James",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        8,
+        8,
+        4,
+        8,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 131,
+      "nome": "Juan Foyth",
+      "card_id": "105864769945293",
+      "edicao": "Highlight — Tactical Defence 13 Aug '26",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        6,
+        4,
+        4,
+        8,
+        4,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 132,
+      "nome": "Javier Zanetti",
+      "card_id": "88033139494357",
+      "edicao": "Epic — Internazionale Milano 09-10",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        4,
+        4,
+        7,
+        10,
+        4,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 133,
+      "nome": "Nico O'Reilly",
+      "card_id": "106780940205246",
+      "edicao": "Show Time — Mobile 9th Anniversary Celebration",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        6,
+        8,
+        4,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 134,
+      "nome": "Mikaël Silvestre",
+      "card_id": "88036360587096",
+      "edicao": "Epic — Manchester United — ID 88036360587096 (rótulo do pack/era PENDENTE)",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        6,
+        9,
+        4,
+        11,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "LE|lateral ofensivo|64|0,8,4,6,9,4,11,0,0,0",
+        "peers": [
+          138
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 135,
+      "nome": "Nuno Mendes",
+      "card_id": "105848932271764",
+      "edicao": "Highlight — National Team Pack Portugal 2026",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        5,
+        8,
+        8,
+        4,
+        10,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 136,
+      "nome": "Tyrick Mitchell",
+      "card_id": "105873896771214",
+      "edicao": "Highlight — English League Selection 13 Aug '26",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        6,
+        8,
+        4,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 137,
+      "nome": "Marc Cucurella",
+      "card_id": "105859132802911",
+      "edicao": "Highlight — Spain Selection 16 Jul '26 — Marc Cucurella",
+      "pp": 68,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        8,
+        9,
+        4,
+        11,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 138,
+      "nome": "Théo Hernández",
+      "card_id": "105849469121172",
+      "edicao": "Highlight — National Team Pack France 2026",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        6,
+        9,
+        4,
+        11,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "LE|lateral ofensivo|64|0,8,4,6,9,4,11,0,0,0",
+        "peers": [
+          134
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 139,
+      "nome": "Noussair Mazraoui",
+      "card_id": "106797935481937",
+      "edicao": "Show Time — Road to CAF AFCON 2027 — Noussair Mazraoui",
+      "pp": 68,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 140,
+      "nome": "Alejandro Grimaldo",
+      "card_id": "105873091431106",
+      "edicao": "Highlight — Summer Transfer 13 Aug '26 — Alejandro Grimaldo",
+      "pp": 64,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 141,
+      "nome": "Ian Maatsen",
+      "card_id": "132386",
+      "edicao": "Standard — Aston RB — eFootball 2027",
+      "pp": 76,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 142,
+      "nome": "Andrew Robertson",
+      "card_id": "105862354012836",
+      "edicao": "Highlight — National Team Captains 11 Jun '26 — Andrew Robertson",
+      "pp": 64,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 143,
+      "nome": "Franco Baresi",
+      "card_id": "88039581945329",
+      "edicao": "Epic — AC Milan 89-90",
+      "pp": 60,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        2,
+        8,
+        10,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 144,
+      "nome": "Dean Huijsen",
+      "card_id": "106766981558114",
+      "edicao": "Show Time — New Year's Gift 2026 — Dean Huijsen",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
+        "peers": [
+          149,
+          150,
+          153,
+          154,
+          158,
+          160,
+          163,
+          166
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 145,
+      "nome": "Franz Beckenbauer",
+      "card_id": "88039581945324",
+      "edicao": "Epic — München RW 75-76",
+      "pp": 64,
+      "treino_registrado": [
+        0,
+        8,
+        0,
+        1,
+        8,
+        9,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 146,
+      "nome": "Manuel Akanji",
+      "card_id": "106780671715908",
+      "edicao": "Show Time — Daily Bonus 2026 — Manuel Akanji",
+      "pp": 60,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        2,
+        8,
+        10,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 147,
+      "nome": "Tony Adams",
+      "card_id": "88032334054195",
+      "edicao": "Epic — Arsenal FC 90-91",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        0,
+        0,
+        2,
+        8,
+        10,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": true,
+      "biotipo_documentado": true,
+      "repeticao": null,
+      "pendencias": [
+        "Segundo ímpeto realmente selecionado"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 148,
+      "nome": "Vitão",
+      "card_id": "106735306130248",
+      "edicao": "Show Time — Brazilian League 2024 Season's Best — Vitão",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        1,
+        8,
+        9,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|basico|56|0,4,0,1,8,9,12,0,0,0",
+        "peers": [
+          9,
+          157
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 149,
+      "nome": "Jan Paul van Hecke",
+      "card_id": "105873896763633",
+      "edicao": "Highlight — English League Selection 13 Aug '26",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
+        "peers": [
+          144,
+          150,
+          153,
+          154,
+          158,
+          160,
+          163,
+          166
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 150,
+      "nome": "Ibrahima Konaté",
+      "card_id": "105873091445023",
+      "edicao": "Highlight — Summer Transfer 13 Aug '26",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": true,
+      "repeticao": {
+        "group": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
+        "peers": [
+          144,
+          149,
+          153,
+          154,
+          158,
+          160,
+          163,
+          166
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 151,
+      "nome": "Willian Pacho",
+      "card_id": "106776376791946",
+      "edicao": "Highlight — Ligue 1 McDonald’s Selection 2 Mar '26 — Willian Pacho",
+      "pp": 52,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 152,
+      "nome": "Pierre Kalulu",
+      "card_id": "105810814439757",
+      "edicao": "Highlight — European Clubs Selection 20 Nov '25 — Pierre Kalulu",
+      "pp": 52,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 153,
+      "nome": "Dean Huijsen",
+      "card_id": "106766981558114",
+      "edicao": "Show Time — New Year's Gift 2026 — Dean Huijsen",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
+        "peers": [
+          144,
+          149,
+          150,
+          154,
+          158,
+          160,
+          163,
+          166
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 154,
+      "nome": "Ibrahima Konaté",
+      "card_id": "105849469124895",
+      "edicao": "Highlight — National Team Pack France 2026 — Ibrahima Konaté",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
+        "peers": [
+          144,
+          149,
+          150,
+          153,
+          158,
+          160,
+          163,
+          166
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 155,
+      "nome": "Micky van de Ven",
+      "card_id": "105794171442168",
+      "edicao": "Highlight — Speedsters 6 Nov '25 — Micky van de Ven",
+      "pp": 48,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 156,
+      "nome": "Ibrahima Konaté",
+      "card_id": "105708003639583",
+      "edicao": "Highlight — Daily Bonus — Ibrahima Konaté",
+      "pp": 38,
+      "treino_registrado": [
+        0,
+        2,
+        0,
+        0,
+        6,
+        7,
+        10,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 157,
+      "nome": "Renato Veiga",
+      "card_id": "105848932292218",
+      "edicao": "Highlight — National Team Pack Portugal 2026",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        1,
+        8,
+        9,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|basico|56|0,4,0,1,8,9,12,0,0,0",
+        "peers": [
+          9,
+          148
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 158,
+      "nome": "António Silva",
+      "card_id": "105848932292145",
+      "edicao": "Highlight — National Team Pack Portugal 2026",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
+        "peers": [
+          144,
+          149,
+          150,
+          153,
+          154,
+          160,
+          163,
+          166
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 159,
+      "nome": "Pau Cubarsí",
+      "card_id": "105854569449280",
+      "edicao": "Highlight — Spain 2026 — Pau Cubarsí",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        1,
+        8,
+        9,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 160,
+      "nome": "Marc Guéhi",
+      "card_id": "105865843704022",
+      "edicao": "Highlight — Starter Set 2027 — Marc Guéhi",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
+        "peers": [
+          144,
+          149,
+          150,
+          153,
+          154,
+          158,
+          163,
+          166
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 161,
+      "nome": "Rúben Dias",
+      "card_id": "105884634166456",
+      "edicao": "Highlight — Pressure-Proof 2026 — Rúben Dias",
+      "pp": 52,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 162,
+      "nome": "Pau Torres",
+      "card_id": "105873896751326",
+      "edicao": "Highlight — English League Selection 13 Aug '26 — Pau Torres",
+      "pp": 52,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 163,
+      "nome": "Jérémy Jacquet",
+      "card_id": "105873091489528",
+      "edicao": "Highlight — Summer Transfer 13 Aug '26 — Jérémy Jacquet",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
+        "peers": [
+          144,
+          149,
+          150,
+          153,
+          154,
+          158,
+          160,
+          166
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 164,
+      "nome": "Marc Guéhi",
+      "card_id": "105864769962198",
+      "edicao": "Highlight — Tactical Defence 13 Aug '26",
+      "pp": 56,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 165,
+      "nome": "Cristian Romero",
+      "card_id": "106787919475376",
+      "edicao": "Show Time — Tournament Stars 2026 — Cristian Romero",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 166,
+      "nome": "Maxence Lacroix",
+      "card_id": "105880876084074",
+      "edicao": "Highlight — Chelsea B — ID 105880876084074 (rótulo do pack PENDENTE)",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
+        "peers": [
+          144,
+          149,
+          150,
+          153,
+          154,
+          158,
+          160,
+          163
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 167,
+      "nome": "Danilo",
+      "card_id": "43989",
+      "edicao": "Standard — Danilo — CB",
+      "pp": 52,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 168,
+      "nome": "Petr Čech",
+      "card_id": "88045755829367",
+      "edicao": "Epic — Chelsea B 05-06 — Petr Čech",
+      "pp": 56,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 169,
+      "nome": "Oliver Kahn",
+      "card_id": "88039045074375",
+      "edicao": "Epic — München RW 00-01",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        8,
+        12,
+        10
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "GO|basico|56|0,0,0,0,0,2,0,8,12,10",
+        "peers": [
+          173,
+          176
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 170,
+      "nome": "Jan Oblak",
+      "card_id": "106766444571720",
+      "edicao": "Show Time — Extraordinary One 4 Dec '25 — Jan Oblak",
+      "pp": 50,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 171,
+      "nome": "Iker Casillas",
+      "card_id": "88045755827028",
+      "edicao": "Epic — Starter Set: Iker Casillas (FC Porto, 20 Aug 2026)",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        8,
+        12,
+        10
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 172,
+      "nome": "Thibaut Courtois",
+      "card_id": "105865038310751",
+      "edicao": "Highlight — Leo Messi Edition 2027 — Thibaut Courtois",
+      "pp": 46,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 173,
+      "nome": "Mike Maignan",
+      "card_id": "105849469070367",
+      "edicao": "Highlight — National Team Pack France 2026",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        8,
+        12,
+        10
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "GO|basico|56|0,0,0,0,0,2,0,8,12,10",
+        "peers": [
+          169,
+          176
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 174,
+      "nome": "Rui Silva",
+      "card_id": "105848932186223",
+      "edicao": "Highlight — National Team Pack Portugal 2026",
+      "pp": 62,
+      "treino_registrado": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        8,
+        12,
+        12
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 175,
+      "nome": "Manuel Neuer",
+      "card_id": "105723035943329",
+      "edicao": "Highlight — Captain Tsubasa Collaboration Campaign 5 Dec '24 — Manuel Neuer",
+      "pp": 40,
+      "treino_registrado": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        8,
+        8,
+        9
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 176,
+      "nome": "Caoimhin Kelleher",
+      "card_id": "105873896750438",
+      "edicao": "Highlight — English League Selection 13 Aug '26",
+      "pp": 56,
+      "treino_registrado": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        8,
+        12,
+        10
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "GO|basico|56|0,0,0,0,0,2,0,8,12,10",
+        "peers": [
+          169,
+          173
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 177,
+      "nome": "Dean Henderson",
+      "card_id": "111450",
+      "edicao": "Standard — Dean Henderson — Crystal Palace RB",
+      "pp": 56,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 178,
+      "nome": "Romelu Lukaku",
+      "card_id": "105727599353018",
+      "edicao": "Highlight — European Clubs Selection 1 Jan '25 — Romelu Lukaku",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        7,
+        5,
+        8,
+        8,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 179,
+      "nome": "Victor Osimhen",
+      "card_id": "105823514783663",
+      "edicao": "Highlight — CAF Africa Cup of Nations Selection 11 Dec '25 — Victor Osimhen",
+      "pp": 56,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 180,
+      "nome": "Hugo Ekitiké",
+      "card_id": "105782897156511",
+      "edicao": "Highlight — Anticipated Standouts 25-26 — Hugo Ekitiké",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        6,
+        4,
+        8,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 181,
+      "nome": "Serhou Guirassy",
+      "card_id": "106769397419872",
+      "edicao": "Highlight — eFootball League Rewards Phase 9 — Serhou Guirassy",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Lista de habilidades nativas e 5 adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 182,
+      "nome": "Marcus Thuram",
+      "card_id": "105829336458789",
+      "edicao": "Highlight — Elite Lineage 30 Apr '26 — Marcus Thuram",
+      "pp": 60,
+      "treino_registrado": [
+        8,
+        3,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "CA|artilheiro|60|8,3,6,11,8,4,0,0,0,0",
+        "peers": [
+          40,
+          43
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 183,
+      "nome": "P. E. Aubameyang",
+      "card_id": "105812156521859",
+      "edicao": "Highlight — eFootball League Rewards Phase 2 — P. E. Aubameyang",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 184,
+      "nome": "João Pedro",
+      "card_id": "105850811314987",
+      "edicao": "Highlight — National Team Selection Brazil Jun '26 — João Pedro",
+      "pp": 62,
+      "treino_registrado": [
+        8,
+        5,
+        6,
+        8,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 185,
+      "nome": "Pedro",
+      "card_id": "111408",
+      "edicao": "Standard — Pedro — CR Flamengo",
+      "pp": 76,
+      "treino_registrado": [
+        12,
+        6,
+        8,
+        8,
+        8,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 186,
+      "nome": "Neymar Jr",
+      "card_id": "105795513523616",
+      "edicao": "Highlight — Yu-Gi-Oh! Collaboration Campaign 25 Sep '25 — Neymar Jr × Dark Magician",
+      "pp": 58,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 187,
+      "nome": "Gonzalo Plata",
+      "card_id": "105816451581405",
+      "edicao": "Highlight — Champions Campaign 2025 CR Flamengo — Gonzalo Plata",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        4,
+        10,
+        12,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "PTD|ala produtivo|62|4,4,10,12,8,0,0,0,0,0",
+        "peers": [
+          55
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 188,
+      "nome": "Antoine Semenyo",
+      "card_id": "106763223426410",
+      "edicao": "Highlight — English League Selection 22 Dec '25 — Antoine Semenyo",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        4,
+        11,
+        11,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 189,
+      "nome": "Donyell Malen",
+      "card_id": "117932",
+      "edicao": "Standard — Donyell Malen — Roma GR",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 190,
+      "nome": "Rafael Leão",
+      "card_id": "105776186249585",
+      "edicao": "Highlight — Daily Bonus 2026 — Rafael Leão",
+      "pp": 50,
+      "treino_registrado": [
+        4,
+        4,
+        8,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 191,
+      "nome": "Gabriel Martinelli",
+      "card_id": "105850811319718",
+      "edicao": "Highlight — National Team Selection Brazil Jun '26 — Gabriel Martinelli",
+      "pp": 66,
+      "treino_registrado": [
+        4,
+        6,
+        10,
+        12,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "PTE|ala produtivo|66|4,6,10,12,8,0,0,0,0,0",
+        "peers": [
+          198
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 192,
+      "nome": "Jérémy Doku",
+      "card_id": "105800613884444",
+      "edicao": "Highlight — National Team Selection Worldwide 30 Apr '26 — Jérémy Doku",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 193,
+      "nome": "Allan Saint-Maximin",
+      "card_id": "105829067975814",
+      "edicao": "Highlight — Magical Dribbler 2 Apr '26 — Allan Saint-Maximin",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 194,
+      "nome": "Bruno Henrique",
+      "card_id": "105816451555441",
+      "edicao": "Highlight — Champions Campaign 2025 CR Flamengo — Bruno Henrique",
+      "pp": 56,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 195,
+      "nome": "Raphinha",
+      "card_id": "105863964635188",
+      "edicao": "Highlight — Advertisement Reward 2027 — Raphinha",
+      "pp": 54,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 196,
+      "nome": "Savinho",
+      "card_id": "105821820296614",
+      "edicao": "Highlight — Brazil & England National Team Campaign 6 Nov '25 — Savinho",
+      "pp": 56,
+      "treino_registrado": [
+        4,
+        4,
+        9,
+        11,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 197,
+      "nome": "Leandro Trossard",
+      "card_id": "105794439861140",
+      "edicao": "Highlight — Clutch Players 4 Dec '25 — Leandro Trossard",
+      "pp": 54,
+      "treino_registrado": [
+        4,
+        6,
+        8,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 198,
+      "nome": "Cody Gakpo",
+      "card_id": "122012",
+      "edicao": "Standard — Liverpool R — eFootball 2027",
+      "pp": 66,
+      "treino_registrado": [
+        4,
+        6,
+        10,
+        12,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "PTE|ala produtivo|66|4,6,10,12,8,0,0,0,0,0",
+        "peers": [
+          191
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 199,
+      "nome": "João Félix",
+      "card_id": "126336",
+      "edicao": "Standard — João Félix",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 200,
+      "nome": "Sadio Mané",
+      "card_id": "89137029898200",
+      "edicao": "Epic — CAF AFRICA CUP OF NATIONS 25 — Sadio Mané",
+      "pp": 66,
+      "treino_registrado": [
+        4,
+        6,
+        11,
+        11,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 201,
+      "nome": "Yan Diomande",
+      "card_id": "176104",
+      "edicao": "Standard — Yan Diomande",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 202,
+      "nome": "Cole Palmer",
+      "card_id": "105849200712620",
+      "edicao": "Highlight — National Team Pack England 2026 — Cole Palmer",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 203,
+      "nome": "Raphinha",
+      "card_id": "105821820268596",
+      "edicao": "Highlight — Brazil & England National Team Campaign 6 Nov '25",
+      "pp": 48,
+      "treino_registrado": [
+        6,
+        8,
+        8,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 204,
+      "nome": "Xavi Simons",
+      "card_id": "52882858710824",
+      "edicao": "Trending — POTW National Teams 27 Mar '25 — Xavi Simons",
+      "pp": 44,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 205,
+      "nome": "Thiago Almada",
+      "card_id": "105831752396173",
+      "edicao": "Highlight — National Teams Campaign Mar '26 — Thiago Almada",
+      "pp": 54,
+      "treino_registrado": [
+        4,
+        10,
+        8,
+        8,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 206,
+      "nome": "Nicolò Zaniolo",
+      "card_id": "105793902985437",
+      "edicao": "Highlight — Udinese Calcio — Card ID exato; rótulo comercial do pack PENDENTE",
+      "pp": 60,
+      "treino_registrado": [
+        4,
+        12,
+        8,
+        8,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 207,
+      "nome": "James Rodríguez",
+      "card_id": "105836047278701",
+      "edicao": "Highlight — National Teams Selection 9 Apr '26 — James Rodríguez",
+      "pp": 70,
+      "treino_registrado": [
+        4,
+        12,
+        10,
+        8,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 208,
+      "nome": "Michael Olise",
+      "card_id": "106788724799833",
+      "edicao": "Show Time — Pressure-Proof 2026 (30 Jul 2026)",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        12,
+        8,
+        8,
+        7,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MAT|armador criativo|62|4,12,8,8,7,0,0,0,0,0",
+        "peers": [
+          82,
+          209
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 209,
+      "nome": "Jamal Musiala",
+      "card_id": "105863159356176",
+      "edicao": "Highlight — National Team Rising Stars 2 Jul '26 — Germany",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        12,
+        8,
+        8,
+        7,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MAT|armador criativo|62|4,12,8,8,7,0,0,0,0,0",
+        "peers": [
+          82,
+          208
+        ]
+      },
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 210,
+      "nome": "Jamal Musiala",
+      "card_id": "106773155552016",
+      "edicao": "Show Time — 1-2 Cut-in A 23 Apr '26 — Jamal Musiala",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 211,
+      "nome": "Kubo Takefusa",
+      "card_id": "105840610761736",
+      "edicao": "Highlight — NARUTO SHIPPUDEN Collaboration Campaign 2026 — Sasuke Uchiha × Takefusa Kubo",
+      "pp": 0,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 212,
+      "nome": "Luiz Araújo",
+      "card_id": "105817256868579",
+      "edicao": "Highlight — Champions Campaign 2025 CR Flamengo",
+      "pp": 58,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 213,
+      "nome": "Ethan Mbappé",
+      "card_id": "105828799639282",
+      "edicao": "Highlight — Role Changers 5 Mar 2026",
+      "pp": 62,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        2,
+        6,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MLD|jogador de infiltracao|62|4,8,8,8,8,2,6,0,0,0",
+        "peers": [
+          89
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 214,
+      "nome": "Nico Williams",
+      "card_id": "105801687641013",
+      "edicao": "Highlight — Spanish League Selection 2 Apr '26",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 215,
+      "nome": "Raphinha",
+      "card_id": "106733963948084",
+      "edicao": "Show Time — The All-Rounders 26 Dec '24",
+      "pp": 70,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        10,
+        8,
+        4,
+        6,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 216,
+      "nome": "Declan Rice",
+      "card_id": "106763760282015",
+      "edicao": "Show Time — Central Dominator 5 Jan '26",
+      "pp": 64,
+      "treino_registrado": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        0,
+        8,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": {
+        "group": "MLG|meia versatil|64|4,8,8,8,8,0,8,0,0,0",
+        "peers": [
+          95,
+          99,
+          102
+        ]
+      },
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 217,
+      "nome": "Vitinha",
+      "card_id": "88040118816667",
+      "edicao": "Epic — World Player of the Year 2025",
+      "pp": 68,
+      "treino_registrado": [
+        4,
+        12,
+        8,
+        8,
+        8,
+        0,
+        4,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 218,
+      "nome": "Nicolò Barella",
+      "card_id": "105856716870918",
+      "edicao": "Highlight — Italy Selection 11 Jun '26 — Nicolò Barella",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 219,
+      "nome": "Warren Zaïre-Emery",
+      "card_id": "105795513640603",
+      "edicao": "Highlight — France feat. Yu-Gi-Oh! — Warren Zaïre-Emery × Red-Eyes Black Dragon — 25 Sep 2025",
+      "pp": 54,
+      "treino_registrado": [
+        0,
+        8,
+        8,
+        8,
+        8,
+        0,
+        5,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 220,
+      "nome": "Luka Modrić",
+      "card_id": "105862353945906",
+      "edicao": "Highlight — National Team Captains 11 Jun '26",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 221,
+      "nome": "Khéphren Thuram",
+      "card_id": "105829336478106",
+      "edicao": "Highlight — Elite Lineage 30 Apr '26 — Khéphren Thuram",
+      "pp": 68,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 222,
+      "nome": "Gerson",
+      "card_id": "105821820262479",
+      "edicao": "Highlight — Brazil & England National Team Campaign 6 Nov '25",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 223,
+      "nome": "Frenkie de Jong",
+      "card_id": "105835242039414",
+      "edicao": "Highlight — National Team Icons vol.3",
+      "pp": 54,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 224,
+      "nome": "Manu Koné",
+      "card_id": "105858595943762",
+      "edicao": "Highlight — France Selection 9 Jul '26",
+      "pp": 64,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 225,
+      "nome": "Rodri",
+      "card_id": "105779675902175",
+      "edicao": "Highlight — Back in the Game 14 Aug '25 — Rodri",
+      "pp": 52,
+      "treino_registrado": [
+        0,
+        8,
+        4,
+        4,
+        4,
+        4,
+        12,
+        0,
+        0,
+        0
+      ],
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Card ID externamente identificado; conferência numérica diretamente na conta ainda não realizada",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 226,
+      "nome": "José María Giménez",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 52,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 227,
+      "nome": "Kenan Yıldız",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 228,
+      "nome": "Murilo",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 56,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 229,
+      "nome": "Zeki Çelik",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 230,
+      "nome": "Pape Matar Sarr",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 231,
+      "nome": "Guglielmo Vicario",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 58,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 232,
+      "nome": "Aymeric Laporte",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 233,
+      "nome": "Nicola Zalewski",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 70,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 234,
+      "nome": "Kakita Yuki",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 235,
+      "nome": "Kumasaka Koki",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 64,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 236,
+      "nome": "Samuel Eto'o",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 66,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 237,
+      "nome": "Piero Hincapié",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 64,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 238,
+      "nome": "Mateus Fernandes",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 68,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 239,
+      "nome": "Alexander Isak",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 240,
+      "nome": "Gonçalo Ramos",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 241,
+      "nome": "Federico Valverde",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 242,
+      "nome": "Maghnes Akliouche",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 62,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 243,
+      "nome": "Anthony Gordon",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Proficiência se for usar em uma posição central",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 244,
+      "nome": "Edmond Tapsoba",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 52,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 245,
+      "nome": "Justin Kluivert",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 64,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    },
+    {
+      "numero": 246,
+      "nome": "Eric Cantona",
+      "card_id": "PENDENTE — não inferido",
+      "edicao": "PENDENTE — não inventar sem Card ID/tela de versão",
+      "pp": 60,
+      "treino_registrado": null,
+      "atributos_base_confirmados": false,
+      "biotipo_documentado": false,
+      "repeticao": null,
+      "pendencias": [
+        "Card ID exato da edição",
+        "Confirmar Card ID da conta e habilidades adicionais equipadas",
+        "Atributos-base desta versão para cálculo de status finais",
+        "Segundo ímpeto realmente selecionado",
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+      ],
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+    }
+  ]
+}
