@@ -72,6 +72,15 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "estudo_atacante_posse": {
+        "funcao": "Matador",
+        "impeto_fixo_fonte": "Physicality +3",
+        "segundo_slot_fonte": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "atributos_base_conferidos": false,
+        "treino_atual_preservado": true,
+        "proposta_de_mudanca": "PENDENTE — comparar atributos finais e edição exata",
+        "nota": "Comparar perfil, habilidades e função antes de homologar ímpeto"
       }
     },
     {
@@ -1892,6 +1901,15 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "estudo_atacante_posse": {
+        "funcao": "Avançado Pivô",
+        "impeto_fixo_fonte": "Technique +3",
+        "segundo_slot_fonte": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "atributos_base_conferidos": false,
+        "treino_atual_preservado": true,
+        "proposta_de_mudanca": "PENDENTE — comparar atributos finais e edição exata",
+        "nota": "Pivô: avaliar apoio e tabelas, não apenas finalização"
       }
     },
     {
@@ -2353,6 +2371,15 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "estudo_atacante_posse": {
+        "funcao": "Artilheiro",
+        "impeto_fixo_fonte": "Shooting +2",
+        "segundo_slot_fonte": "NENHUM SEGUNDO BOOSTER EXPOSTO PELA FONTE",
+        "atributos_base_conferidos": false,
+        "treino_atual_preservado": true,
+        "proposta_de_mudanca": "PENDENTE — comparar atributos finais e edição exata",
+        "nota": "Carta testada e aprovada pelo usuário; não substituir por classificação genérica"
       }
     },
     {
@@ -2543,6 +2570,15 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "estudo_atacante_posse": {
+        "funcao": "Artilheiro",
+        "impeto_fixo_fonte": "Breakthrough +3",
+        "segundo_slot_fonte": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "atributos_base_conferidos": false,
+        "treino_atual_preservado": true,
+        "proposta_de_mudanca": "PENDENTE — comparar atributos finais e edição exata",
+        "nota": "Comparar perfil, habilidades e função antes de homologar ímpeto"
       }
     },
     {
@@ -9868,6 +9904,15 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "estudo_atacante_posse": {
+        "funcao": "Artilheiro",
+        "impeto_fixo_fonte": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "segundo_slot_fonte": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "atributos_base_conferidos": false,
+        "treino_atual_preservado": true,
+        "proposta_de_mudanca": "PENDENTE — comparar atributos finais e edição exata",
+        "nota": "Comparar perfil, habilidades e função antes de homologar ímpeto"
       }
     },
     {
@@ -12898,5 +12943,12 @@
     "selectable_unconfirmed": 95,
     "unverified": 147,
     "registered": 4
-  }
+  },
+  "estudo_atacantes_posse": [
+    1,
+    33,
+    40,
+    43,
+    182
+  ]
 }
