@@ -13,10 +13,70 @@ MLD:[2,9,9,9,8,2,5,0,0,0],MLE:[2,9,9,9,8,2,5,0,0,0]
 const PREVIEW_POSITIONS={AC:'CA',DC:'ZG',ZC:'ZG',MC:'MLG',MDF:'VOL',GR:'GO',DD:'LD',DE:'LE',MO:'MAT'};
 const previewCost=vec=>vec.reduce((sum,n)=>{for(let i=0;i<n;i++)sum+=1+Math.floor(i/4);return sum},0);
 const previewValid=vec=>Array.isArray(vec)&&vec.length===10&&vec.every(n=>Number.isInteger(n)&&n>=0&&n<=20);
-function suggestPreview(pp,role,style){
+const normalizeEvidence=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[-_]/g,' ');
+const isKeeper=(role)=>['GO','GR','GK'].includes(String(role).toUpperCase());
+/* V207: evidência é apenas habilidade NATIVA e ímpeto FIXO documentados da carta.
+   Nada de nome, ID, overall, sorteio ou estatística ausente para forçar builds distintas. */
+function individualWeights(role,style,evidence){
+ const p=PREVIEW_POSITIONS[role]||role;
+ const delta=Array(10).fill(0),signals=[];
+ const e=evidence||{},skills=normalizeEvidence(e.native_skills);
+ const boost=normalizeEvidence(e.boost1);
+ const keeper=isKeeper(role);
+ const rules=keeper?[
+  [/gk penalty saver|gk spirit roar/,'defesa de pênaltis / comando do gol',9,3],
+  [/gk high punt|gk long throw/,'reposição longa',7,3],
+  [/gk low punt|gk directing defence/,'reposição baixa / organização',8,3]
+ ]:[
+  [/one ?touch pass|one touch pass|passe de primeira/,'passe de primeira',1,3],
+  [/through passing|passe em profundidade/,'passe em profundidade',1,4],
+  [/weighted pass|phenomenal pass|visionary pass|passe ponderado/,'passe na medida',1,4],
+  [/double touch|sole control|cut behind|chop turn|toque duplo|controle com a sola/,'controle/drible',2,5],
+  [/long.range shooting|knuckle shot|rising shot|dipping shot|phenomenal finishing/,'finalização técnica',0,4],
+  [/first.time shot|first time shot|acrobatic finishing/,'conclusão rápida',0,3],
+  [/aerial superiority|heading|cabeçada/,'jogo aéreo',5,5],
+  [/blocker|interception|man marking|sliding tackle|fortress/,'defesa e cobertura',6,5],
+  [/track back|fighting spirit/,'apoio e retorno',6,2]
+ ];
+ for(const [re,title,i,weight] of rules)if(re.test(skills)){
+  delta[i]+=weight;signals.push(title);
+ }
+ const boosters=keeper?[
+  [/goalkeeping|saving/,'ímpeto de goleiro documentado',8,5]
+ ]:[
+  [/passing|regista/,'ímpeto fixo de passe',1,6],
+  [/physicality|strength/,'ímpeto fixo físico',5,6],
+  [/aerial/,'ímpeto fixo aéreo',5,7],
+  [/striker.s instinct|shooting|accuracy/,'ímpeto fixo de finalização',0,5],
+  [/breakthrough|ball.carrying/,'ímpeto fixo de condução',3,6],
+  [/balancer|technique|ball protection/,'ímpeto fixo de controle',2,5],
+  [/defending|shutdown|duelling/,'ímpeto fixo defensivo',6,6]
+ ];
+ if(boost&&!/pendente|nao confirmado|nenhum fixo|slot selecionavel|ausente/.test(boost)){
+  for(const [re,title,i,weight] of boosters)if(re.test(boost)){
+   delta[i]+=weight;signals.push(title);break;
+  }
+ }
+ // Impedir categorias incompatíveis: GO só varia entre goleiro 1/2/3;
+ // jogador de linha nunca recebe níveis de goleiro por evidência.
+ for(let i=0;i<10;i++)if((keeper&&i<7)||(!keeper&&i>=7))delta[i]=0;
+ return {delta,signals,confidence:signals.length>=3?'comparativa_limitada':'baixa'};
+}
+function suggestIndividualPreview(pp,role,style,evidence){
+ const e=individualWeights(role,style,evidence);
+ const result=suggestPreview(pp,role,style,e.delta);
+ return {...result,signals:e.signals,confidence:e.confidence,
+  reason:e.signals.length?'Diferenças observáveis em habilidades nativas/ímpeto fixo; treino experimental, atributos-base não confirmados.':
+  'Sem diferença documental suficiente para personalizar com segurança; hipótese por posição e estilo.'};
+}
+function suggestPreview(pp,role,style,extraWeights){
+
  if(!Number.isInteger(pp)||pp<0||pp>238)throw Error('Orçamento de PP inválido');
  const position=PREVIEW_POSITIONS[role]||role;
  const w=(PREVIEW_WEIGHTS[position]||PREVIEW_WEIGHTS.MLG).slice();
+ if(Array.isArray(extraWeights)&&extraWeights.length===10){
+  for(let i=0;i<10;i++)if(Number.isFinite(extraWeights[i])&&w[i]>0)w[i]+=Math.max(0,Math.min(20,extraWeights[i]));
+ }
  if(/artilheiro|matador|oportunista|homem de área|puxa marcação/i.test(style||'')){w[0]+=3;w[3]+=2}
  if(/primeiro volante|destruidor/i.test(style||''))w[6]+=3;
  if(/armador|orquestrador|clássico/i.test(style||''))w[1]+=2;
@@ -52,8 +112,10 @@ function suggestPreview(pp,role,style){
  if(!previewValid(vec)||previewCost(vec)+remaining!==pp)throw Error('Prévia de PP inconsistente');
  return {vec,spent:previewCost(vec),remaining,position,provisional:true};
 }
-if(typeof module==='object'&&module.exports)module.exports={suggestPreview,previewCost,previewValid};
+if(typeof module==='object'&&module.exports)module.exports={suggestPreview,previewCost,previewValid,suggestIndividualPreview,individualWeights};
 if(typeof document==='undefined')return;
+window.SCOUT_TRAINING_V207=Object.freeze({suggestIndividualPreview,previewCost,previewValid,individualWeights});
+document.dispatchEvent(new CustomEvent('scoutpro:individual-engine-ready'));
 const el=document.getElementById('lab-data');if(!el)return;
 const d=JSON.parse(el.textContent), cat=d.categories,box=document.getElementById('lab-controls'),status=document.getElementById('lab-stats');
 const cardCap=Number.parseInt(d.card,10);
