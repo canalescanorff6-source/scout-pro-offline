@@ -30,6 +30,10 @@ if(!inCard){
  const v203Css=document.createElement('link');v203Css.rel='stylesheet';v203Css.href=v189Root+'scout-finish-v203.css';document.head.appendChild(v203Css);
  const v203Js=document.createElement('script');v203Js.src=v189Root+'scout-finish-v203.js';v203Js.defer=true;document.head.appendChild(v203Js);
 }
+// V204: cartões legíveis na biblioteca, apenas no catálogo e no bundle comum.
+if(!inCard){
+ const v204Css=document.createElement('link');v204Css.rel='stylesheet';v204Css.href=v189Root+'scout-finish-v204.css';document.head.appendChild(v204Css);
+}
 // V201: pictogramas originais inspirados no visual de futebol, em ficha e laboratório.
 if(inCard){
  const iconCss=document.createElement('link');iconCss.rel='stylesheet';iconCss.href=v189Root+'scout-training-icons-v201.css';document.head.appendChild(iconCss);
