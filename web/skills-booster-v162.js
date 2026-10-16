@@ -105,7 +105,7 @@ function booster(d,tactic,engine,verifiedSlot){
  const existing=knownExtra||'';
  let ranked=[];
  if(engine&&typeof engine.rank==='function'){
-  try{ranked=engine.rank({posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo},tactic).filter(x=>normal(x.nome)!==normal(natural)&&normal(x.nome)!==normal(existing));}catch(e){ranked=[]}
+  try{ranked=engine.rank({posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo,impeto_extra:value,niveis:d.recommended_levels||d.niveis,habilidades_nativas:d.native_skills||d.habilidades_nativas},tactic).filter(x=>normal(x.nome)!==normal(natural)&&normal(x.nome)!==normal(existing));}catch(e){ranked=[]}
  }
  const note=verifiedSlot==='ausente'?'Você marcou esta carta como sem slot selecionável neste dispositivo. Nenhum ímpeto novo será recomendado.':
  status==='nome_registrado'?'Segundo ímpeto já nomeado no cadastro; não tratar como slot livre ou substituível.':
@@ -116,7 +116,8 @@ function booster(d,tactic,engine,verifiedSlot){
  // O ranking da carta deve existir independentemente da disponibilidade do slot.
  // "primary" é uma prioridade competitiva, NÃO algo equipado ou autorizado.
  return {status,verifiedSlot,able,knownExtra:existing,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
-  confidence:engine&&ranked.length?'heuristica_funcao_estilo_posse_sem_testes_de_partida':'sem_base_para_ranquear',
+  confidence:ranked[0]?.confianca||'sem_base_para_ranquear',
+  spread:ranked.length>1?Number((ranked[0].score-ranked[1].score).toFixed(2)):null,
   equipStatus:verifiedSlot==='ausente'?'impossivel_na_conta':status==='nome_registrado'?'comparacao_segundo_fixo':able?'condicionado_a_slot':'slot_nao_verificado'};
 }
 const USER_SLOT_NOTES=Object.freeze({
@@ -204,7 +205,25 @@ function draw(){
  boost.equipStatus==='condicionado_a_slot'?'Indicação para o segundo slot, somente se estiver realmente disponível e não comprometido.':
  'Recomendação pronta; falta confirmar se esta edição possui segundo slot selecionável. Não exige que você insira um ímpeto para descobrir qual seria o melhor.';
  panel.appendChild(applicability);
- if(boost.primary){const why=document.createElement('p');why.textContent='Por quê nesta função: '+boost.primary.motivo+' (priorização heurística, não resultado medido em partidas).';panel.appendChild(why);const atr=document.createElement('p');atr.textContent='Atributos associados: '+boost.primary.atributos.join(', ')+'.';panel.appendChild(atr);if(boost.alternatives.length){const alt=document.createElement('p');alt.textContent='Alternativas: '+boost.alternatives.map(x=>x.nome).join(' / ')+'.';panel.appendChild(alt)}}
+ if(boost.primary){
+ const why=document.createElement('p');why.textContent='Por que esta carta: '+boost.primary.motivo;panel.appendChild(why);
+ const atr=document.createElement('p');atr.textContent='Atributos afetados pelo ímpeto: '+boost.primary.atributos.join(', ')+'. Não são valores finais calculados.';panel.appendChild(atr);
+ if(boost.alternatives.length){
+  const alt=document.createElement('p');alt.textContent='Alternativas a comparar: '+boost.alternatives.map(x=>x.nome).join(' / ')+'.';panel.appendChild(alt);
+ }
+ const uncertainty=document.createElement('p');uncertainty.className='v200-booster-caution';
+ uncertainty.textContent=boost.spread!==null&&boost.spread<2?
+  'ESCOLHA MUITO PRÓXIMA DAS ALTERNATIVAS. Não vale gastar pedras sem conferir a build final e o slot no eFootball.':
+  boost.confidence==='baixa'?'DADOS INDIVIDUAIS INCOMPLETOS. Esta escolha é provisória; não gastar pedras com base só nela.':
+  'Escolha consultiva para a build registrada. Os níveis não comprovam quanto falta de velocidade, passe ou finalização. Compare no jogo antes de gastar pedras.';
+ panel.appendChild(uncertainty);
+ const details=document.createElement('details');details.className='v200-evidence';
+ const summary=document.createElement('summary');summary.textContent='Como esta recomendação foi calculada';details.appendChild(summary);
+ const e=boost.primary.evidencias||{};
+ const explain=document.createElement('p');
+ explain.textContent='Pontuação relativa (não Overall): função '+(e.score_funcao??'—')+' · complementaridade do investimento '+(e.score_complemento??'—')+' · estilo e habilidades '+(e.score_contexto??'—')+'. '+(e.treino==='investimento_da_build_sem_atributos_finais'?'Treino registrado, porém sem atributos finais certificados.':'Treino individual sem documentação suficiente.')+' Ímpeto fixo informado: '+(e.impeto_fixo||'não comprovado')+'.';
+ details.appendChild(explain);panel.appendChild(details);
+}
  const note=document.createElement('p');note.className='v162-note';note.textContent=boost.note;panel.appendChild(note);
  const jump=document.createElement('a');jump.href='../revisao-impetos-v103.html?c='+Number(d.capture);jump.textContent='Confirmar o slot, o ímpeto equipado e as opções desta carta ↗';jump.style.color='#8dd8f7';jump.style.fontWeight='700';panel.appendChild(jump);
 }
