@@ -133,7 +133,17 @@ body[data-page="detail"] .scout-v208-note{
  margin:10px 5px 1px!important;font-size:11px;line-height:1.45;
  color:#afd4e2;overflow-wrap:anywhere;
 }
+/* No Windows, a tabela ocupa toda a linha; evita a coluna estreita herdada do painel antigo. */
+@media(min-width:1050px){
+ body[data-page="detail"] #scout-v188-principal>.scout-v188-progress.scout-v208-reference{
+  grid-column:1/-1;min-width:0;width:auto;
+ }
+}
 @media(max-width:720px){
+ body[data-page="detail"] .scout-v208-category-col{width:55%}
+ body[data-page="detail"] .scout-v208-level-col{width:20%}
+ body[data-page="detail"] .scout-v208-pp-col{width:25%}
+ body[data-page="detail"] .scout-v208-table tfoot td:last-child{padding-inline:4px;white-space:nowrap}
  body[data-page="detail"] #scout-v188-principal .scout-v188-progress.scout-v208-reference{
   padding:8px!important;border-radius:16px!important;
  }
@@ -164,9 +174,9 @@ body[data-page="detail"] .scout-v208-note{
  }
 }
 @media(max-width:355px){
- body[data-page="detail"] .scout-v208-category-col{width:68%}
- body[data-page="detail"] .scout-v208-level-col{width:15%}
- body[data-page="detail"] .scout-v208-pp-col{width:17%}
+ body[data-page="detail"] .scout-v208-category-col{width:55%}
+ body[data-page="detail"] .scout-v208-level-col{width:20%}
+ body[data-page="detail"] .scout-v208-pp-col{width:25%}
  body[data-page="detail"] .scout-v208-table tbody th,
  body[data-page="detail"] .scout-v208-table tbody td{padding:4px}
  body[data-page="detail"] .scout-v208-table thead th{padding:7px 4px}
