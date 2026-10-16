@@ -207,16 +207,16 @@ function audit(cards){
   if(ids.has(c.numero))throw Error('Número duplicado '+c.numero);ids.add(c.numero);
   return {numero:c.numero,nome:c.name,card_id:c.id,posicao:c.posicao,estilo_ataque:c.estilo_ataque,estilo_defesa:c.estilo_defesa,
     impeto_fixo:c.impeto_fixo,impeto_extra:c.impeto_extra,status_slot_fonte:slotStatus(c.impeto_extra),
-    base_stats_known:c.base_stats_known,ficha:c.arquivo,
+    base_stats_known:c.base_stats_known,treino_individual_documentado:!!levelsOf(c),ficha:c.arquivo,
     recomendacoes:Object.fromEntries(tactics.map(t=>[t,rank(c,t).slice(0,3)]))};
  });
  const summary={total:result.length,selecionavel:result.filter(c=>c.status_slot_fonte==='selecionavel').length,
  possivel:result.filter(c=>c.status_slot_fonte==='possivel').length,
  nome_registrado:result.filter(c=>c.status_slot_fonte==='nome_registrado').length,
  indefinido:result.filter(c=>c.status_slot_fonte==='indefinido').length};
- return {version:'V104',method:'hipóteses competitivas por posição, estilos e efeitos do ímpeto; não equivale a slot vazio comprovado, atributos finais ou desempenho validado',summary,cards:result};
+ return {version:'V104',method:'V200: função, tática, estilo, habilidades nativas e investimento por categoria; sem inferir atributos finais ou slot livre, sem prova de desempenho em partidas',summary,cards:result};
 }
-const api={BOOSTERS,CRAFTABLE,ROLE,POS,tactics,slotStatus,rank,audit};
+const api={BOOSTERS,CRAFTABLE,ROLE,POS,tactics,slotStatus,boosterName,levelsOf,rank,audit};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_BOOSTERS_V103=api;
 })(typeof window!=='undefined'?window:null);
