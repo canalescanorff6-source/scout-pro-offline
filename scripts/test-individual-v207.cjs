@@ -28,7 +28,7 @@ for(const x of cards){
  if(alt.signals.length)signals++;
  if(prev.vec.join(',')!==alt.vec.join(','))changed++;
  const isGO=['GO','GR'].includes(x.posicao);
- assert((isGO?alt.vec.slice(0,7):alt.vec.slice(7)).every(n=>n===0),'não misturar treino GO/jogador '+x.numero);
+ assert((isGO?alt.vec.slice(0,4).concat(alt.vec[6]):alt.vec.slice(7)).every(n=>n===0),'não misturar atributos de linha incompatíveis e grupos GO '+x.numero);
  if(Array.isArray(x.niveis))assert(Array.isArray(original.find(y=>y.numero===x.numero).niveis),'niveis oficiais permanecem');
 }
 assert(signals>100,'relevância documental');
