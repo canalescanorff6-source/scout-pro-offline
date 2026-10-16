@@ -72,6 +72,9 @@ const marked=R.booster({shown_position:'AC',role_used:'CA',boost1:'Physicality +
 assert(![marked.primary,...marked.alternatives].some(x=>x?.nome==="Striker's Instinct"),
  'Ímpeto confirmado como equipado pelo usuário não pode reaparecer como nova recomendação');
 assert.equal(marked.confirmedEquipped,"Striker's Instinct");
+assert.equal(marked.able,false,'Slot ocupado confirmado não pode ser marcado como equipável');
+assert.equal(marked.equipStatus,'ocupado_na_conta','Mostrar status correto para slot ocupado');
+
 const auditUI=fs.readFileSync(path.join(web,'revisao-impetos-v103.js'),'utf8');
 assert(auditUI.includes('optionsFor(c,key,saved)')&&auditUI.includes("optionsFor(c,'posse',read(c))"),'Planejamento exclui equipado confirmado');
 assert(auditUI.includes('scout-pro-246-impetos-individuais-v200.csv'),'Exportação precisa representar motor atual');
