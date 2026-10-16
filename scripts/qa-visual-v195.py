@@ -232,6 +232,17 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_catalog_cards_v204.png"),full_page=False,animations="disabled")
                 page.evaluate("window.scrollTo(0,0)")
 
+                # Diagnóstico explícito de inicialização: o V205 deve montar antes das buscas.
+                page.wait_for_timeout(350)
+                if not page.locator("#scout-v205-empty-reset").count():
+                    state=page.evaluate("""() => ({
+                      ready:document.readyState, mounted:document.body.classList.contains('scout-v205-ready'),
+                      catalog:!!document.getElementById('catalogo'), panel:!!document.getElementById('scout-v203-filter-panel'),
+                      empty:!!document.getElementById('none'), search:!!document.getElementById('search'),
+                      scripts:[...document.scripts].map(x=>x.getAttribute('src')).filter(x=>x&&x.includes('v205')),
+                      styles:[...document.querySelectorAll('link')].map(x=>x.getAttribute('href')).filter(x=>x&&x.includes('v205'))
+                    })""")
+                    raise AssertionError(f"{name}: V205 não montou. Estado={state}, erros={errors}")
                 # V205: busca no HERO nunca pode dizer "Todas as cartas" com filtro ativo.
                 page.locator("#search").fill("Szoboszlai")
                 page.wait_for_function("() => Number(document.getElementById('all-count').textContent)>0 && Number(document.getElementById('all-count').textContent)<246")
