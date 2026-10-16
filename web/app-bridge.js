@@ -21,6 +21,8 @@ const v197Js=document.createElement('script');v197Js.src=v189Root+'scout-finish-
 // V198: metodologias sob demanda no PC e ações completas sem dock sobreposto.
 const v198Css=document.createElement('link');v198Css.rel='stylesheet';v198Css.href=v189Root+'scout-finish-v198.css';document.head.appendChild(v198Css);
 const v198Js=document.createElement('script');v198Js.src=v189Root+'scout-finish-v198.js';document.head.appendChild(v198Js);
+// V200: conclusão de ímpetos com transparência de investimento e incerteza.
+const v200Css=document.createElement('link');v200Css.rel='stylesheet';v200Css.href=v189Root+'scout-finish-v200.css';document.head.appendChild(v200Css);
 // V196: renderizar nomes oficiais PT-BR sem modificar dados das cartas nem o motor.
 const v196Skills=document.createElement('script');v196Skills.src=v189Root+'skill-names-v196.js';document.head.appendChild(v196Skills);
 if(inCard){
