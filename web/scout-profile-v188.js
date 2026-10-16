@@ -10,7 +10,7 @@ const LABELS=['Chute','Passe','Drible','Destreza','Força das pernas','Jogo aér
 const norm=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
 const shown=(n)=>PT[n]||n;
 function sourceCandidates(cap,rows){const matched=(rows||[]).filter(x=>Array.isArray(x.candidate_caps)&&x.candidate_caps.includes(Number(cap)));return [...new Map(matched.map(x=>[x.sha256||x.filename,x])).values()] }
-function boosterView(d,engine,rec,slotLocked){const r=rec?.booster?rec.booster(d,'posse',engine,slotLocked?'ausente':undefined):null;return {recommend:r?.primary||null,alternatives:r?.alternatives||[],confidence:r?.confidence||'sem_evidencia',spread:r?.spread??null,canEquip:r?.able===true&&!slotLocked,slotLocked:!!slotLocked,status:r?.equipStatus||'indisponivel'};}
+function boosterView(d,engine,rec,slotLocked,verified){const r=rec?.booster?rec.booster(d,'posse',engine,slotLocked?'ausente':verified?.status,verified?.equipped):null;return {recommend:r?.primary||null,alternatives:r?.alternatives||[],confidence:r?.confidence||'sem_evidencia',spread:r?.spread??null,canEquip:r?.able===true&&!slotLocked,slotLocked:!!slotLocked,status:r?.equipStatus||'indisponivel'};}
 function progression(d){return LABELS.map((label,i)=>({label,level:Number(d.recommended_levels?.[i]||0)}));}
 /* V194 — move as orientações já cadastradas na ficha; não gera fatos nem duplica texto. */
 function moveGuideContent(doc,panel,holder){
@@ -72,7 +72,12 @@ function run(){
  q('v200-review').href='../revisao-impetos-v103.html?c='+Number(d.capture);
  let selectedPhoto=null;
  function redrawRank(){
-  const r=boosterView(d,host.SCOUT_BOOSTERS_V103,host.SCOUT_RECOMMENDATIONS_V162,locked);
+  let verified={};
+  try{
+   const record=JSON.parse(host.localStorage.getItem('scoutpro:v103:booster:'+Number(d.capture))||'null');
+   if(record&&String(record.card_id)===String(d.id))verified=record;
+  }catch(e){}
+  const r=boosterView(d,host.SCOUT_BOOSTERS_V103,host.SCOUT_RECOMMENDATIONS_V162,locked,verified);
   if(!r.recommend){recLabel.textContent='Cálculo indisponível nesta versão';reason.textContent='Os dados originais da carta estão preservados.';return}
   const name=shown(r.recommend.nome)+' +1';
   recLabel.textContent=name;
