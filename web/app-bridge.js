@@ -25,6 +25,11 @@ const v198Js=document.createElement('script');v198Js.src=v189Root+'scout-finish-
 const v200Css=document.createElement('link');v200Css.rel='stylesheet';v200Css.href=v189Root+'scout-finish-v200.css';document.head.appendChild(v200Css);
 // V202: hierarquia visual da primeira tela Android e Windows, sem alterar treinos.
 const v202Css=document.createElement('link');v202Css.rel='stylesheet';v202Css.href=v189Root+'scout-finish-v202.css';document.head.appendChild(v202Css);
+// V203: filtros originais recolhíveis; biblioteca já na primeira tela.
+if(!inCard){
+ const v203Css=document.createElement('link');v203Css.rel='stylesheet';v203Css.href=v189Root+'scout-finish-v203.css';document.head.appendChild(v203Css);
+ const v203Js=document.createElement('script');v203Js.src=v189Root+'scout-finish-v203.js';v203Js.defer=true;document.head.appendChild(v203Js);
+}
 // V201: pictogramas originais inspirados no visual de futebol, em ficha e laboratório.
 if(inCard){
  const iconCss=document.createElement('link');iconCss.rel='stylesheet';iconCss.href=v189Root+'scout-training-icons-v201.css';document.head.appendChild(iconCss);
