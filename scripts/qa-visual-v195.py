@@ -170,7 +170,7 @@ def run():
                 page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===44")
                 if "CA" not in panel.locator(".scout-v203-filter-status").inner_text():
                     problems.append(f"{name}: resumo não atualiza ao escolher CA")
-                if page.locator("#cards .player-card:visible[data-role!='CA']").count():
+                if page.locator("#cards .player-card:visible:not([data-role="CA"])").count():
                     problems.append(f"{name}: filtro CA não filtrou as cartas")
                 page.locator("#rarities button[data-value='ÉPICA']").click()
                 page.wait_for_function("() => Number(document.getElementById('all-count').textContent)<44")
