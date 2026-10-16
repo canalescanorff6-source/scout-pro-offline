@@ -60,7 +60,7 @@
   emptyClear.id='scout-v205-empty-reset';emptyClear.type='button';
   emptyClear.className='scout-v205-reset scout-v205-empty-reset';
   emptyClear.textContent='Mostrar todas as 246 cartas';
-  empty.appendChild(doc.createTextNode(' '),emptyClear);
+  empty.append(doc.createTextNode(' '),emptyClear);
   const current=(group)=>group.querySelector('button[aria-pressed="true"]')||group.querySelector('button.active');
   function refresh(){
    const role=current(roles),rarity=current(rarities);

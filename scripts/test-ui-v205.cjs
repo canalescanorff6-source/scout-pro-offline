@@ -18,7 +18,7 @@ const empty=mod.summarize({query:'nenhum jogador',role:'TODOS',rarity:'TODAS',so
 assert(empty.label.includes('0 cartas'),'Busca sem resultado deve ser explicitada');
 const code=read('web/scout-finish-v205.js'),css=read('web/scout-finish-v205.css');
 for(const marker of [
- "roleAll.click()","rarityAll.click()","new host.Event('input'","new host.Event('change'",
+ "empty.append(doc.createTextNode(' '),emptyClear)","roleAll.click()","rarityAll.click()","new host.Event('input'","new host.Event('change'",
  "sort.value='cap'","emptyClear.addEventListener('click',reset)",
  "search.addEventListener('input',refresh)","observer.observe(catalog,{childList:true})"
 ])assert(code.includes(marker),'Reset sem duplicar motor: '+marker);

@@ -251,6 +251,11 @@ def run():
                     problems.append(f"{name}: resumo V205 não reflete o texto digitado")
                 if not page.locator("#scout-v205-clear").is_visible():
                     problems.append(f"{name}: ação de limpar filtros não está visível")
+                # Com filtro ativo, o botão compacto precisa restaurar o motor original.
+                page.locator("#scout-v205-clear").click()
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===246")
+                if page.locator("#search").input_value() or page.locator("#scout-v205-clear").is_visible():
+                    problems.append(f"{name}: limpar filtros compacto não restaurou as 246 cartas")
                 page.locator("#search").fill("__SCOUT_NENHUMA_CARTA_V205__")
                 page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===0")
                 if not page.locator("#none").is_visible() or not page.locator("#scout-v205-empty-reset").is_visible():
