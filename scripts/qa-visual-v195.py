@@ -232,6 +232,49 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_catalog_cards_v204.png"),full_page=False,animations="disabled")
                 page.evaluate("window.scrollTo(0,0)")
 
+                # Diagnóstico explícito de inicialização: o V205 deve montar antes das buscas.
+                page.wait_for_timeout(350)
+                if not page.locator("#scout-v205-empty-reset").count():
+                    state=page.evaluate("""() => ({
+                      ready:document.readyState, mounted:document.body.classList.contains('scout-v205-ready'),
+                      catalog:!!document.getElementById('catalogo'), panel:!!document.getElementById('scout-v203-filter-panel'),
+                      empty:!!document.getElementById('none'), search:!!document.getElementById('search'),
+                      scripts:[...document.scripts].map(x=>x.getAttribute('src')).filter(x=>x&&x.includes('v205')),
+                      styles:[...document.querySelectorAll('link')].map(x=>x.getAttribute('href')).filter(x=>x&&x.includes('v205'))
+                    })""")
+                    raise AssertionError(f"{name}: V205 não montou. Estado={state}, erros={errors}")
+                # V205: busca no HERO nunca pode dizer "Todas as cartas" com filtro ativo.
+                page.locator("#search").fill("Szoboszlai")
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)>0 && Number(document.getElementById('all-count').textContent)<246")
+                status_search=page.locator(".scout-v203-filter-status").inner_text()
+                if "Busca:" not in status_search or "Todas as cartas" in status_search:
+                    problems.append(f"{name}: resumo V205 não reflete o texto digitado")
+                if not page.locator("#scout-v205-clear").is_visible():
+                    problems.append(f"{name}: ação de limpar filtros não está visível")
+                # Com filtro ativo, o botão compacto precisa restaurar o motor original.
+                page.locator("#scout-v205-clear").click()
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===246")
+                if page.locator("#search").input_value() or page.locator("#scout-v205-clear").is_visible():
+                    problems.append(f"{name}: limpar filtros compacto não restaurou as 246 cartas")
+                page.locator("#search").fill("__SCOUT_NENHUMA_CARTA_V205__")
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===0")
+                if not page.locator("#none").is_visible() or not page.locator("#scout-v205-empty-reset").is_visible():
+                    problems.append(f"{name}: busca vazia sem botão de recuperação")
+                if "0 cartas" not in page.locator(".scout-v203-filter-status").inner_text():
+                    problems.append(f"{name}: busca sem resultado não mostra contagem zero")
+                page.screenshot(path=str(OUT / f"{name}_search_empty_v205.png"),full_page=False,animations="disabled")
+                page.locator("#scout-v205-empty-reset").click()
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===246")
+                if page.locator("#search").input_value() or page.locator("#none").is_visible():
+                    problems.append(f"{name}: limpar filtros não restaurou busca e catálogo")
+                if page.locator("#scout-v205-clear").is_visible():
+                    problems.append(f"{name}: reset V205 permaneceu visível sem filtros")
+                if "Todas as cartas" not in page.locator(".scout-v203-filter-status").inner_text():
+                    problems.append(f"{name}: resumo V205 não voltou ao padrão")
+                if page.locator("#sort").input_value()!="cap":
+                    problems.append(f"{name}: reset V205 não restaurou ordenação")
+                page.evaluate("window.scrollTo(0,0)")
+
                 errors.clear()
                 page.goto(URL + "/fichas/001_Daniele_Massaro.html", wait_until="domcontentloaded", timeout=35000)
                 page.locator("#scout-v194-focus").wait_for(timeout=25000)

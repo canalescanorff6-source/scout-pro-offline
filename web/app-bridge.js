@@ -34,6 +34,11 @@ if(!inCard){
 if(!inCard){
  const v204Css=document.createElement('link');v204Css.rel='stylesheet';v204Css.href=v189Root+'scout-finish-v204.css';document.head.appendChild(v204Css);
 }
+// V205: resultados reais da busca e botão de recuperação, apenas no catálogo.
+if(!inCard){
+ const v205Css=document.createElement('link');v205Css.rel='stylesheet';v205Css.href=v189Root+'scout-finish-v205.css';document.head.appendChild(v205Css);
+ const v205Js=document.createElement('script');v205Js.src=v189Root+'scout-finish-v205.js';v205Js.defer=true;document.head.appendChild(v205Js);
+}
 // V201: pictogramas originais inspirados no visual de futebol, em ficha e laboratório.
 if(inCard){
  const iconCss=document.createElement('link');iconCss.rel='stylesheet';iconCss.href=v189Root+'scout-training-icons-v201.css';document.head.appendChild(iconCss);
