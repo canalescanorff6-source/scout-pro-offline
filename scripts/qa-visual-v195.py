@@ -213,7 +213,25 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_profile_impeto.png"), full_page=False, animations="disabled")
                 page.locator("#scout-v194-gameplay").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_profile_gameplay.png"), full_page=False, animations="disabled")
-                results[name] = {"catalog": home, "detail": detail}
+                result = {"catalog": home, "detail": detail}
+                if name in ("mobile_390", "windows_1366"):
+                    page.goto(URL + "/revisao-impetos-v103.html?c=24",
+                              wait_until="domcontentloaded", timeout=35000)
+                    page.locator("#tactics article").first.wait_for(timeout=25000)
+                    page.wait_for_function("""() => {
+                      const n=document.getElementById('player-name');
+                      return n && n.textContent.includes('Cristiano Ronaldo');
+                    }""", timeout=25000)
+                    choices = page.locator("#tactics article strong").all_text_contents()
+                    for chosen in choices:
+                        if "Striker's Instinct" in chosen or "Physicality" in chosen:
+                            problems.append(f"{name}: revisão ainda sugere boost já embutido no Ronaldo Big Time")
+                    result["booster_review"] = {"choices_ronaldo_24": choices,
+                                               "is_covered": page.locator("#tactics article").count() == 3}
+                    page.locator("#tactics").scroll_into_view_if_needed()
+                    page.screenshot(path=str(OUT / f"{name}_booster_review.png"),
+                                    full_page=False, animations="disabled")
+                results[name] = result
                 context.close()
         finally:
             browser.close()
