@@ -42,7 +42,10 @@
   const sortTitle=doc.createElement('h3');
   sortTitle.textContent='Ordenação';
   // Os três controles são MOVIMENTADOS, não duplicados; eventos e atributos mantidos.
-  contents.append(sortTitle,tools,roleTitle,roles,rarityTitle,rarities);
+  contents.append(sortTitle,tools);
+  const motion=catalog.querySelector('.scout-motion-controls');
+  if(motion)contents.appendChild(motion);
+  contents.append(roleTitle,roles,rarityTitle,rarities);
   panel.append(summary,contents);
   catalog.insertBefore(panel,meta);
   function update(){
