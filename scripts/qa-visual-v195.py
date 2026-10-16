@@ -31,7 +31,7 @@ SCREENS_SELECTORS = {
     "detail": [
         "body[data-page='detail']", ".mobile-profile",
         "#scout-card-navigator", "#scout-v197-edition", ".detail-header",
-        "#scout-v188-principal", "#scout-v194-focus",
+        "#scout-v188-principal", "#v188-top-rec", "#v200-alternatives", "#v200-caution", "#scout-v194-focus",
         "#scout-v162", "#scout-v189-biotype", "#scout-v194-gameplay",
     ],
 }
@@ -157,6 +157,18 @@ def run():
                 detail = metrics(page, SCREENS_SELECTORS["detail"])
                 detail["edition_collapsed_by_default"] = is_collapsed
                 detail["navigator_buttons"] = page.locator("#scout-card-navigator button").count()
+                primary = page.locator("#v188-top-rec").first.inner_text()
+                caution = page.locator("#v200-caution").first.inner_text()
+                alternatives = page.locator("#v200-alternatives").first.inner_text()
+                detail["impeto_recomendacao"] = primary
+                detail["impeto_aviso"] = caution
+                detail["impetos_alternativos"] = alternatives
+                if not primary.strip() or "Calculando" in primary:
+                    problems.append(f"{name}: cálculo individual do ímpeto não concluiu")
+                if not caution.strip() or not alternatives.strip():
+                    problems.append(f"{name}: comparativo e cautela do ímpeto ausentes")
+                if "Physicality" in primary or "Fisicalidade" in primary:
+                    problems.append(f"{name}: Massaro já tem fisicalidade fixa; não recomendar de novo")
                 detail["native_skills_ptbr"] = names
                 detail["errors"] = list(errors)
                 detail["direct_children"] = page.evaluate("""() => [...document.querySelectorAll(".profile-content > *")].map(e=>({id:e.id||"",className:typeof e.className==="string"?e.className:"",visible:getComputedStyle(e).display!=="none"}))""")
