@@ -163,6 +163,17 @@ def run():
                 detail["impeto_recomendacao"] = primary
                 detail["impeto_aviso"] = caution
                 detail["impetos_alternativos"] = alternatives
+                if page.locator(".v200-why").count() != 1:
+                    problems.append(f"{name}: justificativa detalhada precisa estar acessível")
+                else:
+                    why = page.locator(".v200-why")
+                    if why.evaluate("(e)=>e.open"):
+                        problems.append(f"{name}: método extenso não deve ocupar espaço ao abrir")
+                    why.locator("summary").click()
+                    if not page.locator("#v188-reason").is_visible():
+                        problems.append(f"{name}: justificativa extensa não abre")
+                    why.locator("summary").click()
+                    page.evaluate("window.scrollTo(0, 0)")
                 if not primary.strip() or "Calculando" in primary:
                     problems.append(f"{name}: cálculo individual do ímpeto não concluiu")
                 if not caution.strip() or not alternatives.strip():
