@@ -14,4 +14,21 @@ for(let i=0;i<246;i++){
  assert.strictEqual(now.status,'AUDITORIA PENDENTE — não alterar treino automaticamente');
 }
 assert.strictEqual(r.cards.filter(x=>x.repeticao).length,56);
+const body=JSON.parse(fs.readFileSync('web/SCOUT_V101_MODELO_CORPORAL.json','utf8'));
+assert.strictEqual(r.cards.filter(x=>x.biotipo).length,body.cartas.length);
+for(const b of body.cartas){
+ const card=r.cards.find(x=>x.numero===b.numero);
+ assert(card&&card.biotipo);
+ assert.strictEqual(card.card_id,String(b.card_id));
+ assert.strictEqual(card.biotipo.altura_cm,b.altura_cm);
+}
+const hub=JSON.parse(fs.readFileSync('web/SCOUT_V184_EFHUB_241_COMPLETE.json','utf8'));
+const unique=hub.image_manifest.filter(x=>x.scout_roster_matching?.status==='unambiguous_name_only_no_id');
+assert.strictEqual(r.cards.filter(x=>x.print_candidato).length,unique.length);
+for(const x of unique){
+ const card=r.cards.find(c=>c.numero===x.scout_roster_matching.candidate_cap);
+ assert(card&&card.print_candidato);
+ assert.strictEqual(card.print_candidato.arquivo,x.filename);
+ assert.strictEqual(card.print_candidato.status,'NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA');
+}
 console.log('PASS: 246 cartas, Card IDs, PP, treinos preservados; 56 duplicações sinalizadas.');
