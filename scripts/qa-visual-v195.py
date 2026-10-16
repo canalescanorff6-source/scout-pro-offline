@@ -435,6 +435,40 @@ def run():
                 page.locator("#scout-v207-identity .scout-v207-preview>summary").click()
                 page.locator("#scout-v207-identity .scout-v207-peers>summary").click()
 
+                # V210: estilo calculado a partir do tom oficial verde-turquesa do Scout PRO.
+                palette=page.evaluate("""() => {
+                  const panel=document.querySelector('#scout-v188-principal .scout-v188-progress.scout-v208-reference');
+                  const icon=document.querySelector('#scout-v208-training .scout-v208-icon');
+                  const total=document.querySelector('#scout-v208-training tfoot td:last-child');
+                  return {border:getComputedStyle(icon).borderTopColor,
+                   total:getComputedStyle(total).color,
+                   iconFilter:getComputedStyle(icon.querySelector('svg')).filter,
+                   panelBackground:getComputedStyle(panel).backgroundImage};
+                }""")
+                detail["v210_palette"]=palette
+                if "53, 228, 185" not in palette["border"] or "53, 228, 185" not in palette["total"]:
+                    problems.append(f"{name}: paleta V210 não usa o acento oficial verde-turquesa")
+                if "hue-rotate" not in palette["iconFilter"]:
+                    problems.append(f"{name}: ícones V210 não receberam a cor do projeto")
+                page.screenshot(path=str(OUT / f"{name}_palette_v210.png"),full_page=False,animations="disabled")
+                # V211: Massaro e Batistuta compartilham o mesmo vetor mas exigem revisão.
+                page.wait_for_function("() => !!document.getElementById('scout-v211-audit')",timeout=25000)
+                review=page.evaluate("""() => {
+                  const n=document.getElementById('scout-v211-audit');
+                  return {status:n.dataset.reviewStatus,text:n.innerText,
+                   overflow:n.scrollWidth-n.clientWidth,
+                   total:document.querySelector('#scout-v208-training .scout-v208-total').textContent.trim()};
+                }""")
+                detail["v211_review"]=review
+                if review["status"]!="revisao_documental_prioritaria" or "2 cartas" not in review["text"]:
+                    problems.append(f"{name}: V211 não identificou repetição documental Massaro/Batistuta")
+                if "sem troca automática" not in review["text"].lower() or review["total"]!="62 / 62":
+                    problems.append(f"{name}: V211 alterou treino ou omitiu aviso de auditoria")
+                if review["overflow"]>3:
+                    problems.append(f"{name}: V211 causou overflow na ficha")
+                page.locator("#scout-v211-audit").scroll_into_view_if_needed()
+                page.screenshot(path=str(OUT / f"{name}_review_v211.png"),full_page=False,animations="disabled")
+
                 # V201: categorias do treino são apenas ilustradas, sem tocar no PP.
                 page.wait_for_function("""() => {
                   const labels=[...document.querySelectorAll('#lab-controls .lab-group>label')];
