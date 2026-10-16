@@ -386,6 +386,40 @@ def run():
                 lab_icons=page.locator("#lab-controls .lab-group>label .scout-v201-svg").count()
                 if lab_labels!=10 or lab_icons!=10:
                     problems.append(f"{name}: laboratório não apresenta as 10 ilustrações")
+                # V206 — conferir no Chromium os 10 ícones e os controles originais.
+                page.wait_for_function("""() => {
+                  const keys=['chute','passe','drible','destreza','pernas','aereo','defesa','goleiro1','goleiro2','goleiro3'];
+                  const icons=[...document.querySelectorAll('#lab-controls .lab-group>label .scout-v206-svg')];
+                  return icons.length===10&&keys.every(k=>icons.some(e=>e.dataset.scoutV206Symbol===k));
+                }""",timeout=25000)
+                premium=page.evaluate("""() => {
+                  const summary=[...document.querySelectorAll('#v188-train .scout-v188-train-chip')];
+                  const rows=[...document.querySelectorAll('#lab-controls .lab-group')];
+                  const svgs=rows.map(row=>row.querySelector('label .scout-v206-svg'));
+                  return {
+                    summary:summary.length,
+                    summaryPremium:summary.filter(chip=>!!chip.querySelector('.scout-v206-svg')).length,
+                    lab:rows.length,
+                    uniqueSymbols:new Set(svgs.map(svg=>svg?.dataset.scoutV206Symbol)).size,
+                    visible:svgs.every(svg=>!!svg&&getComputedStyle(svg).display!=='none'),
+                    overflow:rows.filter(row=>row.scrollWidth>row.clientWidth+3).length,
+                    smallButtons:rows.flatMap(row=>[...row.querySelectorAll('.lab-adjust button')]).filter(btn=>btn.getBoundingClientRect().width<38||btn.getBoundingClientRect().height<40).length,
+                    withNames:rows.filter(row=>!!row.querySelector('label')?.textContent?.trim()).length,
+                    accents:new Set(svgs.map(svg=>getComputedStyle(svg).color)).size
+                  };
+                }""")
+                detail["v206_premium_icons"]=premium
+                if premium["lab"]!=10 or premium["uniqueSymbols"]!=10 or not premium["visible"]:
+                    problems.append(f"{name}: V206 não exibiu os dez SVGs exclusivos")
+                if premium["summary"]!=premium["summaryPremium"]:
+                    problems.append(f"{name}: V206 não atualizou todo o resumo de treino")
+                if premium["overflow"] or premium["smallButtons"]:
+                    problems.append(f"{name}: V206 com overflow={premium['overflow']} ou botões pequenos={premium['smallButtons']}")
+                if premium["withNames"]!=10 or premium["accents"]<2:
+                    problems.append(f"{name}: V206 perdeu nomes do treino ou cores do sistema visual")
+                page.locator("#lab-controls .lab-group").first.scroll_into_view_if_needed()
+                page.screenshot(path=str(OUT / f"{name}_lab_premium_v206.png"),full_page=False,animations="disabled")
+
                 original_lab=page.locator("#lab-controls .lab-group").first.locator("input").input_value()
                 original_val=int(original_lab)
                 # Usar click DOM para conferir rerender de laboratório oculto, sem publicar modificações.
