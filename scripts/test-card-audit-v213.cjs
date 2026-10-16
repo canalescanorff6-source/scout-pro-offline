@@ -45,4 +45,12 @@ for(const c of r.cards.filter(c=>c.comparacao_grupo_repetido)){
  assert.strictEqual(c.comparacao_grupo_repetido.substituicao_automatica,false);
  assert(c.comparacao_grupo_repetido.colegas.length>0);
 }
+const offline=fs.readFileSync('web/sw.js','utf8');
+const bundle=fs.readFileSync('scripts/stamp-bundle-v189.cjs','utf8');
+const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+assert(offline.includes('v214-evidence-guard'),'Atualização offline precisa renovar cache');
+assert(offline.includes("'./SCOUT_V213_AUDITORIA_INDIVIDUAL.json'"),'Auditoria disponível offline');
+assert(bundle.includes("'SCOUT_V213_AUDITORIA_INDIVIDUAL.json'"),'Evidência faz parte do fingerprint');
+assert(bundle.includes("'sw.js'"),'Cache faz parte do fingerprint');
+assert(pkg.scripts.check.includes('test-card-audit-v213.cjs'),'CI deve executar teste V213');
 console.log('PASS: 246 cartas, Card IDs, PP, treinos preservados; 56 duplicações sinalizadas.');
