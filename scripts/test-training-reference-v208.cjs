@@ -27,8 +27,20 @@ for(const c of roster){
 assert.equal(registered,162);assert.equal(pending,84);
 const p=ui.resolveTraining({pp:60,recommended_levels:null},{draftA:[11,4,4,11,7,0,0,0,0,0]});
 assert.equal(p.kind,'prévia experimental');assert.equal(p.spent,60);
-assert.equal(ui.resolveTraining({pp:62,recommended_levels:roster[0].niveis,recommended_scenario:'P'},{}).scenario,'P');
+// V209: cabeçalho visual uniforme A em QUALQUER cenário; cenário real preservado para lógica.
+assert.equal(ui.DISPLAY_SCENARIO,'A','Cabeçalho de todas as fichas no padrão aprovado');
+const actualScenario=ui.resolveTraining({pp:62,recommended_levels:roster[0].niveis,recommended_scenario:'P'},{});
+assert.equal(actualScenario.scenario,'P','O cenário real P continua intacto');
+assert.equal(actualScenario.spent,62,'A etiqueta fixa não altera os PP');
+for(const scenario of ['A','B','C','P']){
+ const train=ui.resolveTraining({pp:62,recommended_levels:roster[0].niveis,recommended_scenario:scenario},{});
+ assert.equal(train.scenario,scenario,'Cenário interno preservado: '+scenario);
+ assert.equal(train.spent,62,'PP idêntico: '+scenario);
+ assert.equal(ui.DISPLAY_SCENARIO+' - Posse central','A - Posse central','Título visual uniforme: '+scenario);
+}
 const js=read('web/scout-training-reference-v208.js'),css=read('web/scout-training-reference-v208.css');
+assert(js.includes("prefix.textContent=DISPLAY_SCENARIO+' - '"),'A tela usa a letra fixa da apresentação');
+assert(!js.includes("prefix.textContent=state.scenario+' - '"),'Não reintroduzir cenário real no cabeçalho');
 assert(js.includes("old.hidden=true")&&js.includes('aria-hidden'),'Fallback acessível');
 assert(!js.includes('localStorage.setItem')&&!js.includes('fetch('));
 for(const x of ['scout-v208-heading','scout-v208-icon','scout-v208-total'])assert(js.includes(x)&&css.includes(x));
@@ -38,6 +50,8 @@ for(const n of ['scout-training-reference-v208.js','scout-training-reference-v20
  assert(read('web/sw.js').includes("'./"+n+"'"));
  assert(read('scripts/stamp-bundle-v189.cjs').includes("'"+n+"'"));
 }
+assert(read('web/sw.js').includes('v209-uniform-a-title'));
 assert(read('web/sw.js').includes('v208-user-reference'));
+
 assert.equal(fs.readdirSync(path.join(root,'web/fichas')).filter(x=>x.endsWith('.html')).length,246);
 console.log('V208 OK: layout, 10 ícones, custos progressivos, exemplo 68/68, 162 builds e 84 pendentes preservadas.');
