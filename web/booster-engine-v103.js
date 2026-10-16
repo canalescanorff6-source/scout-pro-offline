@@ -173,6 +173,11 @@ function rank(card,tactic){
   if(role==='CA'||role==='SA'){
    const pivot=/pivo|homem de area|target/.test(style);
    const runner=/infiltra|matador|oportunista|artilheiro/.test(style);
+   // A função de apoio em Posse tem prioridades distintas do finalizador puro.
+   const linkForward=/puxa marcacao|infiltra/.test(style);
+   if(tactic==='posse'&&linkForward&&['Passing','Technique','Offence Creator','Ball Protection'].includes(name))contextScore+=4;
+   if(tactic==='posse'&&pivot&&name==='Passing')contextScore+=3;
+   if(tactic==='posse'&&runner&&!pivot&&name==='Off the Ball')contextScore+=2;
    if(pivot&&['Offence Creator','Ball Protection','Technique','Aerial'].includes(name))contextScore+=4.5;
    if(runner&&name==='Shooting')contextScore+=3;
    // Chute de primeira e finalizações especiais tornam Shooting uma alternativa real.
