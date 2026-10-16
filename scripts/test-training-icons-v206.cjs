@@ -15,7 +15,7 @@ for(const [key,label] of orig.CATEGORIES){
  assert(svg.includes('viewBox="0 0 64 64"')&&svg.includes('aria-hidden="true"'));
  assert(svg.includes('<path')&&svg.includes('<rect')&&svg.includes('stroke='),'Vetor elaborado: '+label);
  assert(!/<(?:image|foreignObject|script|iframe|use)\b/i.test(svg),'Nada de arte externa');
- assert(!/(?:https?:\/\/|data:image|@import|<style)/i.test(svg),'Somente vetores offline');
+ assert(!/(?:data:image|@import|<style|(?:src|href)="https?:)/i.test(svg),'Somente vetores offline; xmlns SVG é namespace padrão');
  assert.equal(orig.keyFor(label+' 12'),key,'Grupos nativos intocados');
 }
 assert.equal(premium.render('inexistente'),'');
