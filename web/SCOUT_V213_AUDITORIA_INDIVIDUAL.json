@@ -64,7 +64,18 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 178,
+        "peso_kg": 74,
+        "pe_dominante": "esquerdo",
+        "comprimento_perna": 7,
+        "alcance_perna_cm": 171.77,
+        "colisao_tronco_cm": 49.48,
+        "fonte": "https://pesdb.net/efootball/players/raul-88036360649078",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 3,
@@ -286,7 +297,18 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 186,
+        "peso_kg": 85,
+        "pe_dominante": "direito",
+        "comprimento_perna": 10,
+        "alcance_perna_cm": 181.16,
+        "colisao_tronco_cm": 51.27,
+        "fonte": "https://pesdb.net/efootball/players/paolo-maldini-88039045074370",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 11,
@@ -310,7 +332,18 @@
       "biotipo_documentado": true,
       "repeticao": null,
       "pendencias": [],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 193,
+        "peso_kg": 93,
+        "pe_dominante": "direito",
+        "comprimento_perna": 11,
+        "alcance_perna_cm": 188.56,
+        "colisao_tronco_cm": 54.49,
+        "fonte": "https://pesdb.net/efootball/players/manuel-neuer-106788187832737",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 12,
@@ -667,7 +700,18 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 188,
+        "peso_kg": 80,
+        "pe_dominante": "direito",
+        "comprimento_perna": 8,
+        "alcance_perna_cm": 181.98,
+        "colisao_tronco_cm": 52.99,
+        "fonte": "https://pesdb.net/efootball/players/marco-van-basten-88033139494377",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 26,
@@ -895,7 +939,18 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 189,
+        "peso_kg": 79,
+        "pe_dominante": "direito",
+        "comprimento_perna": 11,
+        "alcance_perna_cm": 184.65,
+        "colisao_tronco_cm": 53.83,
+        "fonte": "https://pesdb.net/efootball/players/dimitar-berbatov-88039044941086",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 34,
@@ -1078,7 +1133,18 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 183,
+        "peso_kg": 73,
+        "pe_dominante": "direito",
+        "comprimento_perna": 7,
+        "alcance_perna_cm": 176.6,
+        "colisao_tronco_cm": 50.99,
+        "fonte": "https://pesdb.net/efootball/players/andriy-shevchenko-88036360723178",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 40,
@@ -2167,7 +2233,18 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 182,
+        "peso_kg": 78,
+        "pe_dominante": "esquerdo",
+        "comprimento_perna": 5,
+        "alcance_perna_cm": 174.54,
+        "colisao_tronco_cm": 49.72,
+        "fonte": "https://pesdb.net/efootball/players/guti-88029918268943",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 79,
@@ -2667,7 +2744,18 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 184,
+        "peso_kg": 88,
+        "pe_dominante": "direito",
+        "comprimento_perna": 9,
+        "alcance_perna_cm": 178.66,
+        "colisao_tronco_cm": 51.6,
+        "fonte": "https://pesdb.net/efootball/players/frank-lampard-88040387251676",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 96,
@@ -2918,7 +3006,18 @@
         "Segundo ímpeto realmente selecionado",
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 190,
+        "peso_kg": 87,
+        "pe_dominante": "direito",
+        "comprimento_perna": 11,
+        "alcance_perna_cm": 185.63,
+        "colisao_tronco_cm": 53.07,
+        "fonte": "https://pesdb.net/efootball/players/frank-rijkaard-88036360719848",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 105,
@@ -2972,7 +3071,18 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 181,
+        "peso_kg": 76,
+        "pe_dominante": "direito",
+        "comprimento_perna": 7,
+        "alcance_perna_cm": 174.67,
+        "colisao_tronco_cm": 51.05,
+        "fonte": "https://pesdb.net/efootball/players/pep-guardiola-88040387251639",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 107,
@@ -3470,7 +3580,18 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 181,
+        "peso_kg": 84,
+        "pe_dominante": "direito",
+        "comprimento_perna": 10,
+        "alcance_perna_cm": 176.29,
+        "colisao_tronco_cm": 51.17,
+        "fonte": "https://pesdb.net/efootball/players/jules-kounde-105835242041536",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 128,
@@ -3886,7 +4007,18 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 176,
+        "peso_kg": 70,
+        "pe_dominante": "direito",
+        "comprimento_perna": 7,
+        "alcance_perna_cm": 169.84,
+        "colisao_tronco_cm": 49.73,
+        "fonte": "https://pesdb.net/efootball/players/franco-baresi-88039581945329",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 144,
@@ -3954,7 +4086,18 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 181,
+        "peso_kg": 77,
+        "pe_dominante": "direito",
+        "comprimento_perna": 6,
+        "alcance_perna_cm": 174.12,
+        "colisao_tronco_cm": 50.93,
+        "fonte": "https://pesdb.net/efootball/players/franz-beckenbauer-88039581945324",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 146,
@@ -4008,7 +4151,18 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 191,
+        "peso_kg": 83,
+        "pe_dominante": "direito",
+        "comprimento_perna": 11,
+        "alcance_perna_cm": 186.61,
+        "colisao_tronco_cm": 54.18,
+        "fonte": "https://pesdb.net/efootball/players/tony-adams-88032334054195",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 148,
@@ -4121,7 +4275,18 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "biotipo": {
+        "altura_cm": 194,
+        "peso_kg": 95,
+        "pe_dominante": "direito",
+        "comprimento_perna": 11,
+        "alcance_perna_cm": 189.54,
+        "colisao_tronco_cm": 54.63,
+        "fonte": "https://pesdb.net/efootball/players/ibrahima-konate-105873091445023",
+        "status": "fonte_externa_nao_prova_gameplay",
+        "player_id_animacao_confirmado": false
+      }
     },
     {
       "numero": 151,
@@ -6438,5 +6603,7 @@
       ],
       "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
     }
-  ]
+  ],
+  "biotipo_vinculado_por_card_id": 15,
+  "biotipo_conflitos_card_id": []
 }
