@@ -69,7 +69,7 @@ const view=require('../web/scout-profile-v188.js').boosterView(
  B,R,false);
 assert(view.recommend&&Array.isArray(view.alternatives));
 const src=fs.readFileSync(path.join(web,'scout-profile-v188.js'),'utf8');
-assert(src.includes('v200-caution')&&src.includes('v200-alternatives')&&src.includes('v200-review'),'Comparação visível na ficha principal');
+assert(src.includes('v200-caution')&&src.includes('v200-alternatives')&&src.includes('v200-review')&&src.includes('v200-why'),'Comparação visível e método expandível na ficha principal');
 const ui=fs.readFileSync(path.join(web,'skills-booster-v162.js'),'utf8');
 assert(ui.includes('v200-booster-caution')&&ui.includes('score_complemento'),'Explicação do modelo sem OVR');
 const css=fs.readFileSync(path.join(web,'scout-finish-v200.css'),'utf8');
