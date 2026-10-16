@@ -220,6 +220,43 @@ def run():
                         if page.locator(legacy).is_visible():
                             problems.append(f"{name}: laboratório antigo {legacy} apareceu antes da ficha principal compacta")
                 page.screenshot(path=str(OUT / f"{name}_profile_header.png"), full_page=False, animations="disabled")
+
+                # V201: categorias do treino são apenas ilustradas, sem tocar no PP.
+                page.wait_for_function("""() => {
+                  const labels=[...document.querySelectorAll('#lab-controls .lab-group>label')];
+                  return labels.length===10&&labels.every(e=>e.hasAttribute('data-scout-training-icon'));
+                }""",timeout=25000)
+                icons=page.locator("#v188-train .scout-v201-icon").count()
+                training_chips=page.locator("#v188-train .scout-v188-train-chip").count()
+                if training_chips and icons!=training_chips:
+                    problems.append(f"{name}: pictogramas ausentes no resumo de treino ({icons}/{training_chips})")
+                lab_labels=page.locator("#lab-controls .lab-group>label").count()
+                lab_icons=page.locator("#lab-controls .lab-group>label .scout-v201-svg").count()
+                if lab_labels!=10 or lab_icons!=10:
+                    problems.append(f"{name}: laboratório não apresenta as 10 ilustrações")
+                original_lab=page.locator("#lab-controls .lab-group").first.locator("input").input_value()
+                original_val=int(original_lab)
+                # Usar click DOM para conferir rerender de laboratório oculto, sem publicar modificações.
+                page.evaluate("""() => document.querySelector('#lab-controls .lab-group [data-d="1"]')?.click()""")
+                page.wait_for_function("""() => {
+                    const row=document.querySelector('#lab-controls .lab-group');
+                    return row&&Number(row.querySelector('input').value)>0&&
+                           document.querySelectorAll('#lab-controls .lab-group>label.scout-v201-enriched').length===10;
+                }""",timeout=15000)
+                updated_val=int(page.locator("#lab-controls .lab-group").first.locator("input").input_value())
+                if updated_val!=min(20,original_val+1):
+                    problems.append(f"{name}: controle de PP alterou mais que um nível")
+                page.evaluate("""() => document.querySelector('#lab-controls .lab-group [data-d="-1"]')?.click()""")
+                page.wait_for_function("""() => document.querySelectorAll('#lab-controls .lab-group>label.scout-v201-enriched').length===10""",timeout=15000)
+                recovered_val=int(page.locator("#lab-controls .lab-group").first.locator("input").input_value())
+                if recovered_val!=original_val:
+                    problems.append(f"{name}: teste de ícones não restaurou nível original")
+                detail["train_icons_summary"]=icons
+                detail["train_icons_lab"]=lab_icons
+                detail["train_rerender_preserved"]=recovered_val==original_val
+                page.locator("#scout-v188-principal .scout-v188-progress").scroll_into_view_if_needed()
+                page.screenshot(path=str(OUT / f"{name}_profile_training.png"),full_page=False,animations="disabled")
+
                 page.locator(".scout-v188-best").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_profile_impeto.png"), full_page=False, animations="disabled")
                 page.locator("#scout-v194-gameplay").scroll_into_view_if_needed()
