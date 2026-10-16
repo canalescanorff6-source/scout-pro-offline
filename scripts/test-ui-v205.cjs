@@ -12,6 +12,7 @@ assert(search.label.includes('Busca: Szoboszlai'));
 assert(!search.label.includes('Todas as cartas'));
 const combined=mod.summarize({query:'Cristiano Ronaldo',role:'CA',roleLabel:'Centroavantes',rarity:'ÉPICA',sort:'alpha',sortLabel:'Nome A–Z',count:1});
 assert(combined.label.includes('1 carta'));
+assert(combined.label.includes('Nome A–Z'),'Ordenação acessível com o rótulo oficial');
 assert(combined.label.includes('CA')&&combined.label.includes('ÉPICA')&&combined.label.includes('A–Z'));
 assert(combined.full.includes('Cristiano Ronaldo'));
 const empty=mod.summarize({query:'nenhum jogador',role:'TODOS',rarity:'TODAS',sort:'cap',count:0});

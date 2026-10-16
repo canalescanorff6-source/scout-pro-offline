@@ -28,7 +28,7 @@
    full.push('Estilo: '+style);
   }
   if(sort!=='cap'){
-   parts.push(sort==='alpha'?'A–Z':sort==='reverse'?'Recentes':String(state.sortLabel||sort));
+   parts.push(sort==='alpha'?'Nome A–Z':sort==='reverse'?'Recentes':String(state.sortLabel||sort));
    full.push('Ordem: '+String(state.sortLabel||sort));
   }
   if(!parts.length){
