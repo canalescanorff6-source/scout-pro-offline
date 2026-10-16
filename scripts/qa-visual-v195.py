@@ -195,7 +195,42 @@ def run():
                     problems.append(f"{name}: resumo não volta ao padrão")
                 home["v203_filters_preserve_count"]=246
                 home["v203_filters_open_overflow"]=opened["horizontalOverflow"]
+                # V204: validar o acabamento real dos cartões (não só presença de CSS).
+                readability = page.evaluate("""() => {
+                  const cards=[...document.querySelectorAll('#cards .player-card')];
+                  const first=cards[0], name=first?.querySelector('.player-name');
+                  const edition=first?.querySelector('.player-version');
+                  const n=name?getComputedStyle(name):null;
+                  const e=edition?getComputedStyle(edition):null;
+                  return {
+                    count:cards.length,
+                    nameWhiteSpace:n?.whiteSpace||null,
+                    nameLineClamp:n?.webkitLineClamp||null,
+                    editionWhiteSpace:e?.whiteSpace||null,
+                    editionLineClamp:e?.webkitLineClamp||null,
+                    bottomOverflow:cards.slice(0,30).filter(c=>{
+                      const b=c.querySelector('.player-bottom');
+                      return b&&b.scrollWidth>b.clientWidth+3;
+                    }).length
+                  };
+                }""")
+                home["v204_card_readability"]=readability
+                if readability["count"]!=246:
+                    problems.append(f"{name}: V204 não preservou os 246 cartões")
+                if readability["nameWhiteSpace"]!="normal" or readability["nameLineClamp"]!="2":
+                    problems.append(f"{name}: nome longo continua truncado em uma única linha")
+                expected_lines="3" if mobile else "2"
+                if readability["editionWhiteSpace"]!="normal" or readability["editionLineClamp"]!=expected_lines:
+                    problems.append(f"{name}: versão não utiliza o limite de linhas previsto")
+                if readability["bottomOverflow"]:
+                    problems.append(f"{name}: {readability['bottomOverflow']} rodapés de cartões com overflow")
                 page.screenshot(path=str(OUT / f"{name}_catalog.png"), full_page=False, animations="disabled")
+                page.evaluate("""() => {
+                  const grid=document.getElementById('cards');
+                  if(grid)scrollTo(0,scrollY+grid.getBoundingClientRect().top-32);
+                }""")
+                page.screenshot(path=str(OUT / f"{name}_catalog_cards_v204.png"),full_page=False,animations="disabled")
+                page.evaluate("window.scrollTo(0,0)")
 
                 errors.clear()
                 page.goto(URL + "/fichas/001_Daniele_Massaro.html", wait_until="domcontentloaded", timeout=35000)
