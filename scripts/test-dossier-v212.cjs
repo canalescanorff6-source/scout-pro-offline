@@ -15,14 +15,20 @@ for(const c of all){
  assert.equal(module212.ppCost(c.registered),c.pp,'PP original '+c.numero);
  assert.equal(c.approval,'NÃO HOMOLOGADO');
  assert.equal(c.numericBaseCompared,false);assert.equal(c.knownBaseStats,false);
- assert(c.alternative&&c.alternative.length===10,'Simulação válida '+c.numero);
- assert.equal(module212.ppCost(c.alternative),c.pp,'PP alternativo exato '+c.numero);
- assert.equal(c.alternativePP,c.pp);
- assert(c.alternative.every(n=>Number.isInteger(n)&&n>=0&&n<=20));
+ if(c.signals.length){
+  assert(c.alternative&&c.alternative.length===10,'Simulação individualizada válida '+c.numero);
+  assert.equal(module212.ppCost(c.alternative),c.pp,'PP alternativo exato '+c.numero);
+  assert.equal(c.alternativePP,c.pp);
+  assert(c.alternative.every(n=>Number.isInteger(n)&&n>=0&&n<=20));
+  const restricted=c.position==='GO'?c.alternative.slice(0,4).concat(c.alternative[6]):c.alternative.slice(7);
+  assert(restricted.every(x=>x===0),'Treinamento compatível com função '+c.numero);
+ }else{
+  assert.equal(c.stage,'sem_sinal_documental_para_personalizar');
+  assert.equal(c.alternative,null,'Nunca exibir alternativa genérica sem sinais da carta '+c.numero);
+  assert.equal(c.alternativePP,null);
+ }
  assert(c.roleFocus.length>0&&c.formationUse.length>0);
  assert.equal(c.fixedBoosterConfirmed,!!audit.confirmedBooster(original.impeto_fixo),'Ímpeto fixo '+c.numero);
- const restricted=c.position==='GO'?c.alternative.slice(0,4).concat(c.alternative[6]):c.alternative.slice(7);
- assert(restricted.every(x=>x===0),'Treinamento compatível com função '+c.numero);
  if(c.changes.length){changed++;assert.equal(c.stage,'hipotese_individual_para_testar')}
  if(c.signals.length)signalled++;
  else assert.notEqual(c.stage,'hipotese_individual_para_testar');
@@ -33,6 +39,12 @@ assert(all.every((x,i)=>i===0||all[i-1].rolePriority<=x.rolePriority),'Ordem do 
 assert(all.filter(x=>['PTD','PTE'].includes(x.position)).every(x=>x.rolePriority===10));
 assert(all.find(x=>x.numero===95).formationUse.includes('Reserva'));
 assert.deepEqual(all.find(x=>x.numero===1).registered,all.find(x=>x.numero===32).registered);
+const sample=roster.find(x=>x.numero===1),sampleGroup=groups.find(g=>g.ids.includes(1));
+const generic={suggestIndividualPreview(){return {vec:sample.niveis.slice(),remaining:0,signals:[]};}};
+const withoutSignals=module212.individualCase(sample,sampleGroup,generic,formation);
+assert.equal(withoutSignals.stage,'sem_sinal_documental_para_personalizar');
+assert.equal(withoutSignals.alternative,null,'Sem habilidades/ímpeto úteis: não mostrar prévia genérica como individual');
+assert.equal(withoutSignals.approval,'NÃO HOMOLOGADO');
 assert.equal(module212.position('AC'),'CA');
 assert.equal(module212.ppCost(Array(10).fill(0)),0);
 assert.equal(module212.ppCost([21,0,0,0,0,0,0,0,0,0]),null);
