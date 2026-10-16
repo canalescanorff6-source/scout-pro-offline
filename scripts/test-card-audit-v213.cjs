@@ -39,4 +39,10 @@ const focus=[1,33,40,43,182];
 assert.deepStrictEqual(r.estudo_atacantes_posse,focus);
 for(const n of focus){const c=r.cards.find(x=>x.numero===n);assert(c.estudo_atacante_posse);assert.strictEqual(c.estudo_atacante_posse.treino_atual_preservado,true);}
 assert(r.cards.find(x=>x.numero===40).estudo_atacante_posse.nota.includes('aprovada'));
+assert.strictEqual(r.cards.filter(c=>c.comparacao_grupo_repetido).length,56);
+assert.strictEqual(r.grupos_repetidos_impetos_fixos_distintos,17);
+for(const c of r.cards.filter(c=>c.comparacao_grupo_repetido)){
+ assert.strictEqual(c.comparacao_grupo_repetido.substituicao_automatica,false);
+ assert(c.comparacao_grupo_repetido.colegas.length>0);
+}
 console.log('PASS: 246 cartas, Card IDs, PP, treinos preservados; 56 duplicações sinalizadas.');
