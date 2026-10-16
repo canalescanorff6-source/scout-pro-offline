@@ -46,9 +46,11 @@ function individualCase(card,group,engine,formation){
  if(!Array.isArray(current)||ppCost(current)!==budget)
   return {numero:card.numero,stage:'treino_nao_verificado',reason:'Vetor cadastrado sem PP fechando a conta; não gerar alternativa.',pp:budget};
  const native=String(card.habilidades_nativas||'');
- const confirmedBooster=(host?.SCOUT_BUILD_AUDIT_V211?.confirmedBooster ||
-   (typeof require==='function'?require('./scout-build-audit-v211.js').confirmedBooster:null));
- const fixed=typeof confirmedBooster==='function'?confirmedBooster(card.impeto_fixo):null;
+ // Mesma regra de evidência V211, independente da ordem assíncrona dos scripts.
+ // Não confundir "nenhum fixo confirmado" ou slot selecionável com ímpeto equipado.
+ const boosterText=String(card.impeto_fixo||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+ const fixed=!boosterText||/pendente|nao confirmado|nenhum|slot selecionavel|nao informad|ausente/.test(boosterText)?
+  null:boosterText;
  const evidence={native_skills:native,boost1:fixed||null};
  let proposal=null;
  try{proposal=engine?.suggestIndividualPreview?.(budget,normalizedRole,card.estilo_ataque,evidence)}catch(e){}
