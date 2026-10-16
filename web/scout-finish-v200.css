@@ -45,3 +45,24 @@ body[data-page="detail"] #scout-v162 .v200-evidence>p{font-size:12px;color:#c5da
 @media(prefers-reduced-motion:reduce){
  body[data-page="detail"] .scout-v188-best{scroll-behavior:auto}
 }
+
+body[data-page="detail"] .scout-v188-best .v200-why{
+ margin:10px 0 9px;border-top:1px solid rgba(142,209,193,.2);
+ border-bottom:1px solid rgba(142,209,193,.2);padding:0 1px
+}
+body[data-page="detail"] .scout-v188-best .v200-why>summary{
+ display:flex;align-items:center;min-height:44px;box-sizing:border-box;
+ cursor:pointer;color:#b6e2d7;font-size:12px;font-weight:800;
+ list-style:none;padding:5px 1px
+}
+body[data-page="detail"] .scout-v188-best .v200-why>summary:after{
+ content:"⌄";margin-left:8px;font-size:17px;color:#b6e2d7
+}
+body[data-page="detail"] .scout-v188-best .v200-why[open]>summary:after{content:"⌃"}
+body[data-page="detail"] .scout-v188-best .v200-why>summary::-webkit-details-marker{display:none}
+body[data-page="detail"] .scout-v188-best .v200-why>summary:focus-visible{
+ outline:3px solid #e9d4a5;outline-offset:3px
+}
+body[data-page="detail"] .scout-v188-best .v200-why #v188-reason{
+ margin:0 0 10px!important;font-size:12px!important;line-height:1.6!important
+}
