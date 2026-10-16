@@ -93,6 +93,25 @@ def run():
                     problems.append(f"{name}: home precisa de 4 atalhos, recebeu {shortcuts}")
                 if home["horizontalOverflow"] > 8:
                     problems.append(f"{name}: catálogo com overflow horizontal de {home['horizontalOverflow']} px")
+                # V202: primeira dobra deve chegar ao elenco. Não é teste pixel-perfect.
+                start=(home["elements"].get("#catalogo") or {}).get("y",9999)
+                hero_caption=page.locator(".scout-v189-intro")
+                if hero_caption.is_visible():
+                    problems.append(f"{name}: descrição redundante ocupando espaço antes da busca")
+                shortcuts=page.locator(".scout-v189-quick .scout-v189-tile")
+                if shortcuts.count()!=4 or not all(x.is_visible() for x in shortcuts.all()):
+                    problems.append(f"{name}: quatro atalhos principais inacessíveis")
+                if mobile:
+                    if start>(545 if width<=340 else 525):
+                        problems.append(f"{name}: catálogo ainda começa tarde demais na V202: y={start}")
+                    headline=page.locator(".hero h1").inner_text()
+                    if "CARTA.SEU" in headline.replace("\\n",""):
+                        problems.append(f"{name}: título sem espaço entre linhas")
+                elif width>=1200 and start>610:
+                    problems.append(f"{name}: primeira dobra desktop sem biblioteca: y={start}")
+                home["v202_catalog_y"]=start
+                home["v202_intro_hidden"]=not hero_caption.is_visible()
+
                 if not mobile:
                     if page.locator(".lab-intro").is_visible() or page.locator(".v68-method").is_visible():
                         problems.append(f"{name}: metodologia extensa aparece antes do elenco no Windows")
@@ -193,6 +212,8 @@ def run():
                     problems.append(f"{name}: navegação entre cartas precisa de 3 controles")
                 main = detail["elements"].get("#scout-v188-principal") or {}
                 nav = detail["elements"].get("#scout-card-navigator") or {}
+                if mobile and main.get("y",9999)>(555 if width<=340 else 520):
+                    problems.append(f"{name}: ficha compacta V202 começa tarde: y={main.get('y')}")
                 if mobile and main.get("y", 9999) > (640 if width <= 340 else 590):
                     problems.append(f"{name}: ficha principal começa muito abaixo: y={main.get('y')}")
                 if mobile and nav.get("height", 9999) > 94:
