@@ -54,6 +54,18 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -107,6 +119,15 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola",
+          "Passe de calcanhar"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -151,6 +172,16 @@
           "Foguete Rasante"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Toque duplo",
+          "Controle com a sola",
+          "Passe de calcanhar"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -201,6 +232,18 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [
+          "Espírito guerreiro"
+        ],
+        "print_edicao_confirmada": false,
+        "decisao": "REVISAR — possível habilidade nativa já existente"
       }
     },
     {
@@ -245,6 +288,17 @@
           "Foguete Rasante"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe ponderado",
+          "Controle com a sola",
+          "Interceptação",
+          "Bloqueador"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -272,7 +326,19 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Bloqueador",
+          "Marcação individual",
+          "Passe em profundidade",
+          "Cabeceio",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 7,
@@ -305,6 +371,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -349,6 +421,15 @@
           "Fortaleza aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -399,6 +480,14 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -452,6 +541,16 @@
           "Fortaleza aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -487,6 +586,12 @@
         "fonte": "https://pesdb.net/efootball/players/manuel-neuer-106788187832737",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -520,6 +625,18 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -564,6 +681,18 @@
           "Especialista em pênalti"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Finalização acrobática",
+          "Cabeceio",
+          "Finalização fenomenal"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -607,6 +736,15 @@
           "Passador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de calcanhar",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -651,6 +789,17 @@
           "Foguete Rasante"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola",
+          "Interceptação",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -668,7 +817,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 17,
@@ -718,6 +873,15 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Bloqueador"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -751,6 +915,12 @@
           "Especialista em pênalti"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -795,6 +965,18 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Finalização acrobática",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -823,7 +1005,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 21,
@@ -865,6 +1053,16 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -908,6 +1106,15 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -953,6 +1160,14 @@
           "Esticada de perna"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -977,7 +1192,19 @@
       "biotipo_documentado": false,
       "repeticao": null,
       "pendencias": [],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Finalização acrobática"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 25,
@@ -1030,6 +1257,16 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1063,6 +1300,17 @@
           "Curva descendente"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade",
+          "Controle com a sola",
+          "Cabeceio",
+          "Finalização fenomenal"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1089,7 +1337,19 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 28,
@@ -1133,6 +1393,18 @@
           "Cabeçada Matadora"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Controle com a sola",
+          "Finalização acrobática",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1161,7 +1433,19 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 30,
@@ -1211,6 +1495,18 @@
           "Garra"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1261,6 +1557,17 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1310,6 +1617,18 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1365,6 +1684,16 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola",
+          "Cabeceio",
+          "Finalização de longa distância"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1414,6 +1743,18 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Toque duplo",
+          "Controle com a sola",
+          "Finalização acrobática",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1459,6 +1800,17 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1504,6 +1856,17 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1553,6 +1916,18 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Finalização acrobática"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1602,6 +1977,18 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1655,6 +2042,18 @@
           "Cabeçada Matadora"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1702,6 +2101,18 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio",
+          "Finalização de longa distância"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1746,6 +2157,18 @@
           "Finalizador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Finalização de primeira",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1789,6 +2212,17 @@
           "Cruzamento preciso"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Finalização acrobática",
+          "Cabeceio",
+          "Finalização fenomenal"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1839,6 +2273,18 @@
           "Curva descendente"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Finalização acrobática"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1866,7 +2312,19 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Controle com a sola",
+          "Cabeceio",
+          "Finalização de longa distância"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 45,
@@ -1910,6 +2368,18 @@
           "Superioridade aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1954,6 +2424,18 @@
           "Passe visionário"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Finalização de primeira",
+          "Toque duplo",
+          "Cabeceio",
+          "Finalização de longa distância",
+          "Finalização fenomenal"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -1981,7 +2463,19 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Finalização de primeira",
+          "Passe em profundidade",
+          "Finalização acrobática",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 48,
@@ -2022,6 +2516,18 @@
           "Superioridade aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2049,7 +2555,19 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Controle com a sola",
+          "Cabeceio",
+          "Finalização fenomenal"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 50,
@@ -2069,7 +2587,13 @@
         "Raridade em conflito entre captura do jogo e banco externo",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 51,
@@ -2112,6 +2636,17 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Controle com a sola",
+          "Passe de calcanhar",
+          "Finalização de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2156,6 +2691,18 @@
           "Esticada de perna"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Toque duplo",
+          "Controle com a sola",
+          "Passe de calcanhar"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2185,7 +2732,15 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 54,
@@ -2231,6 +2786,12 @@
           "Passe inspirador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2281,6 +2842,17 @@
           "Garra"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Toque duplo",
+          "Controle com a sola",
+          "Passe de primeira",
+          "Passe em profundidade"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2326,6 +2898,14 @@
           "Curva descendente"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Toque duplo"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2356,7 +2936,13 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 58,
@@ -2386,7 +2972,13 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 59,
@@ -2414,7 +3006,15 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 60,
@@ -2459,6 +3059,14 @@
           "Curva para fora"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Chute colocado de longa distância"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2492,7 +3100,17 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Chute colocado de longa distância"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 62,
@@ -2537,6 +3155,12 @@
           "Volta para marcar"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2570,7 +3194,17 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola",
+          "Passe de primeira",
+          "Passe em profundidade"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 64,
@@ -2604,6 +3238,17 @@
           "Drible explosivo"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Chute colocado de longa distância"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2622,7 +3267,13 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 66,
@@ -2666,6 +3317,14 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2684,7 +3343,13 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 68,
@@ -2728,6 +3393,15 @@
           "Passe sem olhar"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Toque duplo",
+          "Passe em profundidade"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2773,6 +3447,16 @@
           "Passador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola"
+        ],
+        "coincidencias_com_print": [
+          "Controle com a sola"
+        ],
+        "print_edicao_confirmada": false,
+        "decisao": "REVISAR — possível habilidade nativa já existente"
       }
     },
     {
@@ -2808,7 +3492,17 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Chute colocado de longa distância"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 71,
@@ -2843,6 +3537,12 @@
           "Drible explosivo"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2894,6 +3594,14 @@
           "Curva descendente"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2929,6 +3637,12 @@
           "Passe inspirador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -2957,7 +3671,13 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 75,
@@ -3003,6 +3723,12 @@
           "Drible explosivo"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3054,6 +3780,15 @@
           "Passe aéreo baixo"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3082,7 +3817,17 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe de calcanhar",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 78,
@@ -3135,6 +3880,14 @@
           "Super substituto"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de calcanhar"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3169,7 +3922,19 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Controle com a sola",
+          "Passe de calcanhar",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 80,
@@ -3198,7 +3963,16 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de calcanhar",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 81,
@@ -3225,7 +3999,19 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Controle com a sola",
+          "Toque duplo",
+          "Passe de calcanhar",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 82,
@@ -3258,7 +4044,16 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de calcanhar",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 83,
@@ -3302,6 +4097,12 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3351,6 +4152,17 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Controle com a sola",
+          "Passe de calcanhar",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3396,6 +4208,12 @@
           "Passador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3430,6 +4248,12 @@
           "Especialista em pênalti"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3465,6 +4289,12 @@
           "Drible explosivo"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3510,6 +4340,16 @@
           "Curva descendente"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3559,6 +4399,16 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Passe de primeira",
+          "Bloqueador"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3593,7 +4443,18 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Passe de primeira",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 91,
@@ -3638,6 +4499,15 @@
           "Cruzamento seco"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3666,7 +4536,19 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Passe de primeira",
+          "Bloqueador",
+          "Espírito guerreiro",
+          "Passe em profundidade"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 93,
@@ -3715,6 +4597,16 @@
           "Curva para fora"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3760,6 +4652,12 @@
           "Cruzamento seco"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3822,6 +4720,18 @@
           "Foguete Rasante"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe ponderado",
+          "Controle com a sola",
+          "Interceptação",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3856,7 +4766,16 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 97,
@@ -3884,7 +4803,16 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 98,
@@ -3928,6 +4856,17 @@
           "Passe aéreo baixo"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe ponderado",
+          "Interceptação",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -3980,6 +4919,18 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade",
+          "Passe ponderado",
+          "Controle com a sola",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4025,6 +4976,16 @@
           "Passe visionário"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4058,6 +5019,18 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade",
+          "Controle com a sola",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [
+          "Espírito guerreiro"
+        ],
+        "print_edicao_confirmada": false,
+        "decisao": "REVISAR — possível habilidade nativa já existente"
       }
     },
     {
@@ -4109,6 +5082,14 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Bloqueador"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4126,7 +5107,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 104,
@@ -4180,6 +5167,14 @@
           "Passe visionário"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4224,6 +5219,17 @@
           "Esticada de perna"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Marcação individual",
+          "Passe ponderado",
+          "Cabeceio",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4277,6 +5283,16 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Marcação individual",
+          "Cabeceio",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4294,7 +5310,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 108,
@@ -4329,7 +5351,13 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 109,
@@ -4363,6 +5391,12 @@
           "Passe inspirador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4391,7 +5425,15 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Cabeceio"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 111,
@@ -4424,7 +5466,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 112,
@@ -4453,6 +5501,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4497,6 +5551,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4540,6 +5600,17 @@
           "Liderança"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Bloqueador",
+          "Marcação individual",
+          "Cabeceio",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4573,6 +5644,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4600,6 +5677,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4630,6 +5713,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4647,7 +5736,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 119,
@@ -4682,6 +5777,12 @@
           "Bloqueador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4715,6 +5816,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4759,6 +5866,15 @@
           "Bloqueador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4804,6 +5920,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4848,6 +5970,18 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Bloqueador",
+          "Marcação individual",
+          "Passe de primeira",
+          "Espírito guerreiro",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4881,7 +6015,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 125,
@@ -4924,6 +6064,14 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -4956,6 +6104,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5008,6 +6162,14 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5047,6 +6209,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5096,6 +6264,15 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Marcação individual",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5139,6 +6316,18 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Bloqueador",
+          "Marcação individual",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5180,6 +6369,15 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5222,6 +6420,16 @@
           "Xerifão"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5266,6 +6474,17 @@
           "Esticada de perna"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Bloqueador",
+          "Marcação individual",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5315,6 +6534,15 @@
           "Cruzamento seco"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Bloqueador",
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5359,6 +6587,18 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Bloqueador",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Espírito guerreiro",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5402,6 +6642,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5441,6 +6687,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5490,6 +6742,16 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Bloqueador",
+          "Marcação individual",
+          "Superioridade aérea"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5524,6 +6786,12 @@
           "Cruzamento seco"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5557,6 +6825,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5587,6 +6861,12 @@
           "Interceptação"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5621,6 +6901,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5674,6 +6960,15 @@
           "Xerifão"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5714,7 +7009,15 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Carrinho"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 145,
@@ -5768,6 +7071,16 @@
           "Bloqueador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Superioridade aérea",
+          "Carrinho",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5812,6 +7125,12 @@
           "Fortaleza aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5865,6 +7184,15 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5916,6 +7244,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -5971,6 +7305,14 @@
           "Superioridade aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Carrinho"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6021,6 +7363,14 @@
         "fonte": "https://pesdb.net/efootball/players/ibrahima-konate-105873091445023",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6052,6 +7402,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6079,6 +7435,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6121,7 +7483,13 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 154,
@@ -6161,7 +7529,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 155,
@@ -6190,6 +7564,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6218,7 +7598,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 157,
@@ -6268,6 +7654,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6322,6 +7714,15 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6365,6 +7766,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6405,7 +7812,15 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 161,
@@ -6437,6 +7852,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6471,6 +7892,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6528,6 +7955,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6544,7 +7977,16 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 165,
@@ -6589,6 +8031,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6642,6 +8090,15 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6660,7 +8117,13 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 168,
@@ -6689,6 +8152,12 @@
           "Comandante da defesa (GO)"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6734,6 +8203,15 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Lançamento rasteiro de goleiro",
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6763,6 +8241,12 @@
           "Comandante da defesa (GO)"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6802,6 +8286,14 @@
           "Comandante da defesa (GO)"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6827,6 +8319,12 @@
           "Arremesso longo do GO"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6872,6 +8370,14 @@
           "Liderança"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6908,6 +8414,16 @@
           "Pegador de pênaltis"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Lançamento longo de goleiro",
+          "Capitão",
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -6936,7 +8452,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 176,
@@ -6978,6 +8500,16 @@
           "Pegador de pênaltis"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Lançamento longo de goleiro",
+          "Capitão",
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7004,6 +8536,12 @@
           "Arremesso longo do GO"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7048,6 +8586,12 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7080,6 +8624,12 @@
           "Superioridade aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7124,6 +8674,12 @@
           "Superioridade aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7158,6 +8714,12 @@
           "Superioridade aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7208,6 +8770,12 @@
           "Chute de primeira"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7225,7 +8793,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 184,
@@ -7269,6 +8843,12 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7311,6 +8891,12 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7328,7 +8914,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 187,
@@ -7375,6 +8967,12 @@
           "Volta para marcar"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7404,7 +9002,16 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 189,
@@ -7439,6 +9046,12 @@
           "Super substituto"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7484,6 +9097,12 @@
           "Passe em profundidade"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7534,6 +9153,12 @@
           "Volta para marcar"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7567,6 +9192,12 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7601,6 +9232,12 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7635,6 +9272,12 @@
           "Superioridade aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7654,7 +9297,13 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 196,
@@ -7683,7 +9332,13 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 197,
@@ -7728,6 +9383,12 @@
           "Super substituto"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7780,6 +9441,12 @@
           "Cruzamento preciso"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7799,7 +9466,13 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 200,
@@ -7845,6 +9518,15 @@
           "Volta para marcar"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola",
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7877,6 +9559,14 @@
           "Cruzamento preciso"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -7894,7 +9584,13 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 203,
@@ -7922,7 +9618,19 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Controle com a sola",
+          "Passe de calcanhar",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 204,
@@ -7940,7 +9648,13 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 205,
@@ -7984,6 +9698,12 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8028,6 +9748,12 @@
           "Volta para marcar"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8072,6 +9798,12 @@
           "Cruzamento preciso"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8106,7 +9838,16 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola",
+          "Passe ponderado"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 209,
@@ -8141,7 +9882,13 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 210,
@@ -8160,7 +9907,13 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 211,
@@ -8194,6 +9947,12 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8227,6 +9986,12 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8274,6 +10039,16 @@
           "Super substituto"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8309,6 +10084,12 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8339,7 +10120,17 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Interceptação",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 216,
@@ -8391,6 +10182,15 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe ponderado",
+          "Controle com a sola"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8420,7 +10220,16 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 218,
@@ -8453,6 +10262,12 @@
           "Bloqueador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8497,6 +10312,16 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe em profundidade",
+          "Controle com a sola",
+          "Bloqueador"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8530,6 +10355,16 @@
           "Liderança"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Controle com a sola",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8562,6 +10397,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8594,6 +10435,18 @@
           "Volta para marcar"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [
+          "Passe ponderado",
+          "Controle com a sola",
+          "Interceptação",
+          "Bloqueador",
+          "Espírito guerreiro"
+        ],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8628,6 +10481,12 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8660,6 +10519,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8689,7 +10554,13 @@
         "Card ID externamente identificado; conferência numérica diretamente na conta ainda não realizada",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      }
     },
     {
       "numero": 226,
@@ -8721,6 +10592,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8756,6 +10633,12 @@
           "Super substituto"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8791,6 +10674,12 @@
           "Esticada de perna"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8826,6 +10715,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8861,6 +10756,12 @@
           "Bloqueador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8890,6 +10791,12 @@
           "Pegador de pênaltis"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8925,6 +10832,12 @@
           "Passador nato"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8957,6 +10870,12 @@
           "Malícia"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -8991,6 +10910,12 @@
           "Superioridade aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9024,6 +10949,12 @@
           "Bloqueador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9059,6 +10990,12 @@
           "Ímpeto de Ataque"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9094,6 +11031,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9129,6 +11072,12 @@
           "Bloqueador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9164,6 +11113,12 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9199,6 +11154,12 @@
           "Superioridade aérea"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9234,6 +11195,12 @@
           "Bloqueador"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9270,6 +11237,12 @@
           "Curva para fora"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9306,6 +11279,12 @@
           "Espírito guerreiro"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9341,6 +11320,12 @@
           "Carrinho"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9375,6 +11360,12 @@
           "Especialista em pênalti"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     },
     {
@@ -9410,10 +11401,21 @@
           "Drible astuto"
         ],
         "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      },
+      "habilidades_adicionais_auditoria": {
+        "candidatas_originais": [],
+        "coincidencias_com_print": [],
+        "print_edicao_confirmada": false,
+        "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
       }
     }
   ],
   "biotipo_vinculado_por_card_id": 15,
   "biotipo_conflitos_card_id": [],
-  "prints_por_nome_sem_id": 185
+  "prints_por_nome_sem_id": 185,
+  "habilidades_adicionais_resumo": {
+    "withCandidates": 125,
+    "overlap": 3,
+    "withPrint": 185
+  }
 }
