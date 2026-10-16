@@ -60,6 +60,9 @@ body[data-page="detail"] .scout-v207-identity details>summary:focus-visible,
 body[data-page="detail"] .scout-v207-peer>a:focus-visible{
  outline:3px solid #f0cd8c;outline-offset:2px;border-radius:6px;
 }
+
+body[data-page="detail"] .scout-v207-preview{border-color:rgba(215,188,139,.37)!important}
+body[data-page="detail"] .scout-v207-peers{border-color:rgba(133,204,193,.32)!important}
 body[data-page="detail"] .scout-v207-grid{
  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0;
 }
