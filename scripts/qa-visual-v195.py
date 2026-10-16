@@ -93,6 +93,33 @@ def run():
                     problems.append(f"{name}: home precisa de 4 atalhos, recebeu {shortcuts}")
                 if home["horizontalOverflow"] > 8:
                     problems.append(f"{name}: catálogo com overflow horizontal de {home['horizontalOverflow']} px")
+                if not mobile:
+                    if page.locator(".lab-intro").is_visible() or page.locator(".v68-method").is_visible():
+                        problems.append(f"{name}: metodologia extensa aparece antes do elenco no Windows")
+                    if not page.locator("#scout-v198-tools").count():
+                        problems.append(f"{name}: menu de ações do Windows não foi montado")
+                    else:
+                        page.locator("#scout-v198-tools > summary").click()
+                        visible_update = page.locator("#scout-v198-tools #scout-update").is_visible()
+                        if not visible_update:
+                            problems.append(f"{name}: Atualizar ficou inacessível após remover dock flutuante")
+                        page.locator("#scout-v198-tools .scout-v189-dock-more > summary").click()
+                        if not page.locator("#scout-v198-tools #scout-backup").is_visible():
+                            problems.append(f"{name}: Backup ficou inacessível no menu Ferramentas > Mais")
+                        page.screenshot(path=str(OUT / f"{name}_tools_open.png"),full_page=False,animations="disabled")
+                        page.locator("#scout-v198-tools > summary").click()
+                    page.locator(".scout-v189-about").click()
+                    if not page.locator(".lab-intro").is_visible() or not page.locator(".v68-method").is_visible():
+                        problems.append(f"{name}: painel completo de metodologia não abre ao solicitar")
+                    page.locator(".scout-v189-about").click()
+                    if page.locator(".lab-intro").is_visible():
+                        problems.append(f"{name}: painel de metodologia não fecha")
+                    home["methodology_collapsed_by_default"] = True
+                    home["tools_menu_accessible"] = visible_update if page.locator("#scout-v198-tools").count() else False
+                    library=home["elements"].get("#catalogo") or {}
+                    if library.get("y",9999) > 1100:
+                        problems.append(f"{name}: catálogo começa longe demais: y={library.get('y')}")
+
                 library = home["elements"].get("#catalogo") or {}
                 if mobile and library.get("y", 9999) > (700 if width <= 340 else 645):
                     problems.append(f"{name}: catálogo começa muito abaixo da primeira tela: y={library.get('y')}")
@@ -154,6 +181,17 @@ def run():
                     dock = detail.get("dock") or {}
                     if dock.get("height", 999) > 90 or dock.get("direction") != "row" or dock.get("bottomGap", 999) > 35:
                         problems.append(f"{name}: dock inferior desproporcional: {dock}")
+                else:
+                    if page.locator("#scout-v198-tools").count()==0:
+                        problems.append(f"{name}: menu Ferramentas não montado na ficha de Windows")
+                    else:
+                        if page.locator("#scout-app-bar").is_visible():
+                            problems.append(f"{name}: dock ainda ocupa parte inferior da ficha no Windows")
+                        if page.locator("#scout-app-bar").evaluate("(e)=>e.parentElement?.id")!="scout-v198-tools":
+                            problems.append(f"{name}: ações não foram movidas para o menu do cabeçalho")
+                        if detail["dock"].get("position")=="fixed":
+                            problems.append(f"{name}: barra persistente ainda sobrepõe conteúdo Windows")
+
                 for legacy in ("#scout-performance-v80", "#scout-v74"):
                     if page.locator(legacy).count() and page.locator("body.scout-v188-compact").count():
                         if page.locator(legacy).is_visible():
