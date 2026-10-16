@@ -10,7 +10,7 @@ const LABELS=['Chute','Passe','Drible','Destreza','Força das pernas','Jogo aér
 const norm=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/gi,'').toLowerCase();
 const shown=(n)=>PT[n]||n;
 function sourceCandidates(cap,rows){const matched=(rows||[]).filter(x=>Array.isArray(x.candidate_caps)&&x.candidate_caps.includes(Number(cap)));return [...new Map(matched.map(x=>[x.sha256||x.filename,x])).values()] }
-function boosterView(d,engine,rec,slotLocked){const r=rec?.booster?rec.booster(d,'posse',engine,slotLocked?'ausente':undefined):null;return {recommend:r?.primary||null,canEquip:r?.able===true&&!slotLocked,slotLocked:!!slotLocked,status:r?.equipStatus||'indisponivel'};}
+function boosterView(d,engine,rec,slotLocked){const r=rec?.booster?rec.booster(d,'posse',engine,slotLocked?'ausente':undefined):null;return {recommend:r?.primary||null,alternatives:r?.alternatives||[],confidence:r?.confidence||'sem_evidencia',spread:r?.spread??null,canEquip:r?.able===true&&!slotLocked,slotLocked:!!slotLocked,status:r?.equipStatus||'indisponivel'};}
 function progression(d){return LABELS.map((label,i)=>({label,level:Number(d.recommended_levels?.[i]||0)}));}
 /* V194 — move as orientações já cadastradas na ficha; não gera fatos nem duplica texto. */
 function moveGuideContent(doc,panel,holder){
@@ -54,7 +54,7 @@ function run(){
  '<p class="scout-v188-intro">Foco e treino da carta, ímpetos documentados e habilidades adicionais. Biotipo e orientações de uso vêm em seguida; relatórios completos são opcionais.</p>'+
  '<div class="scout-v188-progress"><h3>Treino registrado no Scout PRO</h3><div id="v188-train" class="scout-v188-train"></div></div>'+
  '<div class="scout-v188-boost"><h3>Ímpetos mostrados na sua captura</h3><p class="scout-v188-evidence">Dados vistos no eFHUB, não confirmação de qual ímpeto está equipado na conta.</p><div id="v188-choice" class="scout-v188-choice" hidden></div><div class="scout-v188-tiles"><div><small>ÍMPETO 1 · PRINT</small><strong id="v188-b1">Consultando print…</strong></div><div><small>ÍMPETO 2 · PRINT</small><strong id="v188-b2">Consultando print…</strong></div></div><p id="v188-source" class="scout-v188-source"></p>'+
- '<div class="scout-v188-best"><small>MELHOR COMPLEMENTO SUGERIDO · POSSE</small><strong id="v188-top-rec">Calculando…</strong><p id="v188-reason">A função, o estilo e o ímpeto registrado entram na avaliação.</p></div>'+
+ '<div class="scout-v188-best"><small>MELHOR COMPLEMENTO SUGERIDO · POSSE</small><strong id="v188-top-rec">Calculando…</strong><p id="v188-reason">A função, o estilo e o treino registrado entram na avaliação.</p><p id="v200-alternatives" class="v200-alternatives"></p><p id="v200-caution" class="v200-caution"></p><a id="v200-review" class="v200-review-link" href="../revisao-impetos-v103.html">Conferir ímpetos da carta ↗</a></div>'+
  '<label class="scout-v188-lock"><input id="v188-slot-locked" type="checkbox"> Nesta carta não dá para alterar o segundo ímpeto</label><p id="v188-allowed" class="scout-v188-allowed"></p></div>'+
  '<div class="scout-v188-body"><h3>Modelo corporal e pé fraco</h3><p id="v188-model">Consultando as medidas transcritas da captura…</p></div>'+
  '<a class="scout-v188-skills-link" href="#scout-v162">Ver as cinco habilidades adicionais recomendadas ↓</a>'+
@@ -69,13 +69,16 @@ function run(){
  if(!train.children.length){train.textContent='Distribuição não cadastrada nesta edição; PP original preservado.'}
  const lockedBox=q('v188-slot-locked');lockedBox.checked=locked;
  const b1=q('v188-b1'),b2=q('v188-b2'),src=q('v188-source'),reason=q('v188-reason'),recLabel=q('v188-top-rec'),allowed=q('v188-allowed');
+ q('v200-review').href='../revisao-impetos-v103.html?c='+Number(d.capture);
  let selectedPhoto=null;
  function redrawRank(){
   const r=boosterView(d,host.SCOUT_BOOSTERS_V103,host.SCOUT_RECOMMENDATIONS_V162,locked);
   if(!r.recommend){recLabel.textContent='Cálculo indisponível nesta versão';reason.textContent='Os dados originais da carta estão preservados.';return}
   const name=shown(r.recommend.nome)+' +1';
   recLabel.textContent=name;
-  reason.textContent='Prioridade por função e estilo de Posse: '+r.recommend.motivo;
+  reason.textContent='Complementaridade na Posse: '+r.recommend.motivo;
+  q('v200-alternatives').textContent=r.alternatives.length?'Outras opções para comparar: '+r.alternatives.map(x=>shown(x.nome)).join(' / ')+'.':'';
+  q('v200-caution').textContent=r.spread!==null&&r.spread<2?'Alternativas muito próximas: conferir antes de gastar pedras.':r.confidence==='baixa'?'Treino ou atributos insuficientes: recomendação provisória, não gastar pedras sem conferir.':'A distribuição de PP não comprova os atributos finais. Verifique o slot e o efeito antes de gastar pedras.';
   const second=selectedPhoto?.booster_2_print;
   if(second&&norm(second)===norm(name)){reason.textContent+=' O print eFHUB mostra esta mesma escolha no segundo campo.'}
   allowed.textContent=locked?'Você marcou esta carta como não alterável: a sugestão é apenas uma comparação.':
