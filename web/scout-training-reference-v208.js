@@ -77,7 +77,8 @@ function render(doc){
   const category=doc.createElement('th');category.scope='row';
   const pict=doc.createElement('span');pict.className='scout-v208-icon';pict.setAttribute('aria-hidden','true');pict.innerHTML=svg(key);
   const text=doc.createElement('span');text.className='scout-v208-label';text.textContent=label;
-  category.append(pict,text);
+  const inner=doc.createElement('span');inner.className='scout-v208-category-inner';
+  inner.append(pict,text);category.appendChild(inner);
   const levelCell=doc.createElement('td');levelCell.className='scout-v208-num scout-v208-level';
   levelCell.textContent=level===null?'—':String(level);
   const pp=doc.createElement('td');pp.className='scout-v208-num scout-v208-cost';

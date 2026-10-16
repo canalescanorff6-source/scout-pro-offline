@@ -80,9 +80,12 @@ body[data-page="detail"] .scout-v208-table tbody td{
  vertical-align:middle;min-width:0;
 }
 body[data-page="detail"] .scout-v208-table tbody th{
- display:flex;align-items:center;
- gap:clamp(8px,1.8vw,19px);
+ display:table-cell;box-sizing:border-box;
  text-align:left;font-weight:780;
+}
+body[data-page="detail"] .scout-v208-category-inner{
+ display:flex;align-items:center;min-width:0;width:100%;
+ gap:clamp(8px,1.8vw,19px);
 }
 body[data-page="detail"] .scout-v208-label{
  min-width:0;overflow-wrap:break-word;line-height:1.3;
