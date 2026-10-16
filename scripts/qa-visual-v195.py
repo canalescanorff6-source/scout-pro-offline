@@ -85,6 +85,7 @@ def run():
                 page.locator(".scout-v192-search-shell #search").wait_for(timeout=20000)
                 page.locator(".scout-v189-quick a").first.wait_for()
                 page.wait_for_timeout(550)
+                page.locator("#scout-v203-filter-panel > summary").wait_for(timeout=20000)
                 home = metrics(page, SCREENS_SELECTORS["catalog"])
                 shortcuts = page.locator(".scout-v189-quick a").count()
                 home["quick_links"] = shortcuts
@@ -142,6 +143,58 @@ def run():
                 library = home["elements"].get("#catalogo") or {}
                 if mobile and library.get("y", 9999) > (700 if width <= 340 else 645):
                     problems.append(f"{name}: catálogo começa muito abaixo da primeira tela: y={library.get('y')}")
+                # V203: posição, raridade, ordenação e controle de animação preservados.
+                panel = page.locator("#scout-v203-filter-panel")
+                if panel.evaluate("(e)=>e.open"):
+                    problems.append(f"{name}: filtros avançados não devem ocupar a primeira tela por padrão")
+                if page.locator("#scout-v203-filter-panel #roles").count()!=1 or page.locator("#scout-v203-filter-panel #rarities").count()!=1:
+                    problems.append(f"{name}: filtros originais não foram movidos, ou foram duplicados")
+                if page.locator("#scout-v203-filter-panel #sort").count()!=1:
+                    problems.append(f"{name}: ordenação original ficou inacessível")
+                if page.locator("#scout-v203-filter-panel .scout-motion-toggle").count()!=1:
+                    problems.append(f"{name}: controle de animação se perdeu na reorganização")
+                initial_count=int(page.locator("#all-count").inner_text())
+                if initial_count!=246:
+                    problems.append(f"{name}: acervo inicial não tem 246 cartas: {initial_count}")
+                visible_cards=page.locator("#cards .player-card:visible")
+                first=visible_cards.first.bounding_box() if visible_cards.count() else None
+                first_y=first["y"] if first else 9999
+                home["v203_first_card_y"]=round(first_y,1)
+                home["v203_filter_default_closed"]=not panel.evaluate("(e)=>e.open")
+                if first_y>=height-38:
+                    problems.append(f"{name}: nenhuma carta aparece na primeira dobra, y={first_y}, tela={height}")
+                panel.locator("summary").click()
+                if not panel.evaluate("(e)=>e.open"):
+                    problems.append(f"{name}: filtros não abrem por toque/clique")
+                page.locator("#roles button[data-value='CA']").click()
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===44")
+                if "CA" not in panel.locator(".scout-v203-filter-status").inner_text():
+                    problems.append(f"{name}: resumo não atualiza ao escolher CA")
+                if page.locator("#cards .player-card:visible[data-role!='CA']").count():
+                    problems.append(f"{name}: filtro CA não filtrou as cartas")
+                page.locator("#rarities button[data-value='ÉPICA']").click()
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)<44")
+                if "ÉPICA" not in panel.locator(".scout-v203-filter-status").inner_text():
+                    problems.append(f"{name}: raridade ativa não aparece no resumo")
+                page.select_option("#sort","alpha")
+                if "Nome" not in panel.locator(".scout-v203-filter-status").inner_text():
+                    problems.append(f"{name}: ordenação ativa não aparece no resumo")
+                opened = metrics(page, SCREENS_SELECTORS["catalog"])
+                if opened["horizontalOverflow"]>8:
+                    problems.append(f"{name}: filtros abertos ultrapassam a tela")
+                page.screenshot(path=str(OUT / f"{name}_filters_open.png"),full_page=False,animations="disabled")
+                page.locator("#roles button[data-value='TODOS']").click()
+                page.locator("#rarities button[data-value='TODAS']").click()
+                page.select_option("#sort","cap")
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===246")
+                panel.locator("summary").click()
+                page.evaluate("window.scrollTo(0, 0)")
+                if panel.evaluate("(e)=>e.open"):
+                    problems.append(f"{name}: filtros não fecham")
+                if "Todas as cartas" not in panel.locator(".scout-v203-filter-status").inner_text():
+                    problems.append(f"{name}: resumo não volta ao padrão")
+                home["v203_filters_preserve_count"]=246
+                home["v203_filters_open_overflow"]=opened["horizontalOverflow"]
                 page.screenshot(path=str(OUT / f"{name}_catalog.png"), full_page=False, animations="disabled")
 
                 errors.clear()
