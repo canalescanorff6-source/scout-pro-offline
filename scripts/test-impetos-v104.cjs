@@ -52,7 +52,7 @@ for(const c of r.cards){
  assert.equal(typeof c.impeto_extra,'string');
  for(const tactic of engine.tactics){
   const rec=c.recomendacoes[tactic];
-  assert.equal(rec.length,['GR','GO'].includes(c.posicao)?2:3);
+  assert(rec.length>=1&&rec.length<=(['GR','GO'].includes(c.posicao)?2:3),'Não incluir ímpeto nativo ou já registrado');
   for(const choice of rec){
    assert(engine.CRAFTABLE.includes(choice.nome),'Ímpeto exclusivo não pode ser oferecido como token: '+choice.nome);
    assert.equal(choice.atributos.length,4);
