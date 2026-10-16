@@ -31,7 +31,7 @@ SCREENS_SELECTORS = {
     "detail": [
         "body[data-page='detail']", ".mobile-profile",
         "#scout-card-navigator", "#scout-v197-edition", ".detail-header",
-        "#scout-v188-principal", "#scout-v194-focus",
+        "#scout-v188-principal", "#v188-top-rec", "#v200-alternatives", "#v200-caution", "#scout-v194-focus",
         "#scout-v162", "#scout-v189-biotype", "#scout-v194-gameplay",
     ],
 }
@@ -157,6 +157,29 @@ def run():
                 detail = metrics(page, SCREENS_SELECTORS["detail"])
                 detail["edition_collapsed_by_default"] = is_collapsed
                 detail["navigator_buttons"] = page.locator("#scout-card-navigator button").count()
+                primary = page.locator("#v188-top-rec").first.inner_text()
+                caution = page.locator("#v200-caution").first.inner_text()
+                alternatives = page.locator("#v200-alternatives").first.inner_text()
+                detail["impeto_recomendacao"] = primary
+                detail["impeto_aviso"] = caution
+                detail["impetos_alternativos"] = alternatives
+                if page.locator(".v200-why").count() != 1:
+                    problems.append(f"{name}: justificativa detalhada precisa estar acessível")
+                else:
+                    why = page.locator(".v200-why")
+                    if why.evaluate("(e)=>e.open"):
+                        problems.append(f"{name}: método extenso não deve ocupar espaço ao abrir")
+                    why.locator("summary").click()
+                    if not page.locator("#v188-reason").is_visible():
+                        problems.append(f"{name}: justificativa extensa não abre")
+                    why.locator("summary").click()
+                    page.evaluate("window.scrollTo(0, 0)")
+                if not primary.strip() or "Calculando" in primary:
+                    problems.append(f"{name}: cálculo individual do ímpeto não concluiu")
+                if not caution.strip() or not alternatives.strip():
+                    problems.append(f"{name}: comparativo e cautela do ímpeto ausentes")
+                if "Physicality" in primary or "Fisicalidade" in primary:
+                    problems.append(f"{name}: Massaro já tem fisicalidade fixa; não recomendar de novo")
                 detail["native_skills_ptbr"] = names
                 detail["errors"] = list(errors)
                 detail["direct_children"] = page.evaluate("""() => [...document.querySelectorAll(".profile-content > *")].map(e=>({id:e.id||"",className:typeof e.className==="string"?e.className:"",visible:getComputedStyle(e).display!=="none"}))""")
@@ -197,9 +220,29 @@ def run():
                         if page.locator(legacy).is_visible():
                             problems.append(f"{name}: laboratório antigo {legacy} apareceu antes da ficha principal compacta")
                 page.screenshot(path=str(OUT / f"{name}_profile_header.png"), full_page=False, animations="disabled")
+                page.locator(".scout-v188-best").scroll_into_view_if_needed()
+                page.screenshot(path=str(OUT / f"{name}_profile_impeto.png"), full_page=False, animations="disabled")
                 page.locator("#scout-v194-gameplay").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_profile_gameplay.png"), full_page=False, animations="disabled")
-                results[name] = {"catalog": home, "detail": detail}
+                result = {"catalog": home, "detail": detail}
+                if name in ("mobile_390", "windows_1366"):
+                    page.goto(URL + "/revisao-impetos-v103.html?c=24",
+                              wait_until="domcontentloaded", timeout=35000)
+                    page.locator("#tactics article").first.wait_for(timeout=25000)
+                    page.wait_for_function("""() => {
+                      const n=document.getElementById('player-name');
+                      return n && n.textContent.includes('Cristiano Ronaldo');
+                    }""", timeout=25000)
+                    choices = page.locator("#tactics article strong").all_text_contents()
+                    for chosen in choices:
+                        if "Striker's Instinct" in chosen or "Physicality" in chosen:
+                            problems.append(f"{name}: revisão ainda sugere boost já embutido no Ronaldo Big Time")
+                    result["booster_review"] = {"choices_ronaldo_24": choices,
+                                               "is_covered": page.locator("#tactics article").count() == 3}
+                    page.locator("#tactics").scroll_into_view_if_needed()
+                    page.screenshot(path=str(OUT / f"{name}_booster_review.png"),
+                                    full_page=False, animations="disabled")
+                results[name] = result
                 context.close()
         finally:
             browser.close()
