@@ -417,8 +417,15 @@ def run():
                     problems.append(f"{name}: V206 com overflow={premium['overflow']} ou botões pequenos={premium['smallButtons']}")
                 if premium["withNames"]!=10 or premium["accents"]<2:
                     problems.append(f"{name}: V206 perdeu nomes do treino ou cores do sistema visual")
+                # Laboratório é deliberadamente oculto no modo compacto: mostrar apenas
+                # para registrar a captura V206 e restaurar a ficha original em seguida.
+                was_compact=page.evaluate("document.body.classList.contains('scout-v188-compact')")
+                if was_compact:
+                    page.evaluate("document.body.classList.remove('scout-v188-compact')")
                 page.locator("#lab-controls .lab-group").first.scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_lab_premium_v206.png"),full_page=False,animations="disabled")
+                if was_compact:
+                    page.evaluate("document.body.classList.add('scout-v188-compact')")
 
                 original_lab=page.locator("#lab-controls .lab-group").first.locator("input").input_value()
                 original_val=int(original_lab)
