@@ -232,6 +232,33 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_catalog_cards_v204.png"),full_page=False,animations="disabled")
                 page.evaluate("window.scrollTo(0,0)")
 
+                # V205: busca no HERO nunca pode dizer "Todas as cartas" com filtro ativo.
+                page.locator("#search").fill("Szoboszlai")
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)>0 && Number(document.getElementById('all-count').textContent)<246")
+                status_search=page.locator(".scout-v203-filter-status").inner_text()
+                if "Busca:" not in status_search or "Todas as cartas" in status_search:
+                    problems.append(f"{name}: resumo V205 não reflete o texto digitado")
+                if not page.locator("#scout-v205-clear").is_visible():
+                    problems.append(f"{name}: ação de limpar filtros não está visível")
+                page.locator("#search").fill("__SCOUT_NENHUMA_CARTA_V205__")
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===0")
+                if not page.locator("#none").is_visible() or not page.locator("#scout-v205-empty-reset").is_visible():
+                    problems.append(f"{name}: busca vazia sem botão de recuperação")
+                if "0 cartas" not in page.locator(".scout-v203-filter-status").inner_text():
+                    problems.append(f"{name}: busca sem resultado não mostra contagem zero")
+                page.screenshot(path=str(OUT / f"{name}_search_empty_v205.png"),full_page=False,animations="disabled")
+                page.locator("#scout-v205-empty-reset").click()
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===246")
+                if page.locator("#search").input_value() or page.locator("#none").is_visible():
+                    problems.append(f"{name}: limpar filtros não restaurou busca e catálogo")
+                if page.locator("#scout-v205-clear").is_visible():
+                    problems.append(f"{name}: reset V205 permaneceu visível sem filtros")
+                if "Todas as cartas" not in page.locator(".scout-v203-filter-status").inner_text():
+                    problems.append(f"{name}: resumo V205 não voltou ao padrão")
+                if page.locator("#sort").input_value()!="cap":
+                    problems.append(f"{name}: reset V205 não restaurou ordenação")
+                page.evaluate("window.scrollTo(0,0)")
+
                 errors.clear()
                 page.goto(URL + "/fichas/001_Daniele_Massaro.html", wait_until="domcontentloaded", timeout=35000)
                 page.locator("#scout-v194-focus").wait_for(timeout=25000)
