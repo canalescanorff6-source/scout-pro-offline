@@ -5,6 +5,10 @@ const $=id=>document.getElementById(id);
 const safe=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 let all=[],visible=[],selected=0,imageByNumber={},report=null;
 const storage=c=>'scoutpro:v103:booster:'+c.numero;
+const optionsFor=(c,key,saved)=>{
+ const current=saved?.status==='ocupado'&&saved.equipped?E.boosterName(saved.equipped):null;
+ return (c.recomendacoes[key]||[]).filter(b=>b.nome!==current);
+};
 function read(c){try{const saved=JSON.parse(localStorage.getItem(storage(c))||'null')||{};return saved.card_id&&String(saved.card_id)!==String(c.card_id)?{}:saved}catch(e){return {}}}
 function statusText(c){
 return ({selecionavel:'Esta edição tem indicação de slot selecionável, mas NÃO há confirmação se está vazio na sua conta.',
@@ -35,23 +39,25 @@ $('slot-saved').textContent='Estado registrado nesta conta: '+realStatus+(saved.
 $('ficha').href=c.ficha;
 const p=$('tactics');p.replaceChildren();
 for(const [key,title] of [['posse','Posse de Bola'],['normal','Contra-Ataque Normal'],['rapido','Contra-Ataque Rápido']]){
-const x=c.recomendacoes[key],node=document.createElement('article'),best=x[0];
-node.innerHTML='<h3>'+title+'</h3><strong>'+safe(best.nome)+' +1</strong><p>'+safe(best.motivo)+'</p><p>Atributos: '+safe(best.atributos.join(', '))+'.</p><p>Alternativas: '+safe(x.slice(1).map(y=>y.nome).join(' / '))+'.</p>';
+const x=optionsFor(c,key,saved),node=document.createElement('article'),best=x[0];
+node.innerHTML='<h3>'+title+'</h3>'+(!best?
+ '<strong>Sem alternativa elegível documentada</strong><p>Ímpetos já registrados ou confirmados não são sugeridos como novos.</p>':
+ '<strong>'+safe(best.nome)+' +1</strong><p>'+safe(best.motivo)+'</p><p>Atributos associados: '+safe(best.atributos.join(', '))+'.</p><p>Alternativas: '+safe(x.slice(1).map(y=>y.nome).join(' / ')||'nenhuma documentada')+'.</p><p class="warn">'+(best.confianca==='baixa'?'Treino individual pendente; confiança baixa.':'Treino registrado, sem atributos finais certificados.')+' Sem resultado comprovado em partidas. Não gastar Tokens sem conferir.</p>');
 p.appendChild(node);
 }
 $('actual').value=['pendente','vazio','ocupado','ausente'].includes(saved.status)?saved.status:'pendente';
 $('equipped').value=saved.equipped&&Object.hasOwn(E.BOOSTERS,saved.equipped)?saved.equipped:'';
 $('note').value=saved.note||'';
 $('planned').value=E.CRAFTABLE.includes(saved.planned)?saved.planned:'';
-const recommendations=c.recomendacoes.posse;
+const recommendations=optionsFor(c,'posse',saved);
 const hasEvidence=saved.status==='vazio'||saved.status==='ocupado';
 const equippedName=saved.equipped||'ainda não informado';
 $('comparison').textContent=!hasEvidence?
  'Os ímpetos abaixo são hipóteses condicionais. Antes de usar tokens, confirme no jogo que esta edição tem um slot selecionável.' :
  saved.status==='vazio'?
- 'Você confirmou um slot vazio. Compare os atributos finais, o técnico e a função antes de escolher '+recommendations[0].nome+'.' :
+ 'Você confirmou um slot vazio. Compare os atributos finais, o técnico e a função antes de escolher '+(recommendations[0]?.nome||'outro ímpeto')+'.' :
  'Você confirmou slot ocupado ('+equippedName+'). A recomendação é uma ALTERNATIVA DE TESTE, não autorização para substituir. Compare os quatro atributos e mantenha o atual se já atender melhor à build.';
-$('choose-posse').disabled=saved.status==='ausente'||c.status_slot_fonte==='nome_registrado';
+$('choose-posse').disabled=saved.status==='ausente'||c.status_slot_fonte==='nome_registrado'||!recommendations.length;
 $('planned').disabled=c.status_slot_fonte==='nome_registrado';
 if(c.status_slot_fonte==='nome_registrado')$('comparison').textContent='Já existe segundo ímpeto nomeado. Não presuma que ele seja selecionável ou substituível. Confira a edição na tela do jogo.';
 $('feedback').textContent=saved.updated?'Verificação salva neste dispositivo.':'Ainda sem verificação local deste slot.';
@@ -63,10 +69,10 @@ selected=0;render();
 }
 function csv(){
 const rows=[['Numero','Jogador','Card ID','Posicao','Estado da fonte','Estado verificado no aparelho','Impeto nativo','Impeto extra registrado','Impeto equipado informado','Impeto planejado','Posse','CA normal','CA rapido','Aviso']];
-for(const c of all){const s=read(c);rows.push([c.numero,c.nome,c.card_id,c.posicao,c.status_slot_fonte,s.status||'pendente',c.impeto_fixo,c.impeto_extra,s.equipped||'',s.planned||'',c.recomendacoes.posse[0].nome,c.recomendacoes.normal[0].nome,c.recomendacoes.rapido[0].nome,'Hipotese nao validada; conferir disponibilidade real do slot']);}
+for(const c of all){const s=read(c);rows.push([c.numero,c.nome,c.card_id,c.posicao,c.status_slot_fonte,s.status||'pendente',c.impeto_fixo,c.impeto_extra,s.equipped||'',s.planned||'',optionsFor(c,'posse',s)[0]?.nome||'sem alternativa',optionsFor(c,'normal',s)[0]?.nome||'sem alternativa',optionsFor(c,'rapido',s)[0]?.nome||'sem alternativa','Hipotese nao validada; conferir disponibilidade real do slot']);}
 const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
 const blob=new Blob(['\uFEFF'+rows.map(r=>r.map(quote).join(';')).join('\r\n')],{type:'text/csv;charset=utf-8'});
-const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='scout-pro-246-impetos-v103.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),1500);
+const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='scout-pro-246-impetos-individuais-v200.csv';a.click();setTimeout(()=>URL.revokeObjectURL(u),1500);
 }
 $('search').addEventListener('input',applyFilter);$('filter').addEventListener('change',applyFilter);
 $('player').addEventListener('change',()=>{const n=visible.findIndex(c=>String(c.numero)===$('player').value);if(n>=0){selected=n;render()}else{const c=all.find(x=>String(x.numero)===$('player').value);if(c){$('filter').value='all';$('search').value='';visible=all;selected=all.indexOf(c);render()}}});
@@ -79,7 +85,8 @@ try{localStorage.setItem(storage(c),JSON.stringify({card_id:c.card_id,status,equ
 $('export').onclick=csv;
 $('choose-posse').onclick=()=>{
  const c=visible[selected];if(!c||$('actual').value==='ausente')return;
- $('planned').value=c.recomendacoes.posse[0].nome;
+ const proposed=optionsFor(c,'posse',read(c))[0];if(!proposed)return;
+ $('planned').value=proposed.nome;
  $('feedback').textContent='Sugestão preenchida como plano. Toque em Salvar e avançar; nada foi equipado no jogo.';
 };
 function refreshMetrics(){
