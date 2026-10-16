@@ -81,6 +81,16 @@
         "treino_atual_preservado": true,
         "proposta_de_mudanca": "PENDENTE — comparar atributos finais e edição exata",
         "nota": "Comparar perfil, habilidades e função antes de homologar ímpeto"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          32
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Physicality +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -277,6 +287,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          17,
+          96
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Balancer +2",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -551,6 +572,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          148,
+          157
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Rebuilding +2",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -993,6 +1025,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          4,
+          96
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Passing +2",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -1696,6 +1739,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          31,
+          34
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Striker's Instinct +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -1763,6 +1817,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          30,
+          34
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Striker's Instinct +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -1830,6 +1895,16 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          1
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Breakthrough +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -1977,6 +2052,17 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          30,
+          31
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Shooting +2",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -2168,6 +2254,16 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          38
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Agility +3",
+        "impetos_fixos_diferentes_no_grupo": false,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -2235,6 +2331,16 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          37
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Agility +3",
+        "impetos_fixos_diferentes_no_grupo": false,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -2380,6 +2486,17 @@
         "treino_atual_preservado": true,
         "proposta_de_mudanca": "PENDENTE — comparar atributos finais e edição exata",
         "nota": "Carta testada e aprovada pelo usuário; não substituir por classificação genérica"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          43,
+          182
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Shooting +2",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -2579,6 +2696,17 @@
         "treino_atual_preservado": true,
         "proposta_de_mudanca": "PENDENTE — comparar atributos finais e edição exata",
         "nota": "Comparar perfil, habilidades e função antes de homologar ímpeto"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          40,
+          182
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Breakthrough +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -3219,6 +3347,16 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          187
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Striker's Instinct +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -3512,6 +3650,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          63
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": false,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -3618,6 +3766,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          61
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": false,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -3958,6 +4116,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          72,
+          76
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Technique +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -4070,6 +4239,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          70,
+          76
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Shooting +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -4281,6 +4461,17 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          70,
+          72
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "PENDENTE — nenhuma informação de booster fixa confirmada nas fontes usadas",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -4444,6 +4635,16 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          84
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Ball Protection +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -4581,6 +4782,17 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          208,
+          209
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -4703,6 +4915,16 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          79
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Agility +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -4979,6 +5201,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          213
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": false,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -5030,6 +5262,16 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          93
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Ball-carrying +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -5201,6 +5443,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          90
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -5338,6 +5590,18 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          99,
+          102,
+          216
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Accuracy +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -5387,6 +5651,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          4,
+          17
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -5561,6 +5836,18 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          95,
+          102,
+          216
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Balancer +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -5738,6 +6025,18 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          95,
+          99,
+          216
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -6041,6 +6340,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          111
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "PENDENTE — não confirmado pela fonte consultada",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -6174,6 +6483,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          108
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -6801,6 +7120,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          129
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -7083,6 +7412,16 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          124
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -7383,6 +7722,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          138
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "PENDENTE",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -7616,6 +7965,16 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          134
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -7917,6 +8276,23 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          149,
+          150,
+          153,
+          154,
+          158,
+          160,
+          163,
+          166
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "PENDENTE",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -8174,6 +8550,17 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          9,
+          157
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Total Package +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -8243,6 +8630,23 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          144,
+          150,
+          153,
+          154,
+          158,
+          160,
+          163,
+          166
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -8307,6 +8711,23 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          144,
+          149,
+          153,
+          154,
+          158,
+          160,
+          163,
+          166
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -8443,6 +8864,23 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          144,
+          149,
+          150,
+          154,
+          158,
+          160,
+          163,
+          166
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Rebuilding +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -8495,6 +8933,23 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          144,
+          149,
+          150,
+          153,
+          158,
+          160,
+          163,
+          166
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -8638,6 +9093,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          9,
+          148
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -8707,6 +9173,23 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          144,
+          149,
+          150,
+          153,
+          154,
+          160,
+          163,
+          166
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -8816,6 +9299,23 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          144,
+          149,
+          150,
+          153,
+          154,
+          158,
+          163,
+          166
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "PENDENTE — não confirmado",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -8975,6 +9475,23 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          144,
+          149,
+          150,
+          153,
+          154,
+          158,
+          160,
+          166
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "PENDENTE — não confirmado",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -9131,6 +9648,23 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          144,
+          149,
+          150,
+          153,
+          154,
+          158,
+          160,
+          163
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "PENDENTE",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -9262,6 +9796,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          173,
+          176
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Saving +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -9452,6 +9997,17 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          169,
+          176
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -9602,6 +10158,17 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          169,
+          173
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -9913,6 +10480,17 @@
         "treino_atual_preservado": true,
         "proposta_de_mudanca": "PENDENTE — comparar atributos finais e edição exata",
         "nota": "Comparar perfil, habilidades e função antes de homologar ímpeto"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          40,
+          43
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -10140,6 +10718,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          55
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -10350,6 +10938,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          198
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -10680,6 +11278,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          191
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "PENDENTE",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -11140,6 +11748,17 @@
         "estado": "registered",
         "pode_equipar_automaticamente": false,
         "observacao": "Nome registrado na fonte, sem confirmação de disponibilidade de slot adicional"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          82,
+          209
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Passing +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -11187,6 +11806,17 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          82,
+          208
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "PENDENTE",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -11372,6 +12002,16 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          89
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "NENHUM BOOSTER FIXO CONFIRMADO",
+        "impetos_fixos_diferentes_no_grupo": false,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -11532,6 +12172,18 @@
         "estado": "selectable_unconfirmed",
         "pode_equipar_automaticamente": false,
         "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
+      },
+      "comparacao_grupo_repetido": {
+        "colegas": [
+          95,
+          99,
+          102
+        ],
+        "mesma_build": true,
+        "impeto_fixo": "Balancer +3",
+        "impetos_fixos_diferentes_no_grupo": true,
+        "substituicao_automatica": false,
+        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -12950,5 +13602,7 @@
     40,
     43,
     182
-  ]
+  ],
+  "grupos_repetidos_impetos_fixos_distintos": 17,
+  "cartas_repetidas_com_comparacao": 56
 }
