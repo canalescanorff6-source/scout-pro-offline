@@ -38,7 +38,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Daniele_Massaro_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Folha seca",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Espírito guerreiro",
+          "Superioridade aérea",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 2,
@@ -75,6 +91,22 @@
         "fonte": "https://pesdb.net/efootball/players/raul-88036360649078",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Ra_l_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Volta para marcar",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -103,7 +135,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Mikel_Merino_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Curva para fora",
+          "Superioridade aérea",
+          "Foguete Rasante"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 4,
@@ -137,7 +185,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "David_Beckham_efhub.jpg",
+        "habilidades_transcritas": [
+          "Efeito de longe",
+          "Precisão à distância",
+          "Folha seca",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Passe aéreo baixo",
+          "Especialista em pênalti",
+          "Liderança",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 5,
@@ -165,7 +229,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Steven_Gerrard_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Espírito guerreiro",
+          "Foguete Rasante"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 6,
@@ -209,7 +289,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Sergi_Cardona_efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe de primeira",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 8,
@@ -237,7 +333,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Rio_Ferdinand_efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho",
+          "Fortaleza aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 9,
@@ -271,7 +383,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Giorgio_Chiellini_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe de primeira",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 10,
@@ -308,6 +436,22 @@
         "fonte": "https://pesdb.net/efootball/players/paolo-maldini-88039045074370",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Paolo_Maldini_efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe na medida",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho",
+          "Xerifão",
+          "Fortaleza aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -360,7 +504,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Ruud_van_Nistelrooij_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Espírito guerreiro",
+          "Superioridade aérea",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 13,
@@ -388,7 +548,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "David_Villa_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Giro 360°",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Controle da cavadinha",
+          "Toque de calcanhar",
+          "Chute de primeira",
+          "Especialista em pênalti"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 14,
@@ -415,7 +591,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Dani_Olmo_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Super substituto",
+          "Passador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 15,
@@ -443,7 +635,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Paul_Scholes_efhub.jpg",
+        "habilidades_transcritas": [
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Volta para marcar",
+          "Foguete Rasante"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 16,
@@ -494,7 +702,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Jack_Wilshere_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Curva para fora",
+          "Passe sem olhar",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 18,
@@ -511,7 +735,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Safee_Sali_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Cabeçada",
+          "Efeito de longe",
+          "Controle da cavadinha",
+          "Precisão à distância",
+          "Chute com o peito do pé",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Especialista em pênalti"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 19,
@@ -539,7 +779,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "_lhan_Mans_z_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Super substituto",
+          "Espírito guerreiro",
+          "Superioridade aérea",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 20,
@@ -594,7 +850,22 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Aaron_Wan_Bissaka_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Corte com virada",
+          "Puxada de letra",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 22,
@@ -621,7 +892,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Eric_Garc_a_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe de primeira",
+          "Passe na medida",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 23,
@@ -650,7 +937,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "David_Alaba_efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Marcação individual",
+          "Interceptação",
+          "Liderança",
+          "Bloqueador",
+          "Carrinho",
+          "Esticada de perna"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 24,
@@ -711,6 +1014,22 @@
         "fonte": "https://pesdb.net/efootball/players/marco-van-basten-88033139494377",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Marco_van_Basten_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Superioridade aérea",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -728,7 +1047,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Luis_Su_rez_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Espírito guerreiro",
+          "Superioridade aérea",
+          "Curva descendente"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 27,
@@ -782,7 +1117,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Darwin_N__ez_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Folha seca",
+          "Chute de primeira",
+          "Curva para fora",
+          "Espírito guerreiro",
+          "Superioridade aérea",
+          "Cabeçada Matadora"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 29,
@@ -844,7 +1195,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Tuncay__anl__efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Folha seca",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Espírito guerreiro",
+          "Superioridade aérea",
+          "Garra"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 31,
@@ -878,7 +1245,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Filippo_Inzaghi_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Especialista em pênalti",
+          "Espírito guerreiro",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 32,
@@ -911,7 +1294,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Gabriel_Batistuta_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute com o peito do pé",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Espírito guerreiro",
+          "Superioridade aérea",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 33,
@@ -950,6 +1349,22 @@
         "fonte": "https://pesdb.net/efootball/players/dimitar-berbatov-88039044941086",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Dimitar_Berbatov_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Cabeçada",
+          "Efeito de longe",
+          "Finalização acrobática",
+          "Toque de calcanhar",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -983,7 +1398,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Hristo_Stoichkov_efhub.jpg",
+        "habilidades_transcritas": [
+          "Chapéu",
+          "Corte com virada",
+          "Controle da cavadinha",
+          "Folha seca",
+          "Chute ascendente",
+          "Chute de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Liderança",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 35,
@@ -1012,7 +1443,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Robert_Lewandowski_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Finalização acrobática",
+          "Toque de calcanhar",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Curva para fora",
+          "Especialista em pênalti",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 36,
@@ -1041,7 +1488,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Endrick_efhub.jpg",
+        "habilidades_transcritas": [
+          "Corte com virada",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Cabeçada",
+          "Precisão à distância",
+          "Folha seca",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "De letra",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 37,
@@ -1074,7 +1537,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Nihat_Kahveci_efhub.jpg",
+        "habilidades_transcritas": [
+          "Efeito de longe",
+          "Controle da cavadinha",
+          "Chute com o peito do pé",
+          "Chute ascendente",
+          "Toque de calcanhar",
+          "Chute de primeira",
+          "Curva para fora",
+          "Malícia",
+          "Espírito guerreiro",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 38,
@@ -1107,7 +1586,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "El_Hadji_Diouf_efhub.jpg",
+        "habilidades_transcritas": [
+          "Corte com virada",
+          "Cabeçada",
+          "Efeito de longe",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Cruzamento preciso",
+          "Malícia",
+          "Espírito guerreiro",
+          "Superioridade aérea",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 39,
@@ -1144,6 +1639,22 @@
         "fonte": "https://pesdb.net/efootball/players/andriy-shevchenko-88036360723178",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Andriy_Shevchenko_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Cabeçada",
+          "Efeito de longe",
+          "Controle da cavadinha",
+          "Precisão à distância",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Curva para fora",
+          "Superioridade aérea",
+          "Cabeçada Matadora"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -1177,7 +1688,21 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Dwight_Yorke_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Controle da cavadinha",
+          "Folha seca",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Especialista em pênalti",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 41,
@@ -1205,7 +1730,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Kai_Havertz_efhub.jpg",
+        "habilidades_transcritas": [
+          "Corte com virada",
+          "Puxada de letra",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Toque de calcanhar",
+          "Chute de primeira",
+          "Passe em profundidade",
+          "Finalizador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 42,
@@ -1232,7 +1773,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Ousmane_Demb_l__efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Folha seca",
+          "Toque de calcanhar",
+          "Chute de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 43,
@@ -1266,7 +1823,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Burak_Y_lmaz_efhub.jpg",
+        "habilidades_transcritas": [
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute com o peito do pé",
+          "Folha seca",
+          "Chute ascendente",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Liderança",
+          "Espírito guerreiro",
+          "Curva descendente"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 44,
@@ -1321,7 +1894,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Didier_Drogba_efhub.jpg",
+        "habilidades_transcritas": [
+          "Giro 360°",
+          "Cabeçada",
+          "Controle da cavadinha",
+          "Chute com o peito do pé",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Liderança",
+          "Superioridade aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 46,
@@ -1349,7 +1938,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Mikel_Oyarzabal_efhub.jpg",
+        "habilidades_transcritas": [
+          "Giro 360°",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Finalização acrobática",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Liderança",
+          "Passe visionário"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 47,
@@ -1403,7 +2008,21 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Jan_Koller_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Controle da cavadinha",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Toque de calcanhar",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Superioridade aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 49,
@@ -1477,7 +2096,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Diego_Maradona_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Giro 360°",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Finalização acrobática",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 52,
@@ -1505,7 +2140,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Okazaki_Shinji_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Volta para marcar",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho",
+          "Esticada de perna"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 53,
@@ -1564,7 +2215,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Lamine_Yamal_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Giro 360°",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Passe inspirador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 55,
@@ -1598,7 +2265,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Dirk_Kuyt_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Volta para marcar",
+          "Superioridade aérea",
+          "Garra"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 56,
@@ -1627,7 +2310,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "D_sir__Dou__efhub.jpg",
+        "habilidades_transcritas": [
+          "Giro 360°",
+          "Chapéu",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva descendente"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 57,
@@ -1744,7 +2443,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Luis_Garc_a_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Elástico",
+          "Corte com virada",
+          "Controle com a sola",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 61,
@@ -1806,7 +2521,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Doan_Ritsu_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Chapéu",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Chute ascendente",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Malícia",
+          "Volta para marcar"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 63,
@@ -1857,7 +2588,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Burchet_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Corte com virada",
+          "Finta de letra",
+          "Cruzamento preciso",
+          "Arremesso lateral longo",
+          "Especialista em pênalti",
+          "Super substituto",
+          "Espírito guerreiro",
+          "Drible explosivo"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 65,
@@ -1903,7 +2650,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Pedro_Neto_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Giro 360°",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Chute de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 67,
@@ -1949,7 +2712,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Ronaldinho_Ga_cho_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Elástico",
+          "Chapéu",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Curva para fora",
+          "Passe sem olhar"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 69,
@@ -1978,7 +2757,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Eden_Hazard_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Especialista em pênalti",
+          "Passador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 70,
@@ -2032,7 +2827,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Ramadhan_Saifullah_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute com o peito do pé",
+          "Passe de primeira",
+          "Especialista em pênalti",
+          "Espírito guerreiro",
+          "Drible explosivo"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 72,
@@ -2067,7 +2878,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Atep_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Corte com virada",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Passe em profundidade",
+          "Malícia",
+          "Super substituto",
+          "Curva descendente"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 73,
@@ -2086,7 +2913,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Andr_s_Iniesta_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Controle com a sola",
+          "Chute com o peito do pé",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Malícia",
+          "Passe inspirador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 74,
@@ -2144,7 +2987,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Luis_D_az_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Giro 360°",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Drible explosivo"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 76,
@@ -2179,7 +3038,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "K__Kvaratskhelia_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Giro 360°",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Folha seca",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe aéreo baixo"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 77,
@@ -2244,6 +3119,22 @@
         "fonte": "https://pesdb.net/efootball/players/guti-88029918268943",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Guti_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Controle da cavadinha",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Super substituto"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -2395,7 +3286,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Rayan_Cherki_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Giro 360°",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "De letra",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 84,
@@ -2428,7 +3335,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Franck_Rib_ry_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Giro 360°",
+          "Puxada de letra",
+          "Finta de letra",
+          "Controle da cavadinha",
+          "Finalização acrobática",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 85,
@@ -2457,7 +3380,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Minanda_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "De letra",
+          "Passe sem olhar",
+          "Passe aéreo baixo",
+          "Passador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 86,
@@ -2475,7 +3414,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Bruno_Fernandes_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Especialista em pênalti"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 87,
@@ -2494,7 +3449,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Giuliano_Simeone_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Corte com virada",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Cruzamento preciso",
+          "Volta para marcar",
+          "Super substituto",
+          "Espírito guerreiro",
+          "Cruzamento seco",
+          "Drible explosivo"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 88,
@@ -2523,7 +3494,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "V_clav__ern__efhub.jpg",
+        "habilidades_transcritas": [
+          "Puxada de letra",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Curva descendente"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 89,
@@ -2556,7 +3543,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Iliman_Ndiaye_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Malícia",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 90,
@@ -2619,7 +3622,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Serginho_efhub.jpg",
+        "habilidades_transcritas": [
+          "Corte com virada",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Volta para marcar",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho",
+          "Cruzamento seco"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 92,
@@ -2680,7 +3699,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Matheus_Cunha_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Controle da cavadinha",
+          "Precisão à distância",
+          "Toque de calcanhar",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 94,
@@ -2709,7 +3744,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Park_Ji_Sung_efhub.jpg",
+        "habilidades_transcritas": [
+          "Efeito de longe",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Volta para marcar",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Cruzamento seco"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 95,
@@ -2755,6 +3806,22 @@
         "fonte": "https://pesdb.net/efootball/players/frank-lampard-88040387251676",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Frank_Lampard_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute com o peito do pé",
+          "Chute ascendente",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Foguete Rasante"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -2845,7 +3912,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Thiago_Alcantara_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Giro 360°",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Passe aéreo baixo"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 99,
@@ -2881,7 +3964,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Joelinton_efhub.jpg",
+        "habilidades_transcritas": [
+          "Puxada de letra",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Malícia",
+          "Volta para marcar",
+          "Interceptação",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 100,
@@ -2910,7 +4009,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Orkun_K_k___efhub.jpg",
+        "habilidades_transcritas": [
+          "Puxada de letra",
+          "Controle com a sola",
+          "Precisão à distância",
+          "Folha seca",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Passe aéreo baixo",
+          "Especialista em pênalti",
+          "Passe visionário"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 101,
@@ -2927,7 +4042,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Darren_Fletcher_efhub.jpg",
+        "habilidades_transcritas": [
+          "Puxada de letra",
+          "Cabeçada",
+          "Passe de primeira",
+          "Passe na medida",
+          "Marcação individual",
+          "Interceptação",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 102,
@@ -2962,7 +4093,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Jo_o_Neves_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Controle com a sola",
+          "Cabeçada",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Curva para fora",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 103,
@@ -3017,6 +4164,22 @@
         "fonte": "https://pesdb.net/efootball/players/frank-rijkaard-88036360719848",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Frank_Rijkaard_efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Passe visionário"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -3045,7 +4208,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Jordan_Henderson_efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Interceptação",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Esticada de perna"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 106,
@@ -3082,6 +4261,22 @@
         "fonte": "https://pesdb.net/efootball/players/pep-guardiola-88040387251639",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Pep_Guardiola_efhub.jpg",
+        "habilidades_transcritas": [
+          "Puxada de letra",
+          "Folha seca",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Interceptação",
+          "Liderança",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -3152,7 +4347,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "R_ben_Neves_efhub.jpg",
+        "habilidades_transcritas": [
+          "Puxada de letra",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute com o peito do pé",
+          "Folha seca",
+          "Passe na medida",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Especialista em pênalti",
+          "Passe inspirador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 110,
@@ -3230,7 +4441,19 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Amadou_Onana_efhub.jpg",
+        "habilidades_transcritas": [
+          "Precisão à distância",
+          "Passe de primeira",
+          "Passe aéreo baixo",
+          "Interceptação",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 113,
@@ -3258,7 +4481,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Bruno_Guimar_es_efhub.jpg",
+        "habilidades_transcritas": [
+          "Giro 360°",
+          "Chapéu",
+          "Controle com a sola",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Malícia",
+          "Liderança",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 114,
@@ -3285,7 +4524,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Jorginho_efhub.jpg",
+        "habilidades_transcritas": [
+          "Controle com a sola",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Passe aéreo baixo",
+          "Especialista em pênalti",
+          "Malícia",
+          "Interceptação",
+          "Liderança"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 115,
@@ -3302,7 +4557,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Casemiro_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Precisão à distância",
+          "Passe na medida",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 116,
@@ -3319,7 +4590,17 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Christian_Ord__ez_efhub.jpg",
+        "habilidades_transcritas": [
+          "Interceptação",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 117,
@@ -3336,7 +4617,20 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Mois_s_Caicedo_efhub.jpg",
+        "habilidades_transcritas": [
+          "Precisão à distância",
+          "Curva para fora",
+          "Malícia",
+          "Marcação individual",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 118,
@@ -3372,7 +4666,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Tyler_Adams_efhub.jpg",
+        "habilidades_transcritas": [
+          "Chute ascendente",
+          "Passe de primeira",
+          "Passe aéreo baixo",
+          "Malícia",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 120,
@@ -3391,7 +4701,21 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Rodrigo_Bentancur_efhub.jpg",
+        "habilidades_transcritas": [
+          "Puxada de letra",
+          "Passe de primeira",
+          "Passe na medida",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 121,
@@ -3419,7 +4743,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Belletti_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Corte com virada",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Marcação individual",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Bloqueador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 122,
@@ -3448,7 +4788,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Cafu_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Marcação individual",
+          "Afastamento acrobático",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 123,
@@ -3476,7 +4832,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Jo_o_Cancelo_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Interceptação",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 124,
@@ -3536,7 +4908,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Nordi_Mukiele_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe de primeira",
+          "Arremesso lateral longo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 126,
@@ -3554,7 +4942,21 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Daniel_Mu_oz_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Precisão à distância",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 127,
@@ -3591,6 +4993,21 @@
         "fonte": "https://pesdb.net/efootball/players/jules-kounde-105835242041536",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Jules_Kound__efhub_0.jpg",
+        "habilidades_transcritas": [
+          "Controle com a sola",
+          "Cabeçada",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -3619,7 +5036,18 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Matteo_Darmian_efhub.jpg",
+        "habilidades_transcritas": [
+          "Arremesso lateral longo",
+          "Marcação individual",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 129,
@@ -3652,7 +5080,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Malo_Gusto_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Puxada de letra",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 130,
@@ -3679,7 +5123,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Reece_James_efhub.jpg",
+        "habilidades_transcritas": [
+          "Giro 360°",
+          "Controle com a sola",
+          "Chute ascendente",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Interceptação",
+          "Liderança",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 131,
@@ -3706,7 +5166,21 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Juan_Foyth_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 132,
@@ -3732,7 +5206,23 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Javier_Zanetti_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Marcação individual",
+          "Interceptação",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho",
+          "Xerifão"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 133,
@@ -3760,7 +5250,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Nico_O_Reilly_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Giro 360°",
+          "Puxada de letra",
+          "Cabeçada",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Superioridade aérea",
+          "Esticada de perna"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 134,
@@ -3793,7 +5299,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Mika_l_Silvestre_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Cabeçada",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Marcação individual",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Superioridade aérea",
+          "Carrinho",
+          "Cruzamento seco"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 135,
@@ -3821,7 +5343,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Nuno_Mendes_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Controle com a sola",
+          "Precisão à distância",
+          "Cruzamento preciso",
+          "Arremesso lateral longo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 136,
@@ -3848,7 +5386,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Tyrick_Mitchell_efhub.jpg",
+        "habilidades_transcritas": [
+          "Controle com a sola",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 137,
@@ -3876,7 +5430,18 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Marc_Cucurella_efhub.jpg",
+        "habilidades_transcritas": [
+          "Corte com virada",
+          "Puxada de letra",
+          "Malícia",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 138,
@@ -3909,7 +5474,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Th_o_Hern_ndez_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Precisão à distância",
+          "Folha seca",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Malícia",
+          "Interceptação",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 139,
@@ -3927,7 +5508,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Noussair_Mazraoui_efhub.jpg",
+        "habilidades_transcritas": [
+          "Controle com a sola",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Interceptação",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho",
+          "Cruzamento seco"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 140,
@@ -3944,7 +5541,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Alejandro_Grimaldo_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Interceptação",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 141,
@@ -3963,7 +5576,18 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Ian_Maatsen_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Controle com a sola",
+          "Folha seca",
+          "Interceptação"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 142,
@@ -3981,7 +5605,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Andrew_Robertson_efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe de primeira",
+          "Passe na medida",
+          "Cruzamento preciso",
+          "Arremesso lateral longo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Liderança",
+          "Espírito guerreiro",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 143,
@@ -4018,6 +5658,22 @@
         "fonte": "https://pesdb.net/efootball/players/franco-baresi-88039581945329",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Franco_Baresi_efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe em profundidade",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho",
+          "Xerifão"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -4097,6 +5753,21 @@
         "fonte": "https://pesdb.net/efootball/players/franz-beckenbauer-88039581945324",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Franz_Beckenbauer_efhub.jpg",
+        "habilidades_transcritas": [
+          "Precisão à distância",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -4125,7 +5796,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Manuel_Akanji_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe na medida",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho",
+          "Fortaleza aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 147,
@@ -4162,6 +5849,22 @@
         "fonte": "https://pesdb.net/efootball/players/tony-adams-88032334054195",
         "status": "fonte_externa_nao_prova_gameplay",
         "player_id_animacao_confirmado": false
+      },
+      "print_candidato": {
+        "arquivo": "Tony_Adams_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
       }
     },
     {
@@ -4197,7 +5900,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Vit_o_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe de primeira",
+          "Passe na medida",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 149,
@@ -4236,7 +5955,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Jan_Paul_van_Hecke_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe de primeira",
+          "Passe na medida",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 150,
@@ -4304,7 +6039,20 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Willian_Pacho_efhub.jpg",
+        "habilidades_transcritas": [
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 152,
@@ -4321,7 +6069,17 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Pierre_Kalulu_efhub.jpg",
+        "habilidades_transcritas": [
+          "Arremesso lateral longo",
+          "Marcação individual",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 153,
@@ -4420,7 +6178,19 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Micky_van_de_Ven_efhub.jpg",
+        "habilidades_transcritas": [
+          "Arremesso lateral longo",
+          "Marcação individual",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 156,
@@ -4482,7 +6252,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Renato_Veiga_efhub.jpg",
+        "habilidades_transcritas": [
+          "Controle com a sola",
+          "Passe de primeira",
+          "Passe na medida",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 158,
@@ -4522,7 +6308,21 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Ant_nio_Silva_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Liderança",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 159,
@@ -4550,7 +6350,22 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Pau_Cubars__efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe de primeira",
+          "Passe na medida",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 160,
@@ -4608,7 +6423,21 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "R_ben_Dias_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Liderança",
+          "Espírito guerreiro",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 162,
@@ -4626,7 +6455,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Pau_Torres_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe de primeira",
+          "Passe na medida",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 163,
@@ -4667,7 +6512,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "J_r_my_Jacquet_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe de primeira",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 164,
@@ -4713,7 +6574,22 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Cristian_Romero_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 166,
@@ -4753,7 +6629,20 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Maxence_Lacroix_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 167,
@@ -4789,7 +6678,18 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Petr__ech_efhub.jpg",
+        "habilidades_transcritas": [
+          "Reposição baixa do GO",
+          "Arremesso longo do GO",
+          "Pegador de pênaltis",
+          "Liderança",
+          "Comandante da defesa (GO)"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 169,
@@ -4823,7 +6723,18 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Oliver_Kahn_efhub.jpg",
+        "habilidades_transcritas": [
+          "Reposição alta do GO",
+          "Arremesso longo do GO",
+          "Pegador de pênaltis",
+          "Liderança",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 170,
@@ -4841,7 +6752,18 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Jan_Oblak_efhub.jpg",
+        "habilidades_transcritas": [
+          "Reposição alta do GO",
+          "Arremesso longo do GO",
+          "Pegador de pênaltis",
+          "Liderança",
+          "Comandante da defesa (GO)"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 171,
@@ -4869,7 +6791,18 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Iker_Casillas_efhub.jpg",
+        "habilidades_transcritas": [
+          "Reposição baixa do GO",
+          "Arremesso longo do GO",
+          "Pegador de pênaltis",
+          "Liderança",
+          "Comandante da defesa (GO)"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 172,
@@ -4886,7 +6819,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Thibaut_Courtois_efhub.jpg",
+        "habilidades_transcritas": [
+          "Reposição alta do GO",
+          "Arremesso longo do GO"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 173,
@@ -4920,7 +6861,18 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Mike_Maignan_efhub.jpg",
+        "habilidades_transcritas": [
+          "Reposição baixa do GO",
+          "Reposição alta do GO",
+          "Arremesso longo do GO",
+          "Pegador de pênaltis",
+          "Liderança"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 174,
@@ -4948,7 +6900,15 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Rui_Silva_efhub.jpg",
+        "habilidades_transcritas": [
+          "Reposição baixa do GO",
+          "Pegador de pênaltis"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 175,
@@ -5009,7 +6969,16 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Caoimhin_Kelleher_efhub.jpg",
+        "habilidades_transcritas": [
+          "Reposição baixa do GO",
+          "Reposição alta do GO",
+          "Pegador de pênaltis"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 177,
@@ -5027,7 +6996,15 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Dean_Henderson_efhub.jpg",
+        "habilidades_transcritas": [
+          "Reposição baixa do GO",
+          "Arremesso longo do GO"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 178,
@@ -5055,7 +7032,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Romelu_Lukaku_efhub.jpg",
+        "habilidades_transcritas": [
+          "Efeito de longe",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Curva para fora",
+          "Especialista em pênalti",
+          "Malícia",
+          "Volta para marcar",
+          "Liderança",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 179,
@@ -5072,7 +7065,22 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Victor_Osimhen_efhub_0.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Controle da cavadinha",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Malícia",
+          "Espírito guerreiro",
+          "Superioridade aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 180,
@@ -5100,7 +7108,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Hugo_Ekitik__efhub.jpg",
+        "habilidades_transcritas": [
+          "Corte com virada",
+          "Puxada de letra",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Super substituto",
+          "Superioridade aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 181,
@@ -5118,7 +7142,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Serhou_Guirassy_efhub.jpg",
+        "habilidades_transcritas": [
+          "Controle com a sola",
+          "Cabeçada",
+          "Controle da cavadinha",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Malícia",
+          "Espírito guerreiro",
+          "Superioridade aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 182,
@@ -5152,7 +7192,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Marcus_Thuram_efhub.jpg",
+        "habilidades_transcritas": [
+          "Giro 360°",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Cabeçada",
+          "Efeito de longe",
+          "Controle da cavadinha",
+          "Precisão à distância",
+          "Finalização acrobática",
+          "Toque de calcanhar",
+          "Chute de primeira"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 183,
@@ -5197,7 +7253,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Jo_o_Pedro_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Chapéu",
+          "Controle da cavadinha",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 185,
@@ -5226,7 +7298,20 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Pedro_efhub.jpg",
+        "habilidades_transcritas": [
+          "Corte com virada",
+          "Controle com a sola",
+          "Cabeçada",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 186,
@@ -5277,7 +7362,20 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Gonzalo_Plata_efhub.jpg",
+        "habilidades_transcritas": [
+          "Giro 360°",
+          "Corte com virada",
+          "Controle com a sola",
+          "Controle da cavadinha",
+          "Precisão à distância",
+          "Malícia",
+          "Volta para marcar"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 188,
@@ -5325,7 +7423,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Donyell_Malen_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Giro 360°",
+          "Puxada de letra",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Curva para fora",
+          "Super substituto"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 190,
@@ -5354,7 +7468,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Rafael_Le_o_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Elástico",
+          "Corte com virada",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Chute ascendente",
+          "Toque de calcanhar",
+          "Passe em profundidade"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 191,
@@ -5388,7 +7518,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Gabriel_Martinelli_efhub.jpg",
+        "habilidades_transcritas": [
+          "Giro 360°",
+          "Puxada de letra",
+          "Cabeçada",
+          "Efeito de longe",
+          "Controle da cavadinha",
+          "Toque de calcanhar",
+          "Chute de primeira",
+          "Curva para fora",
+          "Malícia",
+          "Volta para marcar"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 192,
@@ -5406,7 +7552,22 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "J_r_my_Doku_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Elástico",
+          "Giro 360°",
+          "Corte com virada",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Toque de calcanhar",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 193,
@@ -5424,7 +7585,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Allan_Saint_Maximin_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Elástico",
+          "Giro 360°",
+          "Corte com virada",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Finalização acrobática",
+          "De letra",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 194,
@@ -5443,7 +7620,22 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Bruno_Henrique_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Chapéu",
+          "Corte com virada",
+          "Puxada de letra",
+          "Cabeçada",
+          "Chute de primeira",
+          "Passe sem olhar",
+          "Malícia",
+          "Superioridade aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 195,
@@ -5520,7 +7712,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Leandro_Trossard_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Giro 360°",
+          "Puxada de letra",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute com o peito do pé",
+          "Folha seca",
+          "Chute ascendente",
+          "Chute de primeira",
+          "Super substituto"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 198,
@@ -5556,7 +7764,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Cody_Gakpo_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Giro 360°",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Folha seca",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Cruzamento preciso"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 199,
@@ -5605,7 +7829,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Sadio_Man__efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Puxada de letra",
+          "Cabeçada",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Especialista em pênalti",
+          "Malícia",
+          "Volta para marcar"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 201,
@@ -5623,7 +7863,21 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Yan_Diomande_efhub.jpg",
+        "habilidades_transcritas": [
+          "Pedalada simples",
+          "Toque duplo",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Chute de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 202,
@@ -5714,7 +7968,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Thiago_Almada_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Giro 360°",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Passe de primeira",
+          "Passe na medida",
+          "Curva para fora",
+          "Especialista em pênalti",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 206,
@@ -5742,7 +8012,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Nicol__Zaniolo_efhub.jpg",
+        "habilidades_transcritas": [
+          "Giro 360°",
+          "Puxada de letra",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Folha seca",
+          "Finalização acrobática",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Malícia",
+          "Volta para marcar"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 207,
@@ -5770,7 +8056,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "James_Rodr_guez_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Puxada de letra",
+          "Controle da cavadinha",
+          "Precisão à distância",
+          "Folha seca",
+          "Finalização acrobática",
+          "Toque de calcanhar",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Cruzamento preciso"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 208,
@@ -5877,7 +8179,22 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Kubo_Takefusa_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Chapéu",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 212,
@@ -5896,7 +8213,21 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Luiz_Ara_jo_efhub.jpg",
+        "habilidades_transcritas": [
+          "Giro 360°",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Folha seca",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Especialista em pênalti",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 213,
@@ -5929,7 +8260,21 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Ethan_Mbapp__efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Malícia",
+          "Super substituto"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 214,
@@ -5948,7 +8293,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Nico_Williams_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Giro 360°",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Chute de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 215,
@@ -6014,7 +8375,23 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Declan_Rice_efhub.jpg",
+        "habilidades_transcritas": [
+          "Precisão à distância",
+          "Chute de primeira",
+          "Passe na medida",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Liderança",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 217,
@@ -6060,7 +8437,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Nicol__Barella_efhub.jpg",
+        "habilidades_transcritas": [
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Bloqueador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 219,
@@ -6088,7 +8481,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Warren_Za_re_Emery_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Puxada de letra",
+          "Precisão à distância",
+          "Folha seca",
+          "Passe de primeira",
+          "Passe na medida",
+          "Passe aéreo baixo",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 220,
@@ -6105,7 +8514,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Luka_Modri__efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Precisão à distância",
+          "Chute ascendente",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Curva para fora",
+          "Passe sem olhar",
+          "Liderança"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 221,
@@ -6122,7 +8547,22 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Kh_phren_Thuram_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Controle com a sola",
+          "Precisão à distância",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe sem olhar",
+          "Interceptação",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 222,
@@ -6139,7 +8579,22 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Gerson_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Passe sem olhar",
+          "Passe aéreo baixo",
+          "Malícia",
+          "Volta para marcar"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 223,
@@ -6157,7 +8612,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Frenkie_de_Jong_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Puxada de letra",
+          "Finta de letra",
+          "Controle com a sola",
+          "Toque de calcanhar",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Curva para fora",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 224,
@@ -6175,7 +8646,21 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Manu_Kon__efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Corte com virada",
+          "Finta de letra",
+          "Precisão à distância",
+          "Passe na medida",
+          "Passe aéreo baixo",
+          "Malícia",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 225,
@@ -6222,7 +8707,21 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Jos__Mar_a_Gim_nez_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 227,
@@ -6241,7 +8740,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Kenan_Y_ld_z_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Folha seca",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Super substituto"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 228,
@@ -6260,7 +8775,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Murilo_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho",
+          "Esticada de perna"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 229,
@@ -6279,7 +8810,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Zeki__elik_efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe de primeira",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Arremesso lateral longo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 230,
@@ -6298,7 +8845,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Pape_Matar_Sarr_efhub.jpg",
+        "habilidades_transcritas": [
+          "Precisão à distância",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 231,
@@ -6317,7 +8880,17 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Guglielmo_Vicario_efhub.jpg",
+        "habilidades_transcritas": [
+          "Reposição baixa do GO",
+          "Reposição alta do GO",
+          "Arremesso longo do GO",
+          "Pegador de pênaltis"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 232,
@@ -6336,7 +8909,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Aymeric_Laporte_efhub.jpg",
+        "habilidades_transcritas": [
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Passe aéreo baixo",
+          "Marcação individual",
+          "Interceptação",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho",
+          "Passador nato"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 233,
@@ -6355,7 +8944,20 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Nicola_Zalewski_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Giro 360°",
+          "Corte com virada",
+          "Finta de letra",
+          "Efeito de longe",
+          "Cruzamento preciso",
+          "Malícia"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 234,
@@ -6373,7 +8975,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Kakita_Yuki_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Volta para marcar",
+          "Super substituto",
+          "Espírito guerreiro",
+          "Superioridade aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 235,
@@ -6391,7 +9009,22 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Kumasaka_Koki_efhub.jpg",
+        "habilidades_transcritas": [
+          "Controle com a sola",
+          "Precisão à distância",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Curva para fora",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Bloqueador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 236,
@@ -6410,7 +9043,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Samuel_Eto_o_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Efeito de longe",
+          "Chute ascendente",
+          "Finalização acrobática",
+          "Toque de calcanhar",
+          "Chute de primeira",
+          "Curva para fora",
+          "Volta para marcar",
+          "Drible explosivo",
+          "Ímpeto de Ataque"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 237,
@@ -6429,7 +9078,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Piero_Hincapi__efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Passe de primeira",
+          "Arremesso lateral longo",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Espírito guerreiro",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 238,
@@ -6448,7 +9113,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Mateus_Fernandes_efhub.jpg",
+        "habilidades_transcritas": [
+          "Chapéu",
+          "Precisão à distância",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Passe na medida",
+          "Curva para fora",
+          "Malícia",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Bloqueador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 239,
@@ -6467,7 +9148,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Alexander_Isak_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Curva para fora",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 240,
@@ -6486,7 +9183,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Gon_alo_Ramos_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Curva para fora",
+          "Volta para marcar",
+          "Super substituto",
+          "Espírito guerreiro",
+          "Superioridade aérea"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 241,
@@ -6505,7 +9218,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Federico_Valverde_efhub.jpg",
+        "habilidades_transcritas": [
+          "Efeito de longe",
+          "Precisão à distância",
+          "Finalização acrobática",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Passe aéreo baixo",
+          "Interceptação",
+          "Espírito guerreiro",
+          "Bloqueador"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 242,
@@ -6525,7 +9254,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Maghnes_Akliouche_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Curva para fora"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 243,
@@ -6545,7 +9290,23 @@
         "Proficiência se for usar em uma posição central",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Anthony_Gordon_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Cruzamento preciso",
+          "Volta para marcar",
+          "Espírito guerreiro"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 244,
@@ -6564,7 +9325,23 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Edmond_Tapsoba_efhub.jpg",
+        "habilidades_transcritas": [
+          "Cabeçada",
+          "Chute de primeira",
+          "Passe aéreo baixo",
+          "Especialista em pênalti",
+          "Marcação individual",
+          "Interceptação",
+          "Afastamento acrobático",
+          "Bloqueador",
+          "Superioridade aérea",
+          "Carrinho"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 245,
@@ -6582,7 +9359,23 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Justin_Kluivert_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Elástico",
+          "Corte com virada",
+          "Puxada de letra",
+          "Controle com a sola",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Cruzamento preciso",
+          "Curva para fora",
+          "Especialista em pênalti"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     },
     {
       "numero": 246,
@@ -6601,9 +9394,26 @@
         "Segundo ímpeto realmente selecionado",
         "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente"
+      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "print_candidato": {
+        "arquivo": "Eric_Cantona_efhub.jpg",
+        "habilidades_transcritas": [
+          "Toque duplo",
+          "Cabeçada",
+          "Efeito de longe",
+          "Precisão à distância",
+          "Finalização acrobática",
+          "Chute de primeira",
+          "Passe de primeira",
+          "Passe em profundidade",
+          "Curva para fora",
+          "Drible astuto"
+        ],
+        "status": "NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA"
+      }
     }
   ],
   "biotipo_vinculado_por_card_id": 15,
-  "biotipo_conflitos_card_id": []
+  "biotipo_conflitos_card_id": [],
+  "prints_por_nome_sem_id": 185
 }
