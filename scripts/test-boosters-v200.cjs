@@ -54,6 +54,15 @@ const cf=R.booster({...byId.get(1),shown_position:'AC',boost1:byId.get(1).impeto
  recommended_levels:byId.get(1).niveis,native_skills:byId.get(1).habilidades_nativas},'posse',B,'ausente');
 assert.equal(cf.able,false,'Sem slot, nunca sugerir equipar');
 assert.equal(cf.equipStatus,'impossivel_na_conta');
+const marked=R.booster({shown_position:'AC',role_used:'CA',boost1:'Physicality +3',
+ boost2:'SLOT SELECIONÁVEL +1',recommended_levels:byId.get(1).niveis,
+ native_skills:byId.get(1).habilidades_nativas,attack_style:'Matador'},'posse',B,'ocupado',"Striker's Instinct");
+assert(![marked.primary,...marked.alternatives].some(x=>x?.nome==="Striker's Instinct"),
+ 'Ímpeto confirmado como equipado pelo usuário não pode reaparecer como nova recomendação');
+assert.equal(marked.confirmedEquipped,"Striker's Instinct");
+const auditUI=fs.readFileSync(path.join(web,'revisao-impetos-v103.js'),'utf8');
+assert(auditUI.includes('optionsFor(c,key,saved)')&&auditUI.includes("optionsFor(c,'posse',read(c))"),'Planejamento exclui equipado confirmado');
+assert(auditUI.includes('scout-pro-246-impetos-individuais-v200.csv'),'Exportação precisa representar motor atual');
 const view=require('../web/scout-profile-v188.js').boosterView(
  {shown_position:'AC',role_used:'CA',boost1:byId.get(1).impeto_fixo,boost2:byId.get(1).impeto_extra,
  recommended_levels:byId.get(1).niveis,native_skills:byId.get(1).habilidades_nativas,attack_style:byId.get(1).estilo_ataque},
