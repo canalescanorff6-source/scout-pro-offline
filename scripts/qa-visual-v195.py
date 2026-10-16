@@ -469,6 +469,29 @@ def run():
                 page.locator("#scout-v211-audit").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_review_v211.png"),full_page=False,animations="disabled")
 
+                # V212: verificar dossiê de Massaro, PP real e aviso não homologado.
+                page.wait_for_function("() => !!document.getElementById('scout-v212-dossier')",timeout=25000)
+                page.locator('#scout-v212-dossier>summary').click()
+                dossier=page.evaluate("""() => {
+                    const d=document.getElementById('scout-v212-dossier');
+                    return {open:d.open,stage:d.dataset.stage,
+                        rows:[...d.querySelectorAll('tbody tr')].map(r=>[r.children[1]?.textContent,r.children[2]?.textContent]),
+                        text:d.textContent,overflow:d.scrollWidth-d.clientWidth,
+                        pp:document.querySelector('#scout-v208-training .scout-v208-total').textContent.trim()};
+                }""")
+                detail["v212_dossier"]=dossier
+                if not dossier["open"] or len(dossier["rows"])!=10:
+                    problems.append(f"{name}: V212 não abre ou não exibe dez categorias")
+                if not all(str(row[0]).isdigit() and str(row[1]).isdigit() for row in dossier["rows"]):
+                    problems.append(f"{name}: V212 níveis ausentes/não inteiros")
+                if "NÃO HOMOLOGADO" not in dossier["text"] or "nenhuma ficha foi alterada" not in dossier["text"]:
+                    problems.append(f"{name}: V212 não esclarece que é experimental")
+                if dossier["pp"]!="62 / 62" or dossier["overflow"]>3:
+                    problems.append(f"{name}: V212 alterou PP ou causou overflow")
+                page.locator('#scout-v212-dossier').scroll_into_view_if_needed()
+                page.screenshot(path=str(OUT / f"{name}_dossie_posse_v212.png"),full_page=False,animations="disabled")
+                page.locator('#scout-v212-dossier>summary').click()
+
                 # V201: categorias do treino são apenas ilustradas, sem tocar no PP.
                 page.wait_for_function("""() => {
                   const labels=[...document.querySelectorAll('#lab-controls .lab-group>label')];

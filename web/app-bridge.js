@@ -64,6 +64,11 @@ if(inCard){
  const color=document.createElement('link');color.rel='stylesheet';color.href=v189Root+'scout-theme-v210.css';document.head.appendChild(color);
  const audit=document.createElement('script');audit.src=v189Root+'scout-build-audit-v211.js';audit.defer=true;document.head.appendChild(audit);
 }
+// V212: dossiês de posse individuais para cartas repetidas, somente leitura.
+if(inCard){
+ const css212=document.createElement('link');css212.rel='stylesheet';css212.href=v189Root+'scout-dossier-v212.css';document.head.appendChild(css212);
+ const js212=document.createElement('script');js212.src=v189Root+'scout-dossier-v212.js';js212.defer=true;document.head.appendChild(js212);
+}
 // V196: renderizar nomes oficiais PT-BR sem modificar dados das cartas nem o motor.
 const v196Skills=document.createElement('script');v196Skills.src=v189Root+'skill-names-v196.js';document.head.appendChild(v196Skills);
 if(inCard){
