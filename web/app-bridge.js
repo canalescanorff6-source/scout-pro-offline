@@ -23,6 +23,11 @@ const v198Css=document.createElement('link');v198Css.rel='stylesheet';v198Css.hr
 const v198Js=document.createElement('script');v198Js.src=v189Root+'scout-finish-v198.js';document.head.appendChild(v198Js);
 // V200: conclusão de ímpetos com transparência de investimento e incerteza.
 const v200Css=document.createElement('link');v200Css.rel='stylesheet';v200Css.href=v189Root+'scout-finish-v200.css';document.head.appendChild(v200Css);
+// V201: pictogramas originais inspirados no visual de futebol, em ficha e laboratório.
+if(inCard){
+ const iconCss=document.createElement('link');iconCss.rel='stylesheet';iconCss.href=v189Root+'scout-training-icons-v201.css';document.head.appendChild(iconCss);
+ const iconJs=document.createElement('script');iconJs.src=v189Root+'scout-training-icons-v201.js';iconJs.defer=true;document.head.appendChild(iconJs);
+}
 // V196: renderizar nomes oficiais PT-BR sem modificar dados das cartas nem o motor.
 const v196Skills=document.createElement('script');v196Skills.src=v189Root+'skill-names-v196.js';document.head.appendChild(v196Skills);
 if(inCard){
