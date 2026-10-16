@@ -1,0 +1,686 @@
+{
+  "schema": "scout_v211_duplicate_build_review",
+  "source": "SCOUT_V69_AUDITORIA.json",
+  "total_cards": 246,
+  "registered": 162,
+  "pending": 84,
+  "group_count": 20,
+  "duplicated_cards": 56,
+  "priority_groups": 20,
+  "validated_replacements": 0,
+  "note": "Não são treinos novos: auditoria de repetição. Sem atributos-base numéricos de cada edição, não afirmar que uma redistribuição seja melhor.",
+  "groups": [
+    {
+      "signature": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
+      "position": "ZG",
+      "style": "Defensor criativo",
+      "pp": 52,
+      "levels": [
+        0,
+        4,
+        0,
+        0,
+        8,
+        8,
+        12,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        144,
+        149,
+        150,
+        153,
+        154,
+        158,
+        160,
+        163,
+        166
+      ],
+      "names": [
+        "Dean Huijsen",
+        "Jan Paul van Hecke",
+        "Ibrahima Konaté",
+        "Dean Huijsen",
+        "Ibrahima Konaté",
+        "António Silva",
+        "Marc Guéhi",
+        "Jérémy Jacquet",
+        "Maxence Lacroix"
+      ],
+      "size": 9,
+      "divergentPairs": 34,
+      "comparedPairs": 36,
+      "unconfirmedPairs": 36,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "MLG|meia versatil|64|4,8,8,8,8,0,8,0,0,0",
+      "position": "MLG",
+      "style": "Meia versátil",
+      "pp": 64,
+      "levels": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        0,
+        8,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        95,
+        99,
+        102,
+        216
+      ],
+      "names": [
+        "Frank Lampard",
+        "Joelinton",
+        "João Neves",
+        "Declan Rice"
+      ],
+      "size": 4,
+      "divergentPairs": 6,
+      "comparedPairs": 6,
+      "unconfirmedPairs": 3,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "MLG|orquestrador|64|4,10,8,8,8,0,5,0,0,0",
+      "position": "MLG",
+      "style": "Orquestrador",
+      "pp": 64,
+      "levels": [
+        4,
+        10,
+        8,
+        8,
+        8,
+        0,
+        5,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        4,
+        17,
+        96
+      ],
+      "names": [
+        "David Beckham",
+        "Jack Wilshere",
+        "Vitinha"
+      ],
+      "size": 3,
+      "divergentPairs": 3,
+      "comparedPairs": 3,
+      "unconfirmedPairs": 2,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "ZG|basico|56|0,4,0,1,8,9,12,0,0,0",
+      "position": "ZG",
+      "style": "Básico",
+      "pp": 56,
+      "levels": [
+        0,
+        4,
+        0,
+        1,
+        8,
+        9,
+        12,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        9,
+        148,
+        157
+      ],
+      "names": [
+        "Giorgio Chiellini",
+        "Vitão",
+        "Renato Veiga"
+      ],
+      "size": 3,
+      "divergentPairs": 3,
+      "comparedPairs": 3,
+      "unconfirmedPairs": 2,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "CA|oportunista|60|8,3,6,11,8,4,0,0,0,0",
+      "position": "CA",
+      "style": "Oportunista",
+      "pp": 60,
+      "levels": [
+        8,
+        3,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        30,
+        31,
+        34
+      ],
+      "names": [
+        "Tuncay Şanlı",
+        "Filippo Inzaghi",
+        "Hristo Stoichkov"
+      ],
+      "size": 3,
+      "divergentPairs": 3,
+      "comparedPairs": 3,
+      "unconfirmedPairs": 0,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "CA|artilheiro|60|8,3,6,11,8,4,0,0,0,0",
+      "position": "CA",
+      "style": "Artilheiro",
+      "pp": 60,
+      "levels": [
+        8,
+        3,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        40,
+        43,
+        182
+      ],
+      "names": [
+        "Dwight Yorke",
+        "Burak Yılmaz",
+        "Marcus Thuram"
+      ],
+      "size": 3,
+      "divergentPairs": 3,
+      "comparedPairs": 3,
+      "unconfirmedPairs": 2,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "PTE|ala produtivo|60|4,6,10,10,8,0,0,0,0,0",
+      "position": "PTE",
+      "style": "Ala produtivo",
+      "pp": 60,
+      "levels": [
+        4,
+        6,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        70,
+        72,
+        76
+      ],
+      "names": [
+        "Denílson",
+        "Atep",
+        "K. Kvaratskhelia"
+      ],
+      "size": 3,
+      "divergentPairs": 3,
+      "comparedPairs": 3,
+      "unconfirmedPairs": 2,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "MAT|armador criativo|62|4,12,8,8,7,0,0,0,0,0",
+      "position": "MAT",
+      "style": "Armador criativo",
+      "pp": 62,
+      "levels": [
+        4,
+        12,
+        8,
+        8,
+        7,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        82,
+        208,
+        209
+      ],
+      "names": [
+        "Cole Palmer",
+        "Michael Olise",
+        "Jamal Musiala"
+      ],
+      "size": 3,
+      "divergentPairs": 3,
+      "comparedPairs": 3,
+      "unconfirmedPairs": 3,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "GO|basico|56|0,0,0,0,0,2,0,8,12,10",
+      "position": "GO",
+      "style": "Básico",
+      "pp": 56,
+      "levels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        8,
+        12,
+        10
+      ],
+      "ids": [
+        169,
+        173,
+        176
+      ],
+      "names": [
+        "Oliver Kahn",
+        "Mike Maignan",
+        "Caoimhin Kelleher"
+      ],
+      "size": 3,
+      "divergentPairs": 3,
+      "comparedPairs": 3,
+      "unconfirmedPairs": 3,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "CA|matador|62|10,5,5,8,8,6,0,0,0,0",
+      "position": "CA",
+      "style": "Matador",
+      "pp": 62,
+      "levels": [
+        10,
+        5,
+        5,
+        8,
+        8,
+        6,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        1,
+        32
+      ],
+      "names": [
+        "Daniele Massaro",
+        "Gabriel Batistuta"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 0,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "CA|artilheiro|62|9,2,6,11,8,4,0,0,0,0",
+      "position": "CA",
+      "style": "Artilheiro",
+      "pp": 62,
+      "levels": [
+        9,
+        2,
+        6,
+        11,
+        8,
+        4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        37,
+        38
+      ],
+      "names": [
+        "Nihat Kahveci",
+        "El-Hadji Diouf"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 0,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "PTD|ala produtivo|62|4,4,10,12,8,0,0,0,0,0",
+      "position": "PTD",
+      "style": "Ala produtivo",
+      "pp": 62,
+      "levels": [
+        4,
+        4,
+        10,
+        12,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        55,
+        187
+      ],
+      "names": [
+        "Dirk Kuyt",
+        "Gonzalo Plata"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 1,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "PTD|ala produtivo|56|4,4,10,10,8,0,0,0,0,0",
+      "position": "PTD",
+      "style": "Ala produtivo",
+      "pp": 56,
+      "levels": [
+        4,
+        4,
+        10,
+        10,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        61,
+        63
+      ],
+      "names": [
+        "Savinho",
+        "Estêvão"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 1,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "MAT|armador criativo|60|4,10,9,9,6,0,0,0,0,0",
+      "position": "MAT",
+      "style": "Armador criativo",
+      "pp": 60,
+      "levels": [
+        4,
+        10,
+        9,
+        9,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        79,
+        84
+      ],
+      "names": [
+        "Neymar Jr",
+        "Franck Ribéry"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 0,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "MLD|jogador de infiltracao|62|4,8,8,8,8,2,6,0,0,0",
+      "position": "MLD",
+      "style": "Jogador de infiltração",
+      "pp": 62,
+      "levels": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        2,
+        6,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        89,
+        213
+      ],
+      "names": [
+        "Iliman Ndiaye",
+        "Ethan Mbappé"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 1,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "MLE|jogador de infiltracao|62|4,8,8,8,8,2,6,0,0,0",
+      "position": "MLE",
+      "style": "Jogador de infiltração",
+      "pp": 62,
+      "levels": [
+        4,
+        8,
+        8,
+        8,
+        8,
+        2,
+        6,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        90,
+        93
+      ],
+      "names": [
+        "Neymar Jr",
+        "Matheus Cunha"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 1,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "VOL|meia versatil|64|0,8,4,4,8,6,12,0,0,0",
+      "position": "VOL",
+      "style": "Meia versátil",
+      "pp": 64,
+      "levels": [
+        0,
+        8,
+        4,
+        4,
+        8,
+        6,
+        12,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        108,
+        111
+      ],
+      "names": [
+        "N'Golo Kanté",
+        "N'Golo Kanté"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 1,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "LD|lateral ofensivo|64|0,8,4,6,9,4,11,0,0,0",
+      "position": "LD",
+      "style": "Lateral ofensivo",
+      "pp": 64,
+      "levels": [
+        0,
+        8,
+        4,
+        6,
+        9,
+        4,
+        11,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        124,
+        129
+      ],
+      "names": [
+        "Dominik Szoboszlai",
+        "Malo Gusto"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 1,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "LE|lateral ofensivo|64|0,8,4,6,9,4,11,0,0,0",
+      "position": "LE",
+      "style": "Lateral ofensivo",
+      "pp": 64,
+      "levels": [
+        0,
+        8,
+        4,
+        6,
+        9,
+        4,
+        11,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        134,
+        138
+      ],
+      "names": [
+        "Mikaël Silvestre",
+        "Théo Hernández"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 1,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    },
+    {
+      "signature": "PTE|ala produtivo|66|4,6,10,12,8,0,0,0,0,0",
+      "position": "PTE",
+      "style": "Ala produtivo",
+      "pp": 66,
+      "levels": [
+        4,
+        6,
+        10,
+        12,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ids": [
+        191,
+        198
+      ],
+      "names": [
+        "Gabriel Martinelli",
+        "Cody Gakpo"
+      ],
+      "size": 2,
+      "divergentPairs": 1,
+      "comparedPairs": 1,
+      "unconfirmedPairs": 1,
+      "baseStatsAllKnown": false,
+      "status": "revisao_documental_prioritaria"
+    }
+  ]
+}

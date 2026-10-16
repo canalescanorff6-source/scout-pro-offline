@@ -59,6 +59,11 @@ if(inCard){
  const refCss=document.createElement('link');refCss.rel='stylesheet';refCss.href=v189Root+'scout-training-reference-v208.css';document.head.appendChild(refCss);
  const refJs=document.createElement('script');refJs.src=v189Root+'scout-training-reference-v208.js';refJs.defer=true;document.head.appendChild(refJs);
 }
+// V210/V211 — paleta da marca e revisão individual baseada em evidências.
+if(inCard){
+ const color=document.createElement('link');color.rel='stylesheet';color.href=v189Root+'scout-theme-v210.css';document.head.appendChild(color);
+ const audit=document.createElement('script');audit.src=v189Root+'scout-build-audit-v211.js';audit.defer=true;document.head.appendChild(audit);
+}
 // V196: renderizar nomes oficiais PT-BR sem modificar dados das cartas nem o motor.
 const v196Skills=document.createElement('script');v196Skills.src=v189Root+'skill-names-v196.js';document.head.appendChild(v196Skills);
 if(inCard){
