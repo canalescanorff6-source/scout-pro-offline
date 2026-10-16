@@ -44,6 +44,11 @@ if(inCard){
  const iconCss=document.createElement('link');iconCss.rel='stylesheet';iconCss.href=v189Root+'scout-training-icons-v201.css';document.head.appendChild(iconCss);
  const iconJs=document.createElement('script');iconJs.src=v189Root+'scout-training-icons-v201.js';iconJs.defer=true;document.head.appendChild(iconJs);
 }
+// V207: auditoria individual e comparador premium (somente interface de ficha).
+if(inCard){
+ const css=document.createElement('link');css.rel='stylesheet';css.href=v189Root+'scout-individual-v207.css';document.head.appendChild(css);
+ const js=document.createElement('script');js.src=v189Root+'scout-individual-v207.js';js.defer=true;document.head.appendChild(js);
+}
 // V206: a mesma iconografia premium nas fichas Android e Windows.
 if(inCard){
  const v206Css=document.createElement('link');v206Css.rel='stylesheet';v206Css.href=v189Root+'scout-training-icons-v206.css';document.head.appendChild(v206Css);

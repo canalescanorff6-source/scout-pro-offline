@@ -373,6 +373,35 @@ def run():
                             problems.append(f"{name}: laboratório antigo {legacy} apareceu antes da ficha principal compacta")
                 page.screenshot(path=str(OUT / f"{name}_profile_header.png"), full_page=False, animations="disabled")
 
+                # V207: painel individual com PP e Card ID reais.
+                page.wait_for_function("""() => {
+                  const root=document.getElementById('scout-v207-identity');
+                  return root&&root.querySelector('#scout-v207-status')&&root.querySelector('.scout-v207-preview');
+                }""",timeout=25000)
+                audit=page.evaluate("""() => {
+                  const panel=document.getElementById('scout-v207-identity');
+                  return {status:panel.querySelector('#scout-v207-status').textContent,
+                    peerSummary:panel.querySelector('.scout-v207-peers>summary').textContent,
+                    width:panel.scrollWidth,client:panel.clientWidth};
+                }""")
+                detail["v207_individual_audit"]=audit
+                if "62 PP" not in audit["status"] or "registrado" not in audit["status"]:
+                    problems.append(f"{name}: V207 perdeu orçamento ou treino registrado")
+                if audit["width"]>audit["client"]+3:
+                    problems.append(f"{name}: V207 causou overflow no painel")
+                page.locator("#scout-v207-identity .scout-v207-preview>summary").click()
+                page.wait_for_function("""() => document.querySelector('#scout-v207-identity .scout-v207-preview')?.open""")
+                if page.locator("#scout-v207-identity .scout-v207-level").count()<4:
+                    problems.append(f"{name}: comparador V207 com progressões incompletas")
+                page.wait_for_function("""() => document.querySelector('#scout-v207-identity .scout-v207-peers>summary')?.textContent.includes('Distribuição igual')""",timeout=15000)
+                page.locator("#scout-v207-identity .scout-v207-peers>summary").click()
+                if page.locator("#scout-v207-identity .scout-v207-peer a").count()==0:
+                    problems.append(f"{name}: sem cartas semelhantes no painel de auditoria")
+                page.locator("#scout-v207-identity").scroll_into_view_if_needed()
+                page.screenshot(path=str(OUT / f"{name}_individual_v207.png"),full_page=False,animations="disabled")
+                page.locator("#scout-v207-identity .scout-v207-preview>summary").click()
+                page.locator("#scout-v207-identity .scout-v207-peers>summary").click()
+
                 # V201: categorias do treino são apenas ilustradas, sem tocar no PP.
                 page.wait_for_function("""() => {
                   const labels=[...document.querySelectorAll('#lab-controls .lab-group>label')];
