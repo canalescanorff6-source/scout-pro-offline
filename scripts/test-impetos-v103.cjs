@@ -12,7 +12,7 @@ const index=new Map(v.cartas.map(c=>[c.numero,c]));
 for(const c of r.cards){
  assert(index.get(c.numero)?.imagem?.startsWith('cartas/CAP_'));
  assert.equal(c.ficha,index.get(c.numero).ficha);
- assert.equal(c.recomendacoes.posse.length,(c.posicao==='GR'||c.posicao==='GO')?2:3);
+ assert(c.recomendacoes.posse.length>=1&&c.recomendacoes.posse.length<=(c.posicao==='GR'||c.posicao==='GO'?2:3),'Só ímpetos elegíveis não repetidos');
  for(const tactic of E.tactics)for(const rec of c.recomendacoes[tactic]){
   assert(E.BOOSTERS[rec.nome]);
   assert.equal(rec.atributos.length,4);
