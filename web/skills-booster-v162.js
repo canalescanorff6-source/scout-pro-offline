@@ -101,7 +101,7 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const validBooster=s=>engine&&Object.keys(engine.BOOSTERS||{}).find(x=>normal(x)===normal(s));
  const knownExtra=validBooster(extra);
  const manual=verifiedSlot==='vazio'||verifiedSlot==='ocupado';
- const able=status!=='nome_registrado'&&verifiedSlot!=='ausente'&&(status==='selecionavel'||status==='possivel'||manual);
+ const able=status!=='nome_registrado'&&verifiedSlot!=='ausente'&&manual;
  const existing=knownExtra||'';
  const equippedName=validBooster(verifiedEquipped)||'';
  let ranked=[];
