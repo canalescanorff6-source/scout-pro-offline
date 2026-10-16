@@ -66,6 +66,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -128,6 +134,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -182,6 +194,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -244,6 +262,12 @@
         ],
         "print_edicao_confirmada": false,
         "decisao": "REVISAR — possível habilidade nativa já existente"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -299,6 +323,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -338,6 +368,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -377,6 +413,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -430,6 +472,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -488,6 +536,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -551,6 +605,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -592,6 +652,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "Passing +3",
+        "estado": "registered",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Nome registrado na fonte, sem confirmação de disponibilidade de slot adicional"
       }
     },
     {
@@ -637,6 +703,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -693,6 +765,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -745,6 +823,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "Off the Ball +3",
+        "estado": "registered",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Nome registrado na fonte, sem confirmação de disponibilidade de slot adicional"
       }
     },
     {
@@ -800,6 +884,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -823,6 +913,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -882,6 +978,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -921,6 +1023,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -977,6 +1085,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1011,6 +1125,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -1063,6 +1183,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -1115,6 +1241,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -1168,6 +1300,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1204,6 +1342,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "Physicality +3",
+        "estado": "registered",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Nome registrado na fonte, sem confirmação de disponibilidade de slot adicional"
       }
     },
     {
@@ -1267,6 +1411,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1311,6 +1461,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1349,6 +1505,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1405,6 +1567,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1445,6 +1613,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1507,6 +1681,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1568,6 +1748,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1629,6 +1815,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1694,6 +1886,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1755,6 +1953,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM SEGUNDO BOOSTER EXPOSTO PELA FONTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -1811,6 +2015,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1867,6 +2077,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1928,6 +2144,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -1989,6 +2211,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -2054,6 +2282,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -2113,6 +2347,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM SEGUNDO BOOSTER EXPOSTO PELA FONTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -2169,6 +2409,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -2223,6 +2469,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -2285,6 +2537,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -2324,6 +2582,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM CONFIRMADO NA FONTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -2380,6 +2644,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -2436,6 +2706,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -2475,6 +2751,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM CONFIRMADO NA FONTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -2528,6 +2810,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM SEGUNDO BOOSTER EXPOSTO PELA FONTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -2567,6 +2855,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -2593,6 +2887,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE - confirmar a edição da conta",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -2647,6 +2947,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM SEGUNDO BOOSTER CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -2703,6 +3009,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -2740,6 +3052,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -2792,6 +3110,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -2853,6 +3177,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -2906,6 +3236,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -2942,6 +3278,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -2978,6 +3320,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -3014,6 +3362,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3067,6 +3421,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3110,6 +3470,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3161,6 +3527,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3204,6 +3576,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3249,6 +3627,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -3273,6 +3657,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3325,6 +3715,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3349,6 +3745,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3402,6 +3804,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3457,6 +3865,12 @@
         ],
         "print_edicao_confirmada": false,
         "decisao": "REVISAR — possível habilidade nativa já existente"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -3502,6 +3916,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -3543,6 +3963,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — dois boosters visuais; nomes não forçados sem confirmação segura",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3602,6 +4028,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -3643,6 +4075,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado nesta consolidação",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3677,6 +4115,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3729,6 +4173,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -3789,6 +4239,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3827,6 +4283,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -3888,6 +4350,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -3934,6 +4402,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -3972,6 +4446,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -4011,6 +4491,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -4053,6 +4539,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -4103,6 +4595,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -4163,6 +4661,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -4214,6 +4718,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -4254,6 +4764,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -4295,6 +4811,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -4350,6 +4872,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -4409,6 +4937,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -4454,6 +4988,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -4508,6 +5048,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -4548,6 +5094,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -4607,6 +5159,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -4658,6 +5216,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -4732,6 +5296,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -4775,6 +5345,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -4812,6 +5388,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE / selecionável",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -4867,6 +5449,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -4931,6 +5519,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE / selecionável",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -4986,6 +5580,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -5031,6 +5631,12 @@
         ],
         "print_edicao_confirmada": false,
         "decisao": "REVISAR — possível habilidade nativa já existente"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5090,6 +5696,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -5113,6 +5725,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5175,6 +5793,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -5230,6 +5854,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -5293,6 +5923,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -5316,6 +5952,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5357,6 +5999,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5397,6 +6045,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5433,6 +6087,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -5472,6 +6132,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5507,6 +6173,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5557,6 +6229,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5611,6 +6289,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5650,6 +6334,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5683,6 +6373,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5719,6 +6415,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5742,6 +6444,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5783,6 +6491,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5822,6 +6536,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5875,6 +6595,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — carta Double Booster confirmada; nome do booster não fechado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -5926,6 +6652,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -5982,6 +6714,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -6021,6 +6759,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6072,6 +6816,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6110,6 +6860,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6170,6 +6926,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6215,6 +6977,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6273,6 +7041,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -6328,6 +7102,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6378,6 +7158,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6430,6 +7216,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -6485,6 +7277,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -6543,6 +7341,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6599,6 +7403,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -6648,6 +7458,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6693,6 +7509,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6752,6 +7574,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -6792,6 +7620,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6831,6 +7665,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6867,6 +7707,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6907,6 +7753,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -6969,6 +7821,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -7017,6 +7875,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7081,6 +7945,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -7131,6 +8001,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7193,6 +8069,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -7250,6 +8132,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7313,6 +8201,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7371,6 +8265,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7408,6 +8308,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7441,6 +8347,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7489,6 +8401,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7535,6 +8453,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER FIXO ADICIONAL CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7570,6 +8494,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7604,6 +8534,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7660,6 +8596,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -7723,6 +8665,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -7772,6 +8720,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7820,6 +8774,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7858,6 +8818,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7898,6 +8864,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7961,6 +8933,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -7986,6 +8964,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8037,6 +9021,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8099,6 +9089,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8123,6 +9119,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8158,6 +9160,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado nesta consolidação",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8212,6 +9220,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -8247,6 +9261,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado nesta consolidação",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8294,6 +9314,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -8325,6 +9351,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8378,6 +9410,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -8424,6 +9462,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -8458,6 +9502,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8510,6 +9560,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8542,6 +9598,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8592,6 +9654,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8630,6 +9698,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8680,6 +9754,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8720,6 +9800,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8776,6 +9862,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8799,6 +9891,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8849,6 +9947,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8897,6 +10001,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8920,6 +10030,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -8973,6 +10089,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9011,6 +10133,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -9052,6 +10180,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9103,6 +10237,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9159,6 +10299,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9198,6 +10344,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9238,6 +10390,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9278,6 +10436,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9303,6 +10467,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9338,6 +10508,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9389,6 +10565,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9447,6 +10629,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9472,6 +10660,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9527,6 +10721,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9567,6 +10767,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9590,6 +10796,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9630,6 +10842,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9654,6 +10872,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9704,6 +10928,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9754,6 +10984,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9804,6 +11040,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9847,6 +11089,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "Ball Protection +3",
+        "estado": "registered",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Nome registrado na fonte, sem confirmação de disponibilidade de slot adicional"
       }
     },
     {
@@ -9888,6 +11136,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9913,6 +11167,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9953,6 +11213,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -9992,6 +11258,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE — não confirmado",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10049,6 +11321,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "—",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10090,6 +11368,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10130,6 +11414,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -10191,6 +11481,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -10229,6 +11525,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE / selecionável",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10268,6 +11570,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10322,6 +11630,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10365,6 +11679,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10403,6 +11723,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10447,6 +11773,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10487,6 +11819,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10525,6 +11863,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "PENDENTE",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10560,6 +11904,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NENHUM BOOSTER NATIVO CONFIRMADO",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10598,6 +11948,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10639,6 +11995,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -10680,6 +12042,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -10721,6 +12089,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -10762,6 +12136,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -10797,6 +12177,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -10838,6 +12224,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -10876,6 +12268,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10916,6 +12314,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10955,6 +12359,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -10996,6 +12406,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -11037,6 +12453,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -11078,6 +12500,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -11119,6 +12547,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -11160,6 +12594,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -11201,6 +12641,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -11243,6 +12689,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -11285,6 +12737,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -11326,6 +12784,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     },
     {
@@ -11366,6 +12830,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "NÃO CONFIRMADO — ausência de botão no print não deve ser tratada como ausência definitiva",
+        "estado": "unverified",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       }
     },
     {
@@ -11407,6 +12877,12 @@
         "coincidencias_com_print": [],
         "print_edicao_confirmada": false,
         "decisao": "NÃO HOMOLOGADO — conferir edição e slots"
+      },
+      "impeto_extra_auditoria": {
+        "texto_original": "SLOT SELECIONÁVEL +1 — escolha da conta não confirmada",
+        "estado": "selectable_unconfirmed",
+        "pode_equipar_automaticamente": false,
+        "observacao": "Slot descrito como selecionável, mas escolha da conta não verificada"
       }
     }
   ],
@@ -11417,5 +12893,10 @@
     "withCandidates": 125,
     "overlap": 3,
     "withPrint": 185
+  },
+  "impeto_extra_resumo": {
+    "selectable_unconfirmed": 95,
+    "unverified": 147,
+    "registered": 4
   }
 }
