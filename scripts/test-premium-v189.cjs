@@ -56,7 +56,7 @@ cp.execFileSync(process.execPath,[path.join(root,'scripts/stamp-bundle-v189.cjs'
 const stamp2=load('scout-build-info.json');
 assert.deepEqual(stamp1,stamp2,'Fingerprint precisa ser determinística');
 assert(/^[a-f0-9]{20}$/.test(stamp1.bundle_fingerprint));
-assert.equal(stamp1.source_count,36,'V207: 36 fontes compartilhadas e assinadas no fingerprint');
+assert.equal(stamp1.source_count,38,'V208: 38 fontes compartilhadas e assinadas no fingerprint');
 const morphology=load('SCOUT_V189_CORPO_EXTRAS.json');
 assert.equal(morphology.entries.length,1);
 assert.equal(morphology.entries[0].cap,1);
