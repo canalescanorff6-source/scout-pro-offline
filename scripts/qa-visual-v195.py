@@ -392,6 +392,10 @@ def run():
                   const icons=[...document.querySelectorAll('#lab-controls .lab-group>label .scout-v206-svg')];
                   return icons.length===10&&keys.every(k=>icons.some(e=>e.dataset.scoutV206Symbol===k));
                 }""",timeout=25000)
+                # Medir geometria com o Laboratório aberto (seção compacta é display:none).
+                was_compact=page.evaluate("document.body.classList.contains('scout-v188-compact')")
+                if was_compact:
+                    page.evaluate("document.body.classList.remove('scout-v188-compact')")
                 premium=page.evaluate("""() => {
                   const summary=[...document.querySelectorAll('#v188-train .scout-v188-train-chip')];
                   const rows=[...document.querySelectorAll('#lab-controls .lab-group')];
@@ -417,11 +421,7 @@ def run():
                     problems.append(f"{name}: V206 com overflow={premium['overflow']} ou botões pequenos={premium['smallButtons']}")
                 if premium["withNames"]!=10 or premium["accents"]<2:
                     problems.append(f"{name}: V206 perdeu nomes do treino ou cores do sistema visual")
-                # Laboratório é deliberadamente oculto no modo compacto: mostrar apenas
-                # para registrar a captura V206 e restaurar a ficha original em seguida.
-                was_compact=page.evaluate("document.body.classList.contains('scout-v188-compact')")
-                if was_compact:
-                    page.evaluate("document.body.classList.remove('scout-v188-compact')")
+                # Capturar o estado aberto e restaurar a ficha original em seguida.
                 page.locator("#lab-controls .lab-group").first.scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_lab_premium_v206.png"),full_page=False,animations="disabled")
                 if was_compact:
