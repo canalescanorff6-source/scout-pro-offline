@@ -31,4 +31,8 @@ for(const x of unique){
  assert.strictEqual(card.print_candidato.arquivo,x.filename);
  assert.strictEqual(card.print_candidato.status,'NOME_COMPATIVEL_EDICAO_NAO_CONFIRMADA');
 }
+
+const collisions=r.cards.filter(c=>c.habilidades_adicionais_auditoria.coincidencias_com_print.length);
+assert.deepStrictEqual(collisions.map(c=>c.numero),[4,69,101]);
+for(const c of r.cards){assert.strictEqual(c.habilidades_adicionais_auditoria.print_edicao_confirmada,false);}
 console.log('PASS: 246 cartas, Card IDs, PP, treinos preservados; 56 duplicações sinalizadas.');
