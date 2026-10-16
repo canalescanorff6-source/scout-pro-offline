@@ -373,6 +373,39 @@ def run():
                             problems.append(f"{name}: laboratório antigo {legacy} apareceu antes da ficha principal compacta")
                 page.screenshot(path=str(OUT / f"{name}_profile_header.png"), full_page=False, animations="disabled")
 
+                # V208: comparação estrutural direta com a referência do usuário.
+                page.wait_for_function("() => document.querySelectorAll('#scout-v208-training tbody tr').length===10",timeout=25000)
+                reference=page.evaluate("""() => {
+                  const table=document.getElementById('scout-v208-training');
+                  const rows=[...table.querySelectorAll('tbody tr')];
+                  const levels=rows.map(row=>Number(row.querySelector('.scout-v208-level').textContent));
+                  const pp=rows.map(row=>Number(row.querySelector('.scout-v208-cost').textContent));
+                  const cost=n=>{let p=0;for(let i=0;i<n;i++)p+=1+Math.floor(i/4);return p};
+                  return {
+                    title:document.getElementById('scout-v208-heading').textContent.trim(),
+                    names:rows.map(row=>row.querySelector('.scout-v208-label').textContent.trim()),
+                    icons:rows.filter(row=>!!row.querySelector('.scout-v208-svg')).length,
+                    levels,pp,sum:pp.reduce((a,b)=>a+b,0),
+                    costsCorrect:rows.every((_,i)=>pp[i]===cost(levels[i])),
+                    total:table.querySelector('.scout-v208-total').textContent.trim(),
+                    hiddenFallback:document.getElementById('v188-train').getAttribute('aria-hidden')==='true',
+                    overflow:table.scrollWidth-table.clientWidth
+                  };
+                }""")
+                detail["v208_reference"]=reference
+                if reference["title"]!="P - Posse central":
+                    problems.append(f"{name}: V208 deve mostrar cenário P real de Massaro")
+                if reference["names"]!=["Chute","Passe","Drible","Destreza","Força das pernas","Jogo aéreo","Defesa","Goleiro 1","Goleiro 2","Goleiro 3"]:
+                    problems.append(f"{name}: V208 categoria ou ordem incorreta")
+                if reference["icons"]!=10 or not reference["hiddenFallback"]:
+                    problems.append(f"{name}: V208 ícones/fallback incorretos")
+                if not reference["costsCorrect"] or reference["sum"]!=62 or reference["total"]!="62 / 62":
+                    problems.append(f"{name}: V208 PP incorretos")
+                if reference["overflow"]>3:
+                    problems.append(f"{name}: V208 overflow horizontal {reference['overflow']} px")
+                page.locator("#scout-v208-training").scroll_into_view_if_needed()
+                page.screenshot(path=str(OUT / f"{name}_training_reference_v208.png"),full_page=False,animations="disabled")
+
                 # V207: painel individual com PP e Card ID reais.
                 page.wait_for_function("""() => {
                   const root=document.getElementById('scout-v207-identity');

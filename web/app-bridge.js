@@ -54,6 +54,11 @@ if(inCard){
  const v206Css=document.createElement('link');v206Css.rel='stylesheet';v206Css.href=v189Root+'scout-training-icons-v206.css';document.head.appendChild(v206Css);
  const v206Js=document.createElement('script');v206Js.src=v189Root+'scout-training-icons-v206.js';v206Js.defer=true;document.head.appendChild(v206Js);
 }
+// V208: categoria, nível e PP segundo a referência visual aprovada.
+if(inCard){
+ const refCss=document.createElement('link');refCss.rel='stylesheet';refCss.href=v189Root+'scout-training-reference-v208.css';document.head.appendChild(refCss);
+ const refJs=document.createElement('script');refJs.src=v189Root+'scout-training-reference-v208.js';refJs.defer=true;document.head.appendChild(refJs);
+}
 // V196: renderizar nomes oficiais PT-BR sem modificar dados das cartas nem o motor.
 const v196Skills=document.createElement('script');v196Skills.src=v189Root+'skill-names-v196.js';document.head.appendChild(v196Skills);
 if(inCard){
