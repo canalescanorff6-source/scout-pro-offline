@@ -35,4 +35,8 @@ for(const x of unique){
 const collisions=r.cards.filter(c=>c.habilidades_adicionais_auditoria.coincidencias_com_print.length);
 assert.deepStrictEqual(collisions.map(c=>c.numero),[4,69,101]);
 for(const c of r.cards){assert.strictEqual(c.habilidades_adicionais_auditoria.print_edicao_confirmada,false);}
+const focus=[1,33,40,43,182];
+assert.deepStrictEqual(r.estudo_atacantes_posse,focus);
+for(const n of focus){const c=r.cards.find(x=>x.numero===n);assert(c.estudo_atacante_posse);assert.strictEqual(c.estudo_atacante_posse.treino_atual_preservado,true);}
+assert(r.cards.find(x=>x.numero===40).estudo_atacante_posse.nota.includes('aprovada'));
 console.log('PASS: 246 cartas, Card IDs, PP, treinos preservados; 56 duplicações sinalizadas.');
