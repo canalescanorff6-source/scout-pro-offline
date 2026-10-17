@@ -525,7 +525,40 @@ def run():
                     problems.append(f"{name}: painel V215 transborda ou possui alvo menor que 44 px")
                 v215.scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_evidencia_skills_v215.png"),full_page=False,animations="disabled")
-                v215.locator('summary').click()
+                # V217: atualizar o painel SEM recarregar após preencher as cinco adicionais,
+                # sem criar uma sexta habilidade ou modificar treino/PP.
+                page.locator('#scout-v162 > details > summary').click()
+                page.locator('#v162-equipped').fill(
+                    'Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola; Toque de calcanhar'
+                )
+                page.locator('#v162-save').click()
+                page.wait_for_function("""() => {
+                    const e=document.getElementById('scout-v215-evidence');
+                    return e?.open && e.querySelectorAll('.scout-v215-replacements li').length===0 &&
+                      e.innerText.includes('Cinco habilidades adicionais distintas');
+                }""",timeout=10000)
+                full_slots=page.locator('#scout-v215-evidence').inner_text()
+                if '5/5 distintas' not in full_slots:
+                    problems.append(f"{name}: V217 não considera cinco adicionais distintas no registro local")
+                if page.locator('#scout-v208-training .scout-v208-total').inner_text().strip()!='62 / 62':
+                    problems.append(f"{name}: V217 alterou PP ao salvar habilidades adicionais")
+                page.screenshot(path=str(OUT / f"{name}_skills_5_slots_v217.png"),full_page=False,animations="disabled")
+                # Alias manual e habilidade nativa informada não podem contar como novos slots.
+                page.locator('#v162-equipped').fill('Passe de primeira; One-touch Pass; Cabeceio')
+                page.locator('#v162-save').click()
+                page.wait_for_function("""() => {
+                    const e=document.getElementById('scout-v215-evidence');
+                    return e?.open && e.innerText.includes('1/5 distintas') &&
+                      e.innerText.includes('Conflito com nativas');
+                }""",timeout=10000)
+                # Limpar registro inserido somente pelo próprio QA.
+                page.locator('#v162-equipped').fill('')
+                page.locator('#v162-save').click()
+                page.wait_for_function("""() =>
+                    document.getElementById('scout-v215-evidence')?.open &&
+                    document.querySelectorAll('#scout-v215-evidence .scout-v215-replacements li').length===1
+                """,timeout=10000)
+                page.locator('#scout-v215-evidence > summary').click()
 
                 # V201: categorias do treino são apenas ilustradas, sem tocar no PP.
                 page.wait_for_function("""() => {

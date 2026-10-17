@@ -71,9 +71,17 @@ function evaluate(d,tactic,manualEquipped){
  const native=splitSkills(d.native_skills||d.habilidades_nativas);
  const nativeKnown=Boolean(native.length);
  const equipped=splitSkills(manualEquipped);
- const used=new Set([...native,...equipped].map(keyFor).filter(Boolean));
- const previous=splitSkills(d.additional_candidates||d.adicionais_candidatas);
- const prevSet=new Set(previous.map(keyFor).filter(Boolean));
+ const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
+ // Cinco slots são físicos. Grafias PT-BR/EN da mesma habilidade contam uma vez;
+ // nenhuma habilidade nativa registrada conta como adicional equipado.
+ const userMap=new Map();
+ for(const name of equipped){
+  const identity=keyFor(name)||'unmapped:'+normal(name);
+  if(identity&&!userMap.has(identity))userMap.set(identity,name);
+ }
+ const nativeManualConflicts=[...userMap].filter(([id])=>nativeKeys.has(id)).map(([,name])=>name);
+ const distinctExtras=[...userMap].filter(([id])=>!nativeKeys.has(id));
+ const used=new Set([...nativeKeys,...userMap.keys()].filter(id=>!id.startsWith('unmapped:')));
  const style=normal([d.playing_style,d.attack_style,d.defence_style,d.estilo_ataque,d.estilo_defesa].filter(Boolean).join(' '));
  const pool=POOLS[role];const scorer=new Map;
  pool.forEach((key,i)=>scorer.set(key,200-i*10));
@@ -87,10 +95,47 @@ function evaluate(d,tactic,manualEquipped){
  if(/destruidor|primeiro volante|lateral defensivo|defensor criativo/.test(style))bump(['intercept','blocker','mark','onepass'],22);
  if(/versatil|todo o terreno/.test(style))bump(['fighting','onepass','intercept'],18);
  if(/goleiro ofensivo/.test(style))bump(['gklow','gklong'],25);
+ // V217: heurísticas transparentes de complementaridade das habilidades NATIVAS
+ // cadastradas na própria carta. Não representam bônus medidos ou gameplay validado.
+ const synergy=new Map();
+ const support=(condition,targets,amount,explanation)=>{
+  if(tactic!=='posse'||!condition)return;
+  for(const id of targets){
+   if(!scorer.has(id)||used.has(id))continue;
+   scorer.set(id,scorer.get(id)+amount);
+   const notes=synergy.get(id)||[];
+   notes.push(explanation);
+   synergy.set(id,notes);
+  }
+ };
+ support(nativeKeys.has('firstshot'),['onepass','through','sole'],11,
+  'Complementar opção de finalização de primeira com apoios curtos');
+ support(nativeKeys.has('double')||nativeKeys.has('sole'),['onepass','through','weighted'],9,
+  'Complementar condução/recepção nativa com distribuição de bola');
+ support(nativeKeys.has('onepass')&&nativeKeys.has('through'),['sole','double','weighted'],15,
+  'Complementar tabela e passe em profundidade já registrados');
+ support(nativeKeys.has('heading')&&nativeKeys.has('aerial'),['onepass','sole','heel'],8,
+  'Diversificar apoios de carta com recursos aéreos registrados');
+ support(nativeKeys.has('intercept')&&nativeKeys.has('blocker'),['onepass','weighted','sole'],12,
+  'Apoiar saída curta após ações defensivas cadastradas');
+ support(nativeKeys.has('longshot')&&nativeKeys.has('curler'),['onepass','double'],7,
+  'Diversificar criação de jogadas de carta com finalizações longas');
  // O histórico de sugestões genéricas não aumenta a nota da carta.
  // Prioridade depende apenas da função, da tática e do estilo, não do OVR.
- const ranked=[...scorer.entries()].filter(([key])=>!used.has(key)).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([key,score])=>({...SKILLS[key],score}));
- return {role,nativeKnown,knownNative:native.length,alreadyEquippedProvided:equipped.length,recommendations:ranked.slice(0,5),alternatives:ranked.slice(5,8),missing:nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']};
+ const ranked=[...scorer.entries()].filter(([key])=>!used.has(key))
+  .sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))
+  .map(([key,score])=>({...SKILLS[key],score,synergies:synergy.get(key)||[]}));
+ const overLimit=distinctExtras.length>5;
+ const warnings=[
+  ...(overLimit?['Foram informadas mais de cinco habilidades adicionais distintas: revisar no jogo.']:[]),
+  ...(nativeManualConflicts.length?['Informadas também como adicionais, mas já aparecem nas nativas cadastradas: '+nativeManualConflicts.join(', ')]:[])
+ ];
+ return {role,nativeKnown,knownNative:native.length,
+  alreadyEquippedProvided:Math.min(5,distinctExtras.length),
+  manualReportedCount:distinctExtras.length,nativeManualConflicts,manualOverLimit:overLimit,
+  recommendations:ranked.slice(0,5),alternatives:ranked.slice(5,8),
+  synergyDetected:synergy.size>0,
+  missing:[...(nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']),...warnings]};
 }
 function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const value=String(d.boost2||d.impeto_extra||'');
@@ -183,9 +228,9 @@ function draw(){
  const remaining=Math.max(0,5-result.alreadyEquippedProvided);
  const proposed=result.recommendations.slice(0,remaining);
  section.querySelectorAll('[data-tactic]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tactic===tactic)));
- section.querySelector('#v162-skills-status').textContent='Nativas catalogadas: '+result.knownNative+' · Adicionais informadas: '+result.alreadyEquippedProvided+'/5 · Vagas a planejar: '+remaining+'. '+(result.nativeKnown?'Ordem calculada para função e tática, excluindo nativas e adicionais informadas.':'EDIÇÃO SEM NATIVAS AUTENTICADAS: sugestões provisórias; não gaste tokens sem conferir.');
+ section.querySelector('#v162-skills-status').textContent='Nativas catalogadas: '+result.knownNative+' · Adicionais informadas (distintas): '+result.alreadyEquippedProvided+'/5 · Vagas a planejar: '+remaining+'. '+(result.nativeKnown?'Ordem heurística para função, tática e complementaridade das nativas cadastradas; não é homologação de gameplay.':'EDIÇÃO SEM NATIVAS DOCUMENTADAS: sugestões provisórias; não gaste tokens sem conferir.')+(result.missing.length?' Atenção: '+result.missing.join(' '):'');
  const ul=section.querySelector('#v162-skills');ul.replaceChildren();
- for(const s of proposed){const li=document.createElement('li'),b=document.createElement('strong'),p=document.createElement('p');b.textContent=s.name;p.textContent=s.why;li.append(b,p);ul.appendChild(li)}
+ for(const s of proposed){const li=document.createElement('li'),b=document.createElement('strong'),p=document.createElement('p');b.textContent=s.name;p.textContent=s.why+(s.synergies?.length?' Critério de complementaridade (hipótese): '+s.synergies.join('; ')+'.':'');li.append(b,p);ul.appendChild(li)}
  for(let i=proposed.length;i<remaining;i++){
   const li=document.createElement('li');li.textContent='Vaga '+(result.alreadyEquippedProvided+i+1)+'/5 · Sem habilidade adicional segura nesta base; confirmar compatibilidade e skills atuais antes de preencher.';ul.appendChild(li);
  }
@@ -231,6 +276,14 @@ function draw(){
  const jump=document.createElement('a');jump.href='../revisao-impetos-v103.html?c='+Number(d.capture);jump.textContent='Confirmar o slot, o ímpeto equipado e as opções desta carta ↗';jump.style.color='#8dd8f7';jump.style.fontWeight='700';panel.appendChild(jump);
 }
 section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',()=>{tactic=b.dataset.tactic;draw()}));
-section.querySelector('#v162-save').addEventListener('click',()=>{extra=ta.value.trim().slice(0,700);try{localStorage.setItem(storage,extra);section.querySelector('#v162-feedback').textContent='Registro salvo neste dispositivo; recomendações recalculadas.'}catch(e){section.querySelector('#v162-feedback').textContent='Sem permissão para salvar neste dispositivo.'}draw()});
+section.querySelector('#v162-save').addEventListener('click',()=>{
+ extra=ta.value.trim().slice(0,700);
+ let saved=false;
+ try{localStorage.setItem(storage,extra);saved=true;section.querySelector('#v162-feedback').textContent='Registro salvo neste dispositivo; recomendações recalculadas.'}
+ catch(e){section.querySelector('#v162-feedback').textContent='Sem permissão para salvar neste dispositivo.'}
+ draw();
+ // O laudo V216 depende dos mesmos slots e deve ser recalculado sem recarregar a ficha.
+ if(saved)document.dispatchEvent(new CustomEvent('scoutpro:skills-updated',{detail:{capture:Number(d.capture),card_id:String(d.id)}}));
+});
 draw();
 })(typeof window!=='undefined'?window:null);

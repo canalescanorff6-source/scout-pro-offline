@@ -52,6 +52,16 @@ const suggestion=rows.find(x=>x.numero===1).plan.replacements[0].name;
 const withManual=E.reviewCard(massaro,massaroEvidence,R.keyFor,new Map(),R.evaluate,suggestion);
 assert(withManual.plan.replacements.length>0,'Manter alternativa sem usar habilidade já equipada');
 assert(!withManual.plan.replacements.some(x=>x.name===suggestion),'Não sugerir habilidade informada como equipada');
+const filled='Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola; Toque de calcanhar';
+const fullPlan=E.reviewCard(massaro,massaroEvidence,R.keyFor,new Map(),R.evaluate,filled).plan;
+assert.equal(fullPlan.manualCount,5,'Cinco skills distintas informadas');
+assert.equal(fullPlan.unreportedSlots,0,'Não apresentar vagas teóricas extras');
+assert.equal(fullPlan.replacements.length,0,'Não sugerir sexta habilidade quando cinco foram informadas');
+const aliasPlan=E.reviewCard(massaro,massaroEvidence,R.keyFor,new Map(),R.evaluate,
+ 'One-touch Pass; Passe de primeira; Cabeceio').plan;
+assert.equal(aliasPlan.manualCount,1,'Aliases são uma única habilidade; nativa não ocupa slot adicional');
+assert(aliasPlan.nativeManualConflicts.includes('Cabeceio'),'Exibir conflito entre nativa e adicional manual');
+
 
 assert.deepEqual(numbers,[1,12,19,25,26,27,28,29,30,31,32,33,35,36,38,39,40,45,48,110,203]);
 const card=n=>rows.find(x=>x.numero===n);
@@ -79,7 +89,9 @@ assert(src.includes('String(identity.id)!==String(source.id)'),'Não misturar ed
 assert(src.includes('print não mostra Card ID verificável')||src.includes('O print não mostra Card ID verificável'));
 assert(!src.includes('localStorage.setItem')&&!src.includes('updateBuild('),'Nunca sobrescrever treino');
 assert(css.includes('min-height:48px')&&css.includes('@media(max-width:480px)'),'Painel responsivo e alvos de toque');
-assert(sw.includes('v215-skill-evidence-v216-candidates'),'Cache renovado para mostrar novas sugestões após atualizar');
-assert(src.includes('SCOUT PRO · Verificação individual V216'),'Título atualizado da auditoria');
+assert(sw.includes('v215-skill-evidence-v216-candidates-v217-live-context'),'Cache V217 renovado para usuários Android/Windows');
+assert(src.includes('SCOUT PRO · Verificação individual V217'),'Título V217 apresentado na ficha');
+assert(src.includes('scoutpro:skills-updated'),'Painel precisa reagir ao salvamento sem recarregar');
+assert(read('web/skills-booster-v162.js').includes("new CustomEvent('scoutpro:skills-updated'"),'Salvar deve notificar laudo V217');
 assert(stamp.includes("'sw.js'"),'Atualização de cache no fingerprint');
 console.log('V216 PASS: 246 cartas, 21 listas candidatas revisadas com alternativas de Posse, 56 cartas repetidas, builds originais intactas.');

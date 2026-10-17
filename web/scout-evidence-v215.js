@@ -24,6 +24,11 @@ function candidatePlan(source,keyFor,evaluate,manualEquipped){
   seen.add(id);kept.push(name);
  }
  const manual=asSkills(manualEquipped);
+ const distinctManual=new Map(manual.map(name=>[skillId(name,keyFor),name]));
+ const nativeManualConflicts=[...distinctManual].filter(([key])=>nativeByKey.has(key)).map(([,name])=>name);
+ const reportedExtras=[...distinctManual].filter(([key])=>!nativeByKey.has(key));
+ // Este número reflete SOMENTE o que foi informado localmente, não os slots reais da conta.
+ const unreportedSlots=Math.max(0,5-reportedExtras.length);
  // Uma recomendação calculada pela tática não equivale a habilidade confirmada na edição.
  let rank=null;
  if(typeof evaluate==='function'&&clashes.length){
@@ -32,7 +37,7 @@ function candidatePlan(source,keyFor,evaluate,manualEquipped){
  const reserved=new Set([...native,...kept,...manual].map(name=>skillId(name,keyFor)));
  const replacements=[];
  for(const candidate of [...(rank?.recommendations||[]),...(rank?.alternatives||[])]){
-  if(replacements.length>=Math.min(clashes.length,Math.max(0,5-kept.length)))break;
+  if(replacements.length>=Math.min(clashes.length,Math.max(0,5-kept.length),unreportedSlots))break;
   const id=skillId(candidate.name,keyFor);
   if(!id||reserved.has(id))continue;
   if(typeof candidate.key==='string'&&candidate.key!==keyFor(candidate.name))continue;
@@ -41,7 +46,8 @@ function candidatePlan(source,keyFor,evaluate,manualEquipped){
   reserved.add(id);
  }
  return {kept,clashes,repeated,replacements,allHistoric:historic.slice(),
-  nativeRegistered:native.length,manualCount:manual.length,
+  nativeRegistered:native.length,manualCount:Math.min(5,reportedExtras.length),
+  manualReportedCount:reportedExtras.length,unreportedSlots,nativeManualConflicts,
   status:clashes.length?'REVISAR — candidatas antigas duplicadas no cadastro':'Sem coincidência canônica identificada',
   updateApplied:false};
 }
@@ -91,7 +97,7 @@ function display(doc,review){
  const panel=element(doc,'details','scout-v215-card');panel.id='scout-v215-evidence';
  panel.dataset.nativeOverlaps=String(review.clashes.length);
  panel.dataset.catalogCardIdMatch='true';
- panel.append(element(doc,'summary','','SCOUT PRO · Verificação individual V216'));
+ panel.append(element(doc,'summary','','SCOUT PRO · Verificação individual V217'));
  const content=element(doc,'div','scout-v215-content');
  content.append(element(doc,'h3','',review.name+' · Carta #'+String(review.numero).padStart(3,'0')));
  line(doc,content,'Card ID:',review.cardId+' · '+review.pp+' PP registrados');
@@ -111,6 +117,8 @@ function display(doc,review){
  }
  if(review.clashes.length){
   content.append(element(doc,'h4','','Candidatas revisadas · Posse de Bola'));
+  line(doc,content,'Adicionais informadas neste dispositivo:',review.plan.manualCount+'/5 distintas; não é confirmação dos slots reais.');
+  if(review.plan.nativeManualConflicts.length)line(doc,content,'Conflito com nativas:',review.plan.nativeManualConflicts.join(' · ')+' — confira o cadastro informado.');
   line(doc,content,'Mantidas apenas para conferência:',review.plan.kept.length?
    review.plan.kept.join(' · '):'Nenhuma sugestão antiga livre de coincidência conhecida.');
   if(review.plan.replacements.length){
@@ -124,7 +132,9 @@ function display(doc,review){
    }
    content.append(options);
   }else{
-   content.append(element(doc,'p','scout-v215-muted','Não foi possível propor alternativa documentalmente distinta; confirme a edição e as habilidades já equipadas.'));
+   content.append(element(doc,'p','scout-v215-muted',review.plan.unreportedSlots===0?
+    'Cinco habilidades adicionais distintas já foram informadas neste dispositivo. Sem vaga indicada no registro local: nenhuma nova sugestão é apresentada. Confira os slots no jogo.':
+    'Não foi possível propor alternativa distinta com este cadastro; confirme a edição e as habilidades já equipadas.'));
   }
   if(review.plan.repeated.length)line(doc,content,'Duplicadas entre candidatas:',review.plan.repeated.join(' · '));
   content.append(element(doc,'p','scout-v215-muted',
@@ -175,6 +185,17 @@ function start(){
    if(mounted&&observer)observer.disconnect();
    return mounted;
   };
+  // Atualizar o laudo NA HORA após o usuário salvar as habilidades informadas.
+  // Preserva a posição lógica do painel e seu estado aberto/recolhido.
+  doc.addEventListener('scoutpro:skills-updated',event=>{
+   if(Number(event.detail?.capture)!==cap||String(event.detail?.card_id)!==String(source.id))return;
+   const old=doc.getElementById('scout-v215-evidence');
+   const keepOpen=Boolean(old?.open);
+   if(old)old.remove();
+   render();
+   const current=doc.getElementById('scout-v215-evidence');
+   if(current)current.open=keepOpen;
+  });
   if(render())return;
   doc.addEventListener('scoutpro:recommendations-ready',render,{once:true});
   if(host.MutationObserver&&doc.body){
