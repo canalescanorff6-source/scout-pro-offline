@@ -43,7 +43,7 @@ for(let n=1;n<=246;n++){
   if(!Array.isArray(card.recommended_levels)&&Array.isArray(masterCard.niveis))warn('Master reports approved levels but page lacks levels');
   if(Array.isArray(card.recommended_levels)&&card.recommended_levels.length!==10)issue('Ten training groups expected');
  }
- if(!source.includes('../app-bridge.js'))issue('Global curator won't load');
+ if(!source.includes('../app-bridge.js'))issue("Global curator will not load");
  const ids=expectedIds.map(id=>({
   id,count:appearances(source,new RegExp('\\bid=["\\x27]'+id+'["\\x27]','gi'))
  }));
