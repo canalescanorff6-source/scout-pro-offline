@@ -69,3 +69,121 @@ body[data-page="rotation-lab"]{margin:0;background:radial-gradient(ellipse at 0 
 .scout-rotation-footer{font-size:11px;color:#9bbec4;text-align:center;padding:10px}
 @media(max-width:760px){.scout-rotation-players{grid-template-columns:1fr}.scout-rotation-team-inside{padding-inline:10px}.scout-rotation-readiness{max-width:64px}.scout-rotation-panel{padding:14px}}
 @media(max-width:360px){.scout-rotation-field-spot img{height:40px}.scout-rotation-field-spot{min-height:68px}.scout-rotation-field{min-height:410px}.scout-rotation-team>summary{gap:7px;padding:9px}}
+
+/* V222 — seleção visual segura dos jogadores do Black.
+   Sem substituir as artes, identidades ou builds das 246 cartas. */
+.scout-rotation-picker{
+ border:1px solid rgba(92,216,180,.28);
+ background:linear-gradient(155deg,#10383a,#0a242f);
+ border-radius:15px;padding:clamp(10px,2.2vw,18px);margin:15px 0;
+}
+.scout-rotation-picker-head{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:12px;flex-wrap:wrap;margin-bottom:14px;
+}
+.scout-rotation-picker-head strong{font-size:clamp(15px,3vw,19px);color:#d9fff0}
+.scout-rotation-picker-head p{font-size:12px;line-height:1.5;color:#b5d4d0;margin:5px 0}
+.scout-rotation-pill{
+ display:inline-flex;min-height:34px;align-items:center;
+ border:1px solid rgba(107,231,195,.61);background:#1a5145;
+ color:#adf6db;padding:8px 11px;border-radius:99px;
+ font-size:12px;font-weight:850;white-space:nowrap;
+}
+.scout-rotation-pick-controls{
+ display:grid;grid-template-columns:minmax(0,2fr) minmax(120px,1fr);
+ gap:10px;min-width:0;margin:0 0 14px;
+}
+.scout-rotation-pick-controls label{min-width:0}
+.scout-rotation-picker-list{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:8px;max-height:min(520px,65vh);overflow:auto;
+ overscroll-behavior:contain;padding:2px;
+}
+.scout-rotation-picker-card{
+ display:flex;align-items:center;gap:10px;min-width:0;
+ background:#102d37;border:1px solid rgba(117,185,165,.34);
+ border-radius:12px;padding:10px;min-height:95px;
+}
+.scout-rotation-picker-card.selected{
+ background:rgba(44,118,96,.24);
+ border-color:#58cca7;min-height:54px;padding:10px;
+}
+.scout-rotation-picker-card img{
+ width:58px;height:76px;flex:none;object-fit:contain;
+ border-radius:9px;background:#071b29;
+}
+.scout-rotation-picker-card>.scout-rotation-noart{
+ width:58px;min-width:58px;height:76px;
+ display:grid;place-content:center;border:1px solid #356d6b;
+ border-radius:9px;background:#061e26;color:#e6c99b;
+}
+.scout-rotation-picker-meta{
+ min-width:0;flex:1;display:grid;gap:5px;
+}
+.scout-rotation-picker-meta strong{
+ color:#eefcf7;font-size:13px;line-height:1.35;
+ overflow-wrap:anywhere;
+}
+.scout-rotation-picker-meta small{
+ color:#b6d5d3;font-size:11px;line-height:1.3;
+ overflow-wrap:anywhere;
+}
+.scout-rotation-picker-meta .scout-rotation-edition{
+ color:#e1c998;font-size:10px;max-height:3.9em;overflow:hidden;
+}
+.scout-rotation-picker-card button{
+ flex:none;min-height:40px;padding:8px 11px;font-size:11px;
+}
+.scout-rotation-picker-card button.pick{
+ background:#176751;border-color:#6ae3b8;color:#e3fff2;
+}
+.scout-rotation-picker-card button.unpick{
+ background:#573d35;border-color:#aa8476;color:#f8d5bc;
+}
+.scout-rotation-picked-heading{
+ display:flex;flex-wrap:wrap;justify-content:space-between;
+ gap:10px;margin:16px 2px 10px;
+ color:#f3fff6;font-size:13px;font-weight:850;
+}
+.scout-rotation-picked-heading span{color:#a8eacf}
+.scout-rotation-picked{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:7px;min-width:0;
+}
+.scout-rotation-picked .scout-rotation-picker-card{
+ background:#0f443c;border-color:#57c9a4;
+}
+.scout-rotation-quick-paste{
+ border:1px solid rgba(80,155,154,.35);border-radius:11px;
+ background:#0a2533;padding:10px 13px;margin:12px 0;
+}
+.scout-rotation-quick-paste>summary{
+ color:#ccece2;font-size:13px;font-weight:800;
+ cursor:pointer;min-height:32px;line-height:1.4;
+}
+.scout-rotation-quick-paste textarea{margin:10px 0 0}
+.scout-rotation-review-label{
+ display:flex!important;align-items:flex-start;gap:12px;
+ padding:12px;margin:13px 0!important;border-radius:12px;
+ background:rgba(61,129,114,.17);
+ border:1px solid rgba(112,190,173,.36);
+ line-height:1.5;
+}
+.scout-rotation-review-label input[type=checkbox]{
+ display:block;width:22px;min-width:22px;max-width:22px;
+ height:22px;min-height:22px;margin:0;cursor:pointer;accent-color:#46dba9;
+}
+.scout-rotation-review-label input:disabled{opacity:.40;cursor:not-allowed}
+@media(max-width:760px){
+ .scout-rotation-picker-list,.scout-rotation-picked{grid-template-columns:1fr}
+ .scout-rotation-picker-card{min-height:85px}
+}
+@media(max-width:420px){
+ .scout-rotation-pick-controls{grid-template-columns:minmax(0,1fr)}
+ .scout-rotation-picker-card{gap:8px;padding:8px}
+ .scout-rotation-picker-card img,.scout-rotation-picker-card>.scout-rotation-noart{
+  width:47px;min-width:47px;height:65px
+ }
+ .scout-rotation-picker-meta strong{font-size:12px}
+ .scout-rotation-picker-card button{padding:7px 9px;font-size:10px;max-width:92px}
+}
