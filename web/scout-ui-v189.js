@@ -90,7 +90,12 @@ function render(){
    copy.href=a.getAttribute('href');links.appendChild(copy)
   }
   details.append(summary,links);
-  const about=el('button','scout-v189-about','Como funciona a análise');
+  const friendsEntry=el('a','scout-v227-friends-entry');
+ friendsEntry.href='outros-elencos-v227.html';
+ friendsEntry.append(el('img','',''),el('span','', 'Outros Elencos — Cadastre cartas de amigos sem misturar com suas 246 cartas'),el('span','scout-v227-friends-arrow','→'));
+ friendsEntry.querySelector('img').src='assets/craque-elenco.svg';
+ friendsEntry.querySelector('img').alt='';
+ const about=el('button','scout-v189-about','Como funciona a análise');
   about.type='button';about.setAttribute('aria-expanded','false');
   about.addEventListener('click',()=>{
    const opened=doc.body.classList.toggle('scout-v189-method-open');
@@ -108,8 +113,8 @@ function render(){
    glass.setAttribute('aria-hidden','true');
    shell.append(glass,search);
    searchBlock.append(label,shell,el('p','scout-v192-search-tip','Nome, edição, raridade ou Card ID · filtros completos logo abaixo'));
-   panel.append(indicator,caption,searchBlock,actions,details,about);
-  }else panel.append(indicator,caption,actions,details,about);
+   panel.append(indicator,caption,searchBlock,actions,friendsEntry,details,about);
+  }else panel.append(indicator,caption,actions,friendsEntry,details,about);
   hero.appendChild(panel);
   const brand=doc.querySelector('.topbar .nav-cta');
   if(brand)brand.textContent='Meu elenco';
