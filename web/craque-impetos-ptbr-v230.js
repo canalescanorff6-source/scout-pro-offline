@@ -63,10 +63,10 @@ function translate(value){
  const raw=String(value??''),protectedSkills=[];
  const masked=raw.replace(skillPattern,match=>{
   const i=protectedSkills.push(match)-1;
-  return '\\uE010'+i+'\\uE011';
+  return String.fromCharCode(0xE010)+i+String.fromCharCode(0xE011);
  });
  const updated=masked.replace(pattern,(_match,prefix,middle)=>prefix+label(middle));
- return updated.replace(/\\uE010(\\d+)\\uE011/g,(_,id)=>protectedSkills[Number(id)]||'');
+ return updated.replace(new RegExp(String.fromCharCode(0xE010)+'([0-9]+)'+String.fromCharCode(0xE011),'g'),(_,id)=>protectedSkills[Number(id)]||'');
 }
 const SKIP='script,style,noscript,textarea,input,pre,code,svg,math,[contenteditable="true"]';
 function excluded(node){
