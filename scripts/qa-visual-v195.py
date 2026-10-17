@@ -934,8 +934,11 @@ def run():
                     with page.expect_download(timeout=12000) as backup_wait:
                         page.locator('#rotation-backup').click()
                     backup=json.loads(Path(backup_wait.value.path()).read_text(encoding='utf8'))
-                    if backup.get('format')!='scoutpro-userdata-v1' or 'scoutpro:v219:black-caps' not in backup.get('items', {}):
-                        problems.append(f"{name}: V225 backup geral não contém os bloqueios salvos")
+                    if (backup.get('format')!='craque-tatico-backup-v226' or
+                            'scoutpro:v219:black-caps' not in backup.get('items', {}) or
+                            backup.get('checksum_algorithm')!='SHA-256' or
+                            len(str(backup.get('checksum','')))!=64):
+                        problems.append(f"{name}: V226 backup inválido, sem bloqueios ou sem SHA-256")
 
                 page.screenshot(path=str(OUT / f"{name}_rotation_4312_v219.png"),full_page=False,animations="disabled")
                 page.locator('button[data-series="4213"]').click()
