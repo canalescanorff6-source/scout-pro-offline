@@ -64,6 +64,13 @@ if(inCard){
  const css218=document.createElement('link');css218.rel='stylesheet';css218.href=v189Root+'scout-training-unified-v218.css';document.head.appendChild(css218);
  const js218=document.createElement('script');js218.src=v189Root+'scout-training-unified-v218.js';js218.defer=true;document.head.appendChild(js218);
 }
+// V220: uma ficha principal, cinco estilos, com o motor antes da interface.
+if(inCard){
+ const css220=document.createElement('link');css220.rel='stylesheet';css220.href=v189Root+'scout-card-unified-v220.css';document.head.appendChild(css220);
+ const engine220=document.createElement('script');engine220.src=v189Root+'scout-multitactic-engine-v220.js';
+ engine220.onload=()=>{const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';document.head.appendChild(ui220)};
+ document.head.appendChild(engine220);
+}
 // V210/V211 — paleta da marca e revisão individual baseada em evidências.
 if(inCard){
  const color=document.createElement('link');color.rel='stylesheet';color.href=v189Root+'scout-theme-v210.css';document.head.appendChild(color);
