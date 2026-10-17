@@ -909,7 +909,7 @@ def run():
                     page.goto(URL + "/fichas/050_Lionel_Messi.html",wait_until="domcontentloaded",timeout=35000)
                     page.locator('#scout-v221-review .scout-v221-stage').wait_for(timeout=25000)
                     messi=page.locator('#scout-v221-review').inner_text()
-                    if 'PENDENTE' not in messi or 'Sem validação' not in messi or 'Habilidades nativas' not in messi:
+                    if 'PENDENTE' not in messi.upper() or 'SEM VALIDAÇÃO' not in messi.upper() or 'HABILIDADES NATIVAS' not in messi.upper():
                         problems.append(f"{name}: Messi #050 ganhou falsa homologação ou perdeu pendências reais")
                     if page.locator('#scout-v221-review').evaluate('(e)=>e.scrollWidth-e.clientWidth')>8:
                         problems.append(f"{name}: V221 Messenger #050 extrapolou a tela")
