@@ -586,6 +586,11 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_evidencia_skills_v215.png"),full_page=False,animations="disabled")
                 # V217: atualizar o painel SEM recarregar após preencher as cinco adicionais,
                 # sem criar uma sexta habilidade ou modificar treino/PP.
+                # V220: painel de cadastro avançado deve permanecer oculto até solicitação explícita.
+                if not page.locator('#scout-v220-technical').evaluate('(e)=>e.open'):
+                    page.locator('#scout-v220-technical > summary').click()
+                if not page.locator('#scout-v220-advanced-skills').evaluate('(e)=>e.open'):
+                    page.locator('#scout-v220-advanced-skills > summary').click()
                 page.locator('#scout-v162 > details > summary').click()
                 page.locator('#v162-equipped').fill(
                     'Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola; Toque de calcanhar'
