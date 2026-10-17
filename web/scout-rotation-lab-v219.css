@@ -192,3 +192,10 @@ body[data-page="rotation-lab"]{margin:0;background:radial-gradient(ellipse at 0 
 .scout-rotation-field-spot.provisional{border:2px dashed #deb77b!important;background:rgba(118,72,26,.25)!important}
 .scout-rotation-field-spot.provisional small{color:#ffdca7!important;font-weight:800}
 .scout-rotation-diagnostics{overflow-wrap:anywhere}
+
+/* Interface V226 — cartões, filtros, duas formações e backups com identidades de cor brasileiras. */
+.scout-rotation-squads{grid-template-columns:minmax(0,1fr)}
+.scout-rotation-panel .scout-rotation-actions>.scout-rotation-btn{flex:0 1 auto}
+.scout-rotation-team>summary:hover{background:rgba(22,133,91,.15)}
+.scout-rotation-pick-controls input:focus,.scout-rotation-pick-controls select:focus{border-color:#ffc629;box-shadow:0 0 0 3px rgba(255,198,41,.14)}
+@media(max-width:540px){.scout-rotation-actions .scout-rotation-btn{flex:1 1 calc(50% - 10px);min-height:48px}.scout-rotation-pick-controls{grid-template-columns:1fr}.scout-rotation-team>summary{gap:8px}}
