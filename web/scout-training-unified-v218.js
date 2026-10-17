@@ -37,7 +37,8 @@ function make(doc,tag,cls,text){
  const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=String(text);return e;
 }
 function mount(doc){
- if(!doc||doc.body?.dataset.page!=='detail'||doc.getElementById('scout-v218-controls'))return false;
+ if(!doc||doc.body?.dataset.page!=='detail')return false;
+ if(doc.getElementById('scout-v218-controls'))return true;
  const table=doc.getElementById('scout-v208-training'),panel=doc.querySelector('#scout-v188-principal .scout-v188-progress');
  const raw=doc.getElementById('scout-v68-data'),labRaw=doc.getElementById('lab-data');
  if(!table||!panel||!raw||!labRaw)return false;
