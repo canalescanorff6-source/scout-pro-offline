@@ -931,13 +931,11 @@ def run():
                         problems.append(f"{name}: V225 arquivo exportado perdeu as 9 equipes de 23")
                     if not exported_squads.get('matches'):
                         problems.append(f"{name}: V225 arquivo exportado perdeu a partida registrada")
-                    page.locator('#scout-backup').click()
                     with page.expect_download(timeout=12000) as backup_wait:
-                        page.locator('#scout-export').click()
+                        page.locator('#rotation-backup').click()
                     backup=json.loads(Path(backup_wait.value.path()).read_text(encoding='utf8'))
                     if backup.get('format')!='scoutpro-userdata-v1' or 'scoutpro:v219:black-caps' not in backup.get('items', {}):
                         problems.append(f"{name}: V225 backup geral não contém os bloqueios salvos")
-                    page.locator('#scout-close').click()
 
                 page.screenshot(path=str(OUT / f"{name}_rotation_4312_v219.png"),full_page=False,animations="disabled")
                 page.locator('button[data-series="4213"]').click()
