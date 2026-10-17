@@ -228,7 +228,7 @@ function draw(){
  const remaining=Math.max(0,5-result.alreadyEquippedProvided);
  const proposed=result.recommendations.slice(0,remaining);
  section.querySelectorAll('[data-tactic]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tactic===tactic)));
- section.querySelector('#v162-skills-status').textContent='Nativas catalogadas: '+result.knownNative+' · Adicionais distintas informadas: '+result.alreadyEquippedProvided+'/5 · Vagas a planejar: '+remaining+'. '+(result.nativeKnown?'Ordem heurística para função, tática e complementaridade das nativas cadastradas; não é homologação de gameplay.':'EDIÇÃO SEM NATIVAS DOCUMENTADAS: sugestões provisórias; não gaste tokens sem conferir.')+(result.missing.length?' Atenção: '+result.missing.join(' '):'');
+ section.querySelector('#v162-skills-status').textContent='Nativas catalogadas: '+result.knownNative+' · Adicionais informadas (distintas): '+result.alreadyEquippedProvided+'/5 · Vagas a planejar: '+remaining+'. '+(result.nativeKnown?'Ordem heurística para função, tática e complementaridade das nativas cadastradas; não é homologação de gameplay.':'EDIÇÃO SEM NATIVAS DOCUMENTADAS: sugestões provisórias; não gaste tokens sem conferir.')+(result.missing.length?' Atenção: '+result.missing.join(' '):'');
  const ul=section.querySelector('#v162-skills');ul.replaceChildren();
  for(const s of proposed){const li=document.createElement('li'),b=document.createElement('strong'),p=document.createElement('p');b.textContent=s.name;p.textContent=s.why+(s.synergies?.length?' Critério de complementaridade (hipótese): '+s.synergies.join('; ')+'.':'');li.append(b,p);ul.appendChild(li)}
  for(let i=proposed.length;i<remaining;i++){
