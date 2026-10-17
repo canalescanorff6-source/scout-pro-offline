@@ -36,7 +36,6 @@ const fakeWindow={localStorage,crypto:webcrypto,Capacitor:null,
 };
 const sandbox={window:fakeWindow,localStorage,crypto:webcrypto,TextEncoder,
  TextDecoder,CustomEvent:class{},setTimeout:()=>0,clearTimeout:()=>{},document:{visibilityState:'visible'}};
-Object.defineProperty(localStorage,'__keys',{value:items});
 const nativeKeysProxy=new Proxy(localStorage,{ownKeys(){return [...items.keys()]},getOwnPropertyDescriptor(o,k){if(items.has(k))return {enumerable:true,configurable:true,value:items.get(k)};return Object.getOwnPropertyDescriptor(o,k)||{enumerable:false,configurable:true}}});
 sandbox.localStorage=nativeKeysProxy;fakeWindow.localStorage=nativeKeysProxy;
 vm.runInNewContext(read('web/craque-backup-v226.js'),sandbox,{filename:'craque-backup-v226.js'});
