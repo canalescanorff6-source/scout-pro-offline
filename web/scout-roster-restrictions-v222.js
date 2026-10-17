@@ -54,7 +54,8 @@ function readRecord(imported,cards){
  const current=catalog(cards),byNo=new Map(imported.excluded.map(x=>[Number(x.numero),x]));
  for(const n of ids){
   const c=current.get(n),reported=byNo.get(n);
-  if(!reported||String(reported.card_id)!==cardId(c)||String(reported.nome)!==String(c.name))
+  if(!reported||String(reported.card_id)!==cardId(c)||String(reported.nome)!==String(c.name)||
+    String(reported.edicao)!==String(c.versao||'')||String(reported.posicao)!==String(c.posicao||''))
    throw Error('Edição/identidade divergente na carta #'+String(n).padStart(3,'0')+
     '. Atualize o catálogo e confira a edição original.');
  }
