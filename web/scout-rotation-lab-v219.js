@@ -120,6 +120,8 @@ function updateBlack(ids,{reviewed=false,message='Lista atualizada nas duas form
 function inventory(){
  const a=engine.analyze(cards,excluded);
  status('black-count',a.excluded+' / 23');
+ const board=$('craque-lab-snapshot');
+ if(board)board.innerHTML='<span>246 cartas originais</span><span>'+a.excluded+' protegidas</span><span>'+a.available+' livres</span><span>'+a.maxTeams+' equipes por formação</span>';
  status('rotation-inventory',a.cards+' cartas reais · '+a.excluded+' reservadas · '+a.available+' disponíveis · '+a.maxTeams+' equipes completas possíveis por série · '+a.remaining+' cartas fora de equipes completas.');
  status('black-feedback',photoStatus());
 }
