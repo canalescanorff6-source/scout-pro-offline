@@ -133,7 +133,7 @@ function diagnostics(){
  const nativeSA=sheet.teams.filter(t=>t.starters.some(s=>s.slot==='sa'&&s.fit==='posição original')).length;
  $('series-diagnostics').innerHTML=
   '<strong>'+sheet.teams.length+' equipes · 11 titulares + 12 reservas</strong> · '+(excluded.length===23?'23 restrições selecionadas. ':'PRÉVIA: confirme as 23 cartas proibidas. ')+esc(formatNumbers(sheet.leftovers))+' fora desta rodada (entram na rodada '+(cycle===1?'2':'1')+')'+ 
-  '<p>Estilo do técnico: '+esc(TACTICS[tactic])+'. Equipes experimentais, sem gameplay confirmado. '+a.keepers+' goleiros elegíveis · +(sheet.teams.some(t=>!t.ready)?'Elencos incompletos exigem conferência; não repetir cartas. ':'')+(a.goalkeeperLimited?'NÚMERO LIMITADO PELOS GOLEIROS: não repetir goleiro entre equipes. ':'')+
+  '<p>Estilo do técnico: '+esc(TACTICS[tactic])+'. Equipes experimentais, sem gameplay confirmado. '+a.keepers+' goleiros elegíveis · '+(sheet.teams.some(t=>!t.ready)?'Elencos incompletos exigem conferência; não repetir cartas. ':'')+(a.goalkeeperLimited?'NÚMERO LIMITADO PELOS GOLEIROS: não repetir goleiro entre equipes. ':'')+
   'Série '+esc(active)+' · Rodada '+cycle+': '+links+' equipes com requisitos documentais simultâneos de Link-Up (não confirma ativação no jogo) · '+caveats+' equipes com possíveis adaptações.'+
   (active==='4213'?' SA na posição original: '+nativeSA+' equipe(s).':'')+'</p>'+
   '<p class="scout-rotation-caution">'+esc(photoStatus())+'</p>';
