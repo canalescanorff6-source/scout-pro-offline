@@ -1027,11 +1027,11 @@ def run():
                 page.locator('#friend-card-booster-slot').select_option('vazio')
                 page.locator('#friend-dialog-save').click()
                 page.locator('#friend-cards .friends-analysis-action').click()
-                if page.locator('#friend-analysis-table tbody tr').count()!=10:
+                if page.locator('.friend-analysis-table tbody tr').count()!=10:
                     problems.append(f"{name}: V228 não mostrou 10 grupos de treino")
                 for tactic in ['posse','normal','rapido','fora','longo']:
                     page.locator(f'#friend-analysis-modes button[data-style="{tactic}"]').click()
-                    if page.locator('#friend-analysis-table tbody tr').count()!=10:
+                    if page.locator('.friend-analysis-table tbody tr').count()!=10:
                         problems.append(f"{name}: V228 tabela ausente para {tactic}")
                     if not page.locator('.friend-analysis-pp').inner_text().count('62'):
                         problems.append(f"{name}: V228 PP incorreto no modo {tactic}")
