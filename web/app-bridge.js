@@ -42,6 +42,9 @@ document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
 // V189: mesmo design e bundle responsivo em Android, Windows e navegador.
 const v189Root=inCard?'../':'';
+const craqueCss=document.createElement('link');craqueCss.rel='stylesheet';craqueCss.href=v189Root+'craque-theme-v226.css';document.head.appendChild(craqueCss);
+const craqueScript=document.createElement('script');craqueScript.src=v189Root+'craque-backup-v226.js';document.head.appendChild(craqueScript);
+document.title=document.title.replace(/Scout PRO|SCOUT PRO/g,'Craque Tático');
 const v189Css=document.createElement('link');v189Css.rel='stylesheet';v189Css.href=v189Root+'scout-ui-v189.css';document.head.appendChild(v189Css);
 const v189Js=document.createElement('script');v189Js.src=v189Root+'scout-ui-v189.js';v189Js.defer=true;document.head.appendChild(v189Js);
 // V190: uma única folha de acabamento responsivo é empacotada pelos dois instaladores.
