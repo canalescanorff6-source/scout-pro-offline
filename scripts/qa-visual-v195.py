@@ -725,7 +725,7 @@ def run():
                 formation_metrics=page.evaluate("""() => {
                   const squads=[...document.querySelectorAll('#squads details[data-team]')];
                   const ids=squads.flatMap(s=>[...s.querySelectorAll('.scout-rotation-player')].map(p=>
-                    Number(p.querySelector('small')?.textContent.match(/#(\d{3})/)?.[1]||0)));
+                    Number(p.querySelector('small')?.textContent.match(/#([0-9]{3})/)?.[1]||0)));
                   return {squads:squads.length,players:ids.length,unique:new Set(ids).size,
                     excluded:[...new Set(ids)].filter(n=>n>=1&&n<=22),
                     horizontal:Math.max(0,document.documentElement.scrollWidth-innerWidth),
@@ -755,8 +755,8 @@ def run():
                     document.querySelector('#series-diagnostics').innerText.includes('Série 4213')
                 """,timeout=12000)
                 second=page.evaluate("""() => {
-                  const ids=[...document.querySelectorAll('#squads .scout-rotation-player small')]
-                    .map(x=>Number(x.textContent.match(/#(\d{3})/)?.[1]||0));
+                  const ids=[...document.querySelectorAll('#squads .scout-rotation-player div small:first-of-type')]
+                    .map(x=>Number(x.textContent.match(/#([0-9]{3})/)?.[1]||0));
                   return {players:ids.length,unique:new Set(ids).size,
                    overflow:Math.max(0,document.documentElement.scrollWidth-innerWidth)};
                 }""")
