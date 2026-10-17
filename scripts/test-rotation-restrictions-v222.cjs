@@ -99,15 +99,20 @@ for(const formation of plan.formations){
  assert(numbers.every(n=>!mixed.includes(n)));
 }
 const first=engine.build(cards,plan.formations[0],excluded,1).teams[0];
-const sig=engine.rosterFingerprint(first,excluded);
+const sig=engine.rosterFingerprint(first,excluded,cards);
 assert(sig.includes('SCOUT_ROSTER_SIGNATURE_V223'));
-assert.equal(sig,engine.rosterFingerprint(first,excluded.slice().reverse()),'Ordem dos bloqueios não altera histórico');
+assert.equal(sig,engine.rosterFingerprint(first,excluded.slice().reverse(),cards),'Ordem dos bloqueios não altera histórico');
 const another=structuredClone(first);another.bench[0].cap=999;
-assert.notEqual(sig,engine.rosterFingerprint(another,excluded),'Alterar uma reserva muda a identidade do elenco');
+assert.notEqual(sig,engine.rosterFingerprint(another,excluded,cards),'Alterar uma reserva muda a identidade do elenco');
 const anotherStarter=structuredClone(first);anotherStarter.starters[0].cap=999;
-assert.notEqual(sig,engine.rosterFingerprint(anotherStarter,excluded),'Alterar um titular muda a identidade do elenco');
-assert.notEqual(sig,engine.rosterFingerprint(first,excluded.slice(1)),'Alterar restrições muda a identidade do experimento');
+assert.notEqual(sig,engine.rosterFingerprint(anotherStarter,excluded,cards),'Alterar um titular muda a identidade do elenco');
+assert.notEqual(sig,engine.rosterFingerprint(first,excluded.slice(1),cards),'Alterar restrições muda a identidade do experimento');
+const changedCatalog=cards.map(c=>c.numero===first.starters[0].cap?{...c,versao:String(c.versao||'')+' modificada'}:c);
+assert.notEqual(sig,engine.rosterFingerprint(first,excluded,changedCatalog),'Edição alterada nunca herda histórico de outra carta');
+const changedIds=cards.map(c=>c.numero===first.starters[0].cap?{...c,id:'versão-incorreta'}:c);
+assert.notEqual(sig,engine.rosterFingerprint(first,excluded,changedIds),'Card ID alterado nunca herda histórico de outra carta');
 assert.throws(()=>engine.rosterFingerprint({}),/inválida/);
+assert.throws(()=>engine.rosterFingerprint(first,excluded,[]),/Catálogo completo/);
 const ui=read('web/scout-rotation-lab-v219.js');
 const html=read('web/meu-time-testes-v219.html');
 const css=read('web/scout-rotation-lab-v219.css');
@@ -119,7 +124,7 @@ assert(ui.includes("restrictions.validateCaps")&&ui.includes("restrictions.makeR
 assert(ui.includes("data-black-cap")&&ui.includes("updateBlack")&&ui.includes('renderPicker'));
 assert(ui.includes("rosterSignature")&&ui.includes("rosterLogs"),'Resultados de partidas antigas não podem ser atribuídos a novos elencos após mudar exclusões');
 assert(ui.includes("lineupSnapshot:lineupSnapshot(team)"),'Partidas devem gravar composição exata dos 22 jogadores');
-assert(ui.includes("engine.rosterFingerprint(team,excluded)"),'Histórico precisa incluir titulares, banco e bloqueios');
+assert(ui.includes("engine.rosterFingerprint(team,excluded,cards)"),'Histórico precisa incluir titulares, banco, edição, Card ID e bloqueios');
 assert(ui.includes("JSON.stringify(savedReview.caps)===JSON.stringify(excluded)"),'Verificação pessoal atrelada exatamente aos números conferidos');
 assert(ui.includes("blackVisualVerified:false"),'Não afirmar foto externa confirmada em relatórios');
 assert(css.includes('@media(max-width:420px)'),'Seletor cabe no celular');
