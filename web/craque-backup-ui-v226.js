@@ -37,4 +37,34 @@ pick.onchange=async()=>{
  }catch(e){feedback.textContent='Restauração não concluída: '+String(e.message||e)}
  finally{pick.value='';importBtn.disabled=false}
 };
+recover.onclick=async()=>{
+ recover.disabled=true;
+ try{
+  const record=await backup.recoverySnapshot(localStorage);
+  if(!record)throw Error('Nenhuma cópia automática encontrada.');
+  const info=await backup.inspect(record);
+  if(!confirm('Recuperar '+backup.summary(info)+'? Primeiro será salvo um backup externo de segurança.'))return;
+  const safety=await backup.exportToFile(localStorage,'CraqueTatico-Copia-Antes-Da-Recuperacao.json');
+  if(safety.status!=='saved')throw Error('Cópia preventiva não confirmada. Nada foi alterado.');
+  const result=backup.apply(localStorage,info);
+  feedback.textContent=result.written+' registros recuperados. Recarregue o aplicativo.';
+  reload.hidden=false;
+ }catch(e){feedback.textContent='Recuperação interrompida: '+String(e.message||e)}
+ finally{recover.disabled=false}
+};
+let timer=null,busy=false;
+function scheduleAutoBackup(){
+ clearTimeout(timer);
+ timer=setTimeout(async()=>{
+  if(busy)return;
+  busy=true;
+  try{await backup.autoSnapshot(localStorage)}
+  catch(e){console.warn('Cópia local indisponível:',e)}
+  finally{busy=false}
+ },6000);
+}
+document.addEventListener('craque:data-changed',scheduleAutoBackup);
+document.addEventListener('change',scheduleAutoBackup,{passive:true});
+document.addEventListener('click',ev=>{if(ev.target?.closest?.('button'))scheduleAutoBackup()},{passive:true});
+if(Object.keys(backup.collect(localStorage)).length)scheduleAutoBackup();
 })();
