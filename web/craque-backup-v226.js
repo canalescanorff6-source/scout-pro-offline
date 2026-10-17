@@ -7,7 +7,7 @@ const FORMAT='craque-tatico-backup-v226',LEGACY='scoutpro-userdata-v1';
 const MAX_BYTES=8*1024*1024,MAX_KEYS=4000,SNAPSHOT_LIMIT=3;
 const AUTO_DEBOUNCE=1400;
 const KEY_PREFIX='scoutpro:',LAST_KEY='craque:v226:backup-last';
-let lastTimer=null,lastError='',pending=Promise.resolve();
+let lastTimer=null,lastError='',pending=Promise.resolve(),lastDigest=null;
 const bytes=s=>new TextEncoder().encode(s).length;
 const keys=()=>Object.keys(localStorage).filter(k=>k.startsWith(KEY_PREFIX)).sort();
 function collect(){
@@ -89,7 +89,9 @@ async function nativeSnapshot(data,kind='automatic'){
 }
 async function protect(reason='automatic'){
  const data=await create();
+ if(data.checksum===lastDigest&&reason==='automatic')return {status:'unchanged'};
  const ret=await nativeSnapshot(data,reason);
+ lastDigest=data.checksum;
  host.dispatchEvent(new CustomEvent('craque:backup-saved',{detail:{reason,records:data.number_of_records}}));
  return ret;
 }
@@ -158,5 +160,8 @@ async function listLocal(){
  const last=JSON.parse(localStorage.getItem(LAST_KEY)||'null');
  return {last,kind:target.kind,error:lastError,limit:SNAPSHOT_LIMIT};
 }
+host.addEventListener('craque:data-changed',()=>queue('automatic'));
+host.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')queue('automatic')});
+host.setInterval(()=>queue('automatic'),180000);
 host.CRAQUE_BACKUP_V226=Object.freeze({FORMAT,LEGACY,create,inspect,restore,protect,queue,readNative,listLocal,describe,collect});
 })(window);
