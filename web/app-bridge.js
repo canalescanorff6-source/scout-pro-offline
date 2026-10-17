@@ -637,6 +637,17 @@ if(!document.querySelector('link[data-scout-favicon]')){
 
 const craqueTheme=document.createElement('link');
 craqueTheme.rel='stylesheet';craqueTheme.href=v189Root+'craque-theme-v226.css';document.head.appendChild(craqueTheme);
+
+// V230: CSS único ouro + azul do escudo; pictogramas e idiomas, somente UI.
+const design230=document.createElement('link');design230.rel='stylesheet';
+design230.href=v189Root+'craque-design-v230.css';document.head.appendChild(design230);
+if(inCard){
+ const train230=document.createElement('script');train230.src=v189Root+'craque-training-icons-v230.js';
+ train230.defer=true;document.head.appendChild(train230);
+}
+const labels230=document.createElement('script');labels230.src=v189Root+'craque-impetos-ptbr-v230.js';
+labels230.defer=true;document.head.appendChild(labels230);
+
 window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
