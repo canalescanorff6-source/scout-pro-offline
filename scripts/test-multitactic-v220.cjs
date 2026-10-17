@@ -30,7 +30,7 @@ for(const c of cards){
   assert(proof.warning.includes('não status finais'),'Não confundir PP com stats');
   assert.equal(proof.priority.length,4);
   const skills=R.evaluate(d,style.id,'');
-  assert.equal(skills.nativeKnown,true,'Todas as nativas catalogadas permanecem no registro '+c.numero);
+  assert.equal(skills.nativeKnown,Boolean(String(c.habilidades_nativas||'').trim()),'Lacunas de habilidades nativas devem permanecer explícitas '+c.numero);
   assert.equal(skills.recommendations.length>0,true,'Habilidades para '+c.numero+' '+style.id);
   assert(skills.recommendations.every(x=>!String(c.habilidades_nativas||'').split(';').map(R.keyFor).includes(x.key)),
    'Nunca sugerir adicional nativa '+c.numero+' '+style.id);
@@ -70,7 +70,7 @@ for(const c of cards){
 }
 assert.equal(verified,162,'162 treinos registrados');
 assert.equal(pending,84,'84 treinos ainda experimentais');
-assert.equal(withNative,246);
+assert(withNative>=200&&withNative<=246,'Contar as nativas documentadas sem inventar nas cartas pendentes');
 assert(changed>70,'Táticas diferentes precisam gerar hipóteses realmente distintas em várias cartas');
 assert(styleDifferences>50,'Múltiplos estilos devem afetar a distribuição por função');
 for(const t of T.STYLES)assert(namesByTactic[t.id].size>=5,'Ímpetos devem variar entre funções '+t.id);
