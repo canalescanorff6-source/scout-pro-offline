@@ -997,6 +997,60 @@ def run():
                     if page.locator('#scout-v221-review a.scout-v221-peer').count()<1:
                         problems.append(f"{name}: Huijsen #144 perdeu comparação de builds iguais")
                     page.screenshot(path=str(OUT / f"{name}_v221_huijsen_shared_id.png"),full_page=False,animations="disabled")
+                # V227: acervos de outras pessoas isolados, sem tocar as 246 cartas oficiais.
+                page.goto(URL + "/outros-elencos-v227.html", wait_until="domcontentloaded", timeout=35000)
+                page.locator("#friend-people").wait_for(timeout=12000)
+                page.locator("#friend-person-name").fill("Acervo da Ana")
+                page.locator("#friend-person-form button[type=submit]").click()
+                page.locator("#friend-new-card").click()
+                page.locator("#friend-card-name").fill("Lionel Messi")
+                page.locator("#friend-card-edition").fill("Épico de Ana")
+                page.locator("#friend-card-position").select_option("SA")
+                page.locator("#friend-card-gameid").fill("TESTE-ANA")
+                page.locator("#friend-dialog-save").click()
+                if page.locator("#friend-cards .friends-card").count()!=1:
+                    problems.append(f"{name}: V227 falha ao cadastrar carta de outra pessoa")
+                page.locator("#friend-person-name").fill("Acervo do Bruno")
+                page.locator("#friend-person-form button[type=submit]").click()
+                if page.locator("#friend-cards .friends-card").count()!=0:
+                    problems.append(f"{name}: V227 cartas da primeira pessoa apareceram no segundo acervo")
+                page.locator("#friend-new-card").click()
+                page.locator("#friend-card-name").fill("Lionel Messi")
+                page.locator("#friend-card-edition").fill("Show Time de Bruno")
+                page.locator("#friend-dialog-save").click()
+                if page.locator("#friend-cards .friends-card").count()!=1:
+                    problems.append(f"{name}: V227 Bruno não conseguiu ter sua própria carta Messi")
+                page.locator("#friend-people .friends-person").first.click()
+                card_text=page.locator("#friend-cards .friends-card").first.inner_text()
+                if "Épico de Ana" not in card_text or "Show Time de Bruno" in card_text:
+                    problems.append(f"{name}: V227 acervos misturados ao voltar para Ana")
+                if name in ('mobile_390','windows_1366'):
+                    with page.expect_download(timeout=12000) as friend_export:
+                        page.locator("#friend-export").click()
+                    file_data=json.loads(Path(friend_export.value.path()).read_text(encoding="utf8"))
+                    if (file_data.get('format')!='craque-friend-profile-v227' or
+                        len(file_data.get('cards',[]))!=1 or
+                        file_data['cards'][0].get('edition')!='Épico de Ana'):
+                        problems.append(f"{name}: V227 exportação individual misturou pessoas")
+                    page.locator("#friend-open-backup").click()
+                    page.locator("#scout-backup-modal").wait_for(state='visible',timeout=12000)
+                    page.locator("#scout-close").click()
+                page.reload(wait_until="domcontentloaded")
+                if page.locator("#friend-people .friends-person").count()!=2:
+                    problems.append(f"{name}: V227 coleções desapareceram após recarregar")
+                stored_guests=page.evaluate("""() => {
+                  const v=JSON.parse(localStorage.getItem('scoutpro:v227:friends-collections')||'null');
+                  return {owners:v?.owners?.length||0,cards:v?.cards?.length||0,
+                   personal:localStorage.getItem('scoutpro:v219:black-caps'),
+                   horizontalOverflow:document.documentElement.scrollWidth-innerWidth}
+                }""")
+                result['friends_v227']=stored_guests
+                if stored_guests['owners']!=2 or stored_guests['cards']!=2 or stored_guests['horizontalOverflow']>8:
+                    problems.append(f"{name}: V227 isolamento/persistência/layout falhou {stored_guests}")
+                page.screenshot(path=str(OUT / f"{name}_friends_v227.png"),full_page=False,animations="disabled")
+                if errors:
+                    relevant=[e for e in errors if 'craque-friends' in e or 'outros-elencos' in e]
+                    if relevant:problems.append(f"{name}: V227 erro JS {relevant[:2]}")
                 results[name] = result
                 context.close()
         finally:
