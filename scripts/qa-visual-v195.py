@@ -618,7 +618,7 @@ def run():
                 page.locator("#scout-v207-identity .scout-v207-preview>summary").click()
                 page.locator("#scout-v207-identity .scout-v207-peers>summary").click()
 
-                # V210: estilo calculado a partir do tom oficial verde-turquesa do Scout PRO.
+                # V230: paleta oficial da nova logo azul-noite e ouro, sem herança neon V210.
                 palette=page.evaluate("""() => {
                   const panel=document.querySelector('#scout-v188-principal .scout-v188-progress.scout-v208-reference');
                   const icon=document.querySelector('#scout-v208-training .scout-v208-icon');
@@ -629,10 +629,10 @@ def run():
                    panelBackground:getComputedStyle(panel).backgroundImage};
                 }""")
                 detail["v210_palette"]=palette
-                if "53, 228, 185" not in palette["border"] or "53, 228, 185" not in palette["total"]:
-                    problems.append(f"{name}: paleta V210 não usa o acento oficial verde-turquesa")
-                if "hue-rotate" not in palette["iconFilter"]:
-                    problems.append(f"{name}: ícones V210 não receberam a cor do projeto")
+                if "234, 195, 108" not in palette["border"] or "246, 213, 139" not in palette["total"]:
+                    problems.append(f"{name}: V230 cores do escudo não aplicadas nos atributos: {palette}")
+                if "hue-rotate" in palette["iconFilter"]:
+                    problems.append(f"{name}: V230 ainda aplica filtro verde dos ícones antigos")
                 page.screenshot(path=str(OUT / f"{name}_palette_v210.png"),full_page=False,animations="disabled")
                 # V211: Massaro e Batistuta compartilham o mesmo vetor mas exigem revisão.
                 page.wait_for_function("() => !!document.getElementById('scout-v211-audit')",timeout=25000)
@@ -800,8 +800,8 @@ def run():
                     problems.append(f"{name}: V206 não atualizou todo o resumo de treino")
                 if premium["overflow"] or premium["smallButtons"]:
                     problems.append(f"{name}: V206 com overflow={premium['overflow']} ou botões pequenos={premium['smallButtons']}")
-                if premium["withNames"]!=10 or premium["accents"]<2:
-                    problems.append(f"{name}: V206 perdeu nomes do treino ou cores do sistema visual")
+                if premium["withNames"]!=10 or premium["accents"]<1:
+                    problems.append(f"{name}: V230 perdeu nomes ou pictogramas do treinamento")
                 # Capturar o estado aberto e restaurar a ficha original em seguida.
                 page.locator("#lab-controls .lab-group").first.scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_lab_premium_v206.png"),full_page=False,animations="disabled")
