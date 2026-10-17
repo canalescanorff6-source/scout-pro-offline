@@ -763,6 +763,22 @@ def run():
                 result['rotation_lab_4213']=second
                 if second['players']!=220 or second['unique']!=220 or second['overflow']>8:
                     problems.append(f"{name}: V219 4-2-1-3 incompleta ou repetida: {second}")
+                # Rodada 2: incluir em equipes as quatro cartas que sobraram na Rodada 1.
+                diagnostics_before=page.locator('#series-diagnostics').inner_text()
+                page.locator('button[data-cycle="2"]').click()
+                page.wait_for_function("""() =>
+                    document.querySelectorAll('#squads details[data-team]').length===10 &&
+                    document.querySelector('#series-diagnostics').textContent.includes('Rodada 2')
+                """,timeout=10000)
+                cycle2=page.evaluate("""() => {
+                    const ids=[...document.querySelectorAll('#squads .scout-rotation-player div small:first-of-type')]
+                      .map(x=>Number(x.textContent.match(/#([0-9]{3})/)?.[1]||0));
+                    return {players:ids.length,unique:new Set(ids).size,overflow:document.documentElement.scrollWidth-innerWidth};
+                }""")
+                result['rotation_cycle_2']=cycle2
+                if cycle2['players']!=220 or cycle2['unique']!=220 or cycle2['overflow']>8:
+                    problems.append(f"{name}: V219 segunda rodada não manteve elenco sem repetição {cycle2}")
+                page.screenshot(path=str(OUT / f"{name}_rotation_second_cycle_v219.png"),full_page=False,animations="disabled")
                 if not page.locator('#rec-start').is_disabled():
                     problems.append(f"{name}: V219 gravação web sem plugin Android não deveria fingir estar funcionando")
                 page.screenshot(path=str(OUT / f"{name}_rotation_4213_v219.png"),full_page=False,animations="disabled")
