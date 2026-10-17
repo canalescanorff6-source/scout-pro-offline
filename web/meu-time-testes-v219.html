@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071723"><title>Laboratório de Elencos | Scout PRO</title>
+<link rel="stylesheet" href="premium.css"><link rel="stylesheet" href="app-bridge.css">
+<link rel="stylesheet" href="scout-rotation-lab-v219.css">
+<script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script>
+<script defer src="scout-rotation-engine-v219.js"></script>
+<script defer src="scout-rotation-lab-v219.js"></script><script defer src="pwa.js"></script>
+</head><body data-page="rotation-lab"><header class="scout-rotation-top"><a href="index.html"><img src="assets/scout-pro-icon-premium-original.png" alt="">SCOUT PRO</a><span>ELENCOS · LABORATÓRIO</span></header>
+<main class="scout-rotation-wrap"><section class="scout-rotation-hero"><div class="scout-rotation-eyebrow">POSSE DE BOLA · TESTE DE TODAS AS CARTAS</div>
+<h1>Laboratório de escalações</h1><p>Separe as 22 cartas usadas no mapeamento do Black e teste as outras, sem repetir jogadores dentro da mesma série. Todas as escolhas são experimentais; o programa não inventa familiaridade de posição nem ativa Link-Up.</p>
+<div class="scout-rotation-trust" id="rotation-inventory" role="status">Carregando 246 cartas…</div></section>
+<section class="scout-rotation-panel" aria-labelledby="black-heading"><div class="scout-rotation-title"><h2 id="black-heading">01 · Jogadores reservados do Black</h2><span id="black-count">0 / 22</span></div>
+<p>Envie as fotos do Black aqui na conversa para validar as identidades e Card IDs. Por enquanto, você pode digitar o <strong>número do catálogo</strong> de cada uma das 22 cartas. Elas ficam proibidas nas séries de teste, mas nenhuma carta será apagada do projeto.</p>
+<label for="black-input">Números das cartas (#), separados por espaço ou vírgula</label>
+<textarea id="black-input" rows="3" spellcheck="false" placeholder="Ex.: 011, 039, 106, 143… (apenas números confirmados no catálogo)"></textarea>
+<div class="scout-rotation-actions"><button id="black-save" type="button" class="scout-rotation-btn main">Aplicar exclusões e gerar equipes</button><button id="black-clear" type="button" class="scout-rotation-btn">Limpar lista</button></div>
+<p id="black-feedback" class="scout-rotation-feedback" role="status">A lista ainda não foi validada pelos prints.</p></section>
+<section class="scout-rotation-panel" aria-labelledby="series-heading"><h2 id="series-heading">02 · Séries de testes por formação</h2><p>O mesmo conjunto disponível pode ser testado nas duas táticas. <strong>Nenhuma carta se repete entre equipes de uma mesma série.</strong></p>
+<div role="group" aria-label="Escolher série" class="scout-rotation-actions"><button type="button" class="scout-rotation-btn selected" data-series="4312" aria-pressed="true">4-3-1-2 · Dois VOL</button><button type="button" class="scout-rotation-btn" data-series="4213" aria-pressed="false">4-2-1-3 · Dois CA + SA</button></div>
+<div role="group" aria-label="Rodada de testes" class="scout-rotation-actions"><button type="button" class="scout-rotation-btn selected" data-cycle="1" aria-pressed="true">Rodada 1 · Equipes iniciais</button><button type="button" class="scout-rotation-btn" data-cycle="2" aria-pressed="false">Rodada 2 · Incluir cartas restantes</button></div><div id="series-diagnostics" class="scout-rotation-diagnostics"></div>
+<div class="scout-rotation-actions"><button type="button" id="rotation-export" class="scout-rotation-btn">Exportar escalações e resultados (JSON)</button><button type="button" id="rotation-prompt" class="scout-rotation-btn">Copiar escalação para análise da partida</button></div>
+<div id="squads" class="scout-rotation-squads"></div></section>
+<section class="scout-rotation-panel" aria-labelledby="video-heading"><h2 id="video-heading">03 · Vídeo da partida · Gravação e análise</h2>
+<p>No <strong>Android nativo</strong>, a gravação de tela usa autorização do sistema e captura em MP4 com resolução adaptada ao limite de 1280×720 e 30 fps. Comece a gravação, escolha <strong>tela inteira</strong> (não somente a janela do Scout PRO), entre no eFootball e, ao terminar, use a notificação de gravação para parar. O primeiro protótipo grava <strong>apenas vídeo, sem áudio</strong> e encerra a captura em até 15 minutos.</p>
+<div class="scout-rotation-actions"><button type="button" id="rec-start" class="scout-rotation-btn main">Iniciar gravação Android</button><button type="button" id="rec-stop" class="scout-rotation-btn">Parar gravação</button><button type="button" id="rec-share" class="scout-rotation-btn">Compartilhar vídeo</button></div>
+<p id="rec-feedback" class="scout-rotation-feedback" role="status">Aguardando verificação do gravador Android.</p>
+<p class="scout-rotation-caution">O vídeo permanece no dispositivo até você escolher compartilhá-lo. O Scout PRO não acessa sua conta ChatGPT, não envia partidas sozinho e não controla a conversa. No compartilhamento, escolha ChatGPT, anexe o MP4 se necessário e confirme o envio. Você poderá obter análise de movimentação, tabelas, erros e momentos específicos, mas não é possível prometer identificar todas as ações de cada jogador.</p>
+</section>
+<section class="scout-rotation-panel"><h2>04 · Critérios de avaliação das partidas</h2>
+<p>A escalação reserva titulares e banco para testes práticos. Após jogar, registre o resultado e observações; quando houver vídeo, anote seu nome e envie-o com a escalação. Para jogadores diferentes, observe movimentação sem bola, primeiro toque, precisão dos passes, desmarques, cobertura, decisões sob pressão e eficácia defensiva. Comparações precisam de partidas semelhantes — não apenas um Overall alto.</p>
+</section><footer class="scout-rotation-footer">SCOUT PRO · CATÁLOGO ORIGINAL PRESERVADO · DADOS DE JOGO NÃO CONFIRMADOS PERMANECEM PENDENTES</footer>
+</main></body></html>
