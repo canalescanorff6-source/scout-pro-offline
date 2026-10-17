@@ -16,6 +16,33 @@ function stored(key,fallback){
 function persist(key,value){
  try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_e){return false}
 }
+// V225: cópia Android em SharedPreferences para recuperação sem nova seleção.
+function nativeRosterStore(){
+ const cap=window.Capacitor;
+ if(!cap?.isNativePlatform?.()||cap?.getPlatform?.()!=='android')return null;
+ return cap.Plugins?.ScoutFileExport||cap.registerPlugin?.('ScoutFileExport')||null;
+}
+let mirrorQueue=Promise.resolve();
+function backupRosterNative(){
+ const plugin=nativeRosterStore();
+ if(!plugin?.storeRoster)return Promise.resolve();
+ const record=JSON.stringify(restrictions.makeRecord(excluded,cards,userReviewed));
+ mirrorQueue=mirrorQueue.catch(()=>{}).then(()=>plugin.storeRoster({record}));
+ return mirrorQueue;
+}
+async function restoreRosterNativeWhenNeeded(){
+ const plugin=nativeRosterStore();
+ if(!plugin?.loadRoster)return;
+ try{
+  const previous=await plugin.loadRoster();
+  if(localStorage.getItem(KEY_BLACK)===null&&previous?.record){
+   const checked=restrictions.readRecord(JSON.parse(previous.record),cards);
+   const numbers=checked.excluded.map(x=>x.numero);
+   if(!persist(KEY_BLACK,numbers)||!persist(KEY_BLACK_REVIEW,{caps:numbers,userReviewed:checked.userReviewed}))
+    throw Error('Não foi possível restaurar o armazenamento do aplicativo');
+  }
+ }catch(e){status('black-feedback','Aviso de recuperação: '+String(e.message||e))}
+}
 function parseIds(raw){
  const values=String(raw||'').match(/\d+/g)||[],ids=values.map(Number);
  const invalid=ids.filter(n=>!byCap.has(n)),unique=[...new Set(ids)];
@@ -83,6 +110,7 @@ function updateBlack(ids,{reviewed=false,message='Lista atualizada nas duas form
   throw Error('O dispositivo não permitiu salvar as 23 restrições. Libere espaço e tente novamente; nenhuma carta foi alterada.');
  excluded=valid;
  userReviewed=newReviewed;
+ backupRosterNative().catch(e=>status('black-feedback','Restrições salvas no app; cópia nativa indisponível: '+String(e.message||e)));
  $('black-input').value=valid.join(', ');
  opened=null;
  recompute();
@@ -239,11 +267,13 @@ async function init(){
  byCap=new Map(cards.map(c=>[Number(c.numero),c]));
  images=new Map(files[2].cartas.map(c=>[Number(c.numero),String(c.imagem||'')]));
  gameLogs=stored(KEY_MATCHES,{});
+ await restoreRosterNativeWhenNeeded();
  const storedBlack=stored(KEY_BLACK,[]);
  excluded=restrictions.validateCaps(Array.isArray(storedBlack)?storedBlack:[],cards);
  const savedReview=stored(KEY_BLACK_REVIEW,{});
  userReviewed=Boolean(savedReview?.userReviewed&&excluded.length===23&&
   JSON.stringify(savedReview.caps)===JSON.stringify(excluded));
+ backupRosterNative().catch(e=>status('black-feedback','Cópia nativa não disponível: '+String(e.message||e)));
  const positions=[...new Set(cards.map(c=>String(c.posicao||'')).filter(Boolean))].sort();
  for(const position of positions){
   const item=document.createElement('option');item.value=position;item.textContent=position;
@@ -264,7 +294,10 @@ async function init(){
  $('black-reviewed').addEventListener('change',()=>{
   if(excluded.length!==23){$('black-reviewed').checked=false;return}
   userReviewed=$('black-reviewed').checked;
-  persist(KEY_BLACK_REVIEW,{caps:excluded.slice(),userReviewed});
+  if(!persist(KEY_BLACK_REVIEW,{caps:excluded.slice(),userReviewed})){
+   status('black-feedback','Não foi possível salvar a conferência no dispositivo.');return;
+  }
+  backupRosterNative().catch(e=>status('black-feedback','Cópia nativa não disponível: '+String(e.message||e)));
   inventory();diagnostics();
  });
  $('black-input').value=excluded.join(', ');
