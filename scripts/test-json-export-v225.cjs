@@ -24,6 +24,11 @@ assert(lab.includes("window.SCOUT_FILE_EXPORT.saveJson(data"),'Elencos precisam 
 assert(!lab.includes("URL.createObjectURL"),'Exportações específicas não podem depender de blob no Android');
 assert(lab.includes('if(!persist(KEY_BLACK,valid)||!persist(KEY_BLACK_REVIEW'),'Bloqueio persistido tem que ser confirmado');
 assert(java.includes('@CapacitorPlugin(name="ScoutFileExport")'));
+assert(java.includes('public void storeRoster(PluginCall call)'), 'Android precisa guardar lista para recuperar sem selecionar');
+assert(java.includes('public void loadRoster(PluginCall call)'), 'Android precisa restaurar a lista');
+assert(lab.includes('restoreRosterNativeWhenNeeded'), 'Bloqueios existentes precisam ser restaurados automaticamente');
+assert(lab.includes('backupRosterNative'), 'Mudanças de bloqueios precisam de espelho nativo');
+assert(lab.includes('localStorage.getItem(KEY_BLACK)===null'), 'Lista local existente nunca deve ser sobrescrita pelo espelho antigo');
 for(const term of ['Intent.ACTION_CREATE_DOCUMENT','startActivityForResult','@ActivityCallback','openOutputStream','output.write','output.flush','call.resolve(saved)'])
  assert(java.includes(term),'Salvamento Android insuficiente: '+term);
 assert(installer.includes('registerPlugin(ScoutFileExportPlugin.class)'),'Plugin Android não registrado');
