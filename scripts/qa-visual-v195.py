@@ -710,6 +710,62 @@ def run():
                     page.locator("#tactics").scroll_into_view_if_needed()
                     page.screenshot(path=str(OUT / f"{name}_booster_review.png"),
                                     full_page=False, animations="disabled")
+                # V219: banco de 22 cartas, sem repetição entre equipes de uma série.
+                page.goto(URL + "/meu-time-testes-v219.html",wait_until="domcontentloaded",timeout=35000)
+                page.wait_for_function("""() => document.querySelectorAll('#squads details[data-team]').length===11""",timeout=25000)
+                if not page.locator('#black-feedback').inner_text().startswith('Prévia:'):
+                    problems.append(f"{name}: V219 escalações sem os prints não foram identificadas como prévias")
+                ids=', '.join(str(n) for n in range(1,23))
+                page.locator('#black-input').fill(ids)
+                page.locator('#black-save').click()
+                page.wait_for_function("""() =>
+                    document.getElementById('black-count').textContent.includes('22 / 22') &&
+                    document.querySelectorAll('#squads details[data-team]').length===10
+                """,timeout=12000)
+                formation_metrics=page.evaluate("""() => {
+                  const squads=[...document.querySelectorAll('#squads details[data-team]')];
+                  const ids=squads.flatMap(s=>[...s.querySelectorAll('.scout-rotation-player')].map(p=>
+                    Number(p.querySelector('small')?.textContent.match(/#(\d{3})/)?.[1]||0)));
+                  return {squads:squads.length,players:ids.length,unique:new Set(ids).size,
+                    excluded:[...new Set(ids)].filter(n=>n>=1&&n<=22),
+                    horizontal:Math.max(0,document.documentElement.scrollWidth-innerWidth),
+                    blackVerified:document.querySelector('#series-diagnostics')?.innerText.includes('ainda não foram conferidos')
+                  };
+                }""")
+                result['rotation_lab_4312']=formation_metrics
+                if formation_metrics['squads']!=10 or formation_metrics['players']!=220 or formation_metrics['unique']!=220 or formation_metrics['excluded']:
+                    problems.append(f"{name}: V219 não dividiu 224 cartas em 10 equipes exclusivas de 22 {formation_metrics}")
+                if not formation_metrics['blackVerified']:
+                    problems.append(f"{name}: V219 declarou mapeamento do Black como validado sem imagem")
+                if formation_metrics['horizontal']>8:
+                    problems.append(f"{name}: V219 laboratório tem overflow horizontal {formation_metrics['horizontal']} px")
+                first=page.locator('#squads details[data-team]').first
+                first.locator('summary').click()
+                page.locator('#squads details[data-team]').first.locator('input[name="goals"]').fill('2')
+                page.locator('#squads details[data-team]').first.locator('input[name="conceded"]').fill('0')
+                page.locator('#squads details[data-team]').first.locator('textarea[name="notes"]').fill('Teste de passe curto e coberturas')
+                page.locator('#squads details[data-team]').first.locator('button[type="submit"]').click()
+                page.wait_for_function("""() =>
+                    document.querySelector('#squads details[data-team] summary small')?.textContent.includes('1 partidas')
+                """,timeout=12000)
+                page.screenshot(path=str(OUT / f"{name}_rotation_4312_v219.png"),full_page=False,animations="disabled")
+                page.locator('button[data-series="4213"]').click()
+                page.wait_for_function("""() =>
+                    document.querySelectorAll('#squads details[data-team]').length===10 &&
+                    document.querySelector('#series-diagnostics').innerText.includes('Série 4213')
+                """,timeout=12000)
+                second=page.evaluate("""() => {
+                  const ids=[...document.querySelectorAll('#squads .scout-rotation-player small')]
+                    .map(x=>Number(x.textContent.match(/#(\d{3})/)?.[1]||0));
+                  return {players:ids.length,unique:new Set(ids).size,
+                   overflow:Math.max(0,document.documentElement.scrollWidth-innerWidth)};
+                }""")
+                result['rotation_lab_4213']=second
+                if second['players']!=220 or second['unique']!=220 or second['overflow']>8:
+                    problems.append(f"{name}: V219 4-2-1-3 incompleta ou repetida: {second}")
+                if not page.locator('#rec-start').is_disabled():
+                    problems.append(f"{name}: V219 gravação web sem plugin Android não deveria fingir estar funcionando")
+                page.screenshot(path=str(OUT / f"{name}_rotation_4213_v219.png"),full_page=False,animations="disabled")
                 results[name] = result
                 context.close()
         finally:
