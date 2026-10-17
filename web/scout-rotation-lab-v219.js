@@ -186,6 +186,15 @@ function teamHTML(team){
 function render(){
  diagnostics();
  $('squads').innerHTML=selected().teams.map(teamHTML).join('');
+ const pager=$('craque-team-jump');
+ if(pager){
+  pager.innerHTML=selected().teams.map(team=>'<button type="button" class="scout-rotation-btn" data-jump="'+esc(team.id)+'" aria-label="Abrir '+esc(team.name)+'">'+String(team.index).padStart(2,'0')+'</button>').join('');
+  pager.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{
+   opened=button.dataset.jump;
+   $('squads').querySelectorAll('details[data-team]').forEach(d=>{d.open=d.dataset.team===opened});
+   $('squads').querySelector('details[open]')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+ }
  $('squads').querySelectorAll('details[data-team]').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)opened=d.dataset.team}));
  $('squads').querySelectorAll('form[data-match]').forEach(f=>f.addEventListener('submit',ev=>{
   ev.preventDefault();const id=f.dataset.match,values=new FormData(f);
