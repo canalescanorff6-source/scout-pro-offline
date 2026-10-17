@@ -6,7 +6,7 @@ const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[x]));
 const engine=window.SCOUT_ROTATION_V219;
 const KEY_BLACK='scoutpro:v219:black-caps',KEY_MATCHES='scoutpro:v219:match-logs';
-let cards=[],byCap=new Map(),images=new Map(),formats=[],active='4312',sheets={},excluded=[],gameLogs={},opened=null;
+let cards=[],byCap=new Map(),images=new Map(),formats=[],active='4312',cycle=1,sheets={},excluded=[],gameLogs={},opened=null;
 const status=(id,v)=>{const e=$(id);if(e)e.textContent=v};
 const len=x=>Array.isArray(x)?x.length:0;
 const getCard=cap=>byCap.get(Number(cap));
@@ -22,7 +22,7 @@ function parseIds(raw){
  return {ids:unique.filter(n=>byCap.has(n)).sort((a,b)=>a-b),invalid,duplicates:ids.length-unique.length};
 }
 function selected(){
- return sheets[active];
+ return sheets[active+'-'+cycle];
 }
 function inventory(){
  const a=engine.analyze(cards,excluded);
@@ -38,9 +38,9 @@ function diagnostics(){
  const caveats=sheet.teams.filter(t=>t.warnings.some(w=>w.includes('adaptação')||w.includes('fora da posição'))).length;
  const nativeSA=sheet.teams.filter(t=>t.starters.some(s=>s.slot==='sa'&&s.fit==='posição original')).length;
  $('series-diagnostics').innerHTML=
-  '<strong>'+sheet.teams.length+' equipes · 11 titulares + 11 reservas</strong> · '+esc(formatNumbers(sheet.leftovers))+' fora do ciclo completo'+
+  '<strong>'+sheet.teams.length+' equipes · 11 titulares + 11 reservas</strong> · '+esc(formatNumbers(sheet.leftovers))+' fora desta rodada (entram na rodada '+(cycle===1?'2':'1')+')'+ 
   '<p>'+a.keepers+' goleiros elegíveis · '+(a.goalkeeperLimited?'NÚMERO LIMITADO PELOS GOLEIROS: não repetir goleiro entre equipes. ':'')+
-  'Série '+esc(active)+': '+links+' equipes com requisitos documentais simultâneos de Link-Up (não confirma ativação no jogo) · '+caveats+' equipes com possíveis adaptações.'+
+  'Série '+esc(active)+' · Rodada '+cycle+': '+links+' equipes com requisitos documentais simultâneos de Link-Up (não confirma ativação no jogo) · '+caveats+' equipes com possíveis adaptações.'+
   (active==='4213'?' SA na posição original: '+nativeSA+' equipe(s).':'')+'</p>'+
   (a.requiresBlackPhoto?'<p class="scout-rotation-caution">Os 22 jogadores do Black ainda não foram conferidos: lista provisória. Não use estes elencos como exclusão definitiva.</p>':'');
 }
@@ -106,7 +106,7 @@ function render(){
 }
 function recompute(){
  sheets={};
- for(const f of formats)sheets[f.id]=engine.build(cards,f,excluded);
+ for(const f of formats)for(const n of [1,2])sheets[f.id+'-'+n]=engine.build(cards,f,excluded,n);
  inventory();render();
 }
 function promptForTeam(team){
@@ -192,10 +192,15 @@ async function init(){
    const on=b===button;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on));
   });render();
  }));
+ document.querySelectorAll('button[data-cycle]').forEach(button=>button.addEventListener('click',()=>{
+  cycle=Number(button.dataset.cycle);opened=null;
+  document.querySelectorAll('button[data-cycle]').forEach(b=>{const on=b===button;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on))});
+  render();
+ }));
  $('rotation-export').addEventListener('click',()=>{
   const d={schema:'SCOUT_MATCH_ANALYSIS_V219',updated:new Date().toISOString(),
    excludedBlackCaps:excluded.slice(),blackVisualVerified:false,
-   originalRosterCards:cards.length,series:{'4312':sheets['4312'],'4213':sheets['4213']},
+   originalRosterCards:cards.length,series:sheets,
    matches:gameLogs,note:'Análise e escalações exploratórias. Nenhum dado original alterado.'};
   const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='ScoutPRO-Elencos-e-Partidas-V219.json';
