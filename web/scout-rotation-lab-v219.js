@@ -253,7 +253,7 @@ async function init(){
   if(excluded.length!==22){$('black-reviewed').checked=false;return}
   userReviewed=$('black-reviewed').checked;
   persist(KEY_BLACK_REVIEW,{caps:excluded.slice(),userReviewed});
-  inventory();
+  inventory();diagnostics();
  });
  $('black-input').value=excluded.join(', ');
  $('black-save').addEventListener('click',()=>{
