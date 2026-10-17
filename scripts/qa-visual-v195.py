@@ -835,8 +835,27 @@ def run():
                 # V219: banco de 22 cartas, sem repetição entre equipes de uma série.
                 page.goto(URL + "/meu-time-testes-v219.html",wait_until="domcontentloaded",timeout=35000)
                 page.wait_for_function("""() => document.querySelectorAll('#squads details[data-team]').length===11""",timeout=25000)
-                if not page.locator('#black-feedback').inner_text().startswith('Prévia:'):
-                    problems.append(f"{name}: V219 escalações sem os prints não foram identificadas como prévias")
+                if 'PRÉVIA INCOMPLETA' not in page.locator('#black-feedback').inner_text():
+                    problems.append(f"{name}: V222 não marcou a escalação sem os 22 prints como prévia")
+                page.locator('#black-search').fill('Massaro')
+                page.wait_for_function("""() =>
+                    document.querySelector('#black-candidates button[data-black-cap="1"][data-action="add"]')
+                """,timeout=12000)
+                if not page.locator('#black-candidates').inner_text().lower().count('massaro'):
+                    problems.append(f"{name}: V222 busca visual não localizou carta real de Massaro")
+                page.locator('#black-candidates button[data-black-cap="1"][data-action="add"]').click()
+                page.wait_for_function("""() =>
+                    document.getElementById('black-count')?.textContent==='1 / 22' &&
+                    !!document.querySelector('#black-reserved button[data-black-cap="1"][data-action="remove"]')
+                """,timeout=12000)
+                page.wait_for_function("""() =>
+                    ![...document.querySelectorAll('#squads .scout-rotation-player div small:first-of-type')]
+                      .some(x=>x.textContent.includes('#001'))
+                """,timeout=12000)
+                page.locator('#black-reserved button[data-black-cap="1"][data-action="remove"]').click()
+                page.wait_for_function("""() => document.getElementById('black-count')?.textContent==='0 / 22'""",timeout=12000)
+                page.locator('#black-search').fill('')
+                page.locator('.scout-rotation-quick-paste > summary').click()
                 ids=', '.join(str(n) for n in range(1,23))
                 page.locator('#black-input').fill(ids)
                 page.locator('#black-save').click()
@@ -844,6 +863,28 @@ def run():
                     document.getElementById('black-count').textContent.includes('22 / 22') &&
                     document.querySelectorAll('#squads details[data-team]').length===10
                 """,timeout=12000)
+                checkbox=page.locator('#black-reviewed')
+                if checkbox.is_disabled():
+                    problems.append(f"{name}: V222 revisão de 22 cartas bloqueada mesmo com lista completa")
+                checkbox.check()
+                page.wait_for_function("""() =>
+                    document.querySelector('#black-feedback')?.textContent.includes('Conferência pessoal declarada')
+                """,timeout=10000)
+                if name in ('mobile_390','windows_1366'):
+                    imported=page.evaluate("""async () => {
+                      const roster=(await (await fetch('SCOUT_V69_AUDITORIA.json')).json()).cards;
+                      const ids=JSON.parse(localStorage.getItem('scoutpro:v219:black-caps'));
+                      return window.SCOUT_RESTRICT_V222.makeRecord(ids,roster,true);
+                    }""")
+                    page.locator('#black-import').set_input_files({
+                      'name':'ScoutPRO-test-22.json','mimeType':'application/json',
+                      'buffer':json.dumps(imported).encode('utf-8')
+                    })
+                    page.wait_for_function("""() =>
+                        document.querySelector('#black-feedback')?.textContent.includes('Lista importada')
+                    """,timeout=10000)
+                    if page.locator('#black-reviewed').is_disabled() or not page.locator('#black-reviewed').is_checked():
+                        problems.append(f"{name}: V222 importação perdeu a confirmação pessoal das 22 cartas")
                 formation_metrics=page.evaluate("""() => {
                   const squads=[...document.querySelectorAll('#squads details[data-team]')];
                   const ids=squads.flatMap(s=>[...s.querySelectorAll('.scout-rotation-player')].map(p=>
@@ -851,7 +892,7 @@ def run():
                   return {squads:squads.length,players:ids.length,unique:new Set(ids).size,
                     excluded:[...new Set(ids)].filter(n=>n>=1&&n<=22),
                     horizontal:Math.max(0,document.documentElement.scrollWidth-innerWidth),
-                    blackVerified:document.querySelector('#series-diagnostics')?.innerText.includes('ainda não foram conferidos')
+                    blackVerified:document.querySelector('#series-diagnostics')?.innerText.includes('imagens não foram verificadas externamente')
                   };
                 }""")
                 result['rotation_lab_4312']=formation_metrics
@@ -904,6 +945,10 @@ def run():
                 if not page.locator('#rec-start').is_disabled():
                     problems.append(f"{name}: V219 gravação web sem plugin Android não deveria fingir estar funcionando")
                 page.screenshot(path=str(OUT / f"{name}_rotation_4213_v219.png"),full_page=False,animations="disabled")
+                page.screenshot(path=str(OUT / f"{name}_v222_black_roster_picker.png"),full_page=False,animations="disabled")
+                # A lista continua idêntica quando alterna entre as duas formações.
+                if page.locator('#black-count').inner_text()!='22 / 22':
+                    problems.append(f"{name}: V222 bloqueios não persistiram nas duas formações")
                 # V221: cards pendentes e IDs compartilhados também precisam de evidência própria.
                 if name in ('mobile_390','windows_1366'):
                     page.goto(URL + "/fichas/050_Lionel_Messi.html",wait_until="domcontentloaded",timeout=35000)
