@@ -78,10 +78,11 @@ function renderPicker(){
 }
 function updateBlack(ids,{reviewed=false,message='Lista atualizada nas duas formações.'}={}){
  const valid=restrictions.validateCaps(ids,cards);
+ const newReviewed=valid.length===23&&reviewed===true;
+ if(!persist(KEY_BLACK,valid)||!persist(KEY_BLACK_REVIEW,{caps:valid,userReviewed:newReviewed}))
+  throw Error('O dispositivo não permitiu salvar as 23 restrições. Libere espaço e tente novamente; nenhuma carta foi alterada.');
  excluded=valid;
- userReviewed=valid.length===23&&reviewed===true;
- persist(KEY_BLACK,valid);
- persist(KEY_BLACK_REVIEW,{caps:valid,userReviewed});
+ userReviewed=newReviewed;
  $('black-input').value=valid.join(', ');
  opened=null;
  recompute();
@@ -167,7 +168,8 @@ function render(){
    goals,conceded,video:String(values.get('video')||'').trim().slice(0,120),
    notes:String(values.get('notes')||'').trim().slice(0,1200)});
   gameLogs[id]=list.slice(-100);
-  persist(KEY_MATCHES,gameLogs);opened=id;render();
+  if(!persist(KEY_MATCHES,gameLogs)){list.pop();gameLogs[id]=list;status('black-feedback','Não foi possível salvar esta partida no dispositivo. Confira o armazenamento.');return}
+   opened=id;render();
  }));
 }
 function recompute(){
@@ -287,13 +289,17 @@ async function init(){
   document.querySelectorAll('button[data-cycle]').forEach(b=>{const on=b===button;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on))});
   render();
  }));
- $('black-export').addEventListener('click',()=>{
-  const file=restrictions.makeRecord(excluded,cards,userReviewed);
-  const blob=new Blob([JSON.stringify(file,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob),anchor=document.createElement('a');
-  anchor.href=url;anchor.download='ScoutPRO-23-Jogadores-Black-V224.json';
-  document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
-  status('black-feedback','Lista de '+excluded.length+' bloqueios exportada; importe o JSON no outro dispositivo. '+photoStatus());
+ $('black-export').addEventListener('click',async()=>{
+  const btn=$('black-export');btn.disabled=true;
+  try{
+   const file=restrictions.makeRecord(excluded,cards,userReviewed);
+   const result=await window.SCOUT_FILE_EXPORT.saveJson(file,'ScoutPRO-23-Jogadores-Black-V225.json');
+   status('black-feedback',result.status==='saved'
+    ?'Lista de '+excluded.length+' restrições salva no local escolhido, com Card IDs e edições.'
+    :result.status==='cancelled'?'Exportação cancelada; bloqueios mantidos neste dispositivo.'
+    :'Download solicitado no navegador. Confira o arquivo na pasta Downloads.');
+  }catch(e){status('black-feedback','Falha na exportação: '+String(e.message||e))}
+  finally{btn.disabled=false}
  });
  $('black-import').addEventListener('change',async event=>{
   const file=event.target.files?.[0];if(!file)return;
@@ -307,14 +313,19 @@ async function init(){
   }catch(e){status('black-feedback','Importação recusada: '+String(e.message||e))}
   finally{event.target.value=''}
  });
- $('rotation-export').addEventListener('click',()=>{
-  const d={schema:'SCOUT_MATCH_ANALYSIS_V219',updated:new Date().toISOString(),
-   excludedBlackCaps:excluded.slice(),blackUserReviewed:userReviewed,blackVisualVerified:false,
-   originalRosterCards:cards.length,series:sheets,
-   matches:gameLogs,note:'Análise e escalações exploratórias. Nenhum dado original alterado.'};
-  const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='ScoutPRO-Elencos-e-Partidas-V219.json';
-  document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
+ $('rotation-export').addEventListener('click',async()=>{
+  const btn=$('rotation-export');btn.disabled=true;
+  try{
+   const data={schema:'SCOUT_MATCH_ANALYSIS_V225',updated:new Date().toISOString(),
+    excludedBlackCaps:excluded.slice(),blackUserReviewed:userReviewed,blackVisualVerified:false,
+    originalRosterCards:cards.length,series:sheets,
+    matches:gameLogs,note:'Elencos e partidas reais cadastradas; fotos do Black ainda exigem confirmação de edição e Card ID.'};
+   const result=await window.SCOUT_FILE_EXPORT.saveJson(data,'ScoutPRO-Elencos-e-Partidas-V225.json');
+   status('black-feedback',result.status==='saved'?'Elencos e registros exportados com sucesso.'
+    :result.status==='cancelled'?'Exportação cancelada; seus resultados permanecem no dispositivo.'
+    :'Download solicitado; confira o arquivo na pasta Downloads.');
+  }catch(e){status('black-feedback','Falha ao exportar elencos: '+String(e.message||e))}
+  finally{btn.disabled=false}
  });
  $('rotation-prompt').addEventListener('click',async()=>{
   const sheet=selected(),team=sheet.teams.find(t=>t.id===opened)||sheet.teams[0];
