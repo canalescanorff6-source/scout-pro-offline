@@ -101,12 +101,12 @@ function mount(doc){
  trainingBlock.append(sectionHeading);
  trainingBlock.append(training);wrap.append(trainingBlock);
  const skillsSection=mk(doc,'section','scout-v220-recs');skillsSection.id='scout-v220-recs';
- skillsSection.innerHTML='<div class="scout-v220-section-head"><div>03 · HABILIDADES E ÍMPETO</div><p>Recomendações por edição cadastrada, função e tática. Não equipam nada na conta.</p></div>'+
+ skillsSection.innerHTML='<div class="scout-v220-section-head"><div>04 · HABILIDADES E ÍMPETO</div><p>Recomendações por edição cadastrada, função e tática. Não equipam nada na conta.</p></div>'+
  '<div class="scout-v220-recs-grid"><article class="scout-v220-skill-panel"><div class="scout-v220-card-head"><h3>5 habilidades adicionais</h3><span id="scout-v220-skill-count">—</span></div><div id="scout-v220-skill-list"></div><p class="scout-v220-small" id="scout-v220-skills-caution"></p><button type="button" class="scout-v220-link" id="scout-v220-edit-skills">Informar habilidades já equipadas ↗</button></article>'+
  '<article class="scout-v220-booster-panel"><div class="scout-v220-card-head"><h3>Ímpeto por estilo</h3><span id="scout-v220-booster-badge">PENDENTE</span></div><div class="scout-v220-boost-hero"><small>Recomendação consultiva</small><strong id="scout-v220-booster-name">—</strong></div><p id="scout-v220-booster-why"></p><p id="scout-v220-booster-other" class="scout-v220-small"></p><p id="scout-v220-booster-slot" class="scout-v220-warning"></p><button type="button" class="scout-v220-link" id="scout-v220-edit-booster">Conferir slot e opções ↗</button></article></div>';
  wrap.append(skillsSection);
  const practical=mk(doc,'section','scout-v220-practice');
- practical.innerHTML='<div class="scout-v220-section-head"><div>04 · TESTE NO CAMPO</div><p>Compare partidas semelhantes e registre o que realmente aconteceu.</p></div>'+
+ practical.innerHTML='<div class="scout-v220-section-head"><div>05 · TESTE NO CAMPO</div><p>Compare partidas semelhantes e registre o que realmente aconteceu.</p></div>'+
  '<div class="scout-v220-practice-grid"><label>Resultado observado<select id="scout-v220-outcome"><option value="pendente">Ainda não testado</option><option value="promissor">Promissor em partidas</option><option value="rever">Precisa de ajustes</option></select></label>'+
  '<label>Observações da carta<textarea id="scout-v220-notes" rows="3" maxlength="1000" placeholder="Ex.: apoios curtos, movimentação, perdas, tabela, interceptações…"></textarea></label></div><button type="button" id="scout-v220-save-notes" class="scout-v220-cta">Salvar observações do estilo</button><p id="scout-v220-notice" aria-live="polite"></p>';
  wrap.append(practical);
