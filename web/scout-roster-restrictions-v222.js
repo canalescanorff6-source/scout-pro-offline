@@ -1,10 +1,10 @@
 /* SCOUT PRO V222 — proteção visual de jogadores para testes nas duas formações.
- * Entradas reais por número + Card ID. 22 nomes sem foto NÃO viram lista verificada.
+ * Entradas reais por número + Card ID. 23 cartas restritas apenas após conferência da edição; seleção anterior de 22 é preservada.
  * Exportação/importação explícitas para troca Android <-> Windows (sem sincronização remota).
  */
 (function(host){
 'use strict';
-const SCHEMA='SCOUT_BLACK_RESTRICTIONS_V222',LIMIT=22;
+const SCHEMA='SCOUT_BLACK_RESTRICTIONS_V224',LEGACY_SCHEMA='SCOUT_BLACK_RESTRICTIONS_V222',LIMIT=23;
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
 const idOf=c=>Number(c?.numero),cardId=c=>String(c?.id??'').trim();
 function catalog(cards){
@@ -46,9 +46,11 @@ function makeRecord(raw,cards,userReviewed=false){
  };
 }
 function readRecord(imported,cards){
- if(!imported||imported.schema!==SCHEMA||imported.rosterCount!==246||imported.limit!==LIMIT||
-   !Array.isArray(imported.excluded))throw Error('Arquivo de bloqueios não é do Scout PRO V222');
- if(imported.excluded.length>LIMIT)throw Error('Arquivo excede 22 exclusões');
+ const legacy=imported?.schema===LEGACY_SCHEMA&&imported?.limit===22;
+ if(!imported||(imported.schema!==SCHEMA&&!legacy)||imported.rosterCount!==246||
+   (!legacy&&imported.limit!==LIMIT)||!Array.isArray(imported.excluded))
+   throw Error('Arquivo de bloqueios não é do Scout PRO V224 ou V222 compatível');
+ if(imported.excluded.length>(legacy?22:LIMIT))throw Error('Arquivo excede '+(legacy?22:LIMIT)+' exclusões');
  const ids=validateCaps(imported.excluded.map(x=>x?.numero),cards);
  if(ids.length!==imported.excluded.length)throw Error('Há cartas repetidas dentro do arquivo importado');
  const current=catalog(cards),byNo=new Map(imported.excluded.map(x=>[Number(x.numero),x]));
@@ -60,7 +62,7 @@ function readRecord(imported,cards){
     '. Atualize o catálogo e confira a edição original.');
  }
  if(imported.externalPhotoVerified===true)throw Error('Arquivo afirma verificação externa não realizada; revisar manualmente');
- return makeRecord(ids,cards,imported.userReviewed===true);
+ return makeRecord(ids,cards,!legacy&&imported.userReviewed===true);
 }
 function available(cards,raw){const blocked=new Set(validateCaps(raw,cards));return cards.filter(c=>!blocked.has(idOf(c)))}
 function match(card,term,positionFilter=''){
@@ -74,7 +76,7 @@ function filter(cards,term,position,limit=48){
  const matching=cards.filter(c=>match(c,term,position));
  return {items:matching.slice(0,limit),total:matching.length,visible:Math.min(limit,matching.length)};
 }
-const api=Object.freeze({SCHEMA,LIMIT,norm,catalog,validateCaps,makeRecord,readRecord,available,match,filter});
+const api=Object.freeze({SCHEMA,LEGACY_SCHEMA,LIMIT,norm,catalog,validateCaps,makeRecord,readRecord,available,match,filter});
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RESTRICT_V222=api;
 })(typeof window!=='undefined'?window:null);
