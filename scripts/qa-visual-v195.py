@@ -492,6 +492,34 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_dossie_posse_v212.png"),full_page=False,animations="disabled")
                 page.locator('#scout-v212-dossier>summary').click()
 
+                # V215: auditoria de habilidades deve aparecer e abrir na ficha real.
+                # Massaro possui Heading nativa e Cabeceio como candidata: não equipar duas vezes.
+                page.wait_for_selector('#scout-v215-evidence', state='attached', timeout=25000)
+                v215=page.locator('#scout-v215-evidence')
+                if v215.evaluate('(e)=>e.open'):
+                    problems.append(f"{name}: V215 deve começar recolhido, inclusive no Windows")
+                v215.locator('summary').click()
+                review215=page.evaluate("""() => {
+                    const e=document.getElementById('scout-v215-evidence');
+                    const summary=e.querySelector('summary').getBoundingClientRect();
+                    return {open:e.open,overlaps:e.dataset.nativeOverlaps,
+                        text:e.innerText,overflow:e.scrollWidth-e.clientWidth,
+                        summaryHeight:summary.height,
+                        registeredPP:document.querySelector('#scout-v208-training .scout-v208-total').textContent.trim()};
+                }""")
+                detail['v215_skill_evidence']=review215
+                if not review215['open'] or review215['overlaps']!='1':
+                    problems.append(f"{name}: V215 não encontrou habilidade candidata duplicada de Massaro")
+                if "Cabeceio" not in review215['text'] or "Heading" not in review215['text']:
+                    problems.append(f"{name}: V215 não explica equivalência EN/PT-BR")
+                if "não alterar habilidades" not in review215['text'].lower() or review215['registeredPP']!='62 / 62':
+                    problems.append(f"{name}: V215 omite preservação de build/PP")
+                if review215['overflow']>3 or review215['summaryHeight']<44:
+                    problems.append(f"{name}: painel V215 transborda ou possui alvo menor que 44 px")
+                v215.scroll_into_view_if_needed()
+                page.screenshot(path=str(OUT / f"{name}_evidencia_skills_v215.png"),full_page=False,animations="disabled")
+                v215.locator('summary').click()
+
                 # V201: categorias do treino são apenas ilustradas, sem tocar no PP.
                 page.wait_for_function("""() => {
                   const labels=[...document.querySelectorAll('#lab-controls .lab-group>label')];

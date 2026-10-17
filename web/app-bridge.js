@@ -69,6 +69,11 @@ if(inCard){
  const css212=document.createElement('link');css212.rel='stylesheet';css212.href=v189Root+'scout-dossier-v212.css';document.head.appendChild(css212);
  const js212=document.createElement('script');js212.src=v189Root+'scout-dossier-v212.js';js212.defer=true;document.head.appendChild(js212);
 }
+// V215: mostrar a auditoria V213 dentro de cada ficha e alertar sugestões de skills repetidas EN/PT-BR.
+if(inCard){
+ const css215=document.createElement('link');css215.rel='stylesheet';css215.href=v189Root+'scout-evidence-v215.css';document.head.appendChild(css215);
+ const js215=document.createElement('script');js215.src=v189Root+'scout-evidence-v215.js';js215.defer=true;document.head.appendChild(js215);
+}
 // V196: renderizar nomes oficiais PT-BR sem modificar dados das cartas nem o motor.
 const v196Skills=document.createElement('script');v196Skills.src=v189Root+'skill-names-v196.js';document.head.appendChild(v196Skills);
 if(inCard){
