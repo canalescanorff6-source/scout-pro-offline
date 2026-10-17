@@ -272,3 +272,19 @@ body[data-page="friends"] .friends-dialog{
 .ct-v230-rotation-modes>h3{font-size:14px;color:#f7e6b3;margin:0 0 5px}
 .ct-v230-rotation-modes>p{font-size:12px;color:#bdced9;line-height:1.6}
 @media(max-width:480px){.ct-v230-fit-grid{grid-template-columns:1fr}.ct-v230-tactic-tabs>button,#ct-v230-rotation-modes>button{flex:1 1 calc(50% - 8px);padding:9px 6px;font-size:11px}}
+
+/* Substituir também a herança verde da camada V210 sem mexer na lógica. */
+body[data-page="detail"]{
+ --sc210-green:#eac36c!important;
+ --sc210-edge:rgba(234,195,108,.45)!important;
+ --sc210-gold:#eac36c!important;
+}
+body[data-page="detail"] .scout-v208-svg.scout-v230-svg{
+ filter:none!important;color:#eac36c!important;
+}
+body[data-page="detail"] #scout-v208-training .scout-v208-icon{
+ border-color:#eac36c!important;
+}
+body[data-page="detail"] #scout-v208-training tfoot td:last-child{
+ color:#f6d58b!important;
+}
