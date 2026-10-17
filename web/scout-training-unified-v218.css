@@ -106,13 +106,13 @@ body[data-page="detail"] .scout-v218-advanced>section{
  }
  body[data-page="detail"] .scout-v218-step{width:30px;flex-basis:30px;min-height:38px}
  body[data-page="detail"] .scout-v218-stepper{gap:2px}
- body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-category-col{width:47%}
- body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-level-col{width:35%}
+ body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-category-col{width:39%}
+ body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-level-col{width:43%}
  body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-pp-col{width:18%}
  body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-icon{
-  width:32px;height:32px;flex-basis:32px;
+  width:29px;height:29px;flex-basis:29px;
  }
- body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-category-inner{gap:6px}
+ body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-category-inner{gap:4px}
  body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-label{
   font-size:clamp(11px,3vw,14px);line-height:1.25;
  }
