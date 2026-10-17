@@ -1,0 +1,28 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const brand=read('web/assets/craque-tatico-icon.svg'),css=read('web/craque-theme-v226.css');
+assert(brand.includes('<svg')&&brand.includes('url(#gold)')&&brand.includes('url(#green)')&&brand.includes('url(#blue)'));
+const capacitor=JSON.parse(read('capacitor.config.json'));
+assert.equal(capacitor.appId,'br.com.scoutpro.offline','Android package id must remain unchanged');
+assert.equal(capacitor.appName,'Craque Tático');
+assert.equal(JSON.parse(read('web/manifest.webmanifest')).short_name,'Craque Tático');
+assert(read('electron-builder.config.cjs').includes("productName: 'Craque Tático'"));
+assert(read('electron-builder.config.cjs').includes("artifactName: 'ScoutPRO-Setup-"),'Do not break Windows updater release artifact name');
+assert(read('scripts/build-brand-v75.cjs').includes('craque-tatico-icon.svg'));
+assert(css.includes('--accent:#00c853')&&css.includes('--gold:#ffc629'));
+assert(read('web/app-bridge.js').includes('craque-backup-v226.js'));
+assert(read('web/app-bridge.js').includes('craque-backup-ui-v226.js'));
+const lab=read('web/meu-time-testes-v219.html');
+for(const id of ['lab-restricoes','lab-formacoes','lab-videos','lab-protecao','craque-team-jump','rotation-restore'])
+ assert(lab.includes('id="'+id+'"'),'Missing lab feature '+id);
+assert(read('web/scout-rotation-lab-v219.js').includes("data-jump"),'Team navigator missing');
+assert(read('web/scout-rotation-lab-v219.js').includes('window.CRAQUE_BACKUP.exportToFile'),'Lab should use same full backup center');
+const java=read('native/android/ScoutFileExportPlugin.java');
+assert(java.includes('AtomicFile')&&java.includes('storeSnapshot')&&java.includes('loadSnapshot'),'Android recovery must be atomic');
+const main=read('desktop/main.cjs');
+assert(main.includes("scout:store-snapshot")&&main.includes("scout:load-snapshot"));
+const workflow=read('.github/workflows/release.yml');
+assert(workflow.includes('npm run brand:build'));
+console.log('V226 PASS: Brazilian name/emblem/icon generation, preserved package identity, premium laboratory, and Android/Windows recovery.');
