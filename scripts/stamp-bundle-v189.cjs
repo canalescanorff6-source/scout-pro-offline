@@ -5,7 +5,7 @@ const root=path.resolve(__dirname,'..'),web=path.join(root,'web');
 const version=require(path.join(root,'package.json')).version;
 const revision=(process.env.GITHUB_SHA||process.env.SCOUT_GIT_REVISION||'local').trim();
 const paths=[
- 'sw.js','index.html','premium.css','scout-premium-v73.css','app-bridge.js','app-bridge.css',
+ 'meu-time-testes-v219.html','scout-rotation-engine-v219.js','scout-rotation-lab-v219.js','scout-rotation-lab-v219.css','sw.js','index.html','premium.css','scout-premium-v73.css','app-bridge.js','app-bridge.css',
  'scout-profile-v188.js','scout-profile-v188.css','scout-ui-v189.js','scout-ui-v189.css','scout-polish-v190.css','scout-visual-v192.css','scout-finish-v197.css','scout-finish-v197.js','scout-finish-v198.css','scout-finish-v198.js','scout-finish-v200.css','scout-training-icons-v201.css','scout-training-icons-v201.js','scout-training-icons-v206.css','scout-training-icons-v206.js','scout-individual-v207.css','scout-individual-v207.js','scout-training-reference-v208.css','scout-training-reference-v208.js','scout-training-unified-v218.js','scout-training-unified-v218.css','scout-theme-v210.css','scout-build-audit-v211.js','scout-dossier-v212.css','scout-dossier-v212.js','scout-evidence-v215.js','scout-evidence-v215.css','SCOUT_V211_REPETICOES_REVIEW.json','scout-finish-v202.css','scout-finish-v203.css','scout-finish-v203.js','scout-finish-v204.css','scout-finish-v205.css','scout-finish-v205.js',
  'skills-booster-v162.js','skill-names-v196.js','booster-engine-v103.js','SCOUT_V69_AUDITORIA.json','SCOUT_V213_AUDITORIA_INDIVIDUAL.json',
  'SCOUT_V101_MODELO_CORPORAL.json','SCOUT_V184_EFHUB_241_COMPLETE.json',
