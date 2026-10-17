@@ -1,4 +1,37 @@
 (()=>{'use strict';
+
+// V225 — salvar JSON com confirmação real via SAF Android / diálogo nativo Windows.
+async function scoutSaveJson(data,fileName){
+ const clean=String(fileName||'').replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,110);
+ if(!clean.endsWith('.json')||clean==='.json')throw Error('Nome de exportação inválido');
+ const content=JSON.stringify(data,null,2);
+ if(!content)throw Error('Não há dados para exportar');
+ const size=new Blob([content]).size;
+ if(size>8*1024*1024)throw Error('Exportação ultrapassou 8 MB');
+ const cap=window.Capacitor;
+ const onAndroid=Boolean(cap?.isNativePlatform?.()&&cap?.getPlatform?.()==='android');
+ if(onAndroid){
+  const plugin=cap.Plugins?.ScoutFileExport||cap.registerPlugin?.('ScoutFileExport');
+  if(typeof plugin?.saveJson!=='function')
+   throw Error('O salvamento de JSON exige a versão V225 ou posterior do APK Android.');
+  const result=await plugin.saveJson({fileName:clean,content});
+  if(!['saved','cancelled'].includes(result?.status))throw Error('O Android não confirmou o salvamento');
+  return result;
+ }
+ if(typeof window.scoutDesktop?.saveJson==='function'){
+  const result=await window.scoutDesktop.saveJson(clean,content);
+  if(!['saved','cancelled'].includes(result?.status))throw Error('O Windows não confirmou o arquivo');
+  return result;
+ }
+ const blob=new Blob([content],{type:'application/json'});
+ const url=URL.createObjectURL(blob);
+ try{
+  const anchor=document.createElement('a');anchor.href=url;anchor.download=clean;
+  document.body.appendChild(anchor);anchor.click();anchor.remove();
+ }finally{setTimeout(()=>URL.revokeObjectURL(url),10000)}
+ return {status:'requested'}; // Navegador: o usuário deve conferir o download.
+}
+window.SCOUT_FILE_EXPORT=Object.freeze({saveJson:scoutSaveJson});
 if(document.getElementById('scout-app-bar'))return;
 const repo=String(window.SCOUT_GITHUB_REPO||'').trim();
 const scoutNativeAndroid=Boolean(window.Capacitor?.isNativePlatform?.() && window.Capacitor?.getPlatform?.()==='android');
@@ -302,11 +335,22 @@ const notify=s=>{
  scoutToastTimer=setTimeout(()=>{scoutToast.hidden=true},5200);
 };
 const getKeys=()=>Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:'));
-const dl=(data,name)=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500)};
+const dl=(data,name)=>scoutSaveJson(data,name);
 const modal=document.createElement('dialog');modal.id='scout-backup-modal';modal.innerHTML='<h3>Backup das suas builds</h3><p>Exporta somente treinos personalizados e registros salvos neste dispositivo. Antes de trocar de celular, reinstalar ou limpar dados, faça backup.</p><button id="scout-export">Exportar meus dados</button><button id="scout-import">Importar backup</button><button id="scout-close">Fechar</button><input id="scout-pick" type="file" accept=".json,application/json" hidden><p id="scout-backup-status" role="status"></p>';document.body.appendChild(modal);
 const feedback=modal.querySelector('#scout-backup-status');
 bar.querySelector('#scout-backup').onclick=()=>modal.showModal();modal.querySelector('#scout-close').onclick=()=>modal.close();
-modal.querySelector('#scout-export').onclick=()=>{try{const out={format:'scoutpro-userdata-v1',exported_at:new Date().toISOString(),items:Object.fromEntries(getKeys().map(k=>[k,localStorage.getItem(k)]))};dl(out,'scout-pro-meus-dados.json');feedback.textContent=`Backup gerado com ${Object.keys(out.items).length} registros.`;}catch(e){feedback.textContent='Falha no backup: '+e.message}};
+modal.querySelector('#scout-export').onclick=async()=>{
+ const button=modal.querySelector('#scout-export');button.disabled=true;
+ try{
+  const out={format:'scoutpro-userdata-v1',exported_at:new Date().toISOString(),items:Object.fromEntries(getKeys().map(k=>[k,localStorage.getItem(k)]))};
+  const result=await dl(out,'scout-pro-meus-dados.json');
+  feedback.textContent=result.status==='saved'
+   ?'Backup salvo com sucesso ('+Object.keys(out.items).length+' registros).'
+   :result.status==='cancelled'?'Salvamento cancelado; dados preservados.'
+   :'Download solicitado; confira a pasta Downloads do navegador.';
+ }catch(e){feedback.textContent='Falha no backup: '+(e.message||e)}
+ finally{button.disabled=false}
+};
 const pick=modal.querySelector('#scout-pick');modal.querySelector('#scout-import').onclick=()=>pick.click();
 pick.onchange=async()=>{try{if(!pick.files?.[0])return;if(pick.files[0].size>4e6)throw Error('Arquivo grande demais.');const val=JSON.parse(await pick.files[0].text());if(val.format!=='scoutpro-userdata-v1'||!val.items||typeof val.items!=='object'||Array.isArray(val.items))throw Error('Formato não reconhecido.');const entries=Object.entries(val.items);if(entries.length>4000||entries.some(([k,v])=>!k.startsWith('scoutpro:')||typeof v!=='string'))throw Error('Backup inválido.');if(!confirm('Importar '+entries.length+' registros? Dados existentes das mesmas cartas serão substituídos.'))return;entries.forEach(([k,v])=>localStorage.setItem(k,v));feedback.textContent='Importação concluída. Reabra a ficha para ver seus treinos.';}catch(e){feedback.textContent=e.message}finally{pick.value=''}};
 async function openReleaseLink(raw){

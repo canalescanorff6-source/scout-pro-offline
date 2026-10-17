@@ -15,6 +15,7 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(ScoutUpdaterPlugin.class);
         registerPlugin(ScoutRecorderPlugin.class);
+        registerPlugin(ScoutFileExportPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }
@@ -23,6 +24,7 @@ fs.writeFileSync(path.join(base,'MainActivity.java'),activity);
 fs.copyFileSync(path.join(root,'native/android/ScoutUpdaterPlugin.java'),path.join(base,'ScoutUpdaterPlugin.java'));
 fs.copyFileSync(path.join(root,'native/android/ScoutUpdateFileProvider.java'),path.join(base,'ScoutUpdateFileProvider.java'));
 fs.copyFileSync(path.join(root,'native/android/ScoutRecorderPlugin.java'),path.join(base,'ScoutRecorderPlugin.java'));
+fs.copyFileSync(path.join(root,'native/android/ScoutFileExportPlugin.java'),path.join(base,'ScoutFileExportPlugin.java'));
 fs.copyFileSync(path.join(root,'native/android/ScoutRecorderService.java'),path.join(base,'ScoutRecorderService.java'));
 const xml=path.join(android,'res/xml');fs.mkdirSync(xml,{recursive:true});
 fs.writeFileSync(path.join(xml,'scout_update_paths.xml'),

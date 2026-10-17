@@ -1,6 +1,7 @@
 'use strict';
 const { app, BrowserWindow, ipcMain, dialog, shell, protocol, net } = require('electron');
 const path = require('path');
+const fs = require('node:fs/promises');
 const {pathToFileURL} = require('url');
 const { autoUpdater } = require('electron-updater');
 protocol.registerSchemesAsPrivileged([{scheme:'scout',privileges:{standard:true,secure:true,supportFetchAPI:true,stream:true}}]);
@@ -57,4 +58,22 @@ ipcMain.handle('scout:check-updates',async()=>{
   if(!app.isPackaged)return {ok:false,message:'No modo de desenvolvimento, o atualizador só funciona no instalador publicado.'};
   if(process.platform!=='win32')return {ok:false,message:'Atualização pelo GitHub disponível no instalador Windows.'};
   try{await autoUpdater.checkForUpdates();return {ok:true}}catch(e){return {ok:false,message:e.message}}
+});
+
+// V225: exportação pelo diálogo nativo; apenas usuário escolhe o destino.
+ipcMain.handle('scout:save-json',async (event,payload)=>{
+  if(!event.sender || event.sender!==win?.webContents)throw Error('Origem de exportação não permitida');
+  const content=payload?.content,name=payload?.fileName;
+  if(typeof content!=='string'||typeof name!=='string'||Buffer.byteLength(content,'utf8')>8*1024*1024)
+    throw Error('Arquivo de exportação inválido ou acima de 8 MB');
+  try{JSON.parse(content);}catch(_e){throw Error('Dados JSON inválidos');}
+  const fileName=name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,110);
+  if(!fileName.endsWith('.json')||fileName==='.json')throw Error('Nome de arquivo inválido');
+  const selection=await dialog.showSaveDialog(win,{
+    title:'Salvar exportação do Scout PRO',defaultPath:fileName,
+    buttonLabel:'Salvar JSON',filters:[{name:'Arquivo JSON',extensions:['json']}]
+  });
+  if(selection.canceled||!selection.filePath)return {status:'cancelled'};
+  await fs.writeFile(selection.filePath,content,{encoding:'utf8'});
+  return {status:'saved',bytes:Buffer.byteLength(content,'utf8')};
 });
