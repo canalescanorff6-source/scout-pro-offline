@@ -55,7 +55,7 @@ for(let n=1;n<=246;n++){
  const duplicateTable=appearances(source,/\bid=["']scout-v208-training["']/gi);
  if(duplicateTable)issue('A second training table is hardcoded in the static page');
  if(!source.includes('class="profile-content"'))issue('Profile root absent');
- if(!source.includes('../lab.js'))issue('Legacy advanced lab module absent; shouldn't remove functionality');
+ if(!source.includes('../lab.js'))issue("Legacy advanced lab module absent; should not remove functionality");
  const sectionPreview=expectedIds.filter(id=>ids.some(x=>x.id===id&&x.count===1));
  reports.push({
   number:n,name:String(masterCard.name),file:assetPath,cardId:String(masterCard.id),
