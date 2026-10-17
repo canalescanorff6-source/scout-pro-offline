@@ -9,10 +9,10 @@
 <script defer src="scout-rotation-lab-v219.js"></script><script defer src="pwa.js"></script>
 </head><body data-page="rotation-lab"><header class="scout-rotation-top"><a href="index.html"><img src="assets/scout-pro-icon-premium-original.png" alt="">SCOUT PRO</a><span>ELENCOS · LABORATÓRIO</span></header>
 <main class="scout-rotation-wrap"><section class="scout-rotation-hero"><div class="scout-rotation-eyebrow">POSSE DE BOLA · TESTE DE TODAS AS CARTAS</div>
-<h1>Laboratório de escalações</h1><p>Separe as 22 cartas usadas no mapeamento do Black e teste as outras, sem repetir jogadores dentro da mesma série. Todas as escolhas são experimentais; o programa não inventa familiaridade de posição nem ativa Link-Up.</p>
+<h1>Laboratório de escalações</h1><p>Restringa as 23 cartas do mapeamento do Black e teste até 223 cartas em cada série. Com 11 titulares e 12 reservas, serão 9 elencos completos por formação e 16 cartas para a segunda rodada, desde que haja goleiros e posições elegíveis. Todas as escolhas são experimentais; o programa não inventa familiaridade de posição nem ativa Link-Up.</p>
 <div class="scout-rotation-trust" id="rotation-inventory" role="status">Carregando 246 cartas…</div></section>
-<section class="scout-rotation-panel" aria-labelledby="black-heading"><div class="scout-rotation-title"><h2 id="black-heading">01 · Jogadores reservados do Black</h2><span id="black-count">0 / 22</span></div>
-<p>Envie as fotos do Black aqui na conversa para validar as identidades e Card IDs. Por enquanto, você pode digitar o <strong>número do catálogo</strong> de cada uma das 22 cartas. Elas ficam proibidas nas séries de teste, mas nenhuma carta será apagada do projeto.</p>
+<section class="scout-rotation-panel" aria-labelledby="black-heading"><div class="scout-rotation-title"><h2 id="black-heading">01 · As 23 cartas que não quero escalar</h2><span id="black-count">0 / 23</span></div>
+<p>Envie as fotos do Black aqui na conversa para validar as identidades e Card IDs. Por enquanto, você pode digitar o <strong>número do catálogo</strong> de cada uma das 23 cartas. Elas ficam proibidas nas séries de teste das duas formações, mas nenhuma carta nem escalação original será apagada.</p>
 <div class="scout-rotation-picker">
   <div class="scout-rotation-picker-head">
     <div><strong>Escolha as cartas visualmente</strong><p>Toque em <b>Restringir</b> na carta correta. Cada escolha vale para as duas formações, titulares e reservas, nas duas rodadas.</p></div>
@@ -24,26 +24,26 @@
   </div>
   <div id="black-candidate-count" class="scout-rotation-subtext" aria-live="polite">Carregando cartas…</div>
   <div id="black-candidates" class="scout-rotation-picker-list" aria-label="Cartas disponíveis para restringir"></div>
-  <div class="scout-rotation-picked-heading">Cartas protegidas da escalação do Black <span id="black-protected-label">0 de 22</span></div>
+  <div class="scout-rotation-picked-heading">Cartas protegidas da escalação do Black <span id="black-protected-label">0 de 23</span></div>
   <div id="black-reserved" class="scout-rotation-picked" aria-label="Jogadores excluídos das duas formações"></div>
 </div>
-<details class="scout-rotation-quick-paste"><summary>Opcional: colar números das 22 cartas de uma vez</summary>
+<details class="scout-rotation-quick-paste"><summary>Opcional: colar números das 23 cartas de uma vez</summary>
 <label for="black-input">Números das cartas (#), separados por espaço ou vírgula</label>
 <textarea id="black-input" rows="3" spellcheck="false" placeholder="Ex.: 011, 039, 106, 143… (somente os números das cartas conferidas)"></textarea></details>
-<label class="scout-rotation-review-label" for="black-reviewed"><input id="black-reviewed" type="checkbox" disabled> Conferi pessoalmente as 22 cartas nas imagens da escalação do Black (declaração pessoal, não verificação externa).</label>
+<label class="scout-rotation-review-label" for="black-reviewed"><input id="black-reviewed" type="checkbox" disabled> Conferi pessoalmente as 23 cartas nas imagens da escalação do Black (declaração pessoal, não verificação externa).</label>
 <div class="scout-rotation-actions">
   <button id="black-save" type="button" class="scout-rotation-btn main">Aplicar números colados</button>
   <button id="black-clear" type="button" class="scout-rotation-btn">Limpar lista</button>
-  <button id="black-export" type="button" class="scout-rotation-btn">Exportar meus 22 bloqueios (.json)</button>
+  <button id="black-export" type="button" class="scout-rotation-btn">Exportar meus 23 bloqueios (.json)</button>
 </div>
 <label for="black-import">Importar lista de bloqueios de outro dispositivo (.json)
   <input id="black-import" type="file" accept=".json,application/json" aria-label="Escolher lista Scout PRO de bloqueios para importar">
 </label>
 <p class="scout-rotation-subtext">Os bloqueios ficam salvos neste dispositivo. Para usar a mesma lista no Android e no Windows, exporte o arquivo JSON aqui e importe-o no outro app. A importação confere os números e os Card IDs, sem alterar as cartas.</p>
 <p id="black-feedback" class="scout-rotation-feedback" role="status">A lista ainda não foi validada pelos prints.</p></section>
-<section class="scout-rotation-panel" aria-labelledby="series-heading"><h2 id="series-heading">02 · Séries de testes por formação</h2><p>O mesmo conjunto disponível pode ser testado nas duas táticas. <strong>Nenhuma carta se repete entre equipes de uma mesma série.</strong></p>
+<section class="scout-rotation-panel" aria-labelledby="series-heading"><h2 id="series-heading">02 · Séries de testes por formação</h2><p>O mesmo conjunto de 223 cartas poderá ser testado nas duas táticas independentes (4-3-1-2 personalizada e 4-2-1-3 estreita). <strong>Nenhuma carta se repete entre equipes da mesma formação e rodada. Adaptação de posição exige confirmação no jogo, e o Link-Up não é considerado ativo automaticamente.</strong></p>
 <div role="group" aria-label="Escolher série" class="scout-rotation-actions"><button type="button" class="scout-rotation-btn selected" data-series="4312" aria-pressed="true">4-3-1-2 · Dois VOL</button><button type="button" class="scout-rotation-btn" data-series="4213" aria-pressed="false">4-2-1-3 · Dois CA + SA</button></div>
-<div role="group" aria-label="Rodada de testes" class="scout-rotation-actions"><button type="button" class="scout-rotation-btn selected" data-cycle="1" aria-pressed="true">Rodada 1 · Equipes iniciais</button><button type="button" class="scout-rotation-btn" data-cycle="2" aria-pressed="false">Rodada 2 · Incluir cartas restantes</button></div><div id="series-diagnostics" class="scout-rotation-diagnostics"></div>
+<div role="group" aria-label="Rodada de testes" class="scout-rotation-actions"><button type="button" class="scout-rotation-btn selected" data-cycle="1" aria-pressed="true">Rodada 1 · Equipes iniciais</button><button type="button" class="scout-rotation-btn" data-cycle="2" aria-pressed="false">Rodada 2 · Testar as 16 restantes</button></div><div id="series-diagnostics" class="scout-rotation-diagnostics"></div>
 <div class="scout-rotation-actions"><button type="button" id="rotation-export" class="scout-rotation-btn">Exportar escalações e resultados (JSON)</button><button type="button" id="rotation-prompt" class="scout-rotation-btn">Copiar escalação para análise da partida</button></div>
 <div id="squads" class="scout-rotation-squads"></div></section>
 <section class="scout-rotation-panel" aria-labelledby="video-heading"><h2 id="video-heading">03 · Vídeo da partida · Gravação e análise</h2>
