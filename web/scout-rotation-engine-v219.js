@@ -70,14 +70,15 @@ function analyze(cards,excluded){
   requiresBlackPhoto:true,listComplete:blocked.size===22,
   blocked:[...blocked].sort((a,b)=>a-b)};
 }
-function build(cards,formation,excluded){
+function build(cards,formation,excluded,cycle=1){
  if(!formation||!['4312','4213'].includes(formation.id)||!Array.isArray(formation.starters)||formation.starters.length!==START_SIZE)throw Error('Formação não reconhecida');
  const stat=analyze(cards,excluded);
+ if(![1,2].includes(Number(cycle)))throw Error('Rodada de teste inválida');
  const filtered=cards.filter(c=>!new Set(stat.blocked).has(Number(c.numero)));
  const count=stat.maxTeams;
  const entries=Array.from({length:count},(_,i)=>({
-  id:formation.id+'-'+String(i+1).padStart(2,'0'),
-  name:'Posse '+formation.id+' · '+NAMES[i%NAMES.length]+' '+String(i+1).padStart(2,'0'),
+  id:formation.id+'-r'+cycle+'-'+String(i+1).padStart(2,'0'),
+  name:'Posse '+formation.id+' · '+NAMES[i%NAMES.length]+' '+String(i+1).padStart(2,'0')+(cycle===2?' · Rodada 2':''),
   index:i+1,formation:formation.id,starters:[],bench:[],warnings:[]
  }));
  const byN=new Map(filtered.map(c=>[Number(c.numero),c]));
@@ -129,7 +130,22 @@ function build(cards,formation,excluded){
    used.add(Number(c.numero));entries[t].bench.push({cap:Number(c.numero),role:position(c)});
   }
  }
- const left=filtered.filter(c=>!used.has(Number(c.numero))).map(c=>Number(c.numero));
+ // Rodada 2: os jogadores que sobraram na primeira bateria entram agora no banco.
+ // Outros assumem a lista de espera; a UNIÃO das duas rodadas cobre todas as cartas.
+ let left=filtered.filter(c=>!used.has(Number(c.numero))).map(c=>Number(c.numero));
+ if(Number(cycle)===2&&left.length&&entries.length){
+  const swaps=left.slice();
+  for(let k=0;k<swaps.length;k++){
+   const team=entries[k%entries.length];
+   const benchIndex=Math.floor(k/entries.length)%team.bench.length;
+   if(!team.bench.length)continue;
+   const previous=team.bench[benchIndex].cap,coming=swaps[k];
+   const selectedCard=byN.get(coming);
+   team.bench[benchIndex]={cap:coming,role:position(selectedCard)};
+   used.delete(previous);used.add(coming);
+  }
+  left=filtered.filter(c=>!used.has(Number(c.numero))).map(c=>Number(c.numero));
+ }
  for(const team of entries){
   const inTeam=new Set([...team.starters.map(s=>s.cap),...team.bench.map(b=>b.cap)]);
   if(inTeam.size!==team.starters.length+team.bench.length)throw Error('Carta duplicada na equipe');
@@ -146,7 +162,7 @@ function build(cards,formation,excluded){
  }
  const usedInAll=new Set(entries.flatMap(e=>[...e.starters.map(s=>s.cap),...e.bench.map(b=>b.cap)]));
  if(usedInAll.size!==entries.reduce((sum,t)=>sum+t.starters.length+t.bench.length,0))throw Error('Uma carta aparece em mais de uma equipe da mesma série');
- return {schema:'SCOUT_ROTATION_V219',formation:formation.id,teams:entries,leftovers:left,counts:stat,
+ return {schema:'SCOUT_ROTATION_V219',formation:formation.id,cycle:Number(cycle),teams:entries,leftovers:left,counts:stat,
   rules:'Nenhuma carta repetida nesta série. Adaptabilidade/ativação não confirmadas. Não usar Overall.',
   source:'SCOUT_V69_AUDITORIA.json',
   exactBlackMappingConfirmed:false};
