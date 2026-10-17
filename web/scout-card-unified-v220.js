@@ -4,7 +4,7 @@
  */
 (function(host){
 'use strict';
-const engine=host?.SCOUT_TACTICS_V220;
+let engine=host?.SCOUT_TACTICS_V220;
 const $=(root,id)=>root.querySelector('#'+id);
 const mk=(doc,tag,cls,text)=>{const x=doc.createElement(tag);if(cls)x.className=cls;if(text!==undefined)x.textContent=String(text);return x};
 const localGet=k=>{try{return host.localStorage?.getItem(k)||null}catch(_e){return null}};
@@ -49,6 +49,7 @@ function makeList(doc,list){
  return ul;
 }
 function mount(doc){
+ engine=host?.SCOUT_TACTICS_V220||engine;
  if(!doc||doc.body?.dataset.page!=='detail')return false;
  if(doc.getElementById('scout-v220-hero'))return true;
  const panel=doc.getElementById('scout-v188-principal'),
@@ -65,7 +66,7 @@ function mount(doc){
  const baseline=possession||experimental;
  let style=localGet('scoutpro:v220:style:'+id)||'posse';
  if(!styles.includes(style))style='posse';
- const summary=evidence(card,{},style);
+ // Os níveis originais continuam preservados em todas as cinco táticas.
  const wrap=mk(doc,'div','scout-v220-shell');wrap.id='scout-v220-hero';
  const hero=mk(doc,'section','scout-v220-hero');
  const eyebrow=mk(doc,'div','scout-v220-eyebrow','SCOUT PRO / ANÁLISE COMPETITIVA');
@@ -121,12 +122,10 @@ function mount(doc){
  for(const q of ['.scout-v188-boost','.scout-v188-body','.scout-v188-more']){
   const e=panel.querySelector(q);if(e)tech.append(e);
  }
- const oldSkill=doc.getElementById('scout-v162');
- if(oldSkill){
-  const box=mk(doc,'details','scout-v220-advanced-skill');box.id='scout-v220-advanced-skills';
-  box.append(mk(doc,'summary','','Cadastro de habilidades, slots e explicações detalhadas'));
-  box.append(oldSkill);tech.append(box);
- }
+ const box=mk(doc,'details','scout-v220-advanced-skill');box.id='scout-v220-advanced-skills';
+ box.append(mk(doc,'summary','','Cadastro de habilidades, slots e explicações detalhadas'));
+ const oldSkill=doc.getElementById('scout-v162');if(oldSkill)box.append(oldSkill);
+ tech.append(box);
  const notesKey=()=> 'scoutpro:v220:match:'+id+':'+style;
  const outcome=$(wrap,'scout-v220-outcome'),memo=$(wrap,'scout-v220-notes');
  function loadNotes(){
