@@ -63,7 +63,7 @@ function readRecord(imported,cards){
 }
 function available(cards,raw){const blocked=new Set(validateCaps(raw,cards));return cards.filter(c=>!blocked.has(idOf(c)))}
 function match(card,term,positionFilter=''){
- const text=norm([card.numero,card.name,card.versao,card.id,card.posicao,card.estilo_ataque].join(' '));
+ const text=norm([card.numero,'#'+String(card.numero).padStart(3,'0'),String(card.numero).padStart(3,'0'),card.name,card.versao,card.id,card.posicao,card.estilo_ataque].join(' '));
  const tokens=norm(term).split(/\s+/).filter(Boolean);
  if(positionFilter&&String(card.posicao||'').toUpperCase()!==String(positionFilter).toUpperCase())return false;
  return tokens.every(part=>text.includes(part));
