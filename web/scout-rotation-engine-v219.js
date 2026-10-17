@@ -67,7 +67,7 @@ function analyze(cards,excluded){
  return {cards:cards.length,excluded:blocked.size,available:available.length,keepers,
   maxTeams,remaining:available.length-maxTeams*SQUAD_SIZE,
   totalFullByQuantity:sizeLimit,goalkeeperLimited:keepers<sizeLimit,
-  requiresBlackPhoto:blocked.size!==22,
+  requiresBlackPhoto:true,listComplete:blocked.size===22,
   blocked:[...blocked].sort((a,b)=>a-b)};
 }
 function build(cards,formation,excluded){
