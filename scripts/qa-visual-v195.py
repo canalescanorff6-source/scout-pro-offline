@@ -503,6 +503,7 @@ def run():
                     const e=document.getElementById('scout-v215-evidence');
                     const summary=e.querySelector('summary').getBoundingClientRect();
                     return {open:e.open,overlaps:e.dataset.nativeOverlaps,
+                        replacements:[...e.querySelectorAll('.scout-v215-replacements li strong')].map(x=>x.textContent),
                         text:e.innerText,overflow:e.scrollWidth-e.clientWidth,
                         summaryHeight:summary.height,
                         registeredPP:document.querySelector('#scout-v208-training .scout-v208-total').textContent.trim()};
@@ -512,6 +513,12 @@ def run():
                     problems.append(f"{name}: V215 não encontrou habilidade candidata duplicada de Massaro")
                 if "Cabeceio" not in review215['text'] or "Heading" not in review215['text']:
                     problems.append(f"{name}: V215 não explica equivalência EN/PT-BR")
+                if len(review215['replacements']) != 1 or review215['replacements'][0] in ('Cabeceio', 'Cabeçada'):
+                    problems.append(f"{name}: V216 não propôs uma alternativa distinta de Heading")
+                if "Mantidas apenas para conferência" not in review215['text'] or "Passe de primeira" not in review215['text']:
+                    problems.append(f"{name}: V216 não separou as quatro sugestões históricas sem colisão")
+                if "hipóteses por função" not in review215['text'].lower():
+                    problems.append(f"{name}: V216 não esclarece que a alternativa não foi homologada")
                 if "não alterar habilidades" not in review215['text'].lower() or review215['registeredPP']!='62 / 62':
                     problems.append(f"{name}: V215 omite preservação de build/PP")
                 if review215['overflow']>3 or review215['summaryHeight']<44:
