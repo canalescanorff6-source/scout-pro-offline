@@ -15,24 +15,25 @@ assert.equal(E.position({posicao:'MDF'}),'VOL');
 assert.equal(E.suitability({posicao:'SA'},'sa').kind,'posição original');
 assert.equal(E.suitability({posicao:'CA'},'sa').kind,'adaptação não confirmada');
 assert.equal(E.suitability({posicao:'CA'},'go').score,-100,'Goleiro nunca inventado');
+assert.equal(E.suitability({posicao:'PTD'},'vol').score,-100,'Não atribuir posição sem qualquer base documental');
 assert(E.evidenceScore({posicao:'VOL',estilo_ataque:'Orquestrador'},'vole')>
        E.evidenceScore({posicao:'VOL',estilo_ataque:'Primeiro volante'},'vole'),
        'VOL orquestrador tem prioridade documental de função');
-const sampleBlocked=cards.filter(c=>!E.isKeeper(c)).slice(0,22).map(c=>c.numero);
-assert.equal(sampleBlocked.length,22);
+const sampleBlocked=cards.filter(c=>!E.isKeeper(c)).slice(0,23).map(c=>c.numero);
+assert.equal(sampleBlocked.length,23);
 const counts=E.analyze(cards,sampleBlocked);
 assert.equal(counts.cards,246);
-assert.equal(counts.excluded,22);
-assert.equal(counts.available,224);
-assert.equal(counts.totalFullByQuantity,10);
-assert.equal(counts.maxTeams,10,'Existem goleiros suficientes no teste de exclusões não GO');
-assert.equal(counts.remaining,4);
-assert.equal(counts.requiresBlackPhoto,true,'Mesmo 22 cartas selecionadas não validam foto do Black');
-assert.equal(counts.listComplete,true,'22 entradas aceitas enquanto revisão visual continua pendente');
+assert.equal(counts.excluded,23);
+assert.equal(counts.available,223);
+assert.equal(counts.totalFullByQuantity,9);
+assert.equal(counts.maxTeams,9,'Existem goleiros suficientes no teste de exclusões não GO');
+assert.equal(counts.remaining,16);
+assert.equal(counts.requiresBlackPhoto,true,'Mesmo 23 cartas selecionadas não validam foto do Black');
+assert.equal(counts.listComplete,true,'23 entradas aceitas enquanto revisão visual continua pendente');
 const noBlack=E.analyze(cards,[]);
 assert.equal(noBlack.requiresBlackPhoto,true,'Antes das fotos não afirmar mapeamento concluído');
 assert.equal(noBlack.available,246);
-assert.equal(noBlack.totalFullByQuantity,11);
+assert.equal(noBlack.totalFullByQuantity,10);
 assert.throws(()=>E.analyze([{numero:1},{numero:1}],[]),'ID do catálogo duplicado deve ser rejeitado');
 assert.deepEqual(E.excludedSet([1,1,800,undefined],cards),new Set([1]));
 let outputs=[];
@@ -40,15 +41,17 @@ for(const form of plan.formations){
  const result=E.build(cards,form,sampleBlocked),next=E.build(cards,form,sampleBlocked);
  assert.deepEqual(result,next,'Construção estável com mesmas cartas e exclusões');
  assert.equal(result.exactBlackMappingConfirmed,false,'Nunca identificar Black por inferência');
- assert.equal(result.teams.length,10);
- assert.equal(result.leftovers.length,4);
+ assert.equal(result.teams.length,9);
+ assert.equal(result.leftovers.length,16);
  const all=new Set();
  for(const team of result.teams){
   assert.equal(team.starters.length,11,form.id+' titulares');
-  assert.equal(team.bench.length,11,form.id+' reservas');
-  assert(team.ready,form.id+' inclui GO nativo');
+  assert.equal(team.bench.length,12,form.id+' reservas');
+  assert(team.ready,form.id+' possui 11 titulares e 12 reservas com GO original');
+   assert.equal(team.positionallyConfirmed,team.starters.every(x=>x.fit==='posição original'));
+   assert(!team.starters.some(x=>x.fit==='posição não compatível documentada'));
   assert.equal(team.starters.find(s=>s.slot==='go').fit,'posição original');
-  assert.equal(new Set([...team.starters.map(x=>x.cap),...team.bench.map(x=>x.cap)]).size,22);
+  assert.equal(new Set([...team.starters.map(x=>x.cap),...team.bench.map(x=>x.cap)]).size,23);
   assert.equal(team.linkup.verifiedInGame,false,'Nunca afirmar Link-Up ativo');
   for(const row of [...team.starters,...team.bench]){
    assert(!sampleBlocked.includes(row.cap),'Carta do mapeamento proibida');
@@ -56,9 +59,9 @@ for(const form of plan.formations){
    all.add(row.cap);
   }
  }
- assert.equal(all.size,220);
+ assert.equal(all.size,207);
  for(const cap of result.leftovers)assert(!all.has(cap),'Sobrantes não usados');
- assert.equal(new Set([...all,...result.leftovers]).size,224,'Todas cartas disponíveis classificadas');
+ assert.equal(new Set([...all,...result.leftovers]).size,223,'Todas cartas disponíveis classificadas');
  if(form.id==='4213')assert(result.teams.some(t=>t.warnings.some(w=>w.includes('adaptação'))),
   'A posição SA é escassa e a adaptação deve ficar evidente');
  outputs.push(result);
@@ -67,12 +70,12 @@ for(const form of plan.formations){
  const one=E.build(cards,form,sampleBlocked,1);
  const two=E.build(cards,form,sampleBlocked,2);
  assert.equal(two.cycle,2,'Segunda rodada explícita');
- assert.equal(two.teams.length,10);
- assert.equal(two.leftovers.length,4,'Cada rodada mantém quatro na espera');
+ assert.equal(two.teams.length,9);
+ assert.equal(two.leftovers.length,16,'Cada rodada mantém quatro na espera');
  const idsOne=new Set(one.teams.flatMap(t=>[...t.starters.map(s=>s.cap),...t.bench.map(s=>s.cap)]));
  const idsTwo=new Set(two.teams.flatMap(t=>[...t.starters.map(s=>s.cap),...t.bench.map(s=>s.cap)]));
- assert.equal(idsTwo.size,220,'A segunda rodada não repete jogadores entre times');
- assert.equal(new Set([...idsOne,...idsTwo]).size,224,'TODAS as cartas restantes aparecem nas duas rodadas combinadas');
+ assert.equal(idsTwo.size,207,'A segunda rodada não repete jogadores entre times');
+ assert.equal(new Set([...idsOne,...idsTwo]).size,223,'TODAS as cartas restantes aparecem nas duas rodadas combinadas');
  for(const leftover of one.leftovers)assert(idsTwo.has(leftover),'Carta de fora da primeira rodada entra na segunda: '+leftover);
  for(const left of two.leftovers)assert(idsOne.has(left),'Carta de fora da segunda foi testada na primeira');
 }
@@ -98,4 +101,4 @@ for(const term of ['MediaRecorder','MediaProjection','VirtualDisplay','START_NOT
 assert(installer.includes("registerPlugin(ScoutRecorderPlugin.class)"));
 assert(installer.includes('FOREGROUND_SERVICE_MEDIA_PROJECTION')&&installer.includes('android:foregroundServiceType="mediaProjection"'));
 assert(!service.includes('openai.com')&&!service.includes('chatgpt.com'),'Nenhum upload automático para ChatGPT');
-console.log('V219 PASS: 246 cartas; 22 excluídas (teste); 10 elencos de 22 sem repetição em cada formação, 4 sobrantes, GO e adaptações sinalizados; gravador Android com consentimento e envio manual.');
+console.log('V219 PASS: 246 cartas; 23 excluídas (teste); 9 elencos de 23 sem repetição em cada formação, 16 sobrantes, GO e adaptações sinalizados; gravador Android com consentimento e envio manual.');

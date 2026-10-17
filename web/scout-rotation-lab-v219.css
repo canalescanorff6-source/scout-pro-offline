@@ -187,3 +187,8 @@ body[data-page="rotation-lab"]{margin:0;background:radial-gradient(ellipse at 0 
  .scout-rotation-picker-meta strong{font-size:12px}
  .scout-rotation-picker-card button{padding:7px 9px;font-size:10px;max-width:92px}
 }
+
+/* V224 — adaptação explícita: nunca apresentar posição provisória como homologada. */
+.scout-rotation-field-spot.provisional{border:2px dashed #deb77b!important;background:rgba(118,72,26,.25)!important}
+.scout-rotation-field-spot.provisional small{color:#ffdca7!important;font-weight:800}
+.scout-rotation-diagnostics{overflow-wrap:anywhere}

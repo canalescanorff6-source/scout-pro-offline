@@ -832,11 +832,11 @@ def run():
                     page.locator("#tactics").scroll_into_view_if_needed()
                     page.screenshot(path=str(OUT / f"{name}_booster_review.png"),
                                     full_page=False, animations="disabled")
-                # V219: banco de 22 cartas, sem repetição entre equipes de uma série.
+                # V224: 23 cartas por equipe, 23 restrições e nenhuma repetição entre elencos da mesma rodada.
                 page.goto(URL + "/meu-time-testes-v219.html",wait_until="domcontentloaded",timeout=35000)
-                page.wait_for_function("""() => document.querySelectorAll('#squads details[data-team]').length===11""",timeout=25000)
+                page.wait_for_function("""() => document.querySelectorAll('#squads details[data-team]').length===10""",timeout=25000)
                 if 'PRÉVIA INCOMPLETA' not in page.locator('#black-feedback').inner_text():
-                    problems.append(f"{name}: V222 não marcou a escalação sem os 22 prints como prévia")
+                    problems.append(f"{name}: V222 não marcou a escalação sem as 23 cartas verificadas como prévia")
                 page.locator('#black-search').fill('Massaro')
                 page.wait_for_function("""() =>
                     document.querySelector('#black-candidates button[data-black-cap="1"][data-action="add"]')
@@ -845,7 +845,7 @@ def run():
                     problems.append(f"{name}: V222 busca visual não localizou carta real de Massaro")
                 page.locator('#black-candidates button[data-black-cap="1"][data-action="add"]').click()
                 page.wait_for_function("""() =>
-                    document.getElementById('black-count')?.textContent==='1 / 22' &&
+                    document.getElementById('black-count')?.textContent==='1 / 23' &&
                     !!document.querySelector('#black-reserved button[data-black-cap="1"][data-action="remove"]')
                 """,timeout=12000)
                 page.wait_for_function("""() =>
@@ -853,19 +853,19 @@ def run():
                       .some(x=>x.textContent.includes('#001'))
                 """,timeout=12000)
                 page.locator('#black-reserved button[data-black-cap="1"][data-action="remove"]').click()
-                page.wait_for_function("""() => document.getElementById('black-count')?.textContent==='0 / 22'""",timeout=12000)
+                page.wait_for_function("""() => document.getElementById('black-count')?.textContent==='0 / 23'""",timeout=12000)
                 page.locator('#black-search').fill('')
                 page.locator('.scout-rotation-quick-paste > summary').click()
-                ids=', '.join(str(n) for n in range(1,23))
+                ids=', '.join(str(n) for n in range(1,24))
                 page.locator('#black-input').fill(ids)
                 page.locator('#black-save').click()
                 page.wait_for_function("""() =>
-                    document.getElementById('black-count').textContent.includes('22 / 22') &&
-                    document.querySelectorAll('#squads details[data-team]').length===10
+                    document.getElementById('black-count').textContent.includes('23 / 23') &&
+                    document.querySelectorAll('#squads details[data-team]').length===9
                 """,timeout=12000)
                 checkbox=page.locator('#black-reviewed')
                 if checkbox.is_disabled():
-                    problems.append(f"{name}: V222 revisão de 22 cartas bloqueada mesmo com lista completa")
+                    problems.append(f"{name}: V222 revisão de 23 cartas bloqueada mesmo com lista completa")
                 checkbox.check()
                 page.wait_for_function("""() =>
                     document.querySelector('#black-feedback')?.textContent.includes('Conferência pessoal declarada')
@@ -877,27 +877,27 @@ def run():
                       return window.SCOUT_RESTRICT_V222.makeRecord(ids,roster,true);
                     }""")
                     page.locator('#black-import').set_input_files({
-                      'name':'ScoutPRO-test-22.json','mimeType':'application/json',
+                      'name':'ScoutPRO-test-23.json','mimeType':'application/json',
                       'buffer':json.dumps(imported).encode('utf-8')
                     })
                     page.wait_for_function("""() =>
                         document.querySelector('#black-feedback')?.textContent.includes('Lista importada')
                     """,timeout=10000)
                     if page.locator('#black-reviewed').is_disabled() or not page.locator('#black-reviewed').is_checked():
-                        problems.append(f"{name}: V222 importação perdeu a confirmação pessoal das 22 cartas")
+                        problems.append(f"{name}: V222 importação perdeu a confirmação pessoal das 23 cartas")
                 formation_metrics=page.evaluate("""() => {
                   const squads=[...document.querySelectorAll('#squads details[data-team]')];
                   const ids=squads.flatMap(s=>[...s.querySelectorAll('.scout-rotation-player')].map(p=>
                     Number(p.querySelector('small')?.textContent.match(/#([0-9]{3})/)?.[1]||0)));
                   return {squads:squads.length,players:ids.length,unique:new Set(ids).size,
-                    excluded:[...new Set(ids)].filter(n=>n>=1&&n<=22),
+                    excluded:[...new Set(ids)].filter(n=>n>=1&&n<=23),
                     horizontal:Math.max(0,document.documentElement.scrollWidth-innerWidth),
                     blackVerified:document.querySelector('#series-diagnostics')?.innerText.includes('imagens não foram verificadas externamente')
                   };
                 }""")
                 result['rotation_lab_4312']=formation_metrics
-                if formation_metrics['squads']!=10 or formation_metrics['players']!=220 or formation_metrics['unique']!=220 or formation_metrics['excluded']:
-                    problems.append(f"{name}: V219 não dividiu 224 cartas em 10 equipes exclusivas de 22 {formation_metrics}")
+                if formation_metrics['squads']!=9 or formation_metrics['players']!=207 or formation_metrics['unique']!=207 or formation_metrics['excluded']:
+                    problems.append(f"{name}: V219 não dividiu 223 cartas em 9 equipes exclusivas de 23 {formation_metrics}")
                 if not formation_metrics['blackVerified']:
                     problems.append(f"{name}: V219 declarou mapeamento do Black como validado sem imagem")
                 if formation_metrics['horizontal']>8:
@@ -914,7 +914,7 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_rotation_4312_v219.png"),full_page=False,animations="disabled")
                 page.locator('button[data-series="4213"]').click()
                 page.wait_for_function("""() =>
-                    document.querySelectorAll('#squads details[data-team]').length===10 &&
+                    document.querySelectorAll('#squads details[data-team]').length===9 &&
                     document.querySelector('#series-diagnostics').innerText.includes('Série 4213')
                 """,timeout=12000)
                 second=page.evaluate("""() => {
@@ -924,13 +924,13 @@ def run():
                    overflow:Math.max(0,document.documentElement.scrollWidth-innerWidth)};
                 }""")
                 result['rotation_lab_4213']=second
-                if second['players']!=220 or second['unique']!=220 or second['overflow']>8:
+                if second['players']!=207 or second['unique']!=207 or second['overflow']>8:
                     problems.append(f"{name}: V219 4-2-1-3 incompleta ou repetida: {second}")
-                # Rodada 2: incluir em equipes as quatro cartas que sobraram na Rodada 1.
+                # Rodada 2: incluir em equipes as 16 cartas que sobraram na Rodada 1.
                 diagnostics_before=page.locator('#series-diagnostics').inner_text()
                 page.locator('button[data-cycle="2"]').click()
                 page.wait_for_function("""() =>
-                    document.querySelectorAll('#squads details[data-team]').length===10 &&
+                    document.querySelectorAll('#squads details[data-team]').length===9 &&
                     document.querySelector('#series-diagnostics').textContent.includes('Rodada 2')
                 """,timeout=10000)
                 cycle2=page.evaluate("""() => {
@@ -939,7 +939,7 @@ def run():
                     return {players:ids.length,unique:new Set(ids).size,overflow:document.documentElement.scrollWidth-innerWidth};
                 }""")
                 result['rotation_cycle_2']=cycle2
-                if cycle2['players']!=220 or cycle2['unique']!=220 or cycle2['overflow']>8:
+                if cycle2['players']!=207 or cycle2['unique']!=207 or cycle2['overflow']>8:
                     problems.append(f"{name}: V219 segunda rodada não manteve elenco sem repetição {cycle2}")
                 page.screenshot(path=str(OUT / f"{name}_rotation_second_cycle_v219.png"),full_page=False,animations="disabled")
                 if not page.locator('#rec-start').is_disabled():
@@ -947,7 +947,7 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_rotation_4213_v219.png"),full_page=False,animations="disabled")
                 page.screenshot(path=str(OUT / f"{name}_v222_black_roster_picker.png"),full_page=False,animations="disabled")
                 # A lista continua idêntica quando alterna entre as duas formações.
-                if page.locator('#black-count').inner_text()!='22 / 22':
+                if page.locator('#black-count').inner_text()!='23 / 23':
                     problems.append(f"{name}: V222 bloqueios não persistiram nas duas formações")
                 # V221: cards pendentes e IDs compartilhados também precisam de evidência própria.
                 if name in ('mobile_390','windows_1366'):
