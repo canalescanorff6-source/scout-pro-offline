@@ -33,3 +33,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .scout-backup-summary strong{color:#ffda75}
 @media(max-width:600px){.scout-rotation-picker-list{grid-template-columns:1fr!important}.scout-rotation-hero{padding:18px!important}#scout-app-bar{max-width:96%!important}.scout-rotation-page-shortcuts a{flex:1 1 45%;text-align:center}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* V226 — iconografia vetorial única para Android e Windows. */
+.scout-rotation-page-shortcuts a::before{content:"";display:inline-block;width:23px;height:23px;vertical-align:middle;background-size:contain;background-repeat:no-repeat;background-position:center;margin-right:7px}
+.scout-rotation-page-shortcuts a[href="#black-heading"]::before{background-image:url("assets/craque-elenco.svg")}
+.scout-rotation-page-shortcuts a[href="#series-heading"]::before{background-image:url("assets/craque-tatica.svg")}
+.scout-rotation-page-shortcuts a[href="#video-heading"]::before{background-image:url("assets/craque-desempenho.svg")}
+.scout-rotation-page-shortcuts a[href="#craque-backup-panel"]::before{background-image:url("assets/craque-resultados.svg")}
+#scout-app-bar #scout-backup::before{content:"";display:inline-block;width:17px;height:17px;background:url("assets/craque-analise.svg") center/contain no-repeat;vertical-align:middle;margin-right:5px}
+.scout-rotation-panel .scout-rotation-actions{align-items:stretch}
+.scout-rotation-panel button[aria-pressed="true"]{box-shadow:0 0 0 2px #ffc62959 inset}
+.scout-rotation-tactical{border:1px solid #447b55!important;box-shadow:inset 0 0 30px rgba(0,120,63,.17)}
