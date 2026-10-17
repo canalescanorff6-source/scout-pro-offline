@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#07262b"/>
+<meta name="description" content="Acervos separados de outras pessoas no Craque Tático. Suas 246 cartas originais permanecem intocadas."/>
+<title>Outros Elencos | Craque Tático</title>
+<link rel="stylesheet" href="app-bridge.css"/>
+<link rel="stylesheet" href="craque-friends-v227.css"/>
+<script defer src="scout-config.js"></script>
+<script defer src="app-bridge.js"></script>
+<script defer src="craque-friends-v227.js"></script>
+<script defer src="craque-friends-page-v227.js"></script>
+<script defer src="pwa.js"></script>
+</head>
+<body data-page="friends">
+<header class="friends-head">
+ <a class="friends-brand" href="index.html"><img src="assets/craque-tatico-icon.svg" alt="Ícone Craque Tático"/> <span><b>CRAQUE TÁTICO</b><small>BIBLIOTECA PRIVADA</small></span></a>
+ <a class="friends-back" href="index.html">← Meu elenco de 246 cartas</a>
+</header>
+<main class="friends-layout">
+ <section class="friends-hero">
+  <div><p class="friends-eyebrow">COLEÇÕES INDEPENDENTES · 100% OFFLINE</p>
+   <h1>Outros Elencos</h1>
+   <p>Cadastre as cartas de amigos e outras pessoas em um espaço separado do seu acervo. Cada pessoa tem sua própria coleção de cartas, imagens e observações.</p>
+   <div class="friends-safe"><span aria-hidden="true">✓</span><span>Seu catálogo original de <strong>246 cartas</strong>, suas formações, bloqueios e treinamentos não são modificados nesta página.</span></div>
+  </div>
+  <img class="friends-hero-icon" src="assets/craque-elenco.svg" alt="" />
+ </section>
+ <div class="friends-columns">
+  <aside class="friends-panel friends-people">
+   <div class="friends-section-heading"><div><span class="friends-eyebrow">01 · PESSOAS</span><h2>Acervos cadastrados</h2></div><span class="friends-count" id="friend-person-count">0</span></div>
+   <p>Escolha uma pessoa para ver somente as cartas dela.</p>
+   <form id="friend-person-form" class="friends-compact-form">
+     <label for="friend-person-name">Nome ou apelido da pessoa</label>
+     <div class="friends-control-row"><input type="text" id="friend-person-name" maxlength="80" required placeholder="Ex.: Colega João" autocomplete="off"/><button class="friends-primary" type="submit">Adicionar</button></div>
+   </form>
+   <div id="friend-people" class="friends-people-list" aria-label="Coleções de outras pessoas"></div>
+   <p id="friend-people-empty" class="friends-muted">Nenhum acervo cadastrado. Adicione o nome da primeira pessoa.</p>
+   <div class="friends-private-note"><strong>Privado por padrão</strong><p>Os dados são armazenados neste aparelho. Não há contas públicas nem envio automático de cartas.</p></div>
+  </aside>
+  <section class="friends-panel friends-main">
+   <div id="friend-no-selection" class="friends-empty-state">
+    <img src="assets/craque-tatica.svg" alt="" />
+    <h2>Selecione uma pessoa</h2><p>Crie um acervo e comece a registrar as cartas dela, sem misturar com as suas.</p>
+   </div>
+   <div id="friend-selected" hidden>
+    <div class="friends-section-heading"><div><span class="friends-eyebrow">02 · CARTAS DA PESSOA</span><h2 id="friend-current-name">Acervo</h2><p id="friend-current-meta">0 cartas</p></div>
+    <button type="button" class="friends-primary" id="friend-new-card">+ Nova carta</button></div>
+    <div class="friends-toolbar">
+     <label for="friend-search">Buscar neste acervo<input id="friend-search" type="search" placeholder="Nome, edição, posição, Card ID…" autocomplete="off"/></label>
+     <label for="friend-position">Posição<select id="friend-position"><option value="">Todas as posições</option><option>CA</option><option>SA</option><option>MAT</option><option>MLG</option><option>VOL</option><option>ZC</option><option>LD</option><option>LE</option><option>GO</option><option>PD</option><option>PE</option><option>Outra</option></select></label>
+    </div>
+    <div id="friend-cards" class="friends-card-grid" aria-live="polite"></div>
+    <p id="friend-cards-empty" class="friends-muted">Ainda não há cartas nesta coleção. Toque em “Nova carta” para cadastrar a primeira.</p>
+    <section class="friends-actions-panel">
+     <h3>Gerenciar esta coleção</h3>
+     <div class="friends-action-row">
+      <button type="button" id="friend-rename">Renomear pessoa</button>
+      <button type="button" id="friend-export">Exportar coleção (.json)</button>
+      <button type="button" class="friends-danger" id="friend-delete">Excluir acervo desta pessoa</button>
+     </div>
+    </section>
+   </div>
+  </section>
+ </div>
+ <section class="friends-panel friends-bottom">
+  <div><span class="friends-eyebrow">03 · PROTEGER OS DADOS</span><h2>Backup e importação</h2><p>O backup completo do Craque Tático inclui também os acervos de outras pessoas e suas miniaturas. Ao importar um arquivo de coleção individual, criaremos uma nova pessoa, sem substituir os acervos existentes.</p></div>
+  <div class="friends-action-row">
+   <button type="button" class="friends-primary" id="friend-open-backup">Abrir central de backup</button>
+   <button type="button" id="friend-import">Importar coleção de outra pessoa</button>
+   <input id="friend-import-file" type="file" accept=".json,application/json" hidden/>
+  </div>
+  <p class="friends-muted">Fotos são reduzidas para miniaturas locais, para caber no armazenamento e nos backups. Guarde os prints originais separadamente.</p>
+ </section>
+ <p id="friend-feedback" class="friends-feedback" role="status" aria-live="polite"></p>
+</main>
+<dialog id="friend-card-dialog" class="friends-dialog" aria-labelledby="friend-dialog-title">
+ <form id="friend-card-form">
+  <div class="friends-dialog-head"><div><span class="friends-eyebrow">CADASTRO PRIVADO</span><h2 id="friend-dialog-title">Nova carta</h2><p id="friend-dialog-owner"></p></div><button type="button" id="friend-dialog-close" aria-label="Fechar cadastro">✕</button></div>
+  <input type="hidden" id="friend-card-id"/>
+  <div class="friends-form-grid">
+   <label>Nome do jogador <span class="friends-required">*</span><input id="friend-card-name" maxlength="80" required placeholder="Ex.: Samuel Eto'o"/></label>
+   <label>Versão / edição da carta<input id="friend-card-edition" maxlength="180" placeholder="Ex.: Épico — Inter 2009-10"/></label>
+   <label>Card ID (somente se confirmado)<input id="friend-card-gameid" maxlength="90" placeholder="ID exato da edição"/></label>
+   <label>Posição<select id="friend-card-position"><option value="">Não informada</option><option>CA</option><option>SA</option><option>MAT</option><option>MLG</option><option>VOL</option><option>ZC</option><option>LD</option><option>LE</option><option>GO</option><option>PD</option><option>PE</option><option>Outra</option></select></label>
+   <label>Raridade<input id="friend-card-rarity" maxlength="50" placeholder="Épico, Show Time, etc."/></label>
+   <label>Estilo de jogo do jogador<input id="friend-card-style" maxlength="110" placeholder="Ex.: Artilheiro"/></label>
+   <label>Nível informado<input id="friend-card-level" type="number" min="1" max="120" placeholder="Sem inventar"/></label>
+   <label>Pontos de progresso (PP)<input id="friend-card-pp" type="number" min="0" max="300" placeholder="Se conhecidos"/></label>
+   <label class="friends-wide">Habilidades adicionais (se informadas)<textarea id="friend-card-skills" maxlength="600" rows="2" placeholder="Não presumir habilidades não conferidas"></textarea></label>
+   <label class="friends-wide">Ímpetos / boosters (se confirmados)<textarea id="friend-card-booster" maxlength="200" rows="2"></textarea></label>
+   <label class="friends-wide">Observações e fonte dos dados<textarea id="friend-card-notes" maxlength="1500" rows="3" placeholder="Ex.: carta enviada por João; atributos ainda pendentes"></textarea></label>
+  </div>
+  <label class="friends-photo-picker" for="friend-photo"><span>Imagem da carta (opcional)</span><input id="friend-photo" type="file" accept="image/png,image/jpeg,image/webp"/><small>O aplicativo salva uma miniatura compactada para backup. Nenhum print é enviado a servidores.</small></label>
+  <div class="friends-photo-preview"><img id="friend-photo-preview" hidden alt="Miniatura da carta selecionada"/><button type="button" id="friend-photo-remove" hidden>Remover imagem</button></div>
+  <div class="friends-dialog-actions"><button type="button" id="friend-dialog-cancel">Cancelar</button><button type="submit" class="friends-primary" id="friend-dialog-save">Salvar carta neste acervo</button></div>
+ </form>
+</dialog>
+</body></html>

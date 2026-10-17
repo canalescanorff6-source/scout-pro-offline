@@ -80,17 +80,23 @@ function render(){
    createLink('player-model-v101.html','Biotipo','Medidas e fontes verificadas','◎')
   );
   const details=el('details','scout-v189-extra');
-  const summary=el('summary','','Mais ferramentas e análises');
+  const summary=el('summary','','Mais ferramentas · Outros Elencos');
   const links=el('div','scout-v189-extra-links');
   const originals=[...old.querySelectorAll('a')];
-  const skip=new Set(['#catalogo','meu-time-duas-formacoes-v177.html','revisao-impetos-v103.html','player-model-v101.html']);
+  const skip=new Set(['#catalogo','meu-time-duas-formacoes-v177.html','revisao-impetos-v103.html','player-model-v101.html','outros-elencos-v227.html']);
   for(const a of originals){
    if(skip.has(a.getAttribute('href')))continue;
    const copy=el('a','',a.textContent.replace(/\s*↗\s*/g,'').trim());
    copy.href=a.getAttribute('href');links.appendChild(copy)
   }
   details.append(summary,links);
-  const about=el('button','scout-v189-about','Como funciona a análise');
+  const friendsEntry=el('a','scout-v227-friends-entry');
+ friendsEntry.href='outros-elencos-v227.html';
+ const friendsIcon=el('span','scout-v227-friends-icon','▣');
+ friendsIcon.setAttribute('aria-hidden','true');
+ friendsEntry.append(friendsIcon,el('span','', 'Outros Elencos — Cadastre cartas de amigos sem misturar com suas 246 cartas'),el('span','scout-v227-friends-arrow','→'));
+ links.appendChild(friendsEntry);
+ const about=el('button','scout-v189-about','Como funciona a análise');
   about.type='button';about.setAttribute('aria-expanded','false');
   about.addEventListener('click',()=>{
    const opened=doc.body.classList.toggle('scout-v189-method-open');
