@@ -85,7 +85,10 @@ function rosterFingerprint(team,excluded=[],cards=[]){
  return JSON.stringify({schema:'SCOUT_ROSTER_SIGNATURE_V223',formation:team.formation,
   team:team.id,starters,bench,excluded:blocked});
 }
-function build(cards,formation,excluded,cycle=1){
+function build(cards,formation,excluded,cycle=1,tactic='posse'){
+ const tactical=host?.CRAQUE_TACTICS_V230;
+ if(!['posse','normal','rapido','fora','longo'].includes(tactic))throw Error('Tática de técnico inválida');
+ if(tactic!=='posse'&&!tactical)throw Error('Motor dos cinco estilos não carregou');
  if(!formation||!['4312','4213'].includes(formation.id)||!Array.isArray(formation.starters)||formation.starters.length!==START_SIZE)throw Error('Formação não reconhecida');
  const stat=analyze(cards,excluded);
  if(![1,2].includes(Number(cycle)))throw Error('Rodada de teste inválida');
@@ -94,8 +97,9 @@ function build(cards,formation,excluded,cycle=1){
  const expectedTotal=stat.available;
  const count=stat.maxTeams;
  const entries=Array.from({length:count},(_,i)=>({
-  id:formation.id+'-r'+cycle+'-'+String(i+1).padStart(2,'0'),
-  name:'Posse '+formation.id+' · '+NAMES[i%NAMES.length]+' '+String(i+1).padStart(2,'0')+(cycle===2?' · Rodada 2':''),
+  id:formation.id+'-r'+cycle+'-'+String(i+1).padStart(2,'0')+(tactic==='posse'?'':'-'+tactic),
+  name:(tactic==='posse'?'Posse':tactical.MODES[tactic].label)+' '+formation.id+' · '+NAMES[i%NAMES.length]+' '+String(i+1).padStart(2,'0')+(cycle===2?' · Rodada 2':''),
+  tactic,
   index:i+1,formation:formation.id,starters:[],bench:[],warnings:[]
  }));
  const byN=new Map(filtered.map(c=>[Number(c.numero),c]));
@@ -110,7 +114,8 @@ function build(cards,formation,excluded,cycle=1){
   const possible=filtered.filter(c=>!used.has(Number(c.numero))&&suitability(c,slot).score>=0);
   if(!possible.length)return null;
   possible.sort((a,b)=>{
-   const as=evidenceScore(a,slot),bs=evidenceScore(b,slot);
+   const extras=card=>tactic==='posse'?0:Math.max(-150,tactical.score(card,slot,tactic).score)*0.6;
+   const as=evidenceScore(a,slot)+extras(a),bs=evidenceScore(b,slot)+extras(b);
    if(bs!==as)return bs-as;
    // Rotação determinística: evita empilhar sempre o mesmo grupo no primeiro XI.
    const ra=(Number(a.numero)+teamIndex*17)%Math.max(1,filtered.length);
@@ -186,7 +191,7 @@ function build(cards,formation,excluded,cycle=1){
  const usedInAll=new Set(entries.flatMap(e=>[...e.starters.map(s=>s.cap),...e.bench.map(b=>b.cap)]));
  if(usedInAll.size!==entries.reduce((sum,t)=>sum+t.starters.length+t.bench.length,0))throw Error('Uma carta aparece em mais de uma equipe da mesma série');
  if(usedInAll.size+left.length!==expectedTotal||left.some(n=>usedInAll.has(n)))throw Error('Cobertura de cartas inconsistente na rodada');
- return {schema:'SCOUT_ROTATION_V219',formation:formation.id,cycle:Number(cycle),teams:entries,leftovers:left,counts:stat,
+ return {schema:'SCOUT_ROTATION_V219',formation:formation.id,cycle:Number(cycle),tactic,teams:entries,leftovers:left,counts:stat,
   rules:'23 cartas por equipe: 11 titulares e 12 reservas. Sem repetição entre equipes da mesma formação/rodada. Adaptação não prova compatibilidade. Sem Overall.',
   source:'SCOUT_V69_AUDITORIA.json',
   exactBlackMappingConfirmed:false};
