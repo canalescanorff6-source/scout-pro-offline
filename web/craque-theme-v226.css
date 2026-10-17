@@ -68,3 +68,9 @@ button:not(:disabled):active{transform:scale(.975)}
  .scout-rotation-field-spot strong{font-size:10px!important}
  .craque-team-jump{gap:7px}
 }
+.craque-launch{position:fixed;inset:0;z-index:25000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;background:radial-gradient(circle at 50% 40%,#145338 0,#0e2531 49%,#08141c 100%);color:#f9ebc7;transition:opacity .38s ease;pointer-events:none}
+.craque-launch img{width:min(52vw,250px);height:auto;filter:drop-shadow(0 15px 35px #0009)}
+.craque-launch strong{font-size:clamp(27px,6vw,48px);font-weight:950;letter-spacing:.06em;color:#ffc629;text-shadow:0 4px 18px #0008}
+.craque-launch span{font-size:clamp(11px,2.5vw,16px);letter-spacing:.25em;color:#e1e7dd}
+.craque-launch-exit{opacity:0}
+@media(prefers-reduced-motion:reduce){.craque-launch{transition:none}}
