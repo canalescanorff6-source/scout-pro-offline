@@ -374,11 +374,9 @@ async function init(){
  $('rotation-backup').addEventListener('click',async()=>{
   const button=$('rotation-backup');button.disabled=true;
   try{
-   const keys=Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:'));
-   const items=Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)]));
-   const data={format:'scoutpro-userdata-v1',exported_at:new Date().toISOString(),items};
-   const outcome=await window.SCOUT_FILE_EXPORT.saveJson(data,'ScoutPRO-Backup-Completo-V225.json');
-   status('black-feedback',outcome.status==='saved'?'Backup completo salvo ('+keys.length+' registros).'
+   if(!window.CRAQUE_BACKUP)throw Error('Central de backup ainda está carregando.');
+   const outcome=await window.CRAQUE_BACKUP.exportToFile(localStorage,'CraqueTatico-Backup-Completo.json');
+   status('black-feedback',outcome.status==='saved'?'Backup completo confirmado. Guarde o JSON fora do aparelho.'
      :outcome.status==='cancelled'?'Backup cancelado. Seus dados continuam no dispositivo.'
      :'Download de backup solicitado; confira o arquivo no navegador.');
   }catch(e){status('black-feedback','Falha ao salvar backup completo: '+String(e.message||e))}
