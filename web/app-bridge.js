@@ -36,12 +36,19 @@ if(document.getElementById('scout-app-bar'))return;
 const repo=String(window.SCOUT_GITHUB_REPO||'').trim();
 const scoutNativeAndroid=Boolean(window.Capacitor?.isNativePlatform?.() && window.Capacitor?.getPlatform?.()==='android');
 if(scoutNativeAndroid)document.body.classList.add('scout-native-android');
-const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribute('aria-label','Gerenciamento do Scout PRO');
-bar.innerHTML='<div><strong>SCOUT PRO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
+const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribute('aria-label','Gerenciamento do Craque Tático');
+bar.innerHTML='<div><strong>CRAQUE TÁTICO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Craque Tático"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
 // V189: mesmo design e bundle responsivo em Android, Windows e navegador.
 const v189Root=inCard?'../':'';
+const craqueBackupScript=document.createElement('script');
+craqueBackupScript.src=v189Root+'craque-backup-v226.js';
+craqueBackupScript.onload=()=>{
+ const ui=document.createElement('script');ui.src=v189Root+'craque-backup-ui-v226.js';document.head.appendChild(ui);
+};
+document.head.appendChild(craqueBackupScript);
+
 const v189Css=document.createElement('link');v189Css.rel='stylesheet';v189Css.href=v189Root+'scout-ui-v189.css';document.head.appendChild(v189Css);
 const v189Js=document.createElement('script');v189Js.src=v189Root+'scout-ui-v189.js';v189Js.defer=true;document.head.appendChild(v189Js);
 // V190: uma única folha de acabamento responsivo é empacotada pelos dois instaladores.
@@ -620,4 +627,13 @@ if(!document.querySelector('link[data-scout-favicon]')){
  link.href=(location.pathname.includes('/fichas/')?'../':'')+'assets/icon-192.png';document.head.appendChild(link);
 }
 })();
+
+const craqueTheme=document.createElement('link');
+craqueTheme.rel='stylesheet';craqueTheme.href=v189Root+'craque-theme-v226.css';document.head.appendChild(craqueTheme);
+window.addEventListener('craque:backup-error',event=>{
+ const e=document.getElementById('craque-backup-last');
+ if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
+});
+const brand=document.querySelector('.brand-copy b');if(brand)brand.textContent='CRAQUE TÁTICO';
+document.querySelectorAll('.brand-logo-img').forEach(img=>{img.src=v189Root+'assets/craque-tatico-icon.svg';img.alt='Craque Tático';});
 })();
