@@ -64,7 +64,21 @@ function makeCard(card){
  if(card.cardId)info.append(el('small','','Card ID: '+card.cardId));
  if(card.level!==null||card.pp!==null)info.append(el('small','',[(card.level!==null?'Nível '+card.level:null),(card.pp!==null?card.pp+' PP':null)].filter(Boolean).join(' · ')));
  const actions=el('div','friends-actions');
- actions.append(button('Editar','',()=>openCard(card)),button('Excluir','friends-remove',()=>eraseCard(card)));
+ actions.append(
+  button('Ficha completa','friends-analysis-action',()=>{
+   const analyzer=window.CRAQUE_FRIEND_TRAINING_UI_V228;
+   const owner=getOwner();
+   if(!analyzer||!owner||card.ownerId!==owner.id){status('Motor de fichas indisponível para esta carta.');return;}
+   analyzer.openCard(card,owner,(original,proposed)=>{
+    if(locked||original.ownerId!==selected||original.id!==proposed.id)throw Error('Coleção foi alterada: análise não salva.');
+    const next=api.saveCard(data,proposed);
+    save(next,'Cinco fichas individuais atualizadas para '+original.name+' · '+owner.name);
+    return data.cards.find(x=>x.ownerId===owner.id&&x.id===original.id);
+   });
+  }),
+  button('Editar','',()=>openCard(card)),
+  button('Excluir','friends-remove',()=>eraseCard(card))
+ );
  info.append(actions);
  const extra=[card.style&&'Estilo: '+card.style,card.skills&&'Habilidades: '+card.skills,card.booster&&'Ímpetos: '+card.booster,card.notes&&'Observações: '+card.notes].filter(Boolean);
  if(extra.length){
@@ -160,7 +174,9 @@ const dialog=$('friend-card-dialog'),form=$('friend-card-form');
 const fields={name:'friend-card-name',cardId:'friend-card-gameid',edition:'friend-card-edition',
  position:'friend-card-position',rarity:'friend-card-rarity',style:'friend-card-style',
  level:'friend-card-level',pp:'friend-card-pp',skills:'friend-card-skills',
- booster:'friend-card-booster',notes:'friend-card-notes'};
+ booster:'friend-card-booster',nativeSkills:'friend-card-native',
+ fixedBooster:'friend-card-fixed-booster',boosterSlot:'friend-card-booster-slot',
+ trainingLevels:'friend-card-training-levels',notes:'friend-card-notes'};
 const preview=$('friend-photo-preview'),removePhoto=$('friend-photo-remove'),photoInput=$('friend-photo');
 function setPreview(){
  preview.hidden=!cardImage;removePhoto.hidden=!cardImage;
@@ -214,8 +230,21 @@ form.onsubmit=event=>{
  if(existing)raw.id=existing.id;
  if(imageModified||!existing)raw.image=cardImage;
  try{
-  const next=api.saveCard(data,raw);
-  save(next,(existing?'Carta atualizada: ':'Carta adicionada: ')+raw.name+' · acervo de '+owner.name+'.');
+  let next=api.saveCard(data,raw);
+  const saved=next.cards.find(x=>x.ownerId===owner.id&&
+   (existing?x.id===existing.id:!data.cards.some(previous=>previous.id===x.id)));
+  if(!saved)throw Error('Não foi possível localizar a carta recém-cadastrada.');
+  let analysisNote='';
+  try{
+   const training=window.CRAQUE_FRIEND_TRAINING_V228;
+   if(!training)throw Error('Motores táticos não carregaram.');
+   const prepared=training.generate(saved);
+   next=api.saveCard(next,{...saved,analysis:prepared});
+   analysisNote=' Cinco fichas por tática calculadas e armazenadas (pendências identificadas quando faltam dados).';
+  }catch(e){
+   analysisNote=' A carta foi salva; geração da ficha pendente: '+String(e.message||e);
+  }
+  save(next,(existing?'Carta atualizada: ':'Carta adicionada: ')+raw.name+' · acervo de '+owner.name+'.'+analysisNote);
   close();
  }catch(e){status('Carta não foi salva: '+e.message)}
 };
