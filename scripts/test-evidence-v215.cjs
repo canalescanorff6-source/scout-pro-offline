@@ -79,6 +79,7 @@ assert(src.includes('String(identity.id)!==String(source.id)'),'Não misturar ed
 assert(src.includes('print não mostra Card ID verificável')||src.includes('O print não mostra Card ID verificável'));
 assert(!src.includes('localStorage.setItem')&&!src.includes('updateBuild('),'Nunca sobrescrever treino');
 assert(css.includes('min-height:48px')&&css.includes('@media(max-width:480px)'),'Painel responsivo e alvos de toque');
-assert(sw.includes('v215-skill-evidence'),'Cache novo para instalação');
+assert(sw.includes('v215-skill-evidence-v216-candidates'),'Cache renovado para mostrar novas sugestões após atualizar');
+assert(src.includes('SCOUT PRO · Verificação individual V216'),'Título atualizado da auditoria');
 assert(stamp.includes("'sw.js'"),'Atualização de cache no fingerprint');
 console.log('V216 PASS: 246 cartas, 21 listas candidatas revisadas com alternativas de Posse, 56 cartas repetidas, builds originais intactas.');
