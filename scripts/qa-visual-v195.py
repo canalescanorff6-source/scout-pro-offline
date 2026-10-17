@@ -306,6 +306,10 @@ def run():
                     page.evaluate("window.scrollTo(0, 0)")
                 page.wait_for_timeout(650)
                 detail = metrics(page, SCREENS_SELECTORS["detail"])
+                # V230: ver o resultado real dos dez ícones vetoriais novos.
+                page.wait_for_function("""() => document.querySelectorAll('#scout-v208-training .scout-v230-svg').length===10""",timeout=20000)
+                if page.locator('#scout-v208-training .scout-v230-svg').count()!=10:
+                    problems.append(f"{name}: V230 pictogramas premium incompletos")
                 detail["edition_collapsed_by_default"] = is_collapsed
                 detail["navigator_buttons"] = page.locator("#scout-card-navigator button").count()
                 # V229: auditoria da unificação de SEIS seções antigas nesta carta.
@@ -1033,6 +1037,35 @@ def run():
                     if page.locator('#scout-v221-review a.scout-v221-peer').count()<1:
                         problems.append(f"{name}: Huijsen #144 perdeu comparação de builds iguais")
                     page.screenshot(path=str(OUT / f"{name}_v221_huijsen_shared_id.png"),full_page=False,animations="disabled")
+                # V230: interface da logo e 5 estilos nas duas formações sem alterar histórico.
+                page.goto(URL + '/meu-time-duas-formacoes-v177.html',wait_until='domcontentloaded',timeout=35000)
+                page.locator('#ct-v230-tactic-tabs button').first.wait_for(timeout=25000)
+                if page.locator('#ct-v230-tactic-tabs button').count()!=5:
+                    problems.append(f"{name}: V230 seletor dos cinco estilos na formação ausente")
+                page.locator('#ct-v230-tactic-tabs [data-mode="rapido"]').click()
+                if 'Contra-Ataque Rápido' not in page.locator('#ct-v230-tactic-name').inner_text():
+                    problems.append(f"{name}: V230 contra-ataque rápido não selecionado")
+                page.locator('[data-formation="4213"]').click()
+                page.locator('#ct-v230-tactic-tabs [data-mode="longo"]').click()
+                if ('Bola Longa' not in page.locator('#ct-v230-tactic-name').inner_text() or
+                    page.locator('#pitch button[data-slot]').count()!=11):
+                    problems.append(f"{name}: V230 alternar tática alterou os 11 titulares")
+                if name in ('mobile_390','windows_1366'):
+                    page.locator('#ct-v230-tactic-profile details > summary').click()
+                    if page.locator('#ct-v230-tactic-details .ct-v230-fit-row').count()!=11:
+                        problems.append(f"{name}: V230 faltam diagnósticos individuais por posição")
+                    page.screenshot(path=str(OUT / f"{name}_five_modes_v230.png"),full_page=False,animations="disabled")
+                page.goto(URL + '/meu-time-testes-v219.html',wait_until='domcontentloaded',timeout=35000)
+                page.wait_for_function("""() => document.querySelectorAll('#squads details[data-team]').length>=9""",timeout=25000)
+                page.locator('#ct-v230-rotation-modes [data-tactic-mode="normal"]').click()
+                if (page.locator('#squads details[data-team]').count()<9 or
+                    page.locator('#ct-v230-rotation-modes [data-tactic-mode="normal"]').get_attribute('aria-pressed')!='true'):
+                    problems.append(f"{name}: V230 laboratório não gera contra-ataque normal")
+                page.locator('#ct-v230-rotation-modes [data-tactic-mode="rapido"]').click()
+                if page.locator('#squads details[data-team]').count()<9:
+                    problems.append(f"{name}: V230 laboratório de contra-ataque rápido sem equipes")
+                page.locator('#ct-v230-rotation-modes [data-tactic-mode="posse"]').click()
+                # A escolha de modo é apenas um sinal da tática, nunca um novo bloco de PP.
                 # V227: acervos de outras pessoas isolados, sem tocar as 246 cartas oficiais.
                 page.goto(URL + "/outros-elencos-v227.html", wait_until="domcontentloaded", timeout=35000)
                 page.locator("#friend-person-name").wait_for(timeout=12000)
