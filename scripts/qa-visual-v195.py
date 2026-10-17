@@ -308,6 +308,19 @@ def run():
                 detail = metrics(page, SCREENS_SELECTORS["detail"])
                 detail["edition_collapsed_by_default"] = is_collapsed
                 detail["navigator_buttons"] = page.locator("#scout-card-navigator button").count()
+                # V229: auditoria da unificação de SEIS seções antigas nesta carta.
+                page.locator('#scout-v229-legacy-archive').wait_for(state='attached',timeout=25000)
+                curation=page.evaluate("""() => window.CRAQUE_CARD_CURATOR_V229?.inspect(document)""")
+                detail['curation_v229']=curation
+                if (not curation or curation['main']!=1 or curation['archive']!=1 or
+                    curation['present']!=6 or curation['archived']!=6 or
+                    curation['mainTables']!=1 or curation['mainProgress']!=1 or
+                    curation['duplicateIds'] or curation['visibleLegacy'] or not curation['compact']):
+                    problems.append(f"{name}: V229 ficha principal ou arquivo legado com problema {curation}")
+                if page.locator('#scout-v229-legacy-archive').evaluate('(e)=>e.open'):
+                    problems.append(f"{name}: V229 acervo legado não deve aparecer expandido")
+                if page.locator('.scout-v220-headline h2').count()!=1:
+                    problems.append(f"{name}: V229 deve existir apenas uma ficha principal")
                 # V220: engenharia técnica fica recolhida; abrir apenas para executar testes legados.
                 tech=page.locator('#scout-v220-technical')
                 if tech.count()!=1 or tech.evaluate('(e)=>e.open'):
@@ -751,6 +764,10 @@ def run():
                   return icons.length===10&&keys.every(k=>icons.some(e=>e.dataset.scoutV206Symbol===k));
                 }""",timeout=25000)
                 # Abrir avançadas somente para os testes legados do laboratório.
+                if not page.locator('#scout-v220-technical').evaluate('(e)=>e.open'):
+                    page.locator('#scout-v220-technical > summary').click()
+                if not page.locator('#scout-v229-legacy-archive').evaluate('(e)=>e.open'):
+                    page.locator('#scout-v229-legacy-archive > summary').click()
                 page.locator('#scout-v218-advanced-performance > summary').click()
                 # Medir geometria com o Laboratório aberto (seção compacta é display:none).
                 was_compact=page.evaluate("document.body.classList.contains('scout-v188-compact')")
