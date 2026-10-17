@@ -465,6 +465,86 @@ def run():
                     document.querySelector('#scout-v208-training tbody tr .scout-v208-level').textContent.trim()==='10'
                 """,timeout=10000)
 
+                # V220: uma ficha principal para os CINCO estilos, sem segunda ficha concorrente.
+                main_tabs=page.locator('#scout-v220-tabs button[data-tactic]')
+                if main_tabs.count()!=5:
+                    problems.append(f"{name}: V220 deve oferecer cinco estilos de técnico no mesmo painel")
+                if page.locator('#scout-v220-training #scout-v208-training').count()!=1:
+                    problems.append(f"{name}: V220 duplicou ou perdeu a tabela principal de PP")
+                if page.locator('#scout-v220-technical #engenharia').count()!=1:
+                    problems.append(f"{name}: engenharia do vídeo não ficou dentro do painel técnico")
+                if page.locator('#scout-v220-technical').evaluate('(e)=>e.open'):
+                    problems.append(f"{name}: engenharia V220 começou expandida")
+                main_skills=page.locator('#scout-v220-skill-list .scout-v220-skill').count()
+                if main_skills!=5:
+                    problems.append(f"{name}: V220 precisa mostrar cinco candidatas em Posse: {main_skills}")
+                # A mesma carta deve guardar o rascunho de contra-ataque independentemente da Posse.
+                page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
+                page.wait_for_function("""() =>
+                    document.querySelector('#scout-v218-status')?.textContent.includes('HIPÓTESE') &&
+                    document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='62 / 62' &&
+                    document.querySelector('#scout-v220-tabs [data-tactic="rapido"]')?.getAttribute('aria-pressed')==='true'
+                """, timeout=12000)
+                rapido_levels=page.evaluate("""() =>
+                    [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v208-level')]
+                      .map(x=>Number(x.textContent.trim()))
+                """)
+                page.locator('#scout-v218-edit').click()
+                page.locator('#scout-v208-training tbody tr').first.locator('button[aria-label="Reduzir Chute"]').click()
+                page.wait_for_function("""() => {
+                  const e=document.querySelector('#scout-v208-training tbody tr .scout-v218-level');
+                  return e && Number(e.textContent) < 12;
+                }""",timeout=10000)
+                adjusted=page.evaluate("""() =>
+                    [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v218-level')]
+                     .map(x=>Number(x.textContent))
+                """)
+                page.locator('#scout-v220-tabs [data-tactic="posse"]').click()
+                page.wait_for_function("""() =>
+                    document.querySelector('#scout-v208-training tbody tr .scout-v208-level')?.textContent.trim()==='10' &&
+                    document.querySelector('#scout-v218-status')?.dataset.mode==='registered'
+                """,timeout=10000)
+                page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
+                page.wait_for_function("""() =>
+                    document.querySelector('#scout-v218-status')?.dataset.mode==='draft'
+                """,timeout=10000)
+                remembered=page.evaluate("""() =>
+                    [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v208-level')]
+                     .map(x=>Number(x.textContent))
+                """)
+                if remembered!=adjusted:
+                    problems.append(f"{name}: rascunho V220 não ficou separado por estilo de jogo")
+                page.locator('#scout-v218-reset').click()
+                for tactic in ('normal','fora','longo'):
+                    page.locator(f'#scout-v220-tabs [data-tactic="{tactic}"]').click()
+                    page.wait_for_function("""tactic => {
+                      const btn=document.querySelector('#scout-v220-tabs [data-tactic="'+tactic+'"]');
+                      return btn?.getAttribute('aria-pressed')==='true' &&
+                        document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='62 / 62';
+                    }""",arg=tactic,timeout=10000)
+                    booster=page.locator('#scout-v220-booster-name').inner_text().strip()
+                    if not booster or booster in ('—','Calculando…'):
+                        problems.append(f"{name}: V220 ímpeto não recalculou em {tactic}")
+                page.locator('#scout-v220-tabs [data-tactic="posse"]').click()
+                page.wait_for_function("""() =>
+                    document.querySelector('#scout-v208-training tbody tr .scout-v208-level')?.textContent.trim()==='10'
+                """,timeout=10000)
+                page.locator('#scout-v220-outcome').select_option('promissor')
+                page.locator('#scout-v220-notes').fill('Teste de Massaro em Posse com tabelas curtas e movimentação observada.')
+                page.locator('#scout-v220-save-notes').click()
+                if 'guardadas' not in page.locator('#scout-v220-notice').inner_text():
+                    problems.append(f"{name}: registro local de teste por tática não confirmou salvamento")
+                page.screenshot(path=str(OUT / f"{name}_v220_card_five_styles.png"),full_page=False,animations="disabled")
+                v220_geom=page.evaluate("""() => ({
+                    tabs:document.querySelectorAll('#scout-v220-tabs button').length,
+                    panel:document.querySelector('#scout-v220-hero')?.getBoundingClientRect().width,
+                    overflow:document.documentElement.scrollWidth-innerWidth,
+                    main:document.querySelectorAll('#scout-v220-training #scout-v208-training').length
+                })""")
+                detail['v220_unified']=v220_geom
+                if v220_geom['overflow']>8:
+                    problems.append(f"{name}: ficha premium V220 cria rolagem lateral {v220_geom['overflow']} px")
+
                 # V207: painel individual com PP e Card ID reais.
                 page.wait_for_function("""() => {
                   const root=document.getElementById('scout-v207-identity');
