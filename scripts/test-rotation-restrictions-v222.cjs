@@ -12,7 +12,7 @@ const R=require('../web/scout-roster-restrictions-v222.js');
 assert.equal(cards.length,246);
 assert.equal(images.length,246);
 assert.deepEqual(plan.formations.map(f=>f.id),['4312','4213'],'Manter as duas táticas previamente aprovadas');
-assert(plan.formations.every(f=>f.starters.length===11&&f.bench.length===11),'Guardar duas formações completas na fonte original');
+assert(plan.formations.every(f=>f.starters.length===11&&f.bench.length===12),'Preservar as duas formações existentes com seus 12 reservas cadastrados');
 assert(R.SCHEMA.includes('V222'));
 assert.equal(R.LIMIT,22);
 assert.equal(R.catalog(cards).size,246);
