@@ -478,6 +478,33 @@ def run():
                 main_skills=page.locator('#scout-v220-skill-list .scout-v220-skill').count()
                 if main_skills!=5:
                     problems.append(f"{name}: V220 precisa mostrar cinco candidatas em Posse: {main_skills}")
+                # V221: Status do acervo deve aparecer na mesma ficha, sem outro formulário de treino.
+                page.locator('#scout-v221-review').wait_for(timeout=25000)
+                audit_label=page.locator('#scout-v221-review .scout-v221-stage').inner_text()
+                if 'REVISÃO' not in audit_label:
+                    problems.append(f"{name}: V221 não avisou build repetida Massaro/Batistuta: {audit_label}")
+                if page.locator('#scout-v221-review .scout-v221-summary').count()!=1:
+                    problems.append(f"{name}: V221 não exibiu Card ID, PP e habilidades nativas")
+                panel=page.locator('#scout-v221-review > details')
+                if panel.evaluate('(e)=>e.open'):
+                    problems.append(f"{name}: V221 auditoria detalhada não deveria ocupar a tela inicial")
+                panel.locator('summary').click()
+                if page.locator('#scout-v221-review a.scout-v221-peer[href*="032_"]').count()!=1:
+                    problems.append(f"{name}: V221 não ligou Massaro à carta Batistuta para comparar")
+                checks=page.locator('#scout-v221-review input[type="checkbox"]')
+                if checks.count()!=4:
+                    problems.append(f"{name}: V221 precisa ter as 4 conferências pessoais")
+                checks.first.check()
+                page.locator('#scout-v221-review textarea').fill('Versão Massaro conferida visualmente; dados restantes ainda pendentes.')
+                page.locator('#scout-v221-review button.scout-v221-save').click()
+                if 'salva' not in page.locator('#scout-v221-review .scout-v221-feedback').inner_text().lower():
+                    problems.append(f"{name}: nota V221 não foi salva localmente")
+                if not page.locator('.scout-v221-personal-progress').inner_text().startswith('1 / 4'):
+                    problems.append(f"{name}: V221 não diferenciou revisão pessoal de homologação")
+                panel.locator('summary').click()
+                if page.locator('#scout-v221-review').evaluate('(e)=>e.scrollWidth-e.clientWidth')>8:
+                    problems.append(f"{name}: V221 gerou rolagem horizontal no Android/Windows")
+
                 # A mesma carta deve guardar o rascunho de contra-ataque independentemente da Posse.
                 page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
                 page.wait_for_function("""() =>
@@ -877,6 +904,25 @@ def run():
                 if not page.locator('#rec-start').is_disabled():
                     problems.append(f"{name}: V219 gravação web sem plugin Android não deveria fingir estar funcionando")
                 page.screenshot(path=str(OUT / f"{name}_rotation_4213_v219.png"),full_page=False,animations="disabled")
+                # V221: cards pendentes e IDs compartilhados também precisam de evidência própria.
+                if name in ('mobile_390','windows_1366'):
+                    page.goto(URL + "/fichas/050_Lionel_Messi.html",wait_until="domcontentloaded",timeout=35000)
+                    page.locator('#scout-v221-review .scout-v221-stage').wait_for(timeout=25000)
+                    messi=page.locator('#scout-v221-review').inner_text()
+                    if 'PENDENTE' not in messi.upper() or 'SEM VALIDAÇÃO' not in messi.upper() or 'HABILIDADES NATIVAS' not in messi.upper():
+                        problems.append(f"{name}: Messi #050 ganhou falsa homologação ou perdeu pendências reais")
+                    if page.locator('#scout-v221-review').evaluate('(e)=>e.scrollWidth-e.clientWidth')>8:
+                        problems.append(f"{name}: V221 Messenger #050 extrapolou a tela")
+                    page.screenshot(path=str(OUT / f"{name}_v221_messi_pending.png"),full_page=False,animations="disabled")
+                    page.goto(URL + "/fichas/144_Dean_Huijsen.html",wait_until="domcontentloaded",timeout=35000)
+                    page.locator('#scout-v221-review .scout-v221-stage').wait_for(timeout=25000)
+                    huijsen=page.locator('#scout-v221-review').inner_text()
+                    if 'IDENTIDADE A REVER' not in huijsen:
+                        problems.append(f"{name}: Dean Huijsen com Card ID duplicado não foi sinalizado")
+                    page.locator('#scout-v221-review > details > summary').click()
+                    if page.locator('#scout-v221-review a.scout-v221-peer').count()<1:
+                        problems.append(f"{name}: Huijsen #144 perdeu comparação de builds iguais")
+                    page.screenshot(path=str(OUT / f"{name}_v221_huijsen_shared_id.png"),full_page=False,animations="disabled")
                 results[name] = result
                 context.close()
         finally:

@@ -71,6 +71,11 @@ if(inCard){
  engine220.onload=()=>{const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';document.head.appendChild(ui220)};
  document.head.appendChild(engine220);
 }
+// V221: análise de evidências por número + Card ID + PP, sem aprovar builds automaticamente.
+if(inCard){
+ const css221=document.createElement('link');css221.rel='stylesheet';css221.href=v189Root+'scout-evidence-review-v221.css';document.head.appendChild(css221);
+ const js221=document.createElement('script');js221.src=v189Root+'scout-evidence-review-v221.js';js221.defer=true;document.head.appendChild(js221);
+}
 // V210/V211 — paleta da marca e revisão individual baseada em evidências.
 if(inCard){
  const color=document.createElement('link');color.rel='stylesheet';color.href=v189Root+'scout-theme-v210.css';document.head.appendChild(color);
