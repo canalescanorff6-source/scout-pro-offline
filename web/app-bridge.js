@@ -59,6 +59,11 @@ if(inCard){
  const refCss=document.createElement('link');refCss.rel='stylesheet';refCss.href=v189Root+'scout-training-reference-v208.css';document.head.appendChild(refCss);
  const refJs=document.createElement('script');refJs.src=v189Root+'scout-training-reference-v208.js';refJs.defer=true;document.head.appendChild(refJs);
 }
+// V218: a referência de treino no topo deixa de ser uma tabela somente de leitura.
+if(inCard){
+ const css218=document.createElement('link');css218.rel='stylesheet';css218.href=v189Root+'scout-training-unified-v218.css';document.head.appendChild(css218);
+ const js218=document.createElement('script');js218.src=v189Root+'scout-training-unified-v218.js';js218.defer=true;document.head.appendChild(js218);
+}
 // V210/V211 — paleta da marca e revisão individual baseada em evidências.
 if(inCard){
  const color=document.createElement('link');color.rel='stylesheet';color.href=v189Root+'scout-theme-v210.css';document.head.appendChild(color);
