@@ -1,6 +1,7 @@
 package br.com.scoutpro.offline;
 
 import android.app.Activity;
+import androidx.activity.result.ActivityResult;
 import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,7 +42,7 @@ public class ScoutRecorderPlugin extends Plugin {
     }
 
     @ActivityCallback
-    private void onProjectionGranted(PluginCall call, android.app.ActivityResult result) {
+    private void onProjectionGranted(PluginCall call, ActivityResult result) {
         if (call == null) return;
         if (result == null || result.getResultCode() != Activity.RESULT_OK || result.getData() == null) {
             call.reject("Captura cancelada. Nenhuma gravação foi iniciada.");
