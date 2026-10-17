@@ -356,9 +356,9 @@ def run():
                     problems.append(f"{name}: ficha principal começa muito abaixo: y={main.get('y')}")
                 if mobile and nav.get("height", 9999) > 94:
                     problems.append(f"{name}: navegador de cartas excessivamente alto: {nav.get('height')} px")
-                focus = rectangle(page,"#scout-v220-focus-title") or {}
-                if mobile and focus.get("y", 9999) > (740 if width <= 340 else 710):
-                    problems.append(f"{name}: foco competitivo não aparece cedo: y={focus.get('y')}")
+                focus = rectangle(page,"#scout-v220-tabs") or {}
+                if mobile and focus.get("y", 9999) > (820 if width <= 340 else 800):
+                    problems.append(f"{name}: seletor de estilos não aparece cedo: y={focus.get('y')}")
                 if mobile:
                     dock = detail.get("dock") or {}
                     if dock.get("height", 999) > 90 or dock.get("direction") != "row" or dock.get("bottomGap", 999) > 35:
