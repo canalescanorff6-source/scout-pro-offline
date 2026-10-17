@@ -318,3 +318,31 @@ body.scout-v188-compact #scout-v220-technical #scout-v162 .v162-meta{
 body[data-page="detail"] #scout-v220-technical .scout-v188-boost{
  display:block!important;
 }
+
+/* V220: o componente de dez linhas precisa de largura intrínseca estável no desktop. */
+body[data-page="detail"] #scout-v188-principal{display:block!important;width:100%!important;min-width:0!important}
+body[data-page="detail"] #scout-v220-hero,
+body[data-page="detail"] #scout-v220-training,
+body[data-page="detail"] #scout-v220-training>.scout-v188-progress{
+ display:block;min-width:0!important;width:100%!important;max-width:100%!important;
+ box-sizing:border-box!important
+}
+body[data-page="detail"] #scout-v220-training #scout-v208-training{
+ box-sizing:border-box!important;width:100%!important;max-width:100%!important;
+ table-layout:fixed!important;overflow:clip!important
+}
+body[data-page="detail"] #scout-v220-training #scout-v208-training .scout-v208-category-col{width:46%!important}
+body[data-page="detail"] #scout-v220-training #scout-v208-training .scout-v208-level-col{width:35%!important}
+body[data-page="detail"] #scout-v220-training #scout-v208-training .scout-v208-pp-col{width:19%!important}
+body[data-page="detail"] #scout-v220-training #scout-v208-training tbody th,
+body[data-page="detail"] #scout-v220-training #scout-v208-training tbody td,
+body[data-page="detail"] #scout-v220-training #scout-v208-training thead th{
+ padding-left:4px!important;padding-right:4px!important;min-width:0!important
+}
+body[data-page="detail"] #scout-v220-training #scout-v208-training .scout-v218-stepper{
+ max-width:120px!important;width:100%!important;white-space:nowrap
+}
+body[data-page="detail"] #scout-v220-training #scout-v208-training tfoot td{
+ font-size:clamp(12px,2.8vw,16px)!important;white-space:nowrap!important;
+ padding-left:2px!important;padding-right:2px!important
+}
