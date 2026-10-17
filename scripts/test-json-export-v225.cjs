@@ -10,7 +10,7 @@ const installer=read('scripts/install-native-updater-v102.cjs');
 const java=read('native/android/ScoutFileExportPlugin.java');
 const electron=read('desktop/main.cjs');
 const preload=read('desktop/preload.cjs');
-const names=['black-export','rotation-export','black-import'];
+const names=['black-export','rotation-export','rotation-backup','black-import'];
 for(const id of names)assert(html.includes('id="'+id+'"'), 'Botão de exportação/importação ausente: '+id);
 assert(app.includes('window.SCOUT_FILE_EXPORT=Object.freeze({saveJson:scoutSaveJson})'),'API única de exportação não exposta');
 assert(app.includes('ScoutFileExport'),'Android precisa chamar plugin nativo');
@@ -21,6 +21,7 @@ assert(app.includes("result.status==='requested'")===false,'Não falsificar conf
 assert(app.includes("const dl=(data,name)=>scoutSaveJson(data,name)"),'Backup principal também deve usar o exportador');
 assert(lab.includes("window.SCOUT_FILE_EXPORT.saveJson(file"),'Bloqueios precisam usar exportador nativo');
 assert(lab.includes("window.SCOUT_FILE_EXPORT.saveJson(data"),'Elencos precisam usar exportador nativo');
+assert(lab.includes("$('rotation-backup').addEventListener"),'Backup completo precisa de botão diretamente acessível no laboratório');
 assert(!lab.includes("URL.createObjectURL"),'Exportações específicas não podem depender de blob no Android');
 assert(lab.includes('if(!persist(KEY_BLACK,valid)||!persist(KEY_BLACK_REVIEW'),'Bloqueio persistido tem que ser confirmado');
 assert(java.includes('@CapacitorPlugin(name="ScoutFileExport")'));
