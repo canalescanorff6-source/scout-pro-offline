@@ -382,6 +382,11 @@ async function init(){
   }catch(e){status('black-feedback','Falha ao salvar backup completo: '+String(e.message||e))}
   finally{button.disabled=false}
  });
+ $('rotation-restore').addEventListener('click',()=>{
+  const btn=document.getElementById('scout-backup');
+  if(btn)btn.click();
+  else status('black-feedback','Central de restauração não disponível nesta tela.');
+ });
  $('rotation-prompt').addEventListener('click',async()=>{
   const sheet=selected(),team=sheet.teams.find(t=>t.id===opened)||sheet.teams[0];
   if(!team){status('black-feedback','Nenhuma equipe completa disponível nesta seleção.');return}
