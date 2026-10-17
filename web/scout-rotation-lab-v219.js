@@ -51,7 +51,8 @@ function playerChoice(c,reserved){
  (src?'<img loading="lazy" src="'+esc(src)+'" alt="">':'<span class="scout-rotation-noart">'+id+'</span>')+
  '<div class="scout-rotation-picker-meta"><strong>'+esc(c.name)+'</strong>'+
  '<small>'+id+' · '+esc(c.posicao)+' · '+esc(c.estilo_ataque)+'</small>'+
- '<small class="scout-rotation-edition">'+esc(c.versao||'Edição pendente')+'</small></div>'+
+ '<small class="scout-rotation-edition">'+esc(c.versao||'Edição pendente')+'</small>'+
+ '<small class="scout-rotation-edition">Card ID: '+esc(c.id||'não cadastrado')+'</small></div>'+
  '<button type="button" class="scout-rotation-btn '+(reserved?'unpick':'pick')+'" data-black-cap="'+cap+'" data-action="'+(reserved?'remove':'add')+'"'+(!reserved&&excluded.length>=22?' disabled':'')+
  ' aria-label="'+(reserved?'Remover restrição':'Restringir carta')+' '+esc(c.name)+'">'+
  (reserved?'Liberar':'Restringir')+'</button></article>';
