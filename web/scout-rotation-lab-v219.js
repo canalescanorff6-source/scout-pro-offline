@@ -1,5 +1,5 @@
 /* Scout PRO V219 — UI do rodízio e registro de partidas.
- * Exclui apenas IDs informados/confirmados; NÃO deduz os 22 jogadores do Black.
+ * Exclui apenas IDs informados/confirmados; NÃO deduz os 23 jogadores do Black.
  */
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
@@ -35,17 +35,17 @@ function lineupSnapshot(team){
   bench:team.bench.map(b=>identity(b.cap))};
 }
 function photoStatus(){
- return excluded.length===22?(userReviewed?
- '22 cartas bloqueadas nas duas formações. Conferência pessoal declarada; imagens não foram verificadas externamente.':
- '22 cartas selecionadas. Confira cada edição nas fotos do Black antes de considerar o bloqueio definitivo.') :
- 'PRÉVIA INCOMPLETA: '+excluded.length+' de 22 jogadores restritos. As equipes ainda podem incluir jogadores do mapeamento que não foram selecionados.';
+ return excluded.length===23?(userReviewed?
+ '23 cartas bloqueadas nas duas formações. Conferência pessoal declarada; imagens não foram verificadas externamente.':
+ '23 cartas selecionadas. Confira cada edição nas fotos do Black antes de considerar o bloqueio definitivo.') :
+ 'PRÉVIA INCOMPLETA: '+excluded.length+' de 23 jogadores restritos. As equipes ainda podem incluir jogadores do mapeamento que não foram selecionados.';
 }
 function blackButtons() {
  const state=excluded.length;
- $('black-count').textContent=state+' / 22';
+ $('black-count').textContent=state+' / 23';
  $('black-selected-count').textContent=state+' protegidas';
- $('black-protected-label').textContent=state+' de 22';
- const checkbox=$('black-reviewed');checkbox.disabled=state!==22;checkbox.checked=state===22&&userReviewed;
+ $('black-protected-label').textContent=state+' de 23';
+ const checkbox=$('black-reviewed');checkbox.disabled=state!==23;checkbox.checked=state===23&&userReviewed;
 }
 function imageFor(cap){
  const src=String(images.get(cap)||'');
@@ -59,7 +59,7 @@ function playerChoice(c,reserved){
  '<small>'+id+' · '+esc(c.posicao)+' · '+esc(c.estilo_ataque)+'</small>'+
  '<small class="scout-rotation-edition">'+esc(c.versao||'Edição pendente')+'</small>'+
  '<small class="scout-rotation-edition">Card ID: '+esc(c.id||'não cadastrado')+'</small></div>'+
- '<button type="button" class="scout-rotation-btn '+(reserved?'unpick':'pick')+'" data-black-cap="'+cap+'" data-action="'+(reserved?'remove':'add')+'"'+(!reserved&&excluded.length>=22?' disabled':'')+
+ '<button type="button" class="scout-rotation-btn '+(reserved?'unpick':'pick')+'" data-black-cap="'+cap+'" data-action="'+(reserved?'remove':'add')+'"'+(!reserved&&excluded.length>=23?' disabled':'')+
  ' aria-label="'+(reserved?'Remover restrição':'Restringir carta')+' '+esc(c.name)+'">'+
  (reserved?'Liberar':'Restringir')+'</button></article>';
 }
@@ -71,7 +71,7 @@ function renderPicker(){
  const filterValue=$('black-position').value;
  const query=$('black-search').value;
  const matches=restrictions.filter(cards,query,filterValue,48);
- $('black-candidate-count').textContent=matches.total+' cartas encontradas · mostrando '+matches.visible+' · selecione até 22.';
+ $('black-candidate-count').textContent=matches.total+' cartas encontradas · mostrando '+matches.visible+' · selecione até 23.';
  $('black-candidates').innerHTML=matches.items.map(c=>current.has(Number(c.numero))?
  '<article class="scout-rotation-picker-card selected"><strong>'+esc(c.name)+'</strong><span class="scout-rotation-subtext">#'+String(c.numero).padStart(3,'0')+' protegida na lista acima</span></article>':
  playerChoice(c,false)).join('')||'<p class="scout-rotation-subtext">Nenhuma carta encontrada. Remova os filtros para voltar ao catálogo.</p>';
@@ -79,7 +79,7 @@ function renderPicker(){
 function updateBlack(ids,{reviewed=false,message='Lista atualizada nas duas formações.'}={}){
  const valid=restrictions.validateCaps(ids,cards);
  excluded=valid;
- userReviewed=valid.length===22&&reviewed===true;
+ userReviewed=valid.length===23&&reviewed===true;
  persist(KEY_BLACK,valid);
  persist(KEY_BLACK_REVIEW,{caps:valid,userReviewed});
  $('black-input').value=valid.join(', ');
@@ -90,7 +90,7 @@ function updateBlack(ids,{reviewed=false,message='Lista atualizada nas duas form
 }
 function inventory(){
  const a=engine.analyze(cards,excluded);
- status('black-count',a.excluded+' / 22');
+ status('black-count',a.excluded+' / 23');
  status('rotation-inventory',a.cards+' cartas reais · '+a.excluded+' reservadas · '+a.available+' disponíveis · '+a.maxTeams+' equipes completas possíveis por série · '+a.remaining+' cartas fora de equipes completas.');
  status('black-feedback',photoStatus());
 }
@@ -100,8 +100,8 @@ function diagnostics(){
  const caveats=sheet.teams.filter(t=>t.warnings.some(w=>w.includes('adaptação')||w.includes('fora da posição'))).length;
  const nativeSA=sheet.teams.filter(t=>t.starters.some(s=>s.slot==='sa'&&s.fit==='posição original')).length;
  $('series-diagnostics').innerHTML=
-  '<strong>'+sheet.teams.length+' equipes · 11 titulares + 11 reservas</strong> · '+esc(formatNumbers(sheet.leftovers))+' fora desta rodada (entram na rodada '+(cycle===1?'2':'1')+')'+ 
-  '<p>'+a.keepers+' goleiros elegíveis · '+(a.goalkeeperLimited?'NÚMERO LIMITADO PELOS GOLEIROS: não repetir goleiro entre equipes. ':'')+
+  '<strong>'+sheet.teams.length+' equipes · 11 titulares + 12 reservas</strong> · '+(excluded.length===23?'23 restrições selecionadas. ':'PRÉVIA: confirme as 23 cartas proibidas. ')++esc(formatNumbers(sheet.leftovers))+' fora desta rodada (entram na rodada '+(cycle===1?'2':'1')+')'+ 
+  '<p>'+a.keepers+' goleiros elegíveis · '+(sheet.teams.some(t=>!t.ready)?'Elencos incompletos exigem conferência; não repetir cartas. ':'')++(a.goalkeeperLimited?'NÚMERO LIMITADO PELOS GOLEIROS: não repetir goleiro entre equipes. ':'')+
   'Série '+esc(active)+' · Rodada '+cycle+': '+links+' equipes com requisitos documentais simultâneos de Link-Up (não confirma ativação no jogo) · '+caveats+' equipes com possíveis adaptações.'+
   (active==='4213'?' SA na posição original: '+nativeSA+' equipe(s).':'')+'</p>'+
   '<p class="scout-rotation-caution">'+esc(photoStatus())+'</p>';
@@ -125,19 +125,19 @@ function metrics(team){
 }
 function teamHTML(team){
  return '<details class="scout-rotation-team" data-team="'+esc(team.id)+'"'+(opened===team.id?' open':'')+'>'+
- '<summary><span class="scout-rotation-team-num">'+String(team.index).padStart(2,'0')+'</span><span><strong>'+esc(team.name)+'</strong><small>'+metrics(team)+' · '+team.starters.length+'/11 titulares · '+team.bench.length+'/11 reservas</small></span><span class="scout-rotation-readiness">'+(team.ready?'Lista completa':'Revisar')+'</span></summary>'+
+ '<summary><span class="scout-rotation-team-num">'+String(team.index).padStart(2,'0')+'</span><span><strong>'+esc(team.name)+'</strong><small>'+metrics(team)+' · '+team.starters.length+'/11 titulares · '+team.bench.length+'/12 reservas</small></span><span class="scout-rotation-readiness">'+(team.ready?(team.requiresPositionReview?'Lista completa · rever posição':'Lista completa · posições originais'):'Revisar')+'</span></summary>'+
  '<div class="scout-rotation-team-inside"><div class="scout-rotation-tactical">'+
   '<div><b>POSSE 4-'+(active==='4312'?'3-1-2':'2-1-3')+'</b><span>'+team.starters.length+' titulares · '+team.bench.length+' reservas sem duplicação</span></div>'+
   '<div class="scout-rotation-field">'+formats.find(f=>f.id===active).rows.map(row=>
    '<div class="scout-rotation-field-row">'+row.map(slot=>{
     const s=team.starters.find(x=>x.slot===slot),c=getCard(s?.cap);
-    return c?'<div class="scout-rotation-field-spot">'+
+    return c?'<div class="scout-rotation-field-spot'+(s.fit!=='posição original'?' provisional':'')+'" title="'+esc(s.fit)+'">'+
       (images.get(s.cap)?'<img loading="lazy" src="'+esc(images.get(s.cap))+'" alt="">':'')+
-      '<strong>'+esc(c.name)+'</strong><small>'+esc(slot.toUpperCase())+'</small></div>':
+      '<strong>'+esc(c.name)+'</strong><small>'+esc(slot.toUpperCase())+(s.fit!=='posição original'?' · A conferir':'')+'</small></div>':
       '<div class="scout-rotation-field-spot missing">'+esc(slot.toUpperCase())+'<small>Pendente</small></div>';
    }).join('')+'</div>').join('')+'</div></div>'+
  '<div class="scout-rotation-players"><section><h3>11 titulares</h3>'+team.starters.map(s=>cardRow(s.cap,s.role,s.fit,s.slot)).join('')+
- '</section><section><h3>11 reservas</h3>'+team.bench.map(b=>cardRow(b.cap,b.role)).join('')+'</section></div>'+
+ '</section><section><h3>12 reservas</h3>'+team.bench.map(b=>cardRow(b.cap,b.role)).join('')+'</section></div>'+
  '<section class="scout-rotation-audit"><h3>Revisão tática e documental</h3>'+
  '<p>VOL Orquestrador: '+(team.linkup.volOrchestrator?'identificado':'não identificado')+' · CA Artilheiro: '+(team.linkup.caArtilheiro?'identificado':'não identificado')+
  ' · MAT Armador criativo: '+(team.linkup.matCreative?'identificado':'não identificado')+'. Link-Up ativo no jogo: NÃO CONFIRMADO.</p>'+
@@ -240,7 +240,7 @@ async function init(){
  const storedBlack=stored(KEY_BLACK,[]);
  excluded=restrictions.validateCaps(Array.isArray(storedBlack)?storedBlack:[],cards);
  const savedReview=stored(KEY_BLACK_REVIEW,{});
- userReviewed=Boolean(savedReview?.userReviewed&&excluded.length===22&&
+ userReviewed=Boolean(savedReview?.userReviewed&&excluded.length===23&&
   JSON.stringify(savedReview.caps)===JSON.stringify(excluded));
  const positions=[...new Set(cards.map(c=>String(c.posicao||'')).filter(Boolean))].sort();
  for(const position of positions){
@@ -260,7 +260,7 @@ async function init(){
  $('black-candidates').addEventListener('click',pick);
  $('black-reserved').addEventListener('click',pick);
  $('black-reviewed').addEventListener('change',()=>{
-  if(excluded.length!==22){$('black-reviewed').checked=false;return}
+  if(excluded.length!==23){$('black-reviewed').checked=false;return}
   userReviewed=$('black-reviewed').checked;
   persist(KEY_BLACK_REVIEW,{caps:excluded.slice(),userReviewed});
   inventory();diagnostics();
@@ -269,7 +269,7 @@ async function init(){
  $('black-save').addEventListener('click',()=>{
   const input=parseIds($('black-input').value);
   if(input.invalid.length){status('black-feedback','Números não encontrados no catálogo: '+input.invalid.join(', '));return}
-  if(input.ids.length>22){status('black-feedback','Limite: a formação enviada pelo Black contém 22 cartas. Confira os números e tente novamente.');return}
+  if(input.ids.length>23){status('black-feedback','Limite: a formação enviada pelo Black contém 23 cartas. Confira os números e tente novamente.');return}
   updateBlack(input.ids,{message:'Exclusões aplicadas sem apagar cartas.'+(input.duplicates?' Entradas repetidas ignoradas: '+input.duplicates+'.':'')});
  });
  $('black-clear').addEventListener('click',()=>{
@@ -291,14 +291,14 @@ async function init(){
   const file=restrictions.makeRecord(excluded,cards,userReviewed);
   const blob=new Blob([JSON.stringify(file,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob),anchor=document.createElement('a');
-  anchor.href=url;anchor.download='ScoutPRO-22-Jogadores-Black-V222.json';
+  anchor.href=url;anchor.download='ScoutPRO-23-Jogadores-Black-V224.json';
   document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
   status('black-feedback','Lista de '+excluded.length+' bloqueios exportada; importe o JSON no outro dispositivo. '+photoStatus());
  });
  $('black-import').addEventListener('change',async event=>{
   const file=event.target.files?.[0];if(!file)return;
   try{
-   if(file.size>150000)throw Error('Arquivo muito grande para uma lista de 22 cartas');
+   if(file.size>150000)throw Error('Arquivo muito grande para uma lista de 23 cartas');
    const imported=restrictions.readRecord(JSON.parse(await file.text()),cards);
    updateBlack(imported.excluded.map(x=>x.numero),{
     reviewed:imported.userReviewed,
