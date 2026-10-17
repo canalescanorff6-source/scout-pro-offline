@@ -64,7 +64,7 @@ function mount(doc){
  const possession=engine.confirmSource(card)?card.recommended_levels.slice():null;
  const experimental=engine.valid(lab.draftA)&&engine.total(lab.draftA)===budget?lab.draftA.slice():null;
  const baseline=possession||experimental;
- let style=localGet('scoutpro:v220:style:'+id)||'posse';
+ let style=localGet('scoutpro:v220:style:'+cap+':'+id)||'posse';
  if(!styles.includes(style))style='posse';
  // Os níveis originais continuam preservados em todas as cinco táticas.
  const wrap=mk(doc,'div','scout-v220-shell');wrap.id='scout-v220-hero';
@@ -126,7 +126,7 @@ function mount(doc){
  box.append(mk(doc,'summary','','Cadastro de habilidades, slots e explicações detalhadas'));
  const oldSkill=doc.getElementById('scout-v162');if(oldSkill)box.append(oldSkill);
  tech.append(box);
- const notesKey=()=> 'scoutpro:v220:match:'+id+':'+style;
+ const notesKey=()=> 'scoutpro:v220:match:'+cap+':'+id+':'+style;
  const outcome=$(wrap,'scout-v220-outcome'),memo=$(wrap,'scout-v220-notes');
  function loadNotes(){
   const n=parse(localGet(notesKey()))||{};
@@ -190,7 +190,7 @@ function mount(doc){
  function choose(id,save){
   if(!styles.includes(id))return;
   style=id;
-  if(save)localSet('scoutpro:v220:style:'+String(card.id),id);
+  if(save)localSet('scoutpro:v220:style:'+cap+':'+String(card.id),id);
   wrap.querySelectorAll('[data-tactic]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tactic===style)));
   switchTraining(id);updateRecommendations();loadNotes();
  }
