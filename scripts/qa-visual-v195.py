@@ -313,7 +313,7 @@ def run():
                 if tech.count()!=1 or tech.evaluate('(e)=>e.open'):
                     problems.append(f"{name}: V220 precisa iniciar com engenharia recolhida")
                 else:
-                    tech.locator('summary').click()
+                    page.locator('#scout-v220-technical > summary').click()
                 primary = page.locator("#v188-top-rec").first.inner_text()
                 caution = page.locator("#v200-caution").first.inner_text()
                 alternatives = page.locator("#v200-alternatives").first.inner_text()
@@ -378,7 +378,7 @@ def run():
                     if page.locator(legacy).count() and page.locator("body.scout-v188-compact").count():
                         if page.locator(legacy).is_visible():
                             problems.append(f"{name}: laboratório antigo {legacy} apareceu antes da ficha principal compacta")
-                tech.locator('summary').click()
+                page.locator('#scout-v220-technical > summary').click()
                 if tech.evaluate('(e)=>e.open'):
                     problems.append(f"{name}: engenharia deve voltar a ficar recolhida")
                 page.screenshot(path=str(OUT / f"{name}_profile_header.png"), full_page=False, animations="disabled")
