@@ -2,7 +2,7 @@
 #scout-app-bar strong{color:#dcc58b;font-size:13px}#scout-app-bar button,#scout-app-bar a{color:#061621;background:#70dfc0;border:0;border-radius:9px;font-size:12px;padding:9px 12px;cursor:pointer;text-decoration:none;font-weight:700;white-space:nowrap}
 #scout-app-bar .app-small{font-size:11px;color:#acbec7;display:block;max-width:450px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#scout-app-bar .app-actions{display:flex;gap:6px}
 body{padding-bottom:84px!important}@media(max-width:540px){#scout-app-bar{font-size:11px;padding:8px}.app-actions{flex-direction:column}#scout-app-bar button{padding:8px;font-size:11px}}
-#scout-backup-modal{border:1px solid #5d998e;border-radius:16px;background:#0c192b;color:white;padding:24px;max-width:530px;width:90%;box-shadow:0 20px 60px #000a}#scout-backup-modal::backdrop{background:#001a}#scout-backup-modal button{background:#71dec0;border:0;border-radius:8px;padding:10px 13px;margin:6px;color:#092132;font-weight:600;cursor:pointer}#scout-backup-modal p{line-height:1.5}
+#scout-backup-modal{max-height:85vh;overflow:auto;border:1px solid #5d998e;border-radius:16px;background:#0c192b;color:white;padding:24px;max-width:530px;width:90%;box-shadow:0 20px 60px #000a}#scout-backup-modal::backdrop{background:#001a}#scout-backup-modal button{background:#71dec0;border:0;border-radius:8px;padding:10px 13px;margin:6px;color:#092132;font-weight:600;cursor:pointer}#scout-backup-modal p{line-height:1.5}
 
 /* V96 — atualização de APK específica do Android */
 #scout-android-update-modal{border:1px solid #5d998e;border-radius:16px;background:#0c192b;color:#f6fafc;padding:22px;width:min(94vw,510px);max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px #000b;font:14px/1.5 system-ui,Arial,sans-serif}

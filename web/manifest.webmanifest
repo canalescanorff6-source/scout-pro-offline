@@ -1,12 +1,12 @@
 {
-  "name": "Scout PRO — eFootball 2027",
-  "short_name": "Scout PRO",
+  "name": "Craque Tático — Laboratório de Futebol",
+  "short_name": "Craque Tático",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#07101d",
-  "theme_color": "#0c202b",
-  "description": "246 cartas com imagens originais e laboratório de builds offline",
+  "background_color": "#081a21",
+  "theme_color": "#005a43",
+  "description": "246 cartas do seu acervo; laboratório tático offline e backups restauráveis",
   "icons": [
     {
       "src": "assets/icon-192.png",

@@ -11,6 +11,11 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.ActivityCallback;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -54,6 +59,79 @@ public class ScoutFileExportPlugin extends Plugin {
         JSObject result = new JSObject();
         result.put("record", record);
         call.resolve(result);
+    }
+
+    // V226: snapshots redundantes no diretório privado; nunca em armazenamento público.
+    private File backupFile(int index) {
+        return new File(getContext().getFilesDir(), "craque-tatico-backup-" + index + ".json");
+    }
+
+    @PluginMethod
+    public void storeBackup(PluginCall call) {
+        String content = call.getString("content");
+        if (content == null || content.getBytes(StandardCharsets.UTF_8).length > MAX_BYTES) {
+            call.reject("Backup vazio ou maior que 8 MB."); return;
+        }
+        try {
+            org.json.JSONObject obj = new org.json.JSONObject(content);
+            if (!obj.has("items") || !obj.has("format")) throw new IllegalArgumentException("Backup inválido");
+            File staged = new File(getContext().getFilesDir(), "craque-backup-pendente.tmp");
+            try (FileOutputStream out = new FileOutputStream(staged)) {
+                out.write(content.getBytes(StandardCharsets.UTF_8));
+                out.getFD().sync();
+            }
+            // Um arquivo íntegro já está em disco antes de girar as cópias antigas.
+            for (int i = 2; i > 0; i--) {
+                File older = backupFile(i-1), next = backupFile(i);
+                if (older.exists()) {
+                    if (next.exists() && !next.delete()) throw new IllegalStateException("Não foi possível girar backup antigo");
+                    if (!older.renameTo(next)) throw new IllegalStateException("Não foi possível guardar backup anterior");
+                }
+            }
+            if (!staged.renameTo(backupFile(0))) throw new IllegalStateException("Não foi possível ativar backup");
+            JSObject done = new JSObject();done.put("status","saved");done.put("bytes",content.length());call.resolve(done);
+        } catch(Exception e) { call.reject("Backup local falhou: "+e.getMessage()); }
+    }
+
+    @PluginMethod
+    public void backupInfo(PluginCall call) {
+        JSObject result=new JSObject();
+        File file=backupFile(0); result.put("status",file.exists()?"available":"empty");
+        result.put("lastModified",file.exists()?file.lastModified():0);
+        result.put("bytes",file.exists()?file.length():0);call.resolve(result);
+    }
+
+    @PluginMethod
+    public void openJson(PluginCall call) {
+        try {
+            Intent pick=new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            pick.addCategory(Intent.CATEGORY_OPENABLE);
+            pick.setType("application/json");
+            pick.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(call,pick,"onBackupSelected");
+        } catch(Exception e) {call.reject("Não foi possível selecionar o backup: "+e.getMessage());}
+    }
+
+    @ActivityCallback
+    private void onBackupSelected(PluginCall call, ActivityResult result) {
+        if(call==null)return;
+        if(result==null||result.getResultCode()!=Activity.RESULT_OK||
+           result.getData()==null||result.getData().getData()==null){
+            JSObject cancelled=new JSObject();cancelled.put("status","cancelled");call.resolve(cancelled);return;
+        }
+        try(InputStream in=getContext().getContentResolver().openInputStream(result.getData().getData());
+            ByteArrayOutputStream out=new ByteArrayOutputStream()){
+            if(in==null)throw new IllegalStateException("Arquivo indisponível");
+            byte[] buffer=new byte[8192];int read;
+            while((read=in.read(buffer))!=-1){
+                if(out.size()+read>MAX_BYTES)throw new IllegalArgumentException("Arquivo acima de 8 MB");
+                out.write(buffer,0,read);
+            }
+            String content=out.toString("UTF-8");
+            new org.json.JSONObject(content); // Rejeitar JSON malformado na origem.
+            JSObject selected=new JSObject();selected.put("status","loaded");selected.put("content",content);
+            call.resolve(selected);
+        }catch(Exception e){call.reject("Falha na leitura do backup: "+e.getMessage());}
     }
 
     @PluginMethod

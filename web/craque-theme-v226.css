@@ -1,0 +1,46 @@
+/* Craque Tático V226 — identidade brasileira sem alterar estruturas de ficha ou dados. */
+:root{--craque-green:#00c853;--craque-green-dark:#097852;--craque-blue:#005a8c;--craque-gold:#ffc629;--craque-graphite:#0f1419;--craque-text:#f8f9fa;color-scheme:dark}
+html{accent-color:var(--craque-green)}
+body{--rot-turquoise:#10d98b;--rot-bg:#081a21;--rot-panel:#102b31;--rot-border:rgba(41,184,116,.32);--rot-ink:#f8f9fa;--rot-muted:#b8d6ce}
+#scout-app-bar{background:linear-gradient(118deg,rgba(6,32,43,.98),rgba(4,45,39,.98))!important;border:1px solid rgba(255,198,41,.38)!important;color:#f8f9fa!important}
+#scout-app-bar strong{color:var(--craque-gold)!important}
+#scout-app-bar button,#scout-app-bar a,#scout-backup-modal button{background:linear-gradient(130deg,#00bd68,#7ae2a5)!important;color:#052622!important}
+#scout-backup-modal,#scout-android-update-modal{background:#092226!important;border:1px solid rgba(255,198,41,.42)!important}
+.topbar,.scout-rotation-top{background:#071d24!important;border-bottom:1px solid rgba(255,198,41,.30)!important}
+.brand-logo-img,.scout-rotation-top img{filter:drop-shadow(0 3px 10px rgba(0,200,83,.25))}
+.brand-copy b,.brand-copy small,.scout-rotation-top a{color:#ffe1a1!important}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--craque-gold)!important;outline-offset:2px}
+.scout-rotation-hero{padding:clamp(18px,3.5vw,35px)!important;border:1px solid rgba(255,198,41,.28);border-radius:20px;background:linear-gradient(130deg,rgba(1,65,49,.52),rgba(0,32,55,.65))!important}
+.scout-rotation-hero h1{color:#f8f9fa!important}
+.scout-rotation-panel{background:linear-gradient(140deg,#0d2933,#0b2428)!important;border-color:rgba(37,178,118,.36)!important;box-shadow:0 14px 33px #0004!important}
+.scout-rotation-panel h2{color:#fff2c5!important}
+.scout-rotation-btn{background:#153c43!important;border-color:#507d71!important;color:#f0fff8!important;border-radius:12px!important}
+.scout-rotation-btn.main,.scout-rotation-btn.selected{background:linear-gradient(120deg,#02a963,#4adf8e)!important;color:#052622!important;border-color:#a1e0ad!important}
+.scout-rotation-team{background:#08292c!important;border-color:rgba(255,198,41,.25)!important}
+.scout-rotation-team-num{background:#084b36!important;border-color:#00c853!important;color:#e5ffd5!important}
+.scout-rotation-trust{border-left-color:var(--craque-gold)!important;background:#0a3e31!important}
+.scout-rotation-diagnostics{border-color:rgba(255,198,41,.35)!important;background:#0d3733!important}
+.scout-rotation-tactical{background:linear-gradient(135deg,#063d2b,#08242c)!important}
+.scout-rotation-field-spot.provisional{border:2px dashed #ffc629!important}
+.scout-rotation-picker-card.selected{border-color:var(--craque-gold)!important}
+.scout-rotation-pill{border-color:#ffc629!important;color:#fff4cf!important}
+.scout-rotation-page-shortcuts{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}
+.scout-rotation-page-shortcuts a{color:#d4fce8;text-decoration:none;border:1px solid #47896e;border-radius:12px;padding:10px 13px;background:#0c3532;font-weight:750;font-size:12px}
+.scout-rotation-page-shortcuts a:hover{border-color:#ffc629}
+.scout-backup-tools{display:flex;flex-wrap:wrap;gap:8px;margin-block:12px}
+.scout-backup-tools button{flex:1 1 120px}
+.scout-backup-summary{background:#102f33;border:1px solid #34685e;border-radius:12px;padding:12px;line-height:1.55;color:#cce7dd}
+.scout-backup-summary strong{color:#ffda75}
+@media(max-width:600px){.scout-rotation-picker-list{grid-template-columns:1fr!important}.scout-rotation-hero{padding:18px!important}#scout-app-bar{max-width:96%!important}.scout-rotation-page-shortcuts a{flex:1 1 45%;text-align:center}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* V226 — iconografia vetorial única para Android e Windows. */
+.scout-rotation-page-shortcuts a::before{content:"";display:inline-block;width:23px;height:23px;vertical-align:middle;background-size:contain;background-repeat:no-repeat;background-position:center;margin-right:7px}
+.scout-rotation-page-shortcuts a[href="#black-heading"]::before{background-image:url("assets/craque-elenco.svg")}
+.scout-rotation-page-shortcuts a[href="#series-heading"]::before{background-image:url("assets/craque-tatica.svg")}
+.scout-rotation-page-shortcuts a[href="#video-heading"]::before{background-image:url("assets/craque-desempenho.svg")}
+.scout-rotation-page-shortcuts a[href="#craque-backup-panel"]::before{background-image:url("assets/craque-resultados.svg")}
+#scout-app-bar #scout-backup::before{content:"";display:inline-block;width:17px;height:17px;background:url("assets/craque-analise.svg") center/contain no-repeat;vertical-align:middle;margin-right:5px}
+.scout-rotation-panel .scout-rotation-actions{align-items:stretch}
+.scout-rotation-panel button[aria-pressed="true"]{box-shadow:0 0 0 2px #ffc62959 inset}
+.scout-rotation-tactical{border:1px solid #447b55!important;box-shadow:inset 0 0 30px rgba(0,120,63,.17)}
