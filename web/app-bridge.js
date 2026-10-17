@@ -635,5 +635,12 @@ window.addEventListener('craque:backup-error',event=>{
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
 });
 const brand=document.querySelector('.brand-copy b');if(brand)brand.textContent='CRAQUE TÁTICO';
+document.title=document.title.replace(/SCOUT PRO|Scout PRO/g,'Craque Tático');
+document.querySelectorAll('.scout-rotation-footer,.footer').forEach(node=>{
+ for(const child of node.childNodes){
+  if(child.nodeType===3)child.textContent=child.textContent.replace(/SCOUT PRO|Scout PRO/g,'CRAQUE TÁTICO');
+ }
+});
+
 document.querySelectorAll('.brand-logo-img').forEach(img=>{img.src=v189Root+'assets/craque-tatico-icon.svg';img.alt='Craque Tático';});
 })();
