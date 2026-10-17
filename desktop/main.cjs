@@ -2,6 +2,17 @@
 const { app, BrowserWindow, ipcMain, dialog, shell, protocol, net } = require('electron');
 const path = require('path');
 const fs = require('node:fs/promises');
+const fsSync = require('node:fs');
+// Ao mudar somente o nome visível, reutilizar a pasta de dados anterior para não perder histórico.
+const previousDataFolders=['Scout PRO','scout-pro-elite-offline'];
+for(const name of previousDataFolders){
+ const oldPath=path.join(app.getPath('appData'),name);
+ if(fsSync.existsSync(oldPath)){
+  app.setPath('userData',oldPath);
+  break;
+ }
+}
+
 const {pathToFileURL} = require('url');
 const { autoUpdater } = require('electron-updater');
 protocol.registerSchemesAsPrivileged([{scheme:'scout',privileges:{standard:true,secure:true,supportFetchAPI:true,stream:true}}]);
@@ -34,7 +45,7 @@ function configureUpdater(){
   autoUpdater.on('error',err=>send('error','Atualização indisponível: '+err.message));
   autoUpdater.on('update-downloaded',async info=>{
     send('ready','Versão '+info.version+' pronta para instalar.');
-    const res=await dialog.showMessageBox(win,{type:'question',buttons:['Instalar agora','Depois'],defaultId:0,cancelId:1,title:'Nova versão do Scout PRO',message:'A versão '+info.version+' foi baixada.',detail:'O aplicativo será reiniciado para concluir a atualização.'});
+    const res=await dialog.showMessageBox(win,{type:'question',buttons:['Instalar agora','Depois'],defaultId:0,cancelId:1,title:'Nova versão do Craque Tático',message:'A versão '+info.version+' foi baixada.',detail:'O aplicativo será reiniciado para concluir a atualização.'});
     if(res.response===0)autoUpdater.quitAndInstall(false,true);
   });
   setTimeout(()=>autoUpdater.checkForUpdates().catch(e=>send('error',e.message)),5000);
@@ -70,10 +81,32 @@ ipcMain.handle('scout:save-json',async (event,payload)=>{
   const fileName=name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,110);
   if(!fileName.endsWith('.json')||fileName==='.json')throw Error('Nome de arquivo inválido');
   const selection=await dialog.showSaveDialog(win,{
-    title:'Salvar exportação do Scout PRO',defaultPath:fileName,
+    title:'Salvar exportação do Craque Tático',defaultPath:fileName,
     buttonLabel:'Salvar JSON',filters:[{name:'Arquivo JSON',extensions:['json']}]
   });
   if(selection.canceled||!selection.filePath)return {status:'cancelled'};
   await fs.writeFile(selection.filePath,content,{encoding:'utf8'});
   return {status:'saved',bytes:Buffer.byteLength(content,'utf8')};
+});
+
+const snapshotLocation=()=>path.join(app.getPath('userData'),'craque-tatico-recovery-v226.json');
+ipcMain.handle('scout:store-snapshot',async(event,payload)=>{
+ if(event.sender!==win?.webContents)throw Error('Origem não autorizada');
+ const data=payload?.record;
+ if(typeof data!=='string'||Buffer.byteLength(data,'utf8')>8*1024*1024)throw Error('Tamanho do backup inválido');
+ const parsed=JSON.parse(data);
+ if(parsed.format!=='craque-tatico-backup-v2'||!parsed.digest||!parsed.items)throw Error('Backup inválido');
+ const dest=snapshotLocation(),tmp=dest+'.tmp',previous=dest+'.previous';
+ await fs.mkdir(path.dirname(dest),{recursive:true});
+ await fs.writeFile(tmp,data,'utf8');
+ try{await fs.copyFile(dest,previous)}catch(e){if(e.code!=='ENOENT')throw e}
+ await fs.rename(tmp,dest);
+ return {status:'saved'};
+});
+ipcMain.handle('scout:load-snapshot',async(event)=>{
+ if(event.sender!==win?.webContents)throw Error('Origem não autorizada');
+ for(const file of [snapshotLocation(),snapshotLocation()+'.previous']){
+  try{return {record:await fs.readFile(file,'utf8')}}catch(e){if(e.code!=='ENOENT')throw e}
+ }
+ return {record:''};
 });

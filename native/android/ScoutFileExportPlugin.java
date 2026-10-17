@@ -11,6 +11,9 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.ActivityCallback;
 import com.getcapacitor.annotation.CapacitorPlugin;
 import java.io.OutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import android.util.AtomicFile;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -54,6 +57,42 @@ public class ScoutFileExportPlugin extends Plugin {
         JSObject result = new JSObject();
         result.put("record", record);
         call.resolve(result);
+    }
+
+
+    // Cópia automática privada e transacional; não substitui o JSON externo.
+    private AtomicFile snapshotFile() {
+        return new AtomicFile(new File(getContext().getFilesDir(), "craque-v226-backup.json"));
+    }
+
+    @PluginMethod
+    public void storeSnapshot(PluginCall call) {
+        String record=call.getString("record");
+        if(record==null||record.length()<5||record.getBytes(StandardCharsets.UTF_8).length>MAX_BYTES) {
+            call.reject("Snapshot vazio ou acima de 8 MB.");return;
+        }
+        try {
+            org.json.JSONObject data=new org.json.JSONObject(record);
+            if(!"craque-tatico-backup-v2".equals(data.optString("format"))||!data.has("digest")||!data.has("items"))
+                throw new IllegalArgumentException("Estrutura de backup inválida");
+            AtomicFile target=snapshotFile();
+            FileOutputStream stream=target.startWrite();
+            try{
+                stream.write(record.getBytes(StandardCharsets.UTF_8));
+                target.finishWrite(stream);
+            }catch(Exception e){target.failWrite(stream);throw e;}
+            JSObject out=new JSObject();out.put("status","saved");call.resolve(out);
+        }catch(Exception ex){call.reject("Não foi possível salvar a cópia automática: "+ex.getMessage());}
+    }
+
+    @PluginMethod
+    public void loadSnapshot(PluginCall call) {
+        try {
+            AtomicFile target=snapshotFile();String data="";
+            if(target.getBaseFile().exists())
+                data=new String(target.readFully(), StandardCharsets.UTF_8);
+            JSObject result=new JSObject();result.put("record",data);call.resolve(result);
+        }catch(Exception ex){call.reject("Falha ao recuperar a cópia automática: "+ex.getMessage());}
     }
 
     @PluginMethod

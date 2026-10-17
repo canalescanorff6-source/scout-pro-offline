@@ -14,7 +14,7 @@ function stored(key,fallback){
  try{const v=JSON.parse(localStorage.getItem(key)||'null');return v??fallback}catch(_e){return fallback}
 }
 function persist(key,value){
- try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_e){return false}
+ try{localStorage.setItem(key,JSON.stringify(value));document.dispatchEvent(new CustomEvent('craque:data-changed'));return true}catch(_e){return false}
 }
 // V225: cópia Android em SharedPreferences para recuperação sem nova seleção.
 function nativeRosterStore(){
@@ -120,6 +120,8 @@ function updateBlack(ids,{reviewed=false,message='Lista atualizada nas duas form
 function inventory(){
  const a=engine.analyze(cards,excluded);
  status('black-count',a.excluded+' / 23');
+ const board=$('craque-lab-snapshot');
+ if(board)board.innerHTML='<span>246 cartas originais</span><span>'+a.excluded+' protegidas</span><span>'+a.available+' livres</span><span>'+a.maxTeams+' equipes por formação</span>';
  status('rotation-inventory',a.cards+' cartas reais · '+a.excluded+' reservadas · '+a.available+' disponíveis · '+a.maxTeams+' equipes completas possíveis por série · '+a.remaining+' cartas fora de equipes completas.');
  status('black-feedback',photoStatus());
 }
@@ -184,6 +186,15 @@ function teamHTML(team){
 function render(){
  diagnostics();
  $('squads').innerHTML=selected().teams.map(teamHTML).join('');
+ const pager=$('craque-team-jump');
+ if(pager){
+  pager.innerHTML=selected().teams.map(team=>'<button type="button" class="scout-rotation-btn" data-jump="'+esc(team.id)+'" aria-label="Abrir '+esc(team.name)+'">'+String(team.index).padStart(2,'0')+'</button>').join('');
+  pager.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{
+   opened=button.dataset.jump;
+   $('squads').querySelectorAll('details[data-team]').forEach(d=>{d.open=d.dataset.team===opened});
+   $('squads').querySelector('details[open]')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+ }
  $('squads').querySelectorAll('details[data-team]').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)opened=d.dataset.team}));
  $('squads').querySelectorAll('form[data-match]').forEach(f=>f.addEventListener('submit',ev=>{
   ev.preventDefault();const id=f.dataset.match,values=new FormData(f);
@@ -195,7 +206,7 @@ function render(){
    lineupSnapshot:lineupSnapshot(team),result:String(values.get('result')),
    goals,conceded,video:String(values.get('video')||'').trim().slice(0,120),
    notes:String(values.get('notes')||'').trim().slice(0,1200)});
-  gameLogs[id]=list.slice(-100);
+  gameLogs[id]=list;
   if(!persist(KEY_MATCHES,gameLogs)){list.pop();gameLogs[id]=list;status('black-feedback','Não foi possível salvar esta partida no dispositivo. Confira o armazenamento.');return}
    opened=id;render();
  }));
@@ -208,7 +219,7 @@ function recompute(){
 function promptForTeam(team){
  const rows=team.starters.map(s=>{const c=getCard(s.cap);return s.role+': #'+s.cap+' '+c.name+' ('+c.estilo_ataque+'), '+s.fit});
  const bench=team.bench.map(b=>{const c=getCard(b.cap);return '#'+b.cap+' '+c.name});
- const desc='Analise o vídeo da partida do eFootball 2027 junto com esta escalação real do meu Scout PRO. '+
+ const desc='Analise o vídeo da partida do eFootball 2027 junto com esta escalação real do meu Craque Tático. '+
  'Identifique decisões, tabelas, passe curto, posicionamento, perdas de posse e erros táticos com minuto/segundo quando visíveis. '+
  'Avalie os jogadores individualmente somente quando eles aparecerem no vídeo; marque evidência incerta como não observada. '+
  'Não invente movimentos, estatísticas, IDs corporais ou jogadas. Sugira mudanças para Posse de Bola e compare com a 4-3-1-2 ou 4-2-1-3.\n'+
@@ -363,15 +374,18 @@ async function init(){
  $('rotation-backup').addEventListener('click',async()=>{
   const button=$('rotation-backup');button.disabled=true;
   try{
-   const keys=Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:'));
-   const items=Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)]));
-   const data={format:'scoutpro-userdata-v1',exported_at:new Date().toISOString(),items};
-   const outcome=await window.SCOUT_FILE_EXPORT.saveJson(data,'ScoutPRO-Backup-Completo-V225.json');
-   status('black-feedback',outcome.status==='saved'?'Backup completo salvo ('+keys.length+' registros).'
+   if(!window.CRAQUE_BACKUP)throw Error('Central de backup ainda está carregando.');
+   const outcome=await window.CRAQUE_BACKUP.exportToFile(localStorage,'CraqueTatico-Backup-Completo.json');
+   status('black-feedback',outcome.status==='saved'?'Backup completo confirmado. Guarde o JSON fora do aparelho.'
      :outcome.status==='cancelled'?'Backup cancelado. Seus dados continuam no dispositivo.'
      :'Download de backup solicitado; confira o arquivo no navegador.');
   }catch(e){status('black-feedback','Falha ao salvar backup completo: '+String(e.message||e))}
   finally{button.disabled=false}
+ });
+ $('rotation-restore').addEventListener('click',()=>{
+  const btn=document.getElementById('scout-backup');
+  if(btn)btn.click();
+  else status('black-feedback','Central de restauração não disponível nesta tela.');
  });
  $('rotation-prompt').addEventListener('click',async()=>{
   const sheet=selected(),team=sheet.teams.find(t=>t.id===opened)||sheet.teams[0];

@@ -1,0 +1,76 @@
+/* Craque Tático V226 — Brazilian premium UI, sobre o design original. */
+:root{
+ --bg:#0f1419;--bg2:#091b28;--layer:#10252c;--panel:#112b30;--panel2:#17333b;
+ --edge:#285c59;--text:#f8f9fa;--muted:#b9d3d2;--faint:#90b6b6;
+ --accent:#00c853;--accent2:#005a8c;--gold:#ffc629;--gold2:#ffe6a1;
+ --green:#00c853;--rot-turquoise:#00c853;--rot-bg:#0f1419;
+ --rot-panel:#102832;--rot-border:rgba(255,198,41,.24);--rot-ink:#f8f9fa;--rot-muted:#b6cad0;
+}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(ellipse at 8% -5%,rgba(0,200,83,.11),transparent 38%),radial-gradient(ellipse at 100% 0%,rgba(0,90,140,.25),transparent 36%),#0f1419;color:#f8f9fa}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ffc629;outline-offset:3px}
+button:disabled{opacity:.55;cursor:not-allowed}
+#scout-app-bar{background:rgba(10,24,33,.97)!important;border-color:rgba(255,198,41,.38)!important}
+#scout-app-bar strong{color:#ffdb74!important}
+#scout-app-bar .app-actions button,#scout-app-bar nav button,#scout-app-bar a{background:linear-gradient(130deg,#0ba764,#00a66d)!important;color:#031a16!important}
+#scout-backup-modal{background:#10222b;border-color:#ffc629;color:#f8f9fa}
+#scout-backup-modal button{background:#006e65;color:#fff;border:1px solid #379784;font-weight:800}
+#scout-backup-modal #scout-export{background:linear-gradient(130deg,#ffc629,#dca61b);color:#132020}
+#scout-backup-modal #craque-backup-recover{background:#0d4b74}
+#scout-backup-modal p{line-height:1.65;max-width:65ch}
+#craque-backup-reload{background:#00c853!important;color:#041b13!important}
+.brand-logo-img,.scout-rotation-top img{object-fit:contain;filter:drop-shadow(0 3px 8px rgba(255,198,41,.2))}
+button,.scout-rotation-btn{transition:transform .18s ease,box-shadow .2s ease,border-color .2s ease}
+button:not(:disabled):active{transform:scale(.975)}
+.scout-rotation-top{background:linear-gradient(100deg,#061a28,#092b2b)!important;border-bottom-color:rgba(255,198,41,.45)!important}
+.scout-rotation-panel,.scout-rotation-hero{background:linear-gradient(160deg,#0d252f,#0c1d2b)!important;border-color:rgba(0,200,83,.24)!important}
+.scout-rotation-btn.main,.scout-rotation-btn.selected{background:linear-gradient(110deg,#00c853,#08a88c)!important;color:#061b17!important;border-color:#51ef8a!important}
+.scout-rotation-btn:not(.main):not(.selected){background:linear-gradient(155deg,#173640,#15303c)!important;border-color:rgba(0,200,83,.32)!important}
+.scout-rotation-btn:hover:not(:disabled){box-shadow:0 0 0 2px rgba(255,198,41,.21)}
+.scout-rotation-eyebrow,.scout-rotation-pill,.scout-rotation-team-num{color:#ffca49!important}
+.scout-rotation-team[open]{border-color:rgba(255,198,41,.52)!important;box-shadow:0 8px 36px #0006}
+.scout-rotation-team summary{border-radius:14px}
+.scout-rotation-field{border:2px solid #18854b!important;background:repeating-linear-gradient(0deg,rgba(0,71,46,.6) 0px,rgba(0,71,46,.6) 45px,rgba(5,90,57,.73) 45px,rgba(5,90,57,.73) 90px)!important}
+.scout-rotation-field-spot{box-shadow:0 5px 18px #0007}
+.scout-rotation-field-spot.provisional{border:2px dashed #ffc629!important;background:#3a2a16!important}
+.scout-rotation-field-spot.provisional small{color:#ffe49c!important}
+.scout-rotation-feedback{color:#ffe1a0!important}
+.craque-lab-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0 28px}
+.craque-lab-shortcut{display:flex;align-items:center;gap:12px;text-decoration:none;padding:14px;background:linear-gradient(145deg,#11352d,#102437);border:1px solid #28684e;border-radius:17px;min-height:82px;box-shadow:0 8px 28px #0004}
+.craque-lab-shortcut:hover{border-color:#ffc629;transform:translateY(-2px)}
+.craque-lab-shortcut svg{width:30px;height:30px;flex:none;color:#ffc629}
+.craque-lab-shortcut strong{font-size:13px;color:#fff;display:block}
+.craque-lab-shortcut span{font-size:11px;color:#a8ccbf}
+.craque-lab-shortcut:focus-visible{outline:3px solid #ffc629}
+.craque-lab-stats{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.craque-lab-stats span{padding:7px 11px;background:#0c2b31;border:1px solid #26745e;border-radius:999px;color:#f3f3ea;font-weight:700;font-size:12px}
+.craque-lab-series{position:sticky;top:0;z-index:10;background:#081c27e9;border:1px solid #276c52;border-radius:15px;padding:10px;backdrop-filter:blur(12px)}
+@media(max-width:740px){
+ .craque-lab-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .craque-lab-shortcut{padding:12px;gap:8px;min-height:74px}
+ .craque-lab-shortcut svg{width:25px;height:25px}
+ .craque-lab-series{top:0}
+ #scout-backup-modal{width:94%;padding:17px}
+}
+@media(max-width:350px){.craque-lab-shortcuts{grid-template-columns:1fr}}
+
+.craque-team-jump{display:flex;gap:9px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding:12px 1px;margin:12px 0 17px}
+.craque-team-jump button{min-width:44px;min-height:44px;border-radius:12px;font-weight:900}
+.scout-rotation-team{scroll-margin-top:105px}
+#lab-restricoes,#lab-formacoes,#lab-videos,#lab-protecao{scroll-margin-top:110px}
+.scout-rotation-hero h1{background:linear-gradient(120deg,#fff8dc,#ffd36a 46%,#b5eec8);-webkit-background-clip:text;background-clip:text;color:transparent}
+#craque-lab-snapshot{margin-bottom:20px}
+.scout-rotation-team summary small{line-height:1.5}
+@media(max-width:520px){
+ .scout-rotation-top{padding:12px!important}
+ .scout-rotation-actions{gap:8px}
+ .scout-rotation-actions button{min-height:44px}
+ .scout-rotation-field-spot strong{font-size:10px!important}
+ .craque-team-jump{gap:7px}
+}
+.craque-launch{position:fixed;inset:0;z-index:25000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;background:radial-gradient(circle at 50% 40%,#145338 0,#0e2531 49%,#08141c 100%);color:#f9ebc7;transition:opacity .38s ease;pointer-events:none}
+.craque-launch img{width:min(52vw,250px);height:auto;filter:drop-shadow(0 15px 35px #0009)}
+.craque-launch strong{font-size:clamp(27px,6vw,48px);font-weight:950;letter-spacing:.06em;color:#ffc629;text-shadow:0 4px 18px #0008}
+.craque-launch span{font-size:clamp(11px,2.5vw,16px);letter-spacing:.25em;color:#e1e7dd}
+.craque-launch-exit{opacity:0}
+@media(prefers-reduced-motion:reduce){.craque-launch{transition:none}}

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Craque Tático — escudo brasileiro de futebol e estratégia">
+<defs>
+<linearGradient id="bg" x2="1" y2="1"><stop stop-color="#05111d"/><stop offset=".48" stop-color="#102433"/><stop offset="1" stop-color="#02070d"/></linearGradient>
+<linearGradient id="gold" x1=".13" y1="0" x2=".86" y2="1"><stop stop-color="#ffef95"/><stop offset=".24" stop-color="#db9b27"/><stop offset=".42" stop-color="#ffe793"/><stop offset=".6" stop-color="#b97610"/><stop offset=".81" stop-color="#fff0ac"/><stop offset="1" stop-color="#9e5b0c"/></linearGradient>
+<linearGradient id="green" x2="1" y2=".8"><stop stop-color="#052d29"/><stop offset=".45" stop-color="#08783b"/><stop offset="1" stop-color="#003b37"/></linearGradient>
+<linearGradient id="blue" x2="0.8" y2="1"><stop stop-color="#008ec9"/><stop offset=".45" stop-color="#083c75"/><stop offset="1" stop-color="#06152c"/></linearGradient>
+<linearGradient id="ball" x2=".72" y2="1"><stop stop-color="#fffdeb"/><stop offset=".5" stop-color="#e5d1a4"/><stop offset="1" stop-color="#82704b"/></linearGradient>
+<filter id="shadow"><feDropShadow dx="0" dy="15" stdDeviation="15" flood-color="#000" flood-opacity=".65"/></filter>
+<filter id="glow"><feGaussianBlur stdDeviation="7"/></filter>
+</defs>
+<rect width="1024" height="1024" rx="200" fill="url(#bg)"/>
+<rect x="24" y="24" width="976" height="976" rx="188" fill="none" stroke="#014f50" stroke-width="7"/>
+<circle cx="510" cy="478" r="395" fill="#00d578" opacity=".10" filter="url(#glow)"/>
+<g filter="url(#shadow)">
+<path d="M165 347 240 277 275 708 201 693 107 546Z" fill="url(#green)" stroke="url(#gold)" stroke-width="12"/>
+<path d="M859 347 784 277 749 708 823 693 917 546Z" fill="url(#green)" stroke="url(#gold)" stroke-width="12"/>
+<path d="M147 602 275 731 388 874 219 822Z" fill="url(#gold)"/>
+<path d="M877 602 749 731 636 874 805 822Z" fill="url(#gold)"/>
+<path d="M204 231 367 171 657 171 820 231 801 607 696 790 512 920 328 790 223 607Z" fill="#071824" stroke="url(#gold)" stroke-width="27"/>
+<path d="M239 258 383 209 641 209 785 258 765 593 670 758 512 871 354 758 259 593Z" fill="url(#green)" stroke="#00aa66" stroke-width="9"/>
+<path d="M512 215 607 215 607 817 512 866Z" fill="url(#blue)" opacity=".88"/>
+<path d="M465 215 507 215 507 863 465 835Z" fill="url(#gold)" opacity=".7"/>
+<path d="M315 313H709 M315 665H709 M325 313V577 M699 313V577" fill="none" stroke="#c1e07d" stroke-opacity=".38" stroke-width="7"/>
+<g fill="none" stroke="url(#gold)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round">
+<path d="M309 520 Q288 386 401 336"/><path d="m368 332 37-8-10 39"/><path d="M720 438 Q751 568 648 637"/><path d="m679 637-38 7 9-40"/>
+</g>
+<g fill="none" stroke="#ffdc54" stroke-width="17" stroke-linecap="round">
+<circle cx="336" cy="589" r="19"/><circle cx="698" cy="362" r="19"/>
+<path d="m327 357 34 34m0-34-34 34M663 584l35 34m0-34-35 34"/>
+</g>
+<circle cx="512" cy="503" r="216" fill="#071727" stroke="url(#gold)" stroke-width="24"/>
+<circle cx="512" cy="500" r="189" fill="url(#ball)" stroke="#00172c" stroke-width="9"/>
+<path d="M512 390 593 448 562 546H462L431 448Z" fill="url(#blue)" stroke="#b38d4e" stroke-width="10"/>
+<g fill="none" stroke="#08406a" stroke-width="15">
+<path d="M431 448 347 421M593 448 678 421M462 546 415 659M562 546 609 659M512 390V321"/>
+<path d="M347 421 368 516 415 659M678 421 654 519 609 659"/>
+</g>
+<circle cx="512" cy="500" r="189" fill="none" stroke="#ffffff" stroke-opacity=".29" stroke-width="7"/>
+<path d="m512 702 19 38 43 6-31 30 7 43-38-20-38 20 8-43-32-30 43-6Z" fill="url(#gold)" stroke="#764608" stroke-width="7"/>
+<path d="M347 181 398 76 463 147 512 52 563 147 626 76 680 181 666 222H359Z" fill="url(#gold)" stroke="#75480f" stroke-width="13"/>
+<path d="M365 191H659" stroke="#fff8c0" stroke-width="13"/>
+<circle cx="398" cy="76" r="19" fill="#ffe897"/><circle cx="512" cy="52" r="20" fill="#fff4c4"/><circle cx="626" cy="76" r="19" fill="#ffe897"/>
+</g></svg>

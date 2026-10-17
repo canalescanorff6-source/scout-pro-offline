@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),sharp=require('sharp');
-const root=path.resolve(__dirname,'..'),assets=path.join(root,'web/assets'),svg=fs.readFileSync(fs.existsSync(path.join(assets,'scout-pro-icon-premium-original.png'))?path.join(assets,'scout-pro-icon-premium-original.png'):path.join(assets,'scout-pro-v75.svg'));
+const root=path.resolve(__dirname,'..'),assets=path.join(root,'web/assets'),svg=fs.readFileSync(path.join(assets,'craque-tatico-icon.svg'));
 (async()=>{
  const sizes=[16,32,48,64,72,96,144,192,256,512],pngs=new Map();
  for(const n of sizes)pngs.set(n,await sharp(svg).resize(n,n).png().toBuffer());
@@ -20,5 +20,5 @@ const root=path.resolve(__dirname,'..'),assets=path.join(root,'web/assets'),svg=
   for(const name of ['ic_launcher.png','ic_launcher_round.png'])fs.writeFileSync(path.join(loc,name),pngs.get(size));
  }
  const android=path.join(root,'resources/android');fs.writeFileSync(path.join(android,'scout_foreground.png'),pngs.get(512));
- console.log('Scout PRO v75: ICO Windows, 5 densidades Android, PNG PWA e favicon gerados.');
+ console.log('Craque Tático V226: ícones Android, Windows e PWA gerados a partir do brasão.');
 })().catch(e=>{console.error(e);process.exit(1)});
