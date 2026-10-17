@@ -102,7 +102,7 @@ function mount(doc){
   oldSwitch.setAttribute('tabindex','-1');
  }
  const mainTitle=panel.querySelector('.scout-v220-headline h2');
- if(mainTitle)mainTitle.textContent='Ficha principal · '+(panel.querySelector('.scout-v220-name')?.textContent||'Minha carta');
+ if(mainTitle)mainTitle.textContent='Minha ficha principal';
  const overline=panel.querySelector('.scout-v220-eyebrow');
  if(overline)overline.textContent='CRAQUE TÁTICO · ANÁLISE INDIVIDUAL';
  const technicalTitle=technical.querySelector(':scope > summary');
@@ -115,12 +115,6 @@ function mount(doc){
  doc.title=rawTitle.replace(SAFE_TITLE,' · Craque Tático').replace(/SCOUT PRO V\d+/gi,'Craque Tático');
  // Não alterar a data, Card ID, PP, a formação, as fontes nem os textos das fichas antigas.
  const status=inspect(doc);
- const indicator=doc.createElement('span');
- indicator.id='scout-v229-audit-state';indicator.className='scout-v229-audit-state';
- indicator.textContent=status.archived===6?'Ficha unificada · históricos preservados':
-  'Ficha unificada · revisar '+(6-status.archived)+' painel(is) antigo(s)';
- const heroHead=panel.querySelector('.scout-v220-head');
- if(heroHead)heroHead.insertAdjacentElement('afterend',indicator);
  doc.dispatchEvent(new CustomEvent('craque:card-curated-v229',{
   detail:{archived:status.archived,card:doc.getElementById('scout-v68-data')?.textContent?.length||0}
  }));
