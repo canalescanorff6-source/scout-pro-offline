@@ -3,7 +3,7 @@
 <title>Minhas Duas Formações · Posse Link-Up | Scout PRO</title>
 <link rel="stylesheet" href="premium.css"/><link rel="stylesheet" href="scout-premium-v73.css"/><link rel="stylesheet" href="app-bridge.css"/>
 <link rel="manifest" href="manifest.webmanifest"/>
-<script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script><script defer src="meu-time-duas-formacoes-v177.js"></script><script defer src="pwa.js"></script>
+<script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script><script defer src="craque-tactics-v230.js"></script><script defer src="meu-time-duas-formacoes-v177.js"></script><script defer src="craque-formation-ui-v230.js"></script><script defer src="pwa.js"></script>
 <style>
 :root{color-scheme:dark;background:#06111e;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#eef4fd}
 *,*::before,*::after{box-sizing:border-box}
@@ -76,13 +76,30 @@ dialog::backdrop{background:#020713d9;backdrop-filter:blur(4px)}
 @media(max-width:520px){main{padding:12px}.pitch{padding:12px 5px;gap:7px;min-height:650px}.p-slot{padding:5px 2px;min-height:87px}.p-slot img{height:53px}.p-cap,.p-trust{font-size:8px}.p-name{font-size:9px}.bench-grid{grid-template-columns:1fr}.strategy-duo{grid-template-columns:1fr}#player-options{grid-template-columns:1fr}}
 .formation-choice{margin:16px 0}.formation-switch{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}.formation-button{display:block;width:100%;text-align:left;min-height:78px;background:#112d40;color:#e8f3fb;border:1px solid #49718b;border-radius:13px;padding:15px;line-height:1.4}.formation-button.selected{border:2px solid #91e3bb;background:#17443e;box-shadow:0 0 0 2px #154634}.formation-button strong{display:block;font-size:17px}.formation-button small{display:block;font-size:12px;margin-top:5px;color:#bfd7dc}.linkup-panel{margin:18px 0;background:linear-gradient(130deg,#10273c,#102e32)}.link-row{display:grid;grid-template-columns:150px 1fr;gap:5px 12px;align-items:center;border-top:1px solid #345465;padding:12px 0}.link-row strong{font-size:13px}.link-row small{grid-column:2;color:#a8c7d8;font-size:11px}.link-indicator{border-radius:7px;font-size:11px;padding:6px 8px;text-align:center;font-weight:800}.link-indicator.filled{border:1px solid #72cfa0;color:#aaf1c9}.link-indicator.missing{border:1px solid #d0a063;color:#ffe0a6}@media(max-width:520px){.formation-switch{grid-template-columns:1fr}.link-row{grid-template-columns:1fr}.link-row small{grid-column:1}}</style></head><body data-page="team">
 <main>
-<header class="head"><a href="index.html" class="brandmark"><img src="assets/scout-pro-icon-premium-original.png" alt="Scout PRO"/> SCOUT PRO · MEU TIME</a><a href="index.html" class="home">← Voltar ao elenco</a></header>
-<section class="hero"><div class="kicker">eFOOTBALL 2027 · SCOUT PRO V177 · SUAS ESCOLHAS RECUPERADAS</div><h1>Minhas 2 formações.<br/>Posse + Link-Up.</h1><p>Suas formações históricas do eFootball 2027, recuperadas dos arquivos anteriores: 4-3-1-2 personalizada e 4-2-1-3 estreita (2 CA + 1 SA). Alternar sem pontas tradicionais, sem depender de cruzamentos, usando passes curtos e o planejamento de vínculos do R. Rodríguez. Nenhum PP, habilidade ou ímpeto é alterado.</p>
+<header class="head"><a href="index.html" class="brandmark"><img src="assets/craque-tatico-icon.svg" alt="Craque Tático"/> CRAQUE TÁTICO · MEU TIME</a><a href="index.html" class="home">← Voltar ao elenco</a></header>
+<section class="hero"><div class="kicker">eFOOTBALL 2027 · SCOUT PRO V177 · SUAS ESCOLHAS RECUPERADAS</div><h1>Minhas 2 formações.<br/>Cinco estilos de jogo.</h1><p>Suas formações históricas do eFootball 2027, recuperadas dos arquivos anteriores, agora analisadas para cinco estilos de técnico: 4-3-1-2 personalizada e 4-2-1-3 estreita (2 CA + 1 SA). Alternar sem pontas tradicionais, sem depender de cruzamentos, usando passes curtos e o planejamento de vínculos do R. Rodríguez. Nenhum PP, habilidade ou ímpeto é alterado.</p>
 <div class="badges"><span id="catalog-count">Carregando cartas...</span><span id="custom-badge">Escalação original recuperada</span><span>Link-Up: requisitos documentados, ativação no jogo pendente</span></div></section>
 <section class="panel formation-choice" id="formation-pick"><h2>Escolha uma de suas duas formações</h2>
 <div class="formation-switch"><button class="formation-button selected" data-formation="4312" aria-pressed="true" type="button"><strong>4-3-1-2 personalizada</strong><small>2 VOL + 1 MLG + 1 MAT + 2 CA · Controle e proteção</small></button>
 <button class="formation-button" data-formation="4213" aria-pressed="false" type="button"><strong>4-2-1-3 estreita</strong><small>2 VOL + 1 MAT + 1 SA + 2 CA · Atacar pelo centro</small></button></div>
 <p class="hint" id="formation-details">Carregando o seu planejamento original…</p></section>
+<section class="panel ct-v230-tactic-profile" id="ct-v230-tactic-profile" aria-labelledby="ct-v230-tactic-title">
+ <div class="ct-v230-tactic-header"><div><span class="ct-v230-eyebrow">PLANO TÁTICO MULTIESTILO</span>
+  <h2 id="ct-v230-tactic-title">Escolha o estilo do técnico</h2>
+  <p class="minor">Mesmas duas formações, cinco maneiras de jogar. Avaliação documental dos jogadores, sem mexer na sua escalação.</p></div>
+ </div>
+ <div class="ct-v230-tactic-tabs" role="group" aria-label="Estilo de jogo do técnico" id="ct-v230-tactic-tabs"></div>
+ <div class="ct-v230-tactic-preview">
+  <strong id="ct-v230-tactic-name">Posse de Bola · 4-3-1-2</strong>
+  <p id="ct-v230-tactic-explain">Carregando análise tática…</p>
+ </div>
+ <details class="ct-v230-tactic-advanced"><summary>Analisar os 11 titulares e consultar alternativas por função</summary>
+  <div id="ct-v230-tactic-count" class="minor"></div>
+  <div id="ct-v230-tactic-details" class="ct-v230-fit-grid"></div>
+  <p class="ct-v230-tactic-caution" id="ct-v230-tactic-warning">Nenhuma escolha será trocada automaticamente.</p>
+ </details>
+ <p class="ct-v230-tactic-status" id="ct-v230-persist" aria-live="polite">Estilo inicial: Posse de Bola.</p>
+</section>
 <section class="panel linkup-panel" id="linkup"><h2>R. Rodríguez · Link-Up</h2><p>Carregando checagem documental…</p></section>
 <div class="layout">
 <section class="panel"><div class="panel-head"><div><h2 id="formation-label">Campo · sua formação</h2><div class="minor">Toque em qualquer jogador para escolher entre suas 246 cartas. Cada formação guarda suas próprias trocas.</div></div><button id="reset-team" class="reset" type="button">Restaurar titulares</button></div>

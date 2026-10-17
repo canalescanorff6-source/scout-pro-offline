@@ -1,0 +1,290 @@
+/* Craque Tático V230 · Design System ESCUDO
+ * Origem: logo oficial do próprio projeto — azul-noite #031420,
+ * azul profundo #005a8c, ouro #ffc629, branco-marfim.
+ * Verde restrito ao campo/sucesso; não usar neon nos botões principais.
+ * Sobrescreve somente aparência, sem alterar componentes ou dados.
+ */
+:root{
+ color-scheme:dark;
+ --ct-ink:#f5f4ed;--ct-quiet:#b9cbd4;--ct-muted:#96aab8;
+ --ct-bg:#061321;--ct-card:#102637;--ct-card-hi:#153147;
+ --ct-depth:#071b2b;--ct-line:rgba(153,180,198,.25);
+ --ct-blue:#16638d;--ct-blue-strong:#07537f;
+ --ct-gold:#eac36c;--ct-gold-strong:#ffc629;--ct-gold-muted:#ae8749;
+ --ct-green:#359879;--ct-error:#dc9c9c;
+ --craque-green:#319a7e;--craque-green-dark:#175f56;
+ --craque-blue:#16638d;--craque-gold:#eac36c;
+ accent-color:var(--ct-gold);
+}
+html{scroll-behavior:smooth}
+body[data-page="catalog"],body[data-page="detail"],
+body[data-page="team"],body[data-page="rotation-lab"],
+body[data-page="friends"]{
+ background:radial-gradient(ellipse at 50% -25%,rgba(18,64,91,.46),transparent 65%),
+ linear-gradient(180deg,#061321,#0a1c2d 62%,#071624)!important;
+ color:var(--ct-ink)!important;
+}
+.topbar,.head,.scout-rotation-top,.friends-head{
+ background:linear-gradient(120deg,#071927,#10293a)!important;
+ border-bottom:1px solid rgba(234,195,108,.33)!important;
+}
+.brand-copy b,.brandmark,.friends-brand b,.scout-rotation-top>a{
+ color:#f4e5bd!important;
+}
+.brand-logo-img,.brandmark img,.friends-brand img,.scout-rotation-top img{
+ filter:drop-shadow(0 4px 9px rgba(234,195,108,.15))!important;
+}
+body[data-page="catalog"] .player-card{
+ background:linear-gradient(150deg,#122c40,#0b1e2c 80%)!important;
+ border:1px solid rgba(155,179,197,.3)!important;
+ box-shadow:0 5px 18px rgba(0,8,20,.35)!important;
+ border-radius:15px!important;
+}
+body[data-page="catalog"] .player-card:hover,
+body[data-page="catalog"] .player-card:focus-within{
+ border-color:rgba(234,195,108,.76)!important;
+ box-shadow:0 8px 23px rgba(0,8,20,.55)!important;
+}
+body[data-page="catalog"] .player-name{color:#fcf9ed!important}
+body[data-page="catalog"] .player-version{color:#bbcbd7!important}
+body[data-page="catalog"] #catalogo,
+body[data-page="catalog"] .catalog-controls{
+ color:var(--ct-ink)!important;
+}
+body[data-page="catalog"] .scout-v189-quick,
+body[data-page="catalog"] .scout-v189-panel,
+body[data-page="catalog"] .scout-v189-search,
+body[data-page="catalog"] .list-meta{
+ border-color:var(--ct-line)!important;
+}
+/* Modernos controles com proporções consistentes: ouro apenas CTA, azul para secundários. */
+body[data-page="catalog"] .btn.primary,
+body[data-page="catalog"] .scout-v189-primary,
+body[data-page="detail"] .scout-v220-cta,
+body[data-page="rotation-lab"] .scout-rotation-btn.main,
+body[data-page="rotation-lab"] .scout-rotation-btn.selected,
+body[data-page="friends"] .friends-primary,
+body[data-page="team"] .formation-button.selected,
+#scout-app-bar button,#scout-app-bar a,
+#scout-backup-modal button{
+ background:linear-gradient(135deg,#f6d78a,#d5a849)!important;
+ color:#0b2030!important;
+ border:1px solid #f7e0a3!important;
+ box-shadow:inset 0 1px rgba(255,249,214,.3),0 3px 11px rgba(0,9,18,.26)!important;
+ text-shadow:none!important;
+}
+body[data-page="catalog"] button:not(.btn):not([aria-pressed="true"]),
+body[data-page="detail"] .scout-v220-tabs button:not([aria-pressed="true"]),
+body[data-page="friends"] .friends-person,
+body[data-page="rotation-lab"] .scout-rotation-btn:not(.main):not(.selected){
+ border-color:#446378!important;
+ background:linear-gradient(135deg,#143146,#102638)!important;
+ color:#e8eff2!important;
+}
+body[data-page="detail"] .scout-v220-tabs button[aria-pressed="true"],
+body[data-page="team"] .formation-button[aria-pressed="true"]{
+ border-color:#eac36c!important;
+ background:linear-gradient(135deg,#27374b,#2f3541)!important;
+ color:#fff0bd!important;
+ box-shadow:inset 0 -3px 0 #eac36c!important;
+}
+body[data-page="catalog"] button[aria-pressed="true"]{
+ border-color:#eac36c!important;
+ color:#fff1c7!important;
+}
+button:focus-visible,a:focus-visible,summary:focus-visible,
+input:focus-visible,select:focus-visible,textarea:focus-visible{
+ outline:3px solid var(--ct-gold-strong)!important;outline-offset:3px!important;
+}
+/* Ficha única: remover a moldura ciano exagerada, devolver ouro da logo e leitura clara */
+body[data-page="detail"] #scout-v188-principal,
+body[data-page="detail"] #scout-v220-hero,
+body[data-page="detail"] #scout-v220-technical{
+ border-color:rgba(158,179,196,.29)!important;
+ color:var(--ct-ink)!important;
+}
+body[data-page="detail"] #scout-v188-principal .scout-v188-progress.scout-v208-reference{
+ --v208-cyan:var(--ct-gold)!important;
+ --v208-text:var(--ct-ink)!important;
+ --v208-muted:#ced1d4!important;
+ background:linear-gradient(158deg,#0c2437,#091b2a 74%,#0a2634)!important;
+ border:1px solid rgba(234,195,108,.56)!important;
+ border-radius:17px!important;
+ box-shadow:0 0 0 2px rgba(8,28,45,.84),0 12px 27px rgba(0,9,18,.32)!important;
+}
+body[data-page="detail"] #scout-v188-principal .scout-v188-progress.scout-v208-reference::before,
+body[data-page="detail"] #scout-v188-principal .scout-v188-progress.scout-v208-reference::after{
+ opacity:0!important;
+}
+body[data-page="detail"] .scout-v208-heading .scout-v208-scenario{
+ color:#efc56c!important;text-shadow:none!important;
+}
+body[data-page="detail"] .scout-v208-table thead th{
+ background:linear-gradient(110deg,#152f43,#122939)!important;
+ color:#dddcd0!important;
+ border-color:rgba(234,195,108,.28)!important;
+}
+body[data-page="detail"] .scout-v208-table tbody th,
+body[data-page="detail"] .scout-v208-table tbody td{
+ border-color:rgba(133,161,176,.25)!important;
+}
+body[data-page="detail"] .scout-v208-table tfoot th,
+body[data-page="detail"] .scout-v208-table tfoot td{
+ background:#203545!important;border-color:rgba(234,195,108,.41)!important;
+ color:#f8dd9d!important;
+}
+body[data-page="detail"] .scout-v208-label,
+body[data-page="detail"] .scout-v208-table .scout-v208-num{color:#f5f6f3!important}
+body[data-page="detail"] .scout-v208-icon,
+body[data-page="detail"] .scout-v206-icon{
+ border:1px solid rgba(234,195,108,.42)!important;
+ border-radius:13px!important;
+ background:linear-gradient(147deg,#182e43,#0d2334)!important;
+ box-shadow:inset 0 1px rgba(247,223,161,.1),0 5px 10px rgba(2,8,20,.28)!important;
+ color:var(--ct-gold)!important;
+}
+body[data-page="detail"] #v188-train .scout-v188-train-chip.scout-v201-enriched{
+ background:linear-gradient(146deg,#1a3549,#102637)!important;
+ border:1px solid rgba(234,195,108,.30)!important;
+}
+body[data-page="detail"] #lab-controls .lab-group>label.scout-v201-enriched{
+ color:#ecf2f4!important;
+}
+body[data-page="detail"] #lab-controls .lab-adjust button{
+ background:linear-gradient(145deg,#233a51,#162b40)!important;
+ border:1px solid #7390a2!important;
+ color:#f8ead1!important;
+ min-height:44px!important;
+}
+body[data-page="detail"] #lab-controls .lab-adjust input{
+ background:#071927!important;
+ border:1px solid #6c8293!important;
+ color:#faf6eb!important;
+}
+body[data-page="detail"] #scout-v229-legacy-archive,
+body[data-page="detail"] .scout-v220-technical-body{
+ border-color:rgba(234,195,108,.25)!important;
+}
+/* Pictogramas autorais V230: ícones de ouro e marfim, uma linguagem consistente. */
+.scout-v230-svg{display:block;width:100%;height:100%;overflow:hidden;color:#ebc878!important}
+.scout-v230-svg .ct-frame{fill:#0b2435;stroke:rgba(234,195,108,.45);stroke-width:1.5}
+.scout-v230-svg .ct-fill{fill:#28435c;stroke:#f0d48b;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.scout-v230-svg .ct-ball{fill:#f2e9d1;stroke:#c6a85c;stroke-width:2.3}
+.scout-v230-svg .ct-detail{fill:#344c62;stroke:#b69a63;stroke-width:1.1;stroke-linejoin:round}
+.scout-v230-svg .ct-stroke{stroke:#f2d48c;stroke-width:3.1;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.scout-v230-svg .ct-secondary{stroke:#82b6cc;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.scout-v230-svg .ct-dash{stroke:#eac36c;stroke-width:3;stroke-dasharray:4 5;stroke-linecap:round;fill:none}
+.scout-v230-svg .ct-check{stroke:#e4d39b;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.scout-v230-svg .ct-glint{stroke:#f7dc9f;stroke-opacity:.3;stroke-width:2;stroke-linecap:round;fill:none}
+/* Formações: campo verde profundo, moldura azul e ouro, deixando as cartas em foco */
+body[data-page="team"] .panel,
+body[data-page="rotation-lab"] .scout-rotation-panel{
+ background:linear-gradient(145deg,#112a3b,#091d2b)!important;
+ border:1px solid var(--ct-line)!important;
+ box-shadow:0 12px 25px rgba(0,9,20,.3)!important;
+}
+body[data-page="team"] .pitch,
+body[data-page="rotation-lab"] .scout-rotation-field{
+ background:repeating-linear-gradient(0deg,#14352f 0,#14352f 70px,#194139 70px,#194139 140px)!important;
+ border:1px solid rgba(234,195,108,.5)!important;
+ box-shadow:inset 0 0 35px rgba(4,11,25,.45)!important;
+}
+body[data-page="team"] .p-slot,
+body[data-page="rotation-lab"] .scout-rotation-field-spot{
+ background:rgba(9,28,41,.92)!important;
+ border-color:rgba(196,218,206,.48)!important;
+}
+body[data-page="rotation-lab"] .scout-rotation-tactical{
+ background:linear-gradient(150deg,#14382f,#102c35)!important;
+ border-color:rgba(234,195,108,.4)!important;
+}
+body[data-page="rotation-lab"] .scout-rotation-team,
+body[data-page="friends"] .friends-card{
+ background:linear-gradient(145deg,#132b3c,#0b2130)!important;
+ border-color:var(--ct-line)!important;
+}
+body[data-page="rotation-lab"] .scout-rotation-team-num{
+ background:#233949!important;color:#ffe3a0!important;border-color:#b1914b!important;
+}
+body[data-page="rotation-lab"] .scout-rotation-hero{
+ background:linear-gradient(135deg,#113349,#092234)!important;
+ border-color:rgba(234,195,108,.38)!important;
+}
+body[data-page="rotation-lab"] .scout-rotation-trust{
+ background:#173948!important;border-color:#d0a75a!important;
+}
+body[data-page="friends"] .friends-hero{
+ background:linear-gradient(132deg,#132e45,#0c2636)!important;
+}
+body[data-page="friends"] .friends-panel,
+body[data-page="friends"] .friends-dialog{
+ background:linear-gradient(140deg,#112a3d,#091e2e)!important;
+ border-color:var(--ct-line)!important;
+}
+/* Letra / espaçamento no Android: evitar densidade sem empurrar controles para baixo */
+@media(max-width:650px){
+ body[data-page="detail"] .scout-v208-table tbody th,
+ body[data-page="detail"] .scout-v208-table tbody td{
+  height:clamp(53px,13vw,66px)!important;padding:6px 8px!important;
+ }
+ body[data-page="detail"] .scout-v208-icon{
+  width:42px!important;height:42px!important;flex-basis:42px!important;
+ }
+ body[data-page="detail"] .scout-v208-category-inner{gap:8px!important}
+ body[data-page="catalog"] .player-card{border-radius:12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ *{scroll-behavior:auto!important;transition:none!important}
+}
+
+/* V230: controle tático compacto, compatível com as duas escalações originais. */
+#ct-v230-tactic-profile{margin-top:16px}
+.ct-v230-eyebrow{display:block;font-size:11px;letter-spacing:.12em;color:#eac36c;font-weight:850;text-transform:uppercase;margin:0 0 7px}
+.ct-v230-tactic-header p{margin:6px 0 9px}
+.ct-v230-tactic-tabs,#ct-v230-rotation-modes{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.ct-v230-tactic-tabs>button,#ct-v230-rotation-modes>button{
+ min-height:44px;flex:1 1 145px;
+ padding:10px 12px;white-space:normal;
+ color:#e6eff3;background:#142c3f;border:1px solid #4e6c83;border-radius:11px;
+ font-size:12px;font-weight:800;line-height:1.3;cursor:pointer;
+}
+.ct-v230-tactic-tabs>button[aria-pressed="true"],#ct-v230-rotation-modes>button[aria-pressed="true"]{
+ background:linear-gradient(125deg,#eacb86,#cda145)!important;
+ color:#142335!important;
+ border-color:#f6e1a4!important;box-shadow:inset 0 1px rgba(255,248,220,.3)!important;
+}
+.ct-v230-tactic-preview{background:linear-gradient(130deg,#193b4d,#102a40);border:1px solid rgba(234,195,108,.38);border-radius:13px;padding:12px}
+.ct-v230-tactic-preview strong{font-size:14px;color:#f6d88e}
+.ct-v230-tactic-preview p{font-size:12px;color:#d3e4ea;line-height:1.6;margin:8px 0 0}
+.ct-v230-tactic-advanced{margin-top:11px;border:1px solid #4e6779;background:#0c2334;border-radius:13px;min-width:0}
+.ct-v230-tactic-advanced>summary{padding:13px;cursor:pointer;color:#f0e6cc;font-size:12px;font-weight:800;line-height:1.5}
+.ct-v230-tactic-advanced>#ct-v230-tactic-count{margin:4px 12px 10px}
+.ct-v230-fit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:9px;padding:8px 11px}
+.ct-v230-fit-row{min-width:0;background:#152f43;border:1px solid #426176;padding:11px;border-radius:11px}
+.ct-v230-fit-heading{display:grid;gap:5px}
+.ct-v230-fit-heading strong{font-size:13px;color:#f5f0df;overflow-wrap:anywhere}
+.ct-v230-fit-heading small{font-size:11px;color:#d4c396;overflow-wrap:anywhere}
+.ct-v230-fit-row p{font-size:12px;color:#c5d8df;line-height:1.5}
+.ct-v230-fit-alts{display:block;font-size:11px;color:#c4d3dc;line-height:1.5;margin:9px 0}
+.ct-v230-fit-change{min-height:43px;border-radius:9px;background:#1e4359;border:1px solid #7a9aa5;color:#e7eff7;padding:9px;font-size:12px;font-weight:800}
+.ct-v230-tactic-caution,.ct-v230-tactic-status{color:#d4c39a!important;font-size:11px;line-height:1.55;padding:6px 12px}
+.ct-v230-rotation-modes{padding:14px;background:linear-gradient(140deg,#10283e,#091d2e);border:1px solid rgba(234,195,108,.38);border-radius:13px;margin:12px 0}
+.ct-v230-rotation-modes>h3{font-size:14px;color:#f7e6b3;margin:0 0 5px}
+.ct-v230-rotation-modes>p{font-size:12px;color:#bdced9;line-height:1.6}
+@media(max-width:480px){.ct-v230-fit-grid{grid-template-columns:1fr}.ct-v230-tactic-tabs>button,#ct-v230-rotation-modes>button{flex:1 1 calc(50% - 8px);padding:9px 6px;font-size:11px}}
+
+/* Substituir também a herança verde da camada V210 sem mexer na lógica. */
+body[data-page="detail"]{
+ --sc210-green:#eac36c!important;
+ --sc210-edge:rgba(234,195,108,.45)!important;
+ --sc210-gold:#eac36c!important;
+}
+body[data-page="detail"] .scout-v208-svg.scout-v230-svg{
+ filter:none!important;color:#eac36c!important;
+}
+body[data-page="detail"] #scout-v208-training .scout-v208-icon{
+ border-color:#eac36c!important;
+}
+body[data-page="detail"] #scout-v208-training tfoot td:last-child{
+ color:#f6d58b!important;
+}
