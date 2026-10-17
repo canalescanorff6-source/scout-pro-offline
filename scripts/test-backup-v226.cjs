@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict');
 const {webcrypto}=require('node:crypto');
-globalThis.crypto=globalThis.crypto||webcrypto;
+if(!globalThis.crypto)Object.defineProperty(globalThis,'crypto',{value:webcrypto,configurable:true});
 const B=require('../web/craque-backup-v226.js');
 function storage(items={}){
  const s={getItem(k){return Object.hasOwn(this,k)?this[k]:null;},
