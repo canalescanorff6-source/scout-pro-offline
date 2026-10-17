@@ -71,11 +71,17 @@ function analyze(cards,excluded){
   blocked:[...blocked].sort((a,b)=>a-b)};
 }
 // Vincula cada partida à composição realmente utilizada; não reaproveita resultados após mudar a escalação.
-function rosterFingerprint(team,excluded=[]){
+function rosterFingerprint(team,excluded=[],cards=[]){
  if(!team||!Array.isArray(team.starters)||!Array.isArray(team.bench))throw Error('Equipe inválida para registrar partida');
+ if(!Array.isArray(cards)||cards.length!==246)throw Error('Catálogo completo necessário para identidade do elenco');
+ const map=new Map(cards.map(c=>[Number(c.numero),c]));
+ const identity=cap=>{
+  const c=map.get(Number(cap));if(!c)throw Error('Carta inexistente no histórico: '+cap);
+  return [Number(c.numero),String(c.id??''),String(c.versao??'')].join(':');
+ };
  const blocked=[...new Set((Array.isArray(excluded)?excluded:[]).map(Number))].sort((a,b)=>a-b);
- const starters=team.starters.map(x=>String(x.slot)+':'+String(x.cap)).sort();
- const bench=team.bench.map(x=>Number(x.cap)).sort((a,b)=>a-b);
+ const starters=team.starters.map(x=>String(x.slot)+':'+identity(x.cap)).sort();
+ const bench=team.bench.map(x=>identity(x.cap)).sort();
  return JSON.stringify({schema:'SCOUT_ROSTER_SIGNATURE_V223',formation:team.formation,
   team:team.id,starters,bench,excluded:blocked});
 }
