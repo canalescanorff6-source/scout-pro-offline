@@ -86,7 +86,7 @@ function rosterFingerprint(team,excluded=[],cards=[]){
   team:team.id,starters,bench,excluded:blocked});
 }
 function build(cards,formation,excluded,cycle=1,tactic='posse'){
- const tactical=host?.CRAQUE_TACTICS_V230;
+ const tactical=host?.CRAQUE_TACTICS_V230||(typeof module==='object'&&module.exports?require('./craque-tactics-v230.js'):null);
  if(!['posse','normal','rapido','fora','longo'].includes(tactic))throw Error('Tática de técnico inválida');
  if(tactic!=='posse'&&!tactical)throw Error('Motor dos cinco estilos não carregou');
  if(!formation||!['4312','4213'].includes(formation.id)||!Array.isArray(formation.starters)||formation.starters.length!==START_SIZE)throw Error('Formação não reconhecida');
