@@ -33,7 +33,7 @@ const card=n=>rows.find(x=>x.numero===n);
 assert.equal(card(1).clashes[0].additional,'Cabeceio');
 assert.equal(card(1).clashes[0].native,'Heading');
 assert.equal(card(40).clashes[0].native,'Heading');
-assert.equal(card(203).clashes[0].native,'Heel Trick');
+assert.equal(card(203).clashes[0].native,'Toque de calcanhar');
 assert.equal(card(203).clashes[0].additional,'Passe de calcanhar');
 assert.equal(rows.filter(x=>x.printMatches.length).length,3,'Avisos dos prints não devem virar habilidades da edição');
 assert.equal(rows.filter(x=>x.print).length,185);
