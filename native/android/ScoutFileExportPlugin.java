@@ -22,6 +22,40 @@ import java.nio.charset.StandardCharsets;
 public class ScoutFileExportPlugin extends Plugin {
     private static final int MAX_BYTES = 8 * 1024 * 1024;
 
+    // Cópia local adicional das restrições para recuperá-las após limpeza do WebView.
+    // Não é sincronização entre Android e Windows; depende da mesma instalação Android.
+    private static final String ROSTER_PREFS = "scout_roster_protected_v225";
+    private static final String ROSTER_KEY = "black_roster_record";
+
+    @PluginMethod
+    public void storeRoster(PluginCall call) {
+        String record = call.getString("record");
+        if (record == null || record.length() > 150000) {
+            call.reject("Dados de restrição inválidos.");
+            return;
+        }
+        try {
+            org.json.JSONObject parsed = new org.json.JSONObject(record);
+            if (!parsed.has("excluded") || !parsed.has("schema")) throw new IllegalArgumentException("Sem identificação");
+            boolean persisted = getContext().getSharedPreferences(ROSTER_PREFS, 0).edit()
+                .putString(ROSTER_KEY, record).commit();
+            if (!persisted) throw new IllegalStateException("Armazenamento do Android recusou a gravação.");
+            JSObject result = new JSObject();
+            result.put("status", "saved");
+            call.resolve(result);
+        } catch (Exception ex) {
+            call.reject("Falha ao guardar restrições no Android: " + ex.getMessage());
+        }
+    }
+
+    @PluginMethod
+    public void loadRoster(PluginCall call) {
+        String record = getContext().getSharedPreferences(ROSTER_PREFS, 0).getString(ROSTER_KEY, "");
+        JSObject result = new JSObject();
+        result.put("record", record);
+        call.resolve(result);
+    }
+
     @PluginMethod
     public void saveJson(PluginCall call) {
         String content = call.getString("content");
