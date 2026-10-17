@@ -885,6 +885,16 @@ def run():
                     """,timeout=10000)
                     if page.locator('#black-reviewed').is_disabled() or not page.locator('#black-reviewed').is_checked():
                         problems.append(f"{name}: V222 importação perdeu a confirmação pessoal das 23 cartas")
+                # V225: arquivos JSON realmente gerados no Chromium, não apenas um clique sem download.
+                if name in ('mobile_390','windows_1366'):
+                    with page.expect_download(timeout=12000) as export_wait:
+                        page.locator('#black-export').click()
+                    exported=export_wait.value
+                    payload=json.loads(Path(exported.path()).read_text(encoding='utf8'))
+                    if len(payload.get('excluded', []))!=23 or payload.get('limit')!=23:
+                        problems.append(f"{name}: V225 exportação das 23 restrições gerou conteúdo incorreto")
+                    if not exported.suggested_filename.endswith('.json'):
+                        problems.append(f"{name}: V225 exportação das restrições sem extensão JSON")
                 formation_metrics=page.evaluate("""() => {
                   const squads=[...document.querySelectorAll('#squads details[data-team]')];
                   const ids=squads.flatMap(s=>[...s.querySelectorAll('.scout-rotation-player')].map(p=>
@@ -911,6 +921,24 @@ def run():
                 page.wait_for_function("""() =>
                     document.querySelector('#squads details[data-team] summary small')?.textContent.includes('1 partidas')
                 """,timeout=12000)
+                if name in ('mobile_390','windows_1366'):
+                    with page.expect_download(timeout=12000) as squads_wait:
+                        page.locator('#rotation-export').click()
+                    exported_squads=json.loads(Path(squads_wait.value.path()).read_text(encoding='utf8'))
+                    series=exported_squads.get('series', {})
+                    current=series.get('4312-1', {}).get('teams', [])
+                    if len(current)!=9 or not all(len(t.get('starters', []))==11 and len(t.get('bench', []))==12 for t in current):
+                        problems.append(f"{name}: V225 arquivo exportado perdeu as 9 equipes de 23")
+                    if not exported_squads.get('matches'):
+                        problems.append(f"{name}: V225 arquivo exportado perdeu a partida registrada")
+                    page.locator('#scout-backup').click()
+                    with page.expect_download(timeout=12000) as backup_wait:
+                        page.locator('#scout-export').click()
+                    backup=json.loads(Path(backup_wait.value.path()).read_text(encoding='utf8'))
+                    if backup.get('format')!='scoutpro-userdata-v1' or 'scoutpro:v219:black-caps' not in backup.get('items', {}):
+                        problems.append(f"{name}: V225 backup geral não contém os bloqueios salvos")
+                    page.locator('#scout-close').click()
+
                 page.screenshot(path=str(OUT / f"{name}_rotation_4312_v219.png"),full_page=False,animations="disabled")
                 page.locator('button[data-series="4213"]').click()
                 page.wait_for_function("""() =>
