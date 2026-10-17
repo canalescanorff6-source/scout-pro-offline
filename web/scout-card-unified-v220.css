@@ -1,0 +1,309 @@
+/* Scout PRO V220 — ficha competitiva BLACK / JADE / CHAMPAGNE.
+ * Único centro de operação em telas pequenas; mantém toda engenharia consultável.
+ */
+:root{--v220-deep:#06171a;--v220-ink:#eaf8f3;--v220-jade:#4adbbb;--v220-champagne:#e8c98d;--v220-edge:rgba(89,184,161,.25);--v220-muted:#a7c6c3}
+body[data-page="detail"] #scout-v188-principal{
+ padding:0!important;border:0!important;box-shadow:none!important;background:transparent!important;
+ margin:12px 0 22px!important;max-width:100%;overflow:visible
+}
+body[data-page="detail"] #scout-v188-principal>.scout-v188-head,
+body[data-page="detail"] #scout-v188-principal>.scout-v188-intro,
+body[data-page="detail"] #scout-v188-principal>.scout-v188-skills-link{
+ display:none!important
+}
+body[data-page="detail"] #scout-v220-hero{
+ display:grid;gap:13px;max-width:100%;min-width:0;
+ font-family:inherit;color:var(--v220-ink);
+}
+body[data-page="detail"] .scout-v220-shell>section,
+body[data-page="detail"] .scout-v220-technical{
+ min-width:0;border:1px solid var(--v220-edge);border-radius:20px;
+ background:linear-gradient(160deg,#0c2731 0%,#091d29 50%,#0b2026 100%);
+ box-shadow:0 12px 36px rgba(0,6,15,.30),inset 0 1px rgba(137,221,191,.07);
+ overflow:hidden;
+}
+body[data-page="detail"] .scout-v220-shell>.scout-v220-hero{
+ position:relative;padding:clamp(16px,4vw,29px);
+ background:radial-gradient(circle at 96% 0,rgba(49,160,127,.23),transparent 42%),
+ linear-gradient(155deg,#0a292d,#091b28 77%);
+}
+body[data-page="detail"] .scout-v220-hero::before{
+ content:"";position:absolute;top:0;left:0;right:0;height:3px;
+ background:linear-gradient(90deg,#39e0af,#a9f7df 54%,#e8c98d);
+}
+body[data-page="detail"] .scout-v220-eyebrow{
+ color:#83e6c6;letter-spacing:.16em;font-size:10px;font-weight:900;margin-bottom:12px;
+}
+body[data-page="detail"] .scout-v220-head{
+ display:flex;align-items:center;justify-content:space-between;gap:14px;min-width:0;
+}
+body[data-page="detail"] .scout-v220-headline{flex:1;min-width:0}
+body[data-page="detail"] .scout-v220-headline h2{
+ font-size:clamp(22px,4.5vw,34px);font-weight:900;line-height:1.06;letter-spacing:-.055em;
+ color:#f5fffa;margin:0 0 8px;overflow-wrap:anywhere;
+}
+body[data-page="detail"] .scout-v220-name{
+ color:#d9bc84;font-weight:800;font-size:clamp(12px,3vw,16px);margin:0;overflow-wrap:anywhere;
+}
+body[data-page="detail"] .scout-v220-pp{
+ width:90px;height:90px;flex:none;border-radius:22px;
+ background:linear-gradient(155deg,#184e46,#0c302f);
+ border:1px solid rgba(101,224,172,.63);box-shadow:inset 0 0 0 1px rgba(186,252,222,.12);
+ display:grid;place-content:center;text-align:center;
+}
+body[data-page="detail"] .scout-v220-pp strong{
+ display:block;color:#75f6d1;font-size:clamp(26px,6vw,38px);
+ font-weight:900;line-height:1.05;letter-spacing:-.03em;
+}
+body[data-page="detail"] .scout-v220-pp span{
+ color:#c6f1dd;font-size:10px;font-weight:800;letter-spacing:.07em;margin-top:5px;
+}
+body[data-page="detail"] .scout-v220-chips{
+ display:flex;gap:6px;flex-wrap:wrap;margin:15px 0 11px;max-width:100%;
+}
+body[data-page="detail"] .scout-v220-chips span{
+ border-radius:99px;border:1px solid rgba(111,193,174,.34);
+ background:#123b3d;padding:6px 11px;font-size:11px;font-weight:800;color:#e1f4ed;
+}
+body[data-page="detail"] .scout-v220-chips span.scout-v220-id{font-size:10px;color:#b5ccc9;overflow-wrap:anywhere}
+body[data-page="detail"] .scout-v220-sub{
+ color:#b6d1cd;line-height:1.5;font-size:12px;margin:0 0 14px;
+}
+body[data-page="detail"] .scout-v220-tabs{
+ display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;
+ padding:5px 1px 9px;scrollbar-width:thin;scrollbar-color:#247d70 transparent;
+ border-bottom:1px solid rgba(104,166,160,.24);
+}
+body[data-page="detail"] .scout-v220-tab{
+ min-height:46px;border-radius:12px;border:1px solid rgba(121,186,176,.34);
+ background:#113242;color:#b9d1d0;padding:10px 14px;font-size:12px;line-height:1.25;
+ font-weight:800;flex:0 0 auto;max-width:180px;scroll-snap-align:start;
+ cursor:pointer;transition:background .12s,border-color .12s;
+}
+body[data-page="detail"] .scout-v220-tab[aria-pressed="true"]{
+ background:linear-gradient(135deg,#53e5b8,#31b6b7);border-color:#a0ffe0;
+ box-shadow:0 5px 20px rgba(41,214,163,.13);color:#05292e;
+}
+body[data-page="detail"] .scout-v220-tab:focus-visible,
+body[data-page="detail"] .scout-v220-shell button:focus-visible,
+body[data-page="detail"] .scout-v220-shell textarea:focus-visible,
+body[data-page="detail"] .scout-v220-shell select:focus-visible,
+body[data-page="detail"] .scout-v220-technical>summary:focus-visible{
+ outline:3px solid var(--v220-champagne);outline-offset:2px
+}
+body[data-page="detail"] .scout-v220-focus{
+ border:1px solid rgba(93,200,171,.36);border-radius:15px;
+ background:linear-gradient(125deg,#123f3b,#0d2b37);padding:14px 16px;margin-top:15px;
+}
+body[data-page="detail"] .scout-v220-focus-heading{
+ display:flex;justify-content:space-between;gap:10px;align-items:start;flex-wrap:wrap;
+ color:#aaf3dc;font-size:11px;font-weight:900;letter-spacing:.08em;
+}
+body[data-page="detail"] .scout-v220-confidence{
+ color:#e8c68d;letter-spacing:0;font-size:10px;font-weight:750;
+}
+body[data-page="detail"] .scout-v220-focus h3{
+ font-size:clamp(15px,3.5vw,22px);margin:10px 0 7px;line-height:1.35;color:#f3fff6;font-weight:850
+}
+body[data-page="detail"] .scout-v220-focus p{margin:0;color:#b8d8d4;font-size:12px;line-height:1.6}
+body[data-page="detail"] .scout-v220-focus-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}
+body[data-page="detail"] .scout-v220-focus-tags span{
+ border:1px solid #427b71;background:#0c2b2c;color:#baf5df;
+ border-radius:8px;padding:5px 9px;font-size:10px;font-weight:800;
+}
+body[data-page="detail"] .scout-v220-training,
+body[data-page="detail"] .scout-v220-recs,
+body[data-page="detail"] .scout-v220-practice{padding:clamp(13px,3vw,24px)}
+body[data-page="detail"] .scout-v220-section-head{display:grid;gap:5px;margin:0 0 13px}
+body[data-page="detail"] .scout-v220-section-head>div{
+ font-size:12px;font-weight:900;color:var(--v220-champagne);letter-spacing:.11em
+}
+body[data-page="detail"] .scout-v220-section-head>p{
+ color:var(--v220-muted);font-size:12px;margin:0;line-height:1.5
+}
+body[data-page="detail"] .scout-v220-training>.scout-v188-progress{
+ padding:0!important;border:0!important;background:transparent!important;
+ box-shadow:none!important;margin:0!important;min-width:0;
+}
+body[data-page="detail"] .scout-v220-training #scout-v208-heading{
+ font-size:clamp(17px,4vw,24px)!important;
+ margin:0 0 13px!important;line-height:1.3!important;
+ border-left:3px solid #49d9b0;padding-left:10px;color:#f0faf3!important;
+}
+body[data-page="detail"] .scout-v220-training #scout-v218-controls{
+ border:0!important;margin:0 0 12px!important;background:transparent!important;gap:9px
+}
+body[data-page="detail"] .scout-v220-training #scout-v218-status{
+ font-size:12px!important;border:1px solid #4a8e7b!important;
+ background:#102e32!important;padding:12px!important;color:#c3f9e0!important;
+}
+body[data-page="detail"] .scout-v220-training #scout-v218-status[data-mode="draft"]{
+ border-color:rgba(232,201,141,.58)!important;color:#f9deb0!important;
+ background:#372e23!important;
+}
+body[data-page="detail"] .scout-v220-training .scout-v218-button.scout-v218-primary{
+ color:#04272a;background:#5ce1b5!important;
+}
+body[data-page="detail"] .scout-v220-training .scout-v218-button{
+ background:#183f4b;border-color:#4b8885;
+}
+body[data-page="detail"] .scout-v220-training #scout-v208-training{
+ border-collapse:separate!important;border-spacing:0!important;max-width:100%;
+ border:1px solid rgba(77,154,139,.34)!important;border-radius:14px;overflow:hidden;
+ background:#071c26!important;
+}
+body[data-page="detail"] .scout-v220-training #scout-v208-training thead{
+ background:linear-gradient(95deg,#174137,#10313a)!important;
+}
+body[data-page="detail"] .scout-v220-training #scout-v208-training tbody tr{
+ background:transparent!important;
+}
+body[data-page="detail"] .scout-v220-training #scout-v208-training tbody tr:nth-child(2n){
+ background:rgba(45,106,100,.10)!important;
+}
+body[data-page="detail"] .scout-v220-training #scout-v208-training tbody tr:hover{
+ background:rgba(71,196,150,.13)!important;
+}
+body[data-page="detail"] .scout-v220-training #scout-v208-training th,
+body[data-page="detail"] .scout-v220-training #scout-v208-training td{
+ border-color:rgba(96,185,165,.17)!important;
+}
+body[data-page="detail"] .scout-v220-training .scout-v208-icon{
+ border-radius:10px!important;background:linear-gradient(150deg,#153e37,#091e2d)!important;
+ border-color:#45c9a7!important;
+}
+body[data-page="detail"] .scout-v220-training .scout-v218-step{
+ background:#1a5a52;color:#f0fff5;border-color:#57d8ad;
+}
+body[data-page="detail"] .scout-v220-training .scout-v218-compare{
+ background:#0a222b!important;border-color:#285b58!important
+}
+body[data-page="detail"] .scout-v220-training .scout-v208-reference{
+ border:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;
+}
+body[data-page="detail"] .scout-v220-recs-grid{
+ display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:12px;
+}
+body[data-page="detail"] .scout-v220-recs-grid>article{
+ min-width:0;border:1px solid rgba(84,159,139,.32);
+ border-radius:15px;background:#0a2330;padding:clamp(13px,3vw,20px);
+}
+body[data-page="detail"] .scout-v220-card-head{
+ display:flex;align-items:start;justify-content:space-between;gap:9px;margin-bottom:10px;
+}
+body[data-page="detail"] .scout-v220-card-head h3{
+ margin:0!important;font-size:clamp(15px,3vw,20px)!important;
+ color:#eefaf4;line-height:1.25;
+}
+body[data-page="detail"] .scout-v220-card-head>span{
+ color:#e9ca93;font-size:10px;font-weight:850;white-space:nowrap;padding:5px 0;
+}
+body[data-page="detail"] .scout-v220-skill-list{
+ list-style:none;margin:0;padding:0;display:grid;gap:7px;
+}
+body[data-page="detail"] .scout-v220-skill{
+ display:grid;gap:2px;padding:10px 12px;border-radius:10px;
+ background:#0e3235;border:1px solid rgba(82,186,161,.28);
+}
+body[data-page="detail"] .scout-v220-skill strong{
+ font-size:13px;color:#bafce2;line-height:1.3
+}
+body[data-page="detail"] .scout-v220-skill span{font-size:11px;color:#b4cfca;line-height:1.5}
+body[data-page="detail"] .scout-v220-skill small{
+ font-size:10px;color:#e3c98c;line-height:1.4
+}
+body[data-page="detail"] .scout-v220-small{
+ color:var(--v220-muted);font-size:11px;line-height:1.6;margin:10px 0;
+}
+body[data-page="detail"] .scout-v220-boost-hero{
+ border-radius:12px;padding:14px;background:linear-gradient(145deg,#144e43,#103237);
+ border:1px solid rgba(89,211,162,.41);margin:8px 0 12px;
+}
+body[data-page="detail"] .scout-v220-boost-hero small{
+ font-size:10px;color:#a4e3cb;font-weight:850;text-transform:uppercase;letter-spacing:.06em;
+ display:block;margin-bottom:6px
+}
+body[data-page="detail"] .scout-v220-boost-hero strong{
+ color:#ddfbe8;font-size:clamp(17px,4vw,23px);overflow-wrap:anywhere;
+}
+body[data-page="detail"] .scout-v220-booster-panel p{
+ font-size:11px;color:#c5d6d2;line-height:1.65;margin:9px 0;
+}
+body[data-page="detail"] .scout-v220-booster-panel p.scout-v220-warning{
+ border-left:3px solid #d8b474;background:#382d22;padding:9px;border-radius:4px 9px 9px 4px;
+ color:#f2d79d;
+}
+body[data-page="detail"] .scout-v220-link{
+ width:100%;min-height:44px;margin-top:6px;cursor:pointer;background:#153d40;
+ border:1px solid #4d9d88;color:#c8f9e2;font-size:12px;font-weight:800;border-radius:10px;padding:10px;
+}
+body[data-page="detail"] .scout-v220-practice-grid{
+ display:grid;grid-template-columns:minmax(160px,1fr) minmax(0,2fr);gap:12px;
+}
+body[data-page="detail"] .scout-v220-practice-grid label{
+ color:#c9e8dd;font-size:12px;font-weight:800;display:grid;gap:7px;min-width:0
+}
+body[data-page="detail"] .scout-v220-practice-grid select,
+body[data-page="detail"] .scout-v220-practice-grid textarea{
+ padding:12px;background:#081f2d;border:1px solid #3b7975;color:#eaf9f3;
+ border-radius:10px;min-height:45px;font:inherit;font-size:12px;
+ width:100%;max-width:100%;resize:vertical;
+}
+body[data-page="detail"] .scout-v220-cta{
+ cursor:pointer;color:#032930;background:linear-gradient(95deg,#65ebbf,#38c6b5);
+ font-size:12px;font-weight:900;border:0;border-radius:10px;min-height:44px;
+ padding:11px 15px;margin-top:12px;
+}
+body[data-page="detail"] #scout-v220-notice{font-size:11px;color:#cce7db}
+body[data-page="detail"] .scout-v220-disclaimer{
+ margin:2px 5px 3px;padding:12px 14px;border-left:3px solid var(--v220-champagne);
+ background:#172b2f;border-radius:6px;color:#c5d9d4;font-size:11px;line-height:1.55;
+}
+body[data-page="detail"] .scout-v220-technical{
+ background:#0a1c29;
+}
+body[data-page="detail"] .scout-v220-technical>summary{
+ padding:17px 20px;cursor:pointer;font-size:14px;font-weight:850;
+ color:#b3e8d4;min-height:54px;
+}
+body[data-page="detail"] .scout-v220-technical-body{
+ padding:6px clamp(10px,3vw,20px) 20px;display:grid;gap:12px;min-width:0;
+}
+body[data-page="detail"] .scout-v220-technical-body>*{
+ min-width:0;max-width:100%;margin:0!important;
+}
+body[data-page="detail"] .scout-v220-technical #engenharia{
+ padding:12px!important;border-radius:12px!important;
+ background:#0d2631!important;
+}
+body[data-page="detail"] .scout-v220-advanced-skill{
+ border:1px solid var(--v220-edge);border-radius:10px;
+}
+body[data-page="detail"] .scout-v220-advanced-skill>summary{
+ color:#b9e9d8;cursor:pointer;font-weight:800;padding:13px;min-height:44px
+}
+body[data-page="detail"] .scout-v220-advanced-skill #scout-v162{
+ margin:0!important;padding:12px!important;
+ background:#0e2733!important;border:0!important
+}
+@media(max-width:720px){
+ body[data-page="detail"] .scout-v220-recs-grid{grid-template-columns:1fr}
+ body[data-page="detail"] .scout-v220-practice-grid{grid-template-columns:1fr}
+}
+@media(max-width:420px){
+ body[data-page="detail"] .scout-v220-head{gap:7px}
+ body[data-page="detail"] .scout-v220-headline h2{font-size:25px}
+ body[data-page="detail"] .scout-v220-pp{width:75px;height:75px;border-radius:16px}
+ body[data-page="detail"] .scout-v220-pp strong{font-size:30px}
+ body[data-page="detail"] .scout-v220-tabs{margin-right:-11px}
+ body[data-page="detail"] .scout-v220-tab{min-height:46px;padding:9px 12px;max-width:145px}
+ body[data-page="detail"] .scout-v220-hero{padding:14px!important}
+ body[data-page="detail"] .scout-v220-training,
+ body[data-page="detail"] .scout-v220-recs,
+ body[data-page="detail"] .scout-v220-practice{padding:11px}
+ body[data-page="detail"] .scout-v220-focus{padding:11px}
+ body[data-page="detail"] .scout-v220-focus-heading>span{overflow-wrap:anywhere}
+}
+@media(prefers-reduced-motion:reduce){
+ body[data-page="detail"] .scout-v220-tab{transition:none!important}
+}
