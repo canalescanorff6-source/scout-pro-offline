@@ -39,6 +39,22 @@ assert.strictEqual(E.booster(confirmed,'posse',B,'vazio').able,true,'Slot confir
 assert.strictEqual(E.booster(confirmed,'posse',B,'ocupado').able,false,'Slot ocupado não é elegível');
 const check=E.evaluate({shown_position:'CA',native_skills:'One Touch Pass; First Time Shot; Double Touch'},'posse','Passe em profundidade; Controle com a sola');
 for(const name of ['onepass','firstshot','double','through','sole'])assert(!check.recommendations.some(x=>x.key===name),'Não repetir habilidade já equipada: '+name);
+const baseSkills=E.evaluate({shown_position:'CA',native_skills:'Heading'},'posse');
+const withFinishing=E.evaluate({shown_position:'CA',native_skills:'Heading; First-time Shot'},'posse');
+const points=(row,key)=>row.recommendations.concat(row.alternatives).find(x=>x.key===key)?.score??null;
+assert(points(withFinishing,'through')>points(baseSkills,'through'),'Finalização de primeira registrada altera critério consultivo de passe');
+assert(withFinishing.synergyDetected,'Informar que há complementaridade documental');
+assert(withFinishing.recommendations.every(x=>Array.isArray(x.synergies)),'Mostrar origem das heurísticas');
+const duplicateManual=E.evaluate({shown_position:'CA',native_skills:'Heading'},'posse',
+ 'Passe de primeira; One-touch Pass; Cabeceio');
+assert.equal(duplicateManual.alreadyEquippedProvided,1,'Aliases repetidos contam uma única adicional');
+assert.equal(duplicateManual.nativeManualConflicts.length,1,'Cabeceio não pode contar como adicional quando Heading é nativa');
+assert(duplicateManual.missing.some(x=>x.includes('nativas')),'Conflito precisa gerar aviso');
+const overFilled=E.evaluate({shown_position:'CA',native_skills:'Heading'},'posse',
+ 'Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola; Toque de calcanhar; Interceptação');
+assert.equal(overFilled.alreadyEquippedProvided,5);
+assert.equal(overFilled.manualReportedCount,6);
+assert.equal(overFilled.manualOverLimit,true,'Alertar cadastro com mais de 5 adicionais');
 assert.strictEqual(E.keyFor('Passe de primeira'),E.keyFor('One-touch Pass'),'Aliases PT-BR/EN');
 assert.strictEqual(E.keyFor('Finalização de primeira'),E.keyFor('First-time Shot'),'Aliases variantes');
 const unknownSlot=E.booster({shown_position:'CA',boost2:'PENDENTE',boost1:'Physicality +3'},'posse',B);
