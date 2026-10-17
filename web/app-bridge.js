@@ -37,12 +37,12 @@ const repo=String(window.SCOUT_GITHUB_REPO||'').trim();
 const scoutNativeAndroid=Boolean(window.Capacitor?.isNativePlatform?.() && window.Capacitor?.getPlatform?.()==='android');
 if(scoutNativeAndroid)document.body.classList.add('scout-native-android');
 const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribute('aria-label','Gerenciamento do Craque Tático');
-bar.innerHTML='<div><strong>CRAQUE TÁTICO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Scout PRO"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
+bar.innerHTML='<div><strong>CRAQUE TÁTICO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Craque Tático"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
 // V189: mesmo design e bundle responsivo em Android, Windows e navegador.
 const v189Root=inCard?'../':'';
-const craqueCss=document.createElement('link');craqueCss.rel='stylesheet';craqueCss.href=v189Root+'craque-theme-v226.css';document.head.appendChild(craqueCss);
+const craqueCss=document.createElement('link');craqueCss.rel='stylesheet';craqueCss.href=v189Root+'craque-theme-v226.css';setTimeout(()=>document.head.appendChild(craqueCss),0);
 const craqueScript=document.createElement('script');craqueScript.src=v189Root+'craque-backup-v226.js';document.head.appendChild(craqueScript);
 craqueScript.addEventListener('load',()=>{const ui=document.createElement('script');ui.src=v189Root+'craque-backup-ui-v226.js';document.head.appendChild(ui)});
 document.title=document.title.replace(/Scout PRO|SCOUT PRO/g,'Craque Tático');
