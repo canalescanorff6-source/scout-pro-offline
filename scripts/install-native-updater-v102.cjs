@@ -14,6 +14,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(ScoutUpdaterPlugin.class);
+        registerPlugin(ScoutRecorderPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }
@@ -21,6 +22,8 @@ public class MainActivity extends BridgeActivity {
 fs.writeFileSync(path.join(base,'MainActivity.java'),activity);
 fs.copyFileSync(path.join(root,'native/android/ScoutUpdaterPlugin.java'),path.join(base,'ScoutUpdaterPlugin.java'));
 fs.copyFileSync(path.join(root,'native/android/ScoutUpdateFileProvider.java'),path.join(base,'ScoutUpdateFileProvider.java'));
+fs.copyFileSync(path.join(root,'native/android/ScoutRecorderPlugin.java'),path.join(base,'ScoutRecorderPlugin.java'));
+fs.copyFileSync(path.join(root,'native/android/ScoutRecorderService.java'),path.join(base,'ScoutRecorderService.java'));
 const xml=path.join(android,'res/xml');fs.mkdirSync(xml,{recursive:true});
 fs.writeFileSync(path.join(xml,'scout_update_paths.xml'),
  `<?xml version="1.0" encoding="utf-8"?>
@@ -33,6 +36,17 @@ if(!manifest.includes('android.permission.INTERNET'))throw Error('Internet permi
 if(!manifest.includes('android.permission.REQUEST_INSTALL_PACKAGES')){
  manifest=manifest.replace(/(<application\b)/,
    '    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />\n\n    $1');
+}
+// V219: gravação de jogo só após autorização do sistema, sempre em foreground.
+for(const permission of ['android.permission.FOREGROUND_SERVICE','android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION']){
+ if(!manifest.includes(permission)){
+  manifest=manifest.replace(/(<application\b)/,
+   '    <uses-permission android:name="'+permission+'" />\n\n    $1');
+ }
+}
+if(!manifest.includes('ScoutRecorderService')){
+ manifest=manifest.replace('</application>',
+  '    <service android:name="'+app.appId+'.ScoutRecorderService" android:exported="false" android:foregroundServiceType="mediaProjection" />\n  </application>');
 }
 const PROVIDER_AUTHORITY=app.appId+'.scoutupdate.files';
 const PROVIDER_CLASS=app.appId+'.ScoutUpdateFileProvider';
@@ -50,6 +64,7 @@ if(!manifest.includes(PROVIDER_AUTHORITY)){
     </provider>
   </application>`);
 }
+if(!manifest.includes('FOREGROUND_SERVICE_MEDIA_PROJECTION')||!manifest.includes('ScoutRecorderService')||!manifest.includes('mediaProjection'))throw Error('V219 recorder service manifest incomplete');
 if(!manifest.includes('scout_update_paths')||!manifest.includes('REQUEST_INSTALL_PACKAGES')||!manifest.includes(PROVIDER_CLASS)||!manifest.includes(PROVIDER_AUTHORITY))
  throw Error('Native installer manifest incomplete or FileProvider authority mismatch');
 fs.writeFileSync(file,manifest);
