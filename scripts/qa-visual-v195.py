@@ -1040,6 +1040,11 @@ def run():
                 # V230: interface da logo e 5 estilos nas duas formações sem alterar histórico.
                 page.goto(URL + '/meu-time-duas-formacoes-v177.html',wait_until='domcontentloaded',timeout=35000)
                 page.locator('#ct-v230-tactic-tabs button').first.wait_for(timeout=25000)
+                page.wait_for_function("""() =>
+                    !!window.CRAQUE_FORMATION_UI_V230 &&
+                    document.querySelectorAll('#pitch button[data-slot]').length===11 &&
+                    document.querySelectorAll('#ct-v230-tactic-details .ct-v230-fit-row').length===11
+                """,timeout=25000)
                 if page.locator('#ct-v230-tactic-tabs button').count()!=5:
                     problems.append(f"{name}: V230 seletor dos cinco estilos na formação ausente")
                 page.locator('#ct-v230-tactic-tabs [data-mode="rapido"]').click()
