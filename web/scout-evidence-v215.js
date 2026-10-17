@@ -59,7 +59,7 @@ function display(doc,review){
  if(!target)return false;
  const panel=element(doc,'details','scout-v215-card');panel.id='scout-v215-evidence';
  panel.dataset.nativeOverlaps=String(review.clashes.length);
- panel.dataset.cardIdVerified='true';
+ panel.dataset.catalogCardIdMatch='true';
  panel.append(element(doc,'summary','','SCOUT PRO · Verificação individual V215'));
  const content=element(doc,'div','scout-v215-content');
  content.append(element(doc,'h3','',review.name+' · Carta #'+String(review.numero).padStart(3,'0')));
