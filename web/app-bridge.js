@@ -111,6 +111,13 @@ if(inCard){
  engine220.onload=()=>{const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';document.head.appendChild(ui220)};
  document.head.appendChild(engine220);
 }
+// V229: consolidar seis painéis legados em arquivo recolhido, sem mudar nenhuma carta.
+if(inCard){
+ const curatedCss=document.createElement('link');curatedCss.rel='stylesheet';
+ curatedCss.href=v189Root+'scout-card-curation-v229.css';document.head.appendChild(curatedCss);
+ const curatedJs=document.createElement('script');curatedJs.src=v189Root+'scout-card-curation-v229.js';
+ document.head.appendChild(curatedJs);
+}
 // V221: análise de evidências por número + Card ID + PP, sem aprovar builds automaticamente.
 if(inCard){
  const css221=document.createElement('link');css221.rel='stylesheet';css221.href=v189Root+'scout-evidence-review-v221.css';document.head.appendChild(css221);
