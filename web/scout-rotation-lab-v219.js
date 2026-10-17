@@ -14,7 +14,7 @@ function stored(key,fallback){
  try{const v=JSON.parse(localStorage.getItem(key)||'null');return v??fallback}catch(_e){return fallback}
 }
 function persist(key,value){
- try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_e){return false}
+ try{localStorage.setItem(key,JSON.stringify(value));document.dispatchEvent(new CustomEvent('craque:data-changed'));return true}catch(_e){return false}
 }
 // V225: cópia Android em SharedPreferences para recuperação sem nova seleção.
 function nativeRosterStore(){
@@ -208,7 +208,7 @@ function recompute(){
 function promptForTeam(team){
  const rows=team.starters.map(s=>{const c=getCard(s.cap);return s.role+': #'+s.cap+' '+c.name+' ('+c.estilo_ataque+'), '+s.fit});
  const bench=team.bench.map(b=>{const c=getCard(b.cap);return '#'+b.cap+' '+c.name});
- const desc='Analise o vídeo da partida do eFootball 2027 junto com esta escalação real do meu Scout PRO. '+
+ const desc='Analise o vídeo da partida do eFootball 2027 junto com esta escalação real do meu Craque Tático. '+
  'Identifique decisões, tabelas, passe curto, posicionamento, perdas de posse e erros táticos com minuto/segundo quando visíveis. '+
  'Avalie os jogadores individualmente somente quando eles aparecerem no vídeo; marque evidência incerta como não observada. '+
  'Não invente movimentos, estatísticas, IDs corporais ou jogadas. Sugira mudanças para Posse de Bola e compare com a 4-3-1-2 ou 4-2-1-3.\n'+
