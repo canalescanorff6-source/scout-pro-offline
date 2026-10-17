@@ -24,9 +24,15 @@ function parseIds(raw){
 function selected(){
  return sheets[active+'-'+cycle];
 }
-const rosterSignature=()=>excluded.slice().sort((a,b)=>a-b).join(',');
-function rosterLogs(teamId){
- return (gameLogs[teamId]||[]).filter(x=>x.rosterSignature===rosterSignature());
+const rosterSignature=team=>engine.rosterFingerprint(team,excluded,cards);
+function rosterLogs(team){
+ return (gameLogs[team.id]||[]).filter(x=>x.rosterSignature===rosterSignature(team));
+}
+function lineupSnapshot(team){
+ const identity=cap=>{const c=getCard(cap);return {numero:Number(cap),card_id:String(c?.id??''),edicao:String(c?.versao??'')};};
+ return {formation:team.formation,cycle,teamId:team.id,
+  starters:team.starters.map(s=>({slot:s.slot,...identity(s.cap)})),
+  bench:team.bench.map(b=>identity(b.cap))};
 }
 function photoStatus(){
  return excluded.length===22?(userReviewed?
@@ -111,9 +117,11 @@ function cardRow(cap,role,fit,slot){
   '</div><a href="'+esc(anchor)+'" aria-label="Abrir ficha de '+esc(c.name)+'">Ficha ↗</a></article>';
 }
 function metrics(team){
- const list=rosterLogs(team.id),win=list.filter(x=>x.result==='V').length,draw=list.filter(x=>x.result==='E').length,loss=list.filter(x=>x.result==='D').length;
+ const list=rosterLogs(team),win=list.filter(x=>x.result==='V').length,draw=list.filter(x=>x.result==='E').length,loss=list.filter(x=>x.result==='D').length;
  const gf=list.reduce((s,x)=>s+Number(x.goals||0),0),ga=list.reduce((s,x)=>s+Number(x.conceded||0),0);
- return list.length+' partidas · '+win+'V '+draw+'E '+loss+'D · '+gf+' gols pró / '+ga+' contra';
+ const history=(gameLogs[team.id]||[]).length-list.length;
+  return list.length+' partidas · '+win+'V '+draw+'E '+loss+'D · '+gf+' gols pró / '+ga+' contra'+
+   (history?' · '+history+' registro(s) de outro elenco preservados no JSON':'');
 }
 function teamHTML(team){
  return '<details class="scout-rotation-team" data-team="'+esc(team.id)+'"'+(opened===team.id?' open':'')+'>'+
@@ -142,7 +150,7 @@ function teamHTML(team){
  '<label class="wide">Nome do vídeo MP4 (opcional)<input name="video" type="text" maxlength="120" placeholder="Ex.: Partida_4312_01.mp4"></label>'+
  '<label class="wide">O que aconteceu em campo?<textarea name="notes" maxlength="1200" rows="3" placeholder="Ex.: SA recuou, gol após tabela, VOL perdeu a marcação…"></textarea></label>'+
  '<button class="scout-rotation-btn main" type="submit">Salvar partida neste dispositivo</button></form>'+
- '<p class="scout-rotation-subtext">'+rosterLogs(team.id).slice(-4).reverse().map(x=>esc(x.when+' · '+x.result+' '+x.goals+'–'+x.conceded+(x.video?' · '+x.video:''))).join('<br>')+'</p></section></div></details>';
+ '<p class="scout-rotation-subtext">'+rosterLogs(team).slice(-4).reverse().map(x=>esc(x.when+' · '+x.result+' '+x.goals+'–'+x.conceded+(x.video?' · '+x.video:''))).join('<br>')+'</p></section></div></details>';
 }
 function render(){
  diagnostics();
@@ -152,8 +160,10 @@ function render(){
   ev.preventDefault();const id=f.dataset.match,values=new FormData(f);
   const goals=Number(values.get('goals')),conceded=Number(values.get('conceded'));
   if(![goals,conceded].every(n=>Number.isInteger(n)&&n>=0&&n<=30))return;
+  const team=selected().teams.find(t=>t.id===id);if(!team)return;
   const list=gameLogs[id]||[];
-  list.push({when:new Date().toISOString(),rosterSignature:rosterSignature(),result:String(values.get('result')),
+  list.push({when:new Date().toISOString(),rosterSignature:rosterSignature(team),
+   lineupSnapshot:lineupSnapshot(team),result:String(values.get('result')),
    goals,conceded,video:String(values.get('video')||'').trim().slice(0,120),
    notes:String(values.get('notes')||'').trim().slice(0,1200)});
   gameLogs[id]=list.slice(-100);
@@ -173,7 +183,7 @@ function promptForTeam(team){
  'Avalie os jogadores individualmente somente quando eles aparecerem no vídeo; marque evidência incerta como não observada. '+
  'Não invente movimentos, estatísticas, IDs corporais ou jogadas. Sugira mudanças para Posse de Bola e compare com a 4-3-1-2 ou 4-2-1-3.\n'+
  'Equipe: '+team.name+'\nTitulares:\n'+rows.join('\n')+'\nReservas:\n'+bench.join('\n')+
- '\nObservações registradas:\n'+rosterLogs(team.id).map(x=>x.when+' '+x.result+' '+x.goals+'-'+x.conceded+' '+x.notes).join('\n');
+ '\nObservações registradas:\n'+rosterLogs(team).map(x=>x.when+' '+x.result+' '+x.goals+'-'+x.conceded+' '+x.notes).join('\n');
  return desc;
 }
 async function copyText(s){
