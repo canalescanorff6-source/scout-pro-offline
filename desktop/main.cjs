@@ -2,8 +2,14 @@
 const { app, BrowserWindow, ipcMain, dialog, shell, protocol, net } = require('electron');
 const path = require('path');
 const fs = require('node:fs/promises');
+const fsSync = require('node:fs');
 const {pathToFileURL} = require('url');
 const { autoUpdater } = require('electron-updater');
+// Preserve Windows localStorage when the displayed product name changes.
+const appDataBase=app.getPath('appData');
+const previousDataPaths=['Scout PRO','scout-pro-elite-offline'];
+const foundPrevious=previousDataPaths.map(name=>path.join(appDataBase,name)).find(p=>fsSync.existsSync(p));
+if(foundPrevious)app.setPath('userData',foundPrevious);
 protocol.registerSchemesAsPrivileged([{scheme:'scout',privileges:{standard:true,secure:true,supportFetchAPI:true,stream:true}}]);
 let win;
 const allowedSite = path.resolve(__dirname, '../web');
