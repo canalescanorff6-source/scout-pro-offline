@@ -4,9 +4,9 @@
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[x]));
-const engine=window.SCOUT_ROTATION_V219;
-const KEY_BLACK='scoutpro:v219:black-caps',KEY_MATCHES='scoutpro:v219:match-logs';
-let cards=[],byCap=new Map(),images=new Map(),formats=[],active='4312',cycle=1,sheets={},excluded=[],gameLogs={},opened=null;
+const engine=window.SCOUT_ROTATION_V219, restrictions=window.SCOUT_RESTRICT_V222;
+const KEY_BLACK='scoutpro:v219:black-caps',KEY_BLACK_REVIEW='scoutpro:v222:black-reviewed',KEY_MATCHES='scoutpro:v219:match-logs';
+let cards=[],byCap=new Map(),images=new Map(),formats=[],active='4312',cycle=1,sheets={},excluded=[],userReviewed=false,gameLogs={},opened=null;
 const status=(id,v)=>{const e=$(id);if(e)e.textContent=v};
 const len=x=>Array.isArray(x)?x.length:0;
 const getCard=cap=>byCap.get(Number(cap));
@@ -24,13 +24,69 @@ function parseIds(raw){
 function selected(){
  return sheets[active+'-'+cycle];
 }
+const rosterSignature=()=>excluded.slice().sort((a,b)=>a-b).join(',');
+function rosterLogs(teamId){
+ return (gameLogs[teamId]||[]).filter(x=>x.rosterSignature===rosterSignature());
+}
+function photoStatus(){
+ return excluded.length===22?(userReviewed?
+ '22 cartas bloqueadas nas duas formações. Conferência pessoal declarada; imagens não foram verificadas externamente.':
+ '22 cartas selecionadas. Confira cada edição nas fotos do Black antes de considerar o bloqueio definitivo.') :
+ 'PRÉVIA INCOMPLETA: '+excluded.length+' de 22 jogadores restritos. As equipes ainda podem incluir jogadores do mapeamento que não foram selecionados.';
+}
+function blackButtons() {
+ const state=excluded.length;
+ $('black-count').textContent=state+' / 22';
+ $('black-selected-count').textContent=state+' protegidas';
+ $('black-protected-label').textContent=state+' de 22';
+ const checkbox=$('black-reviewed');checkbox.disabled=state!==22;checkbox.checked=state===22&&userReviewed;
+}
+function imageFor(cap){
+ const src=String(images.get(cap)||'');
+ return src.startsWith('cartas/')&&!src.includes('..')?src:'';
+}
+function playerChoice(c,reserved){
+ const cap=Number(c.numero),src=imageFor(cap),id='#'+String(cap).padStart(3,'0');
+ return '<article class="scout-rotation-picker-card" data-pick-id="'+cap+'">'+
+ (src?'<img loading="lazy" src="'+esc(src)+'" alt="">':'<span class="scout-rotation-noart">'+id+'</span>')+
+ '<div class="scout-rotation-picker-meta"><strong>'+esc(c.name)+'</strong>'+
+ '<small>'+id+' · '+esc(c.posicao)+' · '+esc(c.estilo_ataque)+'</small>'+
+ '<small class="scout-rotation-edition">'+esc(c.versao||'Edição pendente')+'</small>'+
+ '<small class="scout-rotation-edition">Card ID: '+esc(c.id||'não cadastrado')+'</small></div>'+
+ '<button type="button" class="scout-rotation-btn '+(reserved?'unpick':'pick')+'" data-black-cap="'+cap+'" data-action="'+(reserved?'remove':'add')+'"'+(!reserved&&excluded.length>=22?' disabled':'')+
+ ' aria-label="'+(reserved?'Remover restrição':'Restringir carta')+' '+esc(c.name)+'">'+
+ (reserved?'Liberar':'Restringir')+'</button></article>';
+}
+function renderPicker(){
+ blackButtons();
+ const current=new Set(excluded),reserved=excluded.map(n=>getCard(n)).filter(Boolean);
+ $('black-reserved').innerHTML=reserved.length?
+ reserved.map(c=>playerChoice(c,true)).join(''):'<p class="scout-rotation-subtext">Nenhuma carta protegida. Busque as cartas da foto para excluí-las das duas formações.</p>';
+ const filterValue=$('black-position').value;
+ const query=$('black-search').value;
+ const matches=restrictions.filter(cards,query,filterValue,48);
+ $('black-candidate-count').textContent=matches.total+' cartas encontradas · mostrando '+matches.visible+' · selecione até 22.';
+ $('black-candidates').innerHTML=matches.items.map(c=>current.has(Number(c.numero))?
+ '<article class="scout-rotation-picker-card selected"><strong>'+esc(c.name)+'</strong><span class="scout-rotation-subtext">#'+String(c.numero).padStart(3,'0')+' protegida na lista acima</span></article>':
+ playerChoice(c,false)).join('')||'<p class="scout-rotation-subtext">Nenhuma carta encontrada. Remova os filtros para voltar ao catálogo.</p>';
+}
+function updateBlack(ids,{reviewed=false,message='Lista atualizada nas duas formações.'}={}){
+ const valid=restrictions.validateCaps(ids,cards);
+ excluded=valid;
+ userReviewed=valid.length===22&&reviewed===true;
+ persist(KEY_BLACK,valid);
+ persist(KEY_BLACK_REVIEW,{caps:valid,userReviewed});
+ $('black-input').value=valid.join(', ');
+ opened=null;
+ recompute();
+ renderPicker();
+ status('black-feedback',message+' '+photoStatus());
+}
 function inventory(){
  const a=engine.analyze(cards,excluded);
  status('black-count',a.excluded+' / 22');
  status('rotation-inventory',a.cards+' cartas reais · '+a.excluded+' reservadas · '+a.available+' disponíveis · '+a.maxTeams+' equipes completas possíveis por série · '+a.remaining+' cartas fora de equipes completas.');
- status('black-feedback',!a.listComplete?
-  'Prévia: a lista contém '+a.excluded+' cartas. Para tratar como mapeamento completo, confirme as 22 cartas pelas fotos do Black.':
-  '22 IDs catalogados na lista de exclusão. Confira os jogadores nas fotos: ainda não foi realizada validação visual externa.');
+ status('black-feedback',photoStatus());
 }
 function formatNumbers(arr){return arr.map(n=>'#'+String(n).padStart(3,'0')).join(', ')}
 function diagnostics(){
@@ -42,7 +98,7 @@ function diagnostics(){
   '<p>'+a.keepers+' goleiros elegíveis · '+(a.goalkeeperLimited?'NÚMERO LIMITADO PELOS GOLEIROS: não repetir goleiro entre equipes. ':'')+
   'Série '+esc(active)+' · Rodada '+cycle+': '+links+' equipes com requisitos documentais simultâneos de Link-Up (não confirma ativação no jogo) · '+caveats+' equipes com possíveis adaptações.'+
   (active==='4213'?' SA na posição original: '+nativeSA+' equipe(s).':'')+'</p>'+
-  (a.requiresBlackPhoto?'<p class="scout-rotation-caution">Os 22 jogadores do Black ainda não foram conferidos: lista provisória. Não use estes elencos como exclusão definitiva.</p>':'');
+  '<p class="scout-rotation-caution">'+esc(photoStatus())+'</p>';
 }
 function cardRow(cap,role,fit,slot){
  const c=getCard(cap);if(!c)return '';
@@ -55,7 +111,7 @@ function cardRow(cap,role,fit,slot){
   '</div><a href="'+esc(anchor)+'" aria-label="Abrir ficha de '+esc(c.name)+'">Ficha ↗</a></article>';
 }
 function metrics(team){
- const list=gameLogs[team.id]||[],win=list.filter(x=>x.result==='V').length,draw=list.filter(x=>x.result==='E').length,loss=list.filter(x=>x.result==='D').length;
+ const list=rosterLogs(team.id),win=list.filter(x=>x.result==='V').length,draw=list.filter(x=>x.result==='E').length,loss=list.filter(x=>x.result==='D').length;
  const gf=list.reduce((s,x)=>s+Number(x.goals||0),0),ga=list.reduce((s,x)=>s+Number(x.conceded||0),0);
  return list.length+' partidas · '+win+'V '+draw+'E '+loss+'D · '+gf+' gols pró / '+ga+' contra';
 }
@@ -86,7 +142,7 @@ function teamHTML(team){
  '<label class="wide">Nome do vídeo MP4 (opcional)<input name="video" type="text" maxlength="120" placeholder="Ex.: Partida_4312_01.mp4"></label>'+
  '<label class="wide">O que aconteceu em campo?<textarea name="notes" maxlength="1200" rows="3" placeholder="Ex.: SA recuou, gol após tabela, VOL perdeu a marcação…"></textarea></label>'+
  '<button class="scout-rotation-btn main" type="submit">Salvar partida neste dispositivo</button></form>'+
- '<p class="scout-rotation-subtext">'+(gameLogs[team.id]||[]).slice(-4).reverse().map(x=>esc(x.when+' · '+x.result+' '+x.goals+'–'+x.conceded+(x.video?' · '+x.video:''))).join('<br>')+'</p></section></div></details>';
+ '<p class="scout-rotation-subtext">'+rosterLogs(team.id).slice(-4).reverse().map(x=>esc(x.when+' · '+x.result+' '+x.goals+'–'+x.conceded+(x.video?' · '+x.video:''))).join('<br>')+'</p></section></div></details>';
 }
 function render(){
  diagnostics();
@@ -97,7 +153,7 @@ function render(){
   const goals=Number(values.get('goals')),conceded=Number(values.get('conceded'));
   if(![goals,conceded].every(n=>Number.isInteger(n)&&n>=0&&n<=30))return;
   const list=gameLogs[id]||[];
-  list.push({when:new Date().toISOString(),result:String(values.get('result')),
+  list.push({when:new Date().toISOString(),rosterSignature:rosterSignature(),result:String(values.get('result')),
    goals,conceded,video:String(values.get('video')||'').trim().slice(0,120),
    notes:String(values.get('notes')||'').trim().slice(0,1200)});
   gameLogs[id]=list.slice(-100);
@@ -117,7 +173,7 @@ function promptForTeam(team){
  'Avalie os jogadores individualmente somente quando eles aparecerem no vídeo; marque evidência incerta como não observada. '+
  'Não invente movimentos, estatísticas, IDs corporais ou jogadas. Sugira mudanças para Posse de Bola e compare com a 4-3-1-2 ou 4-2-1-3.\n'+
  'Equipe: '+team.name+'\nTitulares:\n'+rows.join('\n')+'\nReservas:\n'+bench.join('\n')+
- '\nObservações registradas:\n'+(gameLogs[team.id]||[]).map(x=>x.when+' '+x.result+' '+x.goals+'-'+x.conceded+' '+x.notes).join('\n');
+ '\nObservações registradas:\n'+rosterLogs(team.id).map(x=>x.when+' '+x.result+' '+x.goals+'-'+x.conceded+' '+x.notes).join('\n');
  return desc;
 }
 async function copyText(s){
@@ -160,7 +216,7 @@ async function initRecorder(){
  });
 }
 async function init(){
- if(!engine)throw Error('Motor de formações ausente no pacote offline');
+ if(!engine||!restrictions)throw Error('Motor de formações e restrições indisponível no pacote offline');
  const files=await Promise.all([
   fetch('SCOUT_V69_AUDITORIA.json').then(r=>{if(!r.ok)throw Error('Elenco offline ausente');return r.json()}),
   fetch('SCOUT_V177_DUAS_FORMACOES.json').then(r=>{if(!r.ok)throw Error('Tática não encontrada');return r.json()}),
@@ -171,20 +227,44 @@ async function init(){
  byCap=new Map(cards.map(c=>[Number(c.numero),c]));
  images=new Map(files[2].cartas.map(c=>[Number(c.numero),String(c.imagem||'')]));
  gameLogs=stored(KEY_MATCHES,{});
- excluded=stored(KEY_BLACK,[]);
- excluded=engine.analyze(cards,excluded).blocked;
+ const storedBlack=stored(KEY_BLACK,[]);
+ excluded=restrictions.validateCaps(Array.isArray(storedBlack)?storedBlack:[],cards);
+ const savedReview=stored(KEY_BLACK_REVIEW,{});
+ userReviewed=Boolean(savedReview?.userReviewed&&excluded.length===22&&
+  JSON.stringify(savedReview.caps)===JSON.stringify(excluded));
+ const positions=[...new Set(cards.map(c=>String(c.posicao||'')).filter(Boolean))].sort();
+ for(const position of positions){
+  const item=document.createElement('option');item.value=position;item.textContent=position;
+  $('black-position').append(item);
+ }
+ $('black-search').addEventListener('input',renderPicker);
+ $('black-position').addEventListener('change',renderPicker);
+ function pick(event){
+  const btn=event.target.closest('button[data-black-cap]');if(!btn)return;
+  const cap=Number(btn.dataset.blackCap),change=btn.dataset.action;
+  if(!byCap.has(cap))return;
+  const next=change==='remove'?excluded.filter(n=>n!==cap):[...excluded,cap];
+  try{updateBlack(next,{message:(change==='remove'?'Carta liberada: ':'Carta protegida: ')+
+   '#'+String(cap).padStart(3,'0')+'.'})}catch(e){status('black-feedback',String(e.message||e))}
+ }
+ $('black-candidates').addEventListener('click',pick);
+ $('black-reserved').addEventListener('click',pick);
+ $('black-reviewed').addEventListener('change',()=>{
+  if(excluded.length!==22){$('black-reviewed').checked=false;return}
+  userReviewed=$('black-reviewed').checked;
+  persist(KEY_BLACK_REVIEW,{caps:excluded.slice(),userReviewed});
+  inventory();diagnostics();
+ });
  $('black-input').value=excluded.join(', ');
  $('black-save').addEventListener('click',()=>{
   const input=parseIds($('black-input').value);
   if(input.invalid.length){status('black-feedback','Números não encontrados no catálogo: '+input.invalid.join(', '));return}
   if(input.ids.length>22){status('black-feedback','Limite: a formação enviada pelo Black contém 22 cartas. Confira os números e tente novamente.');return}
-  excluded=input.ids;persist(KEY_BLACK,excluded);
-  status('black-feedback','Excluídos '+excluded.length+' jogadores sem remover cartas originais.'+(input.duplicates?' Entradas repetidas ignoradas: '+input.duplicates+'.':''));
-  opened=null;recompute();
+  updateBlack(input.ids,{message:'Exclusões aplicadas sem apagar cartas.'+(input.duplicates?' Entradas repetidas ignoradas: '+input.duplicates+'.':'')});
  });
  $('black-clear').addEventListener('click',()=>{
   if(!confirm('Limpar apenas a lista local de exclusões? Isso não altera o catálogo original.'))return;
-  excluded=[];$('black-input').value='';persist(KEY_BLACK,excluded);opened=null;recompute();
+  updateBlack([],{message:'Lista de restrições limpa neste dispositivo.'});
  });
  document.querySelectorAll('button[data-series]').forEach(button=>button.addEventListener('click',()=>{
   active=button.dataset.series;opened=null;
@@ -197,9 +277,29 @@ async function init(){
   document.querySelectorAll('button[data-cycle]').forEach(b=>{const on=b===button;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on))});
   render();
  }));
+ $('black-export').addEventListener('click',()=>{
+  const file=restrictions.makeRecord(excluded,cards,userReviewed);
+  const blob=new Blob([JSON.stringify(file,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),anchor=document.createElement('a');
+  anchor.href=url;anchor.download='ScoutPRO-22-Jogadores-Black-V222.json';
+  document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
+  status('black-feedback','Lista de '+excluded.length+' bloqueios exportada; importe o JSON no outro dispositivo. '+photoStatus());
+ });
+ $('black-import').addEventListener('change',async event=>{
+  const file=event.target.files?.[0];if(!file)return;
+  try{
+   if(file.size>150000)throw Error('Arquivo muito grande para uma lista de 22 cartas');
+   const imported=restrictions.readRecord(JSON.parse(await file.text()),cards);
+   updateBlack(imported.excluded.map(x=>x.numero),{
+    reviewed:imported.userReviewed,
+    message:'Lista importada e conferida por número, nome e Card ID. Nenhuma carta original foi alterada.'
+   });
+  }catch(e){status('black-feedback','Importação recusada: '+String(e.message||e))}
+  finally{event.target.value=''}
+ });
  $('rotation-export').addEventListener('click',()=>{
   const d={schema:'SCOUT_MATCH_ANALYSIS_V219',updated:new Date().toISOString(),
-   excludedBlackCaps:excluded.slice(),blackVisualVerified:false,
+   excludedBlackCaps:excluded.slice(),blackUserReviewed:userReviewed,blackVisualVerified:false,
    originalRosterCards:cards.length,series:sheets,
    matches:gameLogs,note:'Análise e escalações exploratórias. Nenhum dado original alterado.'};
   const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
@@ -212,7 +312,7 @@ async function init(){
   const result=await copyText(promptForTeam(team));
   status('black-feedback',result?'Escalação copiada. Anexe o vídeo e cole o texto na conversa do ChatGPT.':'Texto disponível para cópia.');
  });
- recompute();await initRecorder();
+ recompute();renderPicker();await initRecorder();
 }
 init().catch(e=>{status('rotation-inventory','Não foi possível iniciar: '+(e.message||e));console.error(e)});
 })();

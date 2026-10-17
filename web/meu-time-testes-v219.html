@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="premium.css"><link rel="stylesheet" href="app-bridge.css">
 <link rel="stylesheet" href="scout-rotation-lab-v219.css">
 <script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script>
+<script defer src="scout-roster-restrictions-v222.js"></script>
 <script defer src="scout-rotation-engine-v219.js"></script>
 <script defer src="scout-rotation-lab-v219.js"></script><script defer src="pwa.js"></script>
 </head><body data-page="rotation-lab"><header class="scout-rotation-top"><a href="index.html"><img src="assets/scout-pro-icon-premium-original.png" alt="">SCOUT PRO</a><span>ELENCOS · LABORATÓRIO</span></header>
@@ -12,9 +13,33 @@
 <div class="scout-rotation-trust" id="rotation-inventory" role="status">Carregando 246 cartas…</div></section>
 <section class="scout-rotation-panel" aria-labelledby="black-heading"><div class="scout-rotation-title"><h2 id="black-heading">01 · Jogadores reservados do Black</h2><span id="black-count">0 / 22</span></div>
 <p>Envie as fotos do Black aqui na conversa para validar as identidades e Card IDs. Por enquanto, você pode digitar o <strong>número do catálogo</strong> de cada uma das 22 cartas. Elas ficam proibidas nas séries de teste, mas nenhuma carta será apagada do projeto.</p>
+<div class="scout-rotation-picker">
+  <div class="scout-rotation-picker-head">
+    <div><strong>Escolha as cartas visualmente</strong><p>Toque em <b>Restringir</b> na carta correta. Cada escolha vale para as duas formações, titulares e reservas, nas duas rodadas.</p></div>
+    <span class="scout-rotation-pill" id="black-selected-count">0 protegidas</span>
+  </div>
+  <div class="scout-rotation-pick-controls">
+    <label for="black-search">Buscar nome, edição ou nº da carta<input id="black-search" type="search" autocomplete="off" spellcheck="false" placeholder="Ex.: Shevchenko, 039, Orquestrador"></label>
+    <label for="black-position">Filtrar posição<select id="black-position"><option value="">Todas as posições</option></select></label>
+  </div>
+  <div id="black-candidate-count" class="scout-rotation-subtext" aria-live="polite">Carregando cartas…</div>
+  <div id="black-candidates" class="scout-rotation-picker-list" aria-label="Cartas disponíveis para restringir"></div>
+  <div class="scout-rotation-picked-heading">Cartas protegidas da escalação do Black <span id="black-protected-label">0 de 22</span></div>
+  <div id="black-reserved" class="scout-rotation-picked" aria-label="Jogadores excluídos das duas formações"></div>
+</div>
+<details class="scout-rotation-quick-paste"><summary>Opcional: colar números das 22 cartas de uma vez</summary>
 <label for="black-input">Números das cartas (#), separados por espaço ou vírgula</label>
-<textarea id="black-input" rows="3" spellcheck="false" placeholder="Ex.: 011, 039, 106, 143… (apenas números confirmados no catálogo)"></textarea>
-<div class="scout-rotation-actions"><button id="black-save" type="button" class="scout-rotation-btn main">Aplicar exclusões e gerar equipes</button><button id="black-clear" type="button" class="scout-rotation-btn">Limpar lista</button></div>
+<textarea id="black-input" rows="3" spellcheck="false" placeholder="Ex.: 011, 039, 106, 143… (somente os números das cartas conferidas)"></textarea></details>
+<label class="scout-rotation-review-label" for="black-reviewed"><input id="black-reviewed" type="checkbox" disabled> Conferi pessoalmente as 22 cartas nas imagens da escalação do Black (declaração pessoal, não verificação externa).</label>
+<div class="scout-rotation-actions">
+  <button id="black-save" type="button" class="scout-rotation-btn main">Aplicar números colados</button>
+  <button id="black-clear" type="button" class="scout-rotation-btn">Limpar lista</button>
+  <button id="black-export" type="button" class="scout-rotation-btn">Exportar meus 22 bloqueios (.json)</button>
+</div>
+<label for="black-import">Importar lista de bloqueios de outro dispositivo (.json)
+  <input id="black-import" type="file" accept=".json,application/json" aria-label="Escolher lista Scout PRO de bloqueios para importar">
+</label>
+<p class="scout-rotation-subtext">Os bloqueios ficam salvos neste dispositivo. Para usar a mesma lista no Android e no Windows, exporte o arquivo JSON aqui e importe-o no outro app. A importação confere os números e os Card IDs, sem alterar as cartas.</p>
 <p id="black-feedback" class="scout-rotation-feedback" role="status">A lista ainda não foi validada pelos prints.</p></section>
 <section class="scout-rotation-panel" aria-labelledby="series-heading"><h2 id="series-heading">02 · Séries de testes por formação</h2><p>O mesmo conjunto disponível pode ser testado nas duas táticas. <strong>Nenhuma carta se repete entre equipes de uma mesma série.</strong></p>
 <div role="group" aria-label="Escolher série" class="scout-rotation-actions"><button type="button" class="scout-rotation-btn selected" data-series="4312" aria-pressed="true">4-3-1-2 · Dois VOL</button><button type="button" class="scout-rotation-btn" data-series="4213" aria-pressed="false">4-2-1-3 · Dois CA + SA</button></div>
