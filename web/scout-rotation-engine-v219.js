@@ -1,11 +1,11 @@
 /* SCOUT PRO V219 — rodízio de testes: nenhuma carta repetida dentro de cada bateria.
  * Evidência documental da versão, NUNCA Overall, jogador inventado ou proficiência presumida.
- * Até a foto do Black ser conferida, a lista de 22 fica vazia e a grade é uma PRÉVIA.
+ * Até a foto do Black ser conferida, a lista de 23 fica vazia e a grade é uma PRÉVIA.
  */
 (function(host){
 'use strict';
 const ALIASES=Object.freeze({AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DC:'ZG',ZC:'ZG',ZG:'ZG',DD:'LD',LD:'LD',DE:'LE',LE:'LE',GR:'GO',GO:'GO',PTD:'PTD',PTE:'PTE',MLD:'MLD',MLE:'MLE'});
-const BENCH_SIZE=11,START_SIZE=11,SQUAD_SIZE=22;
+const BENCH_SIZE=12,START_SIZE=11,SQUAD_SIZE=23;
 const NAMES=Object.freeze(['Âncora','Circuito','Magnetismo','Diamante','Labirinto','Triângulo','Cadência','Prisma','Vértice','Controle','Ritmo','Precisão','Sutileza','Visão','Pressão']);
 function norm(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
 function position(card){return ALIASES[String(card?.posicao||'').toUpperCase()]||null}
@@ -28,7 +28,7 @@ function suitability(card,slot){
   ZG:['VOL','LD','LE'],LD:['LE','ZG','MLD','PTD'],LE:['LD','ZG','MLE','PTE']
  };
  return nearby[want]?.includes(have)?{score:37,kind:'adaptação não confirmada'}:
-  {score:6,kind:'fora da posição original'};
+  {score:-100,kind:'posição não compatível documentada'};
 }
 function styleFor(card){return norm(String(card.estilo_ataque||'')+' '+String(card.estilo_defesa||''))}
 function evidenceScore(card,slot){
@@ -67,7 +67,7 @@ function analyze(cards,excluded){
  return {cards:cards.length,excluded:blocked.size,available:available.length,keepers,
   maxTeams,remaining:available.length-maxTeams*SQUAD_SIZE,
   totalFullByQuantity:sizeLimit,goalkeeperLimited:keepers<sizeLimit,
-  requiresBlackPhoto:true,listComplete:blocked.size===22,
+  requiresBlackPhoto:true,listComplete:blocked.size===23,
   blocked:[...blocked].sort((a,b)=>a-b)};
 }
 // Vincula cada partida à composição realmente utilizada; não reaproveita resultados após mudar a escalação.
@@ -89,7 +89,9 @@ function build(cards,formation,excluded,cycle=1){
  if(!formation||!['4312','4213'].includes(formation.id)||!Array.isArray(formation.starters)||formation.starters.length!==START_SIZE)throw Error('Formação não reconhecida');
  const stat=analyze(cards,excluded);
  if(![1,2].includes(Number(cycle)))throw Error('Rodada de teste inválida');
- const filtered=cards.filter(c=>!new Set(stat.blocked).has(Number(c.numero)));
+ const blocked=new Set(stat.blocked);
+ const filtered=cards.filter(c=>!blocked.has(Number(c.numero)));
+ const expectedTotal=stat.available;
  const count=stat.maxTeams;
  const entries=Array.from({length:count},(_,i)=>({
   id:formation.id+'-r'+cycle+'-'+String(i+1).padStart(2,'0'),
@@ -174,11 +176,18 @@ function build(cards,formation,excluded,cycle=1){
   if(!team.linkup.documentaryMatch)team.warnings.push('Link-Up não atende a todos os requisitos documentais: não afirmar que o bônus está ativo.');
   team.ready=team.starters.length===START_SIZE&&team.bench.length===BENCH_SIZE&&
     team.starters.some(s=>s.slot==='go'&&s.fit==='posição original');
+  team.positionallyConfirmed=team.starters.length===START_SIZE&&
+    team.starters.every(s=>s.fit==='posição original');
+  team.requiresPositionReview=team.starters.some(s=>s.fit!=='posição original');
+  if(team.requiresPositionReview)team.warnings.push('ADAPTAÇÃO PROVISÓRIA: confirmar posição utilizável no jogo antes de testar esta escalação.');
+  if(!team.ready)team.warnings.push('Equipe incompleta: conferir disponibilidade de posição/GO; não reutilizar outras cartas desta rodada.');
+
  }
  const usedInAll=new Set(entries.flatMap(e=>[...e.starters.map(s=>s.cap),...e.bench.map(b=>b.cap)]));
  if(usedInAll.size!==entries.reduce((sum,t)=>sum+t.starters.length+t.bench.length,0))throw Error('Uma carta aparece em mais de uma equipe da mesma série');
+ if(usedInAll.size+left.length!==expectedTotal||left.some(n=>usedInAll.has(n)))throw Error('Cobertura de cartas inconsistente na rodada');
  return {schema:'SCOUT_ROTATION_V219',formation:formation.id,cycle:Number(cycle),teams:entries,leftovers:left,counts:stat,
-  rules:'Nenhuma carta repetida nesta série. Adaptabilidade/ativação não confirmadas. Não usar Overall.',
+  rules:'23 cartas por equipe: 11 titulares e 12 reservas. Sem repetição entre equipes da mesma formação/rodada. Adaptação não prova compatibilidade. Sem Overall.',
   source:'SCOUT_V69_AUDITORIA.json',
   exactBlackMappingConfirmed:false};
 }
