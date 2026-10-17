@@ -46,6 +46,10 @@ tampered.excluded[0].card_id='id-inventado';
 assert.throws(()=>R.readRecord(tampered,cards),/divergente/i,'Importação protege a versão exata');
 const tamperedName=structuredClone(record);tamperedName.excluded[0].nome='jogador inventado';
 assert.throws(()=>R.readRecord(tamperedName,cards),/divergente/i);
+const tamperedEdition=structuredClone(record);tamperedEdition.excluded[0].edicao='Outra edição';
+assert.throws(()=>R.readRecord(tamperedEdition,cards),/divergente/i,'Importação rejeita edição incorreta');
+const tamperedPosition=structuredClone(record);tamperedPosition.excluded[0].posicao='OUTRA';
+assert.throws(()=>R.readRecord(tamperedPosition,cards),/divergente/i,'Importação rejeita posição de outra versão');
 const badProof=structuredClone(record);badProof.externalPhotoVerified=true;
 assert.throws(()=>R.readRecord(badProof,cards),/não realizada/i);
 const dupe=structuredClone(record);dupe.excluded[1]=structuredClone(dupe.excluded[0]);
@@ -94,6 +98,16 @@ for(const formation of plan.formations){
  assert.equal(new Set(numbers).size,numbers.length);
  assert(numbers.every(n=>!mixed.includes(n)));
 }
+const first=engine.build(cards,plan.formations[0],excluded,1).teams[0];
+const sig=engine.rosterFingerprint(first,excluded);
+assert(sig.includes('SCOUT_ROSTER_SIGNATURE_V223'));
+assert.equal(sig,engine.rosterFingerprint(first,excluded.slice().reverse()),'Ordem dos bloqueios não altera histórico');
+const another=structuredClone(first);another.bench[0].cap=999;
+assert.notEqual(sig,engine.rosterFingerprint(another,excluded),'Alterar uma reserva muda a identidade do elenco');
+const anotherStarter=structuredClone(first);anotherStarter.starters[0].cap=999;
+assert.notEqual(sig,engine.rosterFingerprint(anotherStarter,excluded),'Alterar um titular muda a identidade do elenco');
+assert.notEqual(sig,engine.rosterFingerprint(first,excluded.slice(1)),'Alterar restrições muda a identidade do experimento');
+assert.throws(()=>engine.rosterFingerprint({}),/inválida/);
 const ui=read('web/scout-rotation-lab-v219.js');
 const html=read('web/meu-time-testes-v219.html');
 const css=read('web/scout-rotation-lab-v219.css');
@@ -104,6 +118,8 @@ assert(html.indexOf('scout-roster-restrictions-v222.js')<html.indexOf('scout-rot
 assert(ui.includes("restrictions.validateCaps")&&ui.includes("restrictions.makeRecord")&&ui.includes("restrictions.readRecord"));
 assert(ui.includes("data-black-cap")&&ui.includes("updateBlack")&&ui.includes('renderPicker'));
 assert(ui.includes("rosterSignature")&&ui.includes("rosterLogs"),'Resultados de partidas antigas não podem ser atribuídos a novos elencos após mudar exclusões');
+assert(ui.includes("lineupSnapshot:lineupSnapshot(team)"),'Partidas devem gravar composição exata dos 22 jogadores');
+assert(ui.includes("engine.rosterFingerprint(team,excluded)"),'Histórico precisa incluir titulares, banco e bloqueios');
 assert(ui.includes("JSON.stringify(savedReview.caps)===JSON.stringify(excluded)"),'Verificação pessoal atrelada exatamente aos números conferidos');
 assert(ui.includes("blackVisualVerified:false"),'Não afirmar foto externa confirmada em relatórios');
 assert(css.includes('@media(max-width:420px)'),'Seletor cabe no celular');
