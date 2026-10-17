@@ -53,3 +53,18 @@ button:not(:disabled):active{transform:scale(.975)}
  #scout-backup-modal{width:94%;padding:17px}
 }
 @media(max-width:350px){.craque-lab-shortcuts{grid-template-columns:1fr}}
+
+.craque-team-jump{display:flex;gap:9px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding:12px 1px;margin:12px 0 17px}
+.craque-team-jump button{min-width:44px;min-height:44px;border-radius:12px;font-weight:900}
+.scout-rotation-team{scroll-margin-top:105px}
+#lab-restricoes,#lab-formacoes,#lab-videos,#lab-protecao{scroll-margin-top:110px}
+.scout-rotation-hero h1{background:linear-gradient(120deg,#fff8dc,#ffd36a 46%,#b5eec8);-webkit-background-clip:text;background-clip:text;color:transparent}
+#craque-lab-snapshot{margin-bottom:20px}
+.scout-rotation-team summary small{line-height:1.5}
+@media(max-width:520px){
+ .scout-rotation-top{padding:12px!important}
+ .scout-rotation-actions{gap:8px}
+ .scout-rotation-actions button{min-height:44px}
+ .scout-rotation-field-spot strong{font-size:10px!important}
+ .craque-team-jump{gap:7px}
+}
