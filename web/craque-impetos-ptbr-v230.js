@@ -52,7 +52,22 @@ function label(name){const key=keyFor(name);return key?NAMES[key][0]:String(name
 function isOfficial(name){const key=keyFor(name);return Boolean(key&&NAMES[key][1]);}
 const escape=s=>s.split('').map(c=>'.*+?^$()[]{}|\\'.includes(c)?'\\'+c:c).join('');
 const pattern=new RegExp('(^|[^A-Za-zÀ-ÿ0-9])('+all.map(escape).join('|')+')(?=$|[^A-Za-zÀ-ÿ0-9])','gi');
-function translate(value){return String(value??'').replace(pattern,(_match,prefix,middle)=>prefix+label(middle));}
+const SKILL_PHRASES=Object.freeze([
+ 'Through Passing','Weighted Pass','Low Lofted Pass','One-touch Pass',
+ 'Long-Range Shooting','Long-range Shooting','Long-Range Curler','Long-range Curler',
+ 'Pinpoint Crossing','Early Cross','Counter Target','Defensive Awareness',
+ 'Offensive Awareness','GK Low Punt','GK High Punt','Fighting Spirit'
+]);
+const skillPattern=new RegExp(SKILL_PHRASES.map(escape).join('|'),'gi');
+function translate(value){
+ const raw=String(value??''),protectedSkills=[];
+ const masked=raw.replace(skillPattern,match=>{
+  const i=protectedSkills.push(match)-1;
+  return '\\uE010'+i+'\\uE011';
+ });
+ const updated=masked.replace(pattern,(_match,prefix,middle)=>prefix+label(middle));
+ return updated.replace(/\\uE010(\\d+)\\uE011/g,(_,id)=>protectedSkills[Number(id)]||'');
+}
 const SKIP='script,style,noscript,textarea,input,pre,code,svg,math,[contenteditable="true"]';
 function excluded(node){
  const parent=node?.parentElement;
