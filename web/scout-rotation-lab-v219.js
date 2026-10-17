@@ -24,14 +24,15 @@ function parseIds(raw){
 function selected(){
  return sheets[active+'-'+cycle];
 }
-const rosterSignature=team=>engine.rosterFingerprint(team,excluded);
+const rosterSignature=team=>engine.rosterFingerprint(team,excluded,cards);
 function rosterLogs(team){
  return (gameLogs[team.id]||[]).filter(x=>x.rosterSignature===rosterSignature(team));
 }
 function lineupSnapshot(team){
+ const identity=cap=>{const c=getCard(cap);return {numero:Number(cap),card_id:String(c?.id??''),edicao:String(c?.versao??'')};};
  return {formation:team.formation,cycle,teamId:team.id,
-  starters:team.starters.map(s=>({slot:s.slot,cap:s.cap})),
-  bench:team.bench.map(b=>b.cap)};
+  starters:team.starters.map(s=>({slot:s.slot,...identity(s.cap)})),
+  bench:team.bench.map(b=>identity(b.cap))};
 }
 function photoStatus(){
  return excluded.length===22?(userReviewed?
