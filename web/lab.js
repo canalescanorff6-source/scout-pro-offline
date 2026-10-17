@@ -190,6 +190,10 @@ function render(){
  $('lab-flag').textContent=d.pp===null?'Pendente':remaining<0?'PP excedidos':(active==='prévia experimental'||active==='prévia de cenário')&&d.pp>0?'PP corretos · testar em campo':remaining===0?'Distribuição válida':'PP não alocados';
  $('lab-flag').className=d.pp===null?'':remaining<0?'bad':remaining===0?'ok':'';
  document.querySelectorAll('.lab-preset').forEach(b=>b.classList.toggle('active',active===b.dataset.load));
+ // V218: a tabela principal utiliza o mesmo rascunho local que o Laboratório.
+ window.dispatchEvent(new CustomEvent('scoutpro:lab-changed-v218',{detail:{
+  cap:cardCap,card_id:String(d.id),levels:current.slice(),scenario:active,pp:d.pp
+ }}));
  if(!Object.keys(d.stats||{}).length){status.innerHTML='<h3>Atributos finais: pendentes</h3><p>Sem a base numérica da versão exata, não há como demonstrar os efeitos do treino nos atributos com segurança. Use os PP como hipótese e confirme a tela da carta antes de redefinir a progressão.</p>';return}
  const numeric=Object.entries(d.stats).map(([name,ref])=>({name,value:ref.base+current[GROUP[name]??0]+ref.boost+ref.mgr,reference:ref,level:current[GROUP[name]??0]}));
  status.innerHTML='<h3>Subtotais previstos — cenário '+safe(active)+'</h3><p>Base cadastrada + treino ajustado + ímpetos fixos documentados + bônus direto do técnico. Não inclui todos os efeitos de proficiência/condição do jogo.</p><div class="lab-stat-grid">'+numeric.map(x=>'<div class="lab-stat"><small>'+safe(x.name)+'</small><b>'+x.value+'</b><em>base '+x.reference.base+' + treino '+x.level+' + ímpetos '+x.reference.boost+' + técnico '+x.reference.mgr+'</em><span class="'+(x.value>=90?'':'review')+'">'+(x.value>=95?'Referência 95+':x.value>=90?'Referência 90+':x.value>=85?'Referência 85+':'Abaixo de 85')+'</span></div>').join('')+'</div>';
@@ -208,6 +212,20 @@ const historyKey='scoutpro:v67:test:'+d.id+':'+d.card;
 let history=[];try{history=JSON.parse(localStorage.getItem(historyKey)||'[]')}catch(e){}
 function showHistory(){$('lab-history').innerHTML=history.slice(-5).reverse().map(x=>'<div class="lab-history-item"><b>'+safe(x.result)+'</b> · '+safe(x.when)+' · '+safe(x.plan)+' · '+x.goals+' '+safe(d.measureName.toLowerCase())+'<br>'+safe(x.note)+'</div>').join('')||'<p>Nenhuma partida registrada neste navegador.</p>'}
 $('lab-save').addEventListener('click',()=>{const obs=$('lab-note').value.trim().slice(0,400),goals=Math.min(20,Math.max(0,Number($('lab-goals').value)||0));history.push({when:new Date().toLocaleDateString('pt-BR'),result:$('lab-result').value,goals,plan:active,note:obs});history=history.slice(-30);try{localStorage.setItem(historyKey,JSON.stringify(history))}catch(e){}$('lab-note').value='';showHistory()});
+window.addEventListener('scoutpro:training-edit-v218',e=>{
+ const info=e.detail||{};
+ if(Number(info.cap)!==cardCap||String(info.card_id)!==String(d.id))return;
+ if(info.mode==='restore'){
+  try{localStorage.removeItem(storageKey)}catch(_e){}
+  const recorded=previewValid(d[d.recommended])?d[d.recommended]:previewValid(d.A)?d.A:null;
+  current=recorded?recorded.slice():Array(10).fill(0);
+  active=recorded?(d.recommended||'A'):'prévia experimental';
+  render();return;
+ }
+ if(!previewValid(info.levels)||d.pp===null||total(info.levels)>d.pp)return;
+ current=info.levels.slice();active='personalizado';
+ persist();render();
+});
 window.addEventListener('scoutpro:training-load-v160',e=>{
  if(e.detail?.cap!==cardCap||!previewValid(e.detail.levels)||previewCost(e.detail.levels)!==d.pp)return;
  current=e.detail.levels.slice();active='prévia de cenário';render();
