@@ -24,10 +24,18 @@ const profileOf=card=>({
  pp:card.pp,niveis:null
 });
 function sourceSignature(card){
- return JSON.stringify([
+ const serialized=JSON.stringify([
   card.name,card.cardId,card.edition,card.position,card.style,card.pp,
   card.nativeSkills,card.skills,card.booster,card.fixedBooster,card.boosterSlot,card.trainingLevels
  ]);
+ // Marca de atualização, NÃO assinatura de segurança (backup usa SHA-256).
+ let h=2166136261>>>0,j=0x9e3779b9>>>0;
+ for(let i=0;i<serialized.length;i++){
+  const n=serialized.charCodeAt(i);
+  h=Math.imul(h^n,16777619)>>>0;
+  j=Math.imul(j+n,2246822519)>>>0;
+ }
+ return 'v228:'+serialized.length.toString(36)+':'+h.toString(16)+':'+j.toString(16);
 }
 function parseBaseline(card,t){
  const raw=String(card.trainingLevels||'').trim();
