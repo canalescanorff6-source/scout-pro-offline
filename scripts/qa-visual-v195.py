@@ -1010,6 +1010,55 @@ def run():
                 page.locator("#friend-dialog-save").click()
                 if page.locator("#friend-cards .friends-card").count()!=1:
                     problems.append(f"{name}: V227 falha ao cadastrar carta de outra pessoa")
+
+                # V228: nova carta sem PP exibe pendência, nunca níveis inventados.
+                page.locator('#friend-cards .friends-analysis-action').click()
+                if not page.locator('#friend-analysis-content').inner_text().count('Treino ainda não calculável'):
+                    problems.append(f"{name}: V228 ficha sem PP inventou treino")
+                if page.locator('#friend-analysis-modes button').count()!=5:
+                    problems.append(f"{name}: V228 faltam estilos táticos de técnico")
+                page.locator('#friend-analysis-close').click()
+                # Registrar somente informações fornecidas pelo dono da carta.
+                page.locator('#friend-cards .friends-actions button').filter(has_text='Editar').click()
+                page.locator('#friend-card-pp').fill('62')
+                page.locator('#friend-card-native').fill('Passe de primeira; Toque duplo')
+                page.locator('#friend-card-skills').fill('Passe em profundidade')
+                page.locator('#friend-card-fixed-booster').fill('Technique')
+                page.locator('#friend-card-booster-slot').select_option('vazio')
+                page.locator('#friend-dialog-save').click()
+                page.locator('#friend-cards .friends-analysis-action').click()
+                if page.locator('#friend-analysis-table tbody tr').count()!=10:
+                    problems.append(f"{name}: V228 não mostrou 10 grupos de treino")
+                for tactic in ['posse','normal','rapido','fora','longo']:
+                    page.locator(f'#friend-analysis-modes button[data-style="{tactic}"]').click()
+                    if page.locator('#friend-analysis-table tbody tr').count()!=10:
+                        problems.append(f"{name}: V228 tabela ausente para {tactic}")
+                    if not page.locator('.friend-analysis-pp').inner_text().count('62'):
+                        problems.append(f"{name}: V228 PP incorreto no modo {tactic}")
+                if name in ('mobile_390','windows_1366'):
+                    with page.expect_download(timeout=12000) as sheet_wait:
+                        page.locator('#friend-analysis-export').click()
+                    sheet=json.loads(Path(sheet_wait.value.path()).read_text(encoding='utf8'))
+                    if (sheet.get('format')!='craque-friend-training-v228' or
+                        len(sheet.get('styles',{}))!=5 or
+                        sheet['styles']['posse']['training']['pp']!=62):
+                        problems.append(f"{name}: V228 exportação de fichas táticas incompleta")
+                page.locator('#friend-analysis-close').click()
+                saved=page.evaluate("""() => {
+                  const items=JSON.parse(localStorage.getItem('scoutpro:v227:friends-collections')).cards;
+                  const ana=items.find(x=>x.edition==='Épico de Ana');
+                  return {version:ana?.analysis?.version,
+                    profiles:Object.keys(ana?.analysis?.profiles||{}),
+                    posse:ana?.analysis?.profiles?.posse?.pp,
+                    source:ana?.analysis?.source,
+                    native:ana?.nativeSkills,
+                    boosters:ana?.boosterSlot}
+                }""")
+                if (saved['version']!=228 or len(saved['profiles'])!=5 or
+                    saved['posse']!=62 or saved['boosters']!='vazio' or
+                    'Passe de primeira' not in saved['native']):
+                    problems.append(f"{name}: V228 ficha automática não persistiu {saved}")
+
                 page.locator("#friend-person-name").fill("Acervo do Bruno")
                 page.locator("#friend-person-form button[type=submit]").click()
                 if page.locator("#friend-cards .friends-card").count()!=0:
