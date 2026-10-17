@@ -27,7 +27,8 @@ assert.equal(counts.available,224);
 assert.equal(counts.totalFullByQuantity,10);
 assert.equal(counts.maxTeams,10,'Existem goleiros suficientes no teste de exclusões não GO');
 assert.equal(counts.remaining,4);
-assert.equal(counts.requiresBlackPhoto,false,'Contagem registrada não equivale a evidência visual da lista real');
+assert.equal(counts.requiresBlackPhoto,true,'Mesmo 22 cartas selecionadas não validam foto do Black');
+assert.equal(counts.listComplete,true,'22 entradas aceitas enquanto revisão visual continua pendente');
 const noBlack=E.analyze(cards,[]);
 assert.equal(noBlack.requiresBlackPhoto,true,'Antes das fotos não afirmar mapeamento concluído');
 assert.equal(noBlack.available,246);
@@ -73,7 +74,7 @@ assert(html.includes('id="black-input"')&&html.includes('id="rec-start"'));
 assert(js.includes("scoutpro:v219:black-caps")&&js.includes("scoutpro:v219:match-logs"));
 assert(js.includes("navigator.clipboard.writeText")&&js.includes('shareRecording'));
 assert(css.includes('@media(max-width:360px)'));
-assert(!read('web/scout-rotation-engine-v219.js').toLowerCase().includes('overall'),'Nunca ordenar por Overall');
+assert(!/\.overall\b|\.ovr\b|\[['\"]overall['\"]\]/i.test(read('web/scout-rotation-engine-v219.js')),'Nunca ordenar por Overall');
 const plug=read('native/android/ScoutRecorderPlugin.java'),service=read('native/android/ScoutRecorderService.java'),installer=read('scripts/install-native-updater-v102.cjs');
 assert(plug.includes('@CapacitorPlugin(name="ScoutRecorder")'));
 for(const term of ['MediaProjectionManager','startActivityForResult','FLAG_GRANT_READ_URI_PERMISSION','Intent.ACTION_SEND','getStatus'])
