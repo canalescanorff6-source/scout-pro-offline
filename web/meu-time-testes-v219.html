@@ -5,10 +5,11 @@
 <link rel="stylesheet" href="scout-rotation-lab-v219.css">
 <script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script>
 <script defer src="scout-roster-restrictions-v222.js"></script>
+<script defer src="craque-tactics-v230.js"></script>
 <script defer src="scout-rotation-engine-v219.js"></script>
 <script defer src="scout-rotation-lab-v219.js"></script><script defer src="pwa.js"></script>
 </head><body data-page="rotation-lab"><header class="scout-rotation-top"><a href="index.html"><img src="assets/craque-tatico-icon.svg" alt="">CRAQUE TÁTICO</a><span>ELENCOS · LABORATÓRIO</span></header>
-<main class="scout-rotation-wrap"><section class="scout-rotation-hero"><div class="scout-rotation-eyebrow">POSSE DE BOLA · TESTE DE TODAS AS CARTAS</div>
+<main class="scout-rotation-wrap"><section class="scout-rotation-hero"><div class="scout-rotation-eyebrow">CINCO ESTILOS · TESTE DE TODAS AS CARTAS</div>
 <h1>Laboratório de escalações</h1><p>Restringa as 23 cartas do mapeamento do Black e teste até 223 cartas em cada série. Com 11 titulares e 12 reservas, serão 9 elencos completos por formação e 16 cartas para a segunda rodada, desde que haja goleiros e posições elegíveis. Todas as escolhas são experimentais; o programa não inventa familiaridade de posição nem ativa Link-Up.</p>
 <nav class="scout-rotation-page-shortcuts" aria-label="Atalhos do laboratório"><a href="#black-heading">23 restrições</a><a href="#series-heading">Duas formações</a><a href="#video-heading">Gravação e partidas</a><a href="#craque-backup-panel">Backup e restauração</a></nav><div class="scout-rotation-trust" id="rotation-inventory" role="status">Carregando 246 cartas…</div></section>
 <section class="scout-rotation-panel" aria-labelledby="black-heading"><div class="scout-rotation-title"><h2 id="black-heading">01 · As 23 cartas que não quero escalar</h2><span id="black-count">0 / 23</span></div>
@@ -42,6 +43,18 @@
 <p class="scout-rotation-subtext">Os bloqueios ficam salvos neste dispositivo. Para usar a mesma lista no Android e no Windows, exporte o arquivo JSON aqui e importe-o no outro app. A importação confere os números e os Card IDs, sem alterar as cartas.</p>
 <p id="black-feedback" class="scout-rotation-feedback" role="status">A lista ainda não foi validada pelos prints.</p></section>
 <section class="scout-rotation-panel" id="craque-backup-panel"><h2>Backup seguro · Exportar e restaurar</h2><p>Salve sua coleção de dados antes de atualizar ou trocar de aparelho. Para restaurar, confira a prévia e confirme: os dados atuais serão protegidos antes de aplicar o arquivo.</p><div class="scout-rotation-actions"><button id="craque-backup-open" type="button" class="scout-rotation-btn main">Abrir central de backup</button></div><div id="craque-backup-last" class="scout-rotation-feedback" role="status">Seus dados não foram alterados.</div></section><section class="scout-rotation-panel" aria-labelledby="series-heading"><h2 id="series-heading">02 · Séries de testes por formação</h2><p>O mesmo conjunto de 223 cartas poderá ser testado nas duas táticas independentes (4-3-1-2 personalizada e 4-2-1-3 estreita). <strong>Nenhuma carta se repete entre equipes da mesma formação e rodada. Adaptação de posição exige confirmação no jogo, e o Link-Up não é considerado ativo automaticamente.</strong></p>
+<section class="ct-v230-rotation-modes" aria-label="Estilos de jogo">
+ <h3>Estilo do técnico · escolha para as duas formações</h3>
+ <p>Os dois desenhos continuam estreitos. Recalcule os elencos segundo função, estilo e habilidades nativas, sem alterar suas 246 cartas nem os 23 bloqueios.</p>
+ <div id="ct-v230-rotation-modes" role="group" aria-label="Tática para rodízio" class="scout-rotation-actions">
+  <button type="button" class="scout-rotation-btn selected" data-tactic-mode="posse" aria-pressed="true">Posse de Bola</button>
+  <button type="button" class="scout-rotation-btn" data-tactic-mode="normal" aria-pressed="false">Contra-Ataque Normal</button>
+  <button type="button" class="scout-rotation-btn" data-tactic-mode="rapido" aria-pressed="false">Contra-Ataque Rápido</button>
+  <button type="button" class="scout-rotation-btn" data-tactic-mode="fora" aria-pressed="false">Por Fora</button>
+  <button type="button" class="scout-rotation-btn" data-tactic-mode="longo" aria-pressed="false">Bola Longa</button>
+ </div>
+ <p id="ct-v230-rotation-note" class="scout-rotation-feedback" role="status">Posse de Bola selecionada. Selecione outro estilo para testar combinações.</p>
+</section>
 <div role="group" aria-label="Escolher série" class="scout-rotation-actions"><button type="button" class="scout-rotation-btn selected" data-series="4312" aria-pressed="true">4-3-1-2 · Dois VOL</button><button type="button" class="scout-rotation-btn" data-series="4213" aria-pressed="false">4-2-1-3 · Dois CA + SA</button></div>
 <div role="group" aria-label="Rodada de testes" class="scout-rotation-actions"><button type="button" class="scout-rotation-btn selected" data-cycle="1" aria-pressed="true">Rodada 1 · Equipes iniciais</button><button type="button" class="scout-rotation-btn" data-cycle="2" aria-pressed="false">Rodada 2 · Testar as 16 restantes</button></div><div id="series-diagnostics" class="scout-rotation-diagnostics"></div>
 <div class="scout-rotation-actions"><button type="button" id="rotation-export" class="scout-rotation-btn">Exportar escalações e resultados (JSON)</button><button type="button" id="rotation-backup" class="scout-rotation-btn">Salvar backup restaurável (JSON)</button><button type="button" id="rotation-prompt" class="scout-rotation-btn">Copiar escalação para análise da partida</button></div>
