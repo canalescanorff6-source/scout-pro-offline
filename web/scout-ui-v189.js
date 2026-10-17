@@ -92,9 +92,9 @@ function render(){
   details.append(summary,links);
   const friendsEntry=el('a','scout-v227-friends-entry');
  friendsEntry.href='outros-elencos-v227.html';
- friendsEntry.append(el('img','',''),el('span','', 'Outros Elencos — Cadastre cartas de amigos sem misturar com suas 246 cartas'),el('span','scout-v227-friends-arrow','→'));
- friendsEntry.querySelector('img').src='assets/craque-elenco.svg';
- friendsEntry.querySelector('img').alt='';
+ const friendsIcon=el('span','scout-v227-friends-icon','▣');
+ friendsIcon.setAttribute('aria-hidden','true');
+ friendsEntry.append(friendsIcon,el('span','', 'Outros Elencos — Cadastre cartas de amigos sem misturar com suas 246 cartas'),el('span','scout-v227-friends-arrow','→'));
  const about=el('button','scout-v189-about','Como funciona a análise');
   about.type='button';about.setAttribute('aria-expanded','false');
   about.addEventListener('click',()=>{
