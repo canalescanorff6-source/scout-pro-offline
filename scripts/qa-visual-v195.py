@@ -831,6 +831,25 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_profile_impeto.png"), full_page=False, animations="disabled")
                 page.locator("#scout-v194-gameplay").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_profile_gameplay.png"), full_page=False, animations="disabled")
+                # V229: o antigo ajuste GLOBAL de "mostrar todas as análises" não pode
+                # fazer as 6 fichas V72 reaparecerem após carregar outra carta.
+                page.evaluate("""() => localStorage.setItem('scoutpro:v187:full-analysis','1')""")
+                page.reload(wait_until='domcontentloaded')
+                page.wait_for_function("""() => {
+                    const c=window.CRAQUE_CARD_CURATOR_V229?.inspect(document);
+                    return c?.archived===6 && c?.mainTables===1 && c?.compact;
+                }""",timeout=25000)
+                legacy_after_reload=page.evaluate("""() => ({
+                  details:document.querySelector('#scout-v229-legacy-archive')?.open,
+                  technical:document.querySelector('#scout-v220-technical')?.open,
+                  rootVisible:[...document.querySelectorAll('.profile-content>section.topic')].filter(
+                    el=>getComputedStyle(el).display!=='none').length
+                })""")
+                detail['v229_legacy_pref_inert']=legacy_after_reload
+                if (legacy_after_reload['details'] or legacy_after_reload['technical'] or
+                    legacy_after_reload['rootVisible']):
+                    problems.append(f"{name}: V229 configuração antiga reabriu fichas: {legacy_after_reload}")
+                page.evaluate("""() => localStorage.removeItem('scoutpro:v187:full-analysis')""")
                 result = {"catalog": home, "detail": detail}
                 if name in ("mobile_390", "windows_1366"):
                     page.goto(URL + "/revisao-impetos-v103.html?c=24",
