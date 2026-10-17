@@ -54,17 +54,20 @@ function individualCase(card,group,engine,formation){
  const evidence={native_skills:native,boost1:fixed||null};
  let proposal=null;
  try{proposal=engine?.suggestIndividualPreview?.(budget,normalizedRole,card.estilo_ataque,evidence)}catch(e){}
- const valid=proposal&&Array.isArray(proposal.vec)&&ppCost(proposal.vec)===budget&&Number(proposal.remaining)===0;
- const signals=valid?proposal.signals.slice():[];
- const changes=valid?CATEGORY.map((name,i)=>({name,index:i,before:current[i],after:proposal.vec[i],
+ const valid=!!(proposal&&Array.isArray(proposal.vec)&&ppCost(proposal.vec)===budget&&Number(proposal.remaining)===0);
+ const signals=valid&&Array.isArray(proposal.signals)?proposal.signals.slice():[];
+ // Sem sinais da edição (habilidades/ímpeto fixo), uma simulação por posição seria genérica:
+ // não exibir esse vetor como alternativa individualizada.
+ const personalized=valid&&signals.length>0;
+ const changes=personalized?CATEGORY.map((name,i)=>({name,index:i,before:current[i],after:proposal.vec[i],
   delta:proposal.vec[i]-current[i]})).filter(x=>x.delta!==0):[];
- // Dados base numéricos não existem no índice dessas 56 edições; conservar a build.
+ // Dados base comparáveis das edições não estão documentados neste índice; conservar a build.
  const stage=!valid?'sem_proposta_pp_valida':!signals.length?'sem_sinal_documental_para_personalizar':
   changes.length?'hipotese_individual_para_testar':'treino_registrado_coincide_com_hipotese';
  return {
   numero:card.numero,name:card.name,edition:card.versao,card_id:String(card.id),
   position:normalizedRole,style:card.estilo_ataque,pp:budget,registered:current.slice(),
-  alternative:valid?proposal.vec.slice():null,alternativePP:valid?ppCost(proposal.vec):null,
+  alternative:personalized?proposal.vec.slice():null,alternativePP:personalized?ppCost(proposal.vec):null,
   changes,signals,nativeSkillsCount:native.split(';').filter(s=>s.trim()).length,
   fixedBoosterConfirmed:!!fixed,knownBaseStats:card.base_stats_known===true,
   numericBaseCompared:false,editionsExactGameVerified:false,approval:'NÃO HOMOLOGADO',

@@ -33,7 +33,10 @@ for(const c of data){
 }
 assert.strictEqual(inspected,738);
 assert.strictEqual(haveRecommendations,246);
-assert(boostEligible>0&&boostEligible<=246);
+assert.strictEqual(boostEligible,0,'Sem confirmação manual, nenhuma das 246 cartas deve ser marcada como equipável');
+const confirmed={shown_position:'CA',boost2:'SLOT SELECIONÁVEL +1',boost1:'Physicality +3'};
+assert.strictEqual(E.booster(confirmed,'posse',B,'vazio').able,true,'Slot confirmado vazio é elegível');
+assert.strictEqual(E.booster(confirmed,'posse',B,'ocupado').able,false,'Slot ocupado não é elegível');
 const check=E.evaluate({shown_position:'CA',native_skills:'One Touch Pass; First Time Shot; Double Touch'},'posse','Passe em profundidade; Controle com a sola');
 for(const name of ['onepass','firstshot','double','through','sole'])assert(!check.recommendations.some(x=>x.key===name),'Não repetir habilidade já equipada: '+name);
 assert.strictEqual(E.keyFor('Passe de primeira'),E.keyFor('One-touch Pass'),'Aliases PT-BR/EN');
@@ -44,4 +47,4 @@ assert.equal(unknownSlot.able,false,'Recomendação consultiva não confere slot
 assert.equal(unknownSlot.equipStatus,'slot_nao_verificado');
 const bridge=fs.readFileSync(path.join(base,'app-bridge.js'),'utf8');
 assert(bridge.includes('skills-booster-v162.js')&&bridge.includes('booster-engine-v103.js'),'Recomendador precisa aparecer em todas as fichas');
-console.log('PASSOU V162: '+inspected+' avaliações, '+haveRecommendations+' cartas, '+boostEligible+' slots indicados pela fonte (os demais recebem sugestão consultiva), '+unknownNative+' cartas com habilidades nativas pendentes, '+fewerThanFive+' com menos de 5 novas habilidades elegíveis.');
+console.log('PASSOU V162: '+inspected+' avaliações, '+haveRecommendations+' cartas, '+boostEligible+' slots aptos sem confirmação (ranking consultivo preservado), '+unknownNative+' cartas com habilidades nativas pendentes, '+fewerThanFive+' com menos de 5 novas habilidades elegíveis.');

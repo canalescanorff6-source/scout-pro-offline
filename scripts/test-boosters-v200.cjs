@@ -41,6 +41,13 @@ assert.equal(withTrain+withoutTrain,246);
 assert(withoutTrain>0,'Cartas sem níveis finais documentados não podem ser fingidas');
 assert.equal(B.rank({...byId.get(1),niveis:null},'posse')[0].confianca,'baixa');
 assert.equal(B.rank(byId.get(1),'posse')[0].confianca,'comparativa_limitada');
+const possePivot=B.rank({...byId.get(33),estilo_ataque:'Pivô'},'posse');
+const posseRunner=B.rank({...byId.get(33),estilo_ataque:'Artilheiro'},'posse');
+const posseLink=B.rank({...byId.get(1),estilo_ataque:'Puxa marcação'},'posse');
+const runnerForLink=B.rank({...byId.get(1),estilo_ataque:'Artilheiro'},'posse');
+const score=(list,name)=>list.find(x=>x.nome===name)?.score??null;
+assert(score(possePivot,'Passing')>score(posseRunner,'Passing'),'Pivô de posse valoriza passe de apoio');
+assert(score(posseLink,'Technique')>score(runnerForLink,'Technique'),'Atacante de apoio valoriza técnica quando a carta não possui ímpeto fixo Technique');
 const ca=cards.filter(c=>['AC','CA'].includes(c.posicao));
 const leaders=new Set(ca.map(c=>B.rank(c,'posse')[0]?.nome));
 console.log('V200 ranking CA '+ca.length+' cartas: '+JSON.stringify([...leaders]));
@@ -54,12 +61,21 @@ const cf=R.booster({...byId.get(1),shown_position:'AC',boost1:byId.get(1).impeto
  recommended_levels:byId.get(1).niveis,native_skills:byId.get(1).habilidades_nativas},'posse',B,'ausente');
 assert.equal(cf.able,false,'Sem slot, nunca sugerir equipar');
 assert.equal(cf.equipStatus,'impossivel_na_conta');
+const unknownSlot=R.booster({...byId.get(1),shown_position:'AC',boost1:byId.get(1).impeto_fixo,boost2:byId.get(1).impeto_extra},'posse',B);
+assert.equal(unknownSlot.able,false,'Texto do catálogo não confirma slot na conta');
+assert.equal(unknownSlot.equipStatus,'slot_nao_verificado');
+const confirmedEmpty=R.booster({...byId.get(1),shown_position:'AC',boost1:byId.get(1).impeto_fixo,boost2:byId.get(1).impeto_extra},'posse',B,'vazio');
+assert.equal(confirmedEmpty.able,true,'Confirmação manual de slot vazio permite elegibilidade condicionada');
+
 const marked=R.booster({shown_position:'AC',role_used:'CA',boost1:'Physicality +3',
  boost2:'SLOT SELECIONÁVEL +1',recommended_levels:byId.get(1).niveis,
  native_skills:byId.get(1).habilidades_nativas,attack_style:'Matador'},'posse',B,'ocupado',"Striker's Instinct");
 assert(![marked.primary,...marked.alternatives].some(x=>x?.nome==="Striker's Instinct"),
  'Ímpeto confirmado como equipado pelo usuário não pode reaparecer como nova recomendação');
 assert.equal(marked.confirmedEquipped,"Striker's Instinct");
+assert.equal(marked.able,false,'Slot ocupado confirmado não pode ser marcado como equipável');
+assert.equal(marked.equipStatus,'ocupado_na_conta','Mostrar status correto para slot ocupado');
+
 const auditUI=fs.readFileSync(path.join(web,'revisao-impetos-v103.js'),'utf8');
 assert(auditUI.includes('optionsFor(c,key,saved)')&&auditUI.includes("optionsFor(c,'posse',read(c))"),'Planejamento exclui equipado confirmado');
 assert(auditUI.includes('scout-pro-246-impetos-individuais-v200.csv'),'Exportação precisa representar motor atual');
