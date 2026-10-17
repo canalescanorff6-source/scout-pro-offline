@@ -36,6 +36,7 @@ const model={A:[12,5,4,8,8,4,0,0,0,0],B:[12,0,2,8,8,8,0,0,0,0],P:[10,5,5,8,8,6,0
 assert.deepEqual(UI.scenarioPlan(model,'A',62,model.P),model.A);
 assert.equal(UI.scenarioPlan(model,'P',62,model.P),null,'Não repetir plano recomendado no comparador');
 assert.equal(UI.scenarioPlan({A:Array(10).fill(20)},'A',62,model.P),null,'Cenário inválido rejeitado');
+assert.equal(UI.scenarioPlan({A:Array(10).fill(1)},'A',62,model.P),null,'Cenário incompleto não deve concorrer como ficha ótima');
 const original=cards.map(x=>({num:x.numero,id:String(x.id),pp:x.pp,levels:x.niveis}));
 let registered=0,pending=0;
 for(const c of cards){
