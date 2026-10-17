@@ -77,6 +77,12 @@ body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-level{
 body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-category-col{width:54%}
 body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-level-col{width:29%}
 body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-pp-col{width:17%}
+body[data-page="detail"] .scout-v208-table.scout-v218-editing tfoot .scout-v208-total{
+ font-size:clamp(12px,2.8vw,18px)!important;letter-spacing:-.025em;
+}
+body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-label{
+ overflow-wrap:anywhere!important;
+}
 body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-cost{
  padding-inline:3px!important;
 }
@@ -107,8 +113,8 @@ body[data-page="detail"] .scout-v218-advanced>section{
  body[data-page="detail"] .scout-v218-step{width:30px;flex-basis:30px;min-height:38px}
  body[data-page="detail"] .scout-v218-stepper{gap:2px}
  body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-category-col{width:39%}
- body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-level-col{width:43%}
- body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-pp-col{width:18%}
+ body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-level-col{width:36%}
+ body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-pp-col{width:25%}
  body[data-page="detail"] .scout-v208-table.scout-v218-editing .scout-v208-icon{
   width:29px;height:29px;flex-basis:29px;
  }
