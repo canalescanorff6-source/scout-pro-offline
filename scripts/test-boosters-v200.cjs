@@ -8,7 +8,7 @@ const cards=JSON.parse(fs.readFileSync(path.join(web,'SCOUT_V69_AUDITORIA.json')
 const htmls=fs.readdirSync(path.join(web,'fichas')).filter(x=>x.endsWith('.html'));
 assert.equal(cards.length,246);
 assert.equal(htmls.length,246);
-const counters={posse:{},normal:{},rapido:{}};
+const counters=Object.fromEntries(B.tactics.map(t=>[t,{}]));
 const byId=new Map();
 let withTrain=0,withoutTrain=0,noDoubleNative=0,close=0;
 for(const c of cards){
@@ -96,4 +96,4 @@ const stamp=fs.readFileSync(path.join(root,'scripts/stamp-bundle-v189.cjs'),'utf
 assert(bridge.includes("v189Root+'scout-finish-v200.css'"));
 assert(sw.includes("'./scout-finish-v200.css'")&&sw.includes('v200-boosters'));
 assert(stamp.includes("'scout-finish-v200.css'"));
-console.log('V200 OK: 246 cartas x 3 táticas, '+withTrain+' builds documentadas, '+withoutTrain+' provisórias, '+noDoubleNative+' comparações sem recomendar booster registrado; '+close+' alternativas próximas em Posse.');
+console.log('V220 OK: 246 cartas x '+B.tactics.length+' táticas, '+withTrain+' builds documentadas, '+withoutTrain+' provisórias, '+noDoubleNative+' comparações sem recomendar booster registrado; '+close+' alternativas próximas em Posse.');
