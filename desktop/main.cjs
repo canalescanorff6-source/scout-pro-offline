@@ -2,6 +2,17 @@
 const { app, BrowserWindow, ipcMain, dialog, shell, protocol, net } = require('electron');
 const path = require('path');
 const fs = require('node:fs/promises');
+const fsSync = require('node:fs');
+// Ao mudar somente o nome visível, reutilizar a pasta de dados anterior para não perder histórico.
+const previousDataFolders=['Scout PRO','scout-pro-elite-offline'];
+for(const name of previousDataFolders){
+ const oldPath=path.join(app.getPath('appData'),name);
+ if(fsSync.existsSync(oldPath)){
+  app.setPath('userData',oldPath);
+  break;
+ }
+}
+
 const {pathToFileURL} = require('url');
 const { autoUpdater } = require('electron-updater');
 protocol.registerSchemesAsPrivileged([{scheme:'scout',privileges:{standard:true,secure:true,supportFetchAPI:true,stream:true}}]);
