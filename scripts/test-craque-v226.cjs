@@ -59,7 +59,7 @@ const api=fakeWindow.CRAQUE_BACKUP_V226;
  const current=await api.create();
  items.set('scoutpro:v219:black-caps','[66]');
  failOnce='scoutpro:v219:match-logs';
- await assert.rejects(()=>api.restore(await api.inspect(current)),/desfeita/);
+ await assert.rejects(async()=>api.restore(await api.inspect(current)),/desfeita/);
  assert.equal(items.get('scoutpro:v219:black-caps'),'[66]','Failure must restore pre-existing record');
  console.log('V226 PASS: rebrand, stable updater, 246-card files, SHA-256 validation, native SAF hooks, backup and rollback.');
 })().catch(e=>{console.error(e);process.exitCode=1});
