@@ -43,3 +43,17 @@ body[data-page="detail"] .scout-v215-footer{
  body[data-page="detail"] .scout-v215-card>summary{padding:12px;min-height:48px}
  body[data-page="detail"] .scout-v215-content{padding:0 12px 13px}
 }
+
+/* V216: sugestões substitutas são consultivas e não alteram a ficha. */
+body[data-page="detail"] .scout-v215-replacements{
+ list-style:none;padding:0;margin:9px 0 12px;display:grid;gap:8px
+}
+body[data-page="detail"] .scout-v215-replacements li{
+ border:1px solid rgba(132,216,167,.29);border-radius:10px;
+ padding:10px 12px;background:rgba(45,130,104,.12);overflow-wrap:anywhere
+}
+body[data-page="detail"] .scout-v215-replacements strong{color:#c6f1cf}
+body[data-page="detail"] .scout-v215-replacement-note{color:#e1c789}
+body[data-page="detail"] .scout-v215-replacements p{
+ margin:4px 0 0;font-size:11px;color:#bcd4cd;line-height:1.5
+}

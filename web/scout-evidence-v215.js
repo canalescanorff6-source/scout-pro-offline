@@ -11,15 +11,46 @@ function skillId(name,keyFor){
  const canonical=typeof keyFor==='function'?keyFor(name):'';
  return canonical||'raw:'+normal(name);
 }
-function reviewCard(source,record,keyFor,peers){
+// Plano consultivo V216. A lista original nunca é alterada nem considerada "equipada".
+function candidatePlan(source,keyFor,evaluate,manualEquipped){
+ const native=asSkills(source.habilidades_nativas);
+ const historic=asSkills(source.adicionais_candidatas);
+ const nativeByKey=new Map(native.map(name=>[skillId(name,keyFor),name]));
+ const kept=[],clashes=[],repeated=[],seen=new Set();
+ for(const name of historic){
+  const id=skillId(name,keyFor);
+  if(nativeByKey.has(id)){clashes.push({additional:name,native:nativeByKey.get(id),id});continue}
+  if(seen.has(id)){repeated.push(name);continue}
+  seen.add(id);kept.push(name);
+ }
+ const manual=asSkills(manualEquipped);
+ // Uma recomendação calculada pela tática não equivale a habilidade confirmada na edição.
+ let rank=null;
+ if(typeof evaluate==='function'&&clashes.length){
+  try{rank=evaluate(source,'posse',manual.join(';'))}catch(_e){rank=null}
+ }
+ const reserved=new Set([...native,...kept,...manual].map(name=>skillId(name,keyFor)));
+ const replacements=[];
+ for(const candidate of [...(rank?.recommendations||[]),...(rank?.alternatives||[])]){
+  if(replacements.length>=Math.min(clashes.length,Math.max(0,5-kept.length)))break;
+  const id=skillId(candidate.name,keyFor);
+  if(!id||reserved.has(id))continue;
+  if(typeof candidate.key==='string'&&candidate.key!==keyFor(candidate.name))continue;
+  replacements.push({name:candidate.name,why:candidate.why||'',key:candidate.key,
+   approval:'HIPÓTESE — não validada na edição'});
+  reserved.add(id);
+ }
+ return {kept,clashes,repeated,replacements,allHistoric:historic.slice(),
+  nativeRegistered:native.length,manualCount:manual.length,
+  status:clashes.length?'REVISAR — candidatas antigas duplicadas no cadastro':'Sem coincidência canônica identificada',
+  updateApplied:false};
+}
+function reviewCard(source,record,keyFor,peers,evaluate,manualEquipped){
  if(!source||!record||Number(source.numero)!==Number(record.numero)||String(source.id)!==String(record.card_id))
   return {valid:false,reason:'Card ID ou número incompatível. Evidências não vinculadas.'};
  const native=asSkills(source.habilidades_nativas),additional=asSkills(source.adicionais_candidatas);
- const byKey=new Map();
- for(const value of native){const id=skillId(value,keyFor);if(!byKey.has(id))byKey.set(id,value)}
- const clashes=additional.filter(value=>byKey.has(skillId(value,keyFor))).map(value=>({
-  additional:value,native:byKey.get(skillId(value,keyFor)),id:skillId(value,keyFor)
- }));
+ const plan=candidatePlan(source,keyFor,evaluate,manualEquipped);
+ const clashes=plan.clashes;
  const printMatches=Array.isArray(record.habilidades_adicionais_auditoria?.coincidencias_com_print)?
   record.habilidades_adicionais_auditoria.coincidencias_com_print.slice():[];
  const links=Array.isArray(record.repeticao?.peers)?record.repeticao.peers.map(num=>({
@@ -28,7 +59,7 @@ function reviewCard(source,record,keyFor,peers){
  return {
   valid:true,numero:Number(source.numero),name:String(source.name),cardId:String(source.id),
   pp:Number(source.pp),hasBuild:Array.isArray(source.niveis)&&source.niveis.length===10,
-  nativeCount:native.length,candidateCount:additional.length,clashes,printMatches,
+  nativeCount:native.length,candidateCount:additional.length,clashes,plan,printMatches,
   print:record.print_candidato?.arquivo||null,biotype:record.biotipo||null,
   baseStatsFlag:source.base_stats_known===true,baseAttributesNumericallyCompared:false,
   boosterSlot:record.impeto_extra_auditoria?.estado||'unverified',
@@ -36,12 +67,12 @@ function reviewCard(source,record,keyFor,peers){
   approvedBuildPreserved:true
  };
 }
-function auditRoster(cards,records,keyFor){
+function auditRoster(cards,records,keyFor,evaluate){
  if(!Array.isArray(cards)||!Array.isArray(records))throw Error('Catálogo ou auditoria ausente');
  const source=new Map(cards.map(c=>[Number(c.numero),c]));
  const evidence=new Map(records.map(c=>[Number(c.numero),c]));
  const names=new Map(cards.map(c=>[Number(c.numero),c.name]));
- return [...source.values()].map(c=>reviewCard(c,evidence.get(Number(c.numero)),keyFor,names));
+ return [...source.values()].map(c=>reviewCard(c,evidence.get(Number(c.numero)),keyFor,names,evaluate));
 }
 function element(doc,tag,cls,value){
  const node=doc.createElement(tag);if(cls)node.className=cls;
@@ -60,7 +91,7 @@ function display(doc,review){
  const panel=element(doc,'details','scout-v215-card');panel.id='scout-v215-evidence';
  panel.dataset.nativeOverlaps=String(review.clashes.length);
  panel.dataset.catalogCardIdMatch='true';
- panel.append(element(doc,'summary','','SCOUT PRO · Verificação individual V215'));
+ panel.append(element(doc,'summary','','SCOUT PRO · Verificação individual V216'));
  const content=element(doc,'div','scout-v215-content');
  content.append(element(doc,'h3','',review.name+' · Carta #'+String(review.numero).padStart(3,'0')));
  line(doc,content,'Card ID:',review.cardId+' · '+review.pp+' PP registrados');
@@ -77,6 +108,27 @@ function display(doc,review){
   content.append(list);
  }else{
   content.append(element(doc,'p','scout-v215-clear','Nenhuma correspondência conhecida entre as '+review.candidateCount+' sugestão(ões) e '+review.nativeCount+' habilidades nativas registradas. Isso NÃO valida a edição ou os slots.'));
+ }
+ if(review.clashes.length){
+  content.append(element(doc,'h4','','Candidatas revisadas · Posse de Bola'));
+  line(doc,content,'Mantidas apenas para conferência:',review.plan.kept.length?
+   review.plan.kept.join(' · '):'Nenhuma sugestão antiga livre de coincidência conhecida.');
+  if(review.plan.replacements.length){
+   const options=element(doc,'ul','scout-v215-replacements');
+   for(const suggestion of review.plan.replacements){
+    const li=element(doc,'li','');
+    const title=element(doc,'strong','',suggestion.name);
+    li.append(title,element(doc,'span','scout-v215-replacement-note',' · alternativa teórica para avaliar'));
+    if(suggestion.why)li.append(element(doc,'p','',suggestion.why));
+    options.append(li);
+   }
+   content.append(options);
+  }else{
+   content.append(element(doc,'p','scout-v215-muted','Não foi possível propor alternativa documentalmente distinta; confirme a edição e as habilidades já equipadas.'));
+  }
+  if(review.plan.repeated.length)line(doc,content,'Duplicadas entre candidatas:',review.plan.repeated.join(' · '));
+  content.append(element(doc,'p','scout-v215-muted',
+   'Estas opções são hipóteses por função e Posse de Bola, não builds homologadas nem habilidades instaladas. A lista original permanece intacta.'));
  }
  if(review.printMatches.length){
   content.append(element(doc,'p','scout-v215-muted','No print candidato, '+review.printMatches.join(', ')+' também requer(em) conferência. O print não mostra Card ID verificável.'));
@@ -95,7 +147,7 @@ function display(doc,review){
  else target.append(panel);
  return true;
 }
-const api=Object.freeze({normal,asSkills,skillId,reviewCard,auditRoster,display});
+const api=Object.freeze({normal,asSkills,skillId,candidatePlan,reviewCard,auditRoster,display});
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_EVIDENCE_V215=api;
 if(!host?.document)return;
@@ -115,7 +167,10 @@ function start(){
   const render=()=>{
    const mapper=host.SCOUT_RECOMMENDATIONS_V162?.keyFor;
    if(typeof mapper!=='function')return false;
-   const review=reviewCard(source,record,mapper,names);
+   const engine=host.SCOUT_RECOMMENDATIONS_V162;
+   let equipped='';
+   try{equipped=host.localStorage?.getItem('scoutpro:v162:equipped:'+cap+':'+String(source.id))||''}catch(_e){}
+   const review=reviewCard(source,record,mapper,names,engine?.evaluate,equipped);
    const mounted=display(doc,review);
    if(mounted&&observer)observer.disconnect();
    return mounted;

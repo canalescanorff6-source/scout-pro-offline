@@ -7,7 +7,7 @@ const R=require('../web/skills-booster-v162.js');
 const originals=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
 const audit=JSON.parse(read('web/SCOUT_V213_AUDITORIA_INDIVIDUAL.json')).cards;
 const snapshot=originals.map(c=>({n:c.numero,id:c.id,pp:c.pp,levels:c.niveis,skills:c.habilidades_nativas,candidates:c.adicionais_candidatas}));
-const rows=E.auditRoster(originals,audit,R.keyFor);
+const rows=E.auditRoster(originals,audit,R.keyFor,R.evaluate);
 assert.equal(originals.length,246);
 assert.equal(audit.length,246);
 assert.equal(rows.length,246);
@@ -28,6 +28,31 @@ for(const row of rows){
 const affected=rows.filter(x=>x.clashes.length);
 const numbers=affected.map(x=>x.numero);
 assert.equal(affected.length,21,'21 cartas com sugestão duplicada entre nativas cadastradas');
+for(const entry of rows){
+ const source=originals.find(c=>Number(c.numero)===entry.numero);
+ assert.equal(entry.plan.updateApplied,false,'Nenhuma edição automática '+entry.numero);
+ assert.equal(entry.plan.allHistoric.length,entry.plan.kept.length+entry.plan.clashes.length+entry.plan.repeated.length,'Toda candidata antiga contabilizada '+entry.numero);
+ const native=new Set(String(source.habilidades_nativas||'').split(';').map(R.keyFor).filter(Boolean));
+ const kept=new Set(entry.plan.kept.map(R.keyFor).filter(Boolean));
+ const alternatives=entry.plan.replacements;
+ assert.equal(new Set(alternatives.map(a=>a.key)).size,alternatives.length,'Sem repetição interna '+entry.numero);
+ assert(alternatives.length<=entry.plan.clashes.length,'Não sugerir substituições além do necessário '+entry.numero);
+ if(entry.clashes.length){
+  assert(alternatives.length>0,'Ao menos uma alternativa de Posse para carta sinalizada '+entry.numero);
+  assert.equal(entry.plan.kept.length+alternatives.length,entry.plan.allHistoric.length,'Completar cinco candidatas sem duplicação '+entry.numero);
+ }else assert.equal(alternatives.length,0,'Não substituir sem diagnóstico de duplicação '+entry.numero);
+ for(const suggestion of alternatives){
+  assert(!native.has(suggestion.key)&&!kept.has(suggestion.key),'Nunca recomendar skill já nativa ou mantida '+entry.numero);
+  assert.equal(suggestion.key,R.keyFor(suggestion.name),'Alias oficial '+entry.numero);
+  assert.equal(suggestion.approval,'HIPÓTESE — não validada na edição');
+ }
+}
+const massaro=originals.find(c=>c.numero===1),massaroEvidence=audit.find(c=>c.numero===1);
+const suggestion=rows.find(x=>x.numero===1).plan.replacements[0].name;
+const withManual=E.reviewCard(massaro,massaroEvidence,R.keyFor,new Map(),R.evaluate,suggestion);
+assert(withManual.plan.replacements.length>0,'Manter alternativa sem usar habilidade já equipada');
+assert(!withManual.plan.replacements.some(x=>x.name===suggestion),'Não sugerir habilidade informada como equipada');
+
 assert.deepEqual(numbers,[1,12,19,25,26,27,28,29,30,31,32,33,35,36,38,39,40,45,48,110,203]);
 const card=n=>rows.find(x=>x.numero===n);
 assert.equal(card(1).clashes[0].additional,'Cabeceio');
@@ -54,6 +79,7 @@ assert(src.includes('String(identity.id)!==String(source.id)'),'Não misturar ed
 assert(src.includes('print não mostra Card ID verificável')||src.includes('O print não mostra Card ID verificável'));
 assert(!src.includes('localStorage.setItem')&&!src.includes('updateBuild('),'Nunca sobrescrever treino');
 assert(css.includes('min-height:48px')&&css.includes('@media(max-width:480px)'),'Painel responsivo e alvos de toque');
-assert(sw.includes('v215-skill-evidence'),'Cache novo para instalação');
+assert(sw.includes('v215-skill-evidence-v216-candidates'),'Cache renovado para mostrar novas sugestões após atualizar');
+assert(src.includes('SCOUT PRO · Verificação individual V216'),'Título atualizado da auditoria');
 assert(stamp.includes("'sw.js'"),'Atualização de cache no fingerprint');
-console.log('V215 PASS: 246 cartas, 21 alertas canônicos EN/PT-BR, 3 avisos de prints não verificados, 56 pares em grupos repetidos, zero fichas alteradas.');
+console.log('V216 PASS: 246 cartas, 21 listas candidatas revisadas com alternativas de Posse, 56 cartas repetidas, builds originais intactas.');
