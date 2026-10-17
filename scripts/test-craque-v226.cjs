@@ -17,6 +17,11 @@ assert(read('web/assets/craque-tatico-icon.svg').includes('viewBox="0 0 512 512"
 assert(read('web/craque-theme-v226.css').includes('--craque-green:#00c853'));
 assert(html.includes('craque-backup-open')&&html.includes('craque-backup-panel'));
 assert(app.includes('craque-backup-ui-v226.js')&&app.includes('craque-theme-v226.css'));
+const shell=read('web/sw.js');
+for(const asset of ['craque-backup-v226.js','craque-backup-ui-v226.js','craque-theme-v226.css','assets/craque-tatico-icon.svg'])
+ assert(shell.includes(asset),'PWA offline deve guardar '+asset);
+assert(read('scripts/stamp-bundle-v189.cjs').includes('craque-backup-v226.js'),'Versão Windows e Android devem compartilhar o mesmo fingerprint');
+
 assert(read('native/android/ScoutFileExportPlugin.java').includes('Intent.ACTION_OPEN_DOCUMENT'));
 assert(read('native/android/ScoutFileExportPlugin.java').includes('onBackupSelected'));
 assert(read('desktop/main.cjs').includes("ipcMain.handle('craque:open-json'"));
