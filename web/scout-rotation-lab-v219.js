@@ -206,7 +206,7 @@ function render(){
    lineupSnapshot:lineupSnapshot(team),result:String(values.get('result')),
    goals,conceded,video:String(values.get('video')||'').trim().slice(0,120),
    notes:String(values.get('notes')||'').trim().slice(0,1200)});
-  gameLogs[id]=list.slice(-100);
+  gameLogs[id]=list;
   if(!persist(KEY_MATCHES,gameLogs)){list.pop();gameLogs[id]=list;status('black-feedback','Não foi possível salvar esta partida no dispositivo. Confira o armazenamento.');return}
    opened=id;render();
  }));
