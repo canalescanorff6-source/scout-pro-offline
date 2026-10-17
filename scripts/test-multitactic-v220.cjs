@@ -57,9 +57,9 @@ for(const c of cards){
    }
    fingerprints.add(result.levels.join(':'));
    if(T.roleOf(d)==='GO'){
-    assert(result.levels.slice(0,7).every(n=>n===0),'Goleiro não deve evoluir grupos ofensivos sem comprovação');
+    assert(result.levels.slice(0,7).every((n,i)=>n===baseline[i]),'Não alterar categorias de linha preexistentes na ficha do GO');
    }else{
-    assert(result.levels.slice(7).every(n=>n===0),'Jogador de linha não recebe treino GK');
+    assert(result.levels.slice(7).every((n,i)=>n===baseline[i+7]),'Não alterar categoria GK preexistente no cadastro');
    }
    const alt=T.hypothetical(d,style.id,baseline,1);
    assert(alt&&T.total(alt.levels)===c.pp,'Cenário B deve respeitar PP');
