@@ -70,6 +70,15 @@ function analyze(cards,excluded){
   requiresBlackPhoto:true,listComplete:blocked.size===22,
   blocked:[...blocked].sort((a,b)=>a-b)};
 }
+// Vincula cada partida à composição realmente utilizada; não reaproveita resultados após mudar a escalação.
+function rosterFingerprint(team,excluded=[]){
+ if(!team||!Array.isArray(team.starters)||!Array.isArray(team.bench))throw Error('Equipe inválida para registrar partida');
+ const blocked=[...new Set((Array.isArray(excluded)?excluded:[]).map(Number))].sort((a,b)=>a-b);
+ const starters=team.starters.map(x=>String(x.slot)+':'+String(x.cap)).sort();
+ const bench=team.bench.map(x=>Number(x.cap)).sort((a,b)=>a-b);
+ return JSON.stringify({schema:'SCOUT_ROSTER_SIGNATURE_V223',formation:team.formation,
+  team:team.id,starters,bench,excluded:blocked});
+}
 function build(cards,formation,excluded,cycle=1){
  if(!formation||!['4312','4213'].includes(formation.id)||!Array.isArray(formation.starters)||formation.starters.length!==START_SIZE)throw Error('Formação não reconhecida');
  const stat=analyze(cards,excluded);
@@ -167,7 +176,7 @@ function build(cards,formation,excluded,cycle=1){
   source:'SCOUT_V69_AUDITORIA.json',
   exactBlackMappingConfirmed:false};
 }
-const api=Object.freeze({ALIASES,NAMES,position,isKeeper,desired,suitability,evidenceScore,excludedSet,analyze,build});
+const api=Object.freeze({ALIASES,NAMES,position,isKeeper,desired,suitability,evidenceScore,excludedSet,analyze,rosterFingerprint,build});
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_ROTATION_V219=api;
 })(typeof window!=='undefined'?window:null);
