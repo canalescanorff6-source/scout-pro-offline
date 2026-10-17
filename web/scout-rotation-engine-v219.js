@@ -149,7 +149,7 @@ function build(cards,formation,excluded){
  return {schema:'SCOUT_ROTATION_V219',formation:formation.id,teams:entries,leftovers:left,counts:stat,
   rules:'Nenhuma carta repetida nesta série. Adaptabilidade/ativação não confirmadas. Não usar Overall.',
   source:'SCOUT_V69_AUDITORIA.json',
-  exactBlackMappingConfirmed:stat.excluded===22};
+  exactBlackMappingConfirmed:false};
 }
 const api=Object.freeze({ALIASES,NAMES,position,isKeeper,desired,suitability,evidenceScore,excludedSet,analyze,build});
 if(typeof module==='object'&&module.exports)module.exports=api;
