@@ -14,7 +14,7 @@ function stored(key,fallback){
  try{const v=JSON.parse(localStorage.getItem(key)||'null');return v??fallback}catch(_e){return fallback}
 }
 function persist(key,value){
- try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_e){return false}
+ try{localStorage.setItem(key,JSON.stringify(value));window.dispatchEvent(new CustomEvent('craque:data-changed',{detail:{key}}));return true}catch(_e){return false}
 }
 // V225: cópia Android em SharedPreferences para recuperação sem nova seleção.
 function nativeRosterStore(){
@@ -326,7 +326,7 @@ async function init(){
   const btn=$('black-export');btn.disabled=true;
   try{
    const file=restrictions.makeRecord(excluded,cards,userReviewed);
-   const result=await window.SCOUT_FILE_EXPORT.saveJson(file,'ScoutPRO-23-Jogadores-Black-V225.json');
+   const result=await window.SCOUT_FILE_EXPORT.saveJson(file,'CraqueTatico-23-Restricoes.json');
    status('black-feedback',result.status==='saved'
     ?'Lista de '+excluded.length+' restrições salva no local escolhido, com Card IDs e edições.'
     :result.status==='cancelled'?'Exportação cancelada; bloqueios mantidos neste dispositivo.'
@@ -353,7 +353,7 @@ async function init(){
     excludedBlackCaps:excluded.slice(),blackUserReviewed:userReviewed,blackVisualVerified:false,
     originalRosterCards:cards.length,series:sheets,
     matches:gameLogs,note:'Elencos e partidas reais cadastradas; fotos do Black ainda exigem confirmação de edição e Card ID.'};
-   const result=await window.SCOUT_FILE_EXPORT.saveJson(data,'ScoutPRO-Elencos-e-Partidas-V225.json');
+   const result=await window.SCOUT_FILE_EXPORT.saveJson(data,'CraqueTatico-Elencos-Partidas.json');
    status('black-feedback',result.status==='saved'?'Elencos e registros exportados com sucesso.'
     :result.status==='cancelled'?'Exportação cancelada; seus resultados permanecem no dispositivo.'
     :'Download solicitado; confira o arquivo na pasta Downloads.');
@@ -363,11 +363,9 @@ async function init(){
  $('rotation-backup').addEventListener('click',async()=>{
   const button=$('rotation-backup');button.disabled=true;
   try{
-   const keys=Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:'));
-   const items=Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)]));
-   const data={format:'scoutpro-userdata-v1',exported_at:new Date().toISOString(),items};
+   const data=await window.CRAQUE_BACKUP_V226.create();
    const outcome=await window.SCOUT_FILE_EXPORT.saveJson(data,'ScoutPRO-Backup-Completo-V225.json');
-   status('black-feedback',outcome.status==='saved'?'Backup completo salvo ('+keys.length+' registros).'
+   status('black-feedback',outcome.status==='saved'?'Backup completo salvo ('+data.number_of_records+' registros).'
      :outcome.status==='cancelled'?'Backup cancelado. Seus dados continuam no dispositivo.'
      :'Download de backup solicitado; confira o arquivo no navegador.');
   }catch(e){status('black-feedback','Falha ao salvar backup completo: '+String(e.message||e))}
