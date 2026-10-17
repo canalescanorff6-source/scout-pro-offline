@@ -832,11 +832,11 @@ def run():
                     page.locator("#tactics").scroll_into_view_if_needed()
                     page.screenshot(path=str(OUT / f"{name}_booster_review.png"),
                                     full_page=False, animations="disabled")
-                # V224: 23 cartas por equipe e 23 exclusões, sem repetição, sem repetição entre equipes de uma série.
+                # V224: 23 cartas por equipe, 23 restrições e nenhuma repetição entre elencos da mesma rodada.
                 page.goto(URL + "/meu-time-testes-v219.html",wait_until="domcontentloaded",timeout=35000)
-                page.wait_for_function("""() => document.querySelectorAll('#squads details[data-team]').length===9""",timeout=25000)
+                page.wait_for_function("""() => document.querySelectorAll('#squads details[data-team]').length===10""",timeout=25000)
                 if 'PRÉVIA INCOMPLETA' not in page.locator('#black-feedback').inner_text():
-                    problems.append(f"{name}: V222 não marcou a escalação sem os 22 prints como prévia")
+                    problems.append(f"{name}: V222 não marcou a escalação sem as 23 cartas verificadas como prévia")
                 page.locator('#black-search').fill('Massaro')
                 page.wait_for_function("""() =>
                     document.querySelector('#black-candidates button[data-black-cap="1"][data-action="add"]')
