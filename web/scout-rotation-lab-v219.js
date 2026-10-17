@@ -7,6 +7,9 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&
 const engine=window.SCOUT_ROTATION_V219, restrictions=window.SCOUT_RESTRICT_V222;
 const KEY_BLACK='scoutpro:v219:black-caps',KEY_BLACK_REVIEW='scoutpro:v222:black-reviewed',KEY_MATCHES='scoutpro:v219:match-logs';
 let cards=[],byCap=new Map(),images=new Map(),formats=[],active='4312',cycle=1,sheets={},excluded=[],userReviewed=false,gameLogs={},opened=null;
+const TACTIC_KEY='scoutpro:v230:rotation-tactic';
+const TACTICS={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'};
+let tactic='posse';
 const status=(id,v)=>{const e=$(id);if(e)e.textContent=v};
 const len=x=>Array.isArray(x)?x.length:0;
 const getCard=cap=>byCap.get(Number(cap));
@@ -130,7 +133,7 @@ function diagnostics(){
  const nativeSA=sheet.teams.filter(t=>t.starters.some(s=>s.slot==='sa'&&s.fit==='posição original')).length;
  $('series-diagnostics').innerHTML=
   '<strong>'+sheet.teams.length+' equipes · 11 titulares + 12 reservas</strong> · '+(excluded.length===23?'23 restrições selecionadas. ':'PRÉVIA: confirme as 23 cartas proibidas. ')+esc(formatNumbers(sheet.leftovers))+' fora desta rodada (entram na rodada '+(cycle===1?'2':'1')+')'+ 
-  '<p>'+a.keepers+' goleiros elegíveis · '+(sheet.teams.some(t=>!t.ready)?'Elencos incompletos exigem conferência; não repetir cartas. ':'')+(a.goalkeeperLimited?'NÚMERO LIMITADO PELOS GOLEIROS: não repetir goleiro entre equipes. ':'')+
+  '<p>Estilo do técnico: '+esc(TACTICS[tactic])+'. Equipes experimentais, sem gameplay confirmado. '+a.keepers+' goleiros elegíveis · +(sheet.teams.some(t=>!t.ready)?'Elencos incompletos exigem conferência; não repetir cartas. ':'')+(a.goalkeeperLimited?'NÚMERO LIMITADO PELOS GOLEIROS: não repetir goleiro entre equipes. ':'')+
   'Série '+esc(active)+' · Rodada '+cycle+': '+links+' equipes com requisitos documentais simultâneos de Link-Up (não confirma ativação no jogo) · '+caveats+' equipes com possíveis adaptações.'+
   (active==='4213'?' SA na posição original: '+nativeSA+' equipe(s).':'')+'</p>'+
   '<p class="scout-rotation-caution">'+esc(photoStatus())+'</p>';
@@ -156,7 +159,7 @@ function teamHTML(team){
  return '<details class="scout-rotation-team" data-team="'+esc(team.id)+'"'+(opened===team.id?' open':'')+'>'+
  '<summary><span class="scout-rotation-team-num">'+String(team.index).padStart(2,'0')+'</span><span><strong>'+esc(team.name)+'</strong><small>'+metrics(team)+' · '+team.starters.length+'/11 titulares · '+team.bench.length+'/12 reservas</small></span><span class="scout-rotation-readiness">'+(team.ready?(team.requiresPositionReview?'Lista completa · rever posição':'Lista completa · posições originais'):'Revisar')+'</span></summary>'+
  '<div class="scout-rotation-team-inside"><div class="scout-rotation-tactical">'+
-  '<div><b>POSSE 4-'+(active==='4312'?'3-1-2':'2-1-3')+'</b><span>'+team.starters.length+' titulares · '+team.bench.length+' reservas sem duplicação</span></div>'+
+  '<div><b>'+esc(TACTICS[tactic]).toUpperCase()+' · 4-'+(active==='4312'?'3-1-2':'2-1-3')+'</b><span>'+team.starters.length+' titulares · '+team.bench.length+' reservas sem duplicação</span></div>'+
   '<div class="scout-rotation-field">'+formats.find(f=>f.id===active).rows.map(row=>
    '<div class="scout-rotation-field-row">'+row.map(slot=>{
     const s=team.starters.find(x=>x.slot===slot),c=getCard(s?.cap);
@@ -202,7 +205,7 @@ function render(){
 }
 function recompute(){
  sheets={};
- for(const f of formats)for(const n of [1,2])sheets[f.id+'-'+n]=engine.build(cards,f,excluded,n);
+ for(const f of formats)for(const n of [1,2])sheets[f.id+'-'+n]=engine.build(cards,f,excluded,n,tactic);
  inventory();render();
 }
 function promptForTeam(team){
@@ -211,7 +214,7 @@ function promptForTeam(team){
  const desc='Analise o vídeo da partida do eFootball 2027 junto com esta escalação real do meu Scout PRO. '+
  'Identifique decisões, tabelas, passe curto, posicionamento, perdas de posse e erros táticos com minuto/segundo quando visíveis. '+
  'Avalie os jogadores individualmente somente quando eles aparecerem no vídeo; marque evidência incerta como não observada. '+
- 'Não invente movimentos, estatísticas, IDs corporais ou jogadas. Sugira mudanças para Posse de Bola e compare com a 4-3-1-2 ou 4-2-1-3.\n'+
+ 'Não invente movimentos, estatísticas, IDs corporais ou jogadas. Sugira mudanças para '+TACTICS[tactic]+' e compare com a 4-3-1-2 ou 4-2-1-3.\n'+
  'Equipe: '+team.name+'\nTitulares:\n'+rows.join('\n')+'\nReservas:\n'+bench.join('\n')+
  '\nObservações registradas:\n'+rosterLogs(team).map(x=>x.when+' '+x.result+' '+x.goals+'-'+x.conceded+' '+x.notes).join('\n');
  return desc;
@@ -310,6 +313,23 @@ async function init(){
  $('black-clear').addEventListener('click',()=>{
   if(!confirm('Limpar apenas a lista local de exclusões? Isso não altera o catálogo original.'))return;
   updateBlack([],{message:'Lista de restrições limpa neste dispositivo.'});
+ });
+ const savedTactic=stored(TACTIC_KEY,'posse');
+ tactic=Object.hasOwn(TACTICS,savedTactic)?savedTactic:'posse';
+ document.querySelectorAll('button[data-tactic-mode]').forEach(button=>{
+  const selected=button.dataset.tacticMode===tactic;
+  button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));
+  button.addEventListener('click',()=>{
+   const mode=button.dataset.tacticMode;if(!Object.hasOwn(TACTICS,mode))return;
+   tactic=mode;opened=null;
+   if(!persist(TACTIC_KEY,tactic))status('black-feedback','Estilo selecionado nesta sessão; preferência não salva.');
+   document.querySelectorAll('button[data-tactic-mode]').forEach(b=>{
+    const yes=b.dataset.tacticMode===tactic;
+    b.classList.toggle('selected',yes);b.setAttribute('aria-pressed',String(yes));
+   });
+   recompute();
+   status('ct-v230-rotation-note',TACTICS[tactic]+' selecionado. Equipes recalculadas por posição, estilo e habilidades. Restrições preservadas, sem alterar builds.');
+  });
  });
  document.querySelectorAll('button[data-series]').forEach(button=>button.addEventListener('click',()=>{
   active=button.dataset.series;opened=null;
