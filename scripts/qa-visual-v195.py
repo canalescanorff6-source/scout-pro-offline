@@ -999,7 +999,7 @@ def run():
                     page.screenshot(path=str(OUT / f"{name}_v221_huijsen_shared_id.png"),full_page=False,animations="disabled")
                 # V227: acervos de outras pessoas isolados, sem tocar as 246 cartas oficiais.
                 page.goto(URL + "/outros-elencos-v227.html", wait_until="domcontentloaded", timeout=35000)
-                page.locator("#friend-people").wait_for(timeout=12000)
+                page.locator("#friend-person-name").wait_for(timeout=12000)
                 page.locator("#friend-person-name").fill("Acervo da Ana")
                 page.locator("#friend-person-form button[type=submit]").click()
                 page.locator("#friend-new-card").click()
