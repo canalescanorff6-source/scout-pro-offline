@@ -360,6 +360,19 @@ async function init(){
   }catch(e){status('black-feedback','Falha ao exportar elencos: '+String(e.message||e))}
   finally{btn.disabled=false}
  });
+ $('rotation-backup').addEventListener('click',async()=>{
+  const button=$('rotation-backup');button.disabled=true;
+  try{
+   const keys=Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:'));
+   const items=Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)]));
+   const data={format:'scoutpro-userdata-v1',exported_at:new Date().toISOString(),items};
+   const outcome=await window.SCOUT_FILE_EXPORT.saveJson(data,'ScoutPRO-Backup-Completo-V225.json');
+   status('black-feedback',outcome.status==='saved'?'Backup completo salvo ('+keys.length+' registros).'
+     :outcome.status==='cancelled'?'Backup cancelado. Seus dados continuam no dispositivo.'
+     :'Download de backup solicitado; confira o arquivo no navegador.');
+  }catch(e){status('black-feedback','Falha ao salvar backup completo: '+String(e.message||e))}
+  finally{button.disabled=false}
+ });
  $('rotation-prompt').addEventListener('click',async()=>{
   const sheet=selected(),team=sheet.teams.find(t=>t.id===opened)||sheet.teams[0];
   if(!team){status('black-feedback','Nenhuma equipe completa disponível nesta seleção.');return}
