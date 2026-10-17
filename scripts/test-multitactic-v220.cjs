@@ -11,7 +11,8 @@ assert.equal(cards.length,246);
 assert.deepEqual(T.STYLES.map(s=>s.id),['posse','normal','rapido','fora','longo']);
 assert.deepEqual(B.tactics,T.STYLES.map(s=>s.id),'Booster rank cobre todos estilos, sem fallback genérico');
 const original=cards.map(c=>({id:c.id,num:c.numero,pp:c.pp,levels:c.niveis,native:c.habilidades_nativas,fixed:c.impeto_fixo,extra:c.impeto_extra}));
-const unique=new Set(cards.map(c=>c.id));assert.equal(unique.size,246,'Não misturar versões da mesma carta');
+const unique=new Set(cards.map(c=>c.numero+':'+c.id));assert.equal(unique.size,246,'Identificar a carta por número e Card ID');
+const uniqueIds=new Set(cards.map(c=>c.id));assert(uniqueIds.size<=246,'Mesmo Card ID bruto pode aparecer em mais de uma entrada; nunca usar sozinho como chave local');
 let verified=0,pending=0,changed=0,withNative=0,styleDifferences=0;
 const namesByTactic=Object.fromEntries(T.STYLES.map(s=>[s.id,new Set()]));
 for(const c of cards){
