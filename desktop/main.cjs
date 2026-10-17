@@ -77,3 +77,25 @@ ipcMain.handle('scout:save-json',async (event,payload)=>{
   await fs.writeFile(selection.filePath,content,{encoding:'utf8'});
   return {status:'saved',bytes:Buffer.byteLength(content,'utf8')};
 });
+
+const snapshotLocation=()=>path.join(app.getPath('userData'),'craque-tatico-recovery-v226.json');
+ipcMain.handle('scout:store-snapshot',async(event,payload)=>{
+ if(event.sender!==win?.webContents)throw Error('Origem não autorizada');
+ const data=payload?.record;
+ if(typeof data!=='string'||Buffer.byteLength(data,'utf8')>8*1024*1024)throw Error('Tamanho do backup inválido');
+ const parsed=JSON.parse(data);
+ if(parsed.format!=='craque-tatico-backup-v2'||!parsed.digest||!parsed.items)throw Error('Backup inválido');
+ const dest=snapshotLocation(),tmp=dest+'.tmp',previous=dest+'.previous';
+ await fs.mkdir(path.dirname(dest),{recursive:true});
+ await fs.writeFile(tmp,data,'utf8');
+ try{await fs.copyFile(dest,previous)}catch(e){if(e.code!=='ENOENT')throw e}
+ await fs.rename(tmp,dest);
+ return {status:'saved'};
+});
+ipcMain.handle('scout:load-snapshot',async(event)=>{
+ if(event.sender!==win?.webContents)throw Error('Origem não autorizada');
+ for(const file of [snapshotLocation(),snapshotLocation()+'.previous']){
+  try{return {record:await fs.readFile(file,'utf8')}}catch(e){if(e.code!=='ENOENT')throw e}
+ }
+ return {record:''};
+});
