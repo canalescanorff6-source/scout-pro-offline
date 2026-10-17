@@ -374,7 +374,7 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_profile_header.png"), full_page=False, animations="disabled")
 
                 # V208: comparação estrutural direta com a referência do usuário.
-                page.wait_for_function("() => document.querySelectorAll('#scout-v208-training tbody tr').length===10",timeout=25000)
+                page.wait_for_function("() => document.querySelectorAll('#scout-v208-training tbody tr').length===10 && !!document.getElementById('scout-v218-controls')",timeout=25000)
                 reference=page.evaluate("""() => {
                   const table=document.getElementById('scout-v208-training');
                   const rows=[...table.querySelectorAll('tbody tr')];
@@ -393,8 +393,8 @@ def run():
                   };
                 }""")
                 detail["v208_reference"]=reference
-                if reference["title"]!="A - Posse central":
-                    problems.append(f"{name}: V209 cabeçalho fora do modelo fixo A - Posse central")
+                if reference["title"]!="SCOUT · Treino registrado · Posse":
+                    problems.append(f"{name}: V218 deve identificar o treino registrado sem exibir a antiga letra A falsa")
                 if reference["names"]!=["Chute","Passe","Drible","Destreza","Força das pernas","Jogo aéreo","Defesa","Goleiro 1","Goleiro 2","Goleiro 3"]:
                     problems.append(f"{name}: V208 categoria ou ordem incorreta")
                 if reference["icons"]!=10 or not reference["hiddenFallback"]:
@@ -405,6 +405,55 @@ def run():
                     problems.append(f"{name}: V208 overflow horizontal {reference['overflow']} px")
                 page.locator("#scout-v208-training").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_training_reference_v208.png"),full_page=False,animations="disabled")
+
+                # V218: a ficha de treino do topo passa a ser a ÚNICA área principal,
+                # com controles funcionais. Tudo que for editado é apenas rascunho local.
+                for advanced in ('pontos','performance'):
+                    shell=page.locator('#scout-v218-advanced-'+advanced)
+                    if shell.count()!=1 or shell.evaluate('(e)=>e.open'):
+                        problems.append(f"{name}: V218 deve manter comparações antigas recolhidas ({advanced})")
+                main_state=page.locator('#scout-v218-status').inner_text()
+                if 'REGISTRO DA CARTA' not in main_state or '62 / 62 PP' not in main_state:
+                    problems.append(f"{name}: V218 não inicia na build registrada de Massaro")
+                page.locator('#scout-v218-edit').click()
+                page.wait_for_function("() => document.querySelectorAll('#scout-v208-training .scout-v218-stepper').length===10",timeout=10000)
+                first=page.locator('#scout-v208-training tbody tr').first
+                if not first.locator('button[aria-label="Aumentar Chute"]').is_disabled():
+                    problems.append(f"{name}: V218 permite ultrapassar PP quando 62 já foram distribuídos")
+                first.locator('button[aria-label="Reduzir Chute"]').click()
+                page.wait_for_function("""() => {
+                    const t=document.querySelector('#scout-v208-training');
+                    return t.querySelector('.scout-v208-total').textContent.trim()==='59 / 62' &&
+                           t.querySelector('.scout-v218-level')?.textContent==='9' &&
+                           document.querySelector('#lab-controls .lab-group input')?.value==='9';
+                }""",timeout=10000)
+                changes=page.evaluate("""() => ({
+                    overflow:document.querySelector('#scout-v208-training').scrollWidth-
+                             document.querySelector('#scout-v208-training').clientWidth,
+                    pageOverflow:document.documentElement.scrollWidth-innerWidth,
+                    buttons:[...document.querySelectorAll('#scout-v208-training .scout-v218-step')]
+                            .filter(x=>x.getBoundingClientRect().height<34).length
+                })""")
+                if changes['overflow']>3 or changes['pageOverflow']>3 or changes['buttons']:
+                    problems.append(f"{name}: V218 overflow ou controles de ajuste muito pequenos: {changes}")
+                page.screenshot(path=str(OUT / f"{name}_training_editable_v218.png"),full_page=False,animations="disabled")
+                first.locator('button[aria-label="Aumentar Chute"]').click()
+                page.wait_for_function("() => document.querySelector('#scout-v208-training .scout-v208-total').textContent.trim()==='62 / 62'",timeout=10000)
+                page.locator('#scout-v218-reset').click()
+                page.wait_for_function("() => document.querySelector('#scout-v218-status').dataset.mode==='registered'",timeout=10000)
+                page.locator('#scout-v218-compare>summary').click()
+                compareA=page.locator('#scout-v218-compare [data-scenario="A"]')
+                if compareA.count():
+                    compareA.click()
+                    page.wait_for_function("""() =>
+                        document.querySelector('#scout-v208-training .scout-v208-level .scout-v218-level')?.textContent==='12' &&
+                        document.querySelector('#scout-v218-status')?.dataset.mode==='draft'
+                    """,timeout=10000)
+                    page.locator('#scout-v218-reset').click()
+                page.wait_for_function("""() =>
+                    document.querySelector('#scout-v208-training .scout-v208-total').textContent.trim()==='62 / 62' &&
+                    document.querySelector('#scout-v208-training tbody tr .scout-v208-level').textContent.trim()==='10'
+                """,timeout=10000)
 
                 # V207: painel individual com PP e Card ID reais.
                 page.wait_for_function("""() => {
@@ -579,6 +628,8 @@ def run():
                   const icons=[...document.querySelectorAll('#lab-controls .lab-group>label .scout-v206-svg')];
                   return icons.length===10&&keys.every(k=>icons.some(e=>e.dataset.scoutV206Symbol===k));
                 }""",timeout=25000)
+                # Abrir avançadas somente para os testes legados do laboratório.
+                page.locator('#scout-v218-advanced-performance > summary').click()
                 # Medir geometria com o Laboratório aberto (seção compacta é display:none).
                 was_compact=page.evaluate("document.body.classList.contains('scout-v188-compact')")
                 if was_compact:
