@@ -28,7 +28,7 @@ function inventory(){
  const a=engine.analyze(cards,excluded);
  status('black-count',a.excluded+' / 22');
  status('rotation-inventory',a.cards+' cartas reais · '+a.excluded+' reservadas · '+a.available+' disponíveis · '+a.maxTeams+' equipes completas possíveis por série · '+a.remaining+' cartas fora de equipes completas.');
- status('black-feedback',a.requiresBlackPhoto?
+ status('black-feedback',!a.listComplete?
   'Prévia: a lista contém '+a.excluded+' cartas. Para tratar como mapeamento completo, confirme as 22 cartas pelas fotos do Black.':
   '22 IDs catalogados na lista de exclusão. Confira os jogadores nas fotos: ainda não foi realizada validação visual externa.');
 }
