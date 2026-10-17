@@ -66,7 +66,7 @@ const POOLS={
 };
 function roleOf(d){return POSITION[d.role_used]||POSITION[d.shown_position]||POSITION[d.posicao]||null}
 function evaluate(d,tactic,manualEquipped){
- if(!['posse','normal','rapido'].includes(tactic))throw Error('Tática inválida');
+ if(!['posse','normal','rapido','fora','longo'].includes(tactic))throw Error('Tática inválida');
  const role=roleOf(d);if(!role)return {role:null,recommendations:[],nativeKnown:false,missing:['Posição da carta não cadastrada']};
  const native=splitSkills(d.native_skills||d.habilidades_nativas);
  const nativeKnown=Boolean(native.length);
@@ -89,6 +89,8 @@ function evaluate(d,tactic,manualEquipped){
  if(tactic==='posse')bump(['onepass','through','sole','double','heel','intercept','blocker'],22);
  if(tactic==='normal')bump(['intercept','fighting','weighted','blocker','through'],16);
  if(tactic==='rapido')bump(['through','firstshot','double','longshot','fighting','intercept'],18);
+ if(tactic==='fora')bump(['weighted','lowloft','onepass','sole','double','through','aerial','gklong'],23);
+ if(tactic==='longo')bump(['weighted','lowloft','aerial','heading','firstshot','fighting','intercept','gklong'],24);
  if(/pivo|homem de area|target/.test(style))bump(['heading','aerial','onepass','heel'],34);
  if(/infiltr|puxa marcacao|arrastar defesa|matador|artilheiro|oportunista/.test(style))bump(['firstshot','through','onepass','acrobatic'],18);
  if(/armador|orquestrador|classico|criativo/.test(style))bump(['onepass','through','weighted','sole','heel'],23);
@@ -99,10 +101,11 @@ function evaluate(d,tactic,manualEquipped){
  // cadastradas na própria carta. Não representam bônus medidos ou gameplay validado.
  const synergy=new Map();
  const support=(condition,targets,amount,explanation)=>{
-  if(tactic!=='posse'||!condition)return;
+  if(!condition)return;
+  const modifier=tactic==='posse'?amount:(tactic==='fora'?Math.round(amount*.65):tactic==='longo'?Math.round(amount*.55):Math.round(amount*.75));
   for(const id of targets){
    if(!scorer.has(id)||used.has(id))continue;
-   scorer.set(id,scorer.get(id)+amount);
+   scorer.set(id,scorer.get(id)+modifier);
    const notes=synergy.get(id)||[];
    notes.push(explanation);
    synergy.set(id,notes);
@@ -199,7 +202,7 @@ const css=document.createElement('style');css.textContent=
 document.head.appendChild(css);
 const section=document.createElement('section');section.id='scout-v162';section.setAttribute('aria-label','Recomendações de habilidades e ímpetos por carta');
 section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA V162</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
-'<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button></div>'+
+'<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button><button type="button" data-tactic="fora" aria-pressed="false">Pelas Pontas</button><button type="button" data-tactic="longo" aria-pressed="false">Bola Longa</button></div>'+
 '<div class="v162-panels"><article class="v162-panel"><h3>5 habilidades adicionais · prioridade na Posse</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
 '<details><summary>Opcional: informar habilidades já equipadas para refinar a lista</summary><p>Opcional. Separe os nomes por ponto e vírgula. Este registro fica apenas neste dispositivo; não modifica a carta do jogo.</p><textarea id="v162-equipped" aria-label="Habilidades adicionais já equipadas" placeholder="Ex.: Passe de primeira; Toque duplo"></textarea><button id="v162-save" type="button">Salvar e recalcular</button><p id="v162-feedback" aria-live="polite"></p></details>'+
 '<p class="v162-foot">Recomendações teóricas baseadas nas habilidades registradas, no estilo e na função da carta. Não são testes comprovados em partidas; verifique habilidades nativas, compatibilidade e slot antes de usar tokens. Nenhuma escolha é aplicada automaticamente.</p>';
@@ -245,7 +248,7 @@ function draw(){
  line('Estado de sua conta: '+verifiedLabel+(manuallyVerified.equipped?' · '+manuallyVerified.equipped:''));
  if(USER_SLOT_NOTES[Number(d.capture)])line('Relato seu (a confirmar na tela do jogo): '+USER_SLOT_NOTES[Number(d.capture)]);
  const panel=section.querySelector('#v162-booster');panel.replaceChildren();
- const title=document.createElement('p');title.style.fontWeight='800';title.textContent=boost.primary?'Melhor ímpeto sugerido para '+(tactic==='posse'?'Posse de Bola':tactic==='normal'?'Contra-Ataque Normal':'Contra-Ataque Rápido')+': '+boost.primary.nome+' +1':'Sem ímpeto calculável para esta função';panel.appendChild(title);
+ const title=document.createElement('p');title.style.fontWeight='800';title.textContent=boost.primary?'Melhor ímpeto sugerido para '+({posse:'Posse de Bola',normal:'Contra-Ataque',rapido:'Contra-Ataque Rápido',fora:'Pelas Pontas',longo:'Bola Longa'}[tactic]||tactic)+': '+boost.primary.nome+' +1':'Sem ímpeto calculável para esta função';panel.appendChild(title);
  const applicability=document.createElement('p');applicability.style.fontWeight='700';
  applicability.textContent=boost.equipStatus==='impossivel_na_conta'?'Sua conferência indica que esta carta não possui slot: a escolha é somente comparativa.':
  boost.equipStatus==='comparacao_segundo_fixo'?'Há segundo ímpeto fixo registrado: esta é apenas a melhor alternativa teórica, não uma opção para substituir.':
@@ -275,7 +278,8 @@ function draw(){
  const note=document.createElement('p');note.className='v162-note';note.textContent=boost.note;panel.appendChild(note);
  const jump=document.createElement('a');jump.href='../revisao-impetos-v103.html?c='+Number(d.capture);jump.textContent='Confirmar o slot, o ímpeto equipado e as opções desta carta ↗';jump.style.color='#8dd8f7';jump.style.fontWeight='700';panel.appendChild(jump);
 }
-section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',()=>{tactic=b.dataset.tactic;draw()}));
+section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',()=>{tactic=b.dataset.tactic;draw();document.dispatchEvent(new CustomEvent('scoutpro:tactic-ui-selected-v220',{detail:{tactic}}))}));
+ document.addEventListener('scoutpro:tactic-selected-v220',e=>{if(['posse','normal','rapido','fora','longo'].includes(e.detail?.tactic)){tactic=e.detail.tactic;draw()}});
 section.querySelector('#v162-save').addEventListener('click',()=>{
  extra=ta.value.trim().slice(0,700);
  let saved=false;

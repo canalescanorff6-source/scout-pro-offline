@@ -45,7 +45,7 @@ ALA:{speed:5,accel:6,dribble:6,tight:5,balance:5,control:5,pass:4,finish:3,stami
 GO:{gkaware:9,gkreflex:9,gkreach:9,gkparry:8,gkcatch:6}};
 const POS={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LD',LE:'LD',DC:'ZG',ZC:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA'};
 const label={awareness:'consciência ofensiva',finish:'finalização',accel:'aceleração',control:'controle de bola',power:'força do chute',physical:'contato físico',speed:'velocidade',pass:'passe rasteiro',loft:'passe alto',tight:'posse apertada',dribble:'drible',balance:'equilíbrio',heading:'cabeceio',jump:'salto',stamina:'resistência',curl:'efeito',placekick:'bola parada',defaware:'consciência defensiva',tackle:'desarme',defengage:'dedicação defensiva',aggression:'agressividade',gkaware:'consciência de goleiro',gkparry:'desvio de goleiro',gkreflex:'reflexos de goleiro',gkreach:'alcance de goleiro',gkcatch:'firmeza de goleiro'};
-const tactics=['posse','normal','rapido'];
+const tactics=['posse','normal','rapido','fora','longo'];
 function slotStatus(extra){
  const s=String(extra||'');
  if(/^SLOT SELECIONÁVEL/i.test(s))return 'selecionavel';
@@ -136,8 +136,14 @@ function rank(card,tactic){
   addStats(weights,['awareness','defaware'],1);
  }else if(tactic==='normal'){
   addStats(weights,['physical','defaware','balance','stamina'],2);
- }else{
+ }else if(tactic==='rapido'){
   addStats(weights,['speed','accel','awareness','stamina'],2);
+ }else if(tactic==='fora'){
+  addStats(weights,['pass','loft','curl','dribble','stamina'],3);
+  addStats(weights,['speed','tight','balance'],1);
+ }else if(tactic==='longo'){
+  addStats(weights,['loft','heading','jump','physical','stamina'],3);
+  addStats(weights,['defaware','awareness','power'],1);
  }
  const nativeFindings=nativeSkillContext(weights,card.habilidades_nativas||card.native_skills||'',role);
  const levels=levelsOf(card);
