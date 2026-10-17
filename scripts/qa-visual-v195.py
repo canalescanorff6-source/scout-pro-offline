@@ -308,6 +308,19 @@ def run():
                 detail = metrics(page, SCREENS_SELECTORS["detail"])
                 detail["edition_collapsed_by_default"] = is_collapsed
                 detail["navigator_buttons"] = page.locator("#scout-card-navigator button").count()
+                # V229: auditoria da unificação de SEIS seções antigas nesta carta.
+                page.locator('#scout-v229-legacy-archive').wait_for(state='attached',timeout=25000)
+                curation=page.evaluate("""() => window.CRAQUE_CARD_CURATOR_V229?.inspect(document)""")
+                detail['curation_v229']=curation
+                if (not curation or curation['main']!=1 or curation['archive']!=1 or
+                    curation['present']!=6 or curation['archived']!=6 or
+                    curation['mainTables']!=1 or curation['mainProgress']!=1 or
+                    curation['duplicateIds'] or curation['visibleLegacy'] or not curation['compact']):
+                    problems.append(f"{name}: V229 ficha principal ou arquivo legado com problema {curation}")
+                if page.locator('#scout-v229-legacy-archive').evaluate('(e)=>e.open'):
+                    problems.append(f"{name}: V229 acervo legado não deve aparecer expandido")
+                if page.locator('.scout-v220-headline h2').count()!=1:
+                    problems.append(f"{name}: V229 deve existir apenas uma ficha principal")
                 # V220: engenharia técnica fica recolhida; abrir apenas para executar testes legados.
                 tech=page.locator('#scout-v220-technical')
                 if tech.count()!=1 or tech.evaluate('(e)=>e.open'):
@@ -751,6 +764,10 @@ def run():
                   return icons.length===10&&keys.every(k=>icons.some(e=>e.dataset.scoutV206Symbol===k));
                 }""",timeout=25000)
                 # Abrir avançadas somente para os testes legados do laboratório.
+                if not page.locator('#scout-v220-technical').evaluate('(e)=>e.open'):
+                    page.locator('#scout-v220-technical > summary').click()
+                if not page.locator('#scout-v229-legacy-archive').evaluate('(e)=>e.open'):
+                    page.locator('#scout-v229-legacy-archive > summary').click()
                 page.locator('#scout-v218-advanced-performance > summary').click()
                 # Medir geometria com o Laboratório aberto (seção compacta é display:none).
                 was_compact=page.evaluate("document.body.classList.contains('scout-v188-compact')")
@@ -814,6 +831,25 @@ def run():
                 page.screenshot(path=str(OUT / f"{name}_profile_impeto.png"), full_page=False, animations="disabled")
                 page.locator("#scout-v194-gameplay").scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT / f"{name}_profile_gameplay.png"), full_page=False, animations="disabled")
+                # V229: o antigo ajuste GLOBAL de "mostrar todas as análises" não pode
+                # fazer as 6 fichas V72 reaparecerem após carregar outra carta.
+                page.evaluate("""() => localStorage.setItem('scoutpro:v187:full-analysis','1')""")
+                page.reload(wait_until='domcontentloaded')
+                page.wait_for_function("""() => {
+                    const c=window.CRAQUE_CARD_CURATOR_V229?.inspect(document);
+                    return c?.archived===6 && c?.mainTables===1 && c?.compact;
+                }""",timeout=25000)
+                legacy_after_reload=page.evaluate("""() => ({
+                  details:document.querySelector('#scout-v229-legacy-archive')?.open,
+                  technical:document.querySelector('#scout-v220-technical')?.open,
+                  rootVisible:[...document.querySelectorAll('.profile-content>section.topic')].filter(
+                    el=>getComputedStyle(el).display!=='none').length
+                })""")
+                detail['v229_legacy_pref_inert']=legacy_after_reload
+                if (legacy_after_reload['details'] or legacy_after_reload['technical'] or
+                    legacy_after_reload['rootVisible']):
+                    problems.append(f"{name}: V229 configuração antiga reabriu fichas: {legacy_after_reload}")
+                page.evaluate("""() => localStorage.removeItem('scoutpro:v187:full-analysis')""")
                 result = {"catalog": home, "detail": detail}
                 if name in ("mobile_390", "windows_1366"):
                     page.goto(URL + "/revisao-impetos-v103.html?c=24",

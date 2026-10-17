@@ -28,6 +28,14 @@ jobs:
           node-version: '22'
       - name: Testes de integridade offline
         run: npm run check
+      - name: Disponibilizar auditoria individual das 246 cartas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-tatico-auditoria-246-v229
+          path: build/v229-audit-246.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs
