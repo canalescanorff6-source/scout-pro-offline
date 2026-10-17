@@ -277,9 +277,10 @@ def run():
 
                 errors.clear()
                 page.goto(URL + "/fichas/001_Daniele_Massaro.html", wait_until="domcontentloaded", timeout=35000)
-                page.locator("#scout-v194-focus").wait_for(timeout=25000)
-                page.locator("#scout-v194-gameplay").wait_for(timeout=25000)
-                page.locator("#scout-v162").wait_for(timeout=25000)
+                page.locator("#scout-v194-focus").wait_for(state="attached",timeout=25000)
+                page.locator("#scout-v220-hero").wait_for(timeout=25000)
+                page.locator("#scout-v194-gameplay").wait_for(state="attached",timeout=25000)
+                page.locator("#scout-v162").wait_for(state="attached",timeout=25000)
                 # V196: assegurar que o renderizador traduziu os nomes nativos conhecidos.
                 page.wait_for_function("""() =>
                     window.SCOUT_SKILL_NAMES_V196 &&
@@ -307,6 +308,12 @@ def run():
                 detail = metrics(page, SCREENS_SELECTORS["detail"])
                 detail["edition_collapsed_by_default"] = is_collapsed
                 detail["navigator_buttons"] = page.locator("#scout-card-navigator button").count()
+                # V220: engenharia técnica fica recolhida; abrir apenas para executar testes legados.
+                tech=page.locator('#scout-v220-technical')
+                if tech.count()!=1 or tech.evaluate('(e)=>e.open'):
+                    problems.append(f"{name}: V220 precisa iniciar com engenharia recolhida")
+                else:
+                    tech.locator('summary').click()
                 primary = page.locator("#v188-top-rec").first.inner_text()
                 caution = page.locator("#v200-caution").first.inner_text()
                 alternatives = page.locator("#v200-alternatives").first.inner_text()
@@ -349,7 +356,7 @@ def run():
                     problems.append(f"{name}: ficha principal começa muito abaixo: y={main.get('y')}")
                 if mobile and nav.get("height", 9999) > 94:
                     problems.append(f"{name}: navegador de cartas excessivamente alto: {nav.get('height')} px")
-                focus = detail["elements"].get("#scout-v194-focus") or {}
+                focus = rectangle(page,"#scout-v220-focus-title") or {}
                 if mobile and focus.get("y", 9999) > (740 if width <= 340 else 710):
                     problems.append(f"{name}: foco competitivo não aparece cedo: y={focus.get('y')}")
                 if mobile:
@@ -371,6 +378,9 @@ def run():
                     if page.locator(legacy).count() and page.locator("body.scout-v188-compact").count():
                         if page.locator(legacy).is_visible():
                             problems.append(f"{name}: laboratório antigo {legacy} apareceu antes da ficha principal compacta")
+                tech.locator('summary').click()
+                if tech.evaluate('(e)=>e.open'):
+                    problems.append(f"{name}: engenharia deve voltar a ficar recolhida")
                 page.screenshot(path=str(OUT / f"{name}_profile_header.png"), full_page=False, animations="disabled")
 
                 # V208: comparação estrutural direta com a referência do usuário.
