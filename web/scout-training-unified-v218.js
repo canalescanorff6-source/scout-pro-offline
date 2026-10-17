@@ -29,7 +29,7 @@ function readSaved(raw,id,card,budget){
 }
 function scenarioPlan(data,key,budget,official){
  const vec=data?.[key];
- if(!valid(vec)||total(vec)>budget||(!Number.isInteger(budget)||budget<0))return null;
+ if(!valid(vec)||!Number.isInteger(budget)||budget<0||total(vec)!==budget)return null;
  if(valid(official)&&vec.every((n,i)=>n===official[i]))return null;
  return vec.slice();
 }
@@ -123,8 +123,8 @@ function mount(doc){
  function refresh(){
   const spent=total(current);
   const budgetRemaining=budget-spent;
-  tag.textContent=(custom?'SIMULAÇÃO PESSOAL':'REGISTRO DA CARTA')+' · '+spent+' / '+budget+' PP'+(custom&&sourceLabel?' · '+sourceLabel:'');
-  tag.dataset.mode=custom?'draft':'registered';
+  tag.textContent=(custom?'SIMULAÇÃO PESSOAL':officialValid?'REGISTRO DA CARTA':'PRÉVIA SEM HOMOLOGAÇÃO')+' · '+spent+' / '+budget+' PP'+(custom&&sourceLabel?' · '+sourceLabel:'');
+  tag.dataset.mode=custom?'draft':officialValid?'registered':'pending';
   status.textContent=spent+' / '+budget;
   btnEdit.textContent=editing?'Concluir edição':'Editar pontos';
   btnReset.disabled=!custom;
