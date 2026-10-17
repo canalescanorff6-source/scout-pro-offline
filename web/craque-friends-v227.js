@@ -6,7 +6,7 @@
 (function(global,factory){'use strict';const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;if(global)global.CRAQUE_FRIENDS_V227=api;})(typeof window!=='undefined'?window:null,function(){'use strict';
 const KEY='scoutpro:v227:friends-collections',SCHEMA='craque-friends-v227',EXPORT='craque-friend-profile-v227';
 const MAX_STORAGE=3*1024*1024,MAX_OWNERS=150,MAX_CARDS=1200,MAX_IMAGE=85000;
-const LIMITS=Object.freeze({name:80,edition:180,style:110,position:24,rarity:50,cardId:90,notes:1500,skills:600,booster:200});
+const LIMITS=Object.freeze({name:80,edition:180,style:110,position:24,rarity:50,cardId:90,notes:1500,skills:600,booster:200,nativeSkills:1200,fixedBooster:180,trainingLevels:150});
 const readStr=(value,max=100)=>String(value??'').trim().slice(0,max);
 const uid=()=>typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():
   'ct-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12);
@@ -17,6 +17,27 @@ function normalOwner(raw){
  const id=readStr(raw?.id,95);
  if(!name||!id)throw Error('Pessoa sem identificação ou nome.');
  return {id,name,createdAt:readStr(raw?.createdAt,45)||new Date().toISOString()};
+}
+function normalAnalysis(value){
+ if(value===null||value===undefined)return null;
+ if(typeof value!=='object'||Array.isArray(value)||value.version!==228||
+    typeof value.source!=='string'||value.source.length>140||
+    typeof value.createdAt!=='string'||value.createdAt.length>45||
+    !value.profiles||typeof value.profiles!=='object')
+   throw Error('Ficha automática inválida no arquivo. Não é seguro importá-la.');
+ const profiles={};
+ for(const id of ['posse','normal','rapido','fora','longo']){
+  const p=value.profiles[id];
+  if(!p||!['hipotese','pendente'].includes(p.status))throw Error('Ficha tática inválida: '+id);
+  const levels=p.levels===null?null:Array.isArray(p.levels)?p.levels.slice():null;
+  if(p.status==='hipotese'&&(!levels||levels.length!==10||!levels.every(x=>Number.isInteger(x)&&x>=0&&x<=20)))throw Error('PP inválidos na ficha '+id);
+  if(p.status==='pendente'&&levels!==null)throw Error('Ficha pendente com níveis não confirmados.');
+  const pp=p.pp===null?null:Number(p.pp),remaining=p.remaining===null?null:Number(p.remaining);
+  if(p.status==='hipotese'&&(!Number.isInteger(pp)||pp<0||pp>300||remaining!==0))throw Error('Orçamento de treino inválido.');
+  if(p.status==='pendente'&&(pp!==null||remaining!==null))throw Error('Ficha pendente com PP inconsistentes.');
+  profiles[id]={status:p.status,levels,pp,remaining,confidence:readStr(p.confidence,60)};
+ }
+ return {version:228,source:value.source,createdAt:value.createdAt.slice(0,45),profiles};
 }
 function normalCard(raw){
  const ownerId=readStr(raw?.ownerId,95),id=readStr(raw?.id,95),name=readStr(raw?.name,LIMITS.name);
@@ -33,6 +54,11 @@ function normalCard(raw){
   edition:readStr(raw?.edition,LIMITS.edition),position:readStr(raw?.position,LIMITS.position),
   rarity:readStr(raw?.rarity,LIMITS.rarity),style:readStr(raw?.style,LIMITS.style),
   level,pp,skills:readStr(raw?.skills,LIMITS.skills),booster:readStr(raw?.booster,LIMITS.booster),
+  nativeSkills:readStr(raw?.nativeSkills,LIMITS.nativeSkills),
+  fixedBooster:readStr(raw?.fixedBooster,LIMITS.fixedBooster),
+  boosterSlot:['vazio','ocupado','ausente','pendente'].includes(raw?.boosterSlot)?raw.boosterSlot:'pendente',
+  trainingLevels:readStr(raw?.trainingLevels,LIMITS.trainingLevels),
+  analysis:normalAnalysis(raw?.analysis),
   notes:readStr(raw?.notes,LIMITS.notes),image,
   createdAt:readStr(raw?.createdAt,45)||new Date().toISOString(),
   updatedAt:readStr(raw?.updatedAt,45)||new Date().toISOString()
