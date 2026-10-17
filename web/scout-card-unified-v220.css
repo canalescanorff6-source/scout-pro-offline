@@ -307,3 +307,14 @@ body[data-page="detail"] .scout-v220-advanced-skill #scout-v162{
 @media(prefers-reduced-motion:reduce){
  body[data-page="detail"] .scout-v220-tab{transition:none!important}
 }
+
+/* A engenharia e a lista completa de boosters continuam disponíveis quando abertas. */
+body.scout-v188-compact #scout-v220-technical #scout-v162 .v162-panel:nth-child(2){
+ display:block!important;
+}
+body.scout-v188-compact #scout-v220-technical #scout-v162 .v162-meta{
+ display:block!important;
+}
+body[data-page="detail"] #scout-v220-technical .scout-v188-boost{
+ display:block!important;
+}
