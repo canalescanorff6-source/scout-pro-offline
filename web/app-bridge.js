@@ -108,7 +108,13 @@ if(inCard){
 if(inCard){
  const css220=document.createElement('link');css220.rel='stylesheet';css220.href=v189Root+'scout-card-unified-v220.css';document.head.appendChild(css220);
  const engine220=document.createElement('script');engine220.src=v189Root+'scout-multitactic-engine-v220.js';
- engine220.onload=()=>{const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';document.head.appendChild(ui220)};
+ engine220.onload=()=>{
+  const loadCardUI=()=>{const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';document.head.appendChild(ui220)};
+  // V233 precisa da API de PP V220; carrega ANTES da ficha, sem tocar no registro.
+  const intelligent233=document.createElement('script');intelligent233.src=v189Root+'craque-role-intelligence-v233.js';
+  intelligent233.onload=loadCardUI;intelligent233.onerror=loadCardUI;
+  document.head.appendChild(intelligent233);
+ };
  document.head.appendChild(engine220);
 }
 // V229: consolidar seis painéis legados em arquivo recolhido, sem mudar nenhuma carta.
@@ -657,6 +663,15 @@ document.head.appendChild(experience232Css);
 const experience232Js=document.createElement('script');
 experience232Js.src=v189Root+'craque-experience-v232.js';
 document.head.appendChild(experience232Js);
+
+// V233: análise funcional específica por posição/estilo/carta, consultiva.
+// Mantém intactos os níveis, habilidades, ímpetos, Card IDs e backups existentes.
+if(inCard){
+ const role233Css=document.createElement('link');role233Css.rel='stylesheet';
+ role233Css.href=v189Root+'craque-role-panel-v233.css';document.head.appendChild(role233Css);
+ const role233Ui=document.createElement('script');role233Ui.src=v189Root+'craque-role-panel-v233.js';
+ document.head.appendChild(role233Ui);
+}
 
 window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
