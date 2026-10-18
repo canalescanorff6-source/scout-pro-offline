@@ -5,6 +5,8 @@ const SLOT_LABEL={go:'GO',ld:'LD',le:'LE',zge:'ZG E',zgd:'ZG D',vol:'VOL',mlge:'
 const ROLE_MAP={GR:'GO',GO:'GO',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',ZG:'ZG',MDF:'VOL',VOL:'VOL',MC:'MLG',ME:'MLG',MLG:'MLG',MO:'MAT',MAT:'MAT',AC:'CA',CA:'CA',SA:'SA'};
 const ROWS=[['sa','ca'],['mat'],['mlge','mlgd'],['vol'],['le','zge','zgd','ld'],['go']];
 const STORAGE_KEY='scoutpro:v176:posse4312:my-lineup';
+const identity=window.SCOUT_PLAYER_IDENTITY_V245;
+if(!identity)throw Error('Identidade dos jogadores V245 indisponível');
 let plan=null, roster=[], byCap=new Map(), base={}, current={},activeSlot=null,showAll=false;
 const roleFor=c=>ROLE_MAP[String(c.posicao||'')]||c.posicao;
 const originallyFits=(c,slot)=>roleFor(c)===('zge'===slot||'zgd'===slot?'ZG':SLOT_LABEL[slot]?.split(' ')[0]);
@@ -16,8 +18,10 @@ function persist(){
 function canPick(slot,cap){
  const n=Number(cap);
  if(!Number.isSafeInteger(n)||!byCap.has(n)){setStatus('Carta inexistente no catálogo.');return false}
- const existing=Object.entries(current).find(([k,v])=>k!==slot&&Number(v)===n);
- if(existing){setStatus('A carta #'+n+' já está em '+SLOT_LABEL[existing[0]]+'. Remova-a dessa posição antes.');return false}
+ const existing=Object.entries(current).find(([k,v])=>k!==slot&&
+  identity.key(byCap.get(Number(v)))===identity.key(byCap.get(n)));
+ if(existing){setStatus('O jogador '+byCap.get(n).name+' já está em '+SLOT_LABEL[existing[0]]+
+  ', mesmo usando outra carta. Uma versão por pessoa em cada equipe.');return false}
  current[slot]=n;persist();render();return true;
 }
 function playerCard(slot){
@@ -41,9 +45,19 @@ function renderPitch(){
  const altered=Object.keys(base).filter(k=>current[k]!==base[k]);
  $('custom-badge').textContent=altered.length?altered.length+' posição(ões) modificada(s)':'11 titulares recomendados';
 }
+function effectiveBench(){
+ const rows=plan.bench.map(p=>({...p,original_pos:byCap.get(p.cap)?.posicao}));
+ return identity.benchFor(Object.values(current),rows,roster).map((row,index)=>{
+  const original=plan.bench[index],player=byCap.get(row.cap);
+  return {...original,cap:row.cap,nome:player.name,art:getImage(row.cap),
+   card_page:player.arquivo,role:row.original_pos,estilo_ataque:player.estilo_ataque,
+   confidence:row.autoReplacement?'revisão':original.confidence,
+   use:row.autoReplacement?'Reserva substituída para evitar outra versão do mesmo jogador; avalie a função antes de usar.':original.use};
+ });
+}
 function renderBench(){
  const roleoptions=Object.keys(SLOT_LABEL).map(s=>'<option value="'+s+'">'+esc(SLOT_LABEL[s])+'</option>').join('');
- $('bench').innerHTML=plan.bench.map(p=>{
+ $('bench').innerHTML=effectiveBench().map(p=>{
  const inField=Object.values(current).includes(p.cap);
  const selected=byCap.get(p.cap);
  return '<article class="bench-card">'+
@@ -77,11 +91,12 @@ function candidates(){
 function refreshPicker(){
  const cards=candidates();$('player-count').textContent=cards.length>=70?'Até 70 resultados (refine a busca)':'Encontrados: '+cards.length;
  $('player-options').innerHTML=cards.length?cards.map(c=>{
- const used=Object.entries(current).find(([s,n])=>s!==activeSlot&&Number(n)===c.numero);
+ const used=Object.entries(current).find(([s,n])=>s!==activeSlot&&
+ identity.key(byCap.get(Number(n)))===identity.key(c));
  const src=getImage(c.numero);
  return '<button class="option" data-cap="'+c.numero+'" type="button" '+(used?'disabled':'')+'>'+
  (src?'<img src="'+esc(src)+'" alt="" loading="lazy"/>':'<span class="no-art">#'+c.numero+'</span>')+
- '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+(used?' · EM CAMPO':'')+'</small></span></button>';
+ '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+(used?' · JOGADOR JÁ EM CAMPO':'')+'</small></span></button>';
  }).join(''):'<p>Nenhuma carta encontrada neste filtro.</p>';
  $('player-options').querySelectorAll('button[data-cap]').forEach(b=>b.onclick=()=>{
  if(canPick(activeSlot,Number(b.dataset.cap)))$('picker').close();
@@ -109,7 +124,8 @@ async function init(){
  base=Object.fromEntries(plan.starter_slots.map(x=>[x.slot,x.cap]));current={...base};
  try{const stored=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(stored?.schema===plan.schema&&stored.slots&&typeof stored.slots==='object'){
   const vals={...base};for(const s of Object.keys(base))if(byCap.has(Number(stored.slots[s])))vals[s]=Number(stored.slots[s]);
-  if(new Set(Object.values(vals)).size===11)current=vals;else setStatus('Personalização com jogadores repetidos ignorada; formação original carregada.');
+  if(new Set(Object.values(vals)).size===11&&identity.unique(Object.values(vals).map(n=>byCap.get(n))))current=vals;
+  else setStatus('Personalização com versões duplicadas de um jogador ignorada; formação original carregada.');
  }}catch(e){setStatus('Não foi possível carregar personalização anterior.')}
  $('catalog-count').textContent=roster.length+' cartas verificadas no índice • 11 titulares + 12 reservas';
  $('confidence-note').textContent=plan.confidence_explanation;
