@@ -86,6 +86,15 @@ for(const p of paths){
 }
 for(const p of ['web/sw.js','scripts/stamp-bundle-v189.cjs'])
  assert(read(p).includes('scout-player-identity-v245.js'),'Pacote offline: '+p);
+const legacyHTML=read('web/meu-time-posse-4312.html');
+const legacyEditor=read('web/meu-time-posse-4312.js');
+assert(legacyHTML.includes('scout-player-identity-v245.js'));
+assert(legacyHTML.indexOf('scout-player-identity-v245.js')<legacyHTML.indexOf('meu-time-posse-4312.js'));
+assert(legacyEditor.includes('identity.benchFor('),'Formação V176 conserva 12 reservas distintas');
+assert(legacyEditor.includes('identity.key(byCap.get(Number(v)))===identity.key(byCap.get(n))'),
+ 'Formação V176 rejeita Tonali e outras versões repetidas');
+assert(legacyEditor.includes('identity.unique(Object.values(vals).map(n=>byCap.get(n)))'),
+ 'Personalizações locais antigas também são validadas ao abrir');
 const editor=read('web/meu-time-duas-formacoes-v177.js');
 assert(editor.includes('identity.benchFor('));
 assert(editor.includes('identity.key(byCap.get(Number(n)))===identity.key(c)'));
