@@ -1,0 +1,10 @@
+/* V247 — ação objetiva por reserva, legível em telas estreitas. */
+.ct-v247-recommendation{
+ display:grid;gap:4px;margin-top:8px;padding:8px 10px;
+ border-inline-start:2px solid #c9ae70;background:rgba(14,25,42,.74);
+ border-radius:0 7px 7px 0;color:#e9e3d2;font-size:12px;line-height:1.45;
+}
+.ct-v247-recommendation small{display:block;font-size:inherit;line-height:inherit;}
+.ct-v247-recommendation strong{font-weight:700;color:#ead19a;}
+.ct-v247-recommendation[data-confirmed="false"]{border-inline-start-color:#a7adb5;color:#c5cbd4;}
+@media(max-width:520px){.ct-v247-recommendation{max-width:100%;overflow-wrap:anywhere;padding:7px 9px;}}
