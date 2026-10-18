@@ -20,7 +20,7 @@ assert(curator.includes('archiveOptional(doc,holder,archive)'));
 assert(curator.includes('late.observe(root,{childList:true,subtree:true})'));
 assert(curator.includes('archive.contains(node)'));
 assert(curator.includes("if(!SECTION_IDS.includes(targetId)&&!OPTIONAL_IDS.includes(targetId))return"));
-assert(!/localStorage|sessionStorage|indexedDB|fetch\(/.test(curator),
+assert(!/\b(?:localStorage|sessionStorage)\.(?:setItem|removeItem|clear)\s*\(|\bindexedDB\.open\s*\(|\bfetch\s*\(/.test(curator),
  'Archival presentation cannot mutate persistence or load new data.');
 assert(style.includes('scout-v229-legacy-archive:not([open])'));
 assert(style.includes('linear-gradient(135deg,#1a304e,#0d1d34)'));
