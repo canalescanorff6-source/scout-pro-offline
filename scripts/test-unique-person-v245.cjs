@@ -53,7 +53,7 @@ for(const formation of forms){
  }
  for(const tactic of modes)for(const cycle of [1,2]){
   const result=engine.build(roster,formation,[],cycle,tactic);
-  assert.equal(result.teams.length,9,formation.id+' 9 equipes');
+  assert.equal(result.teams.length,10,formation.id+' 10 equipes com 246 cartas');
   const allCards=new Set();
   for(const team of result.teams){
    const members=[...team.starters,...team.bench];
@@ -70,8 +70,8 @@ for(const formation of forms){
     allCards.add(row.cap);
    }
   }
-  assert.equal(allCards.size,207,'207 cartas distribuídas em 9 elencos, sem apagar nenhuma');
-  assert.equal(result.leftovers.length,39,'39 cartas disponíveis em espera sem exclusões');
+  assert.equal(allCards.size,230,'230 cartas distribuídas em 10 elencos, sem apagar nenhuma');
+  assert.equal(result.leftovers.length,16,'16 cartas disponíveis em espera sem exclusões');
  }
 }
 // Alternativas por função também não devem sugerir outras versões do mesmo titular.
@@ -90,4 +90,4 @@ const editor=read('web/meu-time-duas-formacoes-v177.js');
 assert(editor.includes('identity.benchFor('));
 assert(editor.includes('identity.key(byCap.get(Number(n)))===identity.key(c)'));
 assert.equal(JSON.stringify(roster),original,'Não alterar a base de 246 cartas');
-console.log('V245 OK: 2 formações × 5 estilos × 2 rodadas × 9 equipes; 11 titulares + 12 reservas sem pessoas duplicadas. 246 cartas originais intactas.');
+console.log('V245 OK: 2 formações × 5 estilos × 2 rodadas × 10 equipes; 11 titulares + 12 reservas sem pessoas duplicadas. 246 cartas originais intactas.');
