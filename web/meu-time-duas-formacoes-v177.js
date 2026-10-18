@@ -146,18 +146,21 @@ function renderPicker(){
  (getImage(c.numero)?'<img src="'+esc(getImage(c.numero))+'" alt="" loading="lazy"/>':'<span class="no-art">#'+c.numero+'</span>')+
  '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+
   ' · '+esc(proof.label)+(busy?' · JOGADOR JÁ EM CAMPO':'')+'</small></span></button>'+
- (proof.status==='não confirmada'?'<button type="button" class="ct-v246-training" data-v246-confirm="'+c.numero+'">Confirmar treino aplicado: '+esc(roles(editingSlot))+'</button>':
-  proof.status==='treinada'?'<button type="button" class="ct-v246-training" data-v246-remove="'+c.numero+'">Desfazer confirmação de '+esc(roles(editingSlot))+'</button>':'')+
+ (proof.status==='não confirmada'?'<button type="button" class="ct-v246-training" data-v246-confirm="'+c.numero+'">Treino aplicado: '+esc(roles(editingSlot))+'</button>'+
+  '<button type="button" class="ct-v246-training" data-v246-familiar="'+c.numero+'">Já tem familiaridade: '+esc(roles(editingSlot))+'</button>':
+  (proof.status==='treinada'||proof.status==='familiar')?'<button type="button" class="ct-v246-training" data-v246-remove="'+c.numero+'">Desfazer confirmação de '+esc(roles(editingSlot))+'</button>':'')+
  '</div>';
  }).join(''):'<p>Não encontrei cartas para esse filtro.</p>';
  $('player-options').querySelectorAll('button[data-cap]').forEach(b=>b.onclick=()=>{if(assign(editingSlot,Number(b.dataset.cap)))closePicker()});
- $('player-options').querySelectorAll('[data-v246-confirm],[data-v246-remove]').forEach(b=>b.onclick=()=>{
-  const card=byCap.get(Number(b.dataset.v246Confirm||b.dataset.v246Remove));
-  const enabled=!!b.dataset.v246Confirm;
-  if(enabled&&!window.confirm('Você JÁ aplicou no eFootball o treino '+roles(editingSlot)+
-   ' na edição #'+card.numero+' de '+card.name+'? Índice alto no eFHUB NÃO comprova que o treino foi aplicado.'))return;
+ $('player-options').querySelectorAll('[data-v246-confirm],[data-v246-familiar],[data-v246-remove]').forEach(b=>b.onclick=()=>{
+  const card=byCap.get(Number(b.dataset.v246Confirm||b.dataset.v246Familiar||b.dataset.v246Remove));
+  const enabled=!b.dataset.v246Remove,mode=b.dataset.v246Familiar?'familiar':'treinada';
+  if(enabled&&!window.confirm('Você confirmou no eFootball que a edição #'+card.numero+' de '+card.name+
+   (mode==='treinada'?' JÁ recebeu treinamento para ':' JÁ tem familiaridade na posição ')+roles(editingSlot)+
+   '? Apenas índice alto no eFHUB não é comprovação.'))return;
   try{
-   positionTraining.confirm(card,roles(editingSlot),enabled,localStorage);
+   const removeMode=enabled?mode:positionTraining.status(card,roles(editingSlot)).status==='familiar'?'familiar':'treinada';
+   positionTraining.confirm(card,roles(editingSlot),enabled,localStorage,removeMode);
    setStatus((enabled?'Treinamento confirmado: ':'Confirmação retirada: ')+card.name+' · '+roles(editingSlot));
    renderPicker();render();
   }catch(error){setStatus('Posição não atualizada: '+error.message)}
