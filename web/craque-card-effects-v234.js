@@ -13,10 +13,12 @@
  if(!host?.document)return;
  const doc=host.document;
  let pending=false,last=null,observer=null;
- const supportsTilt=API.canTilt(
-  !!host.matchMedia?.('(prefers-reduced-motion: reduce)').matches,
-  !!host.navigator?.connection?.saveData,
-  !!host.matchMedia?.('(hover: hover) and (pointer: fine)').matches
+ // A preferência pode mudar com o aplicativo aberto. Mantém a escuta de mouse
+ // preparada mesmo se "Reduzir movimentos" estiver ativo durante a inicialização.
+ const reducedMedia=host.matchMedia?.('(prefers-reduced-motion: reduce)');
+ const finePointer=host.matchMedia?.('(hover: hover) and (pointer: fine)');
+ const supportsTilt=API.canTilt(false,
+  !!host.navigator?.connection?.saveData,!!finePointer?.matches
  );
  function decorate(art){
   if(!art||art.dataset.ct234Premium==='1')return;
@@ -52,7 +54,8 @@
  }
  function motionAllowed(){
   return doc.body?.classList.contains('scout-motion-on') && !doc.hidden &&
-   !host.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+   !reducedMedia?.matches && !host.navigator?.connection?.saveData &&
+   !!finePointer?.matches;
  }
  function activeArt(target){
   const e=target?.closest?.('.scout-motion-art[data-ct234-premium="1"]');
@@ -80,6 +83,17 @@
   },{passive:true});
   doc.addEventListener('visibilitychange',()=>{if(doc.hidden)stopTilt()});
   doc.addEventListener('keydown',e=>{if(e.key==='Escape')stopTilt()});
+  // O botão também pode ser acionado pelo teclado. Limpa o tilt sem exigir
+  // um novo movimento do mouse quando a animação é desligada/religada.
+  doc.addEventListener('click',e=>{
+   if(e.target?.closest?.('.scout-motion-toggle'))stopTilt();
+  },{passive:true});
+  // Não deixa uma rotação anterior reaparecer após alternar a preferência do SO.
+  const onMotionPreferenceChange=()=>{if(reducedMedia?.matches)stopTilt()};
+  if(typeof reducedMedia?.addEventListener==='function')
+   reducedMedia.addEventListener('change',onMotionPreferenceChange);
+  else if(typeof reducedMedia?.addListener==='function')
+   reducedMedia.addListener(onMotionPreferenceChange);
  }
  function init(){
   if(!API.eligible(doc.body?.dataset.page))return;
