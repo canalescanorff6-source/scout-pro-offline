@@ -25,6 +25,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Aplicar estilos PT-BR com dados originais do catálogo
+        run: npm run styles:ptbr
       - name: Regressão de DOM e cartas originais
         run: node scripts/test-catalog-performance-v243.cjs
       - uses: actions/setup-python@v5
