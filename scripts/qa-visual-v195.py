@@ -597,6 +597,16 @@ def run():
                   const root=document.getElementById('scout-v207-identity');
                   return root&&root.querySelector('#scout-v207-status')&&root.querySelector('.scout-v207-preview');
                 }""",timeout=25000)
+                # V242: comparação individual não pode parecer uma segunda ficha.
+                # Abrir o arquivo SOMENTE para testar os recursos legados completos.
+                page.wait_for_function("""() => {
+                  const archive=document.getElementById('scout-v229-legacy-archive');
+                  const identity=document.getElementById('scout-v207-identity');
+                  return archive&&identity&&archive.contains(identity)&&!archive.open;
+                }""",timeout=25000)
+                if not page.locator('#scout-v220-technical').evaluate('(e)=>e.open'):
+                    page.locator('#scout-v220-technical > summary').click()
+                page.locator('#scout-v229-legacy-archive > summary').click()
                 audit=page.evaluate("""() => {
                   const panel=document.getElementById('scout-v207-identity');
                   return {status:panel.querySelector('#scout-v207-status').textContent,
@@ -682,6 +692,11 @@ def run():
                 # Massaro possui Heading nativa e Cabeceio como candidata: não equipar duas vezes.
                 page.wait_for_selector('#scout-v215-evidence', state='attached', timeout=25000)
                 v215=page.locator('#scout-v215-evidence')
+                if not page.evaluate("""() =>
+                    document.getElementById('scout-v229-legacy-archive')
+                      ?.contains(document.getElementById('scout-v215-evidence'))
+                """):
+                    problems.append(f"{name}: V242 deixou auditoria adicional fora do arquivo recolhido")
                 if v215.evaluate('(e)=>e.open'):
                     problems.append(f"{name}: V215 deve começar recolhido, inclusive no Windows")
                 v215.locator('summary').click()
