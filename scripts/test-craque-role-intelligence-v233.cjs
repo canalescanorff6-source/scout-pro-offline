@@ -101,11 +101,13 @@ const unknown={capture:999,id:'x',edition:'unconfirmed',posicao:'X',pp:50,niveis
 assert.equal(E.interpret(unknown,'posse'),null,'Unmapped role is never guessed as CA');
 const signalCard={...yorke,shown_position:'ZG',posicao:'ZG',attack_style:'',defence_style:'Defensor criativo',
  native_skills:'Interception; Blocker',boost1:'Physicality +3'};
-const bareCard={...signalCard,defence_style:'',native_skills:'',boost1:''};
+const bareCard={...signalCard,attack_style:'',estilo_ataque:'',defence_style:'',estilo_defesa:'',native_skills:'',habilidades_nativas:'',boost1:'',impeto_fixo:''};
 const a=E.interpret(signalCard,'posse'),b=E.interpret(bareCard,'posse');
 assert(a.weights[6]>b.weights[6]);
 assert(a.weights[1]>b.weights[1]);
-assert(a.signals.length>b.signals.length);
+assert(a.signals.some(s=>s.includes('Defensor criativo')));
+assert(a.signals.some(s=>s.includes('Recurso defensivo nativo')));
+assert(!b.signals.some(s=>s.includes('Defensor criativo')));
 assert.notDeepEqual(a.weights,b.weights,'Exact skills/style must individualize position weighting');
 const bridge=read('web/app-bridge.js');
 const sw=read('web/sw.js'),stamp=read('scripts/stamp-bundle-v189.cjs'),visual=read('web/craque-role-panel-v233.css');
