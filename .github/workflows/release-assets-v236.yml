@@ -32,6 +32,8 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
+      - name: Confirmar que a auditoria rejeita arquivos adulterados
+        run: python3 scripts/test-published-assets-v236.py -v
       - name: Selecionar release sem modificar produção
         id: target
         env:
