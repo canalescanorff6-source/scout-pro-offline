@@ -5,6 +5,8 @@
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[x]));
 const engine=window.SCOUT_ROTATION_V219, restrictions=window.SCOUT_RESTRICT_V222;
+const benchGuide=window.CRAQUE_BENCH_V247;
+if(!benchGuide)throw Error('Inteligência V247 das reservas não carregou');
 const KEY_BLACK='scoutpro:v219:black-caps',KEY_BLACK_REVIEW='scoutpro:v222:black-reviewed',KEY_MATCHES='scoutpro:v219:match-logs';
 let cards=[],byCap=new Map(),images=new Map(),formats=[],active='4312',cycle=1,sheets={},excluded=[],userReviewed=false,gameLogs={},opened=null;
 const TACTIC_KEY='scoutpro:v230:rotation-tactic';
@@ -138,14 +140,15 @@ function diagnostics(){
   (active==='4213'?' SA na posição original: '+nativeSA+' equipe(s).':'')+'</p>'+
   '<p class="scout-rotation-caution">'+esc(photoStatus())+'</p>';
 }
-function cardRow(cap,role,fit,slot){
+function cardRow(cap,role,fit,slot,substitution){
  const c=getCard(cap);if(!c)return '';
  const image=images.get(cap),file=String(c.arquivo||'');
  const anchor=file.startsWith('fichas/')&&file.endsWith('.html')?file:'#';
  return '<article class="scout-rotation-player">'+
   (image?'<img loading="lazy" src="'+esc(image)+'" alt="">':'<span class="scout-rotation-noart">#'+esc(cap)+'</span>')+
   '<div><strong>'+esc(c.name)+'</strong><small>#'+String(cap).padStart(3,'0')+' · '+esc(role)+' · '+esc(c.estilo_ataque)+'</small>'+
-  (fit&&fit!=='posição original'?'<small class="scout-rotation-caution">Adaptação a confirmar no jogo</small>':'')+
+  (fit&&fit!=='posição original'?'<small class="scout-rotation-caution">'+esc(fit)+'</small>':'')+
+  (substitution?'<span class="ct-v247-recommendation" data-confirmed="'+String(substitution.eligible)+'"><small>'+esc(substitution.eligible?'Jogar como '+substitution.position+' · Substituir #'+substitution.replaces.cap+' '+substitution.replaces.name+' ('+substitution.replaces.slot.toUpperCase()+')':'Sem troca confirmada nesta formação · '+substitution.reason)+'</small></span>':'')+
   '</div><a href="'+esc(anchor)+'" aria-label="Abrir ficha de '+esc(c.name)+'">Ficha ↗</a></article>';
 }
 function metrics(team){
@@ -169,7 +172,7 @@ function teamHTML(team){
       '<div class="scout-rotation-field-spot missing">'+esc(slot.toUpperCase())+'<small>Pendente</small></div>';
    }).join('')+'</div>').join('')+'</div></div>'+
  '<div class="scout-rotation-players"><section><h3>11 titulares</h3>'+team.starters.map(s=>cardRow(s.cap,s.role,s.fit,s.slot)).join('')+
- '</section><section><h3>12 reservas</h3>'+team.bench.map(b=>cardRow(b.cap,b.role)).join('')+'</section></div>'+
+ '</section><section><h3>12 reservas</h3>'+team.bench.map(b=>cardRow(b.cap,b.role,null,null,benchGuide.recommend(getCard(b.cap),team.starters,roster,tactic))).join('')+'</section></div>'+
  '<section class="scout-rotation-audit"><h3>Revisão tática e documental</h3>'+
  '<p>VOL Orquestrador: '+(team.linkup.volOrchestrator?'identificado':'não identificado')+' · CA Artilheiro: '+(team.linkup.caArtilheiro?'identificado':'não identificado')+
  ' · MAT Armador criativo: '+(team.linkup.matCreative?'identificado':'não identificado')+'. Link-Up ativo no jogo: NÃO CONFIRMADO.</p>'+
