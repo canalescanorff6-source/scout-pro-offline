@@ -193,6 +193,49 @@ body[data-page="catalog"] #catalogo .scout-v238-filter-motion-row .scout-motion-
  .scout-motion-art[data-ct234-premium="1"] .ct234-motion-prism{inset:3%;border-radius:9px}
  .scout-motion-toggle{min-height:42px;font-size:11px!important}
 }
+/* V241 — energia de moldura por raridade. Usa somente o prisma já
+ * existente, nunca duplica imagem/layer ou altera o movimento original.
+ * Desligado pelo botão OFF, fora de tela, aba oculta e Reduzir movimentos. */
+.scout-motion-art[data-ct234-premium="1"][data-scout-motion-rarity="show"]{
+ --ct241-aura-peak:.27;
+ --ct241-aura-low:.08;
+}
+.scout-motion-art[data-ct234-premium="1"][data-scout-motion-rarity="epic"]{
+ --ct241-aura-peak:.20;
+ --ct241-aura-low:.04;
+}
+.scout-motion-art[data-ct234-premium="1"][data-scout-motion-rarity="big"]{
+ --ct241-aura-peak:.30;
+ --ct241-aura-low:.09;
+}
+.scout-motion-art[data-ct234-premium="1"][data-scout-motion-rarity="highlight"]{
+ --ct241-aura-peak:.14;
+ --ct241-aura-low:.02;
+}
+body.scout-motion-on
+ .scout-motion-art[data-ct234-premium="1"][data-scout-motion-active="true"]
+ .ct234-motion-prism{
+ animation:ct241-frame-aura 7.8s ease-in-out infinite;
+ animation-play-state:running;
+}
+@keyframes ct241-frame-aura{
+ 0%,100%{
+  box-shadow:inset 0 0 0 1px rgba(var(--ct234-fx-secondary),.09),
+   0 0 5px rgba(var(--ct234-fx-primary),var(--ct241-aura-low,.04));
+ }
+ 50%{
+  box-shadow:inset 0 0 0 1px rgba(var(--ct234-fx-secondary),.20),
+   0 0 15px rgba(var(--ct234-fx-primary),var(--ct241-aura-peak,.16));
+ }
+}
+/* Não adicionar filtros pesados nem 3D automático em dispositivos de toque. */
+@media(hover:none){
+ body.scout-motion-on
+  .scout-motion-art[data-ct234-premium="1"][data-scout-motion-active="true"]
+  .ct234-motion-prism{
+  animation-duration:10.5s;
+ }
+}
 @media(prefers-reduced-motion:reduce){
  .scout-motion-art[data-ct234-premium="1"] .ct234-motion-prism,
  .scout-motion-art[data-ct234-premium="1"] .ct234-motion-prism::before,

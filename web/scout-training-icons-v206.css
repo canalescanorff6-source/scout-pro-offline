@@ -129,3 +129,60 @@ body[data-page="detail"] #lab-controls .lab-adjust button:hover:not(:disabled){
 body[data-page="detail"] #lab-controls .lab-adjust button:focus-visible{
  outline:3px solid #ffc629!important;outline-offset:2px!important;
 }
+
+/* V241 — placas dos dez pictogramas mais nítidas, sem trocar os SVGs originais. */
+body[data-page="detail"] :is(#v188-train,#lab-controls)
+ .scout-v201-icon.scout-v206-icon{
+ flex-shrink:0;
+ border:1px solid rgba(249,215,144,.57)!important;
+ border-radius:13px!important;
+ background:linear-gradient(148deg,#314c70 0%,#182d48 45%,#0d1c30 100%)!important;
+ box-shadow:inset 0 1px 0 rgba(255,247,220,.15),
+  inset 0 -1px 0 rgba(5,11,25,.65),0 5px 14px rgba(0,7,20,.28)!important;
+}
+body[data-page="detail"] :is(#v188-train,#lab-controls)
+ .scout-v201-icon.scout-v206-icon .scout-v230-svg{
+ width:100%;height:100%;display:block;
+ filter:drop-shadow(0 1px 1px rgba(0,6,16,.36));
+}
+body[data-page="detail"] :is(#v188-train,#lab-controls)
+ .scout-v230-svg .ct-frame{
+ fill:#142b46;stroke:rgba(255,217,137,.55);
+}
+body[data-page="detail"] :is(#v188-train,#lab-controls)
+ .scout-v230-svg .ct-fill{
+ fill:#34547b;stroke:#f4d695;
+}
+body[data-page="detail"] :is(#v188-train,#lab-controls)
+ .scout-v230-svg .ct-secondary{
+ stroke:#aac9e8;
+}
+body[data-page="detail"] #lab-controls .lab-group:focus-within
+ .scout-v201-icon.scout-v206-icon{
+ border-color:#ffc629!important;
+ box-shadow:0 0 0 2px rgba(243,205,119,.19),
+  inset 0 1px rgba(255,244,200,.16)!important;
+}
+body[data-page="detail"] #lab-controls .lab-group>label.scout-v201-enriched{
+ line-height:1.42;overflow-wrap:anywhere;
+}
+body[data-page="detail"] #lab-controls .lab-adjust{
+ flex-wrap:nowrap;max-width:100%;
+}
+body[data-page="detail"] #lab-controls .lab-adjust :is(button,input){
+ min-height:44px!important;min-width:42px!important;
+ font-variant-numeric:tabular-nums;
+}
+@media(max-width:355px){
+ body[data-page="detail"] #lab-controls .lab-group{
+  row-gap:7px!important;
+ }
+ body[data-page="detail"] #lab-controls .lab-adjust{
+  max-width:100%;gap:6px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body[data-page="detail"] :is(#v188-train,#lab-controls) .scout-v230-svg{
+  transition:none!important;animation:none!important;
+ }
+}

@@ -449,6 +449,71 @@ body[data-page] :is(#scout-backup-modal,#scout-android-update-modal)
    0 0 0 1px rgba(243,205,119,.25)!important;
  }
 }
+/* V241 — acabamento de ficha e catálogo: profundidade sem mudar layouts
+ * calculados, raridade, estrutura de cartas ou qualquer dado de treinamento. */
+body[data-page="catalog"] #cards .player-card{
+ border-color:rgba(169,188,213,.50)!important;
+ background:linear-gradient(152deg,#1c3351 0%,#111f35 57%,#0c192d 100%)!important;
+ box-shadow:inset 0 1px rgba(254,243,201,.08),
+  0 10px 23px rgba(0,5,16,.44)!important;
+}
+body[data-page="catalog"] #cards .player-card:focus-visible{
+ outline:3px solid #ffc629!important;outline-offset:3px!important;
+}
+body[data-page="catalog"] #cards .player-card .player-main{
+ min-width:0;
+}
+body[data-page="catalog"] #cards .player-card .player-name{
+ color:#fcf7e9!important;line-height:1.26;letter-spacing:-.012em;
+ overflow-wrap:anywhere;
+}
+body[data-page="catalog"] #cards .player-card .player-version{
+ color:#bdcadc!important;line-height:1.45;
+ overflow-wrap:anywhere;
+}
+body[data-page="catalog"] #cards .player-card .player-role{
+ color:#f5d38b!important;letter-spacing:.025em;
+}
+body[data-page="catalog"] #cards .player-card .mini-rarity,
+body[data-page="catalog"] #cards .player-card .mini-cap{
+ font-variant-numeric:tabular-nums;
+ text-shadow:0 1px 3px rgba(0,6,17,.65);
+}
+body[data-page="detail"] .scout-v220-hero{
+ border:1px solid rgba(243,205,119,.46)!important;
+ background:radial-gradient(ellipse at 92% 2%,rgba(243,205,119,.075),transparent 56%),
+  linear-gradient(149deg,#20395a,#101f36 72%)!important;
+ box-shadow:inset 0 1px rgba(255,246,210,.06),
+  0 13px 30px rgba(0,5,15,.30)!important;
+}
+body[data-page="detail"] .scout-v220-hero .scout-v220-headline h2{
+ color:#fcf7e9!important;line-height:1.22;overflow-wrap:anywhere;
+}
+body[data-page="detail"] .scout-v220-recs-grid>article,
+body[data-page="detail"] .scout-v220-focus{
+ border:1px solid rgba(163,184,216,.43)!important;
+ background:linear-gradient(145deg,#172d49,#0d1e33)!important;
+ box-shadow:inset 0 1px rgba(255,250,231,.05)!important;
+}
+body[data-page="detail"] .scout-v220-pp{
+ font-variant-numeric:tabular-nums;
+}
+body[data-page="detail"] #lab-controls .lab-group>label.scout-v201-enriched,
+body[data-page="detail"] .scout-v220-skill strong{
+ color:#fcf7e9!important;
+}
+body[data-page="detail"] .scout-v208-table thead th{
+ color:#f5d58f!important;
+ border-bottom-color:rgba(243,205,119,.41)!important;
+}
+@media(hover:hover) and (pointer:fine){
+ body[data-page="catalog"] #cards .player-card:hover{
+  border-color:#f3cd77!important;
+  box-shadow:inset 0 1px rgba(255,244,211,.11),
+   0 15px 33px rgba(0,5,17,.54),
+   0 0 0 1px rgba(243,205,119,.22)!important;
+ }
+}
 @media(max-width:720px){
  body[data-page="catalog"] .hero{border-radius:17px!important}
  body[data-page="catalog"] .scout-v189-quick{
