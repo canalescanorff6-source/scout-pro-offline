@@ -24,6 +24,10 @@ for(const phrase of [
  "doc.getElementById('sort')?.addEventListener('change'",
  "new URLSearchParams(host?.location?.search||'')"
 ])assert(code.includes(phrase),'Preservação dos filtros: '+phrase);
+assert(code.includes('if(motion)catalog.insertBefore(motion,meta)'),
+ 'V238: controle Cartas animadas deve aparecer FORA do painel de filtros fechado');
+assert(!code.includes('contents.appendChild(motion)'),
+ 'V238: não esconder animação dentro dos filtros recolhidos');
 assert(!code.includes('cloneNode(')&&!code.includes('innerHTML='),'Não duplicar botões ou reescrever a lista de filtros');
 const css=read('web/scout-finish-v203.css');
 assert(css.includes('.scout-v203-filter-panel:not([open])>.scout-v203-filter-content'),'Painel fechado mostra só o resumo');
