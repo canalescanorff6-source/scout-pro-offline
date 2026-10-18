@@ -74,7 +74,7 @@ assert(txt('web/craque-lineup-profiles-v231.js').includes("new Set(Object.values
 assert(txt('web/craque-lineup-profiles-v231.js').includes("!identity.unique(names)"),"V245: também impedir duas cartas da mesma pessoa");
 assert(js.includes('Requisitos encontrados'));
 assert(js.includes('confirmada dentro do jogo')||js.includes('confirmada dentro do jogo')||js.includes('confirmada dentro do jogo')||js.includes('confirmada dentro do jogo')||js.includes('ativação real'));
-assert(js.includes('A carta #'));
+assert(js.includes('identity.key(byCap.get(Number(n)))===identity.key(c)'),'A seleção V177 também precisa rejeitar versões diferentes da mesma pessoa');
 assert(nav.includes('href="meu-time-duas-formacoes-v177.html"'));
 assert(oldHtml.includes('href="meu-time-duas-formacoes-v177.html"'));
 for(const f of ['meu-time-duas-formacoes-v177.html','meu-time-duas-formacoes-v177.js','SCOUT_V177_DUAS_FORMACOES.json'])
