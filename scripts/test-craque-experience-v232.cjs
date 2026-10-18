@@ -50,6 +50,7 @@ function run(page,native){
  const menu=element('details');menu.open=true;
  menu.querySelector=s=>s==='summary'?summary:null;
  const modal=element('dialog'),actions=element('div');
+ targets.set('scout-android-update-modal',modal);
  modal.querySelector=s=>s==='.ct-v232-security-note'?null:s==='.scout-update-actions'?actions:null;
  const events={};
  const doc={
