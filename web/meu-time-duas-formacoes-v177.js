@@ -70,7 +70,9 @@ function renderPitch(){
  $('pitch').innerHTML=active().rows.map(row=>'<div class="pitch-row">'+row.map(makePlayer).join('')+'</div>').join('');
  $('pitch').querySelectorAll('button[data-slot]').forEach(b=>b.onclick=()=>openPicker(b.dataset.slot));
  const originals=slotsFor(active()),changed=Object.keys(originals).filter(s=>originals[s]!==currentSelections()[s]).length;
- $('custom-badge').textContent=changed?changed+' troca(s) nesta formação':'Formação original restaurada';
+ $('custom-badge').textContent=activeMode!=='posse'&&!profiles.hasSaved(active(),activeMode,localStorage,byCap)?
+  'Prévia da Posse · personalize esta tática':
+  changed?changed+' troca(s) em '+modes[activeMode]:'11 titulares · '+modes[activeMode];
 }
 function checkLink(rule){
  const f=active(),slots=currentSelections();
@@ -83,18 +85,26 @@ function renderLink(){
  return '<article class="link-row"><span class="link-indicator '+(ok?'filled':'missing')+'">'+(ok?'Requisitos encontrados':'Requisitos incompletos')+'</span><strong>'+esc(rule.label)+'</strong>'+
  '<small>'+esc(rule.role_a)+': '+(v.a?'estilo presente':'estilo ausente')+' · '+esc(rule.role_b)+': '+(v.b?'estilo presente':'estilo ausente')+'</small></article>';
  });
- $('linkup').innerHTML='<h2>R. Rodríguez · Link-Up</h2><p class="hint">Comparação com os dois vínculos registrados no seu planejamento. Estilos e posições são checados no catálogo, mas a ativação real do Link-Up só pode ser confirmada dentro do jogo.</p>'+
+ $('linkup').innerHTML='<h2>R. Rodríguez · Link-Up</h2><p class="hint">'+(activeMode==='posse'?
+  'Comparação com os dois vínculos registrados para Posse. Estilos e posições vêm do catálogo; ativação real só pode ser confirmada no jogo.':
+  'Esta é uma comparação histórica do planejamento de Posse. O Link-Up não é garantido em '+modes[activeMode]+
+  ' e deve ser revisado com o técnico e suas condições no jogo.')+'</p>'+
  rules.join('')+'<p class="caution">Não interprete “requisitos encontrados” como bônus ativo. Confira o indicador no Plano de Jogo, além da familiaridade posicional e o estilo efetivamente ativado.</p>';
 }
 function renderInstructions(){
  const f=active(),slots=currentSelections(),modified=Object.keys(slots).some(s=>slots[s]!==slotsFor(f)[s]);
- $('analysis').innerHTML='<h2>Funções individuais · '+esc(f.title)+'</h2>'+
- '<p class="caution">'+(modified?'O elenco foi alterado manualmente. Reavalie os jogadores substitutos; instruções antigas não são automaticamente válidas.':'Instruções de movimentação recomendadas para as escolhas registradas; não são comandos instalados no jogo.')+'</p>'+
+ $('analysis').innerHTML='<h2>Funções individuais · '+esc(f.title)+' · '+esc(modes[activeMode])+'</h2>'+
+ '<p class="caution">'+(activeMode!=='posse'?
+  'Ajuste as instruções dos titulares conforme '+esc(modes[activeMode])+'. O planejamento original de Link-Up e movimentação era de Posse; nenhuma instrução foi aplicada no eFootball.':
+  modified?'O elenco foi alterado manualmente. Reavalie os substitutos; instruções antigas não são automaticamente válidas.':
+  'Instruções de movimentação recomendadas para as escolhas registradas; não são comandos instalados no jogo.')+'</p>'+
  f.starters.map(s=>{
  const now=byCap.get(Number(slots[s.slot]));const changed=now.numero!==s.cap;
  return '<article class="note"><b>'+esc(LABEL[s.slot])+' · #'+now.numero+' '+esc(now.name)+'</b>'+
  '<small>Ofensivo: '+esc(now.estilo_ataque)+' · Defensivo: '+esc(now.estilo_defesa)+' · '+(changed?'Escolha manual':'Escolha histórica')+'</small>'+
- '<p>'+esc(changed?'Confirmar encaixe de posição, habilidades, ímpeto e comportamento em jogo antes de manter.':s.role_instruction)+'</p>'+
+ '<p>'+esc(activeMode!=='posse'?
+  'Avaliar encaixe de '+modes[activeMode]+': conferir movimentação, familiaridade posicional, habilidades, ímpetos e instruções específicas desta tática.':
+  changed?'Confirmar encaixe de posição, habilidades, ímpeto e comportamento em jogo antes de manter.':s.role_instruction)+'</p>'+
  (fits(now,s.slot)?'':'<p class="caution">Fora da posição original do catálogo: validar familiaridade no Plano de Jogo.</p>')+'</article>';
  }).join('');
 }
