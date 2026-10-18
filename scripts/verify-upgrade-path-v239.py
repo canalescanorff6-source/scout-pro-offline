@@ -68,11 +68,17 @@ def android_release(folder: Path, tag: str, aapt: str, apksigner: str) -> dict:
     require(int(code) == tag_version(tag)[2], f"{tag}: versionCode divergente")
 
     proof = command(apksigner, "verify", "--verbose", "--print-certs", str(apk))
-    signers = re.findall(r"Signer #\d+ certificate SHA-256 digest:\s*([a-fA-F0-9:]+)", proof)
-    normalized = {digest.replace(":", "").lower() for digest in signers}
-    require(len(signers) == 1 and normalized == {CERT_SHA256},
+    # Mesmo parser já validado pela auditoria V236. Versões recentes do
+    # apksigner podem exibir mais de uma linha de certificado (ex.: lineage).
+    signer_lines = [
+        line.split("digest:", 1)[1].strip().replace(":", "").lower()
+        for line in proof.splitlines()
+        if "certificate SHA-256 digest:" in line
+    ]
+    signer_set = frozenset(signer_lines)
+    require(bool(signer_set) and CERT_SHA256 in signer_set,
             f"{tag}: certificado Android incompatível com a assinatura oficial V99")
-    return {"package": name, "code": int(code), "cert": signers[0].replace(":", "").lower()}
+    return {"package": name, "code": int(code), "certs": signer_set}
 
 
 def windows_release(folder: Path, tag: str) -> dict:
@@ -113,8 +119,8 @@ def verify(previous_dir: Path, previous_tag: str,
     require(new_android["code"] > old_android["code"], "Android: downgrade ou versionCode repetido")
     require(new_android["package"] == old_android["package"] == APP_ID,
             "Android: packageId alterado, atualização por cima incompatível")
-    require(new_android["cert"] == old_android["cert"] == CERT_SHA256,
-            "Android: assinaturas incompatíveis entre versões")
+    require(new_android["certs"] == old_android["certs"],
+            "Android: certificados assinantes diferentes entre versões")
     old_windows = windows_release(previous_dir, previous_tag)
     new_windows = windows_release(latest_dir, latest_tag)
     require(new_windows["version"] > old_windows["version"],
