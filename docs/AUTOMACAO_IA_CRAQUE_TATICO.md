@@ -30,3 +30,12 @@ Este documento orienta a execução por um agente de programação; **não habil
 ## Custos e privacidade
 - O monitoramento agendado via ChatGPT é distinto das automações de codificação e está sujeito a limites de plano.
 - Uma integração que use OpenAI API, runners extras ou serviços externos pode exigir credenciais e custos; não adicioná-la sem revisão.
+
+
+## Auditoria diária no GitHub Actions (preparada nesta proposta)
+- Arquivo: `.github/workflows/auditoria-diaria.yml`.
+- Quando a proposta for aprovada e integrada em `main`, o GitHub executará `npm run check` diariamente em torno de **08:10 (UTC-3)** e também permitirá execução manual.
+- A rotina valida código e integridade dos dados, guarda o relatório disponível da auditoria das 246 cartas e apresenta falhas no GitHub Actions; **não altera código, não invoca IA e não produz releases**.
+- Este cron não é ativado por commits somente em branches de proposta: agendas do GitHub Actions usam a branch padrão.
+- A tarefa de monitoramento do ChatGPT pode observar esses resultados e comunicar falhas, mas **não deve ser confundida com uma automação de implementação**.
+- Para programação autônoma com Codex Cloud ainda é necessário o **consentimento e a autenticação do proprietário no Codex**. ChatGPT Plus e OpenAI API são produtos distintos; não se deve instalar fluxos que exijam chave paga sem autorização.
