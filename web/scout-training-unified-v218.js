@@ -46,7 +46,8 @@ function mount(doc){
  const budget=Number(card.pp),id=String(card.id),capture=Number(card.capture),filename=String(lab.card||'');
  if(!Number.isInteger(budget)||budget<0||!id||!filename)return false;
  const official=valid(card.recommended_levels)?card.recommended_levels.slice():null;
- const officialValid=valid(official)&&total(official)===budget;
+ const proposedOnly=card.training_status==='proposta_nao_validada';
+ const officialValid=!proposedOnly&&valid(official)&&total(official)===budget;
  const fallback=valid(lab?.draftA)&&total(lab.draftA)===budget?lab.draftA.slice():null;
  const original=officialValid?official:(fallback||null);
  const storageKey='scoutpro:v67:'+id+':'+filename;
@@ -139,7 +140,7 @@ function mount(doc){
   status.textContent=spent+' / '+budget;
   btnEdit.textContent=editing?'Concluir edição':'Editar pontos';
   btnReset.disabled=activeTactic==='posse'?!custom:false;
-  btnReset.textContent=activeTactic==='posse'?'Restaurar treino registrado':'Restaurar hipótese inicial';
+  btnReset.textContent=activeTactic==='posse'?(officialValid?'Restaurar treino registrado':'Restaurar proposta para revisão'):'Restaurar hipótese inicial';
   const headerText=head?.querySelector('span:last-child');if(headerText)headerText.textContent=activeTactic==='posse'?(officialValid?'Treino registrado · Posse':'Treino em revisão · Posse'):'Prévia experimental · '+styleLabel;
   compare.hidden=activeTactic!=='posse';
   if(readNote)readNote.textContent=custom?
@@ -147,7 +148,7 @@ function mount(doc){
     'Simulação pessoal incompleta: '+budgetRemaining+' PP ainda não distribuídos. Não considerar homologada.'):
    (officialValid?'Treino registrado no catálogo. Para comparar ou testar mudanças, use Editar pontos.':'Treino final sem confirmação nesta edição. Preencha apenas como simulação e valide os atributos no jogo.');
   table.classList.toggle('scout-v218-editing',editing);
-  table.dataset.scoutV218Mode=custom?'draft':'registered';
+  table.dataset.scoutV218Mode=custom?'draft':officialValid?'registered':'pending';
   for(let i=0;i<rows.length;i++){
    const cell=rows[i].querySelector('.scout-v208-level'),pp=rows[i].querySelector('.scout-v208-cost');
    if(!cell||!pp)continue;
