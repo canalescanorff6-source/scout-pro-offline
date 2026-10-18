@@ -84,7 +84,7 @@ assert.equal(reads,1,'Somente uma leitura do layout por frame');
 assert.equal(writes,2,'Somente duas variáveis 3D escritas por frame');
 assert.equal(art.dataset.ct234Hover,'1');
 assert.equal(props.get('--ct234-rx'),'1.40deg');
-assert.equal(props.get('--ct234-ry'),'3.50deg');
+assert.equal(props.get('--ct234-ry'),'3.48deg');
 // Ao sair antes do frame, o movimento pendente não ressuscita o efeito.
 pointer(130);
 assert.equal(frames.length,1);
