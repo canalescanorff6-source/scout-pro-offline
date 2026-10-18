@@ -30,6 +30,10 @@ function suitability(card,slot){
  const confirmed=positions?.status(card,want);
  if(confirmed?.status==='treinada'||confirmed?.status==='familiar')
   return {score:84,kind:confirmed.status==='treinada'?'posição treinada confirmada':'familiaridade confirmada'};
+ // V246: ponta -> centroavante depende de familiaridade ou treino confirmado.
+ // Não escalar Martinelli (ou outra ponta) como CA somente por proximidade.
+ if(want==='CA'&&['PTE','PTD'].includes(have))
+  return {score:-100,kind:'treinamento CA não confirmado'};
  const nearby={
   SA:['CA','MAT'],CA:['SA','MAT','PTD','PTE'],MAT:['SA','MLG','VOL','MLD','MLE'],
   MLG:['MAT','VOL','MLD','MLE'],VOL:['MLG','ZG','MAT'],
