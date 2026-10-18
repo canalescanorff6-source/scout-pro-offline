@@ -31,7 +31,7 @@ assert(!/display:\s*none[^}]*!important[^}]*#scout-update/.test(css));
 new vm.Script(source,{filename:'craque-experience-v232.js'});
 function element(tag){
  return {
-  tagName:tag,children:[],attrs:{},className:'',textContent:'',href:'',open:false,
+  tagName:tag,children:[],attrs:{},dataset:{},classList:{add(){}},className:'',textContent:'',href:'',open:false,
   appendChild(v){this.children.push(v);},
   setAttribute(k,v){this.attrs[k]=v;},
   getAttribute(k){return this.attrs[k];},
@@ -48,6 +48,7 @@ function run(page,native){
  ]);
  const summary=element('summary');
  const menu=element('details');menu.open=true;
+ const options=element('div');options.querySelector=()=>null;
  menu.querySelector=s=>s==='summary'?summary:null;
  const modal=element('dialog'),actions=element('div');
  targets.set('scout-android-update-modal',modal);
@@ -61,6 +62,7 @@ function run(page,native){
    if(s==='.ct-v232-jumps')return null;
    if(s==='.profile-content > .detail-header')return page==='detail'?header:null;
    if(s==='#scout-app-bar .scout-v189-dock-more')return menu;
+   if(s==='#scout-app-bar .scout-v189-dock-options')return options;
    if(s==='#scout-android-update-modal')return native?modal:null;
    return null;
   },
@@ -68,7 +70,7 @@ function run(page,native){
  };
  const win={document:doc};
  vm.runInNewContext(source,{window:win,document:doc},{filename:'craque-experience-v232.js'});
- return {formation,header,summary,menu,events,actions,modal};
+ return {formation,header,summary,menu,options,events,actions,modal};
 }
 const team=run('team',false);
 assert.equal(team.formation.beforeNode.tagName,'nav');
@@ -79,9 +81,11 @@ team.events.keydown({key:'Escape'});
 assert.equal(team.menu.open,false);
 assert.equal(team.summary.focused,true);
 const detail=run('detail',false);
-assert.equal(detail.header.afterNode.children.length,3);
-assert.equal(detail.header.afterNode.children[0].href,'#scout-v188-principal');
-assert.equal(detail.header.afterNode.children[2].href,'#scout-v229-legacy-archive');
+assert.equal(detail.options.children.length,1);
+assert.equal(detail.options.children[0].children.length,3);
+assert.equal(detail.options.children[0].children[0].href,'#scout-v188-principal');
+assert.equal(detail.options.children[0].children[2].href,'#scout-v229-legacy-archive');
+assert.equal(detail.header.afterNode,undefined,'Main training stays at the same vertical position');
 const android=run('catalog',true);
 assert.equal(android.actions.beforeNode.tagName,'p');
 assert.match(android.actions.beforeNode.textContent,/Google Play Protect/);
