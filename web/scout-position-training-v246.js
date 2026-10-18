@@ -34,8 +34,8 @@ function db(store){try{
  return obj?.schema==='CRAQUE_POSITION_V246'&&obj.entries&&
   typeof obj.entries==='object'&&!Array.isArray(obj.entries)?obj.entries:{};
 }catch(_){return {}}}
-function trained(card,store){const saved=db(store)[edition(card)];return
- Array.isArray(saved)?saved.filter(p=>ALL.includes(p)&&p!==pos(card?.posicao)&&p!=='GO'):[]}
+function trained(card,store){const saved=db(store)[edition(card)];
+ return Array.isArray(saved)?saved.filter(p=>ALL.includes(p)&&p!==pos(card?.posicao)&&p!=='GO'):[]}
 function status(card,wanted,store){
  const target=pos(wanted),native=pos(card?.posicao);
  if(!target||!native)return {status:'pendente',eligible:false,label:'Posição ainda não documentada'};
