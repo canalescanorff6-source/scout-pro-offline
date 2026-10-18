@@ -148,11 +148,22 @@ function mount(doc){
  function updateRecommendations(){
   const cfg=engine.styleFor(style);
   const focus=engine.focus(card,style),proof=evidence(card,{base_stats_known:card.base_stats_known,niveis:card.recommended_levels,habilidades_nativas:card.native_skills,name:card.name},style);
-  $(wrap,'scout-v220-focus-title').textContent=cfg.focus;
-  $(wrap,'scout-v220-focus-note').textContent='Papel: '+focus.role+' · '+(card.attack_style||'estilo não documentado')+'. '+(focus.evidence.length?'Sinais cadastrados: '+focus.evidence.join(', ')+'.':'Sem sinais individuais adicionais suficientes.');
-  $(wrap,'scout-v220-evidence').textContent=focus.baseKnown?'Atributos-base parcialmente documentados':'Status finais pendentes';
+  // V233: prioridades explicadas por posição real, habilidades e estilo, não apenas
+  // por uma lista de pesos genéricos. Fallback V220 se a extensão não carregar.
+  const read233=host.CRAQUE_INTERPRETATION_V233?.interpret(card,style,lab)||null;
+  $(wrap,'scout-v220-focus-title').textContent=read233?
+   read233.position+' · '+cfg.focus:cfg.focus;
+  $(wrap,'scout-v220-focus-note').textContent=read233?
+   read233.job+' '+(read233.signals.length?read233.signals.slice(0,2).join(' '):
+    'Sem evidência individual suficiente para distinguir esta carta além da sua função.'):
+   'Papel: '+focus.role+' · '+(card.attack_style||'estilo não documentado')+'. '+(focus.evidence.length?'Sinais cadastrados: '+focus.evidence.join(', ')+'.':'Sem sinais individuais adicionais suficientes.');
+  $(wrap,'scout-v220-evidence').textContent=read233?
+   (read233.uncertainty==='parcial_com_atributos_base'?'Base parcial registrada':
+    read233.uncertainty==='documental'?'Evidência documental':'Dados pendentes'):
+   (focus.baseKnown?'Atributos-base parcialmente documentados':'Status finais pendentes');
   const pills=$(wrap,'scout-v220-priorities');pills.replaceChildren();
-  for(const item of focus.priority)pills.append(mk(doc,'span','',item.name));
+  for(const item of (read233?read233.priorities.slice(0,4):focus.priority))
+   pills.append(mk(doc,'span','',item.name));
   const {skills,booster}=nativeDetails(card,style);
   const holder=$(wrap,'scout-v220-skill-list');holder.replaceChildren();
   if(skills){
