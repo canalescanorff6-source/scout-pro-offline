@@ -28,7 +28,8 @@ assert.equal(P.status(martinelli,'CA').eligible,false,
 const originalFit=Tactical.fit(martinelli,'cae');
 assert.equal(originalFit.match,false,'OVR ou proximidade tática não são prova de familiaridade');
 const originalSuit=Rotation.suitability(martinelli,'cae');
-assert.equal(originalSuit.kind,'adaptação não confirmada');
+assert.equal(originalSuit.kind,'treinamento CA não confirmado');
+assert.equal(originalSuit.score,-100,'Ponta nunca entra como CA automaticamente sem evidência');
 const proof=P.confirm(martinelli,'CA',true,store);
 assert.equal(proof.status,'treinada');
 assert.equal(proof.eligible,true);
