@@ -143,6 +143,24 @@ body.scout-motion-on .scout-motion-art[data-ct234-premium="1"][data-scout-motion
   border-color:rgba(var(--ct234-fx-secondary),.78);
  }
 }
+/* V238: botão de efeitos independente do painel recolhido de filtros. */
+body[data-page="catalog"] #catalogo > .scout-motion-controls{
+ display:flex!important;align-items:center;flex-wrap:wrap;
+ gap:9px;padding:10px 12px!important;margin:9px 0 12px!important;
+ border:1px solid rgba(243,205,119,.42);
+ border-radius:13px;background:linear-gradient(145deg,#15283f,#0b182c);
+ box-shadow:inset 0 1px rgba(255,239,186,.08);
+}
+body[data-page="catalog"] #catalogo > .scout-motion-controls::before{
+ content:"EFEITOS DAS CARTAS";
+ color:#f3cd77;letter-spacing:.075em;font-size:10px;font-weight:850;
+}
+@media(max-width:680px){
+ body[data-page="catalog"] #catalogo > .scout-motion-controls{
+  padding:8px 10px!important;margin:8px 0 10px!important;gap:7px;
+ }
+ body[data-page="catalog"] #catalogo > .scout-motion-controls::before{width:100%}
+}
 .scout-motion-toggle{
  background:linear-gradient(138deg,#223d5b,#122840)!important;
  color:#eaf0fa!important;border:1px solid #5e7999!important;
