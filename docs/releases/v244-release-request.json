@@ -1,0 +1,20 @@
+{
+  "app": "Craque Tático — Laboratório de Futebol",
+  "milestone": "V244 — Orçamento de animações premium e fluidez",
+  "date": "2026-10-18",
+  "channel": "official Android signed APK and Windows NSIS",
+  "merged_pr": 149,
+  "merged_commit": "d11060952aec57e412738c3f061c54705fb6a288",
+  "validation_runs": {
+    "main_ci": 39165676274,
+    "mobile_chromium": 39165676343,
+    "visual_qa": 39165676310,
+    "card_integrity_android_windows_smoke": 39165676257
+  },
+  "changes": "Android limita efeitos sobrepostos a uma varredura luminosa por carta, preservando as molduras e quatro raridades. Desktop limita os cálculos de tilt aos quadros requestAnimationFrame e cancela o movimento pendente quando desativado.",
+  "unchanged": "246 cartas, imagens, Card IDs, builds, pontos PP, 5 táticas, habilidades, ímpetos, formações, outros elencos, backups, Android package br.com.scoutpro.offline, certificado oficial SHA-256 818a2b4144234810b9e6e68bddb1ccb1cf9f3b6636dcc0adc31536a4fec02c04, update bridge Windows/Android.",
+  "approval": "User requested 'Próximo' after explicit next step: integrate and publish V244 to test Android/Windows fluency.",
+  "pipeline": "Run existing .github/workflows/release.yml on main by this non-Markdown file commit, automatically number 1.1.${{ github.run_number }}, sign APK with permanent original V99 key, check signed APK and Windows installer hashes, upload exactly official assets.",
+  "isolation": "Do not merge V241 PR #146; its extra animations remain excluded.",
+  "limits": "Automated tests do not establish FPS, thermal behavior, or real upgrade on user's phone; validate on physical device after publication."
+}
