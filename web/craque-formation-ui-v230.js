@@ -32,7 +32,7 @@ function render(){
  const name=tactical.MODES[activeMode];
  $('ct-v230-tactic-name').textContent=name.label+' · '+(currentId==='4312'?'4-3-1-2':'4-2-1-3 estreita');
  $('ct-v230-tactic-explain').textContent=name.hint+
-  ' Esta análise não muda o desenho nem troca os titulares automaticamente.';
+  ' Este estilo possui 11 titulares próprios: trocas manuais ficam isoladas das demais táticas.';
  bar.querySelectorAll('button[data-mode]').forEach(b=>{
   b.setAttribute('aria-pressed',String(b.dataset.mode===activeMode));
   b.classList.toggle('selected',b.dataset.mode===activeMode);
@@ -63,15 +63,19 @@ function render(){
  }
  $('ct-v230-tactic-count').textContent=chosen.length+
   ' titulares · '+strong+' com sinais fortes · '+pending+' para conferir';
- $('ct-v230-tactic-warning').textContent='Comparação documental, não rendimento garantido. Os 23 jogadores da lista de restrições não aparecem nas sugestões. Link-Up e instruções originais foram planejados para Posse e dependem do técnico escolhido no jogo.';
+ $('ct-v230-tactic-warning').textContent='Comparação documental, não rendimento garantido. As cartas da lista de restrições são excluídas das sugestões, não necessariamente do planejamento manual já salvo. Link-Up e instruções originais foram planejados para Posse e dependem do técnico escolhido no jogo.';
 }
 function select(mode){
  if(!Object.hasOwn(tactical.MODES,mode))return;
  activeMode=mode;
  const persisted=store(currentId,mode);
- $('ct-v230-persist').textContent=persisted?
-  'Estilo salvo para esta formação neste aparelho. Cartas e PP preservados.':
-  'Estilo selecionado nesta sessão; armazenamento local indisponível.';
+ const manager=window.CRAQUE_FORMATION_STATE_V231;
+ const applied=manager?.setMode?.(mode);
+ $('ct-v230-persist').textContent=!applied?
+  'Aguarde a escalação carregar. Seu estilo foi selecionado para esta formação.':
+  !persisted?
+  'Estilo alterado nesta sessão; seu dispositivo não confirmou o salvamento.':
+  'Plano independente de '+tactical.MODES[mode].label+' · escolha seus 11 titulares e salve sem alterar as outras táticas.';
  render();
 }
 function sync(){
