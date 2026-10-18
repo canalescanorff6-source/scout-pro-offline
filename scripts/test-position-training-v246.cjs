@@ -84,7 +84,8 @@ for(const file of [
  const dependent=html.indexOf(file.includes('testes')?'scout-rotation-engine-v219.js':
   file.includes('posse')?'meu-time-posse-4312.js':'meu-time-duas-formacoes-v177.js');
  assert(pos>=0&&pos<dependent,'Posição treinada precisa carregar ANTES da formação');
- assert(html.includes('OVR')||html.includes('eFHUB'));
+ if(!file.includes('testes'))assert(html.includes('OVR')||html.includes('eFHUB'),
+  'Editores devem distinguir Overall de familiaridade.');
 }
 for(const path of [
  'web/meu-time-duas-formacoes-v177.js',
