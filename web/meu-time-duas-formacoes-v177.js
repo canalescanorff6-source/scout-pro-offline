@@ -7,6 +7,8 @@ const POSITION={GR:'GO',GO:'GO',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',
 const profiles=window.CRAQUE_LINEUP_PROFILES_V231;
 const identity=window.SCOUT_PLAYER_IDENTITY_V245;
 const positionTraining=window.SCOUT_POSITION_TRAINING_V246;
+const benchGuide=window.CRAQUE_BENCH_V247;
+if(!benchGuide)throw Error('Inteligência de reservas V247 indisponível');
 if(!positionTraining)throw Error('Posições treinadas V246 não carregaram');
 if(!identity)throw Error('Identidade dos jogadores V245 não carregou');
 let doc=null,roster=[],byCap=new Map(),imageMap=new Map(),activeId='4312',activeMode='posse',allSelections={},editingSlot=null,showAll=false;
@@ -119,11 +121,15 @@ function effectiveBench(){
   .map(row=>({...row,art:getImage(row.cap)}));
 }
 function renderBench(){
+ const starters=active().starters.map(s=>({slot:s.slot,role:s.role,cap:Number(currentSelections()[s.slot])}));
  $('bench').innerHTML=effectiveBench().map(c=>{
  const now=byCap.get(c.cap);const selected=Object.values(currentSelections()).includes(c.cap);
+ const guidance=benchGuide.recommend(now,starters,roster,activeMode);
+ const swapText=guidance.eligible?'Jogar como '+guidance.position+' · Substituir #'+guidance.replaces.cap+' '+guidance.replaces.name+' ('+guidance.replaces.slot.toUpperCase()+')':'Sem troca confirmada nesta formação · '+guidance.reason;
+ const swapHtml='<span class="ct-v247-recommendation" data-confirmed="'+String(guidance.eligible)+'"><small>'+esc(swapText)+'</small></span>';
  return '<article class="bench-card"><img alt="Arte original '+esc(c.name)+'" src="'+esc(c.art)+'" loading="lazy"/>'+
  '<div class="bench-details"><strong>#'+c.cap+' '+esc(c.name)+'</strong><small>'+esc(c.original_pos)+' · '+esc(c.atk)+'</small>'+
- '<p>'+(c.autoReplacement?'Reserva ajustada automaticamente para não repetir uma pessoa. ':'')+'Alternativa por função; confira familiaridade, estilo e habilidades.</p><a href="'+esc(c.card_page)+'">Abrir ficha original ↗</a></div>'+
+ '<p>'+(c.autoReplacement?'Reserva ajustada automaticamente para não repetir uma pessoa. ':'')+'Alternativa por função; confira familiaridade, estilo e habilidades.</p>'+swapHtml+'<a href="'+esc(c.card_page)+'">Abrir ficha original ↗</a></div>'+
  '<div class="bench-action"><label for="bench-'+c.cap+'">'+(selected?'Em campo':'Colocar reserva em campo')+'</label><select id="bench-'+c.cap+'" data-bench="'+c.cap+'"><option value="">Selecionar posição…</option>'+
  active().starters.map(s=>'<option value="'+esc(s.slot)+'">'+esc(LABEL[s.slot])+'</option>').join('')+'</select></div></article>';
  }).join('');
