@@ -34,7 +34,7 @@ assert.equal(proof.status,'treinada');
 assert.equal(proof.eligible,true);
 assert.equal(P.status(martinelli,'CA').status,'treinada');
 assert.equal(Tactical.fit(martinelli,'cae').match,true);
-assert.equal(Tactical.fit(martinelli,'cad').label,'Posição treinada e confirmada nesta carta');
+assert.equal(Tactical.fit(martinelli,'cad').label,'Treinamento aplicado — confirmado pelo usuário');
 assert.equal(Rotation.suitability(martinelli,'cae').kind,'posição treinada confirmada');
 assert.equal(Rotation.suitability(martinelli,'cae').score,84);
 assert.equal(P.status(martinelli,'MAT').eligible,false,
@@ -44,7 +44,7 @@ assert.equal(P.status({...martinelli,numero:188,id:'9999'},'CA').eligible,false)
 assert.equal(P.status({...martinelli,id:'333333'},'CA').eligible,false);
 assert.equal(P.status({...martinelli,numero:190},'CA').eligible,false);
 const l191=JSON.parse(storageData.get(P.KEY));
-assert.deepEqual(l191.entries[P.edition(martinelli)],['CA']);
+assert.deepEqual(l191.entries[P.edition(martinelli)].treinada,['CA']);
 assert.equal(Object.keys(l191.entries).length,1);
 assert(!storageData.has('scoutpro:v177:minhas-duas-formacoes:4312'),
  'Não alterar perfil de posse');
@@ -63,6 +63,13 @@ assert.equal(P.status(neymar,'MAT').eligible,false,
 const another=cards.find(c=>c.numero===79);
 assert.equal(P.status(another,'MAT').eligible,true,
  'A posição original MAT do Neymar #079 deve permanecer natural');
+// Posição NATURAL secundária confirmada não é a mesma coisa que treino.
+P.confirm(martinelli,'MAT',true,store,'familiar');
+assert.equal(P.status(martinelli,'MAT').status,'familiar');
+assert.equal(Rotation.suitability(martinelli,'mat').kind,'familiaridade confirmada');
+assert.equal(Tactical.fit(martinelli,'mat').match,true);
+assert.equal(P.status({...martinelli,id:'outra-edicao'},'MAT').eligible,false);
+P.confirm(martinelli,'MAT',false,store,'familiar');
 P.confirm(martinelli,'CA',false,store);
 assert.equal(P.status(martinelli,'CA').eligible,false);
 assert.equal(Tactical.fit(martinelli,'cae').match,false);
@@ -84,7 +91,7 @@ for(const path of [
  'web/meu-time-posse-4312.js'
 ]){const src=read(path);
  for(const s of ['positionTraining.status(', 'positionTraining.confirm(', 'data-v246-confirm',
-  'data-v246-remove','identity.key('])
+  'data-v246-familiar','data-v246-remove','identity.key('])
   assert(src.includes(s),path+' não usa '+s);
 }
 for(const path of ['web/sw.js','scripts/stamp-bundle-v189.cjs'])
