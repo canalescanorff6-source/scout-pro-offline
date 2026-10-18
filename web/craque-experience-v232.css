@@ -98,6 +98,18 @@ body[data-page="detail"] .scout-v208-table button:focus-visible{
 .ct-v232-jumps a:focus-visible{outline:3px solid var(--ct232-gold)!important;outline-offset:2px}
 .ct-v232-jumps a:hover{border-color:var(--ct232-gold);color:#fff}
 .ct-v232-jumps a[aria-current="location"]{border-color:var(--ct232-gold);color:#fff0c6}
+/* Na ficha, atalhos ficam recolhidos dentro de Mais, sem atrasar o primeiro treino. */
+#scout-app-bar .ct-v232-jumps-menu{
+ display:grid!important;grid-template-columns:1fr;gap:6px;
+ background:transparent!important;border:0!important;
+ border-top:1px solid rgba(234,195,108,.31)!important;
+ border-radius:0!important;margin:4px 0 0!important;padding:8px 0 0!important;
+}
+#scout-app-bar .ct-v232-jumps-menu a{
+ width:100%;min-height:39px;font-size:11px!important;
+ background:#14374b!important;color:#f4e7ca!important;
+ border:1px solid #56748a!important;
+}
 #scout-android-update-modal .ct-v232-security-note{
  font-size:12px;line-height:1.55;color:#d3dee7;
  border-left:3px solid var(--ct232-gold);
@@ -106,7 +118,7 @@ body[data-page="detail"] .scout-v208-table button:focus-visible{
 }
 @media(min-width:960px){
  /* No desktop o V198 move as mesmas ações para Ferramentas: não recriar dock. */
- .ct-v232-jumps{display:none}
+ .ct-v232-jumps:not(.ct-v232-jumps-menu){display:none}
 }
 @media(max-width:720px){
  body[data-page="catalog"] .hero{border-radius:17px!important}
