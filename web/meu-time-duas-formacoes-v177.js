@@ -4,40 +4,58 @@ const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<
 const normalized=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
 const LABEL={go:'GO',le:'LE',zge:'ZG E',zgd:'ZG D',ld:'LD',vole:'VOL E',vold:'VOL D',mlg:'MLG',mat:'MAT',sa:'SA',cae:'CA E',cad:'CA D'};
 const POSITION={GR:'GO',GO:'GO',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',ZG:'ZG',MDF:'VOL',VOL:'VOL',MC:'MLG',ME:'MLG',MLG:'MLG',MO:'MAT',MAT:'MAT',AC:'CA',CA:'CA',SA:'SA'};
-let doc=null,roster=[],byCap=new Map(),imageMap=new Map(),activeId='4312',allSelections={},editingSlot=null,showAll=false;
+const profiles=window.CRAQUE_LINEUP_PROFILES_V231;
+let doc=null,roster=[],byCap=new Map(),imageMap=new Map(),activeId='4312',activeMode='posse',allSelections={},editingSlot=null,showAll=false;
+const modes=profiles?.MODES||{posse:'Posse de Bola'};
+const profileId=(id,mode)=>id+':'+mode;
+const currentSelections=()=>allSelections[profileId(activeId,activeMode)];
 const active=()=>doc.formations.find(f=>f.id===activeId);
 const roles=slot=>slot==='zge'||slot==='zgd'?'ZG':slot==='cae'||slot==='cad'?'CA':slot==='vole'||slot==='vold'?'VOL':LABEL[slot]?.split(' ')[0];
 const fits=(card,slot)=>POSITION[card?.posicao]===roles(slot);
 const getImage=cap=>imageMap.get(Number(cap))||'';
 const esc=escapeHtml;
 function setStatus(s){$('status').textContent=s}
-function storedKey(id){return 'scoutpro:v177:minhas-duas-formacoes:'+id}
-function slotsFor(f){return Object.fromEntries(f.starters.map(s=>[s.slot,s.cap]))}
-function readSaved(f){const defaults=slotsFor(f);try{
- const v=JSON.parse(localStorage.getItem(storedKey(f.id))||'null');
- if(!v||v.schema!==doc.schema||!v.slots)return defaults;
- const next={...defaults};
- for(const [slot,n] of Object.entries(v.slots))if(Object.hasOwn(defaults,slot)&&byCap.has(Number(n)))next[slot]=Number(n);
- return new Set(Object.values(next)).size===11?next:defaults;
- }catch(e){return defaults}}
+function slotsFor(f){return profiles.defaults(f)}
+function ensureProfile(id,mode){
+ const key=profileId(id,mode);
+ if(!Object.hasOwn(allSelections,key)){
+  const f=doc.formations.find(x=>x.id===id);
+  allSelections[key]=profiles.read(f,mode,localStorage,byCap);
+ }
+ return allSelections[key];
+}
 function save(){
- try{localStorage.setItem(storedKey(activeId),JSON.stringify({schema:doc.schema,slots:allSelections[activeId]}));
- setStatus('Troca salva localmente para esta formação. O treino, as cartas e a outra formação continuam inalterados.');
- }catch(e){setStatus('Troca aplicada nesta sessão; não foi possível salvar no dispositivo.')}
+ try{
+  const value=profiles.save(active(),activeMode,currentSelections(),localStorage,byCap);
+  window.dispatchEvent(new CustomEvent('craque:data-changed',{detail:{key:value.key}}));
+  setStatus('Onze titulares salvos em '+modes[activeMode]+' · '+active().title+'. Os outros estilos permanecem independentes.');
+ }catch(e){setStatus('Troca nesta sessão; falha ao salvar o estilo: '+e.message)}
+}
+function changeMode(mode){
+ if(!Object.hasOwn(modes,mode))return false;
+ activeMode=mode;ensureProfile(activeId,activeMode);render();
+ const state=$('ct-v230-persist');
+ if(state)state.textContent=profiles.hasSaved(active(),activeMode,localStorage,byCap)?
+  'Titulares deste estilo salvos. Posse e outras formações preservadas.':
+  'Prévia baseada na Posse. Troque um titular para salvar um plano independente em '+modes[activeMode]+'.';
+ window.dispatchEvent(new CustomEvent('craque:formation-profile-v231',{detail:{formation:activeId,mode:activeMode}}));
+ return true;
 }
 function switchFormation(id){if(!doc.formations.some(f=>f.id===id))return;
- activeId=id;document.querySelectorAll('[data-formation]').forEach(b=>{
+ activeId=id;activeMode=profiles.selectedMode(localStorage,id);ensureProfile(activeId,activeMode);
+ document.querySelectorAll('[data-formation]').forEach(b=>{
  const on=b.dataset.formation===id;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on))});
  $('formation-label').textContent='Campo · '+active().title;
  $('formation-details').textContent=active().layout_label+' · '+active().description;
  render();
+ window.dispatchEvent(new CustomEvent('craque:formation-profile-v231',{detail:{formation:activeId,mode:activeMode}}));
 }
-function assign(slot,cap){const c=byCap.get(Number(cap));if(!c||!Object.hasOwn(allSelections[activeId],slot)){setStatus('Escolha indisponível.');return false}
- if(Object.entries(allSelections[activeId]).some(([s,n])=>s!==slot&&Number(n)===Number(cap))){
+function assign(slot,cap){const c=byCap.get(Number(cap));if(!c||!Object.hasOwn(currentSelections(),slot)){setStatus('Escolha indisponível.');return false}
+ if(Object.entries(currentSelections()).some(([s,n])=>s!==slot&&Number(n)===Number(cap))){
  setStatus('A carta #'+cap+' já está escalada nesta formação; escolha outra ou desocupe a posição.');return false}
- allSelections[activeId][slot]=Number(cap);save();render();return true;
+ currentSelections()[slot]=Number(cap);save();render();return true;
 }
-function makePlayer(slot){const c=byCap.get(Number(allSelections[activeId][slot]));const original=active().starters.find(s=>s.slot===slot);
+function makePlayer(slot){const c=byCap.get(Number(currentSelections()[slot]));const original=active().starters.find(s=>s.slot===slot);
  if(!c||!original)return '';
  const changed=c.numero!==original.cap;
  const eligible=fits(c,slot);
@@ -51,11 +69,11 @@ function makePlayer(slot){const c=byCap.get(Number(allSelections[activeId][slot]
 function renderPitch(){
  $('pitch').innerHTML=active().rows.map(row=>'<div class="pitch-row">'+row.map(makePlayer).join('')+'</div>').join('');
  $('pitch').querySelectorAll('button[data-slot]').forEach(b=>b.onclick=()=>openPicker(b.dataset.slot));
- const originals=slotsFor(active()),changed=Object.keys(originals).filter(s=>originals[s]!==allSelections[activeId][s]).length;
+ const originals=slotsFor(active()),changed=Object.keys(originals).filter(s=>originals[s]!==currentSelections()[s]).length;
  $('custom-badge').textContent=changed?changed+' troca(s) nesta formação':'Formação original restaurada';
 }
 function checkLink(rule){
- const f=active(),slots=allSelections[activeId];
+ const f=active(),slots=currentSelections();
  const yes=(role,style)=>f.starters.some(s=>s.role===role&&normalized(byCap.get(Number(slots[s.slot]))?.estilo_ataque)===normalized(style));
  return {a:yes(rule.role_a,rule.style_a),b:yes(rule.role_b,rule.style_b)};
 }
@@ -69,7 +87,7 @@ function renderLink(){
  rules.join('')+'<p class="caution">Não interprete “requisitos encontrados” como bônus ativo. Confira o indicador no Plano de Jogo, além da familiaridade posicional e o estilo efetivamente ativado.</p>';
 }
 function renderInstructions(){
- const f=active(),slots=allSelections[activeId],modified=Object.keys(slots).some(s=>slots[s]!==slotsFor(f)[s]);
+ const f=active(),slots=currentSelections(),modified=Object.keys(slots).some(s=>slots[s]!==slotsFor(f)[s]);
  $('analysis').innerHTML='<h2>Funções individuais · '+esc(f.title)+'</h2>'+
  '<p class="caution">'+(modified?'O elenco foi alterado manualmente. Reavalie os jogadores substitutos; instruções antigas não são automaticamente válidas.':'Instruções de movimentação recomendadas para as escolhas registradas; não são comandos instalados no jogo.')+'</p>'+
  f.starters.map(s=>{
@@ -82,7 +100,7 @@ function renderInstructions(){
 }
 function renderBench(){
  $('bench').innerHTML=active().bench.map(c=>{
- const now=byCap.get(c.cap);const selected=Object.values(allSelections[activeId]).includes(c.cap);
+ const now=byCap.get(c.cap);const selected=Object.values(currentSelections()).includes(c.cap);
  return '<article class="bench-card"><img alt="Arte original '+esc(c.name)+'" src="'+esc(c.art)+'" loading="lazy"/>'+
  '<div class="bench-details"><strong>#'+c.cap+' '+esc(c.name)+'</strong><small>'+esc(c.original_pos)+' · '+esc(c.atk)+'</small>'+
  '<p>Alternativa por função; confira familiaridade, estilo e habilidades.</p><a href="'+esc(c.card_page)+'">Abrir ficha original ↗</a></div>'+
@@ -101,7 +119,7 @@ function choices(){
 function renderPicker(){
  const list=choices();$('player-count').textContent='Mostrando '+list.length+' resultado(s)'+(list.length===70?' — refine a busca':'');
  $('player-options').innerHTML=list.length?list.map(c=>{
- const busy=Object.entries(allSelections[activeId]).find(([s,cap])=>s!==editingSlot&&cap===c.numero);
+ const busy=Object.entries(currentSelections()).find(([s,cap])=>s!==editingSlot&&cap===c.numero);
  return '<button type="button" class="option" data-cap="'+c.numero+'"'+(busy?' disabled':'')+'>'+
  (getImage(c.numero)?'<img src="'+esc(getImage(c.numero))+'" alt="" loading="lazy"/>':'<span class="no-art">#'+c.numero+'</span>')+
  '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+(busy?' · EM CAMPO':'')+'</small></span></button>';
@@ -122,12 +140,17 @@ async function init(){
  ]);
  if(d.schema!=='SCOUT_V177_DUAS_FORMACOES_ESCOLHIDAS'||d.formations.length!==2||r.cards.length!==246||a.cartas.length!==246)throw Error('Versão incompleta da escalação');
  doc=d;roster=r.cards;byCap=new Map(roster.map(x=>[x.numero,x]));imageMap=new Map(a.cartas.map(x=>[x.numero,x.imagem]));
- for(const f of doc.formations)allSelections[f.id]=readSaved(f);
+ for(const f of doc.formations)ensureProfile(f.id,'posse');
  $('catalog-count').textContent='246 cartas · 2 formações personalizadas';
  $('formation-pick').querySelectorAll('[data-formation]').forEach(b=>b.onclick=()=>switchFormation(b.dataset.formation));
- $('reset-team').onclick=()=>{if(!confirm('Restaurar titulares da formação selecionada? Não altera as cartas originais.'))return;allSelections[activeId]=slotsFor(active());save();render()};
+ $('reset-team').onclick=()=>{if(!confirm('Restaurar somente os titulares de '+modes[activeMode]+' nesta formação? Os demais estilos não serão alterados.'))return;allSelections[profileId(activeId,activeMode)]=slotsFor(active());save();render()};
  $('player-search').oninput=renderPicker;$('show-all').onchange=e=>{showAll=e.target.checked;renderPicker()};
  $('picker-close').onclick=closePicker;$('picker').addEventListener('click',e=>{if(e.target===$('picker'))closePicker()});
+ window.CRAQUE_FORMATION_STATE_V231=Object.freeze({
+  mode:()=>activeMode,formation:()=>activeId,setMode:changeMode,
+  snapshot:()=>({...currentSelections()}),
+  read:(id,mode)=>({...ensureProfile(id,mode)})
+ });
  switchFormation('4312');
 }
 init().catch(err=>{setStatus('Não foi possível carregar as duas formações: '+err.message);$('catalog-count').textContent='Confira se a atualização foi instalada.'});
