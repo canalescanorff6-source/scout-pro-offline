@@ -35,7 +35,9 @@ function setup(){
  const fact=(label,value)=>{const box=document.createElement('div');box.className='scout-posse-fact';const small=document.createElement('small');small.textContent=label;const big=document.createElement('strong');big.textContent=value;box.append(small,big);grid.appendChild(box)};
  const original=d.role_used||d.shown_position||'Ver ficha';
  fact('Uso prioritário',original+' · Posse central');
- fact('Treinamento usado','Cenário '+String(d.recommended_scenario||'A')+' · '+d.pp+' PP registrados');
+ fact('Treinamento usado',d.training_status==='proposta_nao_validada'?
+  'Proposta a validar · '+d.pp+' PP (não aplicada no jogo)':
+  'Cenário '+String(d.recommended_scenario||'A')+' · '+d.pp+' PP registrados');
  fact('Habilidades e ímpeto','Recomendações logo abaixo ↓');
  const notice=document.createElement('p');notice.style.cssText='font-size:11px;color:#b1cdda;line-height:1.6;margin:10px 0';
  notice.textContent='Não estamos otimizando Overall. Habilidades e ímpetos são recomendações condicionadas à edição e aos espaços realmente disponíveis.';
