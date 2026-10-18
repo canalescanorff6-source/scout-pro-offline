@@ -673,6 +673,20 @@ if(inCard){
  document.head.appendChild(role233Ui);
 }
 
+// V234: revisão global de cores + acabamentos por raridade, sem substituição
+// das 246 artes. CSS FINAL após V226/V230/V232/V233 para eliminar heranças verdes.
+// Ambos instaladores (Capacitor/Electron) e PWA recebem o mesmo conjunto offline.
+const ct234Theme=document.createElement('link');ct234Theme.rel='stylesheet';
+ct234Theme.href=v189Root+'craque-visual-system-v234.css';
+document.head.appendChild(ct234Theme);
+const ct234MotionCss=document.createElement('link');ct234MotionCss.rel='stylesheet';
+ct234MotionCss.href=v189Root+'craque-card-effects-v234.css';
+document.head.appendChild(ct234MotionCss);
+const ct234MotionJs=document.createElement('script');
+ct234MotionJs.src=v189Root+'craque-card-effects-v234.js';
+ct234MotionJs.defer=true;
+document.head.appendChild(ct234MotionJs);
+
 window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
