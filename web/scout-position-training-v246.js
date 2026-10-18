@@ -34,8 +34,14 @@ function db(store){try{
  return obj?.schema==='CRAQUE_POSITION_V246'&&obj.entries&&
   typeof obj.entries==='object'&&!Array.isArray(obj.entries)?obj.entries:{};
 }catch(_){return {}}}
-function trained(card,store){const saved=db(store)[edition(card)];
- return Array.isArray(saved)?saved.filter(p=>ALL.includes(p)&&p!==pos(card?.posicao)&&p!=='GO'):[]}
+function entries(card,store){
+ const saved=db(store)[edition(card)];
+ const source=Array.isArray(saved)?{treinada:saved}:saved&&typeof saved==='object'?saved:{};
+ const valid=arr=>Array.isArray(arr)?arr.filter(p=>ALL.includes(p)&&p!==pos(card?.posicao)&&p!=='GO'):[];
+ return {treinada:valid(source.treinada),familiar:valid(source.familiar)};
+}
+function trained(card,store){return entries(card,store).treinada}
+function familiar(card,store){return entries(card,store).familiar}
 function status(card,wanted,store){
  const target=pos(wanted),native=pos(card?.posicao);
  if(!target||!native)return {status:'pendente',eligible:false,label:'Posição ainda não documentada'};
@@ -45,20 +51,25 @@ function status(card,wanted,store){
  if(target===native)return {status:'original',eligible:true,label:'Posição original'};
  if(trained(card,store).includes(target))return{
   status:'treinada',eligible:true,label:'Treinamento aplicado — confirmado pelo usuário'};
+ if(familiar(card,store).includes(target))return{
+  status:'familiar',eligible:true,label:'Familiaridade existente — confirmada no jogo'};
  return{status:'não confirmada',eligible:false,
   label:'Posição não confirmada nesta edição — exigir comprovação do jogo'};
 }
-function confirm(card,wanted,enabled,store){
+function confirm(card,wanted,enabled,store,mode='treinada'){
  const target=pos(wanted),native=pos(card?.posicao),entry=edition(card),s=storageOrDefault(store);
  if(!target||!native||!entry||!s?.setItem)throw Error('Carta, posição ou armazenamento indisponível');
  if(target==='GO'||native==='GO'||target===native)throw Error('Só posições alternativas de jogadores de linha podem receber confirmação');
- const data=db(s),prior=trained(card,s),next=enabled?
-  [...new Set([...prior,target])]:prior.filter(x=>x!==target);
+ if(mode!=='treinada'&&mode!=='familiar')throw Error('Tipo de familiaridade inválido');
+ const data=db(s),prior=entries(card,s),other=mode==='treinada'?'familiar':'treinada';
+ const next={...prior,
+  [mode]:enabled?[...new Set([...prior[mode],target])]:prior[mode].filter(x=>x!==target),
+  [other]:enabled?prior[other].filter(x=>x!==target):prior[other]};
  const updated={...data};
- if(next.length)updated[entry]=next;else delete updated[entry];
+ if(next.treinada.length||next.familiar.length)updated[entry]=next;else delete updated[entry];
  s.setItem(KEY,JSON.stringify({schema:'CRAQUE_POSITION_V246',entries:updated}));
  try{host?.dispatchEvent?.(new host.CustomEvent('craque:data-changed',{detail:{key:KEY}}))}catch(_){}
  return status(card,target,s);
 }
-return Object.freeze({KEY,POS,ALL,label,pos,edition,trained,status,confirm});
+return Object.freeze({KEY,POS,ALL,label,pos,edition,trained,familiar,status,confirm});
 });
