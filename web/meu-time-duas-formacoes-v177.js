@@ -6,6 +6,8 @@ const LABEL={go:'GO',le:'LE',zge:'ZG E',zgd:'ZG D',ld:'LD',vole:'VOL E',vold:'VO
 const POSITION={GR:'GO',GO:'GO',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',ZG:'ZG',MDF:'VOL',VOL:'VOL',MC:'MLG',ME:'MLG',MLG:'MLG',MO:'MAT',MAT:'MAT',AC:'CA',CA:'CA',SA:'SA'};
 const profiles=window.CRAQUE_LINEUP_PROFILES_V231;
 const identity=window.SCOUT_PLAYER_IDENTITY_V245;
+const positionTraining=window.SCOUT_POSITION_TRAINING_V246;
+if(!positionTraining)throw Error('Posições treinadas V246 não carregaram');
 if(!identity)throw Error('Identidade dos jogadores V245 não carregou');
 let doc=null,roster=[],byCap=new Map(),imageMap=new Map(),activeId='4312',activeMode='posse',allSelections={},editingSlot=null,showAll=false;
 const modes=profiles?.MODES||{posse:'Posse de Bola'};
@@ -13,7 +15,7 @@ const profileId=(id,mode)=>id+':'+mode;
 const currentSelections=()=>allSelections[profileId(activeId,activeMode)];
 const active=()=>doc.formations.find(f=>f.id===activeId);
 const roles=slot=>slot==='zge'||slot==='zgd'?'ZG':slot==='cae'||slot==='cad'?'CA':slot==='vole'||slot==='vold'?'VOL':LABEL[slot]?.split(' ')[0];
-const fits=(card,slot)=>POSITION[card?.posicao]===roles(slot);
+const fits=(card,slot)=>positionTraining.status(card,roles(slot)).eligible;
 const getImage=cap=>imageMap.get(Number(cap))||'';
 const esc=escapeHtml;
 function setStatus(s){$('status').textContent=s}
@@ -67,7 +69,7 @@ function makePlayer(slot){const c=byCap.get(Number(currentSelections()[slot]));c
  (getImage(c.numero)?'<img src="'+esc(getImage(c.numero))+'" alt="Arte original de '+esc(c.name)+'" loading="lazy"/>':'')+
  '<span class="p-name">'+esc(c.name)+'</span>'+
  '<span class="p-cap">#'+c.numero+' · '+esc(c.estilo_ataque)+'</span>'+
- '<span class="p-trust">'+(eligible?'Posição original compatível':'Fora da posição original')+(changed?' · troca manual':'')+'</span></button>';
+ '<span class="p-trust">'+esc(positionTraining.status(c,roles(slot)).label)+(changed?' · troca manual':'')+'</span></button>';
 }
 function renderPitch(){
  $('pitch').innerHTML=active().rows.map(row=>'<div class="pitch-row">'+row.map(makePlayer).join('')+'</div>').join('');
@@ -108,7 +110,7 @@ function renderInstructions(){
  '<p>'+esc(activeMode!=='posse'?
   'Avaliar encaixe de '+modes[activeMode]+': conferir movimentação, familiaridade posicional, habilidades, ímpetos e instruções específicas desta tática.':
   changed?'Confirmar encaixe de posição, habilidades, ímpeto e comportamento em jogo antes de manter.':s.role_instruction)+'</p>'+
- (fits(now,s.slot)?'':'<p class="caution">Fora da posição original do catálogo: validar familiaridade no Plano de Jogo.</p>')+'</article>';
+ (fits(now,s.slot)?'':'<p class="caution">Sem familiaridade comprovada nesta edição: confirmar no Plano de Jogo ou treinar a posição antes de usar.</p>')+'</article>';
  }).join('');
 }
 function effectiveBench(){
@@ -139,11 +141,27 @@ function renderPicker(){
  $('player-options').innerHTML=list.length?list.map(c=>{
  const busy=Object.entries(currentSelections()).find(([s,cap])=>s!==editingSlot&&
  identity.key(byCap.get(Number(cap)))===identity.key(c));
- return '<button type="button" class="option" data-cap="'+c.numero+'"'+(busy?' disabled':'')+'>'+
+ const proof=positionTraining.status(c,roles(editingSlot));
+ return '<div class="ct-v246-choice"><button type="button" class="option" data-cap="'+c.numero+'"'+(busy?' disabled':'')+'>'+
  (getImage(c.numero)?'<img src="'+esc(getImage(c.numero))+'" alt="" loading="lazy"/>':'<span class="no-art">#'+c.numero+'</span>')+
- '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+(busy?' · JOGADOR JÁ EM CAMPO':'')+'</small></span></button>';
+ '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+
+  ' · '+esc(proof.label)+(busy?' · JOGADOR JÁ EM CAMPO':'')+'</small></span></button>'+
+ (proof.status==='não confirmada'?'<button type="button" class="ct-v246-training" data-v246-confirm="'+c.numero+'">Confirmar treino aplicado: '+esc(roles(editingSlot))+'</button>':
+  proof.status==='treinada'?'<button type="button" class="ct-v246-training" data-v246-remove="'+c.numero+'">Desfazer confirmação de '+esc(roles(editingSlot))+'</button>':'')+
+ '</div>';
  }).join(''):'<p>Não encontrei cartas para esse filtro.</p>';
  $('player-options').querySelectorAll('button[data-cap]').forEach(b=>b.onclick=()=>{if(assign(editingSlot,Number(b.dataset.cap)))closePicker()});
+ $('player-options').querySelectorAll('[data-v246-confirm],[data-v246-remove]').forEach(b=>b.onclick=()=>{
+  const card=byCap.get(Number(b.dataset.v246Confirm||b.dataset.v246Remove));
+  const enabled=!!b.dataset.v246Confirm;
+  if(enabled&&!window.confirm('Você JÁ aplicou no eFootball o treino '+roles(editingSlot)+
+   ' na edição #'+card.numero+' de '+card.name+'? Índice alto no eFHUB NÃO comprova que o treino foi aplicado.'))return;
+  try{
+   positionTraining.confirm(card,roles(editingSlot),enabled,localStorage);
+   setStatus((enabled?'Treinamento confirmado: ':'Confirmação retirada: ')+card.name+' · '+roles(editingSlot));
+   renderPicker();render();
+  }catch(error){setStatus('Posição não atualizada: '+error.message)}
+ });
 }
 function openPicker(slot){editingSlot=slot;showAll=false;$('show-all').checked=false;$('player-search').value='';
  $('picker-title').textContent='Escolher jogador — '+LABEL[slot];renderPicker();
