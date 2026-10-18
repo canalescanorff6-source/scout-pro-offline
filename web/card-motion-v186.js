@@ -96,8 +96,15 @@ function run(){
   caption.className='scout-motion-caption';
   caption.textContent=isCatalog?'4 estilos • Show Time · Épica · Big Time · Distinguido':'Efeito visual inspirado nas raridades; arte original preservada.';
   controls.append(btn,caption);
-  if(isCatalog)target.insertAdjacentElement('afterend',controls);
-  else target.insertBefore(controls,target.firstChild);
+  if(isCatalog){
+   // V238: controles das cartas sempre visíveis, mesmo com filtros fechados.
+   // V203 pode executar antes ou depois deste script; em ambos os casos o
+   // botão pertence à barra principal, nunca ao conteúdo do <details>.
+   const catalog=doc.getElementById('catalogo');
+   const meta=catalog?.querySelector('.list-meta');
+   if(catalog&&meta)catalog.insertBefore(controls,meta);
+   else target.insertAdjacentElement('afterend',controls);
+  }else target.insertBefore(controls,target.firstChild);
  }
  doc.addEventListener('visibilitychange',updateState);
  if(lowMotion){
