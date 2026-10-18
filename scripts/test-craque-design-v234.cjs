@@ -93,6 +93,58 @@ function testPage(page,initial){
 }
 testPage('catalog',246);
 testPage('detail',2);
+// V235: a preferência de movimento pode mudar sem recarregar o app.
+// Testa também acionamento do controle por teclado, sem trocar uma carta.
+function testLiveMotionPreferences(){
+ let reduced=true,changeHandler=null;
+ const handlers={},css=new Map();
+ const media={
+  get matches(){return reduced},
+  addEventListener:(type,handler)=>{if(type==='change')changeHandler=handler}
+ };
+ const art=el('div');art.dataset.scoutMotionRarity='show';art.dataset.scoutMotionActive='true';
+ art.classList={contains:name=>name==='side-art'};
+ art.closest=selector=>selector.startsWith('.scout-motion-art')?art:null;
+ art.getBoundingClientRect=()=>({left:0,top:0,width:200,height:200});
+ art.contains=node=>node===art;
+ art.style={setProperty:(name,value)=>css.set(name,value),removeProperty:name=>css.delete(name)};
+ const body=el('body');body.dataset.page='detail';
+ body.classList={contains:name=>name==='scout-motion-on'};
+ const doc={body,hidden:false,readyState:'complete',
+  createElement:el,
+  querySelectorAll:selector=>
+   selector==='.scout-motion-art[data-scout-motion-rarity]'?[art]:
+   selector==='.scout-motion-art[data-ct234-premium="1"]'&&art.dataset.ct234Premium==='1'?[art]:[],
+  addEventListener:(name,handler)=>{handlers[name]=handler}
+ };
+ const host={document:doc,navigator:{connection:{saveData:false}},
+  matchMedia:query=>query.includes('prefers-reduced-motion')?media:{matches:true},
+  requestAnimationFrame:fn=>fn()
+ };
+ vm.runInNewContext(js,{window:host,module:{exports:{}},console},{timeout:2000});
+ assert.equal(art.dataset.ct234Premium,'1','Original art receives overlay only once');
+ assert.equal(typeof handlers.pointermove,'function',
+  'Mouse handler exists even when device boots in reduced motion');
+ assert.equal(typeof changeHandler,'function',
+  'System preference changes must be handled without reloading');
+ const pointer=()=>handlers.pointermove({
+  pointerType:'mouse',target:art,clientX:140,clientY:60
+ });
+ pointer();
+ assert.equal(css.size,0,'Reduced-motion preference prevents tilt');
+ reduced=false;changeHandler();pointer();
+ assert.equal(art.dataset.ct234Hover,'1','Tilt resumes if user disables reduced motion');
+ assert.equal(css.has('--ct234-rx'),true,'3D motion updates CSS only');
+ reduced=true;changeHandler();
+ assert.equal(art.dataset.ct234Hover,undefined,'Reduced-motion change clears stale hover');
+ assert.equal(css.size,0,'Reduced-motion change clears inline transform values');
+ reduced=false;pointer();
+ handlers.click({target:{closest:selector=>selector==='.scout-motion-toggle'?{}:null}});
+ assert.equal(art.dataset.ct234Hover,undefined,'Toggle click clears tilt without mouse movement');
+ assert.equal(css.size,0,'Keyboard-accessible toggle clears inline transform values');
+ assert.equal(art.children.length,1,'Decorative layer remains idempotent');
+}
+testLiveMotionPreferences();
 assert.equal(JSON.stringify(roster),cardsBefore);
 assert.equal(JSON.stringify(audit),auditBefore);
 assert.equal(read('web/fichas/002_Raul.html').includes('app-bridge.js'),true);
