@@ -1,0 +1,105 @@
+name: Craque Tático | V239 comparar atualização entre versões
+
+on:
+  push:
+    branches: [test/v239-upgrade-path-409-422]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/verify-upgrade-path-v239.py'
+      - 'scripts/test-upgrade-path-v239.py'
+      - '.github/workflows/v239-upgrade-path.yml'
+  workflow_dispatch:
+    inputs:
+      previous_tag:
+        description: 'Versão anterior (ex.: v1.1.409)'
+        required: false
+        type: string
+      latest_tag:
+        description: 'Nova versão (ex.: v1.1.422)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: craque-v239-upgrade-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  upgrade-compatibility:
+    name: APK assinado + compatibilidade 409 para 422 + manifesto Windows
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regressões positivas e negativas
+        run: python3 scripts/test-upgrade-path-v239.py -v
+      - name: Selecionar versões públicas sem alterá-las
+        id: tags
+        env:
+          OLD_INPUT: ${{ inputs.previous_tag }}
+          NEW_INPUT: ${{ inputs.latest_tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          OLD="${OLD_INPUT:-v1.1.409}"
+          NEW="${NEW_INPUT:-v1.1.422}"
+          [[ "$OLD" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          [[ "$NEW" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          echo "old=$OLD" >> "$GITHUB_OUTPUT"
+          echo "new=$NEW" >> "$GITHUB_OUTPUT"
+          echo "Comparando releases já públicas: $OLD -> $NEW"
+      - name: Baixar apenas APKs, checksums e manifestos de cada release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OLD: ${{ steps.tags.outputs.old }}
+          NEW: ${{ steps.tags.outputs.new }}
+        run: |
+          set -euo pipefail
+          mkdir -p release-old release-new
+          gh release download "$OLD" -R "$GITHUB_REPOSITORY" \
+            --pattern 'ScoutPRO-Android.apk' \
+            --pattern 'ScoutPRO-Android.apk.sha256' \
+            --pattern 'latest.yml' --dir release-old
+          gh release download "$NEW" -R "$GITHUB_REPOSITORY" \
+            --pattern 'ScoutPRO-Android.apk' \
+            --pattern 'ScoutPRO-Android.apk.sha256' \
+            --pattern 'latest.yml' --dir release-new
+          for d in release-old release-new; do
+            test -s "$d/ScoutPRO-Android.apk"
+            test -s "$d/ScoutPRO-Android.apk.sha256"
+            test -s "$d/latest.yml"
+          done
+      - name: Localizar ferramentas Android do runner
+        id: sdk
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          AAPT="$(find "$SDK/build-tools" -type f -name aapt | sort -V | tail -1)"
+          APKSIGNER="$(find "$SDK/build-tools" -type f -name apksigner | sort -V | tail -1)"
+          test -x "$AAPT"
+          test -x "$APKSIGNER"
+          echo "aapt=$AAPT" >> "$GITHUB_OUTPUT"
+          echo "apksigner=$APKSIGNER" >> "$GITHUB_OUTPUT"
+      - name: Comparar de verdade as duas releases assinadas
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/verify-upgrade-path-v239.py \
+            --previous-dir release-old \
+            --previous-tag "${{ steps.tags.outputs.old }}" \
+            --latest-dir release-new \
+            --latest-tag "${{ steps.tags.outputs.new }}" \
+            --aapt "${{ steps.sdk.outputs.aapt }}" \
+            --apksigner "${{ steps.sdk.outputs.apksigner }}"
+      - name: Documentar limite do teste
+        if: success()
+        run: |
+          echo '### V239 — compatibilidade confirmada entre APKs oficiais' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Pacote Android, assinatura permanente e versionCode progressivo verificados em duas releases reais.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Versões e SHA512 nos manifestos Windows comparados; integridade completa do EXE é coberta pela auditoria V236.' >> "$GITHUB_STEP_SUMMARY"
+          echo '**Não equivale a atualizar e abrir o app em um dispositivo físico.**' >> "$GITHUB_STEP_SUMMARY"
