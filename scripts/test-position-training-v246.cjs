@@ -114,3 +114,68 @@ for(const mode of ['posse','normal','rapido','fora','longo']){
  P.confirm(martinelli,'CA',false,store);
 }
 console.log('V246 OK: 246 cartas intactas; Martinelli PTE→CA SOMENTE após confirmação local de treino; seleção e rodízio usam esse sinal; outras edições, GK, perfis e backup intactos.');
+
+
+// Regressão real de backup/restauração V226 com os registros V246:
+// o backup deve carregar as posições confirmadas e restaurar a edição exata,
+// sem misturar familiaridade, treino, cartas ou históricos de outros módulos.
+async function testV246BackupRoundTrip(){
+ const vm=require('node:vm');
+ const {webcrypto}=require('node:crypto');
+ const saved=new Map();
+ const target={
+  getItem:k=>saved.has(k)?saved.get(k):null,
+  setItem:(k,v)=>{saved.set(String(k),String(v));},
+  removeItem:k=>saved.delete(k)
+ };
+ const local=new Proxy(target,{
+  ownKeys:t=>[...Reflect.ownKeys(t),...saved.keys()],
+  getOwnPropertyDescriptor:(t,k)=>saved.has(k)?
+   {configurable:true,enumerable:true,writable:true,value:saved.get(k)}:
+   Reflect.getOwnPropertyDescriptor(t,k)
+ });
+ const listeners=new Map();
+ const host={
+  localStorage:local,
+  addEventListener:(event,handler)=>listeners.set(event,handler),
+  dispatchEvent:event=>listeners.get(event.type)?.(event),
+  setInterval:()=>0,
+  CustomEvent:class{constructor(type,options){this.type=type;this.detail=options?.detail}}
+ };
+ const context={
+  window:host,localStorage:local,TextEncoder,crypto:webcrypto,
+  CustomEvent:host.CustomEvent,document:{visibilityState:'visible'},
+  setTimeout:()=>0,clearTimeout:()=>{}
+ };
+ vm.runInNewContext(read('web/craque-backup-v226.js'),context,
+  {filename:'craque-backup-v226.js'});
+ const backup=host.CRAQUE_BACKUP_V226;
+ assert(backup,'Módulo real de backup V226 deve inicializar');
+ local.setItem('scoutpro:v219:match-logs','{"partidas":1}');
+ P.confirm(martinelli,'CA',true,local);
+ const exported=await backup.create();
+ assert.equal(exported.items[P.KEY],local.getItem(P.KEY),
+  'Backup original precisa transportar posições V246 por Card ID');
+ assert.equal(exported.items['scoutpro:v219:match-logs'],'{"partidas":1}',
+  'Backup não pode descartar o histórico de partidas');
+ const preview=await backup.inspect(exported);
+ P.confirm(martinelli,'CA',false,local);
+ P.confirm(martinelli,'MAT',true,local,'familiar');
+ assert.equal(P.status(martinelli,'CA',local).eligible,false);
+ assert.equal(P.status(martinelli,'MAT',local).eligible,true);
+ const restored=await backup.restore(preview);
+ assert.equal(restored.status,'restored');
+ assert.equal(P.status(martinelli,'CA',local).status,'treinada',
+  'Restauração precisa recuperar CA treinado nesta edição');
+ assert.equal(P.status(martinelli,'MAT',local).eligible,false,
+  'Backup não deve conservar familiaridade posterior sobreposta ao registro restaurado');
+ assert.equal(P.status({...martinelli,id:'outra-edicao'},'CA',local).eligible,false,
+  'Outra edição nunca pode herdar treino da carta restaurada');
+ assert.equal(local.getItem('scoutpro:v219:match-logs'),'{"partidas":1}');
+ await assert.rejects(
+  backup.inspect({...exported,items:{...exported.items,[P.KEY]:'{"adulterado":true}'}}),
+  /integridade|SHA-256/i,
+  'Arquivo adulterado deve falhar antes de qualquer restauração');
+ console.log('V246 BACKUP OK: exportação, checksum, prévia, restauração por edição e proteção de histórico.');
+}
+testV246BackupRoundTrip().catch(error=>{console.error(error);process.exitCode=1;});
