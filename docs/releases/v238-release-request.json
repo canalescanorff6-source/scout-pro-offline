@@ -1,0 +1,17 @@
+{
+  "app": "Craque Tático — Laboratório de Futebol",
+  "milestone": "V238",
+  "channel": "official Android/Windows release",
+  "requested_at": "2026-10-18",
+  "baseline_main_commit": "4a2ef340f0c494a1cf0554850c1a9804de0663ca",
+  "validated_pull_request": 143,
+  "validation_runs": {
+    "general_ci": 39149534024,
+    "player_card_audit_and_android_windows_smoke": 39149534005,
+    "visual_qa_six_viewports": 39149534068
+  },
+  "purpose": "Publish the V238 visible card-animation toggle correction, preserve all four original V186/V234 rarity effects, 246 cards and their data.",
+  "authorization": "User explicitly requested publication in chat and then continuation of V237 updater-security work.",
+  "release_policy": "Use existing .github/workflows/release.yml only. Require tests, Windows NSIS manifest, Android official permanent signer, checksum and matching source fingerprints to succeed. Do not copy QA APK as official release.",
+  "after_release": "Continue reviewing V237 PR #142. Do not mix V237 changes into V238 release."
+}
