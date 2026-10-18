@@ -7,6 +7,8 @@ const ROWS=[['sa','ca'],['mat'],['mlge','mlgd'],['vol'],['le','zge','zgd','ld'],
 const STORAGE_KEY='scoutpro:v176:posse4312:my-lineup';
 const identity=window.SCOUT_PLAYER_IDENTITY_V245;
 const positionTraining=window.SCOUT_POSITION_TRAINING_V246;
+const benchGuide=window.CRAQUE_BENCH_V247;
+if(!benchGuide)throw Error('Inteligência de reservas V247 indisponível');
 if(!positionTraining)throw Error('Posições treinadas V246 não carregaram');
 if(!identity)throw Error('Identidade dos jogadores V245 indisponível');
 let plan=null, roster=[], byCap=new Map(), base={}, current={},activeSlot=null,showAll=false;
@@ -60,13 +62,18 @@ function effectiveBench(){
 }
 function renderBench(){
  const roleoptions=Object.keys(SLOT_LABEL).map(s=>'<option value="'+s+'">'+esc(SLOT_LABEL[s])+'</option>').join('');
+ const starters=plan.starter_slots.map(s=>({slot:s.slot,role:s.role,cap:Number(current[s.slot])}));
  $('bench').innerHTML=effectiveBench().map(p=>{
+  const targetCard=byCap.get(Number(p.cap));
+  const guidance=benchGuide.recommend(targetCard,starters,roster,'posse');
+  const swapText=guidance.eligible?'Jogar como '+guidance.position+' · Substituir #'+guidance.replaces.cap+' '+guidance.replaces.name+' ('+guidance.replaces.slot.toUpperCase()+')':'Sem troca confirmada nesta formação · '+guidance.reason;
+  const swapHtml='<span class="ct-v247-recommendation" data-confirmed="'+String(guidance.eligible)+'"><small>'+esc(swapText)+'</small></span>';
  const inField=Object.values(current).includes(p.cap);
  const selected=byCap.get(p.cap);
  return '<article class="bench-card">'+
  '<img src="'+esc(p.art)+'" alt="Arte original de '+esc(p.nome)+'" loading="lazy"/>'+
  '<div class="bench-details"><strong>#'+p.cap+' '+esc(p.nome)+'</strong><small>'+esc(p.role)+' · '+esc(p.estilo_ataque)+' · Confiança '+esc(p.confidence)+'</small><p>'+esc(p.use)+'</p>'+
- '<a href="'+esc(p.card_page)+'">Abrir ficha original ↗</a></div>'+
+ swapHtml+'<a href="'+esc(p.card_page)+'">Abrir ficha original ↗</a></div>'+
  '<div class="bench-action"><label for="bench-'+p.cap+'">'+(inField?'Em campo · trocar posição':'Colocar em campo')+'</label>'+
  '<select id="bench-'+p.cap+'" data-bench="'+p.cap+'"><option value="">Selecionar posição…</option>'+roleoptions+'</select></div></article>';
  }).join('');
