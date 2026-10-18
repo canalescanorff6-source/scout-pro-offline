@@ -32,5 +32,24 @@
   }
   return [...groups.entries()].filter(([,ids])=>ids.length>1).map(([identity,caps])=>({identity,caps}));
  }
- return Object.freeze({key,cap,unique,duplicates});
+ function benchFor(starters,bench,cards){
+  const byCap=new Map(cards.map(c=>[Number(c.numero),c]));
+  const occupied=new Set(starters.map(n=>key(byCap.get(Number(n)))));
+  if(occupied.size!==starters.length)throw Error('Titulares contêm duas versões do mesmo jogador');
+  return bench.map(row=>{
+   let c=byCap.get(Number(row.cap)),replaced=false;
+   if(!c||occupied.has(key(c))){
+    const candidates=cards.filter(card=>!occupied.has(key(card)));
+    candidates.sort((a,b)=>
+     Number(b.posicao===row.original_pos)-Number(a.posicao===row.original_pos)||
+     Number(a.numero)-Number(b.numero));
+    c=candidates[0];replaced=true;
+   }
+   if(!c)throw Error('Sem reservas suficientes com pessoas diferentes');
+   occupied.add(key(c));
+   return {...row,cap:Number(c.numero),name:c.name,original_pos:c.posicao,
+    atk:c.estilo_ataque,card_page:c.arquivo,autoReplacement:replaced};
+  });
+ }
+ return Object.freeze({key,cap,unique,duplicates,benchFor});
 });
