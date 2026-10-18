@@ -13,6 +13,8 @@
  if(!host?.document)return;
  const doc=host.document;
  let pending=false,last=null,observer=null;
+ const ART_SELECTOR='.scout-motion-art[data-scout-motion-rarity]';
+ // V242: mutações de tabelas/fichas não devem repintar as 246 cartas.
  // A preferência pode mudar com o aplicativo aberto. Mantém a escuta de mouse
  // preparada mesmo se "Reduzir movimentos" estiver ativo durante a inicialização.
  const reducedMedia=host.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -34,16 +36,21 @@
  function upgrade(){
   pending=false;
   if(!API.eligible(doc.body?.dataset.page))return;
-  const nodes=doc.querySelectorAll('.scout-motion-art[data-scout-motion-rarity]');
-  for(const art of nodes)decorate(art);
-  const expected=doc.body?.dataset.page==='catalog'?246:2;
-  if(nodes.length>=expected&&observer){observer.disconnect();observer=null}
+  for(const art of doc.querySelectorAll(ART_SELECTOR))decorate(art);
  }
  function requestUpgrade(){
   if(pending)return;
   pending=true;
   if(typeof host.requestAnimationFrame==='function')host.requestAnimationFrame(upgrade);
   else upgrade();
+ }
+ function addedArt(records){
+  // Só importa um nó NOVO com arte, não atualizações de PP, notas e ícones.
+  for(const record of records)for(const node of record.addedNodes||[]){
+   if(node.nodeType!==1)continue;
+   if(node.matches?.(ART_SELECTOR)||node.querySelector?.(ART_SELECTOR))return true;
+  }
+  return false;
  }
  function stopTilt(){
   if(!last)return;
@@ -101,11 +108,12 @@
   doc.body.dataset.ct234MotionReady='1';
   upgrade();
   if(host.MutationObserver){
-   const expected=doc.body.dataset.page==='catalog'?246:2;
-   if(doc.querySelectorAll('.scout-motion-art[data-ct234-premium="1"]').length<expected){
-    observer=new host.MutationObserver(requestUpgrade);
-    observer.observe(doc.body,{childList:true,subtree:true});
-   }
+   // Não varrer o DOM a cada alteração de níveis de treino e outras seções.
+   // Novas cartas inseridas dinamicamente continuam recebendo o prisma.
+   observer=new host.MutationObserver(records=>{
+    if(addedArt(records))requestUpgrade();
+   });
+   observer.observe(doc.body,{childList:true,subtree:true});
   }
   attachPointer();
  }
