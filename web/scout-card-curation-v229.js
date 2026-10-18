@@ -23,7 +23,20 @@
  else boot();
 })(typeof window!=='undefined'?window:null,function(){'use strict';
 const SECTION_IDS=['engenharia','foco','pontos','performance','status','jogar'];
+// V242: comparações fora da ficha principal eram confundidas com outras fichas.
+// A comparação e a checagem V215 permanecem completas no arquivo consultável.
+const OPTIONAL_IDS=['scout-v207-identity','scout-v215-evidence'];
 const SAFE_TITLE=/\s*(?:\||·)\s*SCOUT PRO V\d+\s*$/i;
+function archiveOptional(doc,holder,archive){
+ let moved=0;
+ for(const id of OPTIONAL_IDS){
+  const node=doc.getElementById(id);
+  if(!node||archive.contains(node))continue;
+  // Não alterar o conteúdo nem os listeners; reaproveitar o nó original.
+  holder.appendChild(node);moved++;
+ }
+ return moved;
+}
 function collect(doc){
  const profile=doc.querySelector('.profile-content');
  return SECTION_IDS.map(id=>{
@@ -79,13 +92,30 @@ function mount(doc){
   if(!entry.present||!section||moved.has(section)||section.contains(archive))continue;
   moved.add(section);holder.append(section);
  }
+ archiveOptional(doc,holder,archive);
  content.insertBefore(archive,content.firstChild);
+ // V242: V207/V215 às vezes são inseridos APÓS a primeira montagem da ficha.
+ // Vigiar só novos nós relevantes para não reanalisar a página durante edição PP.
+ const root=doc.querySelector('.profile-content');
+ const Mutation=doc.defaultView?.MutationObserver;
+ if(root&&Mutation){
+  const late=new Mutation(records=>{
+   for(const record of records)for(const node of record.addedNodes||[]){
+    if(node.nodeType!==1)continue;
+    if(OPTIONAL_IDS.includes(node.id)||
+       OPTIONAL_IDS.some(id=>node.querySelector?.('#'+id))){
+     archiveOptional(doc,holder,archive);return;
+    }
+   }
+  });
+  late.observe(root,{childList:true,subtree:true});
+ }
  // Preservar links internos do catálogo e da ficha para os painéis transferidos.
  doc.addEventListener('click',event=>{
   const link=event.target?.closest?.('a[href^="#"]');
   if(!link)return;
   const targetId=link.getAttribute('href').slice(1);
-  if(!SECTION_IDS.includes(targetId))return;
+  if(!SECTION_IDS.includes(targetId)&&!OPTIONAL_IDS.includes(targetId))return;
   const target=doc.getElementById(targetId);
   if(!target||!archive.contains(target))return;
   technical.open=true;archive.open=true;
@@ -120,5 +150,5 @@ function mount(doc){
  }));
  return true;
 }
-return Object.freeze({SECTION_IDS,collect,inspect,mount});
+return Object.freeze({SECTION_IDS,OPTIONAL_IDS,archiveOptional,collect,inspect,mount});
 });
