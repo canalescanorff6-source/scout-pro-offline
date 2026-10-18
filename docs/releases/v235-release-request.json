@@ -1,0 +1,11 @@
+{
+  "app": "Craque Tático — Laboratório de Futebol",
+  "milestone": "V235",
+  "requested_at": "2026-10-18",
+  "baseline_main_commit": "9362fc2969d12537bf6466c7c46fe1083dd1336b",
+  "validated_qa_workflow_run": "39143436341",
+  "validated_pull_request": 140,
+  "release_policy": "Publish only using existing .github/workflows/release.yml after all official integrity, Windows, Android signing, checksum and parity checks succeed.",
+  "approval": "Owner requested next publication step in conversation.",
+  "note": "This metadata-only JSON commit triggers the pre-existing GitHub release pipeline. Version number is assigned by that pipeline's run_number; no player, PP, artwork, formation or signing files are edited."
+}
