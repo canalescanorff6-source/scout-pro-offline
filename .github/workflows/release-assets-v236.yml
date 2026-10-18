@@ -1,0 +1,94 @@
+name: Craque Tático | V236 auditoria da release publicada
+on:
+  push:
+    branches: [audit/v236-post-release-assets]
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-assets-v236.yml'
+      - 'scripts/verify-published-assets-v236.py'
+  release:
+    types: [published]
+  schedule:
+    - cron: '17 12 * * 1'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag exata (vazio = última release)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: craque-v236-release-audit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  published-assets:
+    name: Conferir APK oficial e atualização Windows já publicada
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Selecionar release sem modificar produção
+        id: target
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED_TAG: ${{ inputs.tag }}
+          EVENT_TAG: ${{ github.event.release.tag_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "$REQUESTED_TAG" ]]; then
+            TAG="$REQUESTED_TAG"
+          elif [[ -n "$EVENT_TAG" ]]; then
+            TAG="$EVENT_TAG"
+          else
+            TAG="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name)"
+          fi
+          [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
+            echo 'Tag de release inválida' >&2; exit 1;
+          }
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Auditando $TAG sem alterar downloads nem assinaturas"
+      - name: Obter os cinco arquivos da release oficial
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.target.outputs.tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" --dir release-assets
+          ls -lh release-assets
+      - name: Encontrar ferramentas de assinatura Android do runner
+        id: sdk
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          test -d "$SDK/build-tools"
+          AAPT="$(find "$SDK/build-tools" -type f -name aapt | sort -V | tail -1)"
+          SIGNER="$(find "$SDK/build-tools" -type f -name apksigner | sort -V | tail -1)"
+          test -x "$AAPT"
+          test -x "$SIGNER"
+          echo "aapt=$AAPT" >> "$GITHUB_OUTPUT"
+          echo "apksigner=$SIGNER" >> "$GITHUB_OUTPUT"
+      - name: Verificar hashes, versão, certificado e atualizador
+        shell: bash
+        run: |
+          python3 scripts/verify-published-assets-v236.py \
+            --dir release-assets \
+            --tag "${{ steps.target.outputs.tag }}" \
+            --aapt "${{ steps.sdk.outputs.aapt }}" \
+            --apksigner "${{ steps.sdk.outputs.apksigner }}"
+      - name: Relatar proteção pós-publicação
+        if: success()
+        shell: bash
+        run: |
+          echo '### Release verificada sem alterações' >> "$GITHUB_STEP_SUMMARY"
+          echo 'APK: integridade SHA256, certificado V99, pacote e atualizador.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Windows: EXE, SHA512, latest.yml, versão e blockmap.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Esta auditoria **não instala fisicamente** o APK/EXE.' >> "$GITHUB_STEP_SUMMARY"
