@@ -28,11 +28,17 @@ const edition=card=>{
  return n+'@'+id;
 };
 function storageOrDefault(store){try{return store||host?.localStorage||null}catch(_){return null}}
+let lastStore=null,lastRaw=null,lastEntries=null;
 function db(store){try{
- const raw=storageOrDefault(store)?.getItem(KEY);
+ const s=storageOrDefault(store),raw=s?.getItem(KEY)??null;
+ // No seletor mobile, 70 cartas podem consultar o mesmo registro:
+ // invalidar cache apenas quando o texto salvo realmente mudar.
+ if(lastStore===s&&lastRaw===raw&&lastEntries)return lastEntries;
  const obj=raw?JSON.parse(raw):null;
- return obj?.schema==='CRAQUE_POSITION_V246'&&obj.entries&&
+ const entries=obj?.schema==='CRAQUE_POSITION_V246'&&obj.entries&&
   typeof obj.entries==='object'&&!Array.isArray(obj.entries)?obj.entries:{};
+ lastStore=s;lastRaw=raw;lastEntries=entries;
+ return entries;
 }catch(_){return {}}}
 function entries(card,store){
  const saved=db(store)[edition(card)];
