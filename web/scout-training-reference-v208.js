@@ -34,7 +34,9 @@ function resolveTraining(data,lab){
  const pp=Number.isInteger(data?.pp)&&data.pp>=0?data.pp:null;
  const scenario=/^[ABC P]$/.test(String(data?.recommended_scenario||''))?String(data.recommended_scenario).trim():'A';
  let levels=null,kind='pendente';
- if(validLevels(recommended)){levels=recommended.slice();kind='registrado'}
+ if(validLevels(recommended)&&data?.training_status!=='proposta_nao_validada'){
+  levels=recommended.slice();kind='registrado'
+ }
  else if(validLevels(lab?.draftA)&&pp!==null&&lab.draftA.reduce((s,n)=>s+ppCost(n),0)===pp){
   levels=lab.draftA.slice();kind='prévia experimental';
  }else if(validLevels(lab?.[scenario])&&pp!==null&&lab[scenario].reduce((s,n)=>s+ppCost(n),0)===pp){
