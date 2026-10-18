@@ -15,7 +15,7 @@ class Elem {
   this.classList={toggle(){}};
  }
  get hidden(){return this._hidden}
- set hidden(value){const v=Boolean(value);if(v!==this._hidden){writes++;this._hidden=v}}
+ set hidden(value){const v=Boolean(value);if(v!==this._hidden){if(this.dataset.cap)writes++;this._hidden=v}}
  addEventListener(event,callback){(this.handlers[event]??=[]).push(callback)}
  emit(event){for(const callback of this.handlers[event]||[])callback()}
  setAttribute(key,value){this.attributes[key]=value}
