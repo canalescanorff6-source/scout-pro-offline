@@ -25,6 +25,10 @@ function suitability(card,slot){
  if(want==='GO')return have==='GO'?{score:100,kind:'posição original'}:{score:-100,kind:'sem goleiro'};
  if(have==='GO')return {score:-100,kind:'goleiro incompatível'};
  if(have===want)return {score:100,kind:'posição original'};
+ const positions=host?.SCOUT_POSITION_TRAINING_V246||
+  (typeof module==='object'&&module.exports?require('./scout-position-training-v246.js'):null);
+ if(positions?.status(card,want).status==='treinada')
+  return {score:84,kind:'posição treinada confirmada'};
  const nearby={
   SA:['CA','MAT'],CA:['SA','MAT','PTD','PTE'],MAT:['SA','MLG','VOL','MLD','MLE'],
   MLG:['MAT','VOL','MLD','MLE'],VOL:['MLG','ZG','MAT'],
