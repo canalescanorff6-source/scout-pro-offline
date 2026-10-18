@@ -48,8 +48,13 @@
   const motion=catalog.querySelector('.scout-motion-controls');
   contents.append(roleTitle,roles,rarityTitle,rarities);
   panel.append(summary,contents);
-  catalog.insertBefore(panel,meta);
-  if(motion)catalog.insertBefore(motion,meta);
+  // V238: reutiliza a altura do cabeçalho dos filtros para mostrar o botão.
+  // Não adiciona uma faixa vertical extra antes das cartas no celular.
+  const motionRow=doc.createElement('div');
+  motionRow.className='scout-v238-filter-motion-row';
+  motionRow.appendChild(panel);
+  if(motion)motionRow.appendChild(motion);
+  catalog.insertBefore(motionRow,meta);
   function update(){
    const position=selectedLabel(roles,'Todas as posições');
    const rarity=selectedLabel(rarities,'Todas as raridades');
