@@ -34,7 +34,7 @@ function run(){
    button.disabled=Boolean(lowMotion?.matches);
    const compact=doc.body.dataset.page==='catalog';
    button.textContent=compact
-    ?(lowMotion?.matches?'✧ Efeitos bloqueados':on?'✦ Efeitos ON':'✧ Efeitos OFF')
+    ?(lowMotion?.matches?'✧ Bloqueado':on?'✦ Efeitos ON':'✧ Efeitos OFF')
     :(lowMotion?.matches?'✧ Animação desativada pelo sistema':on?'✦ Cartas animadas: ON':'✧ Cartas animadas: OFF');
    button.setAttribute('aria-label',lowMotion?.matches?
     'Animação desativada pelo sistema':on?'Cartas animadas ligadas':'Cartas animadas desligadas');
