@@ -172,7 +172,7 @@ function teamHTML(team){
       '<div class="scout-rotation-field-spot missing">'+esc(slot.toUpperCase())+'<small>Pendente</small></div>';
    }).join('')+'</div>').join('')+'</div></div>'+
  '<div class="scout-rotation-players"><section><h3>11 titulares</h3>'+team.starters.map(s=>cardRow(s.cap,s.role,s.fit,s.slot)).join('')+
- '</section><section><h3>12 reservas</h3>'+team.bench.map(b=>cardRow(b.cap,b.role,null,null,benchGuide.recommend(getCard(b.cap),team.starters,roster,tactic))).join('')+'</section></div>'+
+ '</section><section><h3>12 reservas</h3>'+team.bench.map(b=>cardRow(b.cap,b.role,null,null,benchGuide.recommend(getCard(b.cap),team.starters,cards,tactic))).join('')+'</section></div>'+
  '<section class="scout-rotation-audit"><h3>Revisão tática e documental</h3>'+
  '<p>VOL Orquestrador: '+(team.linkup.volOrchestrator?'identificado':'não identificado')+' · CA Artilheiro: '+(team.linkup.caArtilheiro?'identificado':'não identificado')+
  ' · MAT Armador criativo: '+(team.linkup.matCreative?'identificado':'não identificado')+'. Link-Up ativo no jogo: NÃO CONFIRMADO.</p>'+
