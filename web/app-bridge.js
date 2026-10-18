@@ -648,6 +648,16 @@ if(inCard){
 const labels230=document.createElement('script');labels230.src=v189Root+'craque-impetos-ptbr-v230.js';
 labels230.defer=true;document.head.appendChild(labels230);
 
+// V232: experiência mobile: navegação rápida, tipografia e barra inferior contida.
+// Um único bundle web atende APK Android, Electron/Windows e PWA; sem alterar dados.
+const experience232Css=document.createElement('link');
+experience232Css.rel='stylesheet';
+experience232Css.href=v189Root+'craque-experience-v232.css';
+document.head.appendChild(experience232Css);
+const experience232Js=document.createElement('script');
+experience232Js.src=v189Root+'craque-experience-v232.js';
+document.head.appendChild(experience232Js);
+
 window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
