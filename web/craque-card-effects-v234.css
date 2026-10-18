@@ -193,6 +193,23 @@ body[data-page="catalog"] #catalogo .scout-v238-filter-motion-row .scout-motion-
  .scout-motion-art[data-ct234-premium="1"] .ct234-motion-prism{inset:3%;border-radius:9px}
  .scout-motion-toggle{min-height:42px;font-size:11px!important}
 }
+/* V242 — opção de desempenho nos celulares: mantém o reflexo animado
+ * V186/V234, mas não gira continuamente DOIS gradientes complexos ao mesmo
+ * tempo. Moldura e assinatura de cada raridade permanecem visíveis. */
+@media(max-width:720px) and (pointer:coarse){
+ body.scout-motion-on
+ .scout-motion-art[data-ct234-premium="1"][data-scout-motion-active="true"]
+ .ct234-motion-prism::before{
+  animation:none!important;
+  animation-play-state:paused!important;
+  opacity:.48!important;
+ }
+ body.scout-motion-on
+ .scout-motion-art[data-ct234-premium="1"][data-scout-motion-active="true"]
+ .ct234-motion-prism::after{
+  animation-duration:calc(var(--ct234-glint-speed) * 1.6);
+ }
+}
 @media(prefers-reduced-motion:reduce){
  .scout-motion-art[data-ct234-premium="1"] .ct234-motion-prism,
  .scout-motion-art[data-ct234-premium="1"] .ct234-motion-prism::before,
