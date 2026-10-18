@@ -101,7 +101,7 @@ function refreshPicker(){
  return '<div class="ct-v246-choice"><button class="option" data-cap="'+c.numero+'" type="button" '+(used?'disabled':'')+'>'+
  (src?'<img src="'+esc(src)+'" alt="" loading="lazy"/>':'<span class="no-art">#'+c.numero+'</span>')+
  '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+' · '+esc(proof.label)+(used?' · JOGADOR JÁ EM CAMPO':'')+'</small></span></button>'+
- (proof.status==='não confirmada'?'<button type="button" class="ct-v246-training" data-v246-confirm="'+c.numero+'">Treino aplicado: '+esc(wanted(activeSlot))+'</button>'+
+ (proof.status==='não confirmada'&&showAll&&$('player-search').value.trim().length>=2?'<button type="button" class="ct-v246-training" data-v246-confirm="'+c.numero+'">Treino aplicado: '+esc(wanted(activeSlot))+'</button>'+
   '<button type="button" class="ct-v246-training" data-v246-familiar="'+c.numero+'">Já tem familiaridade: '+esc(wanted(activeSlot))+'</button>':
   (proof.status==='treinada'||proof.status==='familiar')?'<button type="button" class="ct-v246-training" data-v246-remove="'+c.numero+'">Desfazer confirmação de '+esc(wanted(activeSlot))+'</button>':'')+'</div>';
  }).join(''):'<p>Nenhuma carta encontrada neste filtro.</p>';
