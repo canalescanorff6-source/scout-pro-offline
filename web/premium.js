@@ -3,17 +3,27 @@
 const $=(s,root=document)=>root.querySelector(s), $$=(s,root=document)=>Array.from(root.querySelectorAll(s));
 const fold=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 if(document.body.dataset.page==='catalog'){
- const cards=$$('.player-card'), search=$('#search'), sort=$('#sort'), styleSelect=$('#style-filter'), count=$('#shown-count'), allcount=$('#all-count'), more=$('#more'), none=$('#none');
+ const cards=Array.from(document.querySelectorAll('.player-card')), search=$('#search'), sort=$('#sort'), styleSelect=$('#style-filter'), count=$('#shown-count'), allcount=$('#all-count'), more=$('#more'), none=$('#none');
+ const grid=$('#cards'), foldedSearch=new Map(cards.map(el=>[el,fold(el.dataset.search)]));
  let role='TODOS', rarity='TODAS', style='TODOS', limit=30, filtered=[];
- const buttonState=(root,value)=>{$$('.filter',root).forEach(btn=>{const on=btn.dataset.value===value;btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false')})};
+ const buttonState=(root,value)=>{Array.from(root.querySelectorAll('.filter')).forEach(btn=>{const on=btn.dataset.value===value;btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false')})};
  const apply=()=>{
   const q=fold(search.value.trim());
-  filtered=cards.filter(el=>(role==='TODOS'||el.dataset.role===role)&&(rarity==='TODAS'||el.dataset.rarity===rarity)&&(style==='TODOS'||el.dataset.style===style||el.dataset.styleDefense===style)&&fold(el.dataset.search).includes(q));
+  filtered=cards.filter(el=>(role==='TODOS'||el.dataset.role===role)&&(rarity==='TODAS'||el.dataset.rarity===rarity)&&(style==='TODOS'||el.dataset.style===style||el.dataset.styleDefense===style)&&foldedSearch.get(el).includes(q));
   const key=sort.value;
   filtered.sort((a,b)=>key==='alpha'?a.dataset.name.localeCompare(b.dataset.name,'pt-BR'):key==='reverse'?Number(b.dataset.cap)-Number(a.dataset.cap):key==='position'?((window.SCOUT_POSITION_ORDER?.[a.dataset.position]??99)-(window.SCOUT_POSITION_ORDER?.[b.dataset.position]??99)||Number(a.dataset.cap)-Number(b.dataset.cap)):Number(a.dataset.cap)-Number(b.dataset.cap));
-  cards.forEach(el=>el.hidden=true);
-  filtered.forEach((el,i)=>{if(i<limit){$('#cards').appendChild(el);el.hidden=false}});
-  count.textContent=Math.min(limit,filtered.length);allcount.textContent=filtered.length;
+  const visible=filtered.slice(0,limit), active=new Set(visible);
+  // V243: não reescrever 246 atributos hidden e não mover 30 cards em todo input.
+  // Só alterar visibilidade de fato; a ordem existente é preservada quando igual.
+  cards.forEach(el=>{const show=active.has(el);if(el.hidden===show)el.hidden=!show});
+  const ordered=Array.from(grid?.children||[]).filter(el=>active.has(el));
+  if(ordered.length!==visible.length||visible.some((el,i)=>ordered[i]!==el)){
+   // Uma inserção em lote diminui layouts e notificações de MutationObserver.
+   const fragment=typeof document.createDocumentFragment==='function'?document.createDocumentFragment():null;
+   for(const el of visible)(fragment||grid).appendChild(el);
+   if(fragment)grid.appendChild(fragment);
+  }
+  count.textContent=visible.length;allcount.textContent=filtered.length;
   more.hidden=filtered.length<=limit;none.hidden=filtered.length!==0;
  };
  $$('.filter', $('#roles')).forEach(btn=>btn.addEventListener('click',()=>{role=btn.dataset.value;buttonState($('#roles'),role);limit=30;apply()}));

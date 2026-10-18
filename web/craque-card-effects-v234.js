@@ -13,6 +13,7 @@
  if(!host?.document)return;
  const doc=host.document;
  let pending=false,last=null,observer=null;
+ let pendingArts=new Set();
  const ART_SELECTOR='.scout-motion-art[data-scout-motion-rarity]';
  // V242: mutações de tabelas/fichas não devem repintar as 246 cartas.
  // A preferência pode mudar com o aplicativo aberto. Mantém a escuta de mouse
@@ -36,7 +37,11 @@
  function upgrade(){
   pending=false;
   if(!API.eligible(doc.body?.dataset.page))return;
-  for(const art of doc.querySelectorAll(ART_SELECTOR))decorate(art);
+  // A varredura completa acontece apenas na montagem inicial.
+  // Depois disso, decorar apenas artes realmente NOVAS e ainda não tratadas.
+  const arts=pendingArts.size?pendingArts:doc.querySelectorAll(ART_SELECTOR);
+  pendingArts=new Set();
+  for(const art of arts)decorate(art);
  }
  function requestUpgrade(){
   if(pending)return;
@@ -45,12 +50,15 @@
   else upgrade();
  }
  function addedArt(records){
-  // Só importa um nó NOVO com arte, não atualizações de PP, notas e ícones.
+  // Reordenar uma carta já decorada não é uma carta nova. Não disparar scans.
   for(const record of records)for(const node of record.addedNodes||[]){
    if(node.nodeType!==1)continue;
-   if(node.matches?.(ART_SELECTOR)||node.querySelector?.(ART_SELECTOR))return true;
+   if(node.matches?.(ART_SELECTOR)&&node.dataset.ct234Premium!=='1')pendingArts.add(node);
+   for(const art of node.querySelectorAll?.(ART_SELECTOR)||[]){
+    if(art.dataset.ct234Premium!=='1')pendingArts.add(art);
+   }
   }
-  return false;
+  return pendingArts.size>0;
  }
  function stopTilt(){
   if(!last)return;
