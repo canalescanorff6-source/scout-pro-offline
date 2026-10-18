@@ -38,6 +38,8 @@ assert.equal(Tactical.fit(martinelli,'cae').match,true);
 assert.equal(Tactical.fit(martinelli,'cad').label,'Treinamento aplicado — confirmado pelo usuário');
 assert.equal(Rotation.suitability(martinelli,'cae').kind,'posição treinada confirmada');
 assert.equal(Rotation.suitability(martinelli,'cae').score,84);
+assert(read('web/scout-rotation-engine-v219.js').includes('positionConfirmed(s.fit)'),
+ 'Equipe não deve tratar posição treinada comprovada como adaptação provisória');
 assert.equal(P.status(martinelli,'MAT').eligible,false,
  'CA confirmado não autoriza automaticamente MAT, SA ou outra função');
 // Mesma pessoa ou nome com outro Card ID é OUTRA edição e não herda treino.
