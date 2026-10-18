@@ -1,0 +1,159 @@
+name: Craque Tático | V235 instaladores QA sem publicação
+on:
+  push:
+    branches: [build/v235-instaladores-qa]
+permissions:
+  contents: read
+concurrency:
+  group: craque-tatico-v235-instaladores-qa
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Integridade das 246 cartas e regressões
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rodar testes oficiais do projeto
+        run: npm run check
+      - name: Validar formato da assinatura fixa sem acessar chaves
+        run: node scripts/official-android-sign-v99.cjs check
+
+  windows:
+    name: Windows | EXE V235 para validação
+    needs: validate
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Empacotar Windows sem publicar
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: |
+          npm install --no-audit --no-fund
+          npm run styles:ptbr
+          npm run brand:build
+          node scripts/set-version.cjs 1.1.408 canalescanorff6-source/scout-pro-offline
+          npm run bundle:stamp
+          npm run desktop:win
+          node scripts/ensure-windows-update-manifest.cjs
+      - name: Checar nome, manifesto e fingerprint
+        shell: pwsh
+        run: |
+          $exe = @(Get-ChildItem dist\ScoutPRO-Setup-1.1.408.exe -ErrorAction Stop)
+          if ($exe.Count -ne 1 -or !(Test-Path dist\latest.yml)) { throw 'Instalador Windows incompleto' }
+          if (!(Select-String -Path dist\latest.yml -Pattern 'version: 1.1.408' -Quiet)) { throw 'Versão Windows divergente' }
+          Copy-Item web\scout-build-info.json dist\scout-build-info.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: craque-tatico-v235-windows-qa
+          path: |
+            dist/ScoutPRO-Setup-*.exe
+            dist/*.blockmap
+            dist/latest.yml
+            dist/scout-build-info.json
+          if-no-files-found: error
+          retention-days: 14
+
+  android:
+    name: Android | APK oficial assinado para validação
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Exigir assinatura permanente já utilizada na V234
+        env:
+          MASTER: ${{ secrets.ANDROID_RELEASE_SECRET }}
+        run: |
+          if [ -z "$MASTER" ]; then
+            echo 'Chave permanente ausente; não distribuir APK incompatível.'
+            exit 1
+          fi
+      - name: Preparar o aplicativo nativo sem mudar pacote
+        run: |
+          npm install --no-audit --no-fund
+          node scripts/set-version.cjs 1.1.408 canalescanorff6-source/scout-pro-offline
+          npm run styles:ptbr
+          npm run brand:build
+          npm run bundle:stamp
+          npx cap add android
+          node scripts/install-native-updater-v102.cjs
+          npx cap sync android
+          python3 scripts/install-android-icons.py
+          python3 scripts/set-android-version.py 408 1.1.408
+      - name: Compilar APK release
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew :app:assembleRelease --no-daemon
+      - name: Assinar e conferir certificado original V99
+        env:
+          ANDROID_RELEASE_SECRET: ${{ secrets.ANDROID_RELEASE_SECRET }}
+        run: node scripts/official-android-sign-v99.cjs sign
+      - name: Validar APK assinado, versão progressiva e atualizador
+        run: |
+          set -euo pipefail
+          APK=release-out/ScoutPRO-Android.apk
+          test -s "$APK"
+          unzip -t "$APK" >/dev/null
+          AAPT="$(find "$ANDROID_HOME/build-tools" -name aapt | sort -V | tail -1)"
+          APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -1)"
+          "$APKSIGNER" verify --verbose "$APK"
+          "$AAPT" dump badging "$APK" >/tmp/craque-v235-badging.txt
+          grep -Fq "package: name='br.com.scoutpro.offline' versionCode='408' versionName='1.1.408'" /tmp/craque-v235-badging.txt
+          "$AAPT" dump xmltree "$APK" AndroidManifest.xml >/tmp/craque-v235-manifest.txt
+          grep -Fq 'br.com.scoutpro.offline.ScoutUpdateFileProvider' /tmp/craque-v235-manifest.txt
+          grep -Fq 'br.com.scoutpro.offline.scoutupdate.files' /tmp/craque-v235-manifest.txt
+          (cd release-out && sha256sum -c ScoutPRO-Android.apk.sha256)
+          cp web/scout-build-info.json release-out/scout-build-info.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: craque-tatico-v235-android-assinado-qa
+          path: |
+            release-out/ScoutPRO-Android.apk
+            release-out/ScoutPRO-Android.apk.sha256
+            release-out/scout-build-info.json
+          if-no-files-found: error
+          retention-days: 14
+
+  parity:
+    name: Android/Windows | mesmo código e fingerprint
+    needs: [validate, windows, android]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: craque-tatico-v235-windows-qa
+          path: parity/windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: craque-tatico-v235-android-assinado-qa
+          path: parity/android
+      - name: Conferir dados da compilação
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          paths=('parity/windows/scout-build-info.json','parity/android/scout-build-info.json')
+          a,b=[json.loads(pathlib.Path(p).read_text(encoding='utf-8-sig')) for p in paths]
+          keys=('schema','version','git_revision','bundle_fingerprint','source_count')
+          diffs=[key for key in keys if a.get(key)!=b.get(key)]
+          if diffs: raise SystemExit('Paridade inválida: '+', '.join(diffs))
+          if a.get('version')!='1.1.408': raise SystemExit('Versão inesperada')
+          if a.get('git_revision')!='${{ github.sha }}': raise SystemExit('Commit de origem divergente')
+          print('V235: paridade Android/Windows confirmada')
+          PY
