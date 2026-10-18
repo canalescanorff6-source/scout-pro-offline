@@ -43,11 +43,13 @@
   sortTitle.textContent='Ordenação';
   // Os três controles são MOVIMENTADOS, não duplicados; eventos e atributos mantidos.
   contents.append(sortTitle,tools);
+  // V238: o controle de efeitos NÃO deve ficar num painel de filtros fechado.
+  // Mantém o botão e seus listeners fora do <details>, visível no celular/PC.
   const motion=catalog.querySelector('.scout-motion-controls');
-  if(motion)contents.appendChild(motion);
   contents.append(roleTitle,roles,rarityTitle,rarities);
   panel.append(summary,contents);
   catalog.insertBefore(panel,meta);
+  if(motion)catalog.insertBefore(motion,meta);
   function update(){
    const position=selectedLabel(roles,'Todas as posições');
    const rarity=selectedLabel(rarities,'Todas as raridades');
