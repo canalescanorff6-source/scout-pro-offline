@@ -175,6 +175,9 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
     for(let offset=0;offset<team.bench.length;offset++){
      const benchIndex=(Math.floor(k/entries.length)+offset)%team.bench.length;
      const previous=team.bench[benchIndex].cap;
+     // V245: nunca expulsar da rodada 2 uma carta recém-vinda da lista
+     // de espera. Isso preserva a cobertura completa das duas rodadas.
+     if(swaps.includes(previous))continue;
      const currentName=identity.key(byN.get(previous));
      if(newName!==currentName&&usedNames[t].has(newName))continue;
      team.bench[benchIndex]={cap:coming,role:position(selectedCard)};
