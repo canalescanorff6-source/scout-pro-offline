@@ -100,6 +100,40 @@ def run() -> int:
                         "Os reflexos originais não foram decorados em todas as cartas")
             assert_that(not errors, "Erro JS na biblioteca: " + repr(errors))
 
+            # V244: conferir CSS efetivamente aplicado, não somente presença do texto.
+            page.wait_for_function("""() =>
+              !!document.querySelector('#cards .player-card:not([hidden]) .card-art[data-scout-motion-active="true"] .scout-motion-layer')
+            """, timeout=18000)
+            motion = page.evaluate("""() => {
+              const art=document.querySelector(
+                '#cards .player-card:not([hidden]) .card-art[data-scout-motion-active="true"]');
+              const layer=art?.querySelector('.scout-motion-layer');
+              const prism=art?.querySelector('.ct234-motion-prism');
+              return {
+                mobile:matchMedia('(max-width:720px) and (pointer:coarse)').matches,
+                effectOn:document.body.classList.contains('scout-motion-on'),
+                aura:getComputedStyle(layer,'::before').animationName,
+                sweep:getComputedStyle(layer,'::after').animationName,
+                extraSweep:getComputedStyle(prism,'::after').animationName,
+                rarity:art?.dataset.scoutMotionRarity
+              };
+            }""")
+            report["mobile_motion_v244"] = motion
+            assert_that(motion["mobile"] and motion["effectOn"],
+                        "O QA deve testar modo móvel com efeitos habilitados")
+            assert_that(motion["aura"] == "none" and motion["extraSweep"] == "none",
+                        "V244: gradientes móveis redundantes continuam animados")
+            assert_that("scout-v186-sweep" in motion["sweep"],
+                        "V244: o reflexo original das cartas foi removido")
+            page.locator('.scout-motion-toggle').first.click()
+            assert_that(not page.evaluate(
+                "() => document.body.classList.contains('scout-motion-on')"),
+                "Efeitos OFF deixou animações ligadas")
+            page.locator('.scout-motion-toggle').first.click()
+            assert_that(page.evaluate(
+                "() => document.body.classList.contains('scout-motion-on')"),
+                "Efeitos ON não reativou os reflexos")
+
             page.goto(BASE + "/fichas/007_Sergi_Cardona.html",
                       wait_until="domcontentloaded", timeout=35000)
             page.wait_for_function("""() => {
