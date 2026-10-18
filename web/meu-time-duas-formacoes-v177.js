@@ -112,23 +112,9 @@ function renderInstructions(){
  }).join('');
 }
 function effectiveBench(){
- // Preserva o plano original: o banco exibido usa cada pessoa uma só vez.
- const occupied=new Set(Object.values(currentSelections()).map(n=>identity.key(byCap.get(Number(n)))));
- return active().bench.map(row=>{
-  let c=byCap.get(row.cap),changed=false;
-  if(!c||occupied.has(identity.key(c))){
-   const candidates=roster.filter(card=>!occupied.has(identity.key(card)));
-   candidates.sort((a,b)=>
-     Number(b.posicao===row.original_pos)-Number(a.posicao===row.original_pos)||
-     Number(a.numero)-Number(b.numero));
-   c=candidates[0];changed=true;
-  }
-  if(!c)throw Error('Não há 12 reservas com identidade distinta');
-  occupied.add(identity.key(c));
-  return {...row,cap:c.numero,name:c.name,original_pos:c.posicao,
-   atk:c.estilo_ataque,art:getImage(c.numero),card_page:c.arquivo,
-   autoReplacement:changed};
- });
+ // Nenhum Card ID é removido: lista temporária de 12 reservas para a equipe ativa.
+ return identity.benchFor(Object.values(currentSelections()),active().bench,roster)
+  .map(row=>({...row,art:getImage(row.cap)}));
 }
 function renderBench(){
  $('bench').innerHTML=effectiveBench().map(c=>{
