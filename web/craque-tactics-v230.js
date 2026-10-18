@@ -35,8 +35,9 @@ function fit(card,slot){
  if(want===have)return {match:true,score:55,label:'Posição original'};
  const trained=(typeof window!=='undefined'?window.SCOUT_POSITION_TRAINING_V246:null)||
   (typeof module==='object'&&module.exports?require('./scout-position-training-v246.js'):null);
- if(trained?.status(card,want).status==='treinada')
-  return {match:true,score:49,label:'Posição treinada e confirmada nesta carta'};
+ const confirmed=trained?.status(card,want);
+ if(confirmed?.status==='treinada'||confirmed?.status==='familiar')
+  return {match:true,score:49,label:confirmed.label};
  if(NEAR[want]?.includes(have))return {match:false,score:15,label:'Adaptação sem familiaridade confirmada'};
  return {match:false,score:-100,label:'Posição incompatível'};
 }
