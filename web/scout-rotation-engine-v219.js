@@ -145,7 +145,8 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
    if(!pick){entries[t].warnings.push('Sem jogador disponível para '+slot);continue}
    const fit=suitability(pick,slot);
    entries[t].starters.push({slot,cap:Number(pick.numero),fit:fit.kind,role:desired(slot)});
-   if(fit.kind!=='posição original')entries[t].warnings.push('#'+pick.numero+' '+pick.name+' em '+slot+': '+fit.kind+'; confirmar familiaridade no jogo.');
+   if(!['posição original','posição treinada confirmada','familiaridade confirmada'].includes(fit.kind))
+    entries[t].warnings.push('#'+pick.numero+' '+pick.name+' em '+slot+': '+fit.kind+'; confirmar familiaridade no jogo.');
   }
  }
  const benchPool=filtered.filter(c=>!used.has(Number(c.numero)));
@@ -213,9 +214,10 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
   if(!team.linkup.documentaryMatch)team.warnings.push('Link-Up não atende a todos os requisitos documentais: não afirmar que o bônus está ativo.');
   team.ready=team.starters.length===START_SIZE&&team.bench.length===BENCH_SIZE&&
     team.starters.some(s=>s.slot==='go'&&s.fit==='posição original');
+  const positionConfirmed=fit=>['posição original','posição treinada confirmada','familiaridade confirmada'].includes(fit);
   team.positionallyConfirmed=team.starters.length===START_SIZE&&
-    team.starters.every(s=>s.fit==='posição original');
-  team.requiresPositionReview=team.starters.some(s=>s.fit!=='posição original');
+    team.starters.every(s=>positionConfirmed(s.fit));
+  team.requiresPositionReview=team.starters.some(s=>!positionConfirmed(s.fit));
   if(team.requiresPositionReview)team.warnings.push('ADAPTAÇÃO PROVISÓRIA: confirmar posição utilizável no jogo antes de testar esta escalação.');
   if(!team.ready)team.warnings.push('Equipe incompleta: conferir disponibilidade de posição/GO; não reutilizar outras cartas desta rodada.');
 
