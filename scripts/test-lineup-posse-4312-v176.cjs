@@ -65,7 +65,8 @@ assert(js.includes("new Set(Object.values(vals)).size===11")&&
  js.includes("identity.unique(Object.values(vals).map(n=>byCap.get(n)))")&&
  js.includes("identity.key(byCap.get(Number(v)))===identity.key(byCap.get(n))"),
  'V176 bloqueia a mesma carta e duas versões da mesma pessoa');
-assert(js.includes('canPick(')&&js.includes("show-all")&&js.includes('A carta #'));
+assert(js.includes('canPick(')&&js.includes("show-all")&&js.includes('Uma versão por pessoa em cada equipe'),
+ 'Editor experimental continua bloqueando cartas repetidas com explicação ao usuário');
 assert(!js.includes('fetch("http'));
 assert(index.includes('href="meu-time-posse-4312.html"'));
 for(const f of ['meu-time-posse-4312.html','meu-time-posse-4312.js','SCOUT_V176_POSSE_4312.json','SCOUT_V69_AUDITORIA.json'])
