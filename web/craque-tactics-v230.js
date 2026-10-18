@@ -94,7 +94,12 @@ function score(card,slot,mode='posse'){
 function rank(cards,slot,mode,exclude=[],used=[]){
  if(!Array.isArray(cards))throw Error('Lista de cartas indisponível');
  const banned=new Set([...exclude,...used].map(Number));
- return cards.filter(c=>!banned.has(Number(c.numero)))
+ const identity=(typeof window!=='undefined'?window.SCOUT_PLAYER_IDENTITY_V245:null)||
+  (typeof module==='object'&&module.exports?require('./scout-player-identity-v245.js'):null);
+ const busyNames=new Set(cards.filter(c=>used.some(n=>Number(n)===Number(c.numero)))
+  .map(c=>identity?.key(c)).filter(Boolean));
+ return cards.filter(c=>!banned.has(Number(c.numero))&&
+  (!identity||!busyNames.has(identity.key(c))))
  .map(c=>({card:c,...score(c,slot,mode)}))
  .filter(x=>x.score>=0)
  .sort((a,b)=>b.score-a.score||Number(a.card.numero)-Number(b.card.numero));
