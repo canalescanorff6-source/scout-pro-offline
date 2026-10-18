@@ -20,7 +20,7 @@ function slotRole(slot){
  if(['zge','zgd'].includes(slot))return 'ZG';
  if(['cae','cad'].includes(slot))return 'CA';
  if(['vole','vold'].includes(slot))return 'VOL';
- return ({go:'GO',le:'LE',ld:'LD',mlg:'MLG',mat:'MAT',sa:'SA'})[slot]||null;
+ return ({go:'GO',le:'LE',ld:'LD',vol:'VOL',mlg:'MLG',mlge:'MLG',mlgd:'MLG',mat:'MAT',sa:'SA',ca:'CA'})[slot]||null;
 }
 const NEAR={
  CA:['SA','MAT'],SA:['CA','MAT'],MAT:['SA','MLG','VOL'],MLG:['MAT','VOL'],
