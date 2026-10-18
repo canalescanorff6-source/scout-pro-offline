@@ -13,6 +13,7 @@
  if(!host?.document)return;
  const doc=host.document;
  let pending=false,last=null,observer=null;
+ let tiltQueued=false,tiltEvent=null;
  let pendingArts=new Set();
  const ART_SELECTOR='.scout-motion-art[data-scout-motion-rarity]';
  // V242: mutações de tabelas/fichas não devem repintar as 246 cartas.
@@ -61,6 +62,8 @@
   return pendingArts.size>0;
  }
  function stopTilt(){
+  // V244: uma saída do mouse ou OFF não pode aplicar tilt atrasado.
+  tiltEvent=null;
   if(!last)return;
   delete last.dataset.ct234Hover;
   last.style?.removeProperty?.('--ct234-rx');
@@ -78,20 +81,35 @@
   if(!e.closest?.('.player-card') && !e.closest?.('.mobile-profile') && !e.classList.contains('side-art'))return null;
   return e;
  }
+ function applyTilt(){
+  // No máximo um cálculo de posição e duas alterações CSS por frame.
+  tiltQueued=false;
+  const event=tiltEvent;
+  tiltEvent=null;
+  if(!event||!motionAllowed()){stopTilt();return}
+  const art=activeArt(event.target);
+  if(!art){stopTilt();return}
+  if(last!==art){stopTilt();last=art}
+  const r=art.getBoundingClientRect();
+  if(!r.width||!r.height){stopTilt();return}
+  const px=Math.max(-.5,Math.min(.5,(event.clientX-r.left)/r.width-.5));
+  const py=Math.max(-.5,Math.min(.5,(event.clientY-r.top)/r.height-.5));
+  art.dataset.ct234Hover='1';
+  art.style.setProperty('--ct234-rx',(-py*7).toFixed(2)+'deg');
+  art.style.setProperty('--ct234-ry',(px*7).toFixed(2)+'deg');
+ }
  function attachPointer(){
   if(!supportsTilt)return;
   doc.addEventListener('pointermove',event=>{
    if(event.pointerType==='touch'||!motionAllowed()){stopTilt();return}
-   const art=activeArt(event.target);
-   if(!art){stopTilt();return}
-   if(last!==art){stopTilt();last=art}
-   const r=art.getBoundingClientRect();
-   if(!r.width||!r.height){stopTilt();return}
-   const px=Math.max(-.5,Math.min(.5,(event.clientX-r.left)/r.width-.5));
-   const py=Math.max(-.5,Math.min(.5,(event.clientY-r.top)/r.height-.5));
-   art.dataset.ct234Hover='1';
-   art.style.setProperty('--ct234-rx',(-py*7).toFixed(2)+'deg');
-   art.style.setProperty('--ct234-ry',(px*7).toFixed(2)+'deg');
+   // V244: eventos intermediários são descartados; só a posição mais
+   // recente é aplicada no próximo requestAnimationFrame.
+   tiltEvent={target:event.target,clientX:event.clientX,clientY:event.clientY};
+   if(tiltQueued)return;
+   tiltQueued=true;
+   if(typeof host.requestAnimationFrame==='function')
+    host.requestAnimationFrame(applyTilt);
+   else applyTilt();
   },{passive:true});
   doc.addEventListener('pointerout',e=>{
    if(last&&last.contains(e.target)&&!last.contains(e.relatedTarget))stopTilt();

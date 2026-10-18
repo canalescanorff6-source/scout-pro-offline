@@ -210,6 +210,33 @@ body[data-page="catalog"] #catalogo .scout-v238-filter-motion-row .scout-motion-
   animation-duration:calc(var(--ct234-glint-speed) * 1.6);
  }
 }
+/* V244 — orçamento de animação em telas móveis de toque.
+ * Mesmo com Efeitos ON, conserva uma varredura luminosa V186, a moldura
+ * colorida por raridade V234 e as partículas estáticas. Desliga apenas
+ * animações redundantes e gradientes concêntricos em movimento paralelo.
+ * Efeitos OFF, visibilidade e Reduzir movimentos continuam prioritários. */
+@media(max-width:720px) and (pointer:coarse){
+ body.scout-motion-on
+ .scout-motion-art[data-ct234-premium="1"][data-scout-motion-active="true"]
+ .scout-motion-layer::before{
+  animation:none!important;
+  animation-play-state:paused!important;
+  will-change:auto!important;
+ }
+ body.scout-motion-on
+ .scout-motion-art[data-ct234-premium="1"][data-scout-motion-active="true"]
+ .ct234-motion-prism::after{
+  animation:none!important;
+  animation-play-state:paused!important;
+  opacity:0!important;
+  will-change:auto!important;
+ }
+ body.scout-motion-on
+ .scout-motion-art[data-ct234-premium="1"][data-scout-motion-active="true"]
+ .scout-motion-layer::after{
+  animation-duration:calc(var(--ct234-glint-speed) * 1.5)!important;
+ }
+}
 @media(prefers-reduced-motion:reduce){
  .scout-motion-art[data-ct234-premium="1"] .ct234-motion-prism,
  .scout-motion-art[data-ct234-premium="1"] .ct234-motion-prism::before,
