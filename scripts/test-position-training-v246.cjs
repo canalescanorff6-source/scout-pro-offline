@@ -97,5 +97,18 @@ for(const path of [
   assert(src.includes(s),path+' não usa '+s);
 }
 for(const path of ['web/sw.js','scripts/stamp-bundle-v189.cjs'])
- assert(read(path).includes('scout-position-training-v246.js'),'Offline Android/Windows incompleto: '+path);
+ for(const asset of ['scout-position-training-v246.js','scout-position-training-v246.css'])
+  assert(read(path).includes(asset),'Offline Android/Windows incompleto: '+path+' / '+asset);
+for(const path of ['web/meu-time-duas-formacoes-v177.html','web/meu-time-posse-4312.html'])
+ assert(read(path).includes('scout-position-training-v246.css'),
+  'Controle de posições treinadas sem estilo no Android: '+path);
+const v246CSS=read('web/scout-position-training-v246.css');
+assert(v246CSS.includes('min-height:44px'),'Área de toque premium reduzida');
+assert(v246CSS.includes('prefers-reduced-motion'),'Acessibilidade de movimento preservada');
+for(const mode of ['posse','normal','rapido','fora','longo']){
+ P.confirm(martinelli,'CA',true,store);
+ assert(Tactical.score(martinelli,'cae',mode).score>=0,
+  'Martinelli CA treinado elegível em '+mode);
+ P.confirm(martinelli,'CA',false,store);
+}
 console.log('V246 OK: 246 cartas intactas; Martinelli PTE→CA SOMENTE após confirmação local de treino; seleção e rodízio usam esse sinal; outras edições, GK, perfis e backup intactos.');
