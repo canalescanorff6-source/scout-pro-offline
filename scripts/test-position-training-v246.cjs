@@ -116,6 +116,24 @@ for(const mode of ['posse','normal','rapido','fora','longo']){
 console.log('V246 OK: 246 cartas intactas; Martinelli PTE→CA SOMENTE após confirmação local de treino; seleção e rodízio usam esse sinal; outras edições, GK, perfis e backup intactos.');
 
 
+// V176/V177: todas as vagas do plano devem resolver uma posição real.
+// Antes, vol/mlge/mlgd/ca retornavam null no motor tático V230,
+// apesar de serem vagas registradas no editor experimental.
+const expectedFormations=JSON.parse(read('web/SCOUT_V177_DUAS_FORMACOES.json')).formations;
+const legacyFormation=JSON.parse(read('web/SCOUT_V176_POSSE_4312.json'));
+const documentedSlots=[
+ ...expectedFormations.flatMap(f=>f.starters),
+ ...legacyFormation.starter_slots
+];
+for(const {slot,role} of documentedSlots){
+ assert.equal(Tactical.slotRole(slot),role,
+  'Vaga '+slot+' precisa mapear '+role+' sem deixar posição tática desconhecida');
+ const originalCard=cards.find(c=>P.pos(c.posicao)===role);
+ assert(originalCard,'Catálogo sem jogador original na posição '+role);
+ assert.equal(Tactical.fit(originalCard,slot).match,true,
+  'Jogador original de '+role+' precisa ser aceito em '+slot);
+}
+
 // Regressão real de backup/restauração V226 com os registros V246:
 // o backup deve carregar as posições confirmadas e restaurar a edição exata,
 // sem misturar familiaridade, treino, cartas ou históricos de outros módulos.
