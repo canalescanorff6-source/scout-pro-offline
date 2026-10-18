@@ -15,7 +15,7 @@ assert.equal(mod.selectedLabel(none,'Todos'),'Todos');
 assert.equal(mod.build({body:{dataset:{page:'detail'}}}),false,'Fichas não devem receber filtros');
 const code=read('web/scout-finish-v203.js');
 for(const phrase of [
- 'catalog.insertBefore(panel,meta)',
+ 'catalog.insertBefore(motionRow,meta)',
  'contents.append(sortTitle,tools)',
  'contents.append(roleTitle,roles,rarityTitle,rarities)',
  "const motion=catalog.querySelector('.scout-motion-controls')",
@@ -24,8 +24,10 @@ for(const phrase of [
  "doc.getElementById('sort')?.addEventListener('change'",
  "new URLSearchParams(host?.location?.search||'')"
 ])assert(code.includes(phrase),'Preservação dos filtros: '+phrase);
-assert(code.includes('if(motion)catalog.insertBefore(motion,meta)'),
- 'V238: controle Cartas animadas deve aparecer FORA do painel de filtros fechado');
+assert(code.includes('if(motion)motionRow.appendChild(motion)'),
+ 'V238: controle Cartas animadas deve aparecer ao lado do painel fechado');
+assert(code.includes("motionRow.className='scout-v238-filter-motion-row'"),
+ 'V238: controles precisam compartilhar linha, sem deslocar a primeira carta');
 assert(!code.includes('contents.appendChild(motion)'),
  'V238: não esconder animação dentro dos filtros recolhidos');
 assert(!code.includes('cloneNode(')&&!code.includes('innerHTML='),'Não duplicar botões ou reescrever a lista de filtros');
