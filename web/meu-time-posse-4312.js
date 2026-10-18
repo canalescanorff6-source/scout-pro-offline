@@ -6,10 +6,13 @@ const ROLE_MAP={GR:'GO',GO:'GO',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',
 const ROWS=[['sa','ca'],['mat'],['mlge','mlgd'],['vol'],['le','zge','zgd','ld'],['go']];
 const STORAGE_KEY='scoutpro:v176:posse4312:my-lineup';
 const identity=window.SCOUT_PLAYER_IDENTITY_V245;
+const positionTraining=window.SCOUT_POSITION_TRAINING_V246;
+if(!positionTraining)throw Error('Posições treinadas V246 não carregaram');
 if(!identity)throw Error('Identidade dos jogadores V245 indisponível');
 let plan=null, roster=[], byCap=new Map(), base={}, current={},activeSlot=null,showAll=false;
 const roleFor=c=>ROLE_MAP[String(c.posicao||'')]||c.posicao;
-const originallyFits=(c,slot)=>roleFor(c)===('zge'===slot||'zgd'===slot?'ZG':SLOT_LABEL[slot]?.split(' ')[0]);
+const wanted=slot=>('zge'===slot||'zgd'===slot?'ZG':SLOT_LABEL[slot]?.split(' ')[0]);
+const originallyFits=(c,slot)=>positionTraining.status(c,wanted(slot)).eligible;
 function setStatus(message){$('status').textContent=message}
 function persist(){
  try{localStorage.setItem(STORAGE_KEY,JSON.stringify({schema:plan.schema,slots:current}));setStatus('Personalização salva neste dispositivo; fichas e PP não foram alterados.')}
@@ -34,7 +37,7 @@ function playerCard(slot){
  '<span class="p-role">'+esc(SLOT_LABEL[slot])+'</span>'+
  '<img src="'+esc(src)+'" alt="Arte original de '+esc(selected.name)+'" loading="lazy"/>'+
  '<span class="p-name">'+esc(selected.name)+'</span>'+
- '<span class="p-cap">#'+selected.numero+' · '+(fits?'Encaixe de posição':'Fora da posição')+'</span>'+
+ '<span class="p-cap">#'+selected.numero+' · '+esc(positionTraining.status(selected,wanted(slot)).label)+'</span>'+
  '<span class="p-trust">'+esc(confidence)+(changed?' · escolha manual':'')+'</span></button>';
 }
 function getImage(n){const p=plan.starter_slots.find(x=>x.cap===n)||plan.bench.find(x=>x.cap===n);return p?.art||images.get(n)||''}
@@ -94,12 +97,26 @@ function refreshPicker(){
  const used=Object.entries(current).find(([s,n])=>s!==activeSlot&&
  identity.key(byCap.get(Number(n)))===identity.key(c));
  const src=getImage(c.numero);
- return '<button class="option" data-cap="'+c.numero+'" type="button" '+(used?'disabled':'')+'>'+
+ const proof=positionTraining.status(c,wanted(activeSlot));
+ return '<div class="ct-v246-choice"><button class="option" data-cap="'+c.numero+'" type="button" '+(used?'disabled':'')+'>'+
  (src?'<img src="'+esc(src)+'" alt="" loading="lazy"/>':'<span class="no-art">#'+c.numero+'</span>')+
- '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+(used?' · JOGADOR JÁ EM CAMPO':'')+'</small></span></button>';
+ '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+' · '+esc(proof.label)+(used?' · JOGADOR JÁ EM CAMPO':'')+'</small></span></button>'+
+ (proof.status==='não confirmada'?'<button type="button" class="ct-v246-training" data-v246-confirm="'+c.numero+'">Confirmar treino aplicado: '+esc(wanted(activeSlot))+'</button>':
+  proof.status==='treinada'?'<button type="button" class="ct-v246-training" data-v246-remove="'+c.numero+'">Desfazer confirmação de '+esc(wanted(activeSlot))+'</button>':'')+'</div>';
  }).join(''):'<p>Nenhuma carta encontrada neste filtro.</p>';
  $('player-options').querySelectorAll('button[data-cap]').forEach(b=>b.onclick=()=>{
  if(canPick(activeSlot,Number(b.dataset.cap)))$('picker').close();
+ });
+ $('player-options').querySelectorAll('[data-v246-confirm],[data-v246-remove]').forEach(b=>b.onclick=()=>{
+  const card=byCap.get(Number(b.dataset.v246Confirm||b.dataset.v246Remove));
+  const enabled=!!b.dataset.v246Confirm;
+  if(enabled&&!window.confirm('Você JÁ aplicou no eFootball o treino '+wanted(activeSlot)+
+   ' na edição #'+card.numero+' de '+card.name+'? OVR alto NÃO confirma treino aplicado.'))return;
+  try{
+   positionTraining.confirm(card,wanted(activeSlot),enabled,localStorage);
+   setStatus((enabled?'Treino confirmado: ':'Confirmação desfeita: ')+card.name+' · '+wanted(activeSlot));
+   refreshPicker();render();
+  }catch(error){setStatus('Não foi possível confirmar posição: '+error.message)}
  });
 }
 function openPicker(slot){activeSlot=slot;showAll=false;$('show-all').checked=false;$('player-search').value='';
