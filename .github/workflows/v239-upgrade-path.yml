@@ -12,11 +12,11 @@ on:
   workflow_dispatch:
     inputs:
       previous_tag:
-        description: 'Versão anterior (ex.: v1.1.409)'
+        description: 'Versão anterior (padrão v1.1.422)'
         required: false
         type: string
       latest_tag:
-        description: 'Nova versão (ex.: v1.1.422)'
+        description: 'Nova versão (padrão última release publicada)'
         required: false
         type: string
 
@@ -29,7 +29,7 @@ concurrency:
 
 jobs:
   upgrade-compatibility:
-    name: APK assinado + compatibilidade 409 para 422 + manifesto Windows
+    name: APK assinado + atualização 422 para release mais recente + Windows
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -41,11 +41,16 @@ jobs:
         env:
           OLD_INPUT: ${{ inputs.previous_tag }}
           NEW_INPUT: ${{ inputs.latest_tag }}
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          OLD="${OLD_INPUT:-v1.1.409}"
-          NEW="${NEW_INPUT:-v1.1.422}"
+          OLD="${OLD_INPUT:-v1.1.422}"
+          if [[ -n "$NEW_INPUT" ]]; then
+            NEW="$NEW_INPUT"
+          else
+            NEW="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name)"
+          fi
           [[ "$OLD" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
           [[ "$NEW" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
           echo "old=$OLD" >> "$GITHUB_OUTPUT"
