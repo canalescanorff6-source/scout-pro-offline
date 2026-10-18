@@ -68,9 +68,9 @@ for(const section of ['id="formation-pick"','data-formation="4312"','data-format
 assert(h.includes('meta name="viewport"'));
 assert(h.includes('meu-time-duas-formacoes-v177.js'));
 assert(js.includes('SCOUT_V177_DUAS_FORMACOES.json'));
-assert(js.includes("storedKey(activeId)"));
-assert(js.includes("localStorage.setItem(storedKey(activeId)"));
-assert(js.includes("new Set(Object.values(next)).size===11"));
+assert(js.includes("profiles.save(active(),activeMode,currentSelections()"),"A compatibilidade V177 agora é mantida pelo gerenciador V231");
+assert(txt('web/craque-lineup-profiles-v231.js').includes("scoutpro:v177:minhas-duas-formacoes:"),"A chave de Posse V177 precisa continuar válida");
+assert(txt('web/craque-lineup-profiles-v231.js').includes("new Set(Object.values(picked)).size===11"),"Continuar impedindo titulares duplicados");
 assert(js.includes('Requisitos encontrados'));
 assert(js.includes('confirmada dentro do jogo')||js.includes('confirmada dentro do jogo')||js.includes('confirmada dentro do jogo')||js.includes('confirmada dentro do jogo')||js.includes('ativação real'));
 assert(js.includes('A carta #'));
