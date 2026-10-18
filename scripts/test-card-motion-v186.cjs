@@ -45,12 +45,15 @@ function browserTest(page,reduced=false,storagePref=null){
  const local={};if(storagePref)local[lib.SETTINGS_KEY]=storagePref;
  const body=new El('body');body.dataset.page=page;
  const tools=new El();const toolbar=new El();toolbar.appendChild(tools);
+ const catalog=new El('section'),meta=new El('div');catalog.appendChild(meta);
+ catalog.querySelector=selector=>selector==='.list-meta'?meta:null;
  const profile=new El(),side=new El(),mobile=new El();
  const img=new El('img');mobile.appendChild(img);
  const cards=Array.from({length:4},(_,i)=>{let card=new El('a');card.dataset.rarity=['SHOW TIME','ÉPICA','BIG TIME','DISTINGUIDO'][i];let art=new El();card.art=art;card.appendChild(art);card.querySelector=(s)=>s==='.card-art'?art:null;return card});
  const buttons=[];
  const doc={body,hidden:false,readyState:'complete',title:'Luis Díaz — SHOW TIME | SCOUT PRO',
   createElement:tag=>{let el=new El(tag);if(tag==='button')buttons.push(el);return el},
+  getElementById:id=>id==='catalogo'?catalog:null,
   querySelector:s=>s==='.toolbar .tools'?tools:s==='.profile-content'?profile:s==='.side-art'?side:s==='.mobile-profile'?mobile:null,
   querySelectorAll:s=>s==='.player-card[data-rarity]'?cards:s==='.scout-motion-toggle'?buttons.filter(x=>x.className==='scout-motion-toggle'):[],
   addEventListener:(name,fn)=>{doc['on_'+name]=fn}
@@ -64,6 +67,10 @@ function browserTest(page,reduced=false,storagePref=null){
  const btn=buttons.find(x=>x.className==='scout-motion-toggle');
  assert(btn,'Botão de animação ausente em '+page);
  if(page==='catalog'){
+  assert.strictEqual(btn.parentNode?.parentNode,catalog,
+   'V238: botão Cartas animadas precisa ficar fora dos filtros recolhidos');
+  assert(catalog.children.indexOf(btn.parentNode)<catalog.children.indexOf(meta),
+   'Os efeitos devem aparecer antes do contador de cartas');
   assert.deepEqual(cards.map(c=>c.art.dataset.scoutMotionRarity),['show','epic','big','highlight']);
   assert(cards.every(c=>c.art.children.some(e=>e.className==='scout-motion-layer')),'Todas as quatro artes recebem sobreposição');
   assert.equal(cards[0].art.dataset.scoutMotionActive,String(!reduced&&storagePref!=='off'));

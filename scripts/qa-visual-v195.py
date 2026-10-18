@@ -151,8 +151,11 @@ def run():
                     problems.append(f"{name}: filtros originais não foram movidos, ou foram duplicados")
                 if page.locator("#scout-v203-filter-panel #sort").count()!=1:
                     problems.append(f"{name}: ordenação original ficou inacessível")
-                if page.locator("#scout-v203-filter-panel .scout-motion-toggle").count()!=1:
-                    problems.append(f"{name}: controle de animação se perdeu na reorganização")
+                motion_button=page.locator("#catalogo .scout-v238-filter-motion-row .scout-motion-toggle")
+                if motion_button.count()!=1 or not motion_button.is_visible():
+                    problems.append(f"{name}: botão de animação não aparece ao lado dos filtros")
+                if page.locator("#scout-v203-filter-panel .scout-motion-toggle").count()!=0:
+                    problems.append(f"{name}: botão de animação voltou a ficar escondido nos filtros")
                 initial_count=int(page.locator("#all-count").inner_text())
                 if initial_count!=246:
                     problems.append(f"{name}: acervo inicial não tem 246 cartas: {initial_count}")
