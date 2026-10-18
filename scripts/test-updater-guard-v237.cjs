@@ -57,15 +57,19 @@ ordered(native,'if(!digest.equals(expected))','if(!temp.renameTo(file))',
  'Comparar hash antes de tornar APK instalável');
 ordered(native,'if(!temp.renameTo(file))','putString("verifiedSha256",digest)',
  'Só registrar hash depois de salvar o APK verificado');
-ordered(native,'if(!expected.equals(hex(sha.digest())))','PackageInfo installed=info',
+// Há uma leitura inicial em getInstalledInfo. Para conferir a ordem de instalação,
+// comparar somente o trecho do método installDownloaded.
+const installFlow=native.slice(native.indexOf('public void installDownloaded(PluginCall call)'));
+assert(installFlow.length>0,'Método de instalação nativa ausente');
+ordered(installFlow,'if(!expected.equals(hex(sha.digest())))','PackageInfo installed=info',
  'Verificar alterações após download antes de identificar pacote');
-ordered(native,'candidate.packageName','code(candidate)<=code(installed)',
+ordered(installFlow,'candidate.packageName','code(candidate)<=code(installed)',
  'Verificar pacote antes de oferecer upgrade');
-ordered(native,'code(candidate)<=code(installed)','fingerprint(s1[0]).equals(fingerprint(s2[0]))',
+ordered(installFlow,'code(candidate)<=code(installed)','fingerprint(s1[0]).equals(fingerprint(s2[0]))',
  'Bloquear downgrade antes de comparar assinatura');
-ordered(native,'fingerprint(s1[0]).equals(fingerprint(s2[0]))','pm.canRequestPackageInstalls()',
+ordered(installFlow,'fingerprint(s1[0]).equals(fingerprint(s2[0]))','pm.canRequestPackageInstalls()',
  'Validar assinatura antes de pedir permissão de instalação');
-ordered(native,'openFileDescriptor(uri,"r")','getContext().startActivity(install)',
+ordered(installFlow,'openFileDescriptor(uri,"r")','getContext().startActivity(install)',
  'Confirmar URI legível antes de abrir instalador');
 
 assert(!native.includes('Intent.ACTION_DELETE'));
