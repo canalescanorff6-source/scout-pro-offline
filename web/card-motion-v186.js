@@ -32,7 +32,12 @@ function run(){
   doc.querySelectorAll('.scout-motion-toggle').forEach(button=>{
    button.setAttribute('aria-pressed',String(on));
    button.disabled=Boolean(lowMotion?.matches);
-   button.textContent=lowMotion?.matches?'✧ Animação desativada pelo sistema':on?'✦ Cartas animadas: ON':'✧ Cartas animadas: OFF';
+   const compact=doc.body.dataset.page==='catalog';
+   button.textContent=compact
+    ?(lowMotion?.matches?'✧ Efeitos bloqueados':on?'✦ Efeitos ON':'✧ Efeitos OFF')
+    :(lowMotion?.matches?'✧ Animação desativada pelo sistema':on?'✦ Cartas animadas: ON':'✧ Cartas animadas: OFF');
+   button.setAttribute('aria-label',lowMotion?.matches?
+    'Animação desativada pelo sistema':on?'Cartas animadas ligadas':'Cartas animadas desligadas');
    button.title=lowMotion?.matches?'Desative Reduzir movimentos nas configurações do dispositivo para habilitar os efeitos.':'Ativar ou pausar os efeitos das cartas. Não altera as artes originais.';
   });
   for(const entry of frameNodes){
@@ -102,7 +107,9 @@ function run(){
    // botão pertence à barra principal, nunca ao conteúdo do <details>.
    const catalog=doc.getElementById('catalogo');
    const meta=catalog?.querySelector('.list-meta');
-   if(catalog&&meta)catalog.insertBefore(controls,meta);
+   const row=catalog?.querySelector('.scout-v238-filter-motion-row');
+   if(row)row.appendChild(controls);
+   else if(catalog&&meta)catalog.insertBefore(controls,meta);
    else target.insertAdjacentElement('afterend',controls);
   }else target.insertBefore(controls,target.firstChild);
  }
