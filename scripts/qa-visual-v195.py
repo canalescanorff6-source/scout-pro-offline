@@ -1055,6 +1055,47 @@ def run():
                 if ('Bola Longa' not in page.locator('#ct-v230-tactic-name').inner_text() or
                     page.locator('#pitch button[data-slot]').count()!=11):
                     problems.append(f"{name}: V230 alternar tática alterou os 11 titulares")
+                # V231: formação e estilo têm ONZE titulares independentes.
+                # A troca é feita pela UI real de jogador, nunca por alteração artificial no storage.
+                page.locator('[data-formation="4312"]').click()
+                page.locator('#ct-v230-tactic-tabs [data-mode="posse"]').click()
+                page.wait_for_function("""() => window.CRAQUE_FORMATION_STATE_V231?.mode()==='posse'""",timeout=12000)
+                poss_before=page.evaluate("""() => window.CRAQUE_FORMATION_STATE_V231.snapshot()""")
+                page.locator('#ct-v230-tactic-tabs [data-mode="rapido"]').click()
+                page.wait_for_function("""() => window.CRAQUE_FORMATION_STATE_V231?.mode()==='rapido'""",timeout=12000)
+                page.locator('#pitch button[data-slot="go"]').click()
+                page.locator('#player-search').fill('Oblak')
+                page.locator('#player-options button[data-cap="170"]').click()
+                page.wait_for_function("""() => window.CRAQUE_FORMATION_STATE_V231?.snapshot()?.go===170""",timeout=12000)
+                state_fast=page.evaluate("""() => ({
+                 saved:JSON.parse(localStorage.getItem('scoutpro:v231:formation-lineup:4312:rapido')||'null'),
+                 current:window.CRAQUE_FORMATION_STATE_V231.snapshot()
+                })""")
+                if (not state_fast['saved'] or state_fast['saved']['mode']!='rapido' or
+                    state_fast['current']['go']!=170):
+                    problems.append(f"{name}: V231 trocou jogador mas não salvou XI do contra-ataque")
+                page.locator('#ct-v230-tactic-tabs [data-mode="posse"]').click()
+                poss_after=page.evaluate("""() => window.CRAQUE_FORMATION_STATE_V231.snapshot()""")
+                if poss_after!=poss_before:
+                    problems.append(f"{name}: V231 sobrepôs os 11 titulares de Posse {poss_after}")
+                page.locator('#ct-v230-tactic-tabs [data-mode="rapido"]').click()
+                if page.locator('#pitch button[data-slot="go"] .p-cap').inner_text().find('#170')<0:
+                    problems.append(f"{name}: V231 não restaurou GO Oblak no modo rápido")
+                page.reload(wait_until='domcontentloaded')
+                page.wait_for_function("""() => window.CRAQUE_FORMATION_STATE_V231?.mode()==='rapido' &&
+                  window.CRAQUE_FORMATION_STATE_V231?.snapshot()?.go===170""",timeout=25000)
+                page.locator('[data-formation="4213"]').click()
+                page.locator('#ct-v230-tactic-tabs [data-mode="longo"]').click()
+                page.wait_for_function("""() => window.CRAQUE_FORMATION_STATE_V231?.formation()==='4213' &&
+                  window.CRAQUE_FORMATION_STATE_V231?.mode()==='longo'""",timeout=12000)
+                second=page.evaluate("""() => window.CRAQUE_FORMATION_STATE_V231.snapshot()""")
+                if second.get('go')!=11:
+                    problems.append(f"{name}: V231 vazamento de goleiro entre as duas formações")
+                page.locator('[data-formation="4312"]').click()
+                page.wait_for_function("""() => window.CRAQUE_FORMATION_STATE_V231?.formation()==='4312' &&
+                  window.CRAQUE_FORMATION_STATE_V231?.mode()==='rapido'""",timeout=12000)
+                if page.evaluate("""() => window.CRAQUE_FORMATION_STATE_V231.snapshot().go""")!=170:
+                    problems.append(f"{name}: V231 perdeu titulares ao alternar formações")
                 if name in ('mobile_390','windows_1366'):
                     page.locator('#ct-v230-tactic-profile details > summary').click()
                     if page.locator('#ct-v230-tactic-details .ct-v230-fit-row').count()!=11:
