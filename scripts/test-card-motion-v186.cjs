@@ -67,10 +67,10 @@ function browserTest(page,reduced=false,storagePref=null){
  const btn=buttons.find(x=>x.className==='scout-motion-toggle');
  assert(btn,'Botão de animação ausente em '+page);
  if(page==='catalog'){
-  assert.strictEqual(btn.parentNode,catalog,
+  assert.strictEqual(btn.parentNode?.parentNode,catalog,
    'V238: botão Cartas animadas precisa ficar fora dos filtros recolhidos');
-  assert(catalog.children.indexOf(btn.parentNode.children[0])>=0,
-   'O controle precisa pertencer ao catálogo visível');
+  assert(catalog.children.indexOf(btn.parentNode)<catalog.children.indexOf(meta),
+   'Os efeitos devem aparecer antes do contador de cartas');
   assert.deepEqual(cards.map(c=>c.art.dataset.scoutMotionRarity),['show','epic','big','highlight']);
   assert(cards.every(c=>c.art.children.some(e=>e.className==='scout-motion-layer')),'Todas as quatro artes recebem sobreposição');
   assert.equal(cards[0].art.dataset.scoutMotionActive,String(!reduced&&storagePref!=='off'));
