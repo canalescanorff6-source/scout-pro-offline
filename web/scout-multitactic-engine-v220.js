@@ -44,6 +44,8 @@ const total=x=>valid(x)?x.reduce((a,n)=>a+ppCost(n),0):null;
 const roleOf=c=>ROLE[String(c?.shown_position||c?.posicao||c?.role_used||'').toUpperCase()]||null;
 function styleFor(id){return STYLES.find(s=>s.id===id)||null}
 function confirmSource(card){
+ // Um orçamento matematicamente válido não transforma um rascunho em build homologada.
+ if(card.training_status==='proposta_nao_validada'||card.treino_status==='proposta_nao_validada')return false;
  const budget=Number(card.pp),levels=card.recommended_levels||card.niveis;
  return valid(levels)&&Number.isInteger(budget)&&total(levels)===budget;
 }
