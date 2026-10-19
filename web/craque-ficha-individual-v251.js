@@ -13,6 +13,7 @@ const T=host?.SCOUT_TACTICS_V220||moduleGet('./scout-multitactic-engine-v220.js'
 const I=host?.CRAQUE_INTERPRETATION_V233||moduleGet('./craque-role-intelligence-v233.js');
 const S=host?.SCOUT_RECOMMENDATIONS_V162||moduleGet('./skills-booster-v162.js');
 const B=host?.SCOUT_BOOSTERS_V103||moduleGet('./booster-engine-v103.js');
+const C=host?.CRAQUE_COMPETITIVE_READINESS_V264||moduleGet('./craque-competitive-readiness-v264.js');
 const STATES=Object.freeze({
  complete:'PP e treino cadastrados · sem validação competitiva',
  no_build:'PP confirmado · distribuição ainda pendente',
@@ -424,12 +425,14 @@ function methodologyGate(card,proof,style,store,review={}){
  };
  // V262: cinco prioridades, cada qual com motivo da própria regra de
  // função+tática e eventual complementaridade nativa. Nunca inferir slot.
- const skillList=(skills?.recommendations||[]).slice(0,5).map(x=>({
+ const safeEdition=has('edition')&&!/\bpendente\b|\bconfirmar\b|\binvalidad[oa]\b/i.test(
+  String(card.id||'')+' '+String(card.versao||''));
+ const skillList=(safeEdition?skills?.recommendations||[]:[]).slice(0,5).map(x=>({
   name:x.name,reason:x.why||'Prioridade heurística de função e tática.',
   synergy:x.synergies||[]
  }));
  const skillStatus=confirmed?'lista_conferida_localmente':'slots_nao_conferidos';
- const boosterStatus=boost?.able&&has('booster')?'slot_elegivel_para_comparacao':
+ const boosterStatus=safeEdition&&boost?.able&&has('booster')?'slot_elegivel_para_comparacao':
   'nao_autorizado_para_equipar';
  const gapIds=['edition','budget','native','additional','booster','base','video','gameplay'];
  const missing=gapIds.filter(id=>!has(id)).map(id=>byId[id]?.name||id);
@@ -441,10 +444,11 @@ function methodologyGate(card,proof,style,store,review={}){
   booster:{status:boosterStatus,slotState:slot?.status||'nao_conferido',
    slotEvidence:boost?.slotEvidence||'sem_slot_documentado',
    equipStatus:boost?.equipStatus||'slot_nao_verificado',
-   name:boost?.primary?.nome_pt||boost?.primary?.nome||null,
-   reason:boost?.primary?.motivo||'Sem critérios suficientes para comparar ímpetos.',
+   name:safeEdition?(boost?.primary?.nome_pt||boost?.primary?.nome||null):null,
+   reason:safeEdition?(boost?.primary?.motivo||'Sem critérios suficientes para comparar ímpetos.'):
+    'Card ID ou edição pendente: não calcular escolha de ímpeto confirmada.',
    note:boost?.note||'Motor não disponível.',
-   attributes:boost?.primary?.atributos||[]},
+   attributes:safeEdition?(boost?.primary?.atributos||[]):[]},
   missing,competitivelyHomologated:false
  });
 }
@@ -561,6 +565,31 @@ function display(){
  // V261: parecer compacto dentro da ficha principal; mantém o painel de
  // habilidades existente sem duplicar slots ou oferecer botão de aplicação.
  const method=methodologyGate(card,proof,active,host.localStorage,check);
+ // V264: status individual de cada uma das 246 edições, sem declarar
+ // 246 builds homologadas por rodar testes de integridade.
+ const readiness=C?.assess?.(card,proof,active,method)||null;
+ if(readiness){
+  const status=mk('section','ct264-status');
+  status.dataset.readiness=readiness.classification;
+  status.append(mk('strong','',readiness.label));
+  status.append(mk('p','',
+   'Treino: '+readiness.training+' · Habilidades: '+readiness.additional+
+   ' · Ímpeto: '+readiness.booster+'.'));
+  const reasons=mk('details','ct251-evidence-details ct264-pendencies');
+  reasons.append(mk('summary','',
+   'Prioridades documentais desta edição · '+readiness.missing.length+' lacuna(s)'));
+  const list=mk('ul','');
+  for(const missing of readiness.missing)
+   list.append(mk('li','',missing));
+  if(!readiness.missing.length)list.append(mk('li','',
+   'Verificar qualidade das fontes e o rendimento real em partidas antes de homologar.'));
+  reasons.append(list);status.append(reasons);
+  status.append(mk('small','',
+   'Não aplicar builds, habilidades ou ímpetos automaticamente. Na v6.1.0,'+
+   ' 100 Tokens de Habilidade Selecionada permitem escolher uma habilidade.'+
+   ' Confirme saldo e compatibilidade dentro do jogo.'));
+  block.append(status);
+ }
  const audit=mk('details','ct251-evidence-details ct261-methodology');
  audit.append(mk('summary','','Parecer competitivo · treino, habilidades e ímpeto ('+
   (T.styleFor(active)?.label||active)+')'));
