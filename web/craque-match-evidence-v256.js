@@ -28,8 +28,15 @@ const budget=card=>Number(card?.pp);
 function build(card,mode,role,levels,source){
  if(!MODES.includes(mode)||!ROLES.includes(role)||!validLevels(levels)||
   !['catalogo','simulacao'].includes(source)||!Number.isInteger(budget(card))||
-  T.total(levels)!==budget(card))
+  T.total(levels)!==budget(card)||
+  (role==='GO'?levels.slice(0,7).some(n=>n!==0):
+   levels.slice(7,10).some(n=>n!==0)))
   throw Error('Distribuição inválida para esta tática, função ou PP da edição.');
+ // Fonte "catálogo" significa EXATAMENTE os 10 níveis originais,
+ // nunca um vetor diferente disfarçado como treino já registrado.
+ if(source==='catalogo'&&(!validLevels(card.niveis)||
+  card.niveis.some((n,i)=>n!==levels[i])))
+  throw Error('Build diferente dos níveis originais: usar simulação, não catálogo.');
  key(card);
  return Object.freeze({
   mode,role,source,levels:levels.slice(),pp:budget(card),
