@@ -1550,6 +1550,21 @@ def run():
                         problems.append(f"{name}: V251 não bloqueou ficha com nível pendente")
                     if p251.locator('.ct251-use').count():
                         problems.append(f"{name}: V251 permitiu aplicar novo treino com PP não confirmado")
+                    # V256: prova documental precisa ser exigida PELO MOTOR,
+                    # não apenas por um componente visual que esconde botões.
+                    inspect256=page.evaluate("""async () => {
+                      const c=(await (await fetch('SCOUT_V69_AUDITORIA.json')).json()).cards.find(c=>c.numero===1);
+                      const E=window.CRAQUE_INTERPRETATION_V233;
+                      const card={...c,capture:c.numero,edition:c.versao,
+                        shown_position:c.posicao,recommended_levels:c.niveis};
+                      const result=E.compare(card,'posse',{});
+                      return {documented:result.analysis?.levelDocumented,
+                        proposal:result.proposal,reason:result.reason};
+                    }""")
+                    if (inspect256['documented'] is not False or
+                        inspect256['proposal'] is not None or
+                        'Nível máximo' not in inspect256['reason']):
+                        problems.append(f"{name}: V256 permitiu PP sem prova no motor V233: {inspect256}")
                     # Martinelli #191: corrigir HABILIDADES da cópia antiga
                     # somente após CAP + Card ID + edição exata.
                     page.goto(URL+'/fichas/191_Gabriel_Martinelli.html',
@@ -1562,6 +1577,12 @@ def run():
                         problems.append(f"{name}: V251 não leu o nível 26 de Martinelli")
                     if '10 habilidades nativas' not in martinelli_v251.inner_text():
                         problems.append(f"{name}: V251 não reconciliou nativas do Martinelli")
+                    martinelliProof256=page.evaluate("""async () => {
+                      const c=(await (await fetch('SCOUT_V69_AUDITORIA.json')).json()).cards.find(c=>c.numero===191);
+                      return window.CRAQUE_INTERPRETATION_V233.levelDocumented(c);
+                    }""")
+                    if martinelliProof256 is not True:
+                        problems.append(f"{name}: V256 rejeitou indevidamente Martinelli 26/50 PP")
                     page.wait_for_function("""() =>
                       document.querySelector('#v162-skills-status')
                         ?.textContent.includes('Nativas catalogadas: 10')""",timeout=15000)
