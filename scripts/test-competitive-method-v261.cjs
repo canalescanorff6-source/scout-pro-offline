@@ -30,7 +30,7 @@ for(const card of cards){
    'evidencia_para_avaliacao_competitiva'].includes(result.training.status));
   assert.equal(result.skills.status,'slots_nao_conferidos');
   assert.equal(result.skills.slots,null);
-  assert(result.skills.candidates.length<=3);
+  assert(result.skills.candidates.length<=5,'V262: parecer permite até cinco habilidades, todas consultivas');
   assert.equal(result.booster.status,'nao_autorizado_para_equipar',
    'Nunca presumir slot ao ler a carta');
   assert(Array.isArray(result.missing));
