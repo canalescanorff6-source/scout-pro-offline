@@ -1498,6 +1498,12 @@ def run():
                         problems.append(f"{name}: V251 não leu o nível 26 de Martinelli")
                     if '10 habilidades nativas' not in martinelli_v251.inner_text():
                         problems.append(f"{name}: V251 não reconciliou nativas do Martinelli")
+                    page.wait_for_function("""() =>
+                      document.querySelector('#v162-skills-status')
+                        ?.textContent.includes('Nativas catalogadas: 10')""",timeout=15000)
+                    page.wait_for_function("""() =>
+                      document.querySelector('#scout-v220-skills-caution')
+                        ?.textContent.includes('Nativas cadastradas: 10')""",timeout=15000)
                     page.screenshot(path=str(OUT/f"{name}_v251_martinelli.png"),
                       full_page=False,animations="disabled")
                     result['ficha_individual_v251']={'tested':True,'levels':68,
