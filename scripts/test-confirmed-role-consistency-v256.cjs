@@ -98,6 +98,10 @@ assert(one.includes("doc.addEventListener('scoutpro:role-selected-v256'"));
 assert(one.includes('nativeDetails(tacticalCard,style)'));
 assert(one.includes('interpret(tacticalCard,style,lab)'));
 assert(skillsUi.includes("document.addEventListener('scoutpro:role-selected-v256'"));
+assert(skillsUi.includes("for(const field of ['shown_position','native_skills'"),
+ 'Painel de skills precisa usar posição canônica da edição, não rótulo legado.');
+assert(one.includes("for(const key of ['shown_position','native_skills'"),
+ 'Ficha principal precisa usar a posição original da edição canônica.');
 assert(skillsUi.includes('result=evaluate(effective,tactic,extra'));
 assert(skillsUi.includes('booster(effective,tactic'));
 assert(skillsUi.includes('data-tactic="fora" aria-pressed="false">Por Fora'));
