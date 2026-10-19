@@ -7,12 +7,12 @@ const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
 const original=read('web/SCOUT_V69_AUDITORIA.json');
 const cards=JSON.parse(original).cards;
 const formation=JSON.parse(read('web/SCOUT_V177_DUAS_FORMACOES.json')).formations;
-const legacy=JSON.parse(read('web/SCOUT_V176_POSSE_4312.json'));
-formation.push({id:'v176',starters:legacy.starter_slots.map(x=>({slot:x.slot,cap:x.cap,role:tactics.slotRole(x.slot)})),bench:legacy.bench});
 const bench=require('../web/craque-bench-advisor-v247.js');
 const training=require('../web/scout-position-training-v246.js');
 const tactics=require('../web/craque-tactics-v230.js');
 const identity=require('../web/scout-player-identity-v245.js');
+const legacy=JSON.parse(read('web/SCOUT_V176_POSSE_4312.json'));
+formation.push({id:'v176',starters:legacy.starter_slots.map(x=>({slot:x.slot,cap:x.cap,role:tactics.slotRole(x.slot)})),bench:legacy.bench});
 assert.equal(cards.length,246);
 const byCap=new Map(cards.map(c=>[Number(c.numero),c]));
 const call=(candidate,starters,extra={})=>bench.recommend({
