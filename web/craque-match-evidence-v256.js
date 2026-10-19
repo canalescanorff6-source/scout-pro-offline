@@ -43,6 +43,21 @@ function build(card,mode,role,levels,source){
   fingerprint:[mode,role,budget(card),...levels].join(':')
  });
 }
+// V218 salva o rascunho local em outra chave. O histórico V256 deve
+// enxergar EXATAMENTE essa distribuição, sem supor que foi aplicada no jogo.
+function personalDraft(card,lab,mode,role,store){
+ const filename=String(lab?.card??'').trim(),id=String(card?.id??'');
+ if(!filename||!id||!MODES.includes(mode))return null;
+ const slot='scoutpro:v67:'+id+':'+filename+
+  (mode==='posse'?'':':tactic:'+mode);
+ try{
+  const raw=JSON.parse(store?.getItem?.(slot)||'null');
+  if(!raw||raw.id!==id||raw.card!==filename||
+   (raw.tactic&&raw.tactic!==mode)||!validLevels(raw.train)||
+   T.total(raw.train)!==budget(card))return null;
+  return build(card,mode,role,raw.train,'simulacao');
+ }catch(_){return null}
+}
 function validDate(d){
  if(typeof d!=='string'||!/^\d{4}-\d\d-\d\d$/.test(d))return false;
  const date=new Date(d+'T12:00:00Z');
@@ -143,7 +158,7 @@ function summary(card,store,selected){
   note:'Relatos do usuário, não validação competitiva nem vídeos verificados.'
  });
 }
-function render(doc,{card,check,store,notify}={}){
+function render(doc,{card,check,lab,store,notify}={}){
  const mk=(tag,cls,text)=>{
   const e=doc.createElement(tag);if(cls)e.className=cls;
   if(text!==undefined)e.textContent=String(text);
@@ -173,6 +188,10 @@ function render(doc,{card,check,store,notify}={}){
   if(check?.status!=='unsupported'&&hypothetical&&
    T?.valid(hypothetical)&&T.total(hypothetical)===Number(card.pp))
    profiles.push({title:'Simulação da tática — exigir confirmação em jogo',value:build(card,check.style,check.role,hypothetical,'simulacao')});
+  const draft=personalDraft(card,lab,check.style,check.role,store);
+  if(draft&&!profiles.some(p=>p.value.fingerprint===draft.fingerprint&&
+   p.value.source===draft.source))
+   profiles.push({title:'Meu rascunho editado e salvo nesta tática — confirme se usou no jogo',value:draft});
  }catch(_){}
  if(!profiles.length){
   content.append(mk('p','ct256-warning',
@@ -289,5 +308,5 @@ function render(doc,{card,check,store,notify}={}){
  return wrapper;
 }
 return Object.freeze({SCHEMA,PREFIX,MODES,ROLES,GRADES,MAX_ENTRIES,key,build,
- eligibleRole,validEntry,parse,save,remove,list,summary,render});
+ eligibleRole,personalDraft,validEntry,parse,save,remove,list,summary,render});
 });
