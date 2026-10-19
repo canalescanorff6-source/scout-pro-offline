@@ -7,6 +7,8 @@ const ROWS=[['sa','ca'],['mat'],['mlge','mlgd'],['vol'],['le','zge','zgd','ld'],
 const STORAGE_KEY='scoutpro:v176:posse4312:my-lineup';
 const identity=window.SCOUT_PLAYER_IDENTITY_V245;
 const positionTraining=window.SCOUT_POSITION_TRAINING_V246;
+const benchAdvisor=window.CRAQUE_BENCH_ADVISOR_V247;
+if(!benchAdvisor)throw Error('Inteligência dos reservas V247 indisponível');
 if(!positionTraining)throw Error('Posições treinadas V246 não carregaram');
 if(!identity)throw Error('Identidade dos jogadores V245 indisponível');
 let plan=null, roster=[], byCap=new Map(), base={}, current={},activeSlot=null,showAll=false;
@@ -25,6 +27,7 @@ function canPick(slot,cap){
   identity.key(byCap.get(Number(v)))===identity.key(byCap.get(n)));
  if(existing){setStatus('O jogador '+byCap.get(n).name+' já está em '+SLOT_LABEL[existing[0]]+
   ', mesmo usando outra carta. Uma versão por pessoa em cada equipe.');return false}
+ if(!originallyFits(byCap.get(n),slot)){setStatus('Posição não confirmada nesta edição. Confirme familiaridade ou treinamento antes de escalar.');return false}
  current[slot]=n;persist();render();return true;
 }
 function playerCard(slot){
@@ -59,19 +62,30 @@ function effectiveBench(){
  });
 }
 function renderBench(){
- const roleoptions=Object.keys(SLOT_LABEL).map(s=>'<option value="'+s+'">'+esc(SLOT_LABEL[s])+'</option>').join('');
- $('bench').innerHTML=effectiveBench().map(p=>{
- const inField=Object.values(current).includes(p.cap);
- const selected=byCap.get(p.cap);
- return '<article class="bench-card">'+
- '<img src="'+esc(p.art)+'" alt="Arte original de '+esc(p.nome)+'" loading="lazy"/>'+
- '<div class="bench-details"><strong>#'+p.cap+' '+esc(p.nome)+'</strong><small>'+esc(p.role)+' · '+esc(p.estilo_ataque)+' · Confiança '+esc(p.confidence)+'</small><p>'+esc(p.use)+'</p>'+
- '<a href="'+esc(p.card_page)+'">Abrir ficha original ↗</a></div>'+
- '<div class="bench-action"><label for="bench-'+p.cap+'">'+(inField?'Em campo · trocar posição':'Colocar em campo')+'</label>'+
- '<select id="bench-'+p.cap+'" data-bench="'+p.cap+'"><option value="">Selecionar posição…</option>'+roleoptions+'</select></div></article>';
+ const roleoptions=p=>Object.keys(SLOT_LABEL).map(slot=>{
+  const fit=positionTraining.status(byCap.get(p.cap),wanted(slot));
+  return '<option value="'+slot+'"'+(fit.eligible?'':' disabled')+'>'+
+   esc(SLOT_LABEL[slot])+(fit.eligible?'':' · não confirmado')+'</option>';
  }).join('');
- $('bench').querySelectorAll('select[data-bench]').forEach(s=>s.addEventListener('change',()=>{
-  if(s.value)canPick(s.value,Number(s.dataset.bench));s.value='';
+ $('bench').innerHTML=effectiveBench().map(p=>{
+  const selected=byCap.get(p.cap);
+  const starters=plan.starter_slots.map(x=>({slot:x.slot,role:wanted(x.slot),cap:x.cap}));
+  const advice=benchAdvisor.recommend({card:selected,starters,selections:current,byCap,
+    mode:'posse',training:positionTraining,tactics:window.CRAQUE_TACTICS_V230});
+  const replacement=advice.eligible?advice.text:'SEM SUBSTITUIÇÃO CONFIRMADA';
+  return '<article class="bench-card">'+
+   '<img src="'+esc(p.art)+'" alt="Arte original de '+esc(p.nome)+'" loading="lazy"/>'+
+   '<div class="bench-details"><strong>#'+p.cap+' '+esc(p.nome)+'</strong>'+
+   '<small>'+esc(p.role)+' · '+esc(p.estilo_ataque)+' · Confiança '+esc(p.confidence)+'</small>'+
+   '<p class="'+(advice.eligible?'':'caution')+'"><strong>'+esc(replacement)+'</strong></p>'+
+   '<p>'+esc(advice.reason)+'</p><p>'+esc(p.use)+'</p>'+
+   '<a href="'+esc(p.card_page)+'">Abrir ficha original ↗</a></div>'+
+   '<div class="bench-action"><label for="bench-'+p.cap+'">Substituição manual</label>'+
+   '<select id="bench-'+p.cap+'" data-bench="'+p.cap+'"><option value="">Selecionar posição…</option>'+
+   roleoptions(p)+'</select></div></article>';
+ }).join('');
+ $('bench').querySelectorAll('select[data-bench]').forEach(sel=>sel.addEventListener('change',()=>{
+  if(sel.value)canPick(sel.value,Number(sel.dataset.bench));sel.value='';
  }));
 }
 function renderNotes(){
