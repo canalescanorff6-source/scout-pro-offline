@@ -12,6 +12,7 @@ function confirmedBooster(v){
  return b;
 }
 function signature(c){
+ if(c?.treino_status==='proposta_nao_validada')return null;
  if(!c||!Array.isArray(c.niveis)||c.niveis.length!==10||!c.niveis.every(n=>Number.isInteger(n)&&n>=0&&n<=20))return null;
  return [pos(c.posicao),normalize(c.estilo_ataque),Number(c.pp),c.niveis.join(',')].join('|');
 }
