@@ -30,3 +30,6 @@ As propostas A/B são redistribuições aritmeticamente válidas do orçamento, 
 
 ## Cuidados
 Não gerar PP novos para os demais 162 cartões sem nível máximo documentado. Para cada divergência futura, exigir captura do nível e Card ID da edição exata; auditar catálogo, V98, ficha HTML/JSON, comparativos e editor de treinos. Não tocar na assinatura do APK, imagens, posições treinadas V246 nem no PR V241.
+
+## Sequência obrigatória de integração
+PR #150 (V245) → PR #151 (V246) → PR #152 (V247). O PR #152 pode ser testado contra `main`, mas não deve ser mesclado até que os anteriores estejam integrados e revalidados. Não equivale a APK/EXE publicado.
