@@ -128,3 +128,18 @@ body[data-page="detail"] .ct251-caution{
 @media(prefers-reduced-motion:reduce){
  body[data-page="detail"] .ct251-use{transition:none!important;animation:none!important}
 }
+
+
+/* V251: posição alternativa só entra no cálculo após confirmação V246 exata. */
+body[data-page="detail"] .ct251-position-label{
+ display:grid;gap:7px;color:#f3dba4;font-size:11px;font-weight:850;
+}
+body[data-page="detail"] .ct251-position-select{
+ display:block;box-sizing:border-box;min-height:44px;max-width:100%;
+ width:min(440px,100%);padding:10px 12px;
+ color:#f5e5c4;background:#1a3350;border:1px solid #a58b68;
+ border-radius:9px;font:700 12px system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+body[data-page="detail"] .ct251-position-select:focus-visible{
+ outline:3px solid #f3d395;outline-offset:2px;
+}
