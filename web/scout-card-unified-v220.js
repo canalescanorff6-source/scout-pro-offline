@@ -29,12 +29,13 @@ function evidence(card,source,style){
  const base=source.base_stats_known===true;
  const provisional=card.training_provisional===true||card.treino_proposto_nao_validado===true||source.treino_proposto_nao_validado===true;
  const balanced=engine.confirmSource(card);
- const approved=balanced&&!provisional;
+ // PP fechados não significam treino aprovado em partidas.
+ const approved=balanced&&!provisional&&card.training_gameplay_verified===true;
  const vector=Array.isArray(source.niveis)&&engine.valid(source.niveis);
  return {native,base,approved,provisional,vector,
   trustedName:source.name||card.name||('Carta #'+card.capture),
   label:provisional?(balanced?'Build proposta · PP matematicamente conferidos · validar em partidas':'Build proposta · PP não conferidos'):
-   approved?'Build registrada · PP conferidos':vector?'Treino experimental · validar edição':'Treinamento pendente de comprovação',
+   approved?'Treino com teste de partida documentado':balanced?'Build cadastrada · PP exatos, desempenho NÃO comprovado':vector?'Treino experimental · validar edição':'Treinamento pendente de comprovação',
   disclaimer:'Treinos alternativos são hipóteses por estilo/função e habilidades cadastradas. Sem atributos-base finais, vídeos da edição exata e testes controlados, não há prova de que sejam superiores.'};
 }
 function makeList(doc,list){
@@ -217,6 +218,18 @@ function mount(doc){
   technical.open=true;
   const advanced=$(wrap,'scout-v220-advanced-skills');if(advanced)advanced.open=true;
   const el=$(wrap,'v162-booster');if(el)el.scrollIntoView({block:'center',behavior:'smooth'});
+ });
+ // V251: usar a ficha canônica somente após confirmar CAP, Card ID e edição.
+ // Não toca nos arquivos originais; a cópia antiga pode omitir habilidades.
+ host.addEventListener('scoutpro:v251:canonical-data',event=>{
+  const v=event.detail||{};
+  if(Number(v.capture)!==cap||String(v.id)!==id||
+   String(v.name)!==String(card.name)||String(v.edition)!==String(card.edition))return;
+  for(const key of ['native_skills','attack_style','defence_style','boost1','boost2',
+   'base_stats_known','training_provisional']){
+   if(Object.hasOwn(v,key))card[key]=v[key];
+  }
+  updateRecommendations();
  });
  doc.addEventListener('scoutpro:skills-updated',updateRecommendations);
  doc.addEventListener('scoutpro:recommendations-ready',()=>{
