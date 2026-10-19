@@ -208,3 +208,115 @@ body[data-page="detail"] .ct253-repetition[data-status="repeticao_exige_validaca
  body[data-page="detail"] .ct253-integrated-review,
  body[data-page="detail"] .ct253-reasons{animation:none!important;transition:none!important}
 }
+
+
+/* V256 — observações reais por build, incorporadas à ficha principal.
+   Campos leves, boa leitura em 360px e Windows, sem sobreposição à arte. */
+body[data-page="detail"] .ct256-trials{
+ box-sizing:border-box;width:100%;min-width:0;max-width:100%;
+ border:1px solid #6d8297;border-radius:12px;
+ background:linear-gradient(140deg,#132c45,#0c1f35);
+ overflow:hidden;color:#e7eff9;
+}
+body[data-page="detail"] .ct256-trials>summary{
+ cursor:pointer;list-style:disclosure-closed inside;display:list-item;
+ min-height:46px;padding:12px 14px;box-sizing:border-box;
+ color:#f1d69f;font-weight:850;line-height:1.5;
+ font-size:clamp(12px,1.45vw,14px);overflow-wrap:anywhere;
+}
+body[data-page="detail"] .ct256-trials[open]>summary{
+ border-bottom:1px solid rgba(232,203,149,.3);
+ list-style:disclosure-open inside;
+}
+body[data-page="detail"] .ct256-trials summary:focus-visible,
+body[data-page="detail"] .ct256-trials button:focus-visible,
+body[data-page="detail"] .ct256-trials input:focus-visible,
+body[data-page="detail"] .ct256-trials select:focus-visible,
+body[data-page="detail"] .ct256-trials textarea:focus-visible{
+ outline:3px solid #f1d58b;outline-offset:2px;
+}
+body[data-page="detail"] .ct256-body{
+ box-sizing:border-box;padding:14px;
+ display:grid;gap:12px;min-width:0;
+}
+body[data-page="detail"] .ct256-tip,
+body[data-page="detail"] .ct256-warning{
+ margin:0;font-size:11px;line-height:1.6;overflow-wrap:anywhere;
+ color:#cad9ea;
+}
+body[data-page="detail"] .ct256-warning{color:#ffd2b2}
+body[data-page="detail"] .ct256-form{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:11px;min-width:0;
+}
+body[data-page="detail"] .ct256-field{
+ min-width:0;display:grid;align-content:start;gap:6px;
+ color:#e7dbc2;font-size:12px;line-height:1.4;font-weight:750;
+}
+body[data-page="detail"] .ct256-field:has(textarea),
+body[data-page="detail"] .ct256-field:has(input[type="checkbox"]),
+body[data-page="detail"] .ct256-field:has(input[name="video_filename"]){
+ grid-column:1/-1;
+}
+body[data-page="detail"] .ct256-field input:not([type="checkbox"]),
+body[data-page="detail"] .ct256-field select,
+body[data-page="detail"] .ct256-field textarea{
+ box-sizing:border-box;width:100%;min-width:0;max-width:100%;
+ border:1px solid #657e98;border-radius:9px;
+ background:#0c2137;color:#eef4fc;
+ padding:10px 11px;font:inherit;font-weight:500;
+}
+body[data-page="detail"] .ct256-field input[type="checkbox"]{
+ width:19px;height:19px;accent-color:#d9ae67;cursor:pointer;
+}
+body[data-page="detail"] .ct256-field:has(input[type="checkbox"]){
+ display:flex;flex-wrap:wrap;align-items:center;flex-direction:row-reverse;
+ justify-content:flex-end;padding:10px;
+ border:1px solid #8e7655;border-radius:10px;
+ background:rgba(203,160,89,.1);
+}
+body[data-page="detail"] .ct256-save,
+body[data-page="detail"] .ct256-delete{
+ border:1px solid #d5b476;border-radius:9px;
+ padding:11px 14px;min-height:42px;
+ color:#152942;background:#ead09b;font-weight:800;
+ cursor:pointer;font-size:12px;
+}
+body[data-page="detail"] .ct256-save:disabled{
+ cursor:not-allowed;opacity:.6;
+}
+body[data-page="detail"] .ct256-delete{
+ min-height:38px;font-size:11px;
+ color:#e5eff8;background:#243e59;border-color:#7b93aa;
+}
+body[data-page="detail"] .ct256-message{
+ grid-column:1/-1;min-height:14px;margin:0;
+ color:#f1dcae;font-size:12px;line-height:1.5;
+}
+body[data-page="detail"] .ct256-list{
+ display:grid;gap:10px;max-width:100%;min-width:0;
+}
+body[data-page="detail"] .ct256-count{
+ margin:0;color:#c8d9ec;font-size:11px;line-height:1.6;
+}
+body[data-page="detail"] .ct256-match{
+ display:grid;gap:6px;min-width:0;
+ padding:12px;border:1px solid #4f6a87;
+ border-radius:10px;background:#152e47;
+}
+body[data-page="detail"] .ct256-match strong{color:#f1d69d;font-size:12px}
+body[data-page="detail"] .ct256-match p,
+body[data-page="detail"] .ct256-match small{
+ margin:0;line-height:1.5;font-size:11px;color:#cbdbea;
+ overflow-wrap:anywhere;
+}
+body[data-page="detail"] .ct256-match button{justify-self:start}
+@media(max-width:700px){
+ body[data-page="detail"] .ct256-body{padding:11px}
+ body[data-page="detail"] .ct256-form{grid-template-columns:minmax(0,1fr)}
+ body[data-page="detail"] .ct256-field{grid-column:1/-1}
+}
+@media(prefers-reduced-motion:reduce){
+ body[data-page="detail"] .ct256-trials *,
+ body[data-page="detail"] .ct256-trials{animation:none!important;transition:none!important}
+}
