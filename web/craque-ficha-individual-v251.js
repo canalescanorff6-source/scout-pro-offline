@@ -113,6 +113,54 @@ function allocate(weights,role,pp,baseline){
  }
  return dp[pp]&&T.total(dp[pp].levels)===pp?dp[pp].levels:null;
 }
+/* V253 — comparar uma proposta com outras edições de função/orçamento
+ * iguais. Nunca inventar diferenças por nome, Card ID ou Overall.
+ * Proposta repetida não prova erro, mas nunca é chamada de individualmente
+ * otimizada enquanto seus sinais reais forem insuficientes.
+ */
+function compareProposals(card,cards,style,role,levels,opts={}){
+ if(!T||!I||!T.valid(levels)||!Array.isArray(cards))
+  return {status:'pendente',compared:0,matches:[],distinctSources:0};
+ const pp=Number(card.pp);
+ const native=c=>nativeNames(c.habilidades_nativas).sort().join('|');
+ const peers=cards.filter(c=>Number(c.numero)!==Number(card.numero)&&
+  Number(c.pp)===pp&&roleOf(c)===role);
+ const matches=[];let compared=0;
+ for(const peer of peers){
+  if(!confirmedLevel(peer)&&!localLevelReview(peer,opts.store))continue;
+  const profile={
+   capture:Number(peer.numero),id:String(peer.id),edition:peer.versao,
+   shown_position:peer.posicao,role_used:role,
+   attack_style:peer.estilo_ataque,defence_style:peer.estilo_defesa,
+   native_skills:peer.habilidades_nativas,
+   boost1:peer.impeto_fixo,boost2:peer.impeto_extra,
+   pp:Number(peer.pp),pp_estimated:peer.pp_estimado===true,
+   base_stats_known:peer.base_stats_known===true,
+   recommended_levels:hasValidBuild(peer)?peer.niveis:null
+  };
+  const interpretation=I.interpret(profile,style,{});
+  if(!interpretation||interpretation.role!==role)continue;
+  const alternate=allocate(interpretation.weights,role,pp,
+   hasValidBuild(peer)?peer.niveis:null);
+  if(!T.valid(alternate)||T.total(alternate)!==pp)continue;
+  compared++;
+  if(!alternate.every((value,i)=>value===levels[i]))continue;
+  const inputsDifferent=[];
+  if(native(card)!==native(peer))inputsDifferent.push('habilidades nativas');
+  if(norm(card.impeto_fixo)!==norm(peer.impeto_fixo))inputsDifferent.push('ímpeto fixo');
+  if(norm(card.estilo_ataque)!==norm(peer.estilo_ataque))inputsDifferent.push('estilo da carta');
+  if(norm(card.estilo_defesa)!==norm(peer.estilo_defesa))inputsDifferent.push('função defensiva');
+  matches.push({numero:peer.numero,id:String(peer.id),name:peer.name,inputsDifferent});
+ }
+ const distinctSources=matches.filter(x=>x.inputsDifferent.length>0).length;
+ const status=distinctSources?'repeticao_exige_validacao':
+  matches.length?'proposta_repetida_sem_prova':'sem_repeticao_detectada';
+ const note=distinctSources?
+  'A mesma distribuição foi calculada para cartas com habilidades ou comportamentos diferentes. Sem atributos finais e gameplay, nenhuma das propostas está comprovada.':
+  matches.length?'A proposta coincide com outra edição; isso não demonstra acerto, erro ou superioridade.':
+  'Não foi encontrada repetição no grupo comparado; isso não é validação competitiva.';
+ return {status,compared,matches,distinctSources,note};
+}
 function buildReview(card,raw,lab,all,style,opts={}){
  if(!recognizedStyles.has(style))throw Error('Estilo de técnico inválido');
  if(!T||!I)return {status:'unsupported',reason:'Motor de revisão indisponível.',proposal:null};
@@ -167,13 +215,14 @@ function buildReview(card,raw,lab,all,style,opts={}){
   differences.push('Sem distribuição de treino documentada; proposta matemática não equivale a ficha aprovada.');
  if(shared.length)differences.push('Distribuição repetida em '+shared.length+' outra(s) carta(s); comparar habilidades, corpo e gameplay, sem forçar diferenciação.');
  const canDraft=levelKnown&&context&&Number.isInteger(aligned.pp);
- let proposal=null,changed=null;
+ let proposal=null,changed=null,specificity=null;
  if(canDraft){
   const levels=allocate(context.weights,context.role,aligned.pp,buildKnown?card.niveis:null);
   if(levels&&T.total(levels)===aligned.pp){
    const diffs=buildKnown?levels.map((n,i)=>({
     name:T.CATEGORIES[i],before:card.niveis[i],after:n,delta:n-card.niveis[i]
    })).filter(x=>x.delta):[];
+   specificity=compareProposals(card,all,style,context.role,levels,opts);
    proposal={
     levels,spent:aligned.pp,style,role:context.role,
     source:'hipotese_matematica_v251_sem_status_finais',
@@ -186,7 +235,7 @@ function buildReview(card,raw,lab,all,style,opts={}){
  return {
   status,description:STATES[status],canDraft:!!proposal,proposal,
   positionUsed:mapped,positionEvidence:positionProof?.status||'original',
-  changes:changed,sourceCompatible:true,related:shared,differences,
+  changes:changed,specificity,sourceCompatible:true,related:shared,differences,
   capture:aligned.capture,card_id:aligned.id,style,role:context?.role||roleOf(card),
   pp:aligned.pp,level:levelKnown?(localProof?.level??card.max_level):null,
   original:buildKnown?card.niveis.slice():null,
@@ -285,7 +334,7 @@ function proofChecklist(card,index,lab,store){
   competitivelyVerified:checks.find(x=>x.id==='gameplay').documented&&
     checks.find(x=>x.id==='base').documented&&checks.find(x=>x.id==='budget').documented};
 }
-const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,proofChecklist,signature,
+const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,proofChecklist,signature,compareProposals,
   exact,sourceFor,related,allocate,buildReview,catalogAudit});
 if(!host?.document)return api;
 const doc=host.document;
