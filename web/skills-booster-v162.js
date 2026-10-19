@@ -365,7 +365,7 @@ section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',
   const row=event.detail||{};
   if(Number(row.capture)!==Number(d.capture)||String(row.id)!==String(d.id)||
    String(row.name)!==String(d.name)||String(row.edition)!==String(d.edition))return;
-  for(const field of ['native_skills','attack_style','defence_style','boost1','boost2',
+  for(const field of ['shown_position','native_skills','attack_style','defence_style','boost1','boost2',
    'recommended_levels','base_stats_known']){
    if(Object.hasOwn(row,field))d[field]=row[field];
   }
