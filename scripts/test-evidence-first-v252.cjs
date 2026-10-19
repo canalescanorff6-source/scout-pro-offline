@@ -1,0 +1,16 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const source=fs.readFileSync('web/scout-card-unified-v220.js','utf8');
+const data=JSON.parse(fs.readFileSync('web/SCOUT_V69_AUDITORIA.json','utf8'));
+assert.equal(data.cards.length,246,'Preservar todas as 246 cartas');
+assert.equal(new Set(data.cards.map(c=>String(c.numero)+'@'+String(c.id))).size,246,'Card IDs por edição únicos');
+assert(source.includes("const sourceVerified=Boolean(possession)&&engine.confirmSource(card)"),'Não reutilizar draft experimental como base confirmada');
+assert(source.includes("const fallback=sourceVerified?engine.hypothetical"),'Só gerar hipótese a partir da fonte conferida');
+assert(source.includes("engine.total(fallback.levels)===budget"),'Respeitar orçamento exato de PP');
+assert(source.includes("verifiedInGameplay:false"),'Não declarar treino testado sem evidência');
+assert(source.includes("evidenceStatus:sourceVerified?"),'Expor incerteza ao motor de fichas');
+assert(!source.includes("const fallback=baseline?engine.hypothetical"),'Impedir propagação do draft para cinco estilos');
+assert(source.includes("nativeDetails(card,style)"),'Manter motor de habilidades e ímpetos por estilo');
+assert(source.includes("styles=['posse','normal','rapido','fora','longo']"),'Preservar cinco táticas');
+console.log('V252 OK: 246 edições preservadas; hipóteses não se tornam builds validadas; PP exatos.');
