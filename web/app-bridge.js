@@ -687,6 +687,18 @@ ct234MotionJs.src=v189Root+'craque-card-effects-v234.js';
 ct234MotionJs.defer=true;
 document.head.appendChild(ct234MotionJs);
 
+// V249: conferir níveis e PP por edição em TODAS as fichas e no catálogo.
+// Não altera Card IDs, builds ou valores originais; também estiliza a opção
+// de desfazer do painel V248. O bundle é o mesmo no Android e Windows.
+const ct249Css=document.createElement('link');ct249Css.rel='stylesheet';
+ct249Css.href=v189Root+'craque-progress-consistency-v249.css';
+document.head.appendChild(ct249Css);
+if(document.body.dataset.page==='catalog'||document.body.dataset.page==='detail'){
+ const ct249Script=document.createElement('script');
+ ct249Script.src=v189Root+'craque-progress-consistency-v249.js';
+ ct249Script.defer=true;document.head.appendChild(ct249Script);
+}
+
 window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;

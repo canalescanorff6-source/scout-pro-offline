@@ -42,7 +42,7 @@ const doc=host.document;
 const $=id=>doc.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>
  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let cards=[],images=new Map(),filter='pendente',query='',limit=24;
+let cards=[],images=new Map(),filter='pendente',query='',limit=24,focusCap=null;
 const storage=()=>host.localStorage;
 function note(message,problem=false){
  const e=$('v248-feedback');
@@ -61,7 +61,8 @@ function render(){
  const q=query.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
  const result=cards.filter(c=>{
   const s=status(c);
-  const passes=filter==='all'||(filter==='pendente'&&(s==='pendente'||s==='divergente'))||s===filter;
+  const passes=(focusCap===null||c.numero===focusCap)&&
+   (filter==='all'||(filter==='pendente'&&(s==='pendente'||s==='divergente'))||s===filter);
   if(!passes)return false;
   const phrase=('#'+c.numero+' '+c.name+' '+c.versao+' '+c.id).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
   return !q||phrase.includes(q);
@@ -97,7 +98,8 @@ function render(){
         'value="'+(level??'')+'" placeholder="Ex.: 26"></label>'+
       '<label class="ct248-checkbox"><input type="checkbox" name="confirmed" required> '+
         'Conferi a edição e o nível máximo desta carta no eFootball.</label>'+
-      '<button type="submit">Guardar minha conferência</button>'+
+      '<button type="submit">Guardar minha conferência</button>'+ 
+      (saved?'<button type="button" class="ct248-undo" data-undo="'+c.numero+'">Desfazer minha conferência</button>':'')+
       '<p>Fórmula: 2 × (nível máximo − 1). A alteração é local, não substitui o treino do projeto.</p>'+
      '</form></details>'+
     '<a class="ct248-open" href="'+esc(c.arquivo)+'">Ver ficha desta edição ↗</a>'+
@@ -165,10 +167,25 @@ async function init(){
   images=new Map(art.cartas.map(c=>[Number(c.numero),String(c.imagem||'')]));
   if(summary(cards,storage()).registrado!==85&&summary(cards,storage()).pendente!==161)
    note('Há registros locais ou alterações no catálogo; confira os valores antes de exportar.');
-  $('v248-search').addEventListener('input',e=>{query=e.target.value.trim();limit=24;render()});
-  $('v248-filter').addEventListener('change',e=>{filter=e.target.value;limit=24;render()});
+  const requested=new URLSearchParams(host.location?.search||'').get('cap');
+  if(/^[0-9]{1,3}$/.test(requested||'')&&cards.some(c=>c.numero===Number(requested))){
+   focusCap=Number(requested);filter='all';$('v248-filter').value='all';
+   $('v248-count').textContent='Abrindo ficha #'+focusCap;
+  }
+  $('v248-search').addEventListener('input',e=>{query=e.target.value.trim();focusCap=null;limit=24;render()});
+  $('v248-filter').addEventListener('change',e=>{filter=e.target.value;focusCap=null;limit=24;render()});
   $('v248-more').addEventListener('click',()=>{limit+=24;render()});
   $('v248-cards').addEventListener('submit',save);
+  $('v248-cards').addEventListener('click',event=>{
+   const button=event.target.closest('button[data-undo]');if(!button)return;
+   const card=cards.find(c=>c.numero===Number(button.dataset.undo));
+   if(!card||!readSaved(card,storage()))return note('Nenhum registro local válido encontrado para remover.',true);
+   if(typeof host.confirm==='function'&&!host.confirm('Desfazer a conferência de nível desta carta neste dispositivo?'))return;
+   try{storage().removeItem(key(card))}
+   catch(_){return note('Não foi possível desfazer a conferência.',true)}
+   note('Sua conferência da carta #'+card.numero+' foi desfeita. A ficha original permaneceu intacta.');
+   render();
+  });
   $('v248-export').addEventListener('click',exportReviewed);
   render();
  }catch(e){note('Não foi possível carregar a auditoria: '+String(e.message||e),true)}
