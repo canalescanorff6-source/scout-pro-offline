@@ -115,8 +115,14 @@ if(inCard){
    // V251 precisa da interpretação V233 e da familiaridade EXATA V246.
    // Jamais deduzir posição treinada de Overall calculado.
    const loadV251=()=>{
+    // V256 precisa existir antes de renderizar os testes dentro da ficha V251.
+    // Em falha de recurso, manter a ficha antiga funcional sem prometer gravação.
     const v251=document.createElement('script');v251.src=v189Root+'craque-ficha-individual-v251.js';
-    document.head.appendChild(v251);
+    const evidence=document.createElement('script');
+    evidence.src=v189Root+'craque-match-evidence-v256.js';
+    evidence.onload=()=>document.head.appendChild(v251);
+    evidence.onerror=()=>document.head.appendChild(v251);
+    document.head.appendChild(evidence);
    };
    const position251=document.createElement('script');
    position251.src=v189Root+'scout-position-training-v246.js';
