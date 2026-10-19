@@ -27,8 +27,13 @@ const confirmedLevel=c=>Number.isInteger(c?.max_level)&&c.max_level>=1&&
  typeof c.pp_origem==='string'&&c.pp_origem.startsWith('informado_pelo_usuario_')&&
  Number(c.pp)===2*(c.max_level-1)&&c.pp_estimado!==true;
 const hasValidBuild=c=>T?.valid(c?.niveis)===true&&T.total(c.niveis)===Number(c.pp);
+// Para confrontar a V211, não agrupar PTE e PTD artificialmente.
+const comparisonPosition=c=>{
+ const position=String(c?.posicao||'').toUpperCase();
+ return ({AC:'CA',ZC:'ZG',DC:'ZG',MC:'MLG',GR:'GO',MDF:'VOL'})[position]||position;
+};
 const signature=c=>hasValidBuild(c)?[
-  roleOf(c),norm(c.estilo_ataque),Number(c.pp),c.niveis.join(',')
+  comparisonPosition(c),norm(c.estilo_ataque),Number(c.pp),c.niveis.join(',')
 ].join('|'):null;
 function related(card,cards){
  const sig=signature(card);
