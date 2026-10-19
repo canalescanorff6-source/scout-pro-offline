@@ -422,8 +422,11 @@ function methodologyGate(card,proof,style,store,review={}){
    trained?'Build do catálogo preservada. PP fechados não comprovam atributos finais nem desempenho.':
    'Sem distribuição original comprovada; não substituir por hipótese matemática.'
  };
- const skillList=(skills?.recommendations||[]).slice(0,3).map(x=>({
-  name:x.name,reason:x.why,synergy:x.synergies||[]
+ // V262: cinco prioridades, cada qual com motivo da própria regra de
+ // função+tática e eventual complementaridade nativa. Nunca inferir slot.
+ const skillList=(skills?.recommendations||[]).slice(0,5).map(x=>({
+  name:x.name,reason:x.why||'Prioridade heurística de função e tática.',
+  synergy:x.synergies||[]
  }));
  const skillStatus=confirmed?'lista_conferida_localmente':'slots_nao_conferidos';
  const boosterStatus=boost?.able&&has('booster')?'slot_elegivel_para_comparacao':
@@ -433,8 +436,11 @@ function methodologyGate(card,proof,style,store,review={}){
  return Object.freeze({
   capture:Number(card.numero),card_id:String(card.id),style,role,
   training,skills:{status:skillStatus,slots:confirmed?skills?.slotsRemaining:null,
-   candidates:skillList,nativeKnown:skills?.nativeKnown===true},
+   candidates:skillList,nativeKnown:skills?.nativeKnown===true,
+   nativeEvidence:has('native')?'catalogo_documental':'habilidades_nativas_pendentes'},
   booster:{status:boosterStatus,slotState:slot?.status||'nao_conferido',
+   slotEvidence:boost?.slotEvidence||'sem_slot_documentado',
+   equipStatus:boost?.equipStatus||'slot_nao_verificado',
    name:boost?.primary?.nome_pt||boost?.primary?.nome||null,
    reason:boost?.primary?.motivo||'Sem critérios suficientes para comparar ímpetos.',
    note:boost?.note||'Motor não disponível.',
@@ -540,11 +546,19 @@ function display(){
   'Lista completa conferida neste dispositivo; '+method.skills.slots+
   ' vagas informadas. Sugestões táticas continuam consultivas.':
   'Lista completa não confirmada nesta edição. Nenhuma vaga é presumida.');
- if(method.skills.candidates.length)
-  add('Prioridades de habilidades',method.skills.candidates.map(x=>x.name).join(', ')+
-   ' (por função, tática e nativas disponíveis; não homologadas).');
+ if(method.skills.nativeEvidence!=='catalogo_documental')
+  add('Prova das habilidades nativas',
+   'Lista nativa incompleta ou sem correspondência documental: todas as prioridades são provisórias.');
+ for(const [index,candidate] of method.skills.candidates.entries()){
+  add('Habilidade adicional '+(index+1)+' · '+candidate.name,
+   candidate.reason+
+   (candidate.synergy.length?' Complementaridade com nativas: '+candidate.synergy.join('; ')+'.':'')+
+   ' Prioridade consultiva; não há aplicação automática.');
+ }
  add('Ímpeto',method.booster.name?
-  method.booster.name+' — '+method.booster.note+' '+method.booster.reason:
+  method.booster.name+' — '+method.booster.note+' '+method.booster.reason+
+   (method.booster.attributes.length?
+    ' Quatro atributos afetados: '+method.booster.attributes.join(', ')+'.':''):
   'Nenhuma opção confiável calculável. '+method.booster.note);
  if(method.missing.length)
   add('Evidências a completar',method.missing.join('; ')+'.');
