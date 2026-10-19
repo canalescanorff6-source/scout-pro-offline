@@ -1451,6 +1451,63 @@ def run():
                         'wrong_card_id_blocked':True}
                     page.screenshot(path=str(OUT/f"{name}_progress_transfer_v250.png"),
                         full_page=False,animations="disabled")
+                # V251: 84 cartas com PP comprovado e sem build precisam
+                # apresentar HIPÓTESE por edição, sem alterar o treino original.
+                if name in ('mobile_390','windows_1151'):
+                    page.goto(URL+'/fichas/007_Sergi_Cardona.html',
+                              wait_until='domcontentloaded',timeout=35000)
+                    v251=page.locator('#ct251-individual-ficha')
+                    v251.wait_for(state='visible',timeout=22000)
+                    if v251.get_attribute('data-review')!='no_build':
+                        problems.append(f"{name}: V251 confundiu sem build com ficha registrada")
+                    if '68 / 68 PP' not in v251.inner_text():
+                        problems.append(f"{name}: V251 não fechou PP de Sergi Cardona")
+                    pos=page.locator('#scout-v218-status')
+                    page.once('dialog',lambda dialog:dialog.accept())
+                    v251.locator('.ct251-use').click()
+                    # O rascunho depende de confirmação explícita do usuário.
+                    pos.wait_for(timeout=12000)
+                    page.wait_for_function("""() =>
+                      document.querySelector('#scout-v218-status')
+                        ?.textContent.includes('Rascunho individual V251')""",timeout=12000)
+                    if '68 / 68 PP' not in pos.inner_text():
+                        problems.append(f"{name}: V251 carregou PP diferente no editor")
+                    page.locator('#scout-v220-tabs button[data-tactic="rapido"]').click()
+                    if 'Contra-Ataque Rápido' not in v251.inner_text():
+                        problems.append(f"{name}: V251 não respeitou a tática selecionada")
+                    page.screenshot(path=str(OUT/f"{name}_v251_individual_68pp.png"),
+                      full_page=False,animations="disabled")
+                    # A build legada do Massaro (62 PP) não tem nível máximo
+                    # comprovado: nunca sugerir que a heurística é homologada.
+                    page.goto(URL+'/fichas/001_Daniele_Massaro.html',
+                              wait_until='domcontentloaded',timeout=35000)
+                    p251=page.locator('#ct251-individual-ficha')
+                    p251.wait_for(state='visible',timeout=22000)
+                    if p251.get_attribute('data-review')!='no_level':
+                        problems.append(f"{name}: V251 não bloqueou ficha com nível pendente")
+                    if p251.locator('.ct251-use').count():
+                        problems.append(f"{name}: V251 permitiu aplicar novo treino com PP não confirmado")
+                    # Martinelli #191: corrigir HABILIDADES da cópia antiga
+                    # somente após CAP + Card ID + edição exata.
+                    page.goto(URL+'/fichas/191_Gabriel_Martinelli.html',
+                              wait_until='domcontentloaded',timeout=35000)
+                    martinelli_v251=page.locator('#ct251-individual-ficha')
+                    martinelli_v251.wait_for(state='visible',timeout=22000)
+                    if (martinelli_v251.get_attribute('data-review')!='complete' or
+                        'Nível 26' not in martinelli_v251.inner_text()):
+                        problems.append(f"{name}: V251 não leu o nível 26 de Martinelli")
+                    if '10 habilidades nativas' not in martinelli_v251.inner_text():
+                        problems.append(f"{name}: V251 não reconciliou nativas do Martinelli")
+                    page.wait_for_function("""() =>
+                      document.querySelector('#v162-skills-status')
+                        ?.textContent.includes('Nativas catalogadas: 10')""",timeout=15000)
+                    page.wait_for_function("""() =>
+                      document.querySelector('#scout-v220-skills-caution')
+                        ?.textContent.includes('Nativas cadastradas: 10')""",timeout=15000)
+                    page.screenshot(path=str(OUT/f"{name}_v251_martinelli.png"),
+                      full_page=False,animations="disabled")
+                    result['ficha_individual_v251']={'tested':True,'levels':68,
+                       'pending_blocked':True,'martinelli_26_50':True}
                 results[name] = result
                 context.close()
         finally:

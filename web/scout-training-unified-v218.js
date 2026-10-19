@@ -123,12 +123,12 @@ function mount(doc){
    current=original?original.slice():Array(10).fill(0);
    custom=false;editing=false;sourceLabel='';
    notify('restore');refresh();
-   note.textContent=officialValid?'Treino registrado restaurado. Nenhum nível da carta original foi modificado.':'Não há treino homologado no cadastro; os pontos permanecem como prévia zerada.';
+   note.textContent=officialValid?'Treino registrado restaurado. Nenhum nível da carta original foi modificado.':'Não há distribuição cadastrada e validada em PP; a prévia permanece zerada até escolher um rascunho.';
   }else{
    current=suggested?suggested.slice():Array(10).fill(0);
    custom=true;editing=false;sourceLabel='Hipótese tática · '+styleLabel;
    refresh();notify('restore');
-   note.textContent='Hipótese inicial de '+styleLabel+' restaurada; não substitui a build homologada da carta.';
+   note.textContent='Hipótese inicial de '+styleLabel+' restaurada; não substitui a build cadastrada da carta.';
   }
  }
  function refresh(){
@@ -145,7 +145,7 @@ function mount(doc){
   if(readNote)readNote.textContent=custom?
    (budgetRemaining===0?'Simulação pessoal com PP fechados. Não substitui o treino registrado no Scout PRO.':
     'Simulação pessoal incompleta: '+budgetRemaining+' PP ainda não distribuídos. Não considerar homologada.'):
-   (officialValid?'Treino registrado no catálogo. Para comparar ou testar mudanças, use Editar pontos.':'Treino final sem confirmação nesta edição. Preencha apenas como simulação e valide os atributos no jogo.');
+   (officialValid?'Treino cadastrado com custo PP correto, mas desempenho não homologado em partidas. Use Editar pontos para testar mudanças.':'Treino final sem confirmação nesta edição. Preencha apenas como simulação e valide os atributos no jogo.');
   table.classList.toggle('scout-v218-editing',editing);
   table.dataset.scoutV218Mode=custom?'draft':'registered';
   for(let i=0;i<rows.length;i++){
@@ -188,6 +188,23 @@ function mount(doc){
   }
   editing=false;refresh();
   notify('switch');
+ });
+ // V251: somente com clique e confirmação do usuário a proposta individual
+ // pode substituir o RASCUNHO LOCAL desta tática. Nunca altera o catálogo.
+ host.addEventListener('scoutpro:v251:apply-proposal',event=>{
+  const info=event.detail||{};
+  if(Number(info.cap)!==capture||String(info.card_id)!==id||
+    String(info.tactic)!==activeTactic||
+    !valid(info.levels)||total(info.levels)!==budget)return;
+  current=info.levels.slice();
+  custom=true;editing=false;
+  sourceLabel='Rascunho individual V251 · '+styleLabel;
+  const persisted=writeLocal();
+  refresh();notify('save');
+  note.textContent=persisted?
+   'Hipótese individual de '+styleLabel+' carregada como RASCUNHO local ('+budget+
+   ' PP). Não homologada e não aplicada no jogo.':
+   'Prévia carregada, mas armazenamento indisponível. Nenhum treino da carta foi alterado.';
  });
  btnReset.addEventListener('click',restore);
  // Laboratório continua disponível apenas como ferramenta avançada;
