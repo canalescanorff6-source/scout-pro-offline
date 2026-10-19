@@ -7,6 +7,8 @@ const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
 const original=read('web/SCOUT_V69_AUDITORIA.json');
 const cards=JSON.parse(original).cards;
 const formation=JSON.parse(read('web/SCOUT_V177_DUAS_FORMACOES.json')).formations;
+const legacy=JSON.parse(read('web/SCOUT_V176_POSSE_4312.json'));
+formation.push({id:'v176',starters:legacy.starter_slots.map(x=>({slot:x.slot,cap:x.cap,role:tactics.slotRole(x.slot)})),bench:legacy.bench});
 const bench=require('../web/craque-bench-advisor-v247.js');
 const training=require('../web/scout-position-training-v246.js');
 const tactics=require('../web/craque-tactics-v230.js');
@@ -99,7 +101,7 @@ for(const f of formation)for(const mode of Object.keys(tactics.MODES)){
   analyses++;
  }
 }
-assert.equal(analyses,2*5*12);
+assert.equal(analyses,3*5*12);
 for(const file of ['web/meu-time-duas-formacoes-v177.js',
  'web/meu-time-posse-4312.js','web/scout-rotation-lab-v219.js'])
  assert(read(file).includes('benchAdvisor.recommend('),
