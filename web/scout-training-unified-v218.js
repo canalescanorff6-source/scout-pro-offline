@@ -50,6 +50,20 @@ function mount(doc){
  const fallback=valid(lab?.draftA)&&total(lab.draftA)===budget?lab.draftA.slice():null;
  const original=officialValid?official:(fallback||null);
  const storageKey='scoutpro:v67:'+id+':'+filename;
+ // Bloquear editor se a confirmação local V248 da edição exata divergir
+ // do orçamento usado na ficha. Nunca mudar builds originais automaticamente.
+ const localPPMismatch=()=>{
+  try{
+   const value=JSON.parse(host.localStorage?.getItem('scoutpro:v248:level-review:'+
+    capture+'@'+id)||'null');
+   if(!value||value.schema!=='CRAQUE_PROGRESS_REVIEW_V248'||
+    value.confirmed_in_game!==true||Number(value.numero)!==capture||
+    String(value.card_id)!==id||String(value.name)!==String(card.name)||
+    !Number.isInteger(value.level)||value.level<1||value.level>120||
+    value.pp!==2*(value.level-1)||value.pp===budget)return null;
+   return {pp:value.pp,level:value.level};
+  }catch(_){return null}
+ };
  let saved=null;try{saved=readSaved(JSON.parse(host.localStorage?.getItem(storageKey)||'null'),id,filename,budget)}catch(_e){}
  // O laboratório V67 salvava somente train/source. Compatibilizar sem migrar dados.
  if(!saved){
@@ -84,6 +98,7 @@ function mount(doc){
   const button=make(doc,'button','scout-v218-button','Testar cenário '+entry.key);
   button.type='button';button.dataset.scenario=entry.key;
   button.addEventListener('click',()=>{
+   if(localPPMismatch())return;
    current=entry.vec.slice();custom=true;sourceLabel='Cenário '+entry.key+' (simulação)';
    editing=true;writeLocal();notify('save');refresh();
   });
@@ -99,6 +114,7 @@ function mount(doc){
  const status=table.querySelector('.scout-v208-total');
  const readNote=doc.getElementById('scout-v208-note');
  function writeLocal(){
+  if(localPPMismatch())return false;
   try{
    host.localStorage.setItem(keyForTactic(),JSON.stringify({train:current.slice(),source:'V220 · '+sourceLabel,updated:new Date().toISOString(),id,card:filename,tactic:activeTactic}));
    return true;
@@ -109,6 +125,7 @@ function mount(doc){
   host.dispatchEvent(new host.CustomEvent('scoutpro:training-updated-v220',{detail:{cap:capture,card_id:id,tactic:activeTactic,levels:current.slice(),mode}}));
  }
  function setDelta(i,delta){
+  if(localPPMismatch())return;
   const next=adjust(current,i,delta,budget);
   if(!next)return;
   current=next;custom=true;
@@ -118,6 +135,7 @@ function mount(doc){
   note.textContent=persisted?'Rascunho salvo somente neste dispositivo.':'Prévia alterada, mas o armazenamento local não permitiu salvar.';
  }
  function restore(){
+  if(localPPMismatch())return;
   try{host.localStorage.removeItem(keyForTactic())}catch(_e){}
   if(activeTactic==='posse'){
    current=original?original.slice():Array(10).fill(0);
@@ -132,17 +150,24 @@ function mount(doc){
   }
  }
  function refresh(){
+  const clash=localPPMismatch();
+  if(clash)editing=false;
   const spent=total(current);
   const budgetRemaining=budget-spent;
   tag.textContent=(custom?(activeTactic==='posse'?'SIMULAÇÃO PESSOAL':'HIPÓTESE / RASCUNHO TÁTICO'):officialValid?'REGISTRO DA CARTA':'PRÉVIA SEM HOMOLOGAÇÃO')+' · '+spent+' / '+budget+' PP'+(custom&&sourceLabel?' · '+sourceLabel:'');
-  tag.dataset.mode=custom?'draft':officialValid?'registered':'pending';
+  tag.dataset.mode=clash?'blocked':custom?'draft':officialValid?'registered':'pending';
+  if(clash)tag.textContent='PP DIVERGENTES: '+clash.pp+' PP conferidos (nível '+clash.level+
+   ') contra '+budget+' PP do catálogo. Não editar antes de corrigir.';
   status.textContent=spent+' / '+budget;
   btnEdit.textContent=editing?'Concluir edição':'Editar pontos';
   btnReset.disabled=activeTactic==='posse'?!custom:false;
+  btnEdit.disabled=Boolean(clash);
+  if(clash)btnReset.disabled=true;
   btnReset.textContent=activeTactic==='posse'?'Restaurar treino registrado':'Restaurar hipótese inicial';
   const headerText=head?.querySelector('span:last-child');if(headerText)headerText.textContent=activeTactic==='posse'?(officialValid?'Treino registrado · Posse':'Treino em revisão · Posse'):'Prévia experimental · '+styleLabel;
   compare.hidden=activeTactic!=='posse';
-  if(readNote)readNote.textContent=custom?
+  if(readNote&&clash)readNote.textContent='REVISÃO OBRIGATÓRIA: PP divergentes nesta edição. Não use nem edite esta distribuição até corrigi-la.';
+  else if(readNote)readNote.textContent=custom?
    (budgetRemaining===0?'Simulação pessoal com PP fechados. Não substitui o treino registrado no Scout PRO.':
     'Simulação pessoal incompleta: '+budgetRemaining+' PP ainda não distribuídos. Não considerar homologada.'):
    (officialValid?'Treino cadastrado com custo PP correto, mas desempenho não homologado em partidas. Use Editar pontos para testar mudanças.':'Treino final sem confirmação nesta edição. Preencha apenas como simulação e valide os atributos no jogo.');
@@ -166,7 +191,7 @@ function mount(doc){
    pp.textContent=String(ppCost(current[i]));
   }
  }
- btnEdit.addEventListener('click',()=>{editing=!editing;refresh()});
+ btnEdit.addEventListener('click',()=>{if(localPPMismatch())return;editing=!editing;refresh()});
  host.addEventListener('scoutpro:tactic-selected-v220',event=>{
   const info=event.detail||{};
   if(Number(info.cap)!==capture||String(info.card_id)!==id)return;
@@ -193,7 +218,7 @@ function mount(doc){
  // pode substituir o RASCUNHO LOCAL desta tática. Nunca altera o catálogo.
  host.addEventListener('scoutpro:v251:apply-proposal',event=>{
   const info=event.detail||{};
-  if(Number(info.cap)!==capture||String(info.card_id)!==id||
+  if(localPPMismatch()||Number(info.cap)!==capture||String(info.card_id)!==id||
     String(info.tactic)!==activeTactic||
     !valid(info.levels)||total(info.levels)!==budget)return;
   current=info.levels.slice();
@@ -211,7 +236,7 @@ function mount(doc){
  // suas alterações e as do painel principal usam a mesma conta local por Card ID.
  host.addEventListener('scoutpro:lab-changed-v218',event=>{
   const data=event.detail||{};
-  if(Number(data.cap)!==capture||String(data.card_id)!==id||!valid(data.levels))return;
+  if(localPPMismatch()||Number(data.cap)!==capture||String(data.card_id)!==id||!valid(data.levels))return;
   if(activeTactic!=='posse'||data.levels.every((n,i)=>n===current[i]))return;
   current=data.levels.slice();custom=true;sourceLabel='Laboratório · '+String(data.scenario||'personalizado');
   refresh();

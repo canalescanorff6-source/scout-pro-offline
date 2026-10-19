@@ -85,7 +85,7 @@ function mount(doc){
   mk(doc,'span','',String(card.shown_position||card.posicao||'Posição pendente')),
   mk(doc,'span','',String(card.attack_style||'Estilo da carta pendente')),
   mk(doc,'span','scout-v220-id','Card ID '+id));
- const intro=mk(doc,'p','scout-v220-sub','Uma ficha principal. Escolha a tática, confira PP, habilidades e ímpetos, e teste sem perder seu treino de Posse.');
+ const intro=mk(doc,'p','scout-v220-sub','Uma ficha principal por edição. Cada estilo é uma hipótese até haver atributos, PP e testes da carta exata; não priorizar Overall.');
  const tabs=mk(doc,'div','scout-v220-tabs');tabs.id='scout-v220-tabs';tabs.setAttribute('role','group');tabs.setAttribute('aria-label','Estilo de jogo do técnico');
  for(const t of engine.STYLES){
   const b=mk(doc,'button','scout-v220-tab',t.label);b.type='button';b.dataset.tactic=t.id;
@@ -143,9 +143,24 @@ function mount(doc){
  });
  function switchTraining(tactic){
   const s=engine.styleFor(tactic);
-  const fallback=baseline?engine.hypothetical({...card,niveis:baseline},tactic,baseline):null;
+  // V252: somente o treino registrado e matematicamente confirmado pode
+  // fundamentar uma hipótese. Um draft experimental NÃO vira cinco builds
+  // supostamente confiáveis ao trocar a tática.
+  // PP matematicamente fechados NÃO comprovam nível, edição ou gameplay.
+  // Evita replicar a mesma hipótese em cinco estilos para as 161 cartas sem
+  // nível documentado e para treinos provisórios como Martinelli #191.
+  const levelDocumented=Number.isInteger(card.max_level)&&card.max_level>=1&&
+   Number(card.pp)===2*(card.max_level-1)&&card.pp_estimated!==true&&
+   /^informado_pelo_usuario_/.test(String(card.pp_origem||''));
+  const sourceVerified=Boolean(possession)&&levelDocumented&&
+   card.training_provisional!==true&&engine.confirmSource(card);
+  const fallback=sourceVerified?engine.hypothetical({...card,niveis:possession},tactic,possession):null;
+  const proposed=Array.isArray(fallback?.levels)&&engine.valid(fallback.levels)&&
+   engine.total(fallback.levels)===budget?fallback.levels:null;
   host.dispatchEvent(new host.CustomEvent('scoutpro:tactic-selected-v220',{
-   detail:{cap,card_id:id,tactic,label:s.label,proposedLevels:fallback?.levels||null}
+   detail:{cap,card_id:id,tactic,label:s.label,proposedLevels:proposed,
+    evidenceStatus:sourceVerified?'pp_e_nivel_documentados_hipotese':'nivel_ou_build_sem_comprovacao',
+    verifiedInGameplay:false}
   }));
   doc.dispatchEvent(new host.CustomEvent('scoutpro:tactic-selected-v220',{detail:{tactic}}));
  }
@@ -226,10 +241,13 @@ function mount(doc){
   if(Number(v.capture)!==cap||String(v.id)!==id||
    String(v.name)!==String(card.name)||String(v.edition)!==String(card.edition))return;
   for(const key of ['native_skills','attack_style','defence_style','boost1','boost2',
-   'base_stats_known','training_provisional']){
+   'base_stats_known','training_provisional','max_level','pp_origem','pp_estimated']){
    if(Object.hasOwn(v,key))card[key]=v[key];
   }
   updateRecommendations();
+  // A conferência canônica pode chegar depois da primeira renderização.
+  // Recalcular o estilo para retirar hipóteses sem prova antes de exibi-las.
+  switchTraining(style);
  });
  doc.addEventListener('scoutpro:skills-updated',updateRecommendations);
  doc.addEventListener('scoutpro:recommendations-ready',()=>{

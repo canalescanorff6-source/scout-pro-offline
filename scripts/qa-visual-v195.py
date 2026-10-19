@@ -564,11 +564,14 @@ def run():
                 if page.locator('#scout-v221-review').evaluate('(e)=>e.scrollWidth-e.clientWidth')>8:
                     problems.append(f"{name}: V221 gerou rolagem horizontal no Android/Windows")
 
+                # V252: Massaro tem PP cadastrado, mas nível máximo da edição
+                # ainda não comprovado. Nunca preencher 62 PP automaticamente.
+                # O rascunho manual permanece isolado e persistente por estilo.
                 # A mesma carta deve guardar o rascunho de contra-ataque independentemente da Posse.
                 page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
                 page.wait_for_function("""() =>
                     document.querySelector('#scout-v218-status')?.textContent.includes('HIPÓTESE') &&
-                    document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='62 / 62' &&
+                    document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='0 / 62' &&
                     document.querySelector('#scout-v220-tabs [data-tactic="rapido"]')?.getAttribute('aria-pressed')==='true'
                 """, timeout=12000)
                 rapido_levels=page.evaluate("""() =>
@@ -576,10 +579,10 @@ def run():
                       .map(x=>Number(x.textContent.trim()))
                 """)
                 page.locator('#scout-v218-edit').click()
-                page.locator('#scout-v208-training tbody tr').first.locator('button[aria-label="Reduzir Chute"]').click()
+                page.locator('#scout-v208-training tbody tr').first.locator('button[aria-label="Aumentar Chute"]').click()
                 page.wait_for_function("""() => {
                   const e=document.querySelector('#scout-v208-training tbody tr .scout-v218-level');
-                  return e && Number(e.textContent) < 12;
+                  return e && Number(e.textContent) > 0;
                 }""",timeout=10000)
                 adjusted=page.evaluate("""() =>
                     [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v218-level')]
@@ -606,7 +609,7 @@ def run():
                     page.wait_for_function("""tactic => {
                       const btn=document.querySelector('#scout-v220-tabs [data-tactic="'+tactic+'"]');
                       return btn?.getAttribute('aria-pressed')==='true' &&
-                        document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='62 / 62';
+                        document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='0 / 62';
                     }""",arg=tactic,timeout=10000)
                     booster=page.locator('#scout-v220-booster-name').inner_text().strip()
                     if not booster or booster in ('—','Calculando…'):
@@ -1481,6 +1484,14 @@ def run():
                     # comprovado: nunca sugerir que a heurística é homologada.
                     page.goto(URL+'/fichas/001_Daniele_Massaro.html',
                               wait_until='domcontentloaded',timeout=35000)
+                    # O QA V250 anterior importou PP locais para esta carta.
+                    # Testar estado sem prova separadamente, sem considerar
+                    # nível importado como se fosse nível do catálogo.
+                    page.evaluate("""() => {
+                      const c=JSON.parse(document.querySelector('#scout-v68-data').textContent);
+                      localStorage.removeItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id);
+                    }""")
+                    page.reload(wait_until='domcontentloaded')
                     p251=page.locator('#ct251-individual-ficha')
                     p251.wait_for(state='visible',timeout=22000)
                     if p251.get_attribute('data-review')!='no_level':
@@ -1506,8 +1517,49 @@ def run():
                         ?.textContent.includes('Nativas cadastradas: 10')""",timeout=15000)
                     page.screenshot(path=str(OUT/f"{name}_v251_martinelli.png"),
                       full_page=False,animations="disabled")
+                    # V252: critérios documentais são específicos da edição.
+                    proof=martinelli_v251.locator('.ct251-proof')
+                    if (proof.count()!=1 or
+                        proof.locator('li').count()!=10 or
+                        'pendentes' not in proof.locator('summary').inner_text()):
+                        problems.append(f"{name}: matriz de 10 critérios V252 ausente ou incompleta")
+                    # Confirmar PP diferente no jogo deve bloquear TANTO o painel
+                    # V251 quanto o editor principal V218, sem alterar dados.
+                    page.evaluate("""() => {
+                      const c=JSON.parse(document.querySelector('#scout-v68-data').textContent);
+                      localStorage.setItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id,
+                        JSON.stringify({schema:'CRAQUE_PROGRESS_REVIEW_V248',
+                          numero:Number(c.capture),card_id:String(c.id),name:String(c.name),
+                          level:27,pp:52,confirmed_in_game:true,
+                          source:'conferência manual no eFootball',
+                          confirmed_at:new Date().toISOString()}));
+                    }""")
+                    page.reload(wait_until='domcontentloaded')
+                    martinelli_v251=page.locator('#ct251-individual-ficha')
+                    martinelli_v251.wait_for(state='visible',timeout=22000)
+                    page.wait_for_function("""() =>
+                      document.querySelector('#scout-v218-status')?.dataset.mode==='blocked'
+                    """,timeout=18000)
+                    if martinelli_v251.get_attribute('data-review')!='unsupported':
+                        problems.append(f"{name}: V252 não bloqueou cálculo com PP divergentes")
+                    if page.locator('#scout-v218-edit').is_enabled():
+                        problems.append(f"{name}: V252 manteve editor habilitado com PP 52 vs 50")
+                    if 'PP DIVERGENTES' not in martinelli_v251.inner_text():
+                        problems.append(f"{name}: V252 não informou a divergência de PP da edição")
+                    page.screenshot(path=str(OUT/f"{name}_v252_pp_divergentes.png"),
+                      full_page=False,animations="disabled")
+                    page.evaluate("""() => {
+                      const c=JSON.parse(document.querySelector('#scout-v68-data').textContent);
+                      localStorage.removeItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id);
+                    }""")
+                    page.reload(wait_until='domcontentloaded')
+                    page.locator('#ct251-individual-ficha').wait_for(state='visible',timeout=22000)
+                    if (page.locator('#scout-v218-status').get_attribute('data-mode')=='blocked' or
+                        page.locator('#ct251-individual-ficha').get_attribute('data-review')!='complete'):
+                        problems.append(f"{name}: V252 não recuperou o treino após desfazer PP divergente")
                     result['ficha_individual_v251']={'tested':True,'levels':68,
-                       'pending_blocked':True,'martinelli_26_50':True}
+                       'pending_blocked':True,'martinelli_26_50':True,
+                       'v252_proof_matrix':True,'v252_budget_guard':True}
                 results[name] = result
                 context.close()
         finally:
