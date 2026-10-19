@@ -39,7 +39,11 @@ for(const c of cards){
   }
   assert(report.skills.nativeEvidence==='catalogo_documental'||
    report.skills.nativeEvidence==='habilidades_nativas_pendentes');
-  assert.equal(report.booster.attributes.length,ranked.primary?.atributos.length||0);
+  const editionOK=proof.checks.find(x=>x.id==='edition')?.documented===true&&
+   !/\bpendente\b|\bconfirmar\b|\binvalidad[oa]\b/i.test(String(c.id)+' '+String(c.versao));
+  assert.equal(report.booster.attributes.length,editionOK?
+   ranked.primary?.atributos.length||0:0,
+   'V264: edição com Card ID pendente não recebe ímpeto específico');
   if(B.slotStatus(c.impeto_extra)==='possivel'){
    assert.equal(ranked.status,'possivel');
    assert.equal(ranked.slotEvidence,'slot_pendente');

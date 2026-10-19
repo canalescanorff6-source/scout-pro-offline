@@ -267,3 +267,30 @@ body[data-page="detail"] .ct261-methodology-list li{
  body[data-page="detail"] .ct261-methodology>summary{padding:12px 10px}
  body[data-page="detail"] .ct261-methodology-list{padding:0 10px 12px 26px}
 }
+
+/* V264 — auditoria de prontidão por edição, compacta em Android/Windows. */
+body[data-page="detail"] .ct264-status{
+ border:1px solid rgba(218,184,125,.45);
+ border-radius:12px;
+ margin:12px 0;
+ padding:11px 13px;
+ background:rgba(34,45,54,.88);
+ color:#eae9e3;
+ overflow-wrap:anywhere;
+}
+body[data-page="detail"] .ct264-status>strong{
+ display:block;font-size:13px;letter-spacing:.025em;color:#f4d89d;
+}
+body[data-page="detail"] .ct264-status>p{margin:8px 0;line-height:1.6;font-size:12px;}
+body[data-page="detail"] .ct264-status small{
+ display:block;font-size:11px;line-height:1.5;color:#c8cbd0;margin-top:10px;
+}
+body[data-page="detail"] .ct264-status[data-readiness="blocked"]{
+ border-left:4px solid #d49675;
+}
+body[data-page="detail"] .ct264-pendencies>summary{
+ font-size:12px;line-height:1.5;white-space:normal;
+}
+@media(max-width:520px){
+ body[data-page="detail"] .ct264-status{padding:10px;margin:10px 0;}
+}

@@ -118,9 +118,17 @@ if(inCard){
     const v251=document.createElement('script');v251.src=v189Root+'craque-ficha-individual-v251.js';
     document.head.appendChild(v251);
    };
+   // V264: primeiro carregar auditoria pura; V251 continua funcional
+   // quando o browser estiver offline com cache legado e este JS faltar.
+   const loadReadiness=()=>{
+    const v264=document.createElement('script');
+    v264.src=v189Root+'craque-competitive-readiness-v264.js';
+    v264.onload=loadV251;v264.onerror=loadV251;
+    document.head.appendChild(v264);
+   };
    const position251=document.createElement('script');
    position251.src=v189Root+'scout-position-training-v246.js';
-   position251.onload=loadV251;position251.onerror=loadV251;
+   position251.onload=loadReadiness;position251.onerror=loadReadiness;
    document.head.appendChild(position251);
   };
   // V233 precisa da API de PP V220; carrega ANTES da ficha, sem tocar no registro.
