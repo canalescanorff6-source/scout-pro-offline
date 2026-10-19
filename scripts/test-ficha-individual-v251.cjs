@@ -142,7 +142,10 @@ P.confirm(martinelli,'CA',false,storage);
 assert.equal(V.buildReview(martinelli,raw,{},cards,'posse',{
  targetPosition:'CA',positionTraining:P,store:storage
 }).canDraft,false);
-assert(read('web/app-bridge.js').includes("position251.onload=loadV251"));
+assert(read('web/app-bridge.js').includes("position251.onload=loadReadiness;"),
+ 'V264 precisa carregar readiness antes do V251 e manter fallback offline');
+assert(read('web/app-bridge.js').includes("v264.onload=loadV251;v264.onerror=loadV251;"),
+ 'Motor V251 permanece acessível mesmo sem arquivo V264 no cache antigo');
 
 // O estado de níveis original continua protegido mesmo após 425 hipóteses.
 assert.equal(JSON.stringify(cards),before);
