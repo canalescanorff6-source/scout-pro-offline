@@ -260,7 +260,7 @@ function mount(doc){
   const v=event.detail||{};
   if(Number(v.capture)!==cap||String(v.id)!==id||
    String(v.name)!==String(card.name)||String(v.edition)!==String(card.edition))return;
-  for(const key of ['native_skills','attack_style','defence_style','boost1','boost2',
+  for(const key of ['shown_position','native_skills','attack_style','defence_style','boost1','boost2',
    'base_stats_known','training_provisional','max_level','pp_origem','pp_estimated']){
    if(Object.hasOwn(v,key))card[key]=v[key];
   }
