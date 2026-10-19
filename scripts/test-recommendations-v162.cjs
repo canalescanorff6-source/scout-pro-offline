@@ -60,7 +60,10 @@ assert.strictEqual(E.keyFor('Finalização de primeira'),E.keyFor('First-time Sh
 const unknownSlot=E.booster({shown_position:'CA',boost2:'PENDENTE',boost1:'Physicality +3'},'posse',B);
 assert(unknownSlot.primary,'Ranking de posse deve sempre informar a primeira escolha');
 assert.equal(unknownSlot.able,false,'Recomendação consultiva não confere slot');
-assert.equal(unknownSlot.equipStatus,'slot_nao_verificado');
+assert.equal(unknownSlot.equipStatus,'slot_nao_documentado',
+ 'V261: slot pendente no catálogo deve ficar sem autorização, mesmo quando alguém o declarar vazio');
+assert.equal(E.booster({shown_position:'CA',boost2:'PENDENTE',boost1:'Physicality +3'},'posse',B,'vazio').able,false,
+ 'Conferência local não cria segundo slot em edição sem comprovação no catálogo');
 const bridge=fs.readFileSync(path.join(base,'app-bridge.js'),'utf8');
 assert(bridge.includes('skills-booster-v162.js')&&bridge.includes('booster-engine-v103.js'),'Recomendador precisa aparecer em todas as fichas');
 console.log('PASSOU V162: '+inspected+' avaliações, '+haveRecommendations+' cartas, '+boostEligible+' slots aptos sem confirmação (ranking consultivo preservado), '+unknownNative+' cartas com habilidades nativas pendentes, '+fewerThanFive+' com menos de 5 novas habilidades elegíveis.');
