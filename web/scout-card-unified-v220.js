@@ -209,10 +209,11 @@ function mount(doc){
   const boostName=$(wrap,'scout-v220-booster-name'),boostWhy=$(wrap,'scout-v220-booster-why'),
     boostOther=$(wrap,'scout-v220-booster-other'),boostSlot=$(wrap,'scout-v220-booster-slot');
   if(booster?.primary){
-   boostName.textContent=booster.primary.nome+' +1';
+   boostName.textContent=(booster.primary.nome_pt||booster.primary.nome)+' +1';
    boostWhy.textContent=booster.primary.motivo||'Complemento hipotético de função.';
    boostOther.textContent='Ímpeto fixo: '+(card.boost1||'não documentado')+
-    '. Alternativas: '+(booster.alternatives||[]).slice(0,2).map(b=>b.nome).join(' / ')+'.';
+    '. Alternativas: '+(booster.alternatives||[]).slice(0,2).map(b=>b.nome_pt||b.nome).join(' / ')+'.'+
+    (booster.primary.traducao_documentada?'':' Nome técnico não traduzido: confirme a grafia PT-BR no jogo.');
    boostSlot.textContent=booster.able?'Slot vazio indicado manualmente: confirme disponibilidade e compatibilidade no jogo.':
     'Slot disponível NÃO confirmado. Sugestão apenas comparativa; não gastar pedras sem conferir a edição.';
    $(wrap,'scout-v220-booster-badge').textContent=booster.confidence==='baixa'?'BAIXA CONFIANÇA':'COMPARAÇÃO';
