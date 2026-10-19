@@ -554,9 +554,9 @@ body[data-page] :is(#scout-backup-modal,#scout-android-update-modal)
   font-size:9px!important;
  }
 }
-/* Acima de 1650px há largura suficiente para exibir os quatro atalhos
-   numa linha, sem perder a coluna reservada às imagens. */
-@media (min-width:1650px){
+/* A partir de 1250px, quatro atalhos cabem em uma linha sem invadir a
+   coluna das cartas, preservando o catálogo na primeira dobra de 1366x768. */
+@media (min-width:1250px){
  body[data-page="catalog"] .hero .scout-v189-quick{
   grid-template-columns:repeat(4,minmax(0,1fr))!important;
  }
