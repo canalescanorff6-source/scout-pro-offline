@@ -121,9 +121,15 @@ function effectiveBench(){
 function renderBench(){
  $('bench').innerHTML=effectiveBench().map(c=>{
  const now=byCap.get(c.cap);const selected=Object.values(currentSelections()).includes(c.cap);
+ const replacements=active().starters.map(st=>({st,fit:positionTraining.status(now,roles(st.slot))}));
+ const eligible=replacements.filter(x=>x.fit.eligible);
+ const target=(eligible.length?eligible:replacements).find(x=>!selected||Number(currentSelections()[x.st.slot])!==c.cap);
+ const targetCard=target&&byCap.get(Number(currentSelections()[target.st.slot]));
+ const substitution=target?('Jogar como '+roles(target.st.slot)+' · Substituir #'+targetCard.numero+' '+targetCard.name+
+  (target.fit.eligible?' · '+target.fit.label:' · POSIÇÃO NÃO CONFIRMADA — não recomendar escalação')):'Sem substituição validada';
  return '<article class="bench-card"><img alt="Arte original '+esc(c.name)+'" src="'+esc(c.art)+'" loading="lazy"/>'+
  '<div class="bench-details"><strong>#'+c.cap+' '+esc(c.name)+'</strong><small>'+esc(c.original_pos)+' · '+esc(c.atk)+'</small>'+
- '<p>'+(c.autoReplacement?'Reserva ajustada automaticamente para não repetir uma pessoa. ':'')+'Alternativa por função; confira familiaridade, estilo e habilidades.</p><a href="'+esc(c.card_page)+'">Abrir ficha original ↗</a></div>'+
+ '<p>'+esc(substitution)+'</p><p>'+(c.autoReplacement?'Reserva ajustada automaticamente para não repetir uma pessoa. ':'')+'Alternativa por função; confira familiaridade, estilo e habilidades.</p><a href="'+esc(c.card_page)+'">Abrir ficha original ↗</a></div>'+
  '<div class="bench-action"><label for="bench-'+c.cap+'">'+(selected?'Em campo':'Colocar reserva em campo')+'</label><select id="bench-'+c.cap+'" data-bench="'+c.cap+'"><option value="">Selecionar posição…</option>'+
  active().starters.map(s=>'<option value="'+esc(s.slot)+'">'+esc(LABEL[s.slot])+'</option>').join('')+'</select></div></article>';
  }).join('');
