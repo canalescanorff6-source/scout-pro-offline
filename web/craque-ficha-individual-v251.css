@@ -208,3 +208,23 @@ body[data-page="detail"] .ct253-repetition[data-status="repeticao_exige_validaca
  body[data-page="detail"] .ct253-integrated-review,
  body[data-page="detail"] .ct253-reasons{animation:none!important;transition:none!important}
 }
+
+/* V258 — auditoria recolhível de todas as edições com treino repetido. */
+body[data-page="detail"] .ct258-duplicate-details{
+ min-width:0;max-width:100%;overflow:hidden;border-color:#897656;
+}
+body[data-page="detail"] .ct258-duplicate-details>summary{
+ overflow-wrap:anywhere;line-height:1.5;
+}
+body[data-page="detail"] .ct258-duplicate-list li{
+ overflow-wrap:anywhere;word-break:normal;
+ border-bottom:1px solid rgba(166,194,219,.15);
+ padding-bottom:6px;
+}
+body[data-page="detail"] .ct258-duplicate-list li:last-child{
+ border-bottom:0;
+}
+@media(max-width:520px){
+ body[data-page="detail"] .ct258-duplicate-details>summary{padding:12px;font-size:11px}
+ body[data-page="detail"] .ct258-duplicate-list{padding-right:12px}
+}
