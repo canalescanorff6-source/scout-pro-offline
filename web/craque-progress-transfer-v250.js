@@ -31,6 +31,8 @@ function equalRecord(a,b){
   a.level===b.level&&a.pp===b.pp;
 }
 function inspect(input,cards,store){
+ if(!Array.isArray(cards)||cards.length!==246)
+  throw Error('O acervo de 246 cartas está incompleto; importação cancelada.');
  if(!input||typeof input!=='object'||Array.isArray(input)||
   input.schema!==SCHEMA||!Array.isArray(input.records)||
   !Number.isInteger(input.total)||input.total!==input.records.length||
