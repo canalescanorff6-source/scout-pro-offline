@@ -189,6 +189,23 @@ function mount(doc){
   editing=false;refresh();
   notify('switch');
  });
+ // V251: somente com clique e confirmação do usuário a proposta individual
+ // pode substituir o RASCUNHO LOCAL desta tática. Nunca altera o catálogo.
+ host.addEventListener('scoutpro:v251:apply-proposal',event=>{
+  const info=event.detail||{};
+  if(Number(info.cap)!==capture||String(info.card_id)!==id||
+    String(info.tactic)!==activeTactic||
+    !valid(info.levels)||total(info.levels)!==budget)return;
+  current=info.levels.slice();
+  custom=true;editing=false;
+  sourceLabel='Rascunho individual V251 · '+styleLabel;
+  const persisted=writeLocal();
+  refresh();notify('save');
+  note.textContent=persisted?
+   'Hipótese individual de '+styleLabel+' carregada como RASCUNHO local ('+budget+
+   ' PP). Não homologada e não aplicada no jogo.':
+   'Prévia carregada, mas armazenamento indisponível. Nenhum treino da carta foi alterado.';
+ });
  btnReset.addEventListener('click',restore);
  // Laboratório continua disponível apenas como ferramenta avançada;
  // suas alterações e as do painel principal usam a mesma conta local por Card ID.
