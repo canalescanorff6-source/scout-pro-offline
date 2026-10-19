@@ -187,6 +187,8 @@ async function init(){
    render();
   });
   $('v248-export').addEventListener('click',exportReviewed);
+  // V250: importações de outro dispositivo atualizam cartões, filtros e contadores.
+  host.addEventListener('craque:v250:progress-imported',render);
   render();
  }catch(e){note('Não foi possível carregar a auditoria: '+String(e.message||e),true)}
 }
