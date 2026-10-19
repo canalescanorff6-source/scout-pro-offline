@@ -241,3 +241,29 @@ body[data-page="detail"] .ct251-proof-list li[data-proof="partial"]{
 body[data-page="detail"] .ct251-proof-list li[data-proof="partial"]::marker{
  color:#dbb97d;
 }
+
+/* V261 — parecer da engenharia tática embutido na única ficha principal. */
+body[data-page="detail"] .ct261-methodology{
+ border-color:#a28c68;
+ background:linear-gradient(125deg,rgba(26,46,65,.84),rgba(19,37,54,.9));
+}
+body[data-page="detail"] .ct261-methodology>summary{
+ color:#f2d8a1;
+ overflow-wrap:anywhere;
+ line-height:1.5;
+}
+body[data-page="detail"] .ct261-methodology-list{
+ margin:0;
+ padding:0 15px 12px 28px;
+ list-style:disc;
+}
+body[data-page="detail"] .ct261-methodology-list li{
+ font-size:11px;
+ line-height:1.55;
+ margin:8px 0;
+ overflow-wrap:anywhere;
+}
+@media(max-width:520px){
+ body[data-page="detail"] .ct261-methodology>summary{padding:12px 10px}
+ body[data-page="detail"] .ct261-methodology-list{padding:0 10px 12px 26px}
+}
