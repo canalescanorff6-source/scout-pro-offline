@@ -1361,6 +1361,7 @@ def run():
                     page.locator(f'#v248-cards .ct248-card[data-cap="{first_cap}"]').wait_for(timeout=20000)
                     if page.locator('#v248-filter').input_value()!='all':
                         problems.append(f"{name}: V249 deep link não mostra carta confirmada")
+                    page.locator(f'#v248-cards .ct248-card[data-cap="{first_cap}"] .ct248-details>summary').click()
                     page.once('dialog',lambda dialog:dialog.accept())
                     page.locator(f'#v248-cards .ct248-card[data-cap="{first_cap}"] button[data-undo]').click()
                     page.wait_for_function("""() => !Object.keys(localStorage)
