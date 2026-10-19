@@ -579,7 +579,7 @@ def run():
                       .map(x=>Number(x.textContent.trim()))
                 """)
                 page.locator('#scout-v218-edit').click()
-                page.locator('#scout-v208-training tbody tr').first.locator('button[aria-label="Reduzir Chute"]').click()
+                page.locator('#scout-v208-training tbody tr').first.locator('button[aria-label="Aumentar Chute"]').click()
                 page.wait_for_function("""() => {
                   const e=document.querySelector('#scout-v208-training tbody tr .scout-v218-level');
                   return e && Number(e.textContent) > 0;
