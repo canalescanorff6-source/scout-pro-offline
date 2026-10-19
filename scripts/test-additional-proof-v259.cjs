@@ -79,6 +79,9 @@ store.removeItem(proofKey);
 assert.equal(report().documented,false,'Sem confirmação, zero adicionais é desconhecido');
 assert.equal(JSON.stringify(cards),before);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),source);
+assert(read('web/craque-ficha-individual-v251.js').includes(
+ "doc.addEventListener('scoutpro:skills-updated'"),
+ 'Auditoria deve reagir à confirmação V254 sem reabrir a ficha');
 assert(read('package.json').includes('test-additional-proof-v259.cjs'));
 assert(read('web/sw.js').includes('v259-v254-skill-proof'));
 console.log('V259 PASS: 1.230 análises sem prova indevida, 246 cartas preservadas, confirmação V254 e invalidações testadas.');
