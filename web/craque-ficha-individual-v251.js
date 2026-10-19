@@ -511,6 +511,18 @@ function display(){
  'biotipo/Player ID comprovados e testes comparáveis em partidas. '+ 
  'Habilidades adicionais e ímpetos são consultivos; slots/equipados não são presumidos.');
  block.append(principles);
+ // V256: os testes de campo ficam recolhidos na MESMA ficha principal.
+ // Resultado de partida só é associado a esta edição/posição/estilo/vetor
+ // exato de PP após a confirmação manual de que o treino foi usado no jogo.
+ const trialsApi=host.CRAQUE_MATCH_EVIDENCE_V256;
+ if(trialsApi?.render){
+  try{block.append(trialsApi.render(doc,{
+   card,check,store:host.localStorage
+  }))}catch(error){
+   block.append(mk('p','ct251-warning',
+    'Histórico V256 indisponível: '+String(error?.message||error)));
+  }
+ }
 }
 async function begin(){
  if(doc.body?.dataset.page!=='detail')return;
