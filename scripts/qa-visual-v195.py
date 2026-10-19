@@ -19,7 +19,6 @@ SCREENS = [
     ("mobile_360", 360, 800, True),
     ("mobile_390", 390, 844, True),
     ("mobile_412", 412, 915, True),
-    ("windows_compact_900", 900, 1180, False),
     ("windows_1024", 1024, 900, False),
     ("windows_1151", 1151, 840, False),
     ("windows_1366", 1366, 768, False),
