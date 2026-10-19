@@ -353,6 +353,14 @@ function display(){
  });
  block.replaceChildren();
  block.dataset.review=check.status;
+ const reviewSummary=doc.getElementById('ct253-integrated-review')?.querySelector('summary');
+ if(reviewSummary){
+  const status=check.status==='unsupported'?'revisão obrigatória':
+   check.status==='no_level'?'nível pendente':
+   check.status==='no_build'?'treino pendente':'PP documentados';
+  reviewSummary.textContent='03 · Auditoria da edição · '+(check.tacticLabel||'Posse de Bola')+
+   ' · '+status+' · abrir detalhes';
+ }
  const heading=mk('div','ct251-heading');
  heading.append(mk('strong','ct251-title','Auditoria da edição · '+(check.tacticLabel||'Posse de Bola')),
   mk('span','ct251-status',check.description||'Evidências a revisar'));
@@ -529,9 +537,15 @@ async function begin(){
  if(!root||!card)return;
  const training=root.querySelector('#scout-v220-training');
  if(!training)return;
+ // V253: manter uma ficha PRINCIPAL. Análise avançada passa a ocupar
+ // uma área recolhível dentro da progressão, não uma segunda ficha concorrente.
+ const review=mk('details','ct253-integrated-review');
+ review.id='ct253-integrated-review';
+ review.append(mk('summary','','03 · Auditoria por edição, PP e evidências'));
  block=mk('section','ct251-shell');block.id='ct251-individual-ficha';
- block.setAttribute('aria-label','Auditoria e proposta individual por edição da carta');
- training.insertAdjacentElement('afterend',block);
+ block.setAttribute('aria-label','Auditoria documental e simulação por edição');
+ review.append(block);
+ training.append(review);
  const initial=root.querySelector('.scout-v220-tab[aria-pressed="true"]');
  active=initial?.dataset.tactic||'posse';
  // Corrigir o catálogo informativo da interface APENAS para a edição exata.
