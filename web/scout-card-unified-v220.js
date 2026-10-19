@@ -17,7 +17,10 @@ function nativeDetails(card,tactic){
  let results=null,booster=null;
  if(R){
   const manual=localGet('scoutpro:v162:equipped:'+cap+':'+id)||'';
-  try{results=R.evaluate(card,tactic,manual)}catch(_e){results=null}
+  const manualProof=parse(localGet(R.confirmationKey?.(cap,id)||
+   'scoutpro:v254:additional-confirmed:'+cap+'@'+id));
+  const complete=R.checkedEquipment?.({capture:cap,id},manual,manualProof)===true;
+  try{results=R.evaluate(card,tactic,manual,{equippedConfirmed:complete})}catch(_e){results=null}
   const slot=parse(localGet('scoutpro:v103:booster:'+cap));
   const verified=slot&&String(slot.card_id)===id?slot:{};
   try{booster=R.booster(card,tactic,B,verified.status,verified.equipped)}catch(_e){booster=null}
@@ -186,12 +189,18 @@ function mount(doc){
   const {skills,booster}=nativeDetails(card,style);
   const holder=$(wrap,'scout-v220-skill-list');holder.replaceChildren();
   if(skills){
-   const remaining=Math.max(0,5-(skills.alreadyEquippedProvided||0));
-   const picks=(skills.recommendations||[]).slice(0,remaining);
+   const remaining=skills.slotsRemaining;
+   const picks=skills.recommendations||[];
    if(picks.length)holder.append(makeList(doc,picks));
-   else holder.append(mk(doc,'p','scout-v220-small',remaining?'Habilidades insuficientemente documentadas: confirme no jogo.':'Cinco habilidades adicionais distintas informadas. Confira os slots na carta.'));
-   $(wrap,'scout-v220-skill-count').textContent=remaining+' vagas teóricas';
+   else holder.append(mk(doc,'p','scout-v220-small',
+    skills.manualOverLimit?'Cadastro de habilidades acima de cinco; corrija antes de planejar slots.':
+    remaining===0?'Cinco adicionais conferidas: nenhuma vaga disponível nesta edição.':
+    'Habilidades insuficientemente documentadas; confirme as equipadas no Plano de Jogo.'));
+   $(wrap,'scout-v220-skill-count').textContent=skills.equippedConfirmed?
+    remaining+' vaga(s) conferida(s)':'Slots não conferidos';
    $(wrap,'scout-v220-skills-caution').textContent=(skills.nativeKnown?'Nativas cadastradas: '+skills.knownNative+'. ':'Nativas pendentes. ')+
+    (skills.equippedConfirmed?'Lista completa conferida nesta edição. ':
+     'NÃO há comprovação de slots livres. Sugestões são opções teóricas. ')+
     'Não duplicar nativas nem adicionais equipadas. '+(skills.missing||[]).join(' ');
   }else{
    holder.append(mk(doc,'p','','Motor de habilidades indisponível; tente atualizar o aplicativo.'));
@@ -200,10 +209,11 @@ function mount(doc){
   const boostName=$(wrap,'scout-v220-booster-name'),boostWhy=$(wrap,'scout-v220-booster-why'),
     boostOther=$(wrap,'scout-v220-booster-other'),boostSlot=$(wrap,'scout-v220-booster-slot');
   if(booster?.primary){
-   boostName.textContent=booster.primary.nome+' +1';
+   boostName.textContent=(booster.primary.nome_pt||booster.primary.nome)+' +1';
    boostWhy.textContent=booster.primary.motivo||'Complemento hipotético de função.';
    boostOther.textContent='Ímpeto fixo: '+(card.boost1||'não documentado')+
-    '. Alternativas: '+(booster.alternatives||[]).slice(0,2).map(b=>b.nome).join(' / ')+'.';
+    '. Alternativas: '+(booster.alternatives||[]).slice(0,2).map(b=>b.nome_pt||b.nome).join(' / ')+'.'+
+    (booster.primary.traducao_documentada?'':' Nome técnico não traduzido: confirme a grafia PT-BR no jogo.');
    boostSlot.textContent=booster.able?'Slot vazio indicado manualmente: confirme disponibilidade e compatibilidade no jogo.':
     'Slot disponível NÃO confirmado. Sugestão apenas comparativa; não gastar pedras sem conferir a edição.';
    $(wrap,'scout-v220-booster-badge').textContent=booster.confidence==='baixa'?'BAIXA CONFIANÇA':'COMPARAÇÃO';

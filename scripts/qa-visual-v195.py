@@ -1582,6 +1582,60 @@ def run():
                     result['ficha_individual_v251']={'tested':True,'levels':68,
                        'pending_blocked':True,'martinelli_26_50':True,
                        'v252_proof_matrix':True,'v252_budget_guard':True}
+                    # V254: NÃO presumir cinco slots vazios. A confirmação
+                    # fica no Card ID da edição e é invalidada quando a
+                    # lista completa de equipadas for alterada.
+                    page.goto(URL+'/fichas/040_Dwight_Yorke.html',
+                              wait_until='domcontentloaded',timeout=35000)
+                    skill_count=page.locator('#scout-v220-skill-count')
+                    skill_count.wait_for(state='visible',timeout=18000)
+                    if 'Slots não conferidos' not in skill_count.inner_text():
+                        problems.append(f"{name}: V254 inventou slots vagos antes da confirmação")
+                    page.locator('#scout-v220-technical > summary').click()
+                    page.locator('#scout-v220-advanced-skills > summary').click()
+                    page.locator('#scout-v162 > details > summary').click()
+                    ta=page.locator('#v162-equipped')
+                    ta.fill('Toque duplo; Controle com a sola; Interceptação; Marcação individual; Passe na medida')
+                    page.locator('#v254-confirm-equipped').check()
+                    page.locator('#v162-save').click()
+                    page.wait_for_function("""()=>
+                      document.querySelector('#scout-v220-skill-count')
+                        ?.textContent.includes('0 vaga(s) conferida(s)')
+                    """,timeout=16000)
+                    if page.locator('#scout-v220-skill-list li').count()!=0 or (
+                        'Cinco adicionais conferidas' not in
+                        page.locator('#scout-v220-skill-list').inner_text()):
+                        problems.append(f"{name}: V254 ofereceu sexta habilidade a Yorke")
+                    page.reload(wait_until='domcontentloaded')
+                    page.locator('#v254-confirm-equipped').wait_for(state='attached',timeout=15000)
+                    if not page.locator('#v254-confirm-equipped').is_checked():
+                        problems.append(f"{name}: V254 perdeu confirmação desta edição após reiniciar")
+                    page.locator('#scout-v220-tabs button[data-tactic="fora"]').click()
+                    page.wait_for_function("""() => document.querySelector('#scout-v220-booster-why')
+                      ?.textContent.includes('em Por Fora')""",timeout=15000)
+                    page.locator('#scout-v220-tabs button[data-tactic="longo"]').click()
+                    page.wait_for_function("""() => document.querySelector('#scout-v220-booster-why')
+                      ?.textContent.includes('em Passe Longo')""",timeout=15000)
+                    # Alterar texto sem confirmar invalida prova anterior.
+                    page.locator('#scout-v220-technical > summary').click()
+                    page.locator('#scout-v220-advanced-skills > summary').click()
+                    page.locator('#scout-v162 > details > summary').click()
+                    ta=page.locator('#v162-equipped')
+                    ta.fill('Toque duplo; Controle com a sola')
+                    if page.locator('#v254-confirm-equipped').is_checked():
+                        problems.append(f"{name}: V254 manteve confirmação após modificar adicionais")
+                    page.locator('#v162-save').click()
+                    page.wait_for_function("""() =>
+                      document.querySelector('#scout-v220-skill-count')
+                        ?.textContent.includes('Slots não conferidos')
+                    """,timeout=16000)
+                    if page.evaluate("""() => document.documentElement.scrollWidth - innerWidth""")>8:
+                        problems.append(f"{name}: V254 criou scroll lateral na lista de skills")
+                    page.screenshot(path=str(OUT/f"{name}_v254_equipped_skills.png"),
+                        full_page=False,animations="disabled")
+                    result['skill_slots_v254']={'not_assumed':True,'five_full':True,
+                       'edition_persisted':True,'editing_invalidated':True,
+                       'tactic_labels_ok':True}
                 results[name] = result
                 context.close()
         finally:

@@ -55,7 +55,7 @@ assert(sw.includes('v187-posse'));
 assert(main.includes("localStorage.getItem(KEY)"),'Preferencia da ficha tem que persistir');
 assert(posseCss.includes('section.topic')&&main.includes('Ver análises detalhadas'),'Seções antigas devem recolher e continuar acessíveis');
 assert(main.includes('compactModel')&&main.includes('get(x.arm'),'Biotipo só onde houver evidência');
-assert(skills.includes('Melhor ímpeto sugerido para'));
+assert(skills.includes('Ímpeto para comparar em'), 'A ficha V254 deve apresentar a opção como consultiva, não automaticamente como melhor');;
 assert(skills.includes('não uma opção para substituir'));
 assert(rarity.includes('Somente mudanças ainda não enviadas'));
 assert(rarity.includes('Raridades desta revisão: tudo registrado'));
