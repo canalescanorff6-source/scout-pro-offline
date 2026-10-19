@@ -2,13 +2,13 @@
   "schema": "scout_v211_duplicate_build_review",
   "source": "SCOUT_V69_AUDITORIA.json",
   "total_cards": 246,
-  "registered": 162,
-  "pending": 84,
-  "group_count": 20,
-  "duplicated_cards": 56,
-  "priority_groups": 20,
+  "registered": 161,
+  "pending": 85,
+  "group_count": 19,
+  "duplicated_cards": 54,
+  "priority_groups": 19,
   "validated_replacements": 0,
-  "note": "Não são treinos novos: auditoria de repetição. Sem atributos-base numéricos de cada edição, não afirmar que uma redistribuição seja melhor.",
+  "note": "Não são treinos novos: auditoria de repetição. Sem atributos-base numéricos de cada edição, não afirmar que uma redistribuição seja melhor. A V247 exclui das builds homologadas o treino ainda proposto de Martinelli #191; histórico de 66 PP foi preservado.",
   "groups": [
     {
       "signature": "ZG|defensor criativo|52|0,4,0,0,8,8,12,0,0,0",
@@ -642,38 +642,6 @@
       "names": [
         "Mikaël Silvestre",
         "Théo Hernández"
-      ],
-      "size": 2,
-      "divergentPairs": 1,
-      "comparedPairs": 1,
-      "unconfirmedPairs": 1,
-      "baseStatsAllKnown": false,
-      "status": "revisao_documental_prioritaria"
-    },
-    {
-      "signature": "PTE|ala produtivo|66|4,6,10,12,8,0,0,0,0,0",
-      "position": "PTE",
-      "style": "Ala produtivo",
-      "pp": 66,
-      "levels": [
-        4,
-        6,
-        10,
-        12,
-        8,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      "ids": [
-        191,
-        198
-      ],
-      "names": [
-        "Gabriel Martinelli",
-        "Cody Gakpo"
       ],
       "size": 2,
       "divergentPairs": 1,
