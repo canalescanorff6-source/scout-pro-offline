@@ -18,6 +18,37 @@ const STATES=Object.freeze({
  unsupported:'Edição ou PP divergente · revisão obrigatória'
 });
 const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+// V256 — função tática transitória compartilhada pela ficha, skills e ímpetos.
+// Nunca salvar a opção como posição ORIGINAL nem inferir familiaridade por OVR.
+const activeRoles=new Map();
+const editionKey=card=>{
+ const cap=Number(card?.numero??card?.capture),id=String(card?.id??card?.card_id??'').trim();
+ return Number.isInteger(cap)&&cap>=1&&cap<=246&&id?cap+'@'+id:null;
+};
+function activeRole(card,training,store){
+ const original=training?.pos?.(card?.posicao||card?.shown_position);
+ const key=editionKey(card);
+ if(!original||!key)return {role:null,status:'pendente',confirmed:false};
+ const wanted=activeRoles.get(key);
+ if(!wanted)return {role:original,status:'original',confirmed:true};
+ const proof=training.status({...card,posicao:card.posicao||card.shown_position},
+  wanted,store);
+ if(!proof.eligible){
+  activeRoles.delete(key);
+  return {role:original,status:'original',confirmed:true};
+ }
+ return {role:wanted,status:proof.status,confirmed:true};
+}
+function setActiveRole(card,wanted,training,store){
+ const key=editionKey(card),target=training?.pos?.(wanted);
+ if(!key||!target)throw Error('Carta ou posição alternativa indisponível.');
+ const status=training.status({...card,posicao:card.posicao||card.shown_position},
+  target,store);
+ if(!status.eligible)throw Error('Posição não confirmada nesta edição do jogador.');
+ if(status.status==='original')activeRoles.delete(key);
+ else activeRoles.set(key,target);
+ return {role:target,status:status.status,confirmed:true};
+}
 const nativeNames=s=>String(s??'').split(';').map(x=>norm(x)).filter(Boolean);
 const exact=(source,raw)=>Boolean(source&&raw&&Number(source.numero)===Number(raw.capture)&&
  String(source.id)===String(raw.id)&&norm(source.name)===norm(raw.name)&&
@@ -334,7 +365,7 @@ function proofChecklist(card,index,lab,store){
   competitivelyVerified:checks.find(x=>x.id==='gameplay').documented&&
     checks.find(x=>x.id==='base').documented&&checks.find(x=>x.id==='budget').documented};
 }
-const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,proofChecklist,signature,compareProposals,
+const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,proofChecklist,signature,compareProposals,activeRole,setActiveRole,
   exact,sourceFor,related,allocate,buildReview,catalogAudit});
 if(!host?.document)return api;
 const doc=host.document;
@@ -347,6 +378,8 @@ let card=null,raw=null,lab=null,all=null,active='posse',block=null,positionSelec
 function display(){
  if(!card||!raw||!block)return;
  const posApi=host.SCOUT_POSITION_TRAINING_V246;
+ const current=activeRole(card,posApi,host.localStorage);
+ if(current.role)positionSelected=current.role;
  const check=buildReview(card,raw,lab,all,active,{
   targetPosition:positionSelected||card.posicao,positionTraining:posApi,
   store:host.localStorage
@@ -377,7 +410,7 @@ function display(){
   for(const code of posApi.familiar(card,host.localStorage))
    if(!positions.some(p=>p.code===code))positions.push({code,note:'familiaridade confirmada'});
   if(positions.length>1){
-   const label=mk('label','ct251-position-label','Função tática da proposta');
+   const label=mk('label','ct251-position-label','Função tática confirmada · usada também nas habilidades e ímpetos');
    const select=mk('select','ct251-position-select');
    select.id='ct251-position';
    for(const item of positions){
@@ -385,7 +418,19 @@ function display(){
     op.value=item.code;select.append(op);
    }
    select.value=posApi.pos(positionSelected||card.posicao)||positions[0].code;
-   select.addEventListener('change',()=>{positionSelected=select.value;display()});
+   select.addEventListener('change',()=>{
+    try{
+     const picked=setActiveRole(card,select.value,posApi,host.localStorage);
+     positionSelected=picked.role;display();
+     doc.dispatchEvent(new host.CustomEvent('scoutpro:role-selected-v256',{
+      detail:{cap:Number(card.numero),card_id:String(card.id),
+       role:picked.role,status:picked.status,confirmed:true}
+     }));
+    }catch(error){
+     positionSelected=activeRole(card,posApi,host.localStorage).role;
+     display();
+    }
+   });
    label.append(select);block.append(label);
   }
  }
