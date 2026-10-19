@@ -56,6 +56,15 @@
  const vecOk=v=>T?.valid?.(v)===true;
  const ppCost=n=>T.ppCost(n);
  const role=c=>T?.roleOf?.(c)||null;
+ // V256: PP matematicamente fechados NÃO comprovam nível/edição.
+ // Sem origem confirmada do orçamento, não gerar ficha automática.
+ function levelDocumented(card){
+  const level=card?.max_level;
+  return Number.isInteger(level)&&level>=1&&level<=120&&
+   Number.isInteger(Number(card?.pp))&&Number(card.pp)===2*(level-1)&&
+   card?.pp_estimated!==true&&card?.pp_estimado!==true&&
+   /^informado_pelo_usuario_/.test(String(card?.pp_origem||''));
+ }
  function fingerprints(card){
   return [number(card.capture??card.numero),String(card.id||card.card_id||'').trim(),
    String(card.edition||card.versao||'').trim()];
@@ -114,6 +123,7 @@
   const levels=card.recommended_levels||card.niveis;
   const confirmed=vecOk(levels)&&budget!==null&&T.total(levels)===budget;
   const ppEstimated=card.pp_estimated===true||card.pp_estimado===true;
+  const hasLevelEvidence=levelDocumented(card);
   const weights=rule.weights.map((w,i)=>Math.max(0,w+MODES[tactic].delta[i]));
   const hints=interpretSignals(card,roleId,weights);
   if(roleId==='GO'){
@@ -146,6 +156,7 @@
    if(expensive)tradeoffs.push(expensive.name+': a próxima progressão custaria '+expensive.nextCost+' PP; compare o custo marginal com outra categoria.');
   }else tradeoffs.push('Treino e PP desta edição não coincidem ou ainda não foram confirmados: proposta automática suspensa.');
   if(ppEstimated)tradeoffs.push('Orçamento PP classificado como estimado: validar no jogo antes de qualquer redistribuição.');
+  if(!hasLevelEvidence)tradeoffs.push('Nível máximo/PP da edição sem confirmação documental: somente interpretação, sem redistribuição automática.');
   if(!id||!edition||capture===null)tradeoffs.push('Identidade/edição incompleta: conferir número da carta e Card ID antes de comparar.');
   if(roleId==='GO')tradeoffs.push('GO1 = consciência/salto; GO2 = rebatida/alcance; GO3 = segurança de mãos/reflexos. São pares de atributos, não 5 ajustes independentes.');
   if(roleId==='ZG')tradeoffs.push('Defesa, força das pernas e jogo aéreo se complementam; não assumir velocidade final nem alcance de pernas sem dados.');
@@ -154,12 +165,13 @@
    'Estilo de jogo da carta: '+String(card.attack_style||card.estilo_ataque||'não documentado'),
    'Edição: '+(edition||'pendente'),
    String(card.native_skills||card.habilidades_nativas||'').trim()?'Habilidades nativas cadastradas':'Habilidades nativas não confirmadas',
-   confirmed?'Custo de PP registrado conferido':'Treino registrado sem custo integral conferido'
+   confirmed?'PP fecham matematicamente (não comprova o nível máximo)':'Treino registrado sem custo integral conferido'
   ];
-  const uncertainty=(!confirmed||ppEstimated||!id||!edition||capture===null)?'pendente':
+  const uncertainty=(!confirmed||!hasLevelEvidence||ppEstimated||!id||!edition||capture===null)?'pendente':
    !knownBase.length?'documental':'parcial_com_atributos_base';
   return {
-   capture,id,edition,budget,confirmed,ppEstimated,role:roleId,position:rule.name,
+   capture,id,edition,budget,confirmed,levelDocumented:hasLevelEvidence,
+   ppEstimated,role:roleId,position:rule.name,
    job:rule.job,tactic,mode:MODES[tactic].phrase,weights,priorities,signals:hints,
    knownBase,tradeoffs,evidence,uncertainty,
    tests:rule.tests,
@@ -175,8 +187,10 @@
  }
  function compare(card,tactic,lab){
   const analysis=interpret(card,tactic,lab);
-  if(!analysis||!analysis.confirmed||analysis.ppEstimated||!analysis.id||!analysis.edition||analysis.capture===null)
-   return {analysis,proposal:null,reason:'Sem base individual e orçamento plenamente conferidos; não propor redistribuição.'};
+  if(!analysis||!analysis.confirmed||!analysis.levelDocumented||
+     analysis.ppEstimated||!analysis.id||!analysis.edition||analysis.capture===null)
+   return {analysis,proposal:null,
+    reason:'Nível máximo, origem documental e PP desta edição ainda não confirmados. Interpretação permitida; redistribuição bloqueada.'};
   const baseline=(card.recommended_levels||card.niveis).slice();
   const allowed=analysis.role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
   const current=baseline.slice();
@@ -214,7 +228,7 @@
    note:'Comparação matemática de investimento; não foi testada em partidas e não substitui os treinos aprovados.'
   },reason:'Redistribuição hipotética calculada respeitando os PP da mesma edição; exige comparação em campo.'};
  }
- const api=Object.freeze({CATEGORY,ROLES,MODES,interpret,compare,clean});
+ const api=Object.freeze({CATEGORY,ROLES,MODES,interpret,compare,levelDocumented,clean});
  if(typeof module==='object'&&module.exports)module.exports=api;
  if(host)host.CRAQUE_INTERPRETATION_V233=api;
 })(typeof window!=='undefined'?window:null);
