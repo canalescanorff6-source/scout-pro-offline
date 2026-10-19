@@ -148,7 +148,7 @@ function cardRow(cap,role,fit,slot,substitution){
   (image?'<img loading="lazy" src="'+esc(image)+'" alt="">':'<span class="scout-rotation-noart">#'+esc(cap)+'</span>')+
   '<div><strong>'+esc(c.name)+'</strong><small>#'+String(cap).padStart(3,'0')+' · '+esc(role)+' · '+esc(c.estilo_ataque)+'</small>'+
   (fit&&fit!=='posição original'?'<small class="scout-rotation-caution">'+esc(fit)+'</small>':'')+
-  (substitution?'<span class="ct-v247-recommendation" data-confirmed="'+String(substitution.eligible)+'"><small>'+esc(substitution.eligible?'Jogar como '+substitution.position+' · Substituir #'+substitution.replaces.cap+' '+substitution.replaces.name+' ('+substitution.replaces.slot.toUpperCase()+')':'Sem troca confirmada nesta formação · '+substitution.reason)+'</small></span>':'')+
+  (substitution?'<span class="ct-v247-recommendation" data-confirmed="'+String(substitution.eligible)+'">'+esc(substitution.eligible?'Jogar como '+substitution.position+' · Substituir #'+substitution.replaces.cap+' '+substitution.replaces.name+' ('+substitution.replaces.slot.toUpperCase()+')':'Sem troca confirmada nesta formação · '+substitution.reason)+'</span>':'')+
   '</div><a href="'+esc(anchor)+'" aria-label="Abrir ficha de '+esc(c.name)+'">Ficha ↗</a></article>';
 }
 function metrics(team){
