@@ -95,7 +95,7 @@ function allocate(weights,role,pp,baseline){
  }
  return dp[pp]&&T.total(dp[pp].levels)===pp?dp[pp].levels:null;
 }
-function buildReview(card,raw,lab,all,style){
+function buildReview(card,raw,lab,all,style,opts={}){
  if(!recognizedStyles.has(style))throw Error('Estilo de técnico inválido');
  if(!T||!I)return {status:'unsupported',reason:'Motor de revisão indisponível.',proposal:null};
  const aligned=sourceFor(card,raw),rawIdentity=exact(card,raw);
@@ -105,11 +105,26 @@ function buildReview(card,raw,lab,all,style){
    'CAP, Card ID, nome ou edição não coincidem. Proposta bloqueada.',
   sourceCompatible:false,related:[],differences:[]
  };
+ const target=String(opts.targetPosition||card.posicao);
+ const natural=opts.positionTraining?.pos?.(card.posicao)||String(card.posicao);
+ const mapped=opts.positionTraining?.pos?.(target)||target;
+ let positionProof=null;
+ if(mapped!==natural){
+  positionProof=opts.positionTraining?.status?.(card,mapped,opts.store)||null;
+  if(!positionProof?.eligible)return {
+   status:'unsupported',canDraft:false,proposal:null,sourceCompatible:true,
+   related:[],differences:[],
+   reason:'Posição '+mapped+' não confirmada para esta edição. Treine ou confirme familiaridade no eFootball antes de gerar uma build para essa função.'
+  };
+ }
+ // A troca só muda a função TÁTICA da proposta; identidade e posição original
+ // do catálogo seguem intactas.
+ const interpreted={...aligned,shown_position:mapped,role_used:mapped};
  const levelKnown=confirmedLevel(card),buildKnown=hasValidBuild(card);
  const status=levelKnown?(buildKnown?'complete':'no_build'):'no_level';
  const nativeMismatch=norm(card.habilidades_nativas)!==norm(raw.native_skills);
  const boostMismatch=norm(card.impeto_fixo)!==norm(raw.boost1);
- const context=I.interpret(aligned,style,lab)||null;
+ const context=I.interpret(interpreted,style,lab)||null;
  const shared=related(card,all);
  const differences=[];
  if(nativeMismatch)differences.push('As habilidades nativas do catálogo são diferentes das da ficha antiga; análise usa a edição identificada no catálogo.');
@@ -142,6 +157,7 @@ function buildReview(card,raw,lab,all,style){
  }
  return {
   status,description:STATES[status],canDraft:!!proposal,proposal,
+  positionUsed:mapped,positionEvidence:positionProof?.status||'original',
   changes:changed,sourceCompatible:true,related:shared,differences,
   capture:aligned.capture,card_id:aligned.id,style,role:context?.role||roleOf(card),
   pp:aligned.pp,level:levelKnown?card.max_level:null,
@@ -192,16 +208,44 @@ const mk=(tag,cls,value)=>{
  if(value!==undefined)e.textContent=String(value);
  return e;
 };
-let card=null,raw=null,lab=null,all=null,active='posse',block=null;
+let card=null,raw=null,lab=null,all=null,active='posse',block=null,positionSelected=null;
 function display(){
  if(!card||!raw||!block)return;
- const check=buildReview(card,raw,lab,all,active);
+ const posApi=host.SCOUT_POSITION_TRAINING_V246;
+ const check=buildReview(card,raw,lab,all,active,{
+  targetPosition:positionSelected||card.posicao,positionTraining:posApi,
+  store:host.localStorage
+ });
  block.replaceChildren();
  block.dataset.review=check.status;
  const heading=mk('div','ct251-heading');
  heading.append(mk('strong','ct251-title','Engenharia individual · '+(check.tacticLabel||'Posse de Bola')),
   mk('span','ct251-status',check.description||'Evidências a revisar'));
  block.append(heading);
+ // A função original é a opção padrão; alternativas somente após confirmação
+ // por edição exata no V246. Overall alto em CA NÃO é treinamento.
+ if(posApi){
+  const positions=[{
+   code:posApi.pos(card.posicao)||String(card.posicao),
+   note:'posição original'
+  }];
+  for(const code of posApi.trained(card,host.localStorage))
+   if(!positions.some(p=>p.code===code))positions.push({code,note:'treinamento confirmado'});
+  for(const code of posApi.familiar(card,host.localStorage))
+   if(!positions.some(p=>p.code===code))positions.push({code,note:'familiaridade confirmada'});
+  if(positions.length>1){
+   const label=mk('label','ct251-position-label','Função tática da proposta');
+   const select=mk('select','ct251-position-select');
+   select.id='ct251-position';
+   for(const item of positions){
+    const op=mk('option','',item.code+' · '+item.note);
+    op.value=item.code;select.append(op);
+   }
+   select.value=posApi.pos(positionSelected||card.posicao)||positions[0].code;
+   select.addEventListener('change',()=>{positionSelected=select.value;display()});
+   label.append(select);block.append(label);
+  }
+ }
  if(check.status==='unsupported'){
   block.append(mk('p','ct251-warning',check.reason));
   return;
@@ -209,7 +253,8 @@ function display(){
  const info=mk('p','ct251-intro',
   '#'+String(card.numero).padStart(3,'0')+' · '+card.versao+' · '+
   (check.level?'Nível '+check.level+' confirmado documentalmente':'Nível máximo não comprovado')+
-  ' · '+card.pp+' PP do catálogo. Função: '+check.role+'.');
+  ' · '+card.pp+' PP do catálogo. Função proposta: '+check.role+
+  (check.positionEvidence==='original'?' (posição original).':' (posição alternativa confirmada na conta).'));
  block.append(info);
  const chips=mk('div','ct251-evidence');
  chips.append(mk('span','','Sem Overall como critério'),
