@@ -186,7 +186,7 @@ async function mount(){
   catch(error){reset();report(fmt(error.message),true)}
  });
  $('v250-cancel').addEventListener('click',()=>{reset();report('Importação cancelada; nenhum dado foi alterado.')});
- applyButton.addEventListener('click',()=>{
+ applyButton.addEventListener('click',async()=>{
   if(!chosen)return;
   try{
    const current=inspect(chosen.data,catalog,host.localStorage);
@@ -197,6 +197,11 @@ async function mount(){
    }
    if(!replace&&current.countConflict)
     report('Conflitos serão preservados; apenas conferências novas serão importadas.');
+   // V226 cria um snapshot ANTES da alteração quando disponível.
+   // Se a proteção estiver indisponível por erro, cancelar a operação.
+   if(typeof host.CRAQUE_BACKUP_V226?.protect==='function'){
+    await host.CRAQUE_BACKUP_V226.protect('pre-progress-import');
+   }
    const summary=apply(chosen.data,catalog,host.localStorage,{replaceConflicts:replace});
    reset();
    report('Importação concluída: '+summary.imported+' registros salvos · '+
@@ -205,6 +210,7 @@ async function mount(){
    // A página de conferência original mantém o próprio estado e a contagem.
    // Um evento explícito permite atualizar as 246 cartas sem recarregar.
    host.dispatchEvent(new Event('craque:v250:progress-imported'));
+   host.dispatchEvent(new Event('craque:data-changed')); // backup V226 automático
   }catch(error){report('Nada importado: '+fmt(error.message),true)}
  });
 }
