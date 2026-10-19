@@ -1107,6 +1107,39 @@ def run():
                 """,timeout=25000)
                 if page.locator('#ct-v230-tactic-tabs button').count()!=5:
                     problems.append(f"{name}: V230 seletor dos cinco estilos na formação ausente")
+                # V255: testar o módulo REAL no navegador (sem alterar titulares)
+                # contra outra versão da mesma pessoa e falso ganho numérico
+                # quando a posição de um titular não está confirmada.
+                if name in ('mobile_390','windows_1366'):
+                    check255=page.evaluate("""async () => {
+                      const roster=(await (await fetch('SCOUT_V69_AUDITORIA.json')).json()).cards;
+                      const byCap=new Map(roster.map(c=>[Number(c.numero),c]));
+                      const bench=window.CRAQUE_BENCH_ADVISOR_V247;
+                      const base=window.SCOUT_POSITION_TRAINING_V246;
+                      const training={...base,status:(card,role)=>base.status(
+                        card,role,{getItem:()=>null})};
+                      const opts={byCap,mode:'posse',training,
+                        tactics:window.CRAQUE_TACTICS_V230,
+                        identity:window.SCOUT_PLAYER_IDENTITY_V245};
+                      const duplicate=bench.recommend({...opts,card:byCap.get(53),
+                        starters:[{slot:'cae',role:'CA',cap:50}],
+                        selections:{cae:50}});
+                      const repair=bench.recommend({...opts,card:byCap.get(40),
+                        starters:[{slot:'cae',role:'CA',cap:191}],
+                        selections:{cae:191}});
+                      return {duplicate:duplicate.status,
+                        duplicateAllowed:duplicate.eligible,
+                        repairType:repair.decision,
+                        repairGain:repair.gain,
+                        repairText:repair.text,
+                        repairReason:repair.reason};
+                    }""")
+                    if (check255['duplicateAllowed'] or check255['duplicate']!='já escalado'
+                        or check255['repairType']!='corrigir_posicao_titular'
+                        or check255['repairGain'] is not None
+                        or 'Substituir #191' not in check255['repairText']
+                        or 'NÃO é prova' not in check255['repairReason']):
+                        problems.append(f"{name}: V255 reserva/identidade ou ganho indevido: {check255}")
                 page.locator('#ct-v230-tactic-tabs [data-mode="rapido"]').click()
                 if 'Contra-Ataque Rápido' not in page.locator('#ct-v230-tactic-name').inner_text():
                     problems.append(f"{name}: V230 contra-ataque rápido não selecionado")
