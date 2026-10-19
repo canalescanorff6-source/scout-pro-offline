@@ -66,6 +66,8 @@ function mount(doc){
        labraw=doc.getElementById('lab-data');
  if(!engine||!panel||!training||!controls||!raw||!labraw)return false;
  let card,lab;try{card=JSON.parse(raw.textContent);lab=JSON.parse(labraw.textContent)}catch(_e){return false}
+ const originalPosition=String(card.shown_position||card.role_used||card.posicao||'');
+ let activeRole=originalPosition,roleEvidence='original';
  const budget=Number(card.pp),id=String(card.id),cap=Number(card.capture);
  if(!id||!Number.isInteger(budget)||budget<0)return false;
  const possession=engine.confirmSource(card)?card.recommended_levels.slice():null;
@@ -173,8 +175,10 @@ function mount(doc){
   // V233: prioridades explicadas por posição real, habilidades e estilo, não apenas
   // por uma lista de pesos genéricos. Fallback V220 se a extensão não carregar.
   const read233=host.CRAQUE_INTERPRETATION_V233?.interpret(card,style,lab)||null;
-  $(wrap,'scout-v220-focus-title').textContent=read233?
-   read233.position+' · '+cfg.focus:cfg.focus;
+  $(wrap,'scout-v220-focus-title').textContent=(read233?
+   read233.position+' · '+cfg.focus:cfg.focus)+
+   ' · função '+activeRole+(roleEvidence==='original'?' (original)':
+    roleEvidence==='treinada'?' (treinada)':' (familiaridade confirmada)');
   $(wrap,'scout-v220-focus-note').textContent=read233?
    read233.job+' '+(read233.signals.length?read233.signals.slice(0,2).join(' '):
     'Sem evidência individual suficiente para distinguir esta carta além da sua função.'):
@@ -244,6 +248,25 @@ function mount(doc){
   const advanced=$(wrap,'scout-v220-advanced-skills');if(advanced)advanced.open=true;
   const el=$(wrap,'v162-booster');if(el)el.scrollIntoView({block:'center',behavior:'smooth'});
  });
+ // V263: a função alternativa afeta PP, habilidades, ímpetos e os títulos
+ // da ficha, sem transformar seleção temporária em treino cadastrado.
+ function acceptRole(detail){
+  if(Number(detail?.capture)!==cap||String(detail?.card_id)!==id)return false;
+  const API=host.SCOUT_POSITION_TRAINING_V246;
+  const expected=API?.pos?.(originalPosition)||originalPosition;
+  const wanted=API?.pos?.(detail.position)||'';
+  const proof=API?.status?.({numero:cap,id,posicao:originalPosition},
+   wanted,host.localStorage);
+  if(!wanted||wanted!==expected&&!(proof?.eligible===true&&
+    ['treinada','familiar'].includes(proof.status)))return false;
+  if(activeRole===wanted)return true;
+  activeRole=wanted;roleEvidence=wanted===expected?'original':proof.status;
+  card.shown_position=wanted;card.role_used=wanted;
+  updateRecommendations();switchTraining(style);
+  return true;
+ }
+ host.addEventListener('scoutpro:role-selected-v263',event=>acceptRole(event.detail));
+ if(host.SCOUT_ROLE_SELECTION_V263)acceptRole(host.SCOUT_ROLE_SELECTION_V263);
  // V251: usar a ficha canônica somente após confirmar CAP, Card ID e edição.
  // Não toca nos arquivos originais; a cópia antiga pode omitir habilidades.
  host.addEventListener('scoutpro:v251:canonical-data',event=>{
