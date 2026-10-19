@@ -46,7 +46,7 @@ for(const card of cards){
     prioridade:i+1,nome:s.name,justificativa:s.reason,
     complementaridade:s.synergy
    })):[],
-   habilididades_adicionais_confirmadas:readiness.additional,
+   habilidades_adicionais_confirmadas:readiness.additional,
    impeto_comparativo:permitted&&advice.booster.name?
     {nome:advice.booster.name,justificativa:advice.booster.reason,
      atributos:advice.booster.attributes,slot:readiness.booster,
