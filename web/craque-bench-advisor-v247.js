@@ -34,19 +34,28 @@ function recommend({card,starters,selections,byCap,mode='posse',training,tactics
    reason:'Esta pessoa já é titular nesta formação (inclusive se for outra edição da carta). Escolha um reserva diferente.'};
  }
  const possible=entries.filter(x=>x.fit.eligible).map(x=>{
-  const candidate=tac.score(card,x.slot,mode),
+  const scored=tac.score(card,x.slot,mode),
    incumbentFit=pos.status(x.incumbent,x.role),
    incumbent=incumbentFit.eligible?tac.score(x.incumbent,x.slot,mode):null;
-  // Não interpretar -100 (posição não confirmada) como ganho de 100
-  // pontos de qualidade/meta. Isto é uma necessidade de regularização.
-  const gain=incumbent?candidate.score-incumbent.score:null;
-  return {...x,candidate,incumbentFit,incumbentScore:incumbent?.score??null,gain};
- }).filter(x=>x.candidate.score>=0);
+  // O V246 pode ter prova explícita de posição enquanto a pontuação
+  // ordinal V230 ainda usa um snapshot antigo. A posição CONTINUA
+  // habilitada, mas sua pontuação fica INDETERMINADA, nunca -100 ou 0.
+  const candidateUnscored=x.fit.eligible&&(!Number.isFinite(scored.score)||scored.score<0);
+  const candidate={...scored,score:candidateUnscored?null:scored.score,
+   signals:Array.isArray(scored.signals)?scored.signals:[]};
+  // Um titular fora de posição ou score ausente não demonstra ganho de
+  // desempenho. NUNCA inferir superioridade por diferença com -100.
+  const incumbentScore=incumbent&&Number.isFinite(incumbent.score)&&incumbent.score>=0?
+   incumbent.score:null;
+  const gain=candidate.score!==null&&incumbentScore!==null?
+   candidate.score-incumbentScore:null;
+  return {...x,candidate,candidateUnscored,incumbentFit,incumbentScore,gain};
+ }).filter(x=>x.candidate.score===null||x.candidate.score>=0);
  // Comparação ordinal/documental, não ranking de desempenho ou prova de meta.
  possible.sort((a,b)=>
   Number(b.incumbentFit.eligible===false)-Number(a.incumbentFit.eligible===false)||
   (b.gain??-999)-(a.gain??-999)||
-  b.candidate.score-a.candidate.score||
+  (b.candidate.score??-1)-(a.candidate.score??-1)||
   Number(a.incumbent.numero)-Number(b.incumbent.numero)||a.slot.localeCompare(b.slot));
  if(!possible.length){
   const observed=[...new Set(entries.filter(x=>x.role!=='GO')
@@ -61,19 +70,22 @@ function recommend({card,starters,selections,byCap,mode='posse',training,tactics
  const reasons=best.candidate.signals.filter(x=>!/^Estilo da edição|^Habilidades nativas|^Validar familiaridade/.test(x));
  const suggestion=reasons[0]||'posição e estilo cadastrados; avaliação funcional ainda pendente';
  const decision=best.incumbentFit.eligible===false?'corrigir_posicao_titular':
-  best.gain>0?'encaixe_documental_favoravel':'alternativa_sem_vantagem_comprovada';
+  best.gain!==null&&best.gain>0?'encaixe_documental_favoravel':'alternativa_sem_vantagem_comprovada';
  const caution=decision==='corrigir_posicao_titular'?
   'O titular atual não tem familiaridade confirmada nesta vaga. Esta troca corrige o encaixe posicional; NÃO é prova de qualidade superior.':
   decision==='encaixe_documental_favoravel'?
   'O reserva tem sinais documentais de encaixe melhores nesta tática, não desempenho superior comprovado.':
   'Sem ganho de encaixe documental demonstrado sobre o titular atual; considerar somente rodízio, cansaço ou instrução específica.';
+ const extraCaution=best.candidateUnscored?
+  ' Pontuação tática temporariamente indisponível apesar da posição confirmada. Não comparar notas como se fossem rendimento real.':'';
  return {eligible:true,status:best.fit.status,position:best.role,slot:best.slot,
   incumbent:{numero:best.incumbent.numero,name:best.incumbent.name},
   candidateScore:best.candidate.score,incumbentScore:best.incumbentScore,
-  evidence:'comparacao_ordinal_sem_gameplay',decision,gain:best.gain,
+  evidence:best.candidateUnscored?'posicao_confirmada_sem_pontuacao':'comparacao_ordinal_sem_gameplay',
+  decision,gain:best.gain,
   positionEvidence:best.fit.label,incumbentPositionConfirmed:best.incumbentFit.eligible,
   reason:'Alternativa documental para '+tacticName+': '+roleStatus+'; '+suggestion+
-   '. '+caution+' Não usa Overall, nem garante rendimento em partidas.',
+   '. '+caution+extraCaution+' Não usa Overall, nem garante rendimento em partidas.',
   text:'Jogar como '+best.role+' · Substituir '+formatCap(best.incumbent.numero)+' '+best.incumbent.name};
 }
 return Object.freeze({recommend});
