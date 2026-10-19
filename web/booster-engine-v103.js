@@ -46,6 +46,26 @@ GO:{gkaware:9,gkreflex:9,gkreach:9,gkparry:8,gkcatch:6}};
 const POS={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LD',LE:'LD',DC:'ZG',ZC:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA'};
 const label={awareness:'consciência ofensiva',finish:'finalização',accel:'aceleração',control:'controle de bola',power:'força do chute',physical:'contato físico',speed:'velocidade',pass:'passe rasteiro',loft:'passe alto',tight:'posse apertada',dribble:'drible',balance:'equilíbrio',heading:'cabeceio',jump:'salto',stamina:'resistência',curl:'efeito',placekick:'bola parada',defaware:'consciência defensiva',tackle:'desarme',defengage:'dedicação defensiva',aggression:'agressividade',gkaware:'consciência de goleiro',gkparry:'desvio de goleiro',gkreflex:'reflexos de goleiro',gkreach:'alcance de goleiro',gkcatch:'firmeza de goleiro'};
 const tactics=['posse','normal','rapido','fora','longo'];
+const TACTIC_LABEL=Object.freeze({
+ posse:'Posse de Bola',normal:'Contra-Ataque Normal',
+ rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Passe Longo'
+});
+// Traduções do próprio vocabulário PT-BR já cadastrado no projeto.
+// Caso não exista grafia documental, manter o nome TÉCNICO em vez de
+// inventar um nome oficial da Konami.
+const PTBR=Object.freeze({
+ 'Agility':'Agilidade','Technique':'Técnica','Passing':'Passe',
+ 'Ball Protection':'Proteção de Posse','Ball-carrying':'Condução de Bola',
+ "Striker's Instinct":'Instinto Artilheiro','Off the Ball':'Fora da Bola',
+ 'Offence Creator':'Criador Ofensivo','Shooting':'Finalização',
+ 'Aerial':'Disputa Aérea','Physicality':'Fisicalidade','Accuracy':'Precisão',
+ 'Regista':'Regista','Rebuilding':'Reconstrução',
+ 'Defending':'Defesa','Duelling':'Duelo','Stealing':'Roubo de Bola',
+ 'Goalkeeping':'Goleiro','Balancer':'Equilíbrio',
+ 'Breakthrough':'Rompe Barreira','Strength':'Força','Crossing':'Cruzamento'
+});
+const displayName=name=>PTBR[name]||name;
+const translationKnown=name=>Object.hasOwn(PTBR,name);
 function slotStatus(extra){
  const s=String(extra||'');
  if(/^SLOT SELECIONÁVEL/i.test(s))return 'selecionavel';
@@ -195,13 +215,14 @@ function rank(card,tactic){
   const ordered=stats.slice().sort((a,b)=>(weights[b]||0)-(weights[a]||0));
   const axes=[label[ordered[0]],label[ordered[1]]];
   const info=[
-   'Função '+role+' em '+(tactic==='posse'?'Posse de Bola':tactic==='normal'?'Contra-Ataque Normal':'Contra-Ataque Rápido'),
+   'Função '+role+' em '+TACTIC_LABEL[tactic],
    'prioriza '+axes.join(' e '),
    levels?'níveis de treino servem apenas como sinal de investimento, sem atributos finais medidos':'níveis individuais indisponíveis; recomendação provisória'
   ];
   if(nativeFindings.length)info.push('habilidades nativas indicam '+nativeFindings.slice(0,2).join(' e '));
   return {
-   nome:name,score,atributos:stats.map(k=>label[k]),
+   nome:name,nome_pt:displayName(name),traducao_documentada:translationKnown(name),
+   score,atributos:stats.map(k=>label[k]),
    motivo:info.join('; ')+'.',
    confianca:levels?'comparativa_limitada':'baixa',
    evidencias:{treino:trainingEvidence,impeto_fixo:fixed||null,impeto_extra_registrado:extra||null,
@@ -227,7 +248,8 @@ function audit(cards){
  indefinido:result.filter(c=>c.status_slot_fonte==='indefinido').length};
  return {version:'V104',method:'V200: função, tática, estilo, habilidades nativas e investimento por categoria; sem inferir atributos finais ou slot livre, sem prova de desempenho em partidas',summary,cards:result};
 }
-const api={BOOSTERS,CRAFTABLE,ROLE,POS,tactics,slotStatus,boosterName,levelsOf,rank,audit};
+const api={BOOSTERS,CRAFTABLE,ROLE,POS,tactics,TACTIC_LABEL,PTBR,
+ displayName,translationKnown,slotStatus,boosterName,levelsOf,rank,audit};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_BOOSTERS_V103=api;
 })(typeof window!=='undefined'?window:null);
