@@ -16,15 +16,15 @@ const example=[0,8,4,8,11,4,9,0,0,0];
 assert.equal(example.reduce((a,b)=>a+ui.ppCost(b),0),68,'Imagem do usuário 68/68');
 let registered=0,pending=0;
 for(const c of roster){
- const state=ui.resolveTraining({pp:c.pp,recommended_levels:c.niveis,recommended_scenario:c.recomendacao},{});
- if(Array.isArray(c.niveis)){
+ const state=ui.resolveTraining({pp:c.pp,recommended_levels:c.niveis,recommended_scenario:c.recomendacao,training_status:c.treino_status},{});
+ if(Array.isArray(c.niveis)&&c.treino_status!=='proposta_nao_validada'){
   registered++;assert.equal(state.kind,'registrado');assert(state.matchesBudget,'PP ' +c.numero);
   assert.equal(state.levels.join(','),c.niveis.join(','),'Sem alterar builds');
  }else{
   pending++;assert.equal(state.kind,'pendente');assert.equal(state.spent,null,'Sem zeros inventados');
  }
 }
-assert.equal(registered,162);assert.equal(pending,84);
+assert.equal(registered,161);assert.equal(pending,85);
 const p=ui.resolveTraining({pp:60,recommended_levels:null},{draftA:[11,4,4,11,7,0,0,0,0,0]});
 assert.equal(p.kind,'prévia experimental');assert.equal(p.spent,60);
 // V209: cabeçalho visual uniforme A em QUALQUER cenário; cenário real preservado para lógica.
@@ -54,4 +54,4 @@ assert(read('web/sw.js').includes('v209-uniform-a-title'));
 assert(read('web/sw.js').includes('v208-user-reference'));
 
 assert.equal(fs.readdirSync(path.join(root,'web/fichas')).filter(x=>x.endsWith('.html')).length,246);
-console.log('V208 OK: layout, 10 ícones, custos progressivos, exemplo 68/68, 162 builds e 84 pendentes preservadas.');
+console.log('V208 OK: layout, 10 ícones, custos progressivos, exemplo 68/68, 161 builds registradas e 85 pendentes/revisões preservadas.');
