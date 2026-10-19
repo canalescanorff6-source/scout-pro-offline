@@ -65,6 +65,24 @@ function sourceFor(card,raw){
  };
 }
 const recognizedStyles=new Set(['posse','normal','rapido','fora','longo']);
+ // Revisão V248/V250: só a mesma edição, confirmação explícita de nível
+ // e PP coerentes. Esse registro é declaração do usuário, não prova externa.
+ function localLevelReview(card,store){
+  if(!card||!store?.getItem)return null;
+  try{
+   const key='scoutpro:v248:level-review:'+Number(card.numero)+'@'+String(card.id);
+   const value=JSON.parse(store.getItem(key)||'null');
+   if(!value||value.schema!=='CRAQUE_PROGRESS_REVIEW_V248'||
+    value.confirmed_in_game!==true||
+    Number(value.numero)!==Number(card.numero)||
+    String(value.card_id)!==String(card.id)||
+    String(value.name)!==String(card.name)||
+    !Number.isInteger(value.level)||value.level<1||value.level>120||
+    value.pp!==2*(value.level-1))return null;
+   return Object.freeze({level:value.level,pp:value.pp,source:'conferencia_local_usuario'});
+  }catch(_){return null}
+ }
+
 /* Otimização limitada de INVESTIMENTO em categorias: mochila inteira,
  * custo progressivo e função convexamente penalizada. Não simula status final.
  * Não introduz diferenças por nome, número da carta ou Card ID.
@@ -105,6 +123,14 @@ function buildReview(card,raw,lab,all,style,opts={}){
    'CAP, Card ID, nome ou edição não coincidem. Proposta bloqueada.',
   sourceCompatible:false,related:[],differences:[]
  };
+ const localProof=localLevelReview(card,opts.store);
+ if(localProof&&localProof.pp!==aligned.pp)return {
+  status:'unsupported',canDraft:false,proposal:null,sourceCompatible:true,
+  related:[],differences:[],evidenceLevel:'conferencia_local_usuario',
+  reason:'PP DIVERGENTES: nível máximo '+localProof.level+
+   ' conferido nesta edição indica '+localProof.pp+' PP, mas o catálogo e a ficha usam '+
+   aligned.pp+' PP. Treinamentos bloqueados até reconciliar os dados.'
+ };
  const target=String(opts.targetPosition||card.posicao);
  const natural=opts.positionTraining?.pos?.(card.posicao)||String(card.posicao);
  const mapped=opts.positionTraining?.pos?.(target)||target;
@@ -120,7 +146,7 @@ function buildReview(card,raw,lab,all,style,opts={}){
  // A troca só muda a função TÁTICA da proposta; identidade e posição original
  // do catálogo seguem intactas.
  const interpreted={...aligned,shown_position:mapped,role_used:mapped};
- const levelKnown=confirmedLevel(card),buildKnown=hasValidBuild(card);
+ const levelKnown=confirmedLevel(card)||Boolean(localProof),buildKnown=hasValidBuild(card);
  const status=levelKnown?(buildKnown?'complete':'no_build'):'no_level';
  const nativeMismatch=norm(card.habilidades_nativas)!==norm(raw.native_skills);
  const boostMismatch=norm(card.impeto_fixo)!==norm(raw.boost1);
@@ -135,6 +161,8 @@ function buildReview(card,raw,lab,all,style,opts={}){
   differences.push('Atributos-base numéricos finais indisponíveis; não otimizar por limite de atributo/Overall.');
  if(!levelKnown)
   differences.push('Nível máximo desta edição não comprovado; não recalcular o treino apenas com PP do catálogo.');
+ if(localProof)differences.push('Nível '+localProof.level+
+  ' e '+localProof.pp+' PP conferidos localmente pelo usuário na edição exata. Não equivalem a atributos-base nem gameplay confirmados.');
  if(!buildKnown)
   differences.push('Sem distribuição de treino documentada; proposta matemática não equivale a ficha aprovada.');
  if(shared.length)differences.push('Distribuição repetida em '+shared.length+' outra(s) carta(s); comparar habilidades, corpo e gameplay, sem forçar diferenciação.');
@@ -160,13 +188,14 @@ function buildReview(card,raw,lab,all,style,opts={}){
   positionUsed:mapped,positionEvidence:positionProof?.status||'original',
   changes:changed,sourceCompatible:true,related:shared,differences,
   capture:aligned.capture,card_id:aligned.id,style,role:context?.role||roleOf(card),
-  pp:aligned.pp,level:levelKnown?card.max_level:null,
+  pp:aligned.pp,level:levelKnown?(localProof?.level??card.max_level):null,
   original:buildKnown?card.niveis.slice():null,
   tacticLabel:T.styleFor(style)?.label,context,
   nativeSkills:String(card.habilidades_nativas||'').split(';').map(s=>s.trim()).filter(Boolean),
   boosterFixed:card.impeto_fixo,boosterExtra:card.impeto_extra,
   originNative:card.habilidades_nativas_origem||null,
-  evidenceLevel:levelKnown?'documental_usuario':'pendente',
+  evidenceLevel:confirmedLevel(card)?'documental_usuario':
+   localProof?'conferencia_local_usuario':'pendente',
   trainingProof:'sem_teste_independente_de_partida',
   method:'Revisão de investimento de PP, não engenharia comprovada de atributos finais.'
  };
@@ -199,7 +228,7 @@ function catalogAudit(cards){
  counts.proposalsAreVerified=false;
  return counts;
 }
-const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,hasValidBuild,signature,
+const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,signature,
   exact,sourceFor,related,allocate,buildReview,catalogAudit});
 if(!host?.document)return api;
 const doc=host.document;
@@ -260,7 +289,8 @@ function display(){
  chips.append(mk('span','','Sem Overall como critério'),
   mk('span','',check.nativeSkills.length+' habilidades nativas no catálogo'),
   mk('span','',check.related.length+' fichas semelhantes'),
-  mk('span','',check.evidenceLevel==='documental_usuario'?'PP/nivel documentado':'PP sem nível comprovado'));
+  mk('span','',check.evidenceLevel==='documental_usuario'?'PP/nível documentado':
+    check.evidenceLevel==='conferencia_local_usuario'?'PP/nível conferidos neste dispositivo':'PP sem nível comprovado'));
  block.append(chips);
  if(check.related.length){
   const similar=mk('p','ct251-duplicates',
