@@ -448,7 +448,19 @@ function methodologyGate(card,proof,style,store,review={}){
   missing,competitivelyHomologated:false
  });
 }
-const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,baseEvidence,proofChecklist,methodologyGate,signature,compareProposals,
+// V263: a seleção de função é somente consultiva e precisa de prova V246
+// por CAP + Card ID. Nunca inferir familiaridade por Overall.
+function confirmedRole(card,wanted,positionTraining,store){
+ const original=positionTraining?.pos?.(card?.posicao)||String(card?.posicao||'');
+ const proposed=positionTraining?.pos?.(wanted||original)||String(wanted||original);
+ if(proposed===original)return {position:original,evidence:'original',eligible:true};
+ const status=positionTraining?.status?.(card,proposed,store);
+ if(status?.eligible===true&&['treinada','familiar'].includes(status.status))
+  return {position:proposed,evidence:status.status,eligible:true};
+ return {position:original,evidence:'original',eligible:false,
+  rejected:proposed};
+}
+const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,baseEvidence,proofChecklist,methodologyGate,confirmedRole,signature,compareProposals,
   exact,sourceFor,related,allocate,buildReview,catalogAudit});
 if(!host?.document)return api;
 const doc=host.document;
@@ -458,13 +470,26 @@ const mk=(tag,cls,value)=>{
  return e;
 };
 let card=null,raw=null,lab=null,all=null,active='posse',block=null,positionSelected=null,evidenceByCap=new Map();
+let lastRolePublished=null;
 function display(){
  if(!card||!raw||!block)return;
  const posApi=host.SCOUT_POSITION_TRAINING_V246;
+ const choice=confirmedRole(card,positionSelected||card.posicao,posApi,host.localStorage);
+ if(!choice.eligible)positionSelected=null; // confirmação revogada: voltar à origem
  const check=buildReview(card,raw,lab,all,active,{
-  targetPosition:positionSelected||card.posicao,positionTraining:posApi,
+  targetPosition:choice.position,positionTraining:posApi,
   store:host.localStorage
  });
+ // Publicar somente se a edição é íntegra. O evento não altera o catálogo;
+ // evita circularidade com o V220, que também dispara eventos de tática.
+ if(check.sourceCompatible===true&&check.status!=='unsupported'&&
+    lastRolePublished!==choice.position){
+  lastRolePublished=choice.position;
+  const detail={capture:Number(card.numero),card_id:String(card.id),
+   position:choice.position,evidence:choice.evidence};
+  host.SCOUT_ROLE_SELECTION_V263=Object.freeze(detail);
+  host.dispatchEvent(new host.CustomEvent('scoutpro:role-selected-v263',{detail}));
+ }
  block.replaceChildren();
  block.dataset.review=check.status;
  const reviewSummary=doc.getElementById('ct253-integrated-review')?.querySelector('summary');
@@ -731,6 +756,9 @@ async function begin(){
   }
  });
  host.addEventListener('scoutpro:v251:review-updated',display);
+ host.addEventListener('craque:data-changed',event=>{
+  if(event.detail?.key===host.SCOUT_POSITION_TRAINING_V246?.KEY)display();
+ });
  // V259: a confirmação V254 chega sem recarregar a ficha. Atualizar somente
  // a mesma edição, sem gravar nada e sem interferir na outra carta da pessoa.
  doc.addEventListener('scoutpro:skills-updated',event=>{
