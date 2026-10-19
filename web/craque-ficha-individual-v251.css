@@ -143,3 +143,68 @@ body[data-page="detail"] .ct251-position-select{
 body[data-page="detail"] .ct251-position-select:focus-visible{
  outline:3px solid #f3d395;outline-offset:2px;
 }
+
+
+/* V253 — UMA ficha principal: conferência recolhível na progressão V220.
+   Azul-noite/champanhe; proporção 390px/desktop; nenhuma camada fixa. */
+body[data-page="detail"] .ct253-integrated-review{
+ display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0;
+ margin:14px 0 0;border:1px solid #7d6b4e;border-radius:14px;
+ background:linear-gradient(125deg,#10233a,#152d45);
+ overflow:hidden;
+}
+body[data-page="detail"] .ct253-integrated-review>summary{
+ cursor:pointer;display:list-item;list-style:disclosure-closed inside;
+ min-height:48px;box-sizing:border-box;
+ padding:14px 16px;color:#f4d69e;font-weight:800;
+ font-size:clamp(12px,1.25vw,14px);line-height:1.5;overflow-wrap:anywhere;
+}
+body[data-page="detail"] .ct253-integrated-review[open]>summary{
+ list-style:disclosure-open inside;
+ border-bottom:1px solid rgba(214,188,137,.28);
+}
+body[data-page="detail"] .ct253-integrated-review>summary:focus-visible{
+ outline:3px solid #f6d68e;outline-offset:-3px;
+}
+body[data-page="detail"] #ct251-individual-ficha{
+ margin:0!important;box-shadow:none!important;
+ border:0!important;border-radius:0!important;
+ background:transparent!important;padding:15px!important;
+}
+body[data-page="detail"] .ct253-reasons{
+ box-sizing:border-box;max-width:100%;min-width:0;
+ border:1px solid #4b6783;border-radius:10px;
+ background:#132b43;margin-top:12px;
+}
+body[data-page="detail"] .ct253-reasons>summary{
+ color:#eed49f;cursor:pointer;min-height:44px;padding:11px 12px;
+ font-size:12px;line-height:1.5;font-weight:800;overflow-wrap:anywhere;
+}
+body[data-page="detail"] .ct253-reasons>summary:focus-visible{
+ outline:3px solid #f1cc7c;outline-offset:-3px;
+}
+body[data-page="detail"] .ct253-reason-list{
+ margin:0;padding:1px 16px 14px 27px;
+ color:#cfdeec;font-size:11px;line-height:1.6;
+}
+body[data-page="detail"] .ct253-reason-list li{
+ margin-top:7px;overflow-wrap:anywhere;
+}
+body[data-page="detail"] .ct253-repetition{
+ margin:12px 0 0;padding:10px 12px;
+ color:#f8dfad;font-size:11px;line-height:1.6;
+ border-left:3px solid #e5bc73;background:rgba(218,168,86,.10);
+ border-radius:5px;
+}
+body[data-page="detail"] .ct253-repetition[data-status="repeticao_exige_validacao"]{
+ border-left-color:#f4b279;background:rgba(225,148,98,.13);
+}
+@media(max-width:720px){
+ body[data-page="detail"] .ct253-integrated-review{margin-top:10px;border-radius:11px}
+ body[data-page="detail"] .ct253-integrated-review>summary{padding:11px 12px}
+ body[data-page="detail"] #ct251-individual-ficha{padding:11px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ body[data-page="detail"] .ct253-integrated-review,
+ body[data-page="detail"] .ct253-reasons{animation:none!important;transition:none!important}
+}
