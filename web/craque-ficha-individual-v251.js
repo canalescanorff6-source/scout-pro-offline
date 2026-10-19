@@ -158,7 +158,7 @@ function compareProposals(card,cards,style,role,levels,opts={}){
  const note=distinctSources?
   'A mesma distribuição foi calculada para cartas com habilidades ou comportamentos diferentes. Sem atributos finais e gameplay, nenhuma das propostas está comprovada.':
   matches.length?'A proposta coincide com outra edição; isso não demonstra acerto, erro ou superioridade.':
-  'Não foi encontrada repetição no grupo comparado; isso não é validação competitiva.';
+  'Nenhuma repetição detectada no grupo comparado. Isso não comprova desempenho competitivo.';
  return {status,compared,matches,distinctSources,note};
 }
 function buildReview(card,raw,lab,all,style,opts={}){
