@@ -354,7 +354,7 @@ function display(){
  block.replaceChildren();
  block.dataset.review=check.status;
  const heading=mk('div','ct251-heading');
- heading.append(mk('strong','ct251-title','Engenharia individual · '+(check.tacticLabel||'Posse de Bola')),
+ heading.append(mk('strong','ct251-title','Auditoria da edição · '+(check.tacticLabel||'Posse de Bola')),
   mk('span','ct251-status',check.description||'Evidências a revisar'));
  block.append(heading);
  // A função original é a opção padrão; alternativas somente após confirmação
@@ -447,6 +447,38 @@ function display(){
    grid.append(item);
   }
   comp.append(grid);
+  // Nomes das categorias e sinais REAIS que alteram seus pesos nesta edição.
+  const explanations=mk('details','ct253-reasons');
+  explanations.append(mk('summary','','Por que o sistema distribuiu esses pontos?'));
+  const reasons=mk('ul','ct253-reason-list');
+  const priorities=(check.context?.priorities||[]).slice(0,3);
+  if(priorities.length)reasons.append(mk('li','',
+   'Prioridades para '+check.role+' em '+check.tacticLabel+': '+
+    priorities.map(p=>p.name+' ('+p.stats+')').join('; ')+'.'));
+  for(const reason of (check.context?.signals||[]).slice(0,10))
+   reasons.append(mk('li','',reason));
+  if(!reasons.children.length)
+   reasons.append(mk('li','','Sem dados adicionais suficientes além da posição e da tática.'));
+  explanations.append(reasons);comp.append(explanations);
+  if(check.specificity?.matches?.length){
+   const compare=check.specificity;
+   const flag=mk('p','ct253-repetition','Treino matematicamente igual ao de '+
+    compare.matches.length+' outra(s) carta(s) com função e PP semelhantes. '+
+    compare.note);
+   flag.dataset.status=compare.status;
+   comp.append(flag);
+   const other=mk('details','ct253-reasons');
+   other.append(mk('summary','','Ver cartas com distribuição repetida e as diferenças documentadas'));
+   const list=mk('ul','ct253-reason-list');
+   for(const peer of compare.matches.slice(0,12))
+    list.append(mk('li','',
+     '#'+String(peer.numero).padStart(3,'0')+' '+peer.name+
+     ' · Card ID '+peer.id+
+     (peer.inputsDifferent.length?' · Diferenças: '+peer.inputsDifferent.join(', '):' · Sinais documentais semelhantes')));
+   if(compare.matches.length>12)
+    list.append(mk('li','','Mais '+(compare.matches.length-12)+' coincidências no acervo.'));
+   other.append(list);comp.append(other);
+  }
   comp.append(mk('p','ct251-pp',check.proposal.spent+' / '+check.pp+
    ' PP · Hipótese exata de custo, NÃO validada em partidas.'));
   if(check.changes?.length)
