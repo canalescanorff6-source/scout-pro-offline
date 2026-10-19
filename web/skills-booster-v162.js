@@ -215,6 +215,10 @@ const css=document.createElement('style');css.textContent=
 '#scout-v162 .v162-note{color:#d3caa5}#scout-v162 textarea{box-sizing:border-box;width:100%;min-height:62px;background:#081e2d;border:1px solid #5b829a;border-radius:8px;color:white;font-size:14px;padding:10px}'+
 '#scout-v162 .v162-foot{font-size:12px;color:#b9d3dc;border-top:1px solid #35566a;padding-top:10px;margin-top:12px}'+
 '@media(max-width:750px){#scout-v162 .v162-panels{grid-template-columns:1fr}#scout-v162{padding:12px}}';
+css.textContent+=
+ '#scout-v162 .v254-confirm-line{display:flex;gap:10px;align-items:flex-start;padding:11px;margin:12px 0;border:1px solid #82745d;border-radius:10px;background:#152c42;color:#f1deb4;line-height:1.45;font-size:12px;font-weight:700}'+
+ '#scout-v162 .v254-confirm-line input{flex:0 0 20px;width:20px;height:20px;margin:1px 0 0;accent-color:#e3bb75}'+
+ '#scout-v162 .v254-confirm-line input:focus-visible{outline:3px solid #f0cc82;outline-offset:3px}';
 document.head.appendChild(css);
 const section=document.createElement('section');section.id='scout-v162';section.setAttribute('aria-label','Recomendações de habilidades e ímpetos por carta');
 section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA V162</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
@@ -282,7 +286,13 @@ function draw(){
  line('Estado de sua conta: '+verifiedLabel+(manuallyVerified.equipped?' · '+manuallyVerified.equipped:''));
  if(USER_SLOT_NOTES[Number(d.capture)])line('Relato seu (a confirmar na tela do jogo): '+USER_SLOT_NOTES[Number(d.capture)]);
  const panel=section.querySelector('#v162-booster');panel.replaceChildren();
- const title=document.createElement('p');title.style.fontWeight='800';title.textContent=boost.primary?'Melhor ímpeto sugerido para '+({posse:'Posse de Bola',normal:'Contra-Ataque',rapido:'Contra-Ataque Rápido',fora:'Pelas Pontas',longo:'Bola Longa'}[tactic]||tactic)+': '+boost.primary.nome+' +1':'Sem ímpeto calculável para esta função';panel.appendChild(title);
+ const title=document.createElement('p');title.style.fontWeight='800';
+ const tacticLabel=host.SCOUT_BOOSTERS_V103?.TACTIC_LABEL?.[tactic]||tactic;
+ const boosterLabel=boost.primary?.nome_pt||boost.primary?.nome;
+ title.textContent=boost.primary?
+  'Ímpeto para comparar em '+tacticLabel+': '+boosterLabel+' +1':
+  'Sem ímpeto calculável para esta função';
+ panel.appendChild(title);
  const applicability=document.createElement('p');applicability.style.fontWeight='700';
  applicability.textContent=boost.equipStatus==='impossivel_na_conta'?'Sua conferência indica que esta carta não possui slot: a escolha é somente comparativa.':
  boost.equipStatus==='comparacao_segundo_fixo'?'Há segundo ímpeto fixo registrado: esta é apenas a melhor alternativa teórica, não uma opção para substituir.':
@@ -291,10 +301,17 @@ function draw(){
  'Recomendação pronta; falta confirmar se esta edição possui segundo slot selecionável. Não exige que você insira um ímpeto para descobrir qual seria o melhor.';
  panel.appendChild(applicability);
  if(boost.primary){
+ if(!boost.primary.traducao_documentada){
+  const translation=document.createElement('p');
+  translation.textContent='Nome técnico do ímpeto ('+boost.primary.nome+
+   '): tradução PT-BR ainda sem comprovação documental. Confira no jogo.';
+  panel.appendChild(translation);
+ }
  const why=document.createElement('p');why.textContent='Por que esta carta: '+boost.primary.motivo;panel.appendChild(why);
  const atr=document.createElement('p');atr.textContent='Atributos afetados pelo ímpeto: '+boost.primary.atributos.join(', ')+'. Não são valores finais calculados.';panel.appendChild(atr);
  if(boost.alternatives.length){
-  const alt=document.createElement('p');alt.textContent='Alternativas a comparar: '+boost.alternatives.map(x=>x.nome).join(' / ')+'.';panel.appendChild(alt);
+  const alt=document.createElement('p');alt.textContent='Alternativas a comparar: '+
+   boost.alternatives.map(x=>x.nome_pt||x.nome).join(' / ')+'.';panel.appendChild(alt);
  }
  const uncertainty=document.createElement('p');uncertainty.className='v200-booster-caution';
  uncertainty.textContent=boost.spread!==null&&boost.spread<2?
