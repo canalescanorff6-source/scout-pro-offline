@@ -12,6 +12,7 @@ const moduleGet=p=>{if(typeof module!=='object'||!module.exports)return null;try
 const T=host?.SCOUT_TACTICS_V220||moduleGet('./scout-multitactic-engine-v220.js');
 const I=host?.CRAQUE_INTERPRETATION_V233||moduleGet('./craque-role-intelligence-v233.js');
 const S=host?.SCOUT_RECOMMENDATIONS_V162||moduleGet('./skills-booster-v162.js');
+const B=host?.SCOUT_BOOSTERS_V103||moduleGet('./booster-engine-v103.js');
 const STATES=Object.freeze({
  complete:'PP e treino cadastrados · sem validação competitiva',
  no_build:'PP confirmado · distribuição ainda pendente',
@@ -385,7 +386,63 @@ function proofChecklist(card,index,lab,store){
   competitivelyVerified:checks.find(x=>x.id==='gameplay').documented&&
     checks.find(x=>x.id==='base').documented&&checks.find(x=>x.id==='budget').documented};
 }
-const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,baseEvidence,proofChecklist,signature,compareProposals,
+/* V261 — uma decisão consultiva unificada, com a metodologia de triagem
+ * competitiva solicitada (Blackjhon/Rentão como CRITÉRIOS, jamais
+ * autoria/aval de builds). Não escreve no catálogo ou no armazenamento.
+ */
+function methodologyGate(card,proof,style,store,review={}){
+ if(!recognizedStyles.has(style))throw Error('Tática não reconhecida');
+ const byId=Object.fromEntries((proof?.checks||[]).map(x=>[x.id,x]));
+ const has=id=>byId[id]?.documented===true;
+ const role=review?.positionUsed||card.posicao;
+ const data={capture:Number(card.numero),id:String(card.id),
+  shown_position:role,role_used:role,attack_style:card.estilo_ataque,
+  defence_style:card.estilo_defesa,native_skills:card.habilidades_nativas,
+  boost1:card.impeto_fixo,boost2:card.impeto_extra,
+  recommended_levels:hasValidBuild(card)?card.niveis.slice():null};
+ let manual='',confirmation=null,slot=null;
+ try{
+  manual=String(store?.getItem('scoutpro:v162:equipped:'+card.numero+':'+card.id)||'');
+  confirmation=JSON.parse(store?.getItem(S?.confirmationKey?.(card.numero,card.id))||'null');
+ }catch(_){confirmation=null}
+ try{
+  const record=JSON.parse(store?.getItem('scoutpro:v103:booster:'+card.numero)||'null');
+  if(record&&String(record.card_id)===String(card.id)&&
+   ['vazio','ocupado','ausente'].includes(record.status))slot=record;
+ }catch(_){slot=null}
+ const confirmed=Boolean(S?.checkedEquipment?.(data,manual,confirmation)&&has('additional'));
+ let skills=null,boost=null;
+ try{skills=S?.evaluate?.(data,style,manual,{equippedConfirmed:confirmed})||null}catch(_){}
+ try{boost=S?.booster?.(data,style,B,slot?.status,slot?.equipped)||null}catch(_){}
+ const trained=hasValidBuild(card),budget=has('budget');
+ const proven=trained&&budget&&has('base')&&has('video')&&has('gameplay');
+ const training={
+  status:proven?'evidencia_para_avaliacao_competitiva':trained?'treino_registrado_nao_homologado':'sem_treino_validado',
+  note:proven?'Há referências declaradas para base, edição e partidas; revisão humana ainda obrigatória.':
+   trained?'Build do catálogo preservada. PP fechados não comprovam atributos finais nem desempenho.':
+   'Sem distribuição original comprovada; não substituir por hipótese matemática.'
+ };
+ const skillList=(skills?.recommendations||[]).slice(0,3).map(x=>({
+  name:x.name,reason:x.why,synergy:x.synergies||[]
+ }));
+ const skillStatus=confirmed?'lista_conferida_localmente':'slots_nao_conferidos';
+ const boosterStatus=boost?.able&&has('booster')?'slot_elegivel_para_comparacao':
+  'nao_autorizado_para_equipar';
+ const gapIds=['edition','budget','native','additional','booster','base','video','gameplay'];
+ const missing=gapIds.filter(id=>!has(id)).map(id=>byId[id]?.name||id);
+ return Object.freeze({
+  capture:Number(card.numero),card_id:String(card.id),style,role,
+  training,skills:{status:skillStatus,slots:confirmed?skills?.slotsRemaining:null,
+   candidates:skillList,nativeKnown:skills?.nativeKnown===true},
+  booster:{status:boosterStatus,slotState:slot?.status||'nao_conferido',
+   name:boost?.primary?.nome_pt||boost?.primary?.nome||null,
+   reason:boost?.primary?.motivo||'Sem critérios suficientes para comparar ímpetos.',
+   note:boost?.note||'Motor não disponível.',
+   attributes:boost?.primary?.atributos||[]},
+  missing,competitivelyHomologated:false
+ });
+}
+const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,baseEvidence,proofChecklist,methodologyGate,signature,compareProposals,
   exact,sourceFor,related,allocate,buildReview,catalogAudit});
 if(!host?.document)return api;
 const doc=host.document;
@@ -470,6 +527,31 @@ function display(){
   criteriaList.append(li);
  }
  criteria.append(criteriaList);block.append(criteria);
+ // V261: parecer compacto dentro da ficha principal; mantém o painel de
+ // habilidades existente sem duplicar slots ou oferecer botão de aplicação.
+ const method=methodologyGate(card,proof,active,host.localStorage,check);
+ const audit=mk('details','ct251-evidence-details ct261-methodology');
+ audit.append(mk('summary','','Parecer competitivo · treino, habilidades e ímpeto ('+
+  (T.styleFor(active)?.label||active)+')'));
+ const methodList=mk('ul','ct261-methodology-list');
+ const add=(label,msg)=>methodList.append(mk('li','',label+' — '+msg));
+ add('Treino',method.training.note);
+ add('Habilidades adicionais',method.skills.status==='lista_conferida_localmente'?
+  'Lista completa conferida neste dispositivo; '+method.skills.slots+
+  ' vagas informadas. Sugestões táticas continuam consultivas.':
+  'Lista completa não confirmada nesta edição. Nenhuma vaga é presumida.');
+ if(method.skills.candidates.length)
+  add('Prioridades de habilidades',method.skills.candidates.map(x=>x.name).join(', ')+
+   ' (por função, tática e nativas disponíveis; não homologadas).');
+ add('Ímpeto',method.booster.name?
+  method.booster.name+' — '+method.booster.note+' '+method.booster.reason:
+  'Nenhuma opção confiável calculável. '+method.booster.note);
+ if(method.missing.length)
+  add('Evidências a completar',method.missing.join('; ')+'.');
+ add('Critério de referência',
+  'Triagem competitiva inspirada nos critérios de Blackjhon e Rentão; '+
+  'NENHUMA recomendação atribuída ou aprovada por eles sem vídeo da edição exata.');
+ audit.append(methodList);block.append(audit);
  if(check.related.length){
   // V258: ampliar a conferência sem criar uma segunda ficha, nem copiar
   // treino entre edições com mesmo orçamento ou função.
