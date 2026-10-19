@@ -118,9 +118,16 @@ function paintDetail(card,raw,lab,store){
  footer.append(node('small','',
   'Conferência local desta edição exata; outras versões não são afetadas.'));
  addLink(footer,card.numero);panel.append(footer);
+ // V249: no celular, preservar a primeira dobra V202. O aviso detalhado
+ // fica depois da ficha principal, sem empurrar os botões de tática para baixo.
+ const compact=typeof host.matchMedia==='function'&&host.matchMedia('(max-width:720px)').matches;
+ const mainTraining=dest.querySelector('#scout-v188-principal');
  const heading=dest.querySelector('.detail-header');
- if(heading)heading.insertAdjacentElement('afterend',panel);
- else dest.prepend(panel);
+ if(compact){
+  if(mainTraining)mainTraining.insertAdjacentElement('afterend',panel);
+  else dest.append(panel);
+ }else if(heading)heading.insertAdjacentElement('afterend',panel);
+ else dest.append(panel);
 }
 function paintCatalog(cards,store){
  for(const element of doc.querySelectorAll('#cards .player-card[data-cap]')){
