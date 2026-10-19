@@ -109,7 +109,13 @@ if(inCard){
  const css220=document.createElement('link');css220.rel='stylesheet';css220.href=v189Root+'scout-card-unified-v220.css';document.head.appendChild(css220);
  const engine220=document.createElement('script');engine220.src=v189Root+'scout-multitactic-engine-v220.js';
  engine220.onload=()=>{
-  const loadCardUI=()=>{const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';document.head.appendChild(ui220)};
+  const loadCardUI=()=>{
+   const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';
+   document.head.appendChild(ui220);
+   // V251 depende da leitura documental V233, carregada antes do painel.
+   const v251=document.createElement('script');v251.src=v189Root+'craque-ficha-individual-v251.js';
+   document.head.appendChild(v251);
+  };
   // V233 precisa da API de PP V220; carrega ANTES da ficha, sem tocar no registro.
   const intelligent233=document.createElement('script');intelligent233.src=v189Root+'craque-role-intelligence-v233.js';
   intelligent233.onload=loadCardUI;intelligent233.onerror=loadCardUI;
@@ -686,6 +692,13 @@ const ct234MotionJs=document.createElement('script');
 ct234MotionJs.src=v189Root+'craque-card-effects-v234.js';
 ct234MotionJs.defer=true;
 document.head.appendChild(ct234MotionJs);
+
+// V251: proposta documental ao lado da ficha ÚNICA, com tema do projeto.
+if(inCard){
+ const v251Styles=document.createElement('link');v251Styles.rel='stylesheet';
+ v251Styles.href=v189Root+'craque-ficha-individual-v251.css';
+ document.head.appendChild(v251Styles);
+}
 
 // V249: conferir níveis e PP por edição em TODAS as fichas e no catálogo.
 // Não altera Card IDs, builds ou valores originais; também estiliza a opção
