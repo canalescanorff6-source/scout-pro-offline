@@ -1459,6 +1459,12 @@ def run():
                 if name in ('mobile_390','windows_1151'):
                     page.goto(URL+'/fichas/007_Sergi_Cardona.html',
                               wait_until='domcontentloaded',timeout=35000)
+                    # V253: a auditoria fica recolhida DENTRO da ficha principal.
+                    review253=page.locator('#ct253-integrated-review')
+                    review253.wait_for(state='visible',timeout=22000)
+                    if review253.evaluate('(e)=>e.open'):
+                        problems.append(f"{name}: V253 abriu uma segunda ficha na tela principal")
+                    review253.locator('summary').click()
                     v251=page.locator('#ct251-individual-ficha')
                     v251.wait_for(state='visible',timeout=22000)
                     if v251.get_attribute('data-review')!='no_build':
@@ -1478,6 +1484,18 @@ def run():
                     page.locator('#scout-v220-tabs button[data-tactic="rapido"]').click()
                     if 'Contra-Ataque Rápido' not in v251.inner_text():
                         problems.append(f"{name}: V251 não respeitou a tática selecionada")
+                    # V253: justificativas dentro da mesma ficha, sem overflow.
+                    explanations=v251.locator('.ct253-reasons').first
+                    if explanations.count()!=1:
+                        problems.append(f"{name}: justificativa por função/tática não apareceu")
+                    else:
+                        explanations.locator('summary').click()
+                        if not explanations.locator('li').count():
+                            problems.append(f"{name}: faltam os sinais que justificam os PP")
+                    if page.evaluate("""() => document.documentElement.scrollWidth - innerWidth""")>8:
+                        problems.append(f"{name}: V253 gerou rolagem horizontal na ficha")
+                    page.screenshot(path=str(OUT/f"{name}_v253_one_sheet.png"),
+                      full_page=False,animations="disabled")
                     page.screenshot(path=str(OUT/f"{name}_v251_individual_68pp.png"),
                       full_page=False,animations="disabled")
                     # A build legada do Massaro (62 PP) não tem nível máximo
@@ -1492,6 +1510,7 @@ def run():
                       localStorage.removeItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id);
                     }""")
                     page.reload(wait_until='domcontentloaded')
+                    page.locator('#ct253-integrated-review > summary').click()
                     p251=page.locator('#ct251-individual-ficha')
                     p251.wait_for(state='visible',timeout=22000)
                     if p251.get_attribute('data-review')!='no_level':
@@ -1502,6 +1521,7 @@ def run():
                     # somente após CAP + Card ID + edição exata.
                     page.goto(URL+'/fichas/191_Gabriel_Martinelli.html',
                               wait_until='domcontentloaded',timeout=35000)
+                    page.locator('#ct253-integrated-review > summary').click()
                     martinelli_v251=page.locator('#ct251-individual-ficha')
                     martinelli_v251.wait_for(state='visible',timeout=22000)
                     if (martinelli_v251.get_attribute('data-review')!='complete' or
@@ -1535,6 +1555,7 @@ def run():
                           confirmed_at:new Date().toISOString()}));
                     }""")
                     page.reload(wait_until='domcontentloaded')
+                    page.locator('#ct253-integrated-review > summary').click()
                     martinelli_v251=page.locator('#ct251-individual-ficha')
                     martinelli_v251.wait_for(state='visible',timeout=22000)
                     page.wait_for_function("""() =>
@@ -1553,6 +1574,7 @@ def run():
                       localStorage.removeItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id);
                     }""")
                     page.reload(wait_until='domcontentloaded')
+                    page.locator('#ct253-integrated-review > summary').click()
                     page.locator('#ct251-individual-ficha').wait_for(state='visible',timeout=22000)
                     if (page.locator('#scout-v218-status').get_attribute('data-mode')=='blocked' or
                         page.locator('#ct251-individual-ficha').get_attribute('data-review')!='complete'):
