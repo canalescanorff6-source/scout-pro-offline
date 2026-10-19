@@ -280,6 +280,22 @@ function draw(){
 }
 section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',()=>{tactic=b.dataset.tactic;draw();document.dispatchEvent(new CustomEvent('scoutpro:tactic-ui-selected-v220',{detail:{tactic}}))}));
  document.addEventListener('scoutpro:tactic-selected-v220',e=>{if(['posse','normal','rapido','fora','longo'].includes(e.detail?.tactic)){tactic=e.detail.tactic;draw()}});
+ // V251: harmonizar também o painel legado de habilidades/ímpetos, não apenas
+ // a ficha principal, desde que a versão EXATA da carta seja identificada.
+ host.addEventListener('scoutpro:v251:canonical-data',event=>{
+  const row=event.detail||{};
+  if(Number(row.capture)!==Number(d.capture)||String(row.id)!==String(d.id)||
+   String(row.name)!==String(d.name)||String(row.edition)!==String(d.edition))return;
+  for(const field of ['native_skills','attack_style','defence_style','boost1','boost2',
+   'recommended_levels','base_stats_known']){
+   if(Object.hasOwn(row,field))d[field]=row[field];
+  }
+  draw();
+  document.dispatchEvent(new CustomEvent('scoutpro:skills-updated',{
+   detail:{capture:Number(d.capture),card_id:String(d.id),source:'catalogo_v251'}
+  }));
+ });
+
 section.querySelector('#v162-save').addEventListener('click',()=>{
  extra=ta.value.trim().slice(0,700);
  let saved=false;
