@@ -48,3 +48,14 @@ A auditoria é o **primeiro estágio da homologação total**. As 84 builds sem 
 ## Preservação e publicação
 
 Não houve alteração em `web/fichas/*.html`, `SCOUT_V69_AUDITORIA.json`, `SCOUT_V221_EVIDENCE_INDEX.json`, imagens, PP, níveis, skills nativas, adicionais confirmadas, boosters, saves ou formações. As melhorias ficam em branch isolada até CI, QA visual e builds de teste Android/Windows passarem. Release oficial apenas após integração e pipeline assinada.
+
+## Entrega consultiva completa para todas as 246 cartas
+
+O script `scripts/build-competitive-report-v264.cjs`, executado no `npm run check`, percorre as 246 edições e exporta **1.230 cenários**, em JSON e CSV, nos arquivos:
+
+- `build/v264-competitive-246x5.json`
+- `build/v264-competitive-246x5.csv`
+
+A pipeline disponibiliza ambos no artefato **craque-tatico-v264-dossie-246-cartas-5-estilos**, retido por 30 dias. Para cada edição e tática, registra o vetor original sem modificar, possível distribuição matemática não homologada, até cinco habilidades propostas com justificativa, ímpeto comparativo e lacunas. **Nenhum dos campos significa instalação ou aprovação automática**, e cartas sem identidade comprovada ficam sem recomendação específica.
+
+Isso viabiliza revisar todas, com trilha de evidências e sem travar na primeira carta pendente. Os arquivos de relatório ficam fora do catálogo instalado; não são builds aplicadas no Android ou Windows.
