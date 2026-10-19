@@ -1553,7 +1553,7 @@ def run():
                     # V256: prova documental precisa ser exigida PELO MOTOR,
                     # não apenas por um componente visual que esconde botões.
                     inspect256=page.evaluate("""async () => {
-                      const c=(await (await fetch('SCOUT_V69_AUDITORIA.json')).json()).cards.find(c=>c.numero===1);
+                      const c=(await (await fetch('../SCOUT_V69_AUDITORIA.json')).json()).cards.find(c=>c.numero===1);
                       const E=window.CRAQUE_INTERPRETATION_V233;
                       const card={...c,capture:c.numero,edition:c.versao,
                         shown_position:c.posicao,recommended_levels:c.niveis};
@@ -1578,7 +1578,7 @@ def run():
                     if '10 habilidades nativas' not in martinelli_v251.inner_text():
                         problems.append(f"{name}: V251 não reconciliou nativas do Martinelli")
                     martinelliProof256=page.evaluate("""async () => {
-                      const c=(await (await fetch('SCOUT_V69_AUDITORIA.json')).json()).cards.find(c=>c.numero===191);
+                      const c=(await (await fetch('../SCOUT_V69_AUDITORIA.json')).json()).cards.find(c=>c.numero===191);
                       return window.CRAQUE_INTERPRETATION_V233.levelDocumented(c);
                     }""")
                     if martinelliProof256 is not True:
