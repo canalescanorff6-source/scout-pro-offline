@@ -65,6 +65,25 @@
    card?.pp_estimated!==true&&card?.pp_estimado!==true&&
    /^informado_pelo_usuario_/.test(String(card?.pp_origem||''));
  }
+ // V257: CAP, Card ID e edição podem chegar de duas fontes (catálogo/ficha).
+ // Divergência entre aliases NÃO autoriza redistribuir a build.
+ // Posições original/treinada são intencionalmente distintas e não conflitam.
+ function identityIssues(card){
+  if(!card||typeof card!=='object')return ['Carta ausente'];
+  const value=v=>String(v??'').trim();
+  const issues=[];
+  for(const [a,b,label] of [['capture','numero','CAP'],['id','card_id','Card ID'],
+    ['edition','versao','Edição']]){
+   const left=value(card[a]),right=value(card[b]);
+   if(!left||!right)continue;
+   if(label==='CAP'){
+    const valid=s=>/^\d+$/.test(s)&&Number.isSafeInteger(Number(s))&&Number(s)>0;
+    if(!valid(left)||!valid(right)||Number(left)!==Number(right))
+     issues.push('CAP divergente entre cadastro e ficha');
+   }else if(left!==right)issues.push(label+' divergente entre cadastro e ficha');
+  }
+  return issues;
+ }
  function fingerprints(card){
   return [number(card.capture??card.numero),String(card.id||card.card_id||'').trim(),
    String(card.edition||card.versao||'').trim()];
@@ -124,6 +143,7 @@
   const confirmed=vecOk(levels)&&budget!==null&&T.total(levels)===budget;
   const ppEstimated=card.pp_estimated===true||card.pp_estimado===true;
   const hasLevelEvidence=levelDocumented(card);
+  const inconsistentIdentity=identityIssues(card);
   const weights=rule.weights.map((w,i)=>Math.max(0,w+MODES[tactic].delta[i]));
   const hints=interpretSignals(card,roleId,weights);
   if(roleId==='GO'){
@@ -158,6 +178,7 @@
   if(ppEstimated)tradeoffs.push('Orçamento PP classificado como estimado: validar no jogo antes de qualquer redistribuição.');
   if(!hasLevelEvidence)tradeoffs.push('Nível máximo/PP da edição sem confirmação documental: somente interpretação, sem redistribuição automática.');
   if(!id||!edition||capture===null)tradeoffs.push('Identidade/edição incompleta: conferir número da carta e Card ID antes de comparar.');
+  if(inconsistentIdentity.length)tradeoffs.push('DADOS DA EDIÇÃO EM CONFLITO: '+inconsistentIdentity.join('; ')+'. Proposta suspensa até reconciliação.');
   if(roleId==='GO')tradeoffs.push('GO1 = consciência/salto; GO2 = rebatida/alcance; GO3 = segurança de mãos/reflexos. São pares de atributos, não 5 ajustes independentes.');
   if(roleId==='ZG')tradeoffs.push('Defesa, força das pernas e jogo aéreo se complementam; não assumir velocidade final nem alcance de pernas sem dados.');
   const evidence=[
@@ -167,11 +188,11 @@
    String(card.native_skills||card.habilidades_nativas||'').trim()?'Habilidades nativas cadastradas':'Habilidades nativas não confirmadas',
    confirmed?'PP fecham matematicamente (não comprova o nível máximo)':'Treino registrado sem custo integral conferido'
   ];
-  const uncertainty=(!confirmed||!hasLevelEvidence||ppEstimated||!id||!edition||capture===null)?'pendente':
+  const uncertainty=(!confirmed||!hasLevelEvidence||ppEstimated||!id||!edition||capture===null||inconsistentIdentity.length)?'pendente':
    !knownBase.length?'documental':'parcial_com_atributos_base';
   return {
    capture,id,edition,budget,confirmed,levelDocumented:hasLevelEvidence,
-   ppEstimated,role:roleId,position:rule.name,
+   identityIssues:inconsistentIdentity,ppEstimated,role:roleId,position:rule.name,
    job:rule.job,tactic,mode:MODES[tactic].phrase,weights,priorities,signals:hints,
    knownBase,tradeoffs,evidence,uncertainty,
    tests:rule.tests,
@@ -187,6 +208,8 @@
  }
  function compare(card,tactic,lab){
   const analysis=interpret(card,tactic,lab);
+  if(analysis?.identityIssues?.length)return {analysis,proposal:null,
+   reason:'CAP, Card ID ou edição divergentes entre cadastro e ficha. Concilie os dados da mesma carta antes de comparar PP.'};
   if(!analysis||!analysis.confirmed||!analysis.levelDocumented||
      analysis.ppEstimated||!analysis.id||!analysis.edition||analysis.capture===null)
    return {analysis,proposal:null,
@@ -228,7 +251,7 @@
    note:'Comparação matemática de investimento; não foi testada em partidas e não substitui os treinos aprovados.'
   },reason:'Redistribuição hipotética calculada respeitando os PP da mesma edição; exige comparação em campo.'};
  }
- const api=Object.freeze({CATEGORY,ROLES,MODES,interpret,compare,levelDocumented,clean});
+ const api=Object.freeze({CATEGORY,ROLES,MODES,interpret,compare,levelDocumented,identityIssues,clean});
  if(typeof module==='object'&&module.exports)module.exports=api;
  if(host)host.CRAQUE_INTERPRETATION_V233=api;
 })(typeof window!=='undefined'?window:null);
