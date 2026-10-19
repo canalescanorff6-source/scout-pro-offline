@@ -77,6 +77,9 @@ for(const mode of ['posse','normal','rapido','fora','longo']){
  assert.equal(boost.primary.nome,exact.filter(x=>x.nome!==d.boost1)[0]?.nome,
   'Ímpeto deve ser ranqueado para a função CA, não ponta');
 }
+// Confirmação de familiaridade não deve virar treinamento aplicado.
+assert.throws(()=>V.setActiveRole(martinelli,'GO',P,store),
+ /Posição não confirmada/,'Uma carta de linha jamais vira goleiro por Overall.');
 assert.deepEqual(V.setActiveRole(martinelli,'PTE',P,store),
  {role:'PTE',status:'original',confirmed:true});
 assert.equal(V.activeRole(martinelli,P,store).role,'PTE');
@@ -86,6 +89,13 @@ assert.deepEqual(V.activeRole(martinelli,P,store),
  {role:'PTE',status:'original',confirmed:true},
  'Revogação no V246 invalida função selecionada automaticamente');
 assert.equal(V.activeRole(rawCard,P,store).role,'PTE');
+// Familiaridade originalmente disponível no jogo, sem consumir treino novo.
+P.confirm(martinelli,'SA',true,store,'familiar');
+assert.deepEqual(V.setActiveRole(martinelli,'SA',P,store),
+ {role:'SA',status:'familiar',confirmed:true});
+assert.equal(R.roleOf({...base,shown_position:'SA',role_used:'SA'}),'SA');
+P.confirm(martinelli,'SA',false,store,'familiar');
+assert.equal(V.activeRole(martinelli,P,store).role,'PTE');
 assert.equal(JSON.stringify(cards),copy);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),cSource);
 const page=read('web/craque-ficha-individual-v251.js');
