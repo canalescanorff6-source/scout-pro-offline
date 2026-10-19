@@ -74,9 +74,9 @@
   content.append(cautions);
   const comparison=make('section','ct-v233-comparison');
   addLine(comparison,'h4','','Comparação matemática — opcional');
-  const provenPP=Number.isInteger(card.max_level)&&
-   Number(card.pp)===2*(card.max_level-1)&&
-   /^informado_pelo_usuario_/.test(String(card.pp_origem||''));
+  // V256: o próprio motor verifica a comprovação documental. Não
+  // duplicar regras de confiança só na interface.
+  const provenPP=x.levelDocumented===true;
   if(out.proposal&&provenPP){
    addLine(comparison,'p','',
     'Treino registrado: '+x.budget+' PP. Hipótese alternativa: '+out.proposal.spent+
@@ -88,7 +88,7 @@
    }
    comparison.append(table);
   }else addLine(comparison,'p','',!provenPP?
-   'PP ainda sem nível máximo documentado na edição exata. A V251 suspendeu nova redistribuição até essa confirmação.':
+   'PP ainda sem nível máximo documentado na edição exata. O motor V256 bloqueia redistribuição até confirmação por Card ID e nível.':
    out.reason);
   addLine(comparison,'small','ct-v233-disclaimer',
    'Não aplicar automaticamente. Conferir nível máximo, edição/Card ID, status no jogo e desempenho antes de aprovar qualquer troca.');
