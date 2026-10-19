@@ -1484,6 +1484,14 @@ def run():
                     # comprovado: nunca sugerir que a heurística é homologada.
                     page.goto(URL+'/fichas/001_Daniele_Massaro.html',
                               wait_until='domcontentloaded',timeout=35000)
+                    # O QA V250 anterior importou PP locais para esta carta.
+                    # Testar estado sem prova separadamente, sem considerar
+                    # nível importado como se fosse nível do catálogo.
+                    page.evaluate("""() => {
+                      const c=JSON.parse(document.querySelector('#scout-v68-data').textContent);
+                      localStorage.removeItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id);
+                    }""")
+                    page.reload(wait_until='domcontentloaded')
                     p251=page.locator('#ct251-individual-ficha')
                     p251.wait_for(state='visible',timeout=22000)
                     if p251.get_attribute('data-review')!='no_level':
