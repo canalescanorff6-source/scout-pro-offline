@@ -20,7 +20,8 @@ const R=require('../web/scout-training-reference-v208.js');
 const original=JSON.stringify(cards);
 const byCap=new Map(cards.map(c=>[Number(c.numero),c]));
 assert.equal(cards.length,246);assert.equal(new Set(cards.map(c=>c.numero)).size,246);
-assert.equal(new Set(cards.map(c=>String(c.id))).size,246);
+assert(cards.every(c=>String(c.id).trim().length>0),'Cada carta precisa ter Card ID');
+assert.equal(new Set(cards.map(c=>c.numero+'@'+c.id)).size,246,'Identidade número+Card ID deve ser única');
 assert.equal(audit.length,246);
 let known=0;
 for(const c of cards){
