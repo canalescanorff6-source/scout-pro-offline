@@ -9,9 +9,11 @@
  <link rel="stylesheet" href="premium.css">
  <link rel="stylesheet" href="craque-visual-system-v234.css">
  <link rel="stylesheet" href="craque-progresso-v248.css">
+ <link rel="stylesheet" href="craque-progress-transfer-v250.css">
  <script defer src="scout-config.js"></script>
  <script defer src="app-bridge.js"></script>
  <script defer src="craque-progresso-v248.js"></script>
+ <script defer src="craque-progress-transfer-v250.js"></script>
 </head>
 <body data-page="progress-audit">
  <header class="topbar"><div class="wrap nav">
@@ -30,6 +32,32 @@
    <div class="ct248-hero-actions">
     <a href="index.html">← Elenco</a>
     <button type="button" id="v248-export">Exportar minhas conferências (.json)</button>
+   </div>
+  </section>
+  <section class="ct250-transfer" aria-labelledby="v250-heading">
+   <div class="ct250-heading">
+    <div>
+     <p class="ct248-kicker">TRANSFERÊNCIA MANUAL SEGURA · WINDOWS ↔ ANDROID</p>
+     <h2 id="v250-heading">Continuar minhas conferências em outro dispositivo</h2>
+     <p>Exporte as conferências em um dispositivo e abra o mesmo arquivo JSON no outro. O programa verifica cada edição e preserva registros conflitantes, a menos que você autorize a substituição.</p>
+    </div>
+    <button type="button" id="v250-choose">Selecionar arquivo de níveis (.json)</button>
+    <input type="file" id="v250-file" accept="application/json,.json" hidden aria-label="Arquivo de níveis exportado do Craque Tático">
+   </div>
+   <p class="ct250-disclaimer">Este processo transfere apenas os níveis máximos conferidos por você; <strong>não sincroniza automaticamente</strong>, não altera builds originais, escalações ou demais configurações. O arquivo declara uma conferência — não comprova sozinho o que consta no jogo.</p>
+   <p id="v250-notice" role="status" aria-live="polite" class="ct250-notice">Nenhum arquivo selecionado.</p>
+   <div id="v250-preview" class="ct250-preview" hidden>
+    <h3>Prévia antes de importar</h3>
+    <p id="v250-preview-count"></p>
+    <div id="v250-conflict-note">
+     <p>Algumas cartas têm conferências diferentes neste dispositivo. Por segurança, os registros atuais serão mantidos por padrão.</p>
+     <ul id="v250-conflicts"></ul>
+     <label class="ct250-replace"><input type="checkbox" id="v250-confirm"> Substituir também as conferências conflitantes pelos dados deste arquivo.</label>
+    </div>
+    <div class="ct250-actions">
+     <button type="button" id="v250-import" disabled>Importar conferências válidas</button>
+     <button type="button" id="v250-cancel">Cancelar</button>
+    </div>
    </div>
   </section>
   <section class="ct248-checker" aria-label="Conferência de níveis máximos">
