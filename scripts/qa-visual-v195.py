@@ -1636,6 +1636,63 @@ def run():
                     result['skill_slots_v254']={'not_assumed':True,'five_full':True,
                        'edition_persisted':True,'editing_invalidated':True,
                        'tactic_labels_ok':True}
+                # V256: registrar partida sem inventar performance, por
+                # CAP/Card ID, estilo, posição e vetor EXATO de 10 PP.
+                if name in ('mobile_390','windows_1366'):
+                    page.goto(URL+'/fichas/191_Gabriel_Martinelli.html',
+                              wait_until='domcontentloaded',timeout=35000)
+                    page.locator('#ct253-integrated-review > summary').wait_for(
+                        state='visible',timeout=24000)
+                    page.locator('#ct253-integrated-review > summary').click()
+                    page.locator('#ct256-trials > summary').click()
+                    record=page.locator('#ct256-trials')
+                    if record.locator('select[name="build"] option').count()<1:
+                        problems.append(f"{name}: V256 não oferece treino documental de 50 PP do Martinelli")
+                    if not page.evaluate("""() => !!window.CRAQUE_MATCH_EVIDENCE_V256"""):
+                        problems.append(f"{name}: API V256 não foi carregada")
+                    record.locator('input[name="date"]').fill('2026-10-19')
+                    record.locator('select[name="result"]').select_option('V')
+                    record.locator('textarea[name="notes"]').fill(
+                        'Passe curto sob pressão; giro antes da finalização')
+                    record.locator('input[name="video_filename"]').fill('partida_martinelli.mp4')
+                    record.locator('input[name="in_game_confirmed"]').check()
+                    record.locator('button.ct256-save').click()
+                    page.wait_for_function("""() =>
+                      document.querySelectorAll('#ct256-trials .ct256-match').length===1
+                    """,timeout=15000)
+                    if ('1 partida(s)' not in record.locator('summary').inner_text() or
+                        'sem homologação automática' not in
+                        record.locator('.ct256-count').inner_text()):
+                        problems.append(f"{name}: V256 não identifica relato sem homologação")
+                    # Trocar estilo não transfere a partida automaticamente.
+                    page.locator('#scout-v220-tabs button[data-tactic="rapido"]').click()
+                    page.locator('#ct256-trials > summary').click()
+                    if page.locator('#ct256-trials .ct256-match').count()!=0:
+                        problems.append(f"{name}: V256 transferiu partida de Posse para Contra-Ataque Rápido")
+                    page.locator('#scout-v220-tabs button[data-tactic="posse"]').click()
+                    page.locator('#ct256-trials > summary').click()
+                    if page.locator('#ct256-trials .ct256-match').count()!=1:
+                        problems.append(f"{name}: V256 não restaurou a partida da ficha exata")
+                    page.reload(wait_until='domcontentloaded')
+                    page.locator('#ct253-integrated-review > summary').click()
+                    page.locator('#ct256-trials > summary').click()
+                    if page.locator('#ct256-trials .ct256-match').count()!=1:
+                        problems.append(f"{name}: V256 não preservou observação após reabrir a carta")
+                    page.once('dialog',lambda dialog:dialog.accept())
+                    page.locator('#ct256-trials .ct256-delete').click()
+                    page.wait_for_function("""() =>
+                     document.querySelector('#ct256-trials .ct256-match')===null
+                    """,timeout=15000)
+                    if page.evaluate("""() => Object.keys(localStorage)
+                      .some(k=>k.startsWith('scoutpro:v256:match-evidence:191@'))"""):
+                        problems.append(f"{name}: V256 não excluiu o último relato da edição")
+                    if page.evaluate("""() => document.documentElement.scrollWidth-innerWidth""")>8:
+                        problems.append(f"{name}: V256 criou overflow horizontal de formulário")
+                    page.screenshot(path=str(OUT/f"{name}_v256_match_evidence.png"),
+                        full_page=False,animations="disabled")
+                    result['match_evidence_v256']={
+                      'saved':True,'style_isolated':True,'restored':True,
+                      'manual_confirmation':True,'delete':True}
                 results[name] = result
                 context.close()
         finally:
