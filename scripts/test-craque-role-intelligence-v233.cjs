@@ -19,7 +19,7 @@ assert.match(E.CATEGORY[7].stats,/Consciência de goleiro/);
 assert.match(E.CATEGORY[8].stats,/alcance/);
 assert.match(E.CATEGORY[9].stats,/reflexos/);
 const roles=new Set(),changed=new Set(),identity=new Set(),variants=new Set();
-let inspected=0,proposals=0,missing=0;
+let inspected=0,proposals=0,missing=0,documented=0,blockedUnverified=0;
 const counted={posse:0,normal:0,rapido:0,fora:0,longo:0};
 for(const c of cards){
  const cap=c.numero,card={...c,capture:cap,edition:c.versao,shown_position:c.posicao,
@@ -49,10 +49,19 @@ for(const c of cards){
   if(r==='GO')assert(analysis.priorities.every(p=>p.index>=7&&p.index<=9));
   else assert(analysis.priorities.every(p=>p.index<=6));
   const result=E.compare(card,mode,{});
+  const validSource=E.levelDocumented(card);
+  assert.equal(analysis.levelDocumented,validSource);
+  if(validSource)documented++;
+  else{
+   blockedUnverified++;
+   assert.equal(result.proposal,null,
+    'Sem nível e origem PP por edição, V233 não pode gerar hipótese para '+fingerprint+' em '+mode);
+   assert.equal(analysis.uncertainty,'pendente');
+  }
   assert(result&&result.analysis?.capture===cap);
-  if(!analysis.confirmed){
+  if(!analysis.confirmed||!validSource){
    missing++;
-   assert.equal(result.proposal,null,'No candidate without PP-confirmed baseline');
+   assert.equal(result.proposal,null,'Sem nível/PP e build conferidos não há redistribuição');
   }
   if(result.proposal){
    const p=result.proposal;
@@ -78,8 +87,10 @@ assert.equal(inspected,1230);
 assert.equal(identity.size,246);
 assert.equal(JSON.stringify(cards),snapshot);
 assert(roles.size>=8,'Different job families actually covered');
-assert(proposals>70,'Per-role algorithm must produce meaningful optional experiments');
-assert(changed.size>40,'Several real cards must receive candidate reviews');
+assert.equal(documented,85*5,'85 cartas com níveis documentados x cinco táticas');
+assert.equal(blockedUnverified,161*5,'161 cartas sem nível/PP documental bloqueadas nas cinco táticas');
+assert(proposals>0,'Cartas com evidência suficiente permitem hipóteses consultivas');
+assert(changed.size>0,'O motor conserva pelo menos uma comparação de edição documentada');
 const official=cards.find(x=>x.numero===40);
 const yorke={...official,capture:40,edition:official.versao,shown_position:official.posicao,recommended_levels:official.niveis};
 assert(E.compare(yorke,'posse').analysis,'Yorke receives a reasoned review without overwriting his approved training');
@@ -125,5 +136,5 @@ assert(panel.includes("doc.createElement('details')")===false || panel.includes(
 assert(!/localStorage|indexedDB|\.setItem\(|localSet\(/.test(panel),'Interpretation UI remains read-only');
 assert(!/localStorage|indexedDB|\.setItem\(|localSet\(/.test(read('web/craque-role-intelligence-v233.js')),'Heuristic may not save data');
 assert(visual.includes('#ct-v233-interpret-panel')&&visual.includes('@media(max-width:520px)'));
-console.log('V233 PASS: '+inspected+' card/tactic interpretations; '+proposals+' optional PP-exact comparisons; '+roles.size+
+console.log('V233/V256 PASS: '+inspected+' interpretações; '+blockedUnverified+' redistribuições sem nível bloqueadas; '+proposals+' hipóteses documentais; '+roles.size+
  ' role families; all source PP/builds/skills/boosters intact.');
