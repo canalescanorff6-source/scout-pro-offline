@@ -117,5 +117,18 @@ assert(v220.includes('const levelDocumented=Number.isInteger(card.max_level)'));
 assert(v220.includes("card.training_provisional!==true"));
 assert(v220.includes("pp_e_nivel_documentados_hipotese"));
 assert(v220.includes("switchTraining(style);"));
+const v218=read('web/scout-training-unified-v218.js');
+assert(v218.includes("const localPPMismatch=()=>"),
+ 'O editor V218 precisa conferir o PP da mesma edição');
+assert(v218.includes("String(value.card_id)!==id")&&v218.includes("String(value.name)!==String(card.name)"),
+ 'Nunca aplicar níveis de outra edição ao editor');
+assert(v218.includes("tag.dataset.mode=clash?'blocked'"),
+ 'Avisar PP divergentes na ficha principal');
+assert(v218.includes("btnEdit.disabled=Boolean(clash)"),
+ 'Bloquear edições com orçamento incompatível');
+assert(v218.includes("if(localPPMismatch()||Number(info.cap)"),
+ 'Não aceitar propostas V251 sob divergência de PP');
+assert(v218.includes("if(localPPMismatch())return false;"),
+ 'Não persistir treino com PP antigo');
 console.log('V252 EVIDÊNCIAS OK: '+JSON.stringify(tally));
 console.log('V252 PP OK: 161 cartas sem nível de origem; divergência bloqueia build; conferência local só habilita simulação.');
