@@ -19,6 +19,9 @@ SCREENS = [
     ("mobile_360", 360, 800, True),
     ("mobile_390", 390, 844, True),
     ("mobile_412", 412, 915, True),
+    ("windows_compact_900", 900, 1180, False),
+    ("windows_1024", 1024, 900, False),
+    ("windows_1151", 1151, 840, False),
     ("windows_1366", 1366, 768, False),
     ("windows_1920", 1920, 1080, False),
 ]
@@ -90,6 +93,43 @@ def run():
                 shortcuts = page.locator(".scout-v189-quick a").count()
                 home["quick_links"] = shortcuts
                 home["errors"] = list(errors)
+
+                # V248: verificar GEOMETRIA REAL das cartas no hero Windows.
+                # Screenshot do usuário: 1151px, busca/atalhos cobrindo as artes.
+                if not mobile:
+                    geometry = page.evaluate("""() => {
+                      const text=document.querySelector('.hero-text');
+                      const art=document.querySelector('.hero-visual');
+                      const quick=document.querySelector('.scout-v189-quick');
+                      const search=document.querySelector('.scout-v192-search-shell');
+                      const cardNodes=[...document.querySelectorAll('.hero-visual .featured')];
+                      if(!text||!art||!quick||!search||cardNodes.length!==3)return {ok:false,error:'Nós do cabeçalho ausentes'};
+                      const rect=e=>e.getBoundingClientRect();
+                      const a=rect(text),b=rect(art),q=rect(quick),s=rect(search);
+                      const horizontal=a.right<=b.left+2;
+                      const vertical=a.bottom<=b.top+2;
+                      const layout=horizontal?'colunas':vertical?'empilhado':'sobreposto';
+                      const inside=e=>{
+                        const r=rect(e);
+                        return r.left>=a.left-2&&r.right<=a.right+2;
+                      };
+                      const gallery=cardNodes.map(img=>{
+                        const r=rect(img);
+                        const width=Math.max(0,Math.min(r.right,b.right)-Math.max(r.left,b.left));
+                        const height=Math.max(0,Math.min(r.bottom,b.bottom)-Math.max(r.top,b.top));
+                        const ratio=(width*height)/Math.max(1,r.width*r.height);
+                        return {visibleRatio:+ratio.toFixed(3),loaded:img.complete&&img.naturalWidth>0};
+                      });
+                      return {
+                        ok:layout!=='sobreposto'&&inside(quick)&&inside(search)&&
+                          gallery.every(x=>x.loaded&&x.visibleRatio>=.90),
+                        layout,searchInside:inside(search),quickInside:inside(quick),gallery
+                      };
+                    }""")
+                    home["v248_hero_geometry"] = geometry
+                    if not geometry["ok"]:
+                        problems.append(f"{name}: conteúdo ocupa espaço das artes ou imagem cortada: {geometry}")
+
                 if shortcuts != 4:
                     problems.append(f"{name}: home precisa de 4 atalhos, recebeu {shortcuts}")
                 if home["horizontalOverflow"] > 8:
