@@ -1464,7 +1464,7 @@ def run():
                     review253.wait_for(state='visible',timeout=22000)
                     if review253.evaluate('(e)=>e.open'):
                         problems.append(f"{name}: V253 abriu uma segunda ficha na tela principal")
-                    review253.locator('summary').click()
+                    page.locator('#ct253-integrated-review > summary').click()
                     v251=page.locator('#ct251-individual-ficha')
                     v251.wait_for(state='visible',timeout=22000)
                     if v251.get_attribute('data-review')!='no_build':
