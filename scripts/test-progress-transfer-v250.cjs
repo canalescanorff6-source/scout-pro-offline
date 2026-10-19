@@ -141,6 +141,10 @@ for(const id of ['v250-choose','v250-file','v250-preview','v250-confirm','v250-i
  assert(html.includes('id="'+id+'"'),'Falta controle real '+id);
 assert(js.includes("readSaved(card,store)"));
 assert(js.includes("host.dispatchEvent(new Event('craque:v250:progress-imported'))"));
+assert(js.includes("host.dispatchEvent(new Event('craque:data-changed'))"),
+ 'V226 precisa receber notificação e proteger registros importados.');
+assert(js.includes("host.CRAQUE_BACKUP_V226.protect('pre-progress-import')"),
+ 'A importação precisa criar um snapshot de proteção antes de modificar dados.');
 assert(read('web/craque-progresso-v248.js').includes("addEventListener('craque:v250:progress-imported',render)"));
 assert(css.includes('@media (max-width:750px)'));
 assert(sw.includes('v250-progress-portability'));
