@@ -257,6 +257,26 @@ const equipmentConfirmed=()=>checkedEquipment(d,extra,readProof());
 verifiedCheck.checked=equipmentConfirmed();
 ta.addEventListener('input',()=>{if(fingerprint(ta.value)!==fingerprint(extra))verifiedCheck.checked=false});
 let tactic='posse';
+const originalPosition=String(d.shown_position||d.role_used||d.posicao||'');
+let actualPosition=originalPosition,roleEvidence='original';
+function setConfirmedRole(event){
+ const detail=event||{};
+ if(Number(detail.capture)!==Number(d.capture)||
+    String(detail.card_id)!==String(d.id))return false;
+ const API=host.SCOUT_POSITION_TRAINING_V246;
+ const native=API?.pos?.(originalPosition)||originalPosition;
+ const requested=API?.pos?.(detail.position)||'';
+ if(!requested)return false;
+ const sourceCard={numero:Number(d.capture),id:String(d.id),posicao:originalPosition};
+ const proof=API?.status?.(sourceCard,requested,host.localStorage);
+ const valid=requested===native||proof?.eligible===true&&
+  ['treinada','familiar'].includes(proof.status);
+ if(!valid)return false;
+ actualPosition=requested;
+ roleEvidence=requested===native?'original':proof.status;
+ d.shown_position=requested;d.role_used=requested;
+ draw();return true;
+}
 function draw(){
  let manuallyVerified={};
  try{const val=JSON.parse(localStorage.getItem('scoutpro:v103:booster:'+Number(d.capture))||'null');if(val&&String(val.card_id)===String(d.id))manuallyVerified=val}catch(e){}
@@ -267,7 +287,10 @@ function draw(){
  const proposed=result.recommendations;
  verifiedCheck.checked=confirmed;
  section.querySelectorAll('[data-tactic]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tactic===tactic)));
- section.querySelector('#v162-skills-status').textContent='Nativas catalogadas: '+result.knownNative+
+ section.querySelector('#v162-skills-status').textContent='Função analisada: '+actualPosition+
+  ' ('+(roleEvidence==='original'?'posição original':roleEvidence==='treinada'?
+  'treino confirmado':'familiaridade confirmada')+'). '+
+  'Nativas catalogadas: '+result.knownNative+
   ' · Adicionais informadas (distintas): '+result.manualReportedCount+'/5 · '+
   (confirmed?'Lista completa conferida · vagas restantes: '+remaining+'. ':
    'LISTA NÃO CONFERIDA: vagas disponíveis desconhecidas. Até cinco candidatos teóricos, não cinco slots livres. ')+
@@ -343,6 +366,9 @@ section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',
  document.addEventListener('scoutpro:tactic-selected-v220',e=>{if(['posse','normal','rapido','fora','longo'].includes(e.detail?.tactic)){tactic=e.detail.tactic;draw()}});
  // V251: harmonizar também o painel legado de habilidades/ímpetos, não apenas
  // a ficha principal, desde que a versão EXATA da carta seja identificada.
+ host.addEventListener('scoutpro:role-selected-v263',event=>setConfirmedRole(event.detail));
+ // Revalidar também a última seleção caso o V251 inicialize primeiro.
+ if(host.SCOUT_ROLE_SELECTION_V263)setConfirmedRole(host.SCOUT_ROLE_SELECTION_V263);
  host.addEventListener('scoutpro:v251:canonical-data',event=>{
   const row=event.detail||{};
   if(Number(row.capture)!==Number(d.capture)||String(row.id)!==String(d.id)||
