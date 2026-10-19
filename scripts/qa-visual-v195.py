@@ -1509,8 +1509,49 @@ def run():
                         ?.textContent.includes('Nativas cadastradas: 10')""",timeout=15000)
                     page.screenshot(path=str(OUT/f"{name}_v251_martinelli.png"),
                       full_page=False,animations="disabled")
+                    # V252: critérios documentais são específicos da edição.
+                    proof=martinelli_v251.locator('.ct251-proof')
+                    if (proof.count()!=1 or
+                        proof.locator('li').count()!=10 or
+                        'pendentes' not in proof.locator('summary').inner_text()):
+                        problems.append(f"{name}: matriz de 10 critérios V252 ausente ou incompleta")
+                    # Confirmar PP diferente no jogo deve bloquear TANTO o painel
+                    # V251 quanto o editor principal V218, sem alterar dados.
+                    page.evaluate("""() => {
+                      const c=JSON.parse(document.querySelector('#scout-v68-data').textContent);
+                      localStorage.setItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id,
+                        JSON.stringify({schema:'CRAQUE_PROGRESS_REVIEW_V248',
+                          numero:Number(c.capture),card_id:String(c.id),name:String(c.name),
+                          level:27,pp:52,confirmed_in_game:true,
+                          source:'conferência manual no eFootball',
+                          confirmed_at:new Date().toISOString()}));
+                    }""")
+                    page.reload(wait_until='domcontentloaded')
+                    martinelli_v251=page.locator('#ct251-individual-ficha')
+                    martinelli_v251.wait_for(state='visible',timeout=22000)
+                    page.wait_for_function("""() =>
+                      document.querySelector('#scout-v218-status')?.dataset.mode==='blocked'
+                    """,timeout=18000)
+                    if martinelli_v251.get_attribute('data-review')!='unsupported':
+                        problems.append(f"{name}: V252 não bloqueou cálculo com PP divergentes")
+                    if page.locator('#scout-v218-edit').is_enabled():
+                        problems.append(f"{name}: V252 manteve editor habilitado com PP 52 vs 50")
+                    if 'PP DIVERGENTES' not in martinelli_v251.inner_text():
+                        problems.append(f"{name}: V252 não informou a divergência de PP da edição")
+                    page.screenshot(path=str(OUT/f"{name}_v252_pp_divergentes.png"),
+                      full_page=False,animations="disabled")
+                    page.evaluate("""() => {
+                      const c=JSON.parse(document.querySelector('#scout-v68-data').textContent);
+                      localStorage.removeItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id);
+                    }""")
+                    page.reload(wait_until='domcontentloaded')
+                    page.locator('#ct251-individual-ficha').wait_for(state='visible',timeout=22000)
+                    if (page.locator('#scout-v218-status').get_attribute('data-mode')==='blocked' or
+                        page.locator('#ct251-individual-ficha').get_attribute('data-review')!='complete'):
+                        problems.append(f"{name}: V252 não recuperou o treino após desfazer PP divergente")
                     result['ficha_individual_v251']={'tested':True,'levels':68,
-                       'pending_blocked':True,'martinelli_26_50':True}
+                       'pending_blocked':True,'martinelli_26_50':True,
+                       'v252_proof_matrix':True,'v252_budget_guard':True}
                 results[name] = result
                 context.close()
         finally:
