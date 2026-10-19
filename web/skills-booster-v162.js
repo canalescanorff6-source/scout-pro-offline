@@ -51,6 +51,15 @@ for(const [raw,key] of Object.entries({
 }))if(!aliasMap.has(normal(raw)))aliasMap.set(normal(raw),key);
 const keyFor=s=>aliasMap.get(normal(s))||'';
 const splitSkills=s=>Array.isArray(s)?s:String(s||'').split(/[;\n,]+/).map(x=>x.trim()).filter(Boolean);
+// A confirmação só vale para a edição exata e para ESTA lista de habilidades.
+// Editar o texto invalida automaticamente a confirmação antiga.
+const confirmationKey=(cap,id)=>'scoutpro:v254:additional-confirmed:'+Number(cap)+'@'+String(id);
+const fingerprint=s=>[...new Set(splitSkills(s).map(x=>keyFor(x)||'unmapped:'+normal(x)))].sort().join('|');
+function checkedEquipment(card,manual,record){
+ return Boolean(record&&record.schema==='CRAQUE_ADDITIONAL_V254'&&record.confirmed===true&&
+  Number(record.capture)===Number(card.capture)&&String(record.card_id)===String(card.id)&&
+  record.fingerprint===fingerprint(manual));
+}
 const POSITION={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',ZG:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA'};
 const POOLS={
  CA:['firstshot','onepass','through','sole','heel','acrobatic','longshot','fighting','heading','aerial','double','curler','supersub','weighted'],
@@ -65,7 +74,7 @@ const POOLS={
  GO:['gklow','gklong','gkhigh','gkpenalty','fighting','captain','weighted','lowloft','onepass']
 };
 function roleOf(d){return POSITION[d.role_used]||POSITION[d.shown_position]||POSITION[d.posicao]||null}
-function evaluate(d,tactic,manualEquipped){
+function evaluate(d,tactic,manualEquipped,options={}){
  if(!['posse','normal','rapido','fora','longo'].includes(tactic))throw Error('Tática inválida');
  const role=roleOf(d);if(!role)return {role:null,recommendations:[],nativeKnown:false,missing:['Posição da carta não cadastrada']};
  const native=splitSkills(d.native_skills||d.habilidades_nativas);
@@ -129,6 +138,11 @@ function evaluate(d,tactic,manualEquipped){
   .sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))
   .map(([key,score])=>({...SKILLS[key],score,synergies:synergy.get(key)||[]}));
  const overLimit=distinctExtras.length>5;
+ // A lista manual pode estar INCOMPLETA. Não declarar espaços livres
+ // ou cinco skills aplicáveis até o usuário conferir no Plano de Jogo.
+ const equippedConfirmed=options.equippedConfirmed===true;
+ const slotsRemaining=equippedConfirmed&&!overLimit?Math.max(0,5-distinctExtras.length):null;
+ const limit=overLimit?0:equippedConfirmed?slotsRemaining:5;
  const warnings=[
   ...(overLimit?['Foram informadas mais de cinco habilidades adicionais distintas: revisar no jogo.']:[]),
   ...(nativeManualConflicts.length?['Informadas também como adicionais, mas já aparecem nas nativas cadastradas: '+nativeManualConflicts.join(', ')]:[])
@@ -136,7 +150,8 @@ function evaluate(d,tactic,manualEquipped){
  return {role,nativeKnown,knownNative:native.length,
   alreadyEquippedProvided:Math.min(5,distinctExtras.length),
   manualReportedCount:distinctExtras.length,nativeManualConflicts,manualOverLimit:overLimit,
-  recommendations:ranked.slice(0,5),alternatives:ranked.slice(5,8),
+  equippedConfirmed,slotsRemaining,
+  recommendations:ranked.slice(0,limit),alternatives:ranked.slice(limit,limit+3),
   synergyDetected:synergy.size>0,
   missing:[...(nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']),...warnings]};
 }
@@ -176,7 +191,8 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
-const api={SKILLS,ENTRIES,POSITION,POOLS,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES};
+const api={SKILLS,ENTRIES,POSITION,POOLS,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+ confirmationKey,fingerprint,checkedEquipment};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;
