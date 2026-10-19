@@ -5350,8 +5350,10 @@
       "segundo_impeto": "unverified",
       "id_status": "card_id_no_catalogo",
       "card_id_compartilhado_com": [],
-      "grupo_repetido": null,
-      "pares_repetidos": [],
+      "grupo_repetido": "PTE|ala produtivo|50|4,4,8,10,8,0,0,0,0,0",
+      "pares_repetidos": [
+        191
+      ],
       "candidatas_adicionais": 0,
       "pendencias": [
         "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
@@ -5366,7 +5368,7 @@
       "nome": "Gabriel Martinelli",
       "edicao": "Highlight — National Team Selection Brazil Jun '26 — Gabriel Martinelli",
       "arquivo": "fichas/191_Gabriel_Martinelli.html",
-      "pp": 66,
+      "pp": 50,
       "posicao": "PTE",
       "estilo": "Ala produtivo",
       "treino": "treino_registrado",
@@ -5378,16 +5380,17 @@
       "segundo_impeto": "unverified",
       "id_status": "card_id_no_catalogo",
       "card_id_compartilhado_com": [],
-      "grupo_repetido": "PTE|ala produtivo|66|4,6,10,12,8,0,0,0,0,0",
+      "grupo_repetido": "PTE|ala produtivo|50|4,4,8,10,8,0,0,0,0,0",
       "pares_repetidos": [
-        198
+        190
       ],
       "candidatas_adicionais": 0,
       "pendencias": [
         "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central",
-        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização",
+        "Build de 50 PP proposta, não homologada em partidas."
       ]
     },
     {
@@ -5580,10 +5583,8 @@
       "segundo_impeto": "unverified",
       "id_status": "card_id_no_catalogo",
       "card_id_compartilhado_com": [],
-      "grupo_repetido": "PTE|ala produtivo|66|4,6,10,12,8,0,0,0,0,0",
-      "pares_repetidos": [
-        191
-      ],
+      "grupo_repetido": null,
+      "pares_repetidos": [],
       "candidatas_adicionais": 0,
       "pendencias": [
         "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
