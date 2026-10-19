@@ -112,9 +112,16 @@ if(inCard){
   const loadCardUI=()=>{
    const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';
    document.head.appendChild(ui220);
-   // V251 depende da leitura documental V233, carregada antes do painel.
-   const v251=document.createElement('script');v251.src=v189Root+'craque-ficha-individual-v251.js';
-   document.head.appendChild(v251);
+   // V251 precisa da interpretação V233 e da familiaridade EXATA V246.
+   // Jamais deduzir posição treinada de Overall calculado.
+   const loadV251=()=>{
+    const v251=document.createElement('script');v251.src=v189Root+'craque-ficha-individual-v251.js';
+    document.head.appendChild(v251);
+   };
+   const position251=document.createElement('script');
+   position251.src=v189Root+'scout-position-training-v246.js';
+   position251.onload=loadV251;position251.onerror=loadV251;
+   document.head.appendChild(position251);
   };
   // V233 precisa da API de PP V220; carrega ANTES da ficha, sem tocar no registro.
   const intelligent233=document.createElement('script');intelligent233.src=v189Root+'craque-role-intelligence-v233.js';
