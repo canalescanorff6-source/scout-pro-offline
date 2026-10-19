@@ -1373,6 +1373,84 @@ def run():
                         problems.append(f"{name}: V249 ainda mostra PP locais depois de desfazer")
                     result['progress_consistency_v249']={'cap':first_cap,'confirmed_pp':50,
                         'undo_ok':True}
+                    # V250 — importar o JSON exportado em outro dispositivo
+                    # sem misturar Card IDs, sem sobrescrever conflito por padrão.
+                    page.goto(URL+'/conferir-progresso-v248.html',
+                              wait_until='domcontentloaded',timeout=35000)
+                    picker=page.locator('#v250-file')
+                    await_file={'name':'niveis-exportados-v248.json',
+                         'mimeType':'application/json',
+                         'buffer':json.dumps(exported_json,ensure_ascii=False).encode('utf8')}
+                    picker.set_input_files(await_file)
+                    page.locator('#v250-preview').wait_for(state='visible',timeout=15000)
+                    preview=page.locator('#v250-preview-count').inner_text()
+                    if not ('1 novas conferências' in preview and '0 conflitos' in preview):
+                        problems.append(f"{name}: V250 prévia de arquivo exportado inválida: {preview}")
+                    before_import=page.evaluate("""() => Object.keys(localStorage)
+                       .filter(k=>k.startsWith('scoutpro:v248:level-review:')).length""")
+                    if before_import:
+                        problems.append(f"{name}: V250 gravou dados antes da confirmação")
+                    page.locator('#v250-import').click()
+                    page.wait_for_function("""() => Object.keys(localStorage)
+                       .some(k=>k.startsWith('scoutpro:v248:level-review:'))""",timeout=12000)
+                    review_level=page.evaluate("""() => {
+                      const k=Object.keys(localStorage).find(k=>k.startsWith('scoutpro:v248:level-review:'));
+                      return JSON.parse(localStorage.getItem(k)).level;
+                    }""")
+                    if review_level!=26:
+                        problems.append(f"{name}: V250 importou nível diferente do arquivo: {review_level}")
+                    counts=page.locator('#v248-stats').inner_text()
+                    if '1 divergências' not in counts:
+                        problems.append(f"{name}: V250 não atualizou contador de PP divergente: {counts}")
+                    # O mesmo arquivo não duplica nem sobrescreve.
+                    picker.set_input_files(await_file)
+                    page.locator('#v250-preview').wait_for(state='visible',timeout=15000)
+                    if page.locator('#v250-import').is_enabled():
+                        problems.append(f"{name}: V250 reimportação sem novidades deveria ser desabilitada")
+                    page.locator('#v250-cancel').click()
+                    # Mesmo CAP com nível diferente exige escolha explícita.
+                    changed_export=json.loads(json.dumps(exported_json))
+                    changed_export['records'][0]['level']=27
+                    changed_export['records'][0]['pp']=52
+                    changed_export['divergent']=1
+                    altered={'name':'niveis-outro-dispositivo.json',
+                         'mimeType':'application/json',
+                         'buffer':json.dumps(changed_export,ensure_ascii=False).encode('utf8')}
+                    picker.set_input_files(altered)
+                    page.locator('#v250-preview').wait_for(state='visible',timeout=15000)
+                    conflicts=page.locator('#v250-preview-count').inner_text()
+                    if '1 conflitos' not in conflicts or page.locator('#v250-confirm').is_checked():
+                        problems.append(f"{name}: V250 não protege conflitos: {conflicts}")
+                    page.locator('#v250-import').click()
+                    remaining=page.evaluate("""() => {
+                      const k=Object.keys(localStorage).find(k=>k.startsWith('scoutpro:v248:level-review:'));
+                      return JSON.parse(localStorage.getItem(k)).level;
+                    }""")
+                    if remaining!=26:
+                        problems.append(f"{name}: V250 substituiu conflito sem autorização")
+                    picker.set_input_files(altered)
+                    page.locator('#v250-confirm').check()
+                    page.once('dialog',lambda dialog:dialog.accept())
+                    page.locator('#v250-import').click()
+                    page.wait_for_function("""() => Object.keys(localStorage).some(k=>{
+                       if(!k.startsWith('scoutpro:v248:level-review:'))return false;
+                       return JSON.parse(localStorage.getItem(k)).level===27;
+                    })""",timeout=12000)
+                    # Um ID adulterado deve barrar todo o arquivo.
+                    tampered=json.loads(json.dumps(exported_json))
+                    tampered['records'][0]['card_id']='CARD_ID_ADULTERADO'
+                    picker.set_input_files({'name':'niveis-incompatíveis.json',
+                      'mimeType':'application/json',
+                      'buffer':json.dumps(tampered,ensure_ascii=False).encode('utf8')})
+                    page.wait_for_function("""() => document.querySelector('#v250-notice')
+                       ?.textContent.includes('Importação bloqueada')""",timeout=15000)
+                    if not page.locator('#v250-preview').is_hidden():
+                        problems.append(f"{name}: V250 permitiu prévia de Card ID incompatível")
+                    result['progress_transfer_v250']={'cap':first_cap,'imported':True,
+                        'conflict_preserved':True,'explicit_replacement':True,
+                        'wrong_card_id_blocked':True}
+                    page.screenshot(path=str(OUT/f"{name}_progress_transfer_v250.png"),
+                        full_page=False,animations="disabled")
                 results[name] = result
                 context.close()
         finally:
