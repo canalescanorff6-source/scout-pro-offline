@@ -21,8 +21,8 @@ for(const c of audit){
  assert(row&&String(row.card_id)===String(c.id),'Edição exata no índice #'+c.numero);
  const checklist=V.proofChecklist(c,row,{},null);
  assert.equal(checklist.matched,true,'Índice deve pertencer à edição #'+c.numero);
- assert.equal(checklist.checks.length,8);
- assert.equal(checklist.documented+checklist.pending,8);
+ assert.equal(checklist.checks.length,10);
+ assert.equal(checklist.documented+checklist.pending,10);
  const byId=Object.fromEntries(checklist.checks.map(x=>[x.id,x]));
  if(byId.edition.documented)tally.idCataloged++;
  if(byId.budget.documented)tally.levelDocumented++;
@@ -33,6 +33,8 @@ for(const c of audit){
  if(byId.video.documented)tally.editionVisualConfirmed++;
  if(byId.gameplay.documented)tally.gameplayConfirmed++;
  if(!checklist.competitivelyVerified)tally.unverified++;
+ assert.equal(byId.additional.documented,false,'Sem registro de habilidades equipadas não afirmar slot ocupado');
+ assert.equal(byId.booster.documented,false,'Sem confirmação de slot não assumir ímpeto equipável');
  assert.equal(byId.base.documented,false,
    'Flag de base sem números exatos NÃO deve comprovar atributos finais');
  assert.equal(byId.video.documented,false,
@@ -58,6 +60,19 @@ const record=(c,level)=>({schema:'CRAQUE_PROGRESS_REVIEW_V248',numero:c.numero,
  card_id:String(c.id),name:c.name,level,pp:2*(level-1),
  confirmed_in_game:true,source:'conferência manual no eFootball',
  confirmed_at:'2026-10-19T06:00:00.000Z'});
+const skillsKey='scoutpro:v162:equipped:'+martinelli.numero+':'+martinelli.id;
+const boostKey='scoutpro:v103:booster:'+martinelli.numero;
+stored.set(skillsKey,'Passe de primeira; Toque duplo');
+stored.set(boostKey,JSON.stringify({card_id:martinelli.id,status:'vazio'}));
+let selected=V.proofChecklist(martinelli,map.get(191),{},storage);
+let selectedChecks=Object.fromEntries(selected.checks.map(x=>[x.id,x.documented]));
+assert.equal(selectedChecks.additional,true,'Habilidades informadas nesta edição precisam aparecer');
+assert.equal(selectedChecks.booster,true,'Slot confirmado desta edição precisa aparecer');
+stored.set(boostKey,JSON.stringify({card_id:'outra-edicao',status:'vazio'}));
+selected=V.proofChecklist(martinelli,map.get(191),{},storage);
+assert.equal(selected.checks.find(x=>x.id==='booster').documented,false,
+ 'Slot de outra edição não deve migrar para Martinelli');
+stored.delete(skillsKey);stored.delete(boostKey);
 const confirmed=V.buildReview(martinelli,raw,{},audit,'posse',{store:storage});
 assert.equal(confirmed.status,'complete');
 assert.equal(confirmed.pp,50);
