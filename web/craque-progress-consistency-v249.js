@@ -151,7 +151,7 @@ async function mount(){
  const path=relative()+'SCOUT_V69_AUDITORIA.json';
  let cards;
  try{
-  const response=await host.fetch(path,{cache:'no-store'});
+  const response=await host.fetch(path);
   if(!response.ok)throw Error('catálogo indisponível');
   const data=await response.json();
   if(!Array.isArray(data.cards)||data.cards.length!==246)throw Error('acervo incompleto');
