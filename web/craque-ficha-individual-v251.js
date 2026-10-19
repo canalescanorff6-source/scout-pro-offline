@@ -517,7 +517,7 @@ function display(){
  const trialsApi=host.CRAQUE_MATCH_EVIDENCE_V256;
  if(trialsApi?.render){
   try{block.append(trialsApi.render(doc,{
-   card,check,store:host.localStorage
+   card,check,lab,store:host.localStorage
   }))}catch(error){
    block.append(mk('p','ct251-warning',
     'Histórico V256 indisponível: '+String(error?.message||error)));
