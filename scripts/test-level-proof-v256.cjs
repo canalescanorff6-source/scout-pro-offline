@@ -46,6 +46,8 @@ for(const card of catalog){
 }
 assert.equal(documented,85);
 assert.equal(withoutLevel,161);
+assert.equal(mathematicalButUnverified,161,
+ 'PP matematicamente fechados em 161 edições não equivalem a nível confirmado');
 assert(mathematicalButUnverified>0,
  'O risco de PP matematicamente completos, porém não confirmados, precisa estar coberto');
 assert.equal(checks,1230);
@@ -66,6 +68,20 @@ for(const mutation of [
   shown_position:martinelli.posicao,recommended_levels:martinelli.niveis};
  assert.equal(E.compare(card,'posse',{}).proposal,null);
 }
+// Fixture SINTÉTICA fora das 246 cartas, apenas para comprovar que o
+// algoritmo ainda permite uma hipótese quando nível, origem e custo existem.
+const synthetic=[2,0,0,0,0,12,12,0,0,0]; // 2 + 24 + 24 = 50 PP
+assert.equal(T.total(synthetic),50);
+const eligible={...martinelli,capture:191,edition:martinelli.versao,
+ shown_position:'AC',posicao:'AC',niveis:synthetic.slice(),
+ recommended_levels:synthetic.slice()};
+assert.equal(E.levelDocumented(eligible),true);
+const eligibleReview=E.compare(eligible,'posse',{});
+assert(eligibleReview.analysis.levelDocumented);
+assert(eligibleReview.proposal,
+ 'Com orçamento confirmado, o motor deve conseguir melhorar uma build sintética ruim');
+assert.equal(T.total(eligibleReview.proposal.levels),50);
+assert.notDeepEqual(eligibleReview.proposal.levels,synthetic);
 const engine=read('web/craque-role-intelligence-v233.js');
 assert(engine.includes("const hasLevelEvidence=levelDocumented(card)"));
 assert(engine.includes("if(!analysis||!analysis.confirmed||!analysis.levelDocumented"));
