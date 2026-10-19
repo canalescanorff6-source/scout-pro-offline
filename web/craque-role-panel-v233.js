@@ -74,7 +74,10 @@
   content.append(cautions);
   const comparison=make('section','ct-v233-comparison');
   addLine(comparison,'h4','','Comparação matemática — opcional');
-  if(out.proposal){
+  const provenPP=Number.isInteger(card.max_level)&&
+   Number(card.pp)===2*(card.max_level-1)&&
+   /^informado_pelo_usuario_/.test(String(card.pp_origem||''));
+  if(out.proposal&&provenPP){
    addLine(comparison,'p','',
     'Treino registrado: '+x.budget+' PP. Hipótese alternativa: '+out.proposal.spent+
     ' PP. A distribuição registrada NÃO será alterada.');
@@ -84,7 +87,9 @@
      change.name+': '+change.from+' → '+change.to+' ('+(change.delta>0?'+':'')+change.delta+')');
    }
    comparison.append(table);
-  }else addLine(comparison,'p','',out.reason);
+  }else addLine(comparison,'p','',!provenPP?
+   'PP ainda sem nível máximo documentado na edição exata. A V251 suspendeu nova redistribuição até essa confirmação.':
+   out.reason);
   addLine(comparison,'small','ct-v233-disclaimer',
    'Não aplicar automaticamente. Conferir nível máximo, edição/Card ID, status no jogo e desempenho antes de aprovar qualquer troca.');
   content.append(comparison);
@@ -113,6 +118,18 @@
   panel.append(summary,make('div','ct-v233-body'));
   anchor.insertAdjacentElement('afterend',panel);
   fill();
+  // A leitura V233 é histórica/consultiva: após a V251 reconciliar a edição,
+  // não apresentar alternativas se o nível máximo ainda não foi confirmado.
+  host.addEventListener('scoutpro:v251:canonical-data',event=>{
+   const v=event.detail||{};
+   if(Number(v.capture)!==Number(card.capture)||String(v.id)!==String(card.id)||
+    String(v.name)!==String(card.name)||String(v.edition)!==String(card.edition))return;
+   for(const field of ['native_skills','attack_style','defence_style','boost1','boost2',
+    'pp_origem','max_level','recommended_levels','base_stats_known']){
+    if(Object.hasOwn(v,field))card[field]=v[field];
+   }
+   fill();
+  });
   doc.addEventListener('scoutpro:tactic-selected-v220',event=>{
    const next=event.detail?.tactic;
    if(api.MODES[next]){
