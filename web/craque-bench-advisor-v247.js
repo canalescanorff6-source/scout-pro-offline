@@ -14,10 +14,12 @@ const moduleApi=name=>{
 };
 const trainingDefault=()=>host?.SCOUT_POSITION_TRAINING_V246||moduleApi('./scout-position-training-v246.js');
 const tacticsDefault=()=>host?.CRAQUE_TACTICS_V230||moduleApi('./craque-tactics-v230.js');
+const identityDefault=()=>host?.SCOUT_PLAYER_IDENTITY_V245||moduleApi('./scout-player-identity-v245.js');
 const byId=(byCap,cap)=>typeof byCap?.get==='function'?byCap.get(Number(cap)):byCap?.[Number(cap)];
 const formatCap=n=>'#'+String(n).padStart(3,'0');
-function recommend({card,starters,selections,byCap,mode='posse',training,tactics}={}){
- const pos=training||trainingDefault(),tac=tactics||tacticsDefault();
+function recommend({card,starters,selections,byCap,mode='posse',training,tactics,identity}={}){
+ const pos=training||trainingDefault(),tac=tactics||tacticsDefault(),
+  people=identity||identityDefault();
  if(!pos||!tac||!card||!Array.isArray(starters)||!selections||!byCap)
   return {eligible:false,status:'indisponível',reason:'Dados táticos ou escalação indisponíveis.'};
  const entries=starters.map(entry=>{
@@ -26,16 +28,25 @@ function recommend({card,starters,selections,byCap,mode='posse',training,tactics
   const fit=role?pos.status(card,role):{eligible:false,label:'Vaga não documentada'};
   return {slot,role,incumbent,fit};
  }).filter(x=>x.role&&x.incumbent);
- if(entries.some(x=>Number(x.incumbent.numero)===Number(card.numero))){
-  return {eligible:false,status:'já escalado',reason:'Esta carta já é titular; não pode substituir a si mesma.'};
+ if(entries.some(x=>Number(x.incumbent.numero)===Number(card.numero)||
+  (people?.key&&people.key(x.incumbent)===people.key(card)))){
+  return {eligible:false,status:'já escalado',position:null,slot:null,incumbent:null,
+   reason:'Esta pessoa já é titular nesta formação (inclusive se for outra edição da carta). Escolha um reserva diferente.'};
  }
  const possible=entries.filter(x=>x.fit.eligible).map(x=>{
-  const candidate=tac.score(card,x.slot,mode),incumbent=tac.score(x.incumbent,x.slot,mode);
-  const gain=candidate.score-incumbent.score;
-  return {...x,candidate,incumbentScore:incumbent.score,gain};
+  const candidate=tac.score(card,x.slot,mode),
+   incumbentFit=pos.status(x.incumbent,x.role),
+   incumbent=incumbentFit.eligible?tac.score(x.incumbent,x.slot,mode):null;
+  // Não interpretar -100 (posição não confirmada) como ganho de 100
+  // pontos de qualidade/meta. Isto é uma necessidade de regularização.
+  const gain=incumbent?candidate.score-incumbent.score:null;
+  return {...x,candidate,incumbentFit,incumbentScore:incumbent?.score??null,gain};
  }).filter(x=>x.candidate.score>=0);
  // Comparação ordinal/documental, não ranking de desempenho ou prova de meta.
- possible.sort((a,b)=>b.gain-a.gain||b.candidate.score-a.candidate.score||
+ possible.sort((a,b)=>
+  Number(b.incumbentFit.eligible===false)-Number(a.incumbentFit.eligible===false)||
+  (b.gain??-999)-(a.gain??-999)||
+  b.candidate.score-a.candidate.score||
   Number(a.incumbent.numero)-Number(b.incumbent.numero)||a.slot.localeCompare(b.slot));
  if(!possible.length){
   const observed=[...new Set(entries.filter(x=>x.role!=='GO')
@@ -49,11 +60,20 @@ function recommend({card,starters,selections,byCap,mode='posse',training,tactics
   best.fit.status==='treinada'?'treino confirmado':'familiaridade confirmada';
  const reasons=best.candidate.signals.filter(x=>!/^Estilo da edição|^Habilidades nativas|^Validar familiaridade/.test(x));
  const suggestion=reasons[0]||'posição e estilo cadastrados; avaliação funcional ainda pendente';
+ const decision=best.incumbentFit.eligible===false?'corrigir_posicao_titular':
+  best.gain>0?'encaixe_documental_favoravel':'alternativa_sem_vantagem_comprovada';
+ const caution=decision==='corrigir_posicao_titular'?
+  'O titular atual não tem familiaridade confirmada nesta vaga. Esta troca corrige o encaixe posicional; NÃO é prova de qualidade superior.':
+  decision==='encaixe_documental_favoravel'?
+  'O reserva tem sinais documentais de encaixe melhores nesta tática, não desempenho superior comprovado.':
+  'Sem ganho de encaixe documental demonstrado sobre o titular atual; considerar somente rodízio, cansaço ou instrução específica.';
  return {eligible:true,status:best.fit.status,position:best.role,slot:best.slot,
   incumbent:{numero:best.incumbent.numero,name:best.incumbent.name},
   candidateScore:best.candidate.score,incumbentScore:best.incumbentScore,
+  evidence:'comparacao_ordinal_sem_gameplay',decision,gain:best.gain,
+  positionEvidence:best.fit.label,incumbentPositionConfirmed:best.incumbentFit.eligible,
   reason:'Alternativa documental para '+tacticName+': '+roleStatus+'; '+suggestion+
-   '. Não garante que será melhor em partidas.',
+   '. '+caution+' Não usa Overall, nem garante rendimento em partidas.',
   text:'Jogar como '+best.role+' · Substituir '+formatCap(best.incumbent.numero)+' '+best.incumbent.name};
 }
 return Object.freeze({recommend});
