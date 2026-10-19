@@ -6,6 +6,9 @@
 'use strict';
 const ALIASES=Object.freeze({AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DC:'ZG',ZC:'ZG',ZG:'ZG',DD:'LD',LD:'LD',DE:'LE',LE:'LE',GR:'GO',GO:'GO',PTD:'PTD',PTE:'PTE',MLD:'MLD',MLE:'MLE'});
 const BENCH_SIZE=12,START_SIZE=11,SQUAD_SIZE=23;
+const identity=host?.SCOUT_PLAYER_IDENTITY_V245||
+ (typeof module==='object'&&module.exports?require('./scout-player-identity-v245.js'):null);
+if(!identity)throw Error('Motor de identidade de jogadores V245 indisponível');
 const NAMES=Object.freeze(['Âncora','Circuito','Magnetismo','Diamante','Labirinto','Triângulo','Cadência','Prisma','Vértice','Controle','Ritmo','Precisão','Sutileza','Visão','Pressão']);
 function norm(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
 function position(card){return ALIASES[String(card?.posicao||'').toUpperCase()]||null}
@@ -104,6 +107,7 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
  }));
  const byN=new Map(filtered.map(c=>[Number(c.numero),c]));
  const used=new Set();
+ const usedNames=entries.map(()=>new Set());
  const slots=formation.starters.map(s=>({slot:s.slot,role:desired(s.slot)}));
  // Posicionamentos raros primeiro para evitar consumir jogadores de funções escassas.
  const exactCount=role=>filtered.filter(c=>position(c)===role).length;
@@ -111,7 +115,7 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
                      (exactCount(b.role)/slots.filter(s=>s.role===b.role).length)||
    (a.slot==='vole'?-1:b.slot==='vole'?1:a.slot.localeCompare(b.slot)));
  function takeFor(slot,teamIndex){
-  const possible=filtered.filter(c=>!used.has(Number(c.numero))&&suitability(c,slot).score>=0);
+  const possible=filtered.filter(c=>!used.has(Number(c.numero))&&!usedNames[teamIndex].has(identity.key(c))&&suitability(c,slot).score>=0);
   if(!possible.length)return null;
   possible.sort((a,b)=>{
    const extras=card=>tactic==='posse'?0:Math.max(-150,tactical.score(card,slot,tactic).score)*0.6;
@@ -122,7 +126,7 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
    const rb=(Number(b.numero)+teamIndex*17)%Math.max(1,filtered.length);
    return ra-rb||Number(a.numero)-Number(b.numero);
   });
-  const pick=possible[0];used.add(Number(pick.numero));return pick;
+  const pick=possible[0];used.add(Number(pick.numero));usedNames[teamIndex].add(identity.key(pick));return pick;
  }
  for(let s=0;s<slots.length;s++){
   const slot=slots[s].slot;
@@ -147,9 +151,13 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
  for(let round=0;round<BENCH_SIZE;round++){
   for(let offset=0;offset<count;offset++){
    const t=(offset+round*3)%count;
-   const c=benchPool[cursor++];
-   if(!c)break;
-   used.add(Number(c.numero));entries[t].bench.push({cap:Number(c.numero),role:position(c)});
+   // V245: jogadores diferentes em campo E no banco. Card ID e CAP
+   // diferentes não autorizam outra edição da mesma pessoa na equipe.
+   const index=benchPool.findIndex(c=>!usedNames[t].has(identity.key(c)));
+   if(index<0){entries[t].warnings.push('Sem reserva de identidade diferente disponível.');continue}
+   const c=benchPool.splice(index,1)[0];cursor++;
+   used.add(Number(c.numero));usedNames[t].add(identity.key(c));
+   entries[t].bench.push({cap:Number(c.numero),role:position(c)});
   }
  }
  // Rodada 2: os jogadores que sobraram na primeira bateria entram agora no banco.
@@ -158,19 +166,34 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
  if(Number(cycle)===2&&left.length&&entries.length){
   const swaps=left.slice();
   for(let k=0;k<swaps.length;k++){
-   const team=entries[k%entries.length];
-   const benchIndex=Math.floor(k/entries.length)%team.bench.length;
-   if(!team.bench.length)continue;
-   const previous=team.bench[benchIndex].cap,coming=swaps[k];
-   const selectedCard=byN.get(coming);
-   team.bench[benchIndex]={cap:coming,role:position(selectedCard)};
-   used.delete(previous);used.add(coming);
+   const coming=swaps[k],selectedCard=byN.get(coming),newName=identity.key(selectedCard);
+   let exchanged=false;
+   // Inserir os sobrantes na segunda rodada SEM substituir outra edição
+   // do mesmo atleta. A carta anterior vai para a lista de espera.
+   for(let shift=0;shift<entries.length&&!exchanged;shift++){
+    const t=(k+shift)%entries.length,team=entries[t];
+    for(let offset=0;offset<team.bench.length;offset++){
+     const benchIndex=(Math.floor(k/entries.length)+offset)%team.bench.length;
+     const previous=team.bench[benchIndex].cap;
+     // V245: nunca expulsar da rodada 2 uma carta recém-vinda da lista
+     // de espera. Isso preserva a cobertura completa das duas rodadas.
+     if(swaps.includes(previous))continue;
+     const currentName=identity.key(byN.get(previous));
+     if(newName!==currentName&&usedNames[t].has(newName))continue;
+     team.bench[benchIndex]={cap:coming,role:position(selectedCard)};
+     usedNames[t].delete(currentName);usedNames[t].add(newName);
+     used.delete(previous);used.add(coming);exchanged=true;break;
+    }
+   }
+   if(!exchanged)entries[0].warnings.push('Carta #'+coming+' permaneceu em espera: outra edição já ocupa a equipe.');
   }
   left=filtered.filter(c=>!used.has(Number(c.numero))).map(c=>Number(c.numero));
  }
  for(const team of entries){
   const inTeam=new Set([...team.starters.map(s=>s.cap),...team.bench.map(b=>b.cap)]);
   if(inTeam.size!==team.starters.length+team.bench.length)throw Error('Carta duplicada na equipe');
+  const players=[...team.starters,...team.bench].map(x=>byN.get(x.cap));
+  if(!identity.unique(players))throw Error('V245: duas edições da mesma pessoa na equipe '+team.id);
   const occupied=new Map(team.starters.map(s=>[s.slot,byN.get(s.cap)]));
   const play=slot=>occupied.get(slot),hasStyle=(slots,rx)=>slots.some(slot=>rx.test(styleFor(play(slot)||{})));
   const primary=hasStyle(['vole','vold'],/orquestrador/);
@@ -192,7 +215,7 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
  if(usedInAll.size!==entries.reduce((sum,t)=>sum+t.starters.length+t.bench.length,0))throw Error('Uma carta aparece em mais de uma equipe da mesma série');
  if(usedInAll.size+left.length!==expectedTotal||left.some(n=>usedInAll.has(n)))throw Error('Cobertura de cartas inconsistente na rodada');
  return {schema:'SCOUT_ROTATION_V219',formation:formation.id,cycle:Number(cycle),tactic,teams:entries,leftovers:left,counts:stat,
-  rules:'23 cartas por equipe: 11 titulares e 12 reservas. Sem repetição entre equipes da mesma formação/rodada. Adaptação não prova compatibilidade. Sem Overall.',
+  rules:'23 jogadores diferentes por equipe: 11 titulares e 12 reservas. Cartas alternativas da mesma pessoa são proibidas na mesma equipe; nenhuma carta é excluída do catálogo. Adaptação não prova compatibilidade. Sem Overall.',
   source:'SCOUT_V69_AUDITORIA.json',
   exactBlackMappingConfirmed:false};
 }

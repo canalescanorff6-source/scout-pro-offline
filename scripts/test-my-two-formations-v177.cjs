@@ -70,10 +70,11 @@ assert(h.includes('meu-time-duas-formacoes-v177.js'));
 assert(js.includes('SCOUT_V177_DUAS_FORMACOES.json'));
 assert(js.includes("profiles.save(active(),activeMode,currentSelections()"),"A compatibilidade V177 agora é mantida pelo gerenciador V231");
 assert(txt('web/craque-lineup-profiles-v231.js').includes("scoutpro:v177:minhas-duas-formacoes:"),"A chave de Posse V177 precisa continuar válida");
-assert(txt('web/craque-lineup-profiles-v231.js').includes("new Set(Object.values(picked)).size===11"),"Continuar impedindo titulares duplicados");
+assert(txt('web/craque-lineup-profiles-v231.js').includes("new Set(Object.values(picked)).size!==11"),"Continuar impedindo titulares com a mesma carta");
+assert(txt('web/craque-lineup-profiles-v231.js').includes("!identity.unique(names)"),"V245: também impedir duas cartas da mesma pessoa");
 assert(js.includes('Requisitos encontrados'));
 assert(js.includes('confirmada dentro do jogo')||js.includes('confirmada dentro do jogo')||js.includes('confirmada dentro do jogo')||js.includes('confirmada dentro do jogo')||js.includes('ativação real'));
-assert(js.includes('A carta #'));
+assert(js.includes('identity.key(byCap.get(Number(n)))===identity.key(c)'),'A seleção V177 também precisa rejeitar versões diferentes da mesma pessoa');
 assert(nav.includes('href="meu-time-duas-formacoes-v177.html"'));
 assert(oldHtml.includes('href="meu-time-duas-formacoes-v177.html"'));
 for(const f of ['meu-time-duas-formacoes-v177.html','meu-time-duas-formacoes-v177.js','SCOUT_V177_DUAS_FORMACOES.json'])
