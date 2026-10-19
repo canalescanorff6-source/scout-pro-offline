@@ -1304,7 +1304,13 @@ def run():
                         problems.append(f"{name}: auditoria V248 não separa os 85 níveis conhecidos dos 161 pendentes: {counts}")
                     first=page.locator('#v248-cards .ct248-card').first
                     first_cap=int(first.get_attribute('data-cap'))
-                    if not first.locator('.ct248-art img').first.evaluate("(img)=>img.complete&&img.naturalWidth>0"):
+                    first.scroll_into_view_if_needed()
+                    try:
+                        page.wait_for_function("""() => {
+                          const i=document.querySelector('#v248-cards .ct248-card .ct248-art img');
+                          return i&&i.complete&&i.naturalWidth>0;
+                        }""",timeout=15000)
+                    except Exception:
                         problems.append(f"{name}: imagem original ausente no painel de níveis")
                     first.locator('.ct248-details>summary').click()
                     first.locator('input[name=level]').fill('26')
