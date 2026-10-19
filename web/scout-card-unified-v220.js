@@ -85,7 +85,7 @@ function mount(doc){
   mk(doc,'span','',String(card.shown_position||card.posicao||'Posição pendente')),
   mk(doc,'span','',String(card.attack_style||'Estilo da carta pendente')),
   mk(doc,'span','scout-v220-id','Card ID '+id));
- const intro=mk(doc,'p','scout-v220-sub','Uma ficha principal. Escolha a tática, confira PP, habilidades e ímpetos, e teste sem perder seu treino de Posse.');
+ const intro=mk(doc,'p','scout-v220-sub','Uma ficha principal por edição. Cada estilo é uma hipótese até haver atributos, PP e testes da carta exata; não priorizar Overall.');
  const tabs=mk(doc,'div','scout-v220-tabs');tabs.id='scout-v220-tabs';tabs.setAttribute('role','group');tabs.setAttribute('aria-label','Estilo de jogo do técnico');
  for(const t of engine.STYLES){
   const b=mk(doc,'button','scout-v220-tab',t.label);b.type='button';b.dataset.tactic=t.id;
@@ -143,9 +143,17 @@ function mount(doc){
  });
  function switchTraining(tactic){
   const s=engine.styleFor(tactic);
-  const fallback=baseline?engine.hypothetical({...card,niveis:baseline},tactic,baseline):null;
+  // V252: somente o treino registrado e matematicamente confirmado pode
+  // fundamentar uma hipótese. Um draft experimental NÃO vira cinco builds
+  // supostamente confiáveis ao trocar a tática.
+  const sourceVerified=Boolean(possession)&&engine.confirmSource(card);
+  const fallback=sourceVerified?engine.hypothetical({...card,niveis:possession},tactic,possession):null;
+  const proposed=Array.isArray(fallback?.levels)&&engine.valid(fallback.levels)&&
+   engine.total(fallback.levels)===budget?fallback.levels:null;
   host.dispatchEvent(new host.CustomEvent('scoutpro:tactic-selected-v220',{
-   detail:{cap,card_id:id,tactic,label:s.label,proposedLevels:fallback?.levels||null}
+   detail:{cap,card_id:id,tactic,label:s.label,proposedLevels:proposed,
+    evidenceStatus:sourceVerified?'hipotese_de_base_conferida':'sem_base_conferida',
+    verifiedInGameplay:false}
   }));
   doc.dispatchEvent(new host.CustomEvent('scoutpro:tactic-selected-v220',{detail:{tactic}}));
  }
