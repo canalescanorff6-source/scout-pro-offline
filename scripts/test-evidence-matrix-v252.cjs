@@ -66,8 +66,27 @@ stored.set(skillsKey,'Passe de primeira; Toque duplo');
 stored.set(boostKey,JSON.stringify({card_id:martinelli.id,status:'vazio'}));
 let selected=V.proofChecklist(martinelli,map.get(191),{},storage);
 let selectedChecks=Object.fromEntries(selected.checks.map(x=>[x.id,x.documented]));
-assert.equal(selectedChecks.additional,true,'Habilidades informadas nesta edição precisam aparecer');
+assert.equal(selectedChecks.additional,false,
+ 'Texto informado não equivale à lista completa conferida na V254');
 assert.equal(selectedChecks.booster,true,'Slot confirmado desta edição precisa aparecer');
+const V254=require('../web/skills-booster-v162.js');
+const confirmedManual=storage.getItem(skillsKey);
+const confirmedKey=V254.confirmationKey(martinelli.numero,martinelli.id);
+const confirmedRecord={schema:'CRAQUE_ADDITIONAL_V254',capture:martinelli.numero,
+ card_id:martinelli.id,confirmed:true,fingerprint:V254.fingerprint(confirmedManual)};
+stored.set(confirmedKey,JSON.stringify(confirmedRecord));
+selected=V.proofChecklist(martinelli,map.get(191),{},storage);
+assert.equal(selected.checks.find(x=>x.id==='additional').documented,true,
+ 'Só a confirmação V254 da lista atual pode validar habilidades adicionais');
+stored.set(skillsKey,'Passe de primeira; Toque duplo; Bloqueador');
+selected=V.proofChecklist(martinelli,map.get(191),{},storage);
+assert.equal(selected.checks.find(x=>x.id==='additional').documented,false,
+ 'Editar as habilidades invalida a conferência da V254');
+stored.set(skillsKey,confirmedManual);
+stored.set(confirmedKey,JSON.stringify({...confirmedRecord,card_id:'OUTRA_EDICAO'}));
+assert.equal(V.proofChecklist(martinelli,map.get(191),{},storage).checks.find(x=>x.id==='additional').documented,false,
+ 'Confirmar outra edição não autoriza slots do Martinelli');
+stored.set(confirmedKey,JSON.stringify(confirmedRecord));
 stored.set(boostKey,JSON.stringify({card_id:'outra-edicao',status:'vazio'}));
 selected=V.proofChecklist(martinelli,map.get(191),{},storage);
 assert.equal(selected.checks.find(x=>x.id==='booster').documented,false,
