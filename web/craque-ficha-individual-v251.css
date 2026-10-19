@@ -1,0 +1,130 @@
+/* CRAQUE TÁTICO V251 — engenharia individual sem duplicar a ficha principal.
+ * Azul-noite + champanhe, texto legível em Windows/Android, sem verde neon.
+ */
+body[data-page="detail"] #ct251-individual-ficha{
+ box-sizing:border-box;display:grid;gap:12px;min-width:0;
+ width:100%;max-width:100%;margin:13px 0 16px;
+ padding:clamp(14px,2vw,22px);border:1px solid #786a55;
+ border-radius:17px;background:linear-gradient(132deg,#14273e,#0b192b 88%);
+ color:#ecf2f8;box-shadow:0 10px 25px rgba(1,6,20,.22);
+}
+body[data-page="detail"] .ct251-heading{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:10px;flex-wrap:wrap;
+}
+body[data-page="detail"] .ct251-title{
+ color:#f5d99d;font-size:clamp(14px,1.7vw,17px);font-weight:900;
+}
+body[data-page="detail"] .ct251-status{
+ font-size:10px;line-height:1.35;font-weight:800;
+ padding:6px 9px;border-radius:999px;color:#e4eef7;
+ background:#263a52;border:1px solid #68809a;
+}
+body[data-page="detail"] #ct251-individual-ficha[data-review="no_build"] .ct251-status{
+ border-color:#e7bb70;color:#f7dda9;
+}
+body[data-page="detail"] #ct251-individual-ficha[data-review="no_level"] .ct251-status{
+ border-color:#90a6b9;color:#d9e4ee;
+}
+body[data-page="detail"] #ct251-individual-ficha[data-review="unsupported"]{
+ border-color:#e9a28b;
+}
+body[data-page="detail"] .ct251-intro{
+ font-size:12px;line-height:1.6;color:#cdd9e8;margin:0;overflow-wrap:anywhere;
+}
+body[data-page="detail"] .ct251-evidence{
+ display:flex;gap:7px;flex-wrap:wrap;
+}
+body[data-page="detail"] .ct251-evidence span{
+ font-size:10px;line-height:1.4;border-radius:9px;
+ color:#f3dfb5;background:#1d3650;border:1px solid #526c8a;
+ padding:6px 8px;font-weight:800;
+}
+body[data-page="detail"] .ct251-duplicates{
+ font-size:11px;line-height:1.65;margin:0;
+ padding:10px 12px;border-radius:10px;background:rgba(223,168,92,.09);
+ border-left:3px solid #dab573;color:#f3ddb4;
+}
+body[data-page="detail"] .ct251-evidence-details{
+ background:rgba(9,25,43,.72);border:1px solid #415f7b;border-radius:10px;
+ min-width:0;
+}
+body[data-page="detail"] .ct251-evidence-details summary{
+ display:list-item;list-style:disclosure-closed inside;
+ cursor:pointer;padding:12px;color:#ebd5a7;
+ font-size:12px;font-weight:800;min-height:44px;box-sizing:border-box;
+}
+body[data-page="detail"] .ct251-evidence-details[open] summary{
+ list-style:disclosure-open inside;
+}
+body[data-page="detail"] .ct251-evidence-details ul{
+ margin:0;padding:0 18px 14px 28px;color:#d0dfed;
+}
+body[data-page="detail"] .ct251-evidence-details li{
+ font-size:11px;line-height:1.6;margin:5px 0;
+}
+body[data-page="detail"] .ct251-preview{
+ border:1px solid #55708f;border-radius:12px;
+ background:rgba(13,32,54,.78);padding:12px;
+ min-width:0;
+}
+body[data-page="detail"] .ct251-preview h4{
+ color:#f8db9b;font-size:13px;margin:0 0 10px;
+}
+body[data-page="detail"] .ct251-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:7px;
+}
+body[data-page="detail"] .ct251-point{
+ box-sizing:border-box;min-width:0;display:grid;gap:3px;
+ padding:9px;border-radius:9px;border:1px solid #445f7b;background:#172f4a;
+}
+body[data-page="detail"] .ct251-priority{
+ border-color:#a88c61;background:#253850;
+}
+body[data-page="detail"] .ct251-point span{
+ color:#d4e0ea;font-size:10px;overflow-wrap:anywhere;line-height:1.35;
+}
+body[data-page="detail"] .ct251-point strong{
+ font-size:13px;color:#f7e2b7;
+}
+body[data-page="detail"] .ct251-point small{
+ font-size:10px;color:#aec9df;
+}
+body[data-page="detail"] .ct251-pp,
+body[data-page="detail"] .ct251-changes,
+body[data-page="detail"] .ct251-warning{
+ font-size:11px;line-height:1.6;margin:10px 0 0;color:#c9d9e7;
+}
+body[data-page="detail"] .ct251-warning{color:#ffdfaa}
+body[data-page="detail"] .ct251-use{
+ display:inline-flex;align-items:center;justify-content:center;
+ margin-top:12px;min-height:44px;max-width:100%;padding:11px 15px;
+ color:#14263d;background:linear-gradient(125deg,#f5dc9e,#ddb976);
+ border:1px solid #f7deb0;border-radius:10px;font-weight:900;font-size:11px;
+ cursor:pointer;
+}
+body[data-page="detail"] .ct251-use:focus-visible,
+body[data-page="detail"] .ct251-evidence-details summary:focus-visible{
+ outline:3px solid #f4d292;outline-offset:3px;
+}
+body[data-page="detail"] .ct251-caution{
+ font-size:10px;line-height:1.62;color:#b4c8dc;margin:0;
+ padding-left:10px;border-left:2px solid #b39566;
+}
+@media(max-width:720px){
+ body[data-page="detail"] #ct251-individual-ficha{
+  padding:12px;gap:10px;margin:8px 0 12px;border-radius:12px;
+ }
+ body[data-page="detail"] .ct251-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-page="detail"] .ct251-preview{padding:10px}
+ body[data-page="detail"] .ct251-use{width:100%}
+}
+@media(max-width:390px){
+ body[data-page="detail"] .ct251-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-page="detail"] .ct251-title{font-size:13px}
+ body[data-page="detail"] .ct251-heading{align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+ body[data-page="detail"] .ct251-use{transition:none!important;animation:none!important}
+}
