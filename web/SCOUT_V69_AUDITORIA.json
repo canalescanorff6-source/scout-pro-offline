@@ -7462,9 +7462,9 @@
       "recomendacao": "A",
       "niveis": [
         4,
-        6,
+        4,
+        8,
         10,
-        12,
         8,
         0,
         0,
@@ -7480,7 +7480,7 @@
         "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central",
-        "Revalidar distribuição dos 50 PP: ficha anterior foi construída com 66 PP; não aplicar build anterior até revisão."
+        "Validar experimentalmente a nova proposta de 50 PP (4/4/8/10/8); NÃO é treino aprovado em jogo."
       ],
       "arquivo": "fichas/191_Gabriel_Martinelli.html",
       "habilidades_nativas_origem": {
@@ -7490,7 +7490,10 @@
         "url": "https://pesdb.net/efootball/players/gabriel-martinelli-105850811319718",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
-      }
+      },
+      "max_level": 26,
+      "pp_origem": "informado_pelo_usuario_2026-10-18",
+      "treino_proposto_nao_validado": true
     },
     {
       "numero": 192,
