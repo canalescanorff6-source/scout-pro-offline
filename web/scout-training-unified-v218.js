@@ -218,7 +218,7 @@ function mount(doc){
  // pode substituir o RASCUNHO LOCAL desta tática. Nunca altera o catálogo.
  host.addEventListener('scoutpro:v251:apply-proposal',event=>{
   const info=event.detail||{};
-  if(Number(info.cap)!==capture||String(info.card_id)!==id||
+  if(localPPMismatch()||Number(info.cap)!==capture||String(info.card_id)!==id||
     String(info.tactic)!==activeTactic||
     !valid(info.levels)||total(info.levels)!==budget)return;
   current=info.levels.slice();
