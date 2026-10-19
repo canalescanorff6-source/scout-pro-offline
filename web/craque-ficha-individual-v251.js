@@ -40,10 +40,14 @@ function related(card,cards){
  if(!sig||!Array.isArray(cards))return [];
  return cards.filter(c=>Number(c.numero)!==Number(card.numero)&&signature(c)===sig)
    .map(c=>({
-    numero:c.numero,name:c.name,id:String(c.id),
-    differentSkills:nativeNames(c.habilidades_nativas).join('|')!==nativeNames(card.habilidades_nativas).join('|'),
+    numero:c.numero,name:c.name,id:String(c.id),edition:String(c.versao||''),
+    differentSkills:nativeNames(c.habilidades_nativas).sort().join('|')!==
+     nativeNames(card.habilidades_nativas).sort().join('|'),
     differentBooster:norm(c.impeto_fixo)!==norm(card.impeto_fixo),
-    details:'Mesmo PP, posição, estilo e níveis; não significa mesma performance.'
+    differentDefenceStyle:norm(c.estilo_defesa)!==norm(card.estilo_defesa),
+    missingLevelEvidence:!confirmedLevel(c)||!confirmedLevel(card),
+    baseEvidencePending:c.base_stats_known!==true||card.base_stats_known!==true,
+    details:'Mesmo PP, posição, estilo ofensivo e distribuição. Comparação só documental; não significa mesma performance.'
    }));
 }
 function sourceFor(card,raw){
@@ -419,13 +423,34 @@ function display(){
  }
  criteria.append(criteriaList);block.append(criteria);
  if(check.related.length){
+  // V258: ampliar a conferência sem criar uma segunda ficha, nem copiar
+  // treino entre edições com mesmo orçamento ou função.
+  const divergent=check.related.filter(x=>x.differentSkills||
+   x.differentBooster||x.differentDefenceStyle);
   const similar=mk('p','ct251-duplicates',
-   'Revisão obrigatória de treinos repetidos: '+
-    check.related.slice(0,5).map(x=>'#'+x.numero+' '+x.name+
-     (x.differentSkills?' (nativas diferentes)':'')+
-     (x.differentBooster?' (ímpeto diferente)':'')).join(' · ')+
-    '. Repetição não é prova de erro nem de acerto.');
+   'Atenção: treino registrado idêntico em '+check.related.length+
+   ' outra(s) edição(ões). '+divergent.length+
+   ' têm diferenças documentais de habilidades, ímpeto ou função defensiva. '+
+   'Isso exige comparação individual, não substituição automática.');
   block.append(similar);
+  const peers=mk('details','ct251-evidence-details ct258-duplicate-details');
+  peers.append(mk('summary','','Conferir TODAS as '+check.related.length+
+   ' edições com treino igual · Card IDs e diferenças'));
+  const list=mk('ul','ct258-duplicate-list');
+  for(const peer of check.related){
+   const differences=[];
+   if(peer.differentSkills)differences.push('habilidades nativas diferentes');
+   if(peer.differentBooster)differences.push('ímpeto fixo diferente');
+   if(peer.differentDefenceStyle)differences.push('função defensiva diferente');
+   if(peer.missingLevelEvidence)differences.push('nível/PP sem documentação completa');
+   if(peer.baseEvidencePending)differences.push('atributos-base ainda pendentes');
+   if(!differences.length)differences.push('revisar atributos-base e comportamento em campo');
+   list.append(mk('li','',
+    '#'+String(peer.numero).padStart(3,'0')+' · '+peer.name+
+    ' · Card ID '+peer.id+' · '+(peer.edition||'edição pendente')+
+    ' — '+differences.join('; ')+'.'));
+  }
+  peers.append(list);block.append(peers);
  }
  const detail=mk('details','ct251-evidence-details');
  detail.append(mk('summary','','O que esta carta confirma e o que ainda falta'));
