@@ -157,6 +157,13 @@ function render(doc,{card,check,store,notify}={}){
   'Registre somente partidas realmente jogadas. A evidência fica ligada ao Card ID, à tática, à função e aos 10 níveis exatos. O nome de um vídeo NÃO significa vídeo verificado. Nenhum registro aprova uma build automaticamente.');
  content.append(tip);
  const profiles=[];
+ // Sem nível/PP conferidos na edição exata, manter relatório indisponível.
+ // Uma distribuição que fecha matematicamente NÃO confirma seu orçamento.
+ if(!Number.isInteger(check?.level)||check.level<1||check?.status==='unsupported'){
+  content.append(mk('p','ct256-warning',
+   'Nível máximo e PP desta edição ainda não estão conciliados. Confira os dados no jogo antes de registrar testes associados à build.'));
+  return wrapper;
+ }
  try{
   const original=Array.isArray(check?.original)?check.original:null;
   if(original&&T?.valid(original)&&T.total(original)===Number(card.pp)&&
