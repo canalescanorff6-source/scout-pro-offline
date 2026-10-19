@@ -602,6 +602,13 @@ async function begin(){
   }
  });
  host.addEventListener('scoutpro:v251:review-updated',display);
+ // V259: a confirmação V254 chega sem recarregar a ficha. Atualizar somente
+ // a mesma edição, sem gravar nada e sem interferir na outra carta da pessoa.
+ doc.addEventListener('scoutpro:skills-updated',event=>{
+  const change=event.detail||{};
+  if(Number(change.capture)===Number(card.numero)&&
+   String(change.card_id)===String(card.id))display();
+ });
 }
 if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',()=>{
  const observer=new host.MutationObserver(()=>{
