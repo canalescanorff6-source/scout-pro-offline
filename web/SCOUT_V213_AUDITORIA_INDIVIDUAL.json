@@ -2,8 +2,8 @@
   "schema": "scout_v213_card_by_card_evidence_audit",
   "source": "SCOUT_V69_AUDITORIA.json",
   "total": 246,
-  "duplicate_groups": 20,
-  "duplicate_cards": 56,
+  "duplicate_groups": 19,
+  "duplicate_cards": 54,
   "body_records": 15,
   "policy": "Somente leitura; preservar todas as builds, PP, IDs, habilidades e ímpetos; nunca aprovar alteração sem atributos e evidência por edição",
   "cards": [
@@ -10883,12 +10883,12 @@
       "nome": "Gabriel Martinelli",
       "card_id": "105850811319718",
       "edicao": "Highlight — National Team Selection Brazil Jun '26 — Gabriel Martinelli",
-      "pp": 66,
+      "pp": 50,
       "treino_registrado": [
         4,
-        6,
+        4,
+        8,
         10,
-        12,
         8,
         0,
         0,
@@ -10898,19 +10898,14 @@
       ],
       "atributos_base_confirmados": false,
       "biotipo_documentado": false,
-      "repeticao": {
-        "group": "PTE|ala produtivo|66|4,6,10,12,8,0,0,0,0,0",
-        "peers": [
-          198
-        ]
-      },
       "pendencias": [
         "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central",
-        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização",
+        "Validar os 50 PP propostos; 66 PP antigos preservados no histórico V247"
       ],
-      "status": "AUDITORIA PENDENTE — não alterar treino automaticamente",
+      "status": "AUDITORIA PENDENTE — proposta de 50 PP não homologada",
       "print_candidato": {
         "arquivo": "Gabriel_Martinelli_efhub.jpg",
         "habilidades_transcritas": [
@@ -10939,16 +10934,7 @@
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
       },
-      "comparacao_grupo_repetido": {
-        "colegas": [
-          198
-        ],
-        "mesma_build": true,
-        "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
-        "impetos_fixos_diferentes_no_grupo": true,
-        "substituicao_automatica": false,
-        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
-      }
+      "treino_status": "proposta_nao_validada"
     },
     {
       "numero": 192,
@@ -11236,12 +11222,6 @@
       ],
       "atributos_base_confirmados": false,
       "biotipo_documentado": false,
-      "repeticao": {
-        "group": "PTE|ala produtivo|66|4,6,10,12,8,0,0,0,0,0",
-        "peers": [
-          191
-        ]
-      },
       "pendencias": [
         "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
@@ -11278,16 +11258,6 @@
         "estado": "unverified",
         "pode_equipar_automaticamente": false,
         "observacao": "Disponibilidade do slot não comprovada; não sugerir gasto de token como certeza"
-      },
-      "comparacao_grupo_repetido": {
-        "colegas": [
-          191
-        ],
-        "mesma_build": true,
-        "impeto_fixo": "PENDENTE",
-        "impetos_fixos_diferentes_no_grupo": true,
-        "substituicao_automatica": false,
-        "decisao": "REVISÃO INDIVIDUAL — NÃO HOMOLOGADO"
       }
     },
     {
@@ -13603,6 +13573,6 @@
     43,
     182
   ],
-  "grupos_repetidos_impetos_fixos_distintos": 17,
-  "cartas_repetidas_com_comparacao": 56
+  "grupos_repetidos_impetos_fixos_distintos": 16,
+  "cartas_repetidas_com_comparacao": 54
 }
