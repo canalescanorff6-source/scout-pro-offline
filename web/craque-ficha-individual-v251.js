@@ -232,11 +232,22 @@ function catalogAudit(cards){
  * Prints candidatos e flags gerais não comprovam a edição exata. */
 function proofChecklist(card,index,lab,store){
  const matched=!!(card&&index&&Number(index.numero)===Number(card.numero)&&
-  String(index.card_id)===String(card.id)&&norm(index.edicao)===norm(card.versao));
+  String(index.card_id)===String(card.id)&&norm(index.nome)===norm(card.name)&&
+  norm(index.edicao)===norm(card.versao));
  const row=matched?index:{};
  const native=String(card?.habilidades_nativas||'').split(';').filter(x=>x.trim()).length;
  const stats=lab?.stats&&typeof lab.stats==='object'&&
   Object.values(lab.stats).some(x=>x&&Number.isFinite(x.base)&&x.base>=0&&x.base<=120);
+ let installedSkills='',boostSlot=null;
+ try{
+  installedSkills=String(store?.getItem('scoutpro:v162:equipped:'+
+   card.numero+':'+card.id)||'').trim();
+  boostSlot=JSON.parse(store?.getItem('scoutpro:v103:booster:'+
+   Number(card.numero))||'null');
+ }catch(_){boostSlot=null}
+ const extraConfirmed=installedSkills.split(';').map(x=>x.trim()).filter(Boolean);
+ const boosterReported=boostSlot&&String(boostSlot.card_id)===String(card.id)&&
+  ['vazio','ocupado','ausente'].includes(boostSlot.status);
  const checks=[
   {id:'edition',name:'CAP e Card ID vinculados à edição do catálogo',
    documented:matched&&!['sem_card_id','card_id_compartilhado'].includes(row.id_status),
@@ -247,6 +258,12 @@ function proofChecklist(card,index,lab,store){
   {id:'native',name:'Habilidades nativas documentadas',
    documented:matched&&native>0&&native===row.nativas_documentadas,
    note:'Cadastro não comprova habilidades equipadas.'},
+  {id:'additional',name:'Habilidades adicionais informadas nesta conta',
+   documented:extraConfirmed.length>0&&extraConfirmed.length<=5,
+   note:'Registro manual de habilidades; não comprova sua aplicação no jogo.'},
+  {id:'booster',name:'Slot de ímpeto conferido pelo usuário',
+   documented:Boolean(boosterReported),
+   note:'Só o slot confirmado da edição permite avaliar ímpeto equipável.'},
   {id:'base',name:'Atributos-base numéricos utilizáveis',
    documented:row.base_stats_confirmados===true&&Boolean(stats),
    note:'Uma flag sem valores não permite simular status finais.'},
