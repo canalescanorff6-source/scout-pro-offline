@@ -1,0 +1,54 @@
+/* V250 — Transferir somente conferências de nível por edição exata.
+   Tema azul-noite/chapagne, sem sombras pesadas ou modais que ocultem cartas. */
+body[data-page="progress-audit"] .ct250-transfer{
+ margin:22px 0 12px;
+ padding:clamp(17px,2.3vw,26px);
+ border:1px solid rgba(228,196,123,.43);
+ border-radius:18px;
+ background:linear-gradient(137deg,#142a47 5%,#0e1f35 92%);
+ box-shadow:0 12px 31px rgba(3,11,27,.18);
+ color:#eef2f8;
+}
+.ct250-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:18px}
+.ct250-heading>div{flex:1;min-width:0}
+.ct250-heading h2{margin:7px 0 10px;font-size:clamp(18px,2.1vw,24px);color:#f4e4c2}
+.ct250-heading p{font-size:12px;line-height:1.6;color:#cbd9eb;margin:7px 0 0}
+.ct250-heading button,.ct250-actions button{
+ border:1px solid #f0d18d;
+ border-radius:10px;
+ min-height:44px;
+ background:#f1ce81;
+ color:#11223b;
+ padding:11px 16px;
+ font:800 12px system-ui,-apple-system,"Segoe UI",sans-serif;
+ cursor:pointer;
+}
+.ct250-heading button{flex-shrink:0;max-width:270px}
+.ct250-heading button:disabled,.ct250-actions button:disabled{cursor:not-allowed;opacity:.55}
+.ct250-actions button:last-child{background:#203752;color:#e8eef7;border-color:#7892b1}
+.ct250-disclaimer{margin:17px 0 9px;font-size:11px!important;line-height:1.6!important;color:#cad6e6!important}
+.ct250-disclaimer strong{color:#ffe0a1}
+.ct250-notice{font-size:12px;line-height:1.5;min-height:18px;color:#d9e9f6}
+.ct250-notice[data-error="true"]{color:#ffc6a7}
+.ct250-preview{margin-top:15px;padding:15px;border-radius:13px;
+ border:1px solid rgba(177,198,221,.45);background:#0e2037}
+.ct250-preview[hidden],#v250-conflict-note[hidden],#v250-file[hidden]{display:none!important}
+.ct250-preview h3{margin:0 0 6px;color:#f6d995;font-size:16px}
+.ct250-preview p,.ct250-preview li{font-size:12px;line-height:1.5;color:#d5dfeb}
+.ct250-preview ul{margin:7px 0 15px;padding-left:19px;max-height:165px;overflow-y:auto}
+.ct250-preview li{margin-bottom:6px;overflow-wrap:anywhere}
+.ct250-replace{display:flex;align-items:flex-start;gap:8px;margin:14px 0;
+ color:#f4ddb3;font-size:12px;font-weight:750;line-height:1.5}
+.ct250-replace input{flex:none;width:18px;height:18px;margin-top:1px;accent-color:#f1ce81}
+.ct250-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.ct250-heading button:focus-visible,.ct250-actions button:focus-visible,
+.ct250-replace input:focus-visible{outline:3px solid #f3cd77;outline-offset:3px}
+@media (max-width:750px){
+ .ct250-heading{align-items:stretch;flex-direction:column;gap:10px}
+ .ct250-heading button{max-width:none;width:100%}
+ .ct250-transfer{padding:16px 13px!important;margin:14px 0!important}
+ .ct250-actions button{flex:1;min-width:130px}
+}
+@media (prefers-reduced-motion:reduce){
+ .ct250-transfer,.ct250-preview,.ct250-heading button{transition:none!important;animation:none!important}
+}
