@@ -87,7 +87,7 @@
      change.name+': '+change.from+' → '+change.to+' ('+(change.delta>0?'+':'')+change.delta+')');
    }
    comparison.append(table);
-  }else addLine(comparison,'p','',!provenPP?
+  }else addLine(comparison,'p','',x.identityIssues?.length?out.reason:!provenPP?
    'PP ainda sem nível máximo documentado na edição exata. O motor V256 bloqueia redistribuição até confirmação por Card ID e nível.':
    out.reason);
   addLine(comparison,'small','ct-v233-disclaimer',
