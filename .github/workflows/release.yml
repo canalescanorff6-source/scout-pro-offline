@@ -36,6 +36,16 @@ jobs:
           path: build/v229-audit-246.json
           if-no-files-found: warn
           retention-days: 30
+      - name: Dossiê consultivo 246 cartas × cinco estilos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-tatico-v264-dossie-246-cartas-5-estilos
+          path: |
+            build/v264-competitive-246x5.json
+            build/v264-competitive-246x5.csv
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs
