@@ -11,9 +11,9 @@ for(let i=0;i<246;i++){
  assert.strictEqual(now.card_id,String(old.id));
  assert.strictEqual(now.pp,old.pp);
  assert.deepStrictEqual(now.treino_registrado,old.niveis);
- assert.strictEqual(now.status,'AUDITORIA PENDENTE — não alterar treino automaticamente');
+ assert.strictEqual(now.status,now.numero===191?'AUDITORIA PENDENTE — proposta de 50 PP não homologada':'AUDITORIA PENDENTE — não alterar treino automaticamente');
 }
-assert.strictEqual(r.cards.filter(x=>x.repeticao).length,56);
+assert.strictEqual(r.cards.filter(x=>x.repeticao).length,54);
 const body=JSON.parse(fs.readFileSync('web/SCOUT_V101_MODELO_CORPORAL.json','utf8'));
 assert.strictEqual(r.cards.filter(x=>x.biotipo).length,body.cartas.length);
 for(const b of body.cartas){
@@ -39,8 +39,8 @@ const focus=[1,33,40,43,182];
 assert.deepStrictEqual(r.estudo_atacantes_posse,focus);
 for(const n of focus){const c=r.cards.find(x=>x.numero===n);assert(c.estudo_atacante_posse);assert.strictEqual(c.estudo_atacante_posse.treino_atual_preservado,true);}
 assert(r.cards.find(x=>x.numero===40).estudo_atacante_posse.nota.includes('aprovada'));
-assert.strictEqual(r.cards.filter(c=>c.comparacao_grupo_repetido).length,56);
-assert.strictEqual(r.grupos_repetidos_impetos_fixos_distintos,17);
+assert.strictEqual(r.cards.filter(c=>c.comparacao_grupo_repetido).length,54);
+assert.strictEqual(r.grupos_repetidos_impetos_fixos_distintos,16);
 for(const c of r.cards.filter(c=>c.comparacao_grupo_repetido)){
  assert.strictEqual(c.comparacao_grupo_repetido.substituicao_automatica,false);
  assert(c.comparacao_grupo_repetido.colegas.length>0);
@@ -53,4 +53,4 @@ assert(offline.includes("'./SCOUT_V213_AUDITORIA_INDIVIDUAL.json'"),'Auditoria d
 assert(bundle.includes("'SCOUT_V213_AUDITORIA_INDIVIDUAL.json'"),'Evidência faz parte do fingerprint');
 assert(bundle.includes("'sw.js'"),'Cache faz parte do fingerprint');
 assert(pkg.scripts.check.includes('test-card-audit-v213.cjs'),'CI deve executar teste V213');
-console.log('PASS: 246 cartas, Card IDs, PP, treinos preservados; 56 duplicações sinalizadas.');
+console.log('PASS: 246 cartas, Card IDs, PP, treinos preservados; 54 duplicações sinalizadas, Martinelli em revisão.');

@@ -12,6 +12,8 @@ const MODES=Object.freeze({
  rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'
 });
 const SCHEMA='CRAQUE_V231_LINEUP_PROFILE';
+const identity=(typeof window!=='undefined'?window.SCOUT_PLAYER_IDENTITY_V245:null)||
+ (typeof module==='object'&&module.exports?require('./scout-player-identity-v245.js'):null);
 const oldKey=id=>'scoutpro:v177:minhas-duas-formacoes:'+id;
 const modeKey=id=>'scoutpro:v230:formation-mode:'+id;
 const profileKey=(id,mode)=>'scoutpro:v231:formation-lineup:'+id+':'+mode;
@@ -27,7 +29,13 @@ function validate(form,slots,known){
   if(!Number.isInteger(n)||n<1||n>246||known&& !known.has(n))return false;
   picked[key]=n;
  }
- return Object.keys(slots).length===11 && new Set(Object.values(picked)).size===11;
+ if(Object.keys(slots).length!==11||new Set(Object.values(picked)).size!==11)return false;
+ // O número da carta não equivale à identidade da pessoa no eFootball.
+ if(known instanceof Map&&identity){
+  const names=Object.values(picked).map(n=>known.get(n)).filter(Boolean);
+  if(names.length!==11||!identity.unique(names))return false;
+ }
+ return true;
 }
 function validSlots(form,slots,known){
  if(!validate(form,slots,known))return null;
@@ -58,7 +66,7 @@ function read(form,mode,storage,known){
 }
 function save(form,mode,slots,storage,known){
  const copy=validSlots(form,slots,known);
- if(!Object.hasOwn(MODES,mode)||!copy)throw Error('Escalação inválida; são necessários 11 jogadores diferentes do catálogo');
+ if(!Object.hasOwn(MODES,mode)||!copy)throw Error('Escalação inválida; as 11 posições precisam de 11 jogadores diferentes, não só versões distintas da mesma pessoa');
  if(!storage?.setItem)throw Error('Armazenamento local indisponível');
  const key=mode==='posse'?oldKey(form.id):profileKey(form.id,mode);
  const value=mode==='posse'?

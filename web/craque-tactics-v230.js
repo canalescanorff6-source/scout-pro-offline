@@ -20,7 +20,7 @@ function slotRole(slot){
  if(['zge','zgd'].includes(slot))return 'ZG';
  if(['cae','cad'].includes(slot))return 'CA';
  if(['vole','vold'].includes(slot))return 'VOL';
- return ({go:'GO',le:'LE',ld:'LD',mlg:'MLG',mat:'MAT',sa:'SA'})[slot]||null;
+ return ({go:'GO',le:'LE',ld:'LD',vol:'VOL',mlg:'MLG',mlge:'MLG',mlgd:'MLG',mat:'MAT',sa:'SA',ca:'CA'})[slot]||null;
 }
 const NEAR={
  CA:['SA','MAT'],SA:['CA','MAT'],MAT:['SA','MLG','VOL'],MLG:['MAT','VOL'],
@@ -33,6 +33,11 @@ function fit(card,slot){
  if(want==='GO'||have==='GO')return have===want?
    {match:true,score:55,label:'Posição original'}:{match:false,score:-100,label:'Goleiro incompatível'};
  if(want===have)return {match:true,score:55,label:'Posição original'};
+ const trained=(typeof window!=='undefined'?window.SCOUT_POSITION_TRAINING_V246:null)||
+  (typeof module==='object'&&module.exports?require('./scout-position-training-v246.js'):null);
+ const confirmed=trained?.status(card,want);
+ if(confirmed?.status==='treinada'||confirmed?.status==='familiar')
+  return {match:true,score:49,label:confirmed.label};
  if(NEAR[want]?.includes(have))return {match:false,score:15,label:'Adaptação sem familiaridade confirmada'};
  return {match:false,score:-100,label:'Posição incompatível'};
 }
@@ -94,7 +99,12 @@ function score(card,slot,mode='posse'){
 function rank(cards,slot,mode,exclude=[],used=[]){
  if(!Array.isArray(cards))throw Error('Lista de cartas indisponível');
  const banned=new Set([...exclude,...used].map(Number));
- return cards.filter(c=>!banned.has(Number(c.numero)))
+ const identity=(typeof window!=='undefined'?window.SCOUT_PLAYER_IDENTITY_V245:null)||
+  (typeof module==='object'&&module.exports?require('./scout-player-identity-v245.js'):null);
+ const busyNames=new Set(cards.filter(c=>used.some(n=>Number(n)===Number(c.numero)))
+  .map(c=>identity?.key(c)).filter(Boolean));
+ return cards.filter(c=>!banned.has(Number(c.numero))&&
+  (!identity||!busyNames.has(identity.key(c))))
  .map(c=>({card:c,...score(c,slot,mode)}))
  .filter(x=>x.score>=0)
  .sort((a,b)=>b.score-a.score||Number(a.card.numero)-Number(b.card.numero));

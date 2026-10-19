@@ -68,8 +68,8 @@ for(const c of cards){
  if(String(c.habilidades_nativas||'').trim())withNative++;
  if(fingerprints.size>1)styleDifferences++;
 }
-assert.equal(verified,162,'162 treinos registrados');
-assert.equal(pending,84,'84 treinos ainda experimentais');
+assert.equal(verified,161,'161 treinos registrados e Martinelli em proposta');
+assert.equal(pending,85,'85 treinos pendentes, incluindo Martinelli não validado');
 assert(withNative>=200&&withNative<=246,'Contar as nativas documentadas sem inventar nas cartas pendentes');
 assert(changed>70,'Táticas diferentes precisam gerar hipóteses realmente distintas em várias cartas');
 assert(styleDifferences>50,'Múltiplos estilos devem afetar a distribuição por função');

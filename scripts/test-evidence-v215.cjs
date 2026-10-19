@@ -73,7 +73,7 @@ assert.equal(card(203).clashes[0].additional,'Passe de calcanhar');
 assert.equal(rows.filter(x=>x.printMatches.length).length,3,'Avisos dos prints não devem virar habilidades da edição');
 assert.equal(rows.filter(x=>x.print).length,185);
 assert.equal(rows.filter(x=>x.biotype).length,15);
-assert.equal(rows.filter(x=>x.peers.length).length,56);
+assert.equal(rows.filter(x=>x.peers.length).length,54);
 assert.equal(card(40).approvedBuildPreserved,true,'Yorke não pode perder ficha aprovada');
 assert.equal(E.reviewCard(originals[0],{...audit[0],card_id:'999'},R.keyFor).valid,false,'Bloquear Card ID de outra edição');
 assert.deepEqual(originals.map(c=>({n:c.numero,id:c.id,pp:c.pp,levels:c.niveis,skills:c.habilidades_nativas,candidates:c.adicionais_candidatas})),snapshot,'Auditoria é somente leitura');
@@ -94,4 +94,4 @@ assert(src.includes('SCOUT PRO · Verificação individual V217'),'Título V217 
 assert(src.includes('scoutpro:skills-updated'),'Painel precisa reagir ao salvamento sem recarregar');
 assert(read('web/skills-booster-v162.js').includes("new CustomEvent('scoutpro:skills-updated'"),'Salvar deve notificar laudo V217');
 assert(stamp.includes("'sw.js'"),'Atualização de cache no fingerprint');
-console.log('V216 PASS: 246 cartas, 21 listas candidatas revisadas com alternativas de Posse, 56 cartas repetidas, builds originais intactas.');
+console.log('V216 PASS: 246 cartas, 21 listas candidatas revisadas com alternativas de Posse, 54 cartas com treino repetido registrado, Martinelli em proposta.');

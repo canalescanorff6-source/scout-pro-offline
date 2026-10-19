@@ -19,7 +19,7 @@ const createIndex=function createIndex(roster,audit,similar){
   const id=String(c.id||''),pendingID=!id||/^PENDENTE\b/i.test(id)||/N.A.O INFERIDO/i.test(id);
   const idStatus=pendingID?'sem_card_id':(counts.get(id)>1?'card_id_compartilhado':'card_id_no_catalogo');
   const peers=Array.isArray(v.repeticao?.peers)?v.repeticao.peers.map(n=>Number(n)).filter(n=>byNo.has(n)&&n!==no):[];
-  const train=trainValid(c)?'treino_registrado':'treino_sem_validacao';
+  const train=trainValid(c)&&c.treino_status!=='proposta_nao_validada'?'treino_registrado':'treino_sem_validacao';
   const skills=String(c.habilidades_nativas||'').split(';').map(x=>x.trim()).filter(Boolean);
   const slot=String(v.impeto_extra_auditoria?.estado||'unverified');
   const notes=Array.isArray(v.pendencias)?v.pendencias.map(s=>String(s)).filter(Boolean):[];
@@ -54,7 +54,7 @@ const createIndex=function createIndex(roster,audit,similar){
   com_biotipo:total(x=>x.modelo_corporal_documentado),
   politica:"Preservar registro; simulações, skills e ímpetos são consultivos e não homologados sem edição exata"
  };
- if(info.registrados!==162||info.pendentes!==84||info.repetidos!==56)throw Error("Contagens divergentes do acervo oficial");
+ if(info.registrados!==161||info.pendentes!==85||info.repetidos!==54)throw Error("Contagens divergentes do acervo oficial");
  return {resumo:info,cards};
 };
 

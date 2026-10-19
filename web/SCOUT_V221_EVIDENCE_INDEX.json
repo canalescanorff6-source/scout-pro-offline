@@ -3,9 +3,9 @@
     "schema": "scout-evidence-index-v221",
     "source": "V69 + V213 + V211, cruzamento por numero e Card ID",
     "total": 246,
-    "registrados": 162,
-    "pendentes": 84,
-    "repetidos": 56,
+    "registrados": 161,
+    "pendentes": 85,
+    "repetidos": 54,
     "base_confirmada": 14,
     "nativas_pendentes": 3,
     "ids_pendentes": 22,
@@ -5366,10 +5366,10 @@
       "nome": "Gabriel Martinelli",
       "edicao": "Highlight — National Team Selection Brazil Jun '26 — Gabriel Martinelli",
       "arquivo": "fichas/191_Gabriel_Martinelli.html",
-      "pp": 66,
+      "pp": 50,
       "posicao": "PTE",
       "estilo": "Ala produtivo",
-      "treino": "treino_registrado",
+      "treino": "treino_sem_validacao",
       "base_stats_confirmados": false,
       "nativas_documentadas": 10,
       "modelo_corporal_documentado": false,
@@ -5378,16 +5378,15 @@
       "segundo_impeto": "unverified",
       "id_status": "card_id_no_catalogo",
       "card_id_compartilhado_com": [],
-      "grupo_repetido": "PTE|ala produtivo|66|4,6,10,12,8,0,0,0,0,0",
-      "pares_repetidos": [
-        198
-      ],
+      "grupo_repetido": null,
+      "pares_repetidos": [],
       "candidatas_adicionais": 0,
       "pendencias": [
         "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central",
-        "Conferir atributos-base numéricos da edição exata antes de homologar otimização"
+        "Conferir atributos-base numéricos da edição exata antes de homologar otimização",
+        "Validar os 50 PP propostos; 66 PP antigos preservados no histórico V247"
       ]
     },
     {
@@ -5580,10 +5579,8 @@
       "segundo_impeto": "unverified",
       "id_status": "card_id_no_catalogo",
       "card_id_compartilhado_com": [],
-      "grupo_repetido": "PTE|ala produtivo|66|4,6,10,12,8,0,0,0,0,0",
-      "pares_repetidos": [
-        191
-      ],
+      "grupo_repetido": null,
+      "pares_repetidos": [],
       "candidatas_adicionais": 0,
       "pendencias": [
         "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",

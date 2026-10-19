@@ -5,9 +5,16 @@ const SLOT_LABEL={go:'GO',ld:'LD',le:'LE',zge:'ZG E',zgd:'ZG D',vol:'VOL',mlge:'
 const ROLE_MAP={GR:'GO',GO:'GO',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',ZG:'ZG',MDF:'VOL',VOL:'VOL',MC:'MLG',ME:'MLG',MLG:'MLG',MO:'MAT',MAT:'MAT',AC:'CA',CA:'CA',SA:'SA'};
 const ROWS=[['sa','ca'],['mat'],['mlge','mlgd'],['vol'],['le','zge','zgd','ld'],['go']];
 const STORAGE_KEY='scoutpro:v176:posse4312:my-lineup';
+const identity=window.SCOUT_PLAYER_IDENTITY_V245;
+const positionTraining=window.SCOUT_POSITION_TRAINING_V246;
+const benchGuide=window.CRAQUE_BENCH_V247;
+if(!benchGuide)throw Error('Inteligência de reservas V247 indisponível');
+if(!positionTraining)throw Error('Posições treinadas V246 não carregaram');
+if(!identity)throw Error('Identidade dos jogadores V245 indisponível');
 let plan=null, roster=[], byCap=new Map(), base={}, current={},activeSlot=null,showAll=false;
 const roleFor=c=>ROLE_MAP[String(c.posicao||'')]||c.posicao;
-const originallyFits=(c,slot)=>roleFor(c)===('zge'===slot||'zgd'===slot?'ZG':SLOT_LABEL[slot]?.split(' ')[0]);
+const wanted=slot=>('zge'===slot||'zgd'===slot?'ZG':SLOT_LABEL[slot]?.split(' ')[0]);
+const originallyFits=(c,slot)=>positionTraining.status(c,wanted(slot)).eligible;
 function setStatus(message){$('status').textContent=message}
 function persist(){
  try{localStorage.setItem(STORAGE_KEY,JSON.stringify({schema:plan.schema,slots:current}));setStatus('Personalização salva neste dispositivo; fichas e PP não foram alterados.')}
@@ -16,8 +23,10 @@ function persist(){
 function canPick(slot,cap){
  const n=Number(cap);
  if(!Number.isSafeInteger(n)||!byCap.has(n)){setStatus('Carta inexistente no catálogo.');return false}
- const existing=Object.entries(current).find(([k,v])=>k!==slot&&Number(v)===n);
- if(existing){setStatus('A carta #'+n+' já está em '+SLOT_LABEL[existing[0]]+'. Remova-a dessa posição antes.');return false}
+ const existing=Object.entries(current).find(([k,v])=>k!==slot&&
+  identity.key(byCap.get(Number(v)))===identity.key(byCap.get(n)));
+ if(existing){setStatus('O jogador '+byCap.get(n).name+' já está em '+SLOT_LABEL[existing[0]]+
+  ', mesmo usando outra carta. Uma versão por pessoa em cada equipe.');return false}
  current[slot]=n;persist();render();return true;
 }
 function playerCard(slot){
@@ -30,7 +39,7 @@ function playerCard(slot){
  '<span class="p-role">'+esc(SLOT_LABEL[slot])+'</span>'+
  '<img src="'+esc(src)+'" alt="Arte original de '+esc(selected.name)+'" loading="lazy"/>'+
  '<span class="p-name">'+esc(selected.name)+'</span>'+
- '<span class="p-cap">#'+selected.numero+' · '+(fits?'Encaixe de posição':'Fora da posição')+'</span>'+
+ '<span class="p-cap">#'+selected.numero+' · '+esc(positionTraining.status(selected,wanted(slot)).label)+'</span>'+
  '<span class="p-trust">'+esc(confidence)+(changed?' · escolha manual':'')+'</span></button>';
 }
 function getImage(n){const p=plan.starter_slots.find(x=>x.cap===n)||plan.bench.find(x=>x.cap===n);return p?.art||images.get(n)||''}
@@ -41,15 +50,30 @@ function renderPitch(){
  const altered=Object.keys(base).filter(k=>current[k]!==base[k]);
  $('custom-badge').textContent=altered.length?altered.length+' posição(ões) modificada(s)':'11 titulares recomendados';
 }
+function effectiveBench(){
+ const rows=plan.bench.map(p=>({...p,original_pos:byCap.get(p.cap)?.posicao}));
+ return identity.benchFor(Object.values(current),rows,roster).map((row,index)=>{
+  const original=plan.bench[index],player=byCap.get(row.cap);
+  return {...original,cap:row.cap,nome:player.name,art:getImage(row.cap),
+   card_page:player.arquivo,role:row.original_pos,estilo_ataque:player.estilo_ataque,
+   confidence:row.autoReplacement?'revisão':original.confidence,
+   use:row.autoReplacement?'Reserva substituída para evitar outra versão do mesmo jogador; avalie a função antes de usar.':original.use};
+ });
+}
 function renderBench(){
  const roleoptions=Object.keys(SLOT_LABEL).map(s=>'<option value="'+s+'">'+esc(SLOT_LABEL[s])+'</option>').join('');
- $('bench').innerHTML=plan.bench.map(p=>{
+ const starters=plan.starter_slots.map(s=>({slot:s.slot,role:s.role,cap:Number(current[s.slot])}));
+ $('bench').innerHTML=effectiveBench().map(p=>{
+  const targetCard=byCap.get(Number(p.cap));
+  const guidance=benchGuide.recommend(targetCard,starters,roster,'posse');
+  const swapText=guidance.eligible?'Jogar como '+guidance.position+' · Substituir #'+guidance.replaces.cap+' '+guidance.replaces.name+' ('+guidance.replaces.slot.toUpperCase()+')':'Sem troca confirmada nesta formação · '+guidance.reason;
+  const swapHtml='<span class="ct-v247-recommendation" data-confirmed="'+String(guidance.eligible)+'"><small>'+esc(swapText)+'</small></span>';
  const inField=Object.values(current).includes(p.cap);
  const selected=byCap.get(p.cap);
  return '<article class="bench-card">'+
  '<img src="'+esc(p.art)+'" alt="Arte original de '+esc(p.nome)+'" loading="lazy"/>'+
  '<div class="bench-details"><strong>#'+p.cap+' '+esc(p.nome)+'</strong><small>'+esc(p.role)+' · '+esc(p.estilo_ataque)+' · Confiança '+esc(p.confidence)+'</small><p>'+esc(p.use)+'</p>'+
- '<a href="'+esc(p.card_page)+'">Abrir ficha original ↗</a></div>'+
+ swapHtml+'<a href="'+esc(p.card_page)+'">Abrir ficha original ↗</a></div>'+
  '<div class="bench-action"><label for="bench-'+p.cap+'">'+(inField?'Em campo · trocar posição':'Colocar em campo')+'</label>'+
  '<select id="bench-'+p.cap+'" data-bench="'+p.cap+'"><option value="">Selecionar posição…</option>'+roleoptions+'</select></div></article>';
  }).join('');
@@ -77,14 +101,32 @@ function candidates(){
 function refreshPicker(){
  const cards=candidates();$('player-count').textContent=cards.length>=70?'Até 70 resultados (refine a busca)':'Encontrados: '+cards.length;
  $('player-options').innerHTML=cards.length?cards.map(c=>{
- const used=Object.entries(current).find(([s,n])=>s!==activeSlot&&Number(n)===c.numero);
+ const used=Object.entries(current).find(([s,n])=>s!==activeSlot&&
+ identity.key(byCap.get(Number(n)))===identity.key(c));
  const src=getImage(c.numero);
- return '<button class="option" data-cap="'+c.numero+'" type="button" '+(used?'disabled':'')+'>'+
+ const proof=positionTraining.status(c,wanted(activeSlot));
+ return '<div class="ct-v246-choice"><button class="option" data-cap="'+c.numero+'" type="button" '+(used?'disabled':'')+'>'+
  (src?'<img src="'+esc(src)+'" alt="" loading="lazy"/>':'<span class="no-art">#'+c.numero+'</span>')+
- '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+(used?' · EM CAMPO':'')+'</small></span></button>';
+ '<span><strong>#'+c.numero+' '+esc(c.name)+'</strong><small>'+esc(c.posicao)+' · '+esc(c.estilo_ataque)+' · '+esc(proof.label)+(used?' · JOGADOR JÁ EM CAMPO':'')+'</small></span></button>'+
+ (proof.status==='não confirmada'&&showAll&&$('player-search').value.trim().length>=2?'<button type="button" class="ct-v246-training" data-v246-confirm="'+c.numero+'">Treino aplicado: '+esc(wanted(activeSlot))+'</button>'+
+  '<button type="button" class="ct-v246-training" data-v246-familiar="'+c.numero+'">Já tem familiaridade: '+esc(wanted(activeSlot))+'</button>':
+  (proof.status==='treinada'||proof.status==='familiar')?'<button type="button" class="ct-v246-training" data-v246-remove="'+c.numero+'">Desfazer confirmação de '+esc(wanted(activeSlot))+'</button>':'')+'</div>';
  }).join(''):'<p>Nenhuma carta encontrada neste filtro.</p>';
  $('player-options').querySelectorAll('button[data-cap]').forEach(b=>b.onclick=()=>{
  if(canPick(activeSlot,Number(b.dataset.cap)))$('picker').close();
+ });
+ $('player-options').querySelectorAll('[data-v246-confirm],[data-v246-familiar],[data-v246-remove]').forEach(b=>b.onclick=()=>{
+  const card=byCap.get(Number(b.dataset.v246Confirm||b.dataset.v246Familiar||b.dataset.v246Remove));
+  const enabled=!b.dataset.v246Remove,mode=b.dataset.v246Familiar?'familiar':'treinada';
+  if(enabled&&!window.confirm('Você confirmou no eFootball que a edição #'+card.numero+' de '+card.name+
+   (mode==='treinada'?' JÁ recebeu treinamento para ':' JÁ tem familiaridade na posição ')+wanted(activeSlot)+
+   '? Apenas índice alto no eFHUB não é comprovação.'))return;
+  try{
+   const removeMode=enabled?mode:positionTraining.status(card,wanted(activeSlot)).status==='familiar'?'familiar':'treinada';
+   positionTraining.confirm(card,wanted(activeSlot),enabled,localStorage,removeMode);
+   setStatus((enabled?'Treino confirmado: ':'Confirmação desfeita: ')+card.name+' · '+wanted(activeSlot));
+   refreshPicker();render();
+  }catch(error){setStatus('Não foi possível confirmar posição: '+error.message)}
  });
 }
 function openPicker(slot){activeSlot=slot;showAll=false;$('show-all').checked=false;$('player-search').value='';
@@ -109,7 +151,8 @@ async function init(){
  base=Object.fromEntries(plan.starter_slots.map(x=>[x.slot,x.cap]));current={...base};
  try{const stored=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(stored?.schema===plan.schema&&stored.slots&&typeof stored.slots==='object'){
   const vals={...base};for(const s of Object.keys(base))if(byCap.has(Number(stored.slots[s])))vals[s]=Number(stored.slots[s]);
-  if(new Set(Object.values(vals)).size===11)current=vals;else setStatus('Personalização com jogadores repetidos ignorada; formação original carregada.');
+  if(new Set(Object.values(vals)).size===11&&identity.unique(Object.values(vals).map(n=>byCap.get(n))))current=vals;
+  else setStatus('Personalização com versões duplicadas de um jogador ignorada; formação original carregada.');
  }}catch(e){setStatus('Não foi possível carregar personalização anterior.')}
  $('catalog-count').textContent=roster.length+' cartas verificadas no índice • 11 titulares + 12 reservas';
  $('confidence-note').textContent=plan.confidence_explanation;

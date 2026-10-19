@@ -6,9 +6,22 @@
 <script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script>
 <script defer src="scout-roster-restrictions-v222.js"></script>
 <script defer src="craque-tactics-v230.js"></script>
+<script defer src="scout-player-identity-v245.js"></script>
+<script defer src="scout-position-training-v246.js"></script>
+<script defer src="craque-bench-substitutions-v247.js"></script>
 <script defer src="scout-rotation-engine-v219.js"></script>
 <script defer src="scout-rotation-lab-v219.js"></script><script defer src="pwa.js"></script>
-</head><body data-page="rotation-lab"><header class="scout-rotation-top"><a href="index.html"><img src="assets/craque-tatico-icon.svg" alt="">CRAQUE TÁTICO</a><span>ELENCOS · LABORATÓRIO</span></header>
+<style>
+/* V246 — confirmação explícita, visível e acessível no seletor do jogador. */
+.ct-v246-choice{display:grid;gap:5px;min-width:0;margin:5px 0}
+.ct-v246-choice>.option{width:100%;min-width:0}
+.ct-v246-training{min-height:42px;padding:8px 12px;border:1px solid #a7874a;
+ border-radius:10px;background:#18314b;color:#ffe2a1;text-align:left;
+ font:inherit;font-size:12px;font-weight:650;cursor:pointer}
+.ct-v246-training:focus-visible{outline:2px solid #f8d182;outline-offset:2px}
+@media(max-width:420px){.ct-v246-training{font-size:11px}}
+</style>
+<link rel="stylesheet" href="craque-bench-substitutions-v247.css"></head><body data-page="rotation-lab"><header class="scout-rotation-top"><a href="index.html"><img src="assets/craque-tatico-icon.svg" alt="">CRAQUE TÁTICO</a><span>ELENCOS · LABORATÓRIO</span></header>
 <main class="scout-rotation-wrap"><section class="scout-rotation-hero"><div class="scout-rotation-eyebrow">CINCO ESTILOS · TESTE DE TODAS AS CARTAS</div>
 <h1>Laboratório de escalações</h1><p>Restringa as 23 cartas do mapeamento do Black e teste até 223 cartas em cada série. Com 11 titulares e 12 reservas, serão 9 elencos completos por formação e 16 cartas para a segunda rodada, desde que haja goleiros e posições elegíveis. Todas as escolhas são experimentais; o programa não inventa familiaridade de posição nem ativa Link-Up.</p>
 <nav class="scout-rotation-page-shortcuts" aria-label="Atalhos do laboratório"><a href="#black-heading">23 restrições</a><a href="#series-heading">Duas formações</a><a href="#video-heading">Gravação e partidas</a><a href="#craque-backup-panel">Backup e restauração</a></nav><div class="scout-rotation-trust" id="rotation-inventory" role="status">Carregando 246 cartas…</div></section>

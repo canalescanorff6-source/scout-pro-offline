@@ -6,8 +6,8 @@ const roster=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
 const groups=JSON.parse(read('web/SCOUT_V211_REPETICOES_REVIEW.json')).groups;
 const formation=JSON.parse(read('web/SCOUT_V176_POSSE_4312.json'));
 const all=module212.reviewCases(roster,groups,engine,formation);
-assert.equal(roster.length,246);assert.equal(all.length,56);
-assert.equal(new Set(all.map(x=>x.numero)).size,56);
+assert.equal(roster.length,246);assert.equal(all.length,54);
+assert.equal(new Set(all.map(x=>x.numero)).size,54);
 let changed=0,signalled=0;
 for(const c of all){
  const original=roster.find(x=>x.numero===c.numero);

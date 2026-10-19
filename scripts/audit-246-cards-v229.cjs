@@ -59,7 +59,7 @@ for(let n=1;n<=246;n++){
  const sectionPreview=expectedIds.filter(id=>ids.some(x=>x.id===id&&x.count===1));
  reports.push({
   number:n,name:String(masterCard.name),file:assetPath,cardId:String(masterCard.id),
-  pp:Number(masterCard.pp),registeredTraining:Array.isArray(masterCard.niveis)&&masterCard.niveis.length===10,
+  pp:Number(masterCard.pp),registeredTraining:Array.isArray(masterCard.niveis)&&masterCard.niveis.length===10&&masterCard.treino_status!=='proposta_nao_validada',
   nativeSkillsKnown:Boolean(masterCard.habilidades_nativas),
   legacySectionsFound:sectionPreview,legacyPanels:legacy,oldBrandMarkup:pageHasOldBrand,
   template:'V72 preserved, V220 main sheet with V229 optional archive'

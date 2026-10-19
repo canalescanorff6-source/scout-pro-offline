@@ -10,7 +10,7 @@
     "no_pp": 0,
     "adapt_alert": 55,
     "extra_confirmed": 16,
-    "level_user_entered": 84,
+    "level_user_entered": 85,
     "raridade_confirmada_pelo_usuario": 58,
     "treinos_propostos_experimentais_v95": 84
   },
@@ -7456,15 +7456,15 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": 66,
+      "pp": 50,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": "A",
       "niveis": [
         4,
-        6,
+        4,
+        8,
         10,
-        12,
         8,
         0,
         0,
@@ -7479,7 +7479,8 @@
       "pendencias": [
         "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
-        "Proficiência se for usar em uma posição central"
+        "Proficiência se for usar em uma posição central",
+        "Validar em jogo a redistribuição de 50 PP; treino anterior de 66 PP não cabe no nível máximo 26"
       ],
       "arquivo": "fichas/191_Gabriel_Martinelli.html",
       "habilidades_nativas_origem": {
@@ -7489,7 +7490,10 @@
         "url": "https://pesdb.net/efootball/players/gabriel-martinelli-105850811319718",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
-      }
+      },
+      "max_level": 26,
+      "treino_status": "proposta_nao_validada",
+      "pp_origem": "Correção informada pelo usuário: nível máximo 26, PP = 2 × (26 − 1)"
     },
     {
       "numero": 192,

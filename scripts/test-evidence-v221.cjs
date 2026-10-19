@@ -12,9 +12,9 @@ const generator=require('./build-card-evidence-v221.cjs');
 generator.run=generator.run; // Manter API exportada disponível.
 assert.deepEqual(generator.createIndex({cards:roster},audit,repetitions),data,'Índice deve ser reproduzível a partir das fontes imutáveis');
 assert.equal(data.resumo.total,246);
-assert.equal(data.resumo.registrados,162);
-assert.equal(data.resumo.pendentes,84);
-assert.equal(data.resumo.repetidos,56);
+assert.equal(data.resumo.registrados,161);
+assert.equal(data.resumo.pendentes,85);
+assert.equal(data.resumo.repetidos,54);
 assert.equal(data.resumo.base_confirmada,14);
 assert.equal(data.resumo.nativas_pendentes,3);
 assert.equal(data.resumo.ids_pendentes,22);
@@ -42,7 +42,7 @@ for(const r of roster){
  assert.equal(state.record.card_id,String(r.id));
  assert.equal(state.record.pp,Number(r.pp));
  assert.equal(state.matchedOn,'numero + Card ID + PP');
- assert.equal(state.registered,Array.isArray(r.niveis),'Registro não é homologação #'+no);
+ assert.equal(state.registered,Array.isArray(r.niveis)&&r.treino_status!=='proposta_nao_validada','Registro não é homologação #'+no);
  assert(!state.issues.some(i=>/homologado e comprovado|validado em partidas/i.test(i.why)), 'Nenhuma alegação falsa de desempenho');
  if(!state.registered){
   blocked++;
@@ -56,8 +56,8 @@ for(const r of roster){
  assert.equal(gate.storageKey({capture:c.capture,id:c.id}),'scoutpro:v221:evidence:'+no+':'+c.id);
  checked++;
 }
-assert.equal(blocked,84);
-assert.equal(duplicate,56);
+assert.equal(blocked,85);
+assert.equal(duplicate,54);
 const massaro=data.cards.find(x=>x.numero===1),messi=data.cards.find(x=>x.numero===50),
       savinhoA=data.cards.find(x=>x.numero===61),savinhoB=data.cards.find(x=>x.numero===196),
       huijsenA=data.cards.find(x=>x.numero===144),huijsenB=data.cards.find(x=>x.numero===153);

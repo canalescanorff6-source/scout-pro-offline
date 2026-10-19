@@ -6446,7 +6446,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": 66,
+      "pp": 50,
       "imagem": "cartas/CAP_191_Gabriel_Martinelli_OVR99_PTE.png",
       "base_stats_known": false,
       "habilidades_nativas_documentadas": true,
@@ -6455,9 +6455,9 @@
       "referencia": "anterior",
       "treino_anterior": [
         4,
-        6,
+        4,
+        8,
         10,
-        12,
         8,
         0,
         0,
@@ -6465,15 +6465,18 @@
         0,
         0
       ],
-      "origem_treino": "auditoria: níveis registrados previamente",
+      "origem_treino": "V247: proposta matemática 50 PP, não aprovada. Treino 66 PP anterior arquivado em auditoria V247.",
       "ficha": "fichas/191_Gabriel_Martinelli.html",
       "pendencias": [
         "Atributos-base da edição",
         "Habilidades nativas",
         "Posição de ativação do estilo no Plano de Jogo",
-        "Partidas comparativas nas três táticas"
+        "Partidas comparativas nas três táticas",
+        "Confirmar o novo treino de 50 PP no eFootball"
       ],
-      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/gabriel-martinelli-105850811319718"
+      "habilidades_nativas_origem": "https://pesdb.net/efootball/players/gabriel-martinelli-105850811319718",
+      "max_level": 26,
+      "treino_status": "proposta_nao_validada"
     },
     {
       "numero": 192,

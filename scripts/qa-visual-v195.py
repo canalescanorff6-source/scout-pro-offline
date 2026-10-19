@@ -1119,6 +1119,27 @@ def run():
                     if page.locator('#ct-v230-tactic-details .ct-v230-fit-row').count()!=11:
                         problems.append(f"{name}: V230 faltam diagnósticos individuais por posição")
                     page.screenshot(path=str(OUT / f"{name}_five_modes_v230.png"),full_page=False,animations="disabled")
+                    # V246: Martinelli PTE só passa a CA após confirmação REAL no seletor.
+                    page.locator('#pitch button[data-slot="cae"]').click()
+                    page.locator('#show-all').check()
+                    page.locator('#player-search').fill('Gabriel Martinelli')
+                    page.locator('#player-options [data-v246-confirm="191"]').wait_for(timeout=12000)
+                    before_v246=page.evaluate("""() => window.SCOUT_POSITION_TRAINING_V246.status(
+                      {numero:191,id:'105850811319718',posicao:'PTE'},'CA').eligible""")
+                    if before_v246:
+                        problems.append(f"{name}: V246 liberou CA antes da confirmação de treino")
+                    page.once("dialog",lambda dialog:dialog.accept())
+                    page.locator('#player-options [data-v246-confirm="191"]').click()
+                    page.wait_for_function("""() => window.SCOUT_POSITION_TRAINING_V246.status(
+                      {numero:191,id:'105850811319718',posicao:'PTE'},'CA').status==='treinada'""",timeout=10000)
+                    if not page.evaluate("""() => window.CRAQUE_TACTICS_V230.fit(
+                       {numero:191,id:'105850811319718',posicao:'PTE'},'cae').match"""):
+                        problems.append(f"{name}: V246 não reconheceu Martinelli CA no motor tático")
+                    page.locator('#player-options [data-v246-remove="191"]').click()
+                    if page.evaluate("""() => window.SCOUT_POSITION_TRAINING_V246.status(
+                        {numero:191,id:'105850811319718',posicao:'PTE'},'CA').eligible"""):
+                        problems.append(f"{name}: V246 não reverteu treino de posição")
+                    page.locator('#picker-close').click()
                 page.goto(URL + '/meu-time-testes-v219.html',wait_until='domcontentloaded',timeout=35000)
                 page.wait_for_function("""() => document.querySelectorAll('#squads details[data-team]').length>=9""",timeout=25000)
                 page.locator('#ct-v230-rotation-modes [data-tactic-mode="normal"]').click()

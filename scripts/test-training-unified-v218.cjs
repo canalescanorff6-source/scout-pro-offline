@@ -40,11 +40,11 @@ assert.equal(UI.scenarioPlan({A:Array(10).fill(1)},'A',62,model.P),null,'Cenári
 const original=cards.map(x=>({num:x.numero,id:String(x.id),pp:x.pp,levels:x.niveis}));
 let registered=0,pending=0;
 for(const c of cards){
- const p=ref.resolveTraining({pp:c.pp,recommended_levels:c.niveis},{});
+ const p=ref.resolveTraining({pp:c.pp,recommended_levels:c.niveis,training_status:c.treino_status},{});
  if(p.kind==='registrado'){registered++;assert(UI.valid(p.levels));assert.equal(UI.total(p.levels),c.pp)}
  else{pending++;assert.equal(p.kind,'pendente');assert.equal(p.levels,null)}
 }
-assert.equal(registered,162);assert.equal(pending,84);
+assert.equal(registered,161);assert.equal(pending,85);
 assert.deepEqual(cards.map(x=>({num:x.numero,id:String(x.id),pp:x.pp,levels:x.niveis})),original,'Nenhuma build alterada');
 const logic=read('web/scout-training-unified-v218.js'),lab=read('web/lab.js'),css=read('web/scout-training-unified-v218.css');
 const bridge=read('web/app-bridge.js'),sw=read('web/sw.js'),bundle=read('scripts/stamp-bundle-v189.cjs');
@@ -60,4 +60,4 @@ assert(logic.includes('Restaurar treino registrado')&&logic.includes('Editar pon
 assert(css.includes('min-height:44px')&&css.includes('@media(max-width:520px)'),'Toques acessíveis e responsividade');
 assert(sw.includes('v218-unified-training'),'Novo cache para que a atualização não exiba ficha estática');
 assert(!logic.includes('recommended_levels=')&&!logic.includes('cards.push('),'Sem alteração do catálogo');
-console.log('V218 PASS: 246 cartas, 162 treinos registrados, 84 pendentes, PP progressivo e comparação A/B/P preservados; ficha editável local Android/Windows.');
+console.log('V218 PASS: 246 cartas, 161 treinos registrados e 85 em revisão/pendentes, PP progressivo e comparação A/B/P preservados; ficha editável local Android/Windows.');

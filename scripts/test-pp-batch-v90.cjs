@@ -12,10 +12,10 @@ assert.equal(audit.cards.length,246);
 assert.equal(audit.summary.processed,246);
 assert.equal(audit.summary.with_pp,246);
 assert.equal(audit.summary.no_pp,0);
-assert.equal(audit.summary.level_user_entered,84);
+assert.equal(audit.summary.level_user_entered,85);
 assert.equal(audit.cards.filter(c=>c.pp!==null).length,246);
 assert.equal(audit.cards.filter(c=>c.pp===null).length,0);
-assert.equal(audit.cards.filter(c=>c.max_level!==undefined).length,84);
+assert.equal(audit.cards.filter(c=>c.max_level!==undefined).length,85);
 const kubo=audit.cards.find(c=>c.numero===211);
 assert.equal(kubo.max_level,1);assert.equal(kubo.pp,0,'Zero PP confirmado não é dado ausente');
 let checked=0;
@@ -50,4 +50,4 @@ for(const c of audit.cards){
  assert(originals.includes(art[1]),'Arquivo de arte ausente: '+art[1]);
 }
 assert.equal(checked,4);
-console.log('V90 OK: 246 cartas com PP, nenhuma pendente, 84 níveis máximos manuais, artes e fichas intactas, Kubo 1/0 preservado.');
+console.log('V90 OK: 246 cartas com PP, nenhuma pendente, 85 níveis máximos confirmados, artes e fichas intactas, Kubo 1/0 preservado.');
