@@ -1463,10 +1463,9 @@ def run():
                     if '68 / 68 PP' not in v251.inner_text():
                         problems.append(f"{name}: V251 não fechou PP de Sergi Cardona")
                     pos=page.locator('#scout-v218-status')
-                    v251.locator('.ct251-use').click()
                     page.once('dialog',lambda dialog:dialog.accept())
-                    # O clique acima solicita confirmação real; abrir manualmente
-                    # como usuário caso o diálogo ainda esteja pendente.
+                    v251.locator('.ct251-use').click()
+                    # O rascunho depende de confirmação explícita do usuário.
                     pos.wait_for(timeout=12000)
                     page.wait_for_function("""() =>
                       document.querySelector('#scout-v218-status')
