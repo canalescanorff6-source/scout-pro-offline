@@ -10,6 +10,8 @@
 })(typeof window!=='undefined'?window:null,function(host){'use strict';
 const T=host?.SCOUT_TACTICS_V220||
  (typeof module==='object'&&module.exports?require('./scout-multitactic-engine-v220.js'):null);
+const POS=host?.SCOUT_POSITION_TRAINING_V246||
+ (typeof module==='object'&&module.exports?require('./scout-position-training-v246.js'):null);
 const SCHEMA='CRAQUE_MATCH_EVIDENCE_V256';
 const PREFIX='scoutpro:v256:match-evidence:';
 const MODES=Object.freeze(['posse','normal','rapido','fora','longo']);
@@ -72,11 +74,19 @@ function makeId(){
   return crypto.randomUUID().replace(/-/g,'');
  return 'm'+Date.now().toString(36)+Math.random().toString(36).slice(2,15);
 }
+function eligibleRole(card,role,store){
+ // PTE/PTD/MLE/MLD usam a categoria técnica ALA. Essa equivalência
+ // de orçamento NÃO autoriza CA ou MAT sem treino/familiaridade da edição.
+ if(T?.roleOf({shown_position:card?.posicao})===role)return true;
+ return POS?.status?.(card,role,store)?.eligible===true;
+}
 function save(card,store,spec){
  if(!store?.setItem)throw Error('Armazenamento local indisponível.');
  if(spec?.in_game_confirmed!==true)
   throw Error('Confirme que esta distribuição foi realmente utilizada no eFootball.');
  const selected=build(card,spec.mode,spec.role,spec.levels,spec.source);
+ if(!eligibleRole(card,selected.role,store))
+  throw Error('Esta edição não tem treino/familiaridade confirmado para '+selected.role+'.');
  const record={
   id:spec.id||makeId(),date:spec.date,result:spec.result,
   in_game_confirmed:true,build:selected,
@@ -265,5 +275,5 @@ function render(doc,{card,check,store,notify}={}){
  return wrapper;
 }
 return Object.freeze({SCHEMA,PREFIX,MODES,ROLES,GRADES,MAX_ENTRIES,key,build,
- validEntry,parse,save,remove,list,summary,render});
+ eligibleRole,validEntry,parse,save,remove,list,summary,render});
 });
