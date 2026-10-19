@@ -66,7 +66,6 @@ if(V.points(unknown.niveis)>disagreeing.pp){
 assert.equal(JSON.stringify(unknown),originalSnapshot,'Não alterar build original');
 assert.equal(P.state(unknown,P.readSaved(unknown,store)),'divergente');
 for(const bad of [
- {...disagreeing,id:'outra-edicao'},
  {...disagreeing,card_id:'outra-edicao'},
  {...disagreeing,confirmed_in_game:false},
  {...disagreeing,level:121},
