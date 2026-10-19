@@ -37,10 +37,13 @@ for(const c of cards){
   if(c.pp!==2*(c.max_level-1))mismatch.push('#'+c.numero+' nível '+c.max_level+' PP '+c.pp);
   if(raw?.pp!==c.pp)mismatch.push('#'+c.numero+' ficha PP '+raw?.pp+' catálogo '+c.pp);
   if(lab?.pp!==c.pp)mismatch.push('#'+c.numero+' laboratório PP '+lab?.pp+' catálogo '+c.pp);
-  if(String(raw?.id)!==String(c.id)||String(lab?.id)!==String(c.id))
-   mismatch.push('#'+c.numero+' Card ID divergente');
-  if(!Array.isArray(c.niveis)||points(c.niveis)!==c.pp)
-   mismatch.push('#'+c.numero+' build incompatível com PP');
+  if(!/^PENDENTE\b/i.test(String(c.id))&&
+    (String(raw?.id)!==String(c.id)||String(lab?.id)!==String(c.id)))
+   mismatch.push('#'+c.numero+' Card ID confirmado divergente');
+  // Nível/PP confirmado não comprova que o TREINO esteja distribuído.
+  // Cartas sem build não são erro; nunca preenchê-las ficticiamente.
+  if(Array.isArray(c.niveis)&&points(c.niveis)!==c.pp)
+   mismatch.push('#'+c.numero+' build registrada excede ou não alcança PP');
  }else{
   pending.push(c.numero);
   if(raw?.pp!==undefined&&raw.pp!==c.pp)warnings.push('#'+c.numero+' ficha '+raw.pp+' vs catálogo '+c.pp);
