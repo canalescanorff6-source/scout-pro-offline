@@ -89,8 +89,10 @@ assert.equal(JSON.stringify(cards),snapshot);
 assert(roles.size>=8,'Different job families actually covered');
 assert.equal(documented,85*5,'85 cartas com níveis documentados x cinco táticas');
 assert.equal(blockedUnverified,161*5,'161 cartas sem nível/PP documental bloqueadas nas cinco táticas');
-assert(proposals>0,'Cartas com evidência suficiente permitem hipóteses consultivas');
-assert(changed.size>0,'O motor conserva pelo menos uma comparação de edição documentada');
+// Das 85 edições com nível documentado, apenas 1 tem simultaneamente
+// distribuição válida do acervo. As outras 84 não podem originar propostas.
+assert(proposals<=5,'Só a edição com nível E build documental completos pode propor até 5 táticas');
+assert(changed.size<=1,'Nenhuma outra carta sem base plenamente documentada recebe revisão');
 const official=cards.find(x=>x.numero===40);
 const yorke={...official,capture:40,edition:official.versao,shown_position:official.posicao,recommended_levels:official.niveis};
 assert(E.compare(yorke,'posse').analysis,'Yorke receives a reasoned review without overwriting his approved training');
