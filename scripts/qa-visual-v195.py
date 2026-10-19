@@ -1546,7 +1546,7 @@ def run():
                     }""")
                     page.reload(wait_until='domcontentloaded')
                     page.locator('#ct251-individual-ficha').wait_for(state='visible',timeout=22000)
-                    if (page.locator('#scout-v218-status').get_attribute('data-mode')==='blocked' or
+                    if (page.locator('#scout-v218-status').get_attribute('data-mode')=='blocked' or
                         page.locator('#ct251-individual-ficha').get_attribute('data-review')!='complete'):
                         problems.append(f"{name}: V252 não recuperou o treino após desfazer PP divergente")
                     result['ficha_individual_v251']={'tested':True,'levels':68,
