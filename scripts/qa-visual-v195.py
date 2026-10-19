@@ -1600,12 +1600,12 @@ def run():
                       document.querySelector('#scout-v220-skill-count')
                         ?.textContent.includes('0 vaga(s) conferida(s)')
                     """,timeout=16000)
-                    if page.locator('#scout-v220-skill-list li').count()!=1 or (
-                        'Cinco habilidades adicionais' not in
+                    if page.locator('#scout-v220-skill-list li').count()!=0 or (
+                        'Cinco adicionais conferidas' not in
                         page.locator('#scout-v220-skill-list').inner_text()):
                         problems.append(f"{name}: V254 ofereceu sexta habilidade a Yorke")
                     page.reload(wait_until='domcontentloaded')
-                    page.locator('#v254-confirm-equipped').wait_for(timeout=15000)
+                    page.locator('#v254-confirm-equipped').wait_for(state='attached',timeout=15000)
                     if not page.locator('#v254-confirm-equipped').is_checked():
                         problems.append(f"{name}: V254 perdeu confirmação desta edição após reiniciar")
                     page.locator('#scout-v220-tabs button[data-tactic="fora"]').click()
@@ -1615,6 +1615,7 @@ def run():
                     page.wait_for_function("""() => document.querySelector('#scout-v220-booster-why')
                       ?.textContent.includes('em Passe Longo')""",timeout=15000)
                     # Alterar texto sem confirmar invalida prova anterior.
+                    page.locator('#scout-v162 > details > summary').click()
                     ta=page.locator('#v162-equipped')
                     ta.fill('Toque duplo; Controle com a sola')
                     if page.locator('#v254-confirm-equipped').is_checked():
