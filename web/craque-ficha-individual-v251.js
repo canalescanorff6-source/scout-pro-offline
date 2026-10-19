@@ -11,6 +11,7 @@
 const moduleGet=p=>{if(typeof module!=='object'||!module.exports)return null;try{return require(p)}catch(_){return null}};
 const T=host?.SCOUT_TACTICS_V220||moduleGet('./scout-multitactic-engine-v220.js');
 const I=host?.CRAQUE_INTERPRETATION_V233||moduleGet('./craque-role-intelligence-v233.js');
+const S=host?.SCOUT_RECOMMENDATIONS_V162||moduleGet('./skills-booster-v162.js');
 const STATES=Object.freeze({
  complete:'PP e treino cadastrados · sem validação competitiva',
  no_build:'PP confirmado · distribuição ainda pendente',
@@ -291,14 +292,26 @@ function proofChecklist(card,index,lab,store){
  const native=String(card?.habilidades_nativas||'').split(';').filter(x=>x.trim()).length;
  const stats=lab?.stats&&typeof lab.stats==='object'&&
   Object.values(lab.stats).some(x=>x&&Number.isFinite(x.base)&&x.base>=0&&x.base<=120);
- let installedSkills='',boostSlot=null;
+ let installedSkills='',boostSlot=null,equipmentRecord=null;
  try{
   installedSkills=String(store?.getItem('scoutpro:v162:equipped:'+
    card.numero+':'+card.id)||'').trim();
   boostSlot=JSON.parse(store?.getItem('scoutpro:v103:booster:'+
    Number(card.numero))||'null');
  }catch(_){boostSlot=null}
- const extraConfirmed=installedSkills.split(';').map(x=>x.trim()).filter(Boolean);
+ try{
+  equipmentRecord=JSON.parse(store?.getItem(S?.confirmationKey?.(card.numero,card.id))||'null');
+ }catch(_){equipmentRecord=null}
+ // V259: digitar habilidades não comprova slots. Só a confirmação V254
+ // vigente para CAP+Card ID e a impressão digital da lista é prova local.
+ const identity={capture:Number(card.numero),id:String(card.id),shown_position:card.posicao,
+  native_skills:card.habilidades_nativas};
+ const checked=Boolean(S?.checkedEquipment?.(identity,installedSkills,equipmentRecord));
+ const extra=checked?S.evaluate(identity,'posse',installedSkills,{equippedConfirmed:true}):null;
+ const knownNames=installedSkills.split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean)
+  .every(x=>Boolean(S?.keyFor?.(x)));
+ const additionalDocumented=checked&&Boolean(extra)&&knownNames&&
+  !extra.manualOverLimit&&extra.nativeManualConflicts.length===0;
  const boosterReported=boostSlot&&String(boostSlot.card_id)===String(card.id)&&
   ['vazio','ocupado','ausente'].includes(boostSlot.status);
  const checks=[
@@ -311,9 +324,11 @@ function proofChecklist(card,index,lab,store){
   {id:'native',name:'Habilidades nativas documentadas',
    documented:matched&&native>0&&native===row.nativas_documentadas,
    note:'Cadastro não comprova habilidades equipadas.'},
-  {id:'additional',name:'Habilidades adicionais informadas nesta conta',
-   documented:extraConfirmed.length>0&&extraConfirmed.length<=5,
-   note:'Registro manual de habilidades; não comprova sua aplicação no jogo.'},
+  {id:'additional',name:'Lista completa de habilidades adicionais conferida na conta',
+   documented:additionalDocumented,
+   note:additionalDocumented?
+    'Confirmação local V254 vinculada ao CAP, Card ID e lista atual; não comprova gameplay.':
+    'Lista digitada ou incompleta não confirma slots. Conferir todas as habilidades equipadas na V254, inclusive quando forem zero.'},
   {id:'booster',name:'Slot de ímpeto conferido pelo usuário',
    documented:Boolean(boosterReported),
    note:'Só o slot confirmado da edição permite avaliar ímpeto equipável.'},
