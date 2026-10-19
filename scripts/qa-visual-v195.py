@@ -1293,6 +1293,45 @@ def run():
                 if errors:
                     relevant=[e for e in errors if 'craque-friends' in e or 'outros-elencos' in e]
                     if relevant:problems.append(f"{name}: V227 erro JS {relevant[:2]}")
+                # V248: formulário de conferência no Windows e no Android simulado,
+                # sem modificar as 246 fichas originais. Exportação deve preservar Card ID.
+                if name in ('mobile_390','windows_1151'):
+                    page.goto(URL + '/conferir-progresso-v248.html',
+                        wait_until='domcontentloaded',timeout=35000)
+                    page.locator('#v248-cards .ct248-card').first.wait_for(timeout=25000)
+                    counts=page.locator('#v248-stats').inner_text()
+                    if '85 níveis documentados' not in counts or '161 sem nível comprovado' not in counts:
+                        problems.append(f"{name}: auditoria V248 não separa os 85 níveis conhecidos dos 161 pendentes: {counts}")
+                    first=page.locator('#v248-cards .ct248-card').first
+                    first_cap=int(first.get_attribute('data-cap'))
+                    if not first.locator('.ct248-art img').first.evaluate("(img)=>img.complete&&img.naturalWidth>0"):
+                        problems.append(f"{name}: imagem original ausente no painel de níveis")
+                    first.locator('.ct248-details>summary').click()
+                    first.locator('input[name=level]').fill('26')
+                    first.locator('input[name=confirmed]').check()
+                    first.locator('button[type=submit]').click()
+                    page.wait_for_function("""() => Object.keys(localStorage)
+                      .some(k=>k.startsWith('scoutpro:v248:level-review:'))""",timeout=12000)
+                    exported=page.evaluate("""() => {
+                      const k=Object.keys(localStorage).find(k=>k.startsWith('scoutpro:v248:level-review:'));
+                      const x=JSON.parse(localStorage.getItem(k));
+                      return {level:x.level,pp:x.pp,cap:x.numero,card_id:x.card_id,
+                        confirmed:x.confirmed_in_game};
+                    }""")
+                    if (exported['level']!=26 or exported['pp']!=50 or
+                        exported['cap']!=first_cap or not exported['confirmed']):
+                        problems.append(f"{name}: confirmação V248 perdeu nível/PP/identidade: {exported}")
+                    with page.expect_download(timeout=16000) as audit_export:
+                        page.locator('#v248-export').click()
+                    exported_json=json.loads(Path(audit_export.value.path()).read_text(encoding='utf8'))
+                    if (exported_json.get('total')!=1 or
+                        exported_json['records'][0]['card_id']!=exported['card_id']):
+                        problems.append(f"{name}: exportação de níveis V248 não preservou a edição")
+                    page.reload(wait_until='domcontentloaded')
+                    page.locator('#v248-stats').wait_for()
+                    result['progress_review_v248']=exported
+                    page.screenshot(path=str(OUT / f"{name}_progress_review_v248.png"),
+                        full_page=False,animations="disabled")
                 results[name] = result
                 context.close()
         finally:
