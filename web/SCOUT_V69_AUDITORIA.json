@@ -7456,7 +7456,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": 66,
+      "pp": 50,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": "A",
@@ -7479,7 +7479,8 @@
       "pendencias": [
         "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
         "Atributos-base desta versão para cálculo de status finais",
-        "Proficiência se for usar em uma posição central"
+        "Proficiência se for usar em uma posição central",
+        "Revalidar distribuição dos 50 PP: ficha anterior foi construída com 66 PP; não aplicar build anterior até revisão."
       ],
       "arquivo": "fichas/191_Gabriel_Martinelli.html",
       "habilidades_nativas_origem": {
