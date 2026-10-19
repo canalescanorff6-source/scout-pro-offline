@@ -1338,6 +1338,40 @@ def run():
                     result['progress_review_v248']=exported
                     page.screenshot(path=str(OUT / f"{name}_progress_review_v248.png"),
                         full_page=False,animations="disabled")
+                    # V249: a confirmação deve aparecer na carta do catálogo
+                    # e na ficha ORIGINAL, sem reescrever o orçamento da build.
+                    sheet_href=page.locator('#v248-cards .ct248-card').first.locator('.ct248-open').get_attribute('href')
+                    page.goto(URL+'/index.html',wait_until='domcontentloaded',timeout=35000)
+                    badge=page.locator(f'#cards .player-card[data-cap="{first_cap}"] .ct249-local-tag')
+                    badge.wait_for(state='visible',timeout=20000)
+                    if '50' not in badge.inner_text() or badge.get_attribute('data-status')!='divergente':
+                        problems.append(f"{name}: V249 catálogo não alertou diferença de PP confirmada")
+                    page.goto(URL+'/'+sheet_href,wait_until='domcontentloaded',timeout=35000)
+                    alert=page.locator('#ct249-progress-alert')
+                    alert.wait_for(state='visible',timeout=20000)
+                    if (alert.get_attribute('data-status')!='divergente' or
+                        '50 PP' not in alert.inner_text()):
+                        problems.append(f"{name}: V249 ficha omitiu PP real confirmado")
+                    review_link=alert.locator('.ct249-review-link')
+                    if f'cap={first_cap}' not in (review_link.get_attribute('href') or ''):
+                        problems.append(f"{name}: V249 não vincula conferência à edição exata")
+                    page.screenshot(path=str(OUT/f"{name}_progress_consistency_v249.png"),
+                        full_page=False,animations="disabled")
+                    review_link.click()
+                    page.locator(f'#v248-cards .ct248-card[data-cap="{first_cap}"]').wait_for(timeout=20000)
+                    if page.locator('#v248-filter').input_value()!='all':
+                        problems.append(f"{name}: V249 deep link não mostra carta confirmada")
+                    page.once('dialog',lambda dialog:dialog.accept())
+                    page.locator(f'#v248-cards .ct248-card[data-cap="{first_cap}"] button[data-undo]').click()
+                    page.wait_for_function("""() => !Object.keys(localStorage)
+                       .some(k=>k.startsWith('scoutpro:v248:level-review:'))""",timeout=12000)
+                    page.goto(URL+'/index.html',wait_until='domcontentloaded',timeout=35000)
+                    page.locator('#scout-v203-filter-panel > summary').wait_for(timeout=20000)
+                    page.wait_for_timeout(450)
+                    if page.locator(f'#cards .player-card[data-cap="{first_cap}"] .ct249-local-tag').count():
+                        problems.append(f"{name}: V249 ainda mostra PP locais depois de desfazer")
+                    result['progress_consistency_v249']={'cap':first_cap,'confirmed_pp':50,
+                        'undo_ok':True}
                 results[name] = result
                 context.close()
         finally:
