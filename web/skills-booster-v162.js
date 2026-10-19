@@ -221,9 +221,9 @@ css.textContent+=
  '#scout-v162 .v254-confirm-line input:focus-visible{outline:3px solid #f0cc82;outline-offset:3px}';
 document.head.appendChild(css);
 const section=document.createElement('section');section.id='scout-v162';section.setAttribute('aria-label','Recomendações de habilidades e ímpetos por carta');
-section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA V162</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
-'<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button><button type="button" data-tactic="fora" aria-pressed="false">Pelas Pontas</button><button type="button" data-tactic="longo" aria-pressed="false">Bola Longa</button></div>'+
-'<div class="v162-panels"><article class="v162-panel"><h3>5 habilidades adicionais · prioridade na Posse</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
+section.innerHTML='<div class="v162-meta">SCOUT PRO · RECOMENDAÇÕES DOCUMENTAIS V256</div><h2>Habilidades adicionais e ímpetos por função</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
+'<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button><button type="button" data-tactic="fora" aria-pressed="false">Por Fora</button><button type="button" data-tactic="longo" aria-pressed="false">Passe Longo</button></div>'+
+'<div class="v162-panels"><article class="v162-panel"><h3>Habilidades adicionais · confirmar vagas por edição</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
 '<details><summary>Informar habilidades adicionais desta edição</summary><p>Separe os nomes por ponto e vírgula. Sem conferência, esta é apenas uma lista parcial: não presumimos que os outros slots estejam vazios.</p><textarea id="v162-equipped" aria-label="Habilidades adicionais já equipadas" placeholder="Ex.: Passe de primeira; Toque duplo"></textarea><label class="v254-confirm-line"><input type="checkbox" id="v254-confirm-equipped"><span>Conferi no Plano de Jogo: esta lista contém TODAS as habilidades adicionais equipadas nesta edição exata, inclusive se estiver vazia.</span></label><button id="v162-save" type="button">Salvar conferência e recalcular</button><p id="v162-feedback" aria-live="polite"></p></details>'+
 '<p class="v162-foot">Recomendações teóricas baseadas nas habilidades registradas, no estilo e na função da carta. Não são testes comprovados em partidas; verifique habilidades nativas, compatibilidade e slot antes de usar tokens. Nenhuma escolha é aplicada automaticamente.</p>';
 // V192: mostrar as cinco habilidades dentro da ficha PRINCIPAL, sem cópia do painel.
@@ -249,17 +249,38 @@ const equipmentConfirmed=()=>checkedEquipment(d,extra,readProof());
 verifiedCheck.checked=equipmentConfirmed();
 ta.addEventListener('input',()=>{if(fingerprint(ta.value)!==fingerprint(extra))verifiedCheck.checked=false});
 let tactic='posse';
+// V256 — somente a função realmente habilitada nesta edição pode mudar
+// a lista de habilidades e o ranking de ímpetos. Sem esse registro, usar
+// a posição original da carta, nunca Overall por posição do eFHUB.
+function selectedFunction(){
+ const card={numero:Number(d.capture),id:String(d.id),
+  posicao:d.shown_position||d.posicao};
+ const info=host.CRAQUE_FICHA_INDIVIDUAL_V251?.activeRole?.(card,
+  host.SCOUT_POSITION_TRAINING_V246,host.localStorage);
+ return info?.confirmed&&info.role?info:null;
+}
+function interpretedCard(){
+ const chosen=selectedFunction();
+ return chosen?{...d,shown_position:chosen.role,role_used:chosen.role}:d;
+}
 function draw(){
  let manuallyVerified={};
  try{const val=JSON.parse(localStorage.getItem('scoutpro:v103:booster:'+Number(d.capture))||'null');if(val&&String(val.card_id)===String(d.id))manuallyVerified=val}catch(e){}
- const confirmed=equipmentConfirmed();
- const result=evaluate(d,tactic,extra,{equippedConfirmed:confirmed});
- const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103,manuallyVerified.status,manuallyVerified.equipped);
+ const confirmed=equipmentConfirmed(),effective=interpretedCard(),
+  selected=selectedFunction();
+ const result=evaluate(effective,tactic,extra,{equippedConfirmed:confirmed});
+ const boost=booster(effective,tactic,host.SCOUT_BOOSTERS_V103,
+  manuallyVerified.status,manuallyVerified.equipped);
  const remaining=result.slotsRemaining;
  const proposed=result.recommendations;
  verifiedCheck.checked=confirmed;
  section.querySelectorAll('[data-tactic]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tactic===tactic)));
- section.querySelector('#v162-skills-status').textContent='Nativas catalogadas: '+result.knownNative+
+ section.querySelector('#v162-skills-status').textContent=
+  'Função avaliada: '+(selected?.role||result.role||'pendente')+
+  (selected?.status==='treinada'?' · treino de posição confirmado':
+   selected?.status==='familiar'?' · familiaridade confirmada':
+   ' · posição original ou sem alternativa confirmada')+
+  '. Nativas catalogadas: '+result.knownNative+
   ' · Adicionais informadas (distintas): '+result.manualReportedCount+'/5 · '+
   (confirmed?'Lista completa conferida · vagas restantes: '+remaining+'. ':
    'LISTA NÃO CONFERIDA: vagas disponíveis desconhecidas. Até cinco candidatos teóricos, não cinco slots livres. ')+
@@ -331,6 +352,13 @@ function draw(){
 }
 section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',()=>{tactic=b.dataset.tactic;draw();document.dispatchEvent(new CustomEvent('scoutpro:tactic-ui-selected-v220',{detail:{tactic}}))}));
  document.addEventListener('scoutpro:tactic-selected-v220',e=>{if(['posse','normal','rapido','fora','longo'].includes(e.detail?.tactic)){tactic=e.detail.tactic;draw()}});
+ // Seleção V251 validada no V246. O painel e a ficha devem concordar sobre
+ // habilidades e ímpeto de uma carta treinada como CA/SA/MAT/etc.
+ document.addEventListener('scoutpro:role-selected-v256',e=>{
+  if(Number(e.detail?.cap)!==Number(d.capture)||
+   String(e.detail?.card_id)!==String(d.id))return;
+  draw();
+ });
  // V251: harmonizar também o painel legado de habilidades/ímpetos, não apenas
  // a ficha principal, desde que a versão EXATA da carta seja identificada.
  host.addEventListener('scoutpro:v251:canonical-data',event=>{
