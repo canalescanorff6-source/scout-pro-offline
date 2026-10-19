@@ -111,6 +111,39 @@ assert.equal(V.sourceFor(martinelli,wrong),null);
 assert.equal(V.buildReview(martinelli,wrong,{},cards,'posse').canDraft,false);
 assert.equal(V.sourceFor(martinelli,{...raw,edition:'outro pack'}),null);
 assert.equal(V.sourceFor(martinelli,{...raw,pp:66}),null);
+// V246: Martinelli #191 é PTE original. CA só vira opção TÁTICA
+// quando o usuário confirma treinamento/familiaridade da edição EXATA.
+const P=require('../web/scout-position-training-v246.js');
+const saved=new Map();
+const storage={
+ getItem:k=>saved.has(k)?saved.get(k):null,
+ setItem:(k,v)=>saved.set(k,String(v)),
+ removeItem:k=>saved.delete(k)
+};
+const beforeTraining=V.buildReview(martinelli,raw,{},cards,'posse',{
+ targetPosition:'CA',positionTraining:P,store:storage
+});
+assert.equal(beforeTraining.status,'unsupported');
+assert.equal(beforeTraining.canDraft,false);
+assert(beforeTraining.reason.includes('não confirmada'));
+const approvedTraining=P.confirm(martinelli,'CA',true,storage);
+assert.equal(approvedTraining.eligible,true);
+const chosen=V.buildReview(martinelli,raw,{},cards,'posse',{
+ targetPosition:'CA',positionTraining:P,store:storage
+});
+assert.equal(chosen.positionUsed,'CA');
+assert.equal(chosen.positionEvidence,'treinada');
+assert.equal(chosen.role,'CA');
+assert.equal(T.total(chosen.proposal.levels),50);
+assert(!chosen.proposal.levels.slice(7).some(Boolean));
+const editionOfSomeoneElse={...martinelli,id:'id-edicao-diferente'};
+assert.equal(P.status(editionOfSomeoneElse,'CA',storage).eligible,false);
+P.confirm(martinelli,'CA',false,storage);
+assert.equal(V.buildReview(martinelli,raw,{},cards,'posse',{
+ targetPosition:'CA',positionTraining:P,store:storage
+}).canDraft,false);
+assert(read('web/app-bridge.js').includes("position251.onload=loadV251"));
+
 // O estado de níveis original continua protegido mesmo após 425 hipóteses.
 assert.equal(JSON.stringify(cards),before);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),sourceText);
