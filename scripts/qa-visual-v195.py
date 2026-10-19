@@ -1591,6 +1591,8 @@ def run():
                     skill_count.wait_for(state='visible',timeout=18000)
                     if 'Slots não conferidos' not in skill_count.inner_text():
                         problems.append(f"{name}: V254 inventou slots vagos antes da confirmação")
+                    page.locator('#scout-v220-technical > summary').click()
+                    page.locator('#scout-v220-advanced-skills > summary').click()
                     page.locator('#scout-v162 > details > summary').click()
                     ta=page.locator('#v162-equipped')
                     ta.fill('Toque duplo; Controle com a sola; Interceptação; Marcação individual; Passe na medida')
@@ -1615,6 +1617,8 @@ def run():
                     page.wait_for_function("""() => document.querySelector('#scout-v220-booster-why')
                       ?.textContent.includes('em Passe Longo')""",timeout=15000)
                     # Alterar texto sem confirmar invalida prova anterior.
+                    page.locator('#scout-v220-technical > summary').click()
+                    page.locator('#scout-v220-advanced-skills > summary').click()
                     page.locator('#scout-v162 > details > summary').click()
                     ta=page.locator('#v162-equipped')
                     ta.fill('Toque duplo; Controle com a sola')
