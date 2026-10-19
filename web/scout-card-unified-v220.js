@@ -27,11 +27,14 @@ function nativeDetails(card,tactic){
 function evidence(card,source,style){
  const native=String(source.habilidades_nativas||card.native_skills||'').split(';').filter(x=>x.trim()).length;
  const base=source.base_stats_known===true;
- const approved=engine.confirmSource(card);
+ const provisional=card.training_provisional===true||card.treino_proposto_nao_validado===true||source.treino_proposto_nao_validado===true;
+ const balanced=engine.confirmSource(card);
+ const approved=balanced&&!provisional;
  const vector=Array.isArray(source.niveis)&&engine.valid(source.niveis);
- return {native,base,approved,vector,
+ return {native,base,approved,provisional,vector,
   trustedName:source.name||card.name||('Carta #'+card.capture),
-  label:approved?'Build registrada · PP conferidos':vector?'Treino experimental · validar edição':'Treinamento pendente de comprovação',
+  label:provisional?(balanced?'Build proposta · PP matematicamente conferidos · validar em partidas':'Build proposta · PP não conferidos'):
+   approved?'Build registrada · PP conferidos':vector?'Treino experimental · validar edição':'Treinamento pendente de comprovação',
   disclaimer:'Treinos alternativos são hipóteses por estilo/função e habilidades cadastradas. Sem atributos-base finais, vídeos da edição exata e testes controlados, não há prova de que sejam superiores.'};
 }
 function makeList(doc,list){

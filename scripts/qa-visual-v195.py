@@ -19,6 +19,8 @@ SCREENS = [
     ("mobile_360", 360, 800, True),
     ("mobile_390", 390, 844, True),
     ("mobile_412", 412, 915, True),
+    ("windows_1024", 1024, 900, False),
+    ("windows_1151", 1151, 840, False),
     ("windows_1366", 1366, 768, False),
     ("windows_1920", 1920, 1080, False),
 ]
@@ -90,6 +92,43 @@ def run():
                 shortcuts = page.locator(".scout-v189-quick a").count()
                 home["quick_links"] = shortcuts
                 home["errors"] = list(errors)
+
+                # V248: verificar GEOMETRIA REAL das cartas no hero Windows.
+                # Screenshot do usuário: 1151px, busca/atalhos cobrindo as artes.
+                if not mobile:
+                    geometry = page.evaluate("""() => {
+                      const text=document.querySelector('.hero-text');
+                      const art=document.querySelector('.hero-visual');
+                      const quick=document.querySelector('.scout-v189-quick');
+                      const search=document.querySelector('.scout-v192-search-shell');
+                      const cardNodes=[...document.querySelectorAll('.hero-visual .featured')];
+                      if(!text||!art||!quick||!search||cardNodes.length!==3)return {ok:false,error:'Nós do cabeçalho ausentes'};
+                      const rect=e=>e.getBoundingClientRect();
+                      const a=rect(text),b=rect(art),q=rect(quick),s=rect(search);
+                      const horizontal=a.right<=b.left+2;
+                      const vertical=a.bottom<=b.top+2;
+                      const layout=horizontal?'colunas':vertical?'empilhado':'sobreposto';
+                      const inside=e=>{
+                        const r=rect(e);
+                        return r.left>=a.left-2&&r.right<=a.right+2;
+                      };
+                      const gallery=cardNodes.map(img=>{
+                        const r=rect(img);
+                        const width=Math.max(0,Math.min(r.right,b.right)-Math.max(r.left,b.left));
+                        const height=Math.max(0,Math.min(r.bottom,b.bottom)-Math.max(r.top,b.top));
+                        const ratio=(width*height)/Math.max(1,r.width*r.height);
+                        return {visibleRatio:+ratio.toFixed(3),loaded:img.complete&&img.naturalWidth>0};
+                      });
+                      return {
+                        ok:layout!=='sobreposto'&&inside(quick)&&inside(search)&&
+                          gallery.every(x=>x.loaded&&x.visibleRatio>=.90),
+                        layout,searchInside:inside(search),quickInside:inside(quick),gallery
+                      };
+                    }""")
+                    home["v248_hero_geometry"] = geometry
+                    if not geometry["ok"]:
+                        problems.append(f"{name}: conteúdo ocupa espaço das artes ou imagem cortada: {geometry}")
+
                 if shortcuts != 4:
                     problems.append(f"{name}: home precisa de 4 atalhos, recebeu {shortcuts}")
                 if home["horizontalOverflow"] > 8:
@@ -1119,6 +1158,27 @@ def run():
                     if page.locator('#ct-v230-tactic-details .ct-v230-fit-row').count()!=11:
                         problems.append(f"{name}: V230 faltam diagnósticos individuais por posição")
                     page.screenshot(path=str(OUT / f"{name}_five_modes_v230.png"),full_page=False,animations="disabled")
+                    # V246: Martinelli PTE só passa a CA após confirmação REAL no seletor.
+                    page.locator('#pitch button[data-slot="cae"]').click()
+                    page.locator('#show-all').check()
+                    page.locator('#player-search').fill('Gabriel Martinelli')
+                    page.locator('#player-options [data-v246-confirm="191"]').wait_for(timeout=12000)
+                    before_v246=page.evaluate("""() => window.SCOUT_POSITION_TRAINING_V246.status(
+                      {numero:191,id:'105850811319718',posicao:'PTE'},'CA').eligible""")
+                    if before_v246:
+                        problems.append(f"{name}: V246 liberou CA antes da confirmação de treino")
+                    page.once("dialog",lambda dialog:dialog.accept())
+                    page.locator('#player-options [data-v246-confirm="191"]').click()
+                    page.wait_for_function("""() => window.SCOUT_POSITION_TRAINING_V246.status(
+                      {numero:191,id:'105850811319718',posicao:'PTE'},'CA').status==='treinada'""",timeout=10000)
+                    if not page.evaluate("""() => window.CRAQUE_TACTICS_V230.fit(
+                       {numero:191,id:'105850811319718',posicao:'PTE'},'cae').match"""):
+                        problems.append(f"{name}: V246 não reconheceu Martinelli CA no motor tático")
+                    page.locator('#player-options [data-v246-remove="191"]').click()
+                    if page.evaluate("""() => window.SCOUT_POSITION_TRAINING_V246.status(
+                        {numero:191,id:'105850811319718',posicao:'PTE'},'CA').eligible"""):
+                        problems.append(f"{name}: V246 não reverteu treino de posição")
+                    page.locator('#picker-close').click()
                 page.goto(URL + '/meu-time-testes-v219.html',wait_until='domcontentloaded',timeout=35000)
                 page.wait_for_function("""() => document.querySelectorAll('#squads details[data-team]').length>=9""",timeout=25000)
                 page.locator('#ct-v230-rotation-modes [data-tactic-mode="normal"]').click()
@@ -1233,6 +1293,51 @@ def run():
                 if errors:
                     relevant=[e for e in errors if 'craque-friends' in e or 'outros-elencos' in e]
                     if relevant:problems.append(f"{name}: V227 erro JS {relevant[:2]}")
+                # V248: formulário de conferência no Windows e no Android simulado,
+                # sem modificar as 246 fichas originais. Exportação deve preservar Card ID.
+                if name in ('mobile_390','windows_1151'):
+                    page.goto(URL + '/conferir-progresso-v248.html',
+                        wait_until='domcontentloaded',timeout=35000)
+                    page.locator('#v248-cards .ct248-card').first.wait_for(timeout=25000)
+                    counts=page.locator('#v248-stats').inner_text()
+                    if '85 níveis documentados' not in counts or '161 sem nível comprovado' not in counts:
+                        problems.append(f"{name}: auditoria V248 não separa os 85 níveis conhecidos dos 161 pendentes: {counts}")
+                    first=page.locator('#v248-cards .ct248-card').first
+                    first_cap=int(first.get_attribute('data-cap'))
+                    first.scroll_into_view_if_needed()
+                    try:
+                        page.wait_for_function("""() => {
+                          const i=document.querySelector('#v248-cards .ct248-card .ct248-art img');
+                          return i&&i.complete&&i.naturalWidth>0;
+                        }""",timeout=15000)
+                    except Exception:
+                        problems.append(f"{name}: imagem original ausente no painel de níveis")
+                    first.locator('.ct248-details>summary').click()
+                    first.locator('input[name=level]').fill('26')
+                    first.locator('input[name=confirmed]').check()
+                    first.locator('button[type=submit]').click()
+                    page.wait_for_function("""() => Object.keys(localStorage)
+                      .some(k=>k.startsWith('scoutpro:v248:level-review:'))""",timeout=12000)
+                    exported=page.evaluate("""() => {
+                      const k=Object.keys(localStorage).find(k=>k.startsWith('scoutpro:v248:level-review:'));
+                      const x=JSON.parse(localStorage.getItem(k));
+                      return {level:x.level,pp:x.pp,cap:x.numero,card_id:x.card_id,
+                        confirmed:x.confirmed_in_game};
+                    }""")
+                    if (exported['level']!=26 or exported['pp']!=50 or
+                        exported['cap']!=first_cap or not exported['confirmed']):
+                        problems.append(f"{name}: confirmação V248 perdeu nível/PP/identidade: {exported}")
+                    with page.expect_download(timeout=16000) as audit_export:
+                        page.locator('#v248-export').click()
+                    exported_json=json.loads(Path(audit_export.value.path()).read_text(encoding='utf8'))
+                    if (exported_json.get('total')!=1 or
+                        exported_json['records'][0]['card_id']!=exported['card_id']):
+                        problems.append(f"{name}: exportação de níveis V248 não preservou a edição")
+                    page.reload(wait_until='domcontentloaded')
+                    page.locator('#v248-stats').wait_for()
+                    result['progress_review_v248']=exported
+                    page.screenshot(path=str(OUT / f"{name}_progress_review_v248.png"),
+                        full_page=False,animations="disabled")
                 results[name] = result
                 context.close()
         finally:

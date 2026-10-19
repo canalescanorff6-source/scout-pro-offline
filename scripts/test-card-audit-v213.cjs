@@ -40,7 +40,11 @@ assert.deepStrictEqual(r.estudo_atacantes_posse,focus);
 for(const n of focus){const c=r.cards.find(x=>x.numero===n);assert(c.estudo_atacante_posse);assert.strictEqual(c.estudo_atacante_posse.treino_atual_preservado,true);}
 assert(r.cards.find(x=>x.numero===40).estudo_atacante_posse.nota.includes('aprovada'));
 assert.strictEqual(r.cards.filter(c=>c.comparacao_grupo_repetido).length,56);
-assert.strictEqual(r.grupos_repetidos_impetos_fixos_distintos,17);
+assert.strictEqual(r.grupos_repetidos_impetos_fixos_distintos,16);
+assert.deepStrictEqual(r.cards.find(c=>c.numero===191).repeticao.peers,[190],
+ 'Martinelli com 50 PP agora compara com Rafael Leão, não com Gakpo');
+assert.strictEqual(r.cards.find(c=>c.numero===198).repeticao,null);
+assert.strictEqual(r.cards.find(c=>c.numero===190).repeticao.peers[0],191);
 for(const c of r.cards.filter(c=>c.comparacao_grupo_repetido)){
  assert.strictEqual(c.comparacao_grupo_repetido.substituicao_automatica,false);
  assert(c.comparacao_grupo_repetido.colegas.length>0);

@@ -1,0 +1,42 @@
+/* V246 — treinamento posicional confirmado, sem criar nova ficha ou animações. */
+#player-options .ct-v246-choice{
+ min-width:0;display:flex;flex-direction:column;gap:7px;
+ padding:8px;border:1px solid rgba(175,192,214,.28);
+ border-radius:13px;
+ background:linear-gradient(145deg,#142942,#0a192d);
+ box-shadow:inset 0 1px 0 rgba(255,245,215,.045);
+}
+#player-options .ct-v246-choice>.option{
+ width:100%;min-width:0;min-height:58px;
+ border-radius:9px;
+}
+#player-options .ct-v246-choice .ct-v246-training{
+ display:flex;align-items:center;justify-content:center;
+ min-height:44px;width:100%;
+ padding:10px 11px;
+ color:#ffe4a5;
+ background:linear-gradient(140deg,#263b52,#13243b);
+ border:1px solid rgba(243,205,119,.63);
+ border-radius:9px;
+ font-size:12px;font-weight:700;
+ line-height:1.35;text-align:center;
+ overflow-wrap:anywhere;cursor:pointer;
+}
+#player-options .ct-v246-choice .ct-v246-training:focus-visible,
+#player-options .ct-v246-choice .option:focus-visible{
+ outline:3px solid #ffc629;outline-offset:2px;
+}
+#player-options .ct-v246-choice .ct-v246-training:disabled{
+ opacity:.5;cursor:not-allowed;
+}
+#player-options .ct-v246-choice .option:disabled{
+ opacity:.59;cursor:not-allowed;
+}
+@media(max-width:520px){
+ #player-options .ct-v246-choice{padding:7px;gap:6px}
+ #player-options .ct-v246-choice .ct-v246-training{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ #player-options .ct-v246-choice,
+ #player-options .ct-v246-choice>*{animation:none!important;transition:none!important}
+}

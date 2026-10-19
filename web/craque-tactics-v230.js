@@ -20,7 +20,7 @@ function slotRole(slot){
  if(['zge','zgd'].includes(slot))return 'ZG';
  if(['cae','cad'].includes(slot))return 'CA';
  if(['vole','vold'].includes(slot))return 'VOL';
- return ({go:'GO',le:'LE',ld:'LD',mlg:'MLG',mat:'MAT',sa:'SA'})[slot]||null;
+ return ({go:'GO',le:'LE',ld:'LD',vol:'VOL',mlg:'MLG',mlge:'MLG',mlgd:'MLG',mat:'MAT',sa:'SA',ca:'CA'})[slot]||null;
 }
 const NEAR={
  CA:['SA','MAT'],SA:['CA','MAT'],MAT:['SA','MLG','VOL'],MLG:['MAT','VOL'],
@@ -33,6 +33,11 @@ function fit(card,slot){
  if(want==='GO'||have==='GO')return have===want?
    {match:true,score:55,label:'Posição original'}:{match:false,score:-100,label:'Goleiro incompatível'};
  if(want===have)return {match:true,score:55,label:'Posição original'};
+ const trained=(typeof window!=='undefined'?window.SCOUT_POSITION_TRAINING_V246:null)||
+  (typeof module==='object'&&module.exports?require('./scout-position-training-v246.js'):null);
+ const confirmed=trained?.status(card,want);
+ if(confirmed?.status==='treinada'||confirmed?.status==='familiar')
+  return {match:true,score:49,label:confirmed.label};
  if(NEAR[want]?.includes(have))return {match:false,score:15,label:'Adaptação sem familiaridade confirmada'};
  return {match:false,score:-100,label:'Posição incompatível'};
 }

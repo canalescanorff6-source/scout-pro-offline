@@ -469,3 +469,168 @@ body[data-page] :is(#scout-backup-modal,#scout-android-update-modal)
   background:#132b47!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;
  }
 }
+
+
+/* V248 — Cabeçalho Windows sem sobreposição.
+   Relato 1151px: o bloco de busca/atalhos avançava por cima das artes.
+   Reservar uma coluna real às 3 cartas; ações ficam em 2 linhas ao
+   reduzir a janela. Não ocultar imagens, nem alterar mobile <=720px. */
+@media (min-width:960px){
+ body[data-page="catalog"] .hero{
+  display:grid!important;
+  grid-template-columns:minmax(0,60%) minmax(0,40%)!important;
+  align-items:center!important;
+ }
+ body[data-page="catalog"] .hero-text{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+  padding:18px clamp(16px,2.1vw,30px)!important;
+  z-index:2;
+ }
+ body[data-page="catalog"] .hero .scout-v189-home,
+ body[data-page="catalog"] .hero .scout-v192-search-block,
+ body[data-page="catalog"] .hero .scout-v192-search-shell{
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+ }
+ body[data-page="catalog"] .hero .scout-v189-quick{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  max-width:100%!important;
+  gap:8px!important;
+  margin:8px 0 6px!important;
+ }
+ body[data-page="catalog"] .hero .scout-v189-tile{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  min-height:52px!important;
+  padding:8px!important;
+ }
+ body[data-page="catalog"] .hero .scout-v189-tile-content{
+  min-width:0!important;
+  overflow-wrap:anywhere;
+ }
+ body[data-page="catalog"] .hero-visual{
+  box-sizing:border-box!important;
+  position:relative;
+  width:100%!important;
+  min-width:0!important;
+  height:350px!important;
+  min-height:350px!important;
+  max-height:350px!important;
+  overflow:hidden!important;
+  z-index:1;
+  isolation:isolate;
+ }
+ body[data-page="catalog"] .hero-visual .featured.one{
+  right:min(33%,150px)!important;
+  top:78px!important;
+  width:138px!important;
+  height:197px!important;
+  transform:rotate(-8deg)!important;
+ }
+ body[data-page="catalog"] .hero-visual .featured.two{
+  right:18px!important;
+  top:33px!important;
+  width:166px!important;
+  height:235px!important;
+  transform:rotate(6deg)!important;
+ }
+ body[data-page="catalog"] .hero-visual .featured.three{
+  display:block!important;
+  right:min(62%,280px)!important;
+  top:119px!important;
+  width:112px!important;
+  height:158px!important;
+  transform:rotate(-10deg)!important;
+ }
+ body[data-page="catalog"] .hero-visual .hero-stamp{
+  right:16px!important;
+  bottom:17px!important;
+  font-size:9px!important;
+ }
+}
+/* A partir de 1250px, quatro atalhos cabem em uma linha sem invadir a
+   coluna das cartas, preservando o catálogo na primeira dobra de 1366x768. */
+@media (min-width:1250px){
+ body[data-page="catalog"] .hero .scout-v189-quick{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ }
+}
+/* Janela Windows compacta/tablet: imagem em faixa PRÓPRIA abaixo dos
+   atalhos, sem atrás do formulário. Android pequeno mantém o layout V202. */
+@media (min-width:721px) and (max-width:959px){
+ body[data-page="catalog"] .hero{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  align-items:stretch!important;
+ }
+ body[data-page="catalog"] .hero-text{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  padding:16px 20px!important;
+  z-index:2;
+ }
+ body[data-page="catalog"] .hero .scout-v189-home,
+ body[data-page="catalog"] .hero .scout-v192-search-block,
+ body[data-page="catalog"] .hero .scout-v192-search-shell{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+ }
+ body[data-page="catalog"] .hero .scout-v189-quick{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  max-width:100%!important;
+ }
+ body[data-page="catalog"] .hero-visual{
+  position:relative;
+  width:100%!important;
+  height:255px!important;
+  min-height:255px!important;
+  max-height:255px!important;
+  overflow:hidden!important;
+  opacity:1!important;
+  z-index:1;
+ }
+ body[data-page="catalog"] .hero-visual .featured.one{
+  right:calc(50% - 10px)!important;
+  top:30px!important;
+  width:130px!important;
+  height:178px!important;
+  transform:rotate(-8deg)!important;
+ }
+ body[data-page="catalog"] .hero-visual .featured.two{
+  right:calc(50% - 175px)!important;
+  top:10px!important;
+  width:150px!important;
+  height:208px!important;
+  transform:rotate(6deg)!important;
+ }
+ body[data-page="catalog"] .hero-visual .featured.three{
+  display:block!important;
+  right:calc(50% + 125px)!important;
+  top:65px!important;
+  width:104px!important;
+  height:145px!important;
+  transform:rotate(-10deg)!important;
+ }
+ body[data-page="catalog"] .hero-visual .hero-stamp{
+  right:50%!important;
+  transform:translateX(50%);
+  bottom:8px!important;
+  white-space:nowrap;
+ }
+}
+/* Sem transições compulsórias: o acabamento respeita redução de movimento. */
+@media (prefers-reduced-motion:reduce){
+ body[data-page="catalog"] .hero-visual .featured{
+  transition:none!important;
+  animation:none!important;
+ }
+}
