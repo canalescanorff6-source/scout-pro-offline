@@ -169,12 +169,22 @@ function mount(doc){
  }
  function updateRecommendations(){
   const cfg=engine.styleFor(style);
-  const focus=engine.focus(card,style),proof=evidence(card,{base_stats_known:card.base_stats_known,niveis:card.recommended_levels,habilidades_nativas:card.native_skills,name:card.name},style);
+  // V256: a posição alternativa confirmada no V246 também deve reger skills
+  // e ímpetos. Nunca mudar o arquivo original nem recalcular PP pela OVR.
+  const roleInfo=host.CRAQUE_FICHA_INDIVIDUAL_V251?.activeRole?.({
+   numero:cap,id,posicao:card.shown_position||card.posicao
+  },host.SCOUT_POSITION_TRAINING_V246,host.localStorage)||null;
+  const tacticalCard=roleInfo?.confirmed&&roleInfo.role?
+   {...card,shown_position:roleInfo.role,role_used:roleInfo.role}:card;
+  const focus=engine.focus(tacticalCard,style),proof=evidence(card,{base_stats_known:card.base_stats_known,niveis:card.recommended_levels,habilidades_nativas:card.native_skills,name:card.name},style);
   // V233: prioridades explicadas por posição real, habilidades e estilo, não apenas
   // por uma lista de pesos genéricos. Fallback V220 se a extensão não carregar.
-  const read233=host.CRAQUE_INTERPRETATION_V233?.interpret(card,style,lab)||null;
-  $(wrap,'scout-v220-focus-title').textContent=read233?
-   read233.position+' · '+cfg.focus:cfg.focus;
+  const read233=host.CRAQUE_INTERPRETATION_V233?.interpret(tacticalCard,style,lab)||null;
+  $(wrap,'scout-v220-focus-title').textContent=
+   (roleInfo?.status==='treinada'?'Função treinada: ':
+    roleInfo?.status==='familiar'?'Familiaridade confirmada: ':'Função original: ')+
+   (roleInfo?.role||engine.roleOf(card)||'pendente')+' · '+
+   (read233?read233.position+' · '+cfg.focus:cfg.focus);
   $(wrap,'scout-v220-focus-note').textContent=read233?
    read233.job+' '+(read233.signals.length?read233.signals.slice(0,2).join(' '):
     'Sem evidência individual suficiente para distinguir esta carta além da sua função.'):
@@ -186,7 +196,7 @@ function mount(doc){
   const pills=$(wrap,'scout-v220-priorities');pills.replaceChildren();
   for(const item of (read233?read233.priorities.slice(0,4):focus.priority))
    pills.append(mk(doc,'span','',item.name));
-  const {skills,booster}=nativeDetails(card,style);
+  const {skills,booster}=nativeDetails(tacticalCard,style);
   const holder=$(wrap,'scout-v220-skill-list');holder.replaceChildren();
   if(skills){
    const remaining=skills.slotsRemaining;
@@ -250,7 +260,7 @@ function mount(doc){
   const v=event.detail||{};
   if(Number(v.capture)!==cap||String(v.id)!==id||
    String(v.name)!==String(card.name)||String(v.edition)!==String(card.edition))return;
-  for(const key of ['native_skills','attack_style','defence_style','boost1','boost2',
+  for(const key of ['shown_position','native_skills','attack_style','defence_style','boost1','boost2',
    'base_stats_known','training_provisional','max_level','pp_origem','pp_estimated']){
    if(Object.hasOwn(v,key))card[key]=v[key];
   }
@@ -260,6 +270,11 @@ function mount(doc){
   switchTraining(style);
  });
  doc.addEventListener('scoutpro:skills-updated',updateRecommendations);
+ doc.addEventListener('scoutpro:role-selected-v256',e=>{
+  if(Number(e.detail?.cap)!==cap||String(e.detail?.card_id)!==id)return;
+  // activeRole() revalida no V246 antes de mudar qualquer recomendação.
+  updateRecommendations();
+ });
  doc.addEventListener('scoutpro:recommendations-ready',()=>{
   const old=doc.getElementById('scout-v162');
   const bx=doc.getElementById('scout-v220-advanced-skills');

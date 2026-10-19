@@ -1543,6 +1543,57 @@ def run():
                         proof.locator('li').count()!=10 or
                         'pendentes' not in proof.locator('summary').inner_text()):
                         problems.append(f"{name}: matriz de 10 critérios V252 ausente ou incompleta")
+                    # V256: a função confirmada no jogo deve orientar a
+                    # build, as habilidades e o ímpeto DA MESMA edição.
+                    if page.locator('#ct251-position').count():
+                        problems.append(f"{name}: V256 mostrou CA sem treino do Martinelli")
+                    page.evaluate("""() => {
+                      const P=window.SCOUT_POSITION_TRAINING_V246;
+                      P.confirm({numero:191,id:'105850811319718',posicao:'PTE'},
+                        'CA',true,localStorage);
+                    }""")
+                    page.reload(wait_until='domcontentloaded')
+                    page.locator('#ct253-integrated-review > summary').click()
+                    page.locator('#ct251-position').wait_for(state='visible',timeout=20000)
+                    page.locator('#ct251-position').select_option('CA')
+                    page.wait_for_function("""() =>
+                      document.querySelector('#v162-skills-status')
+                        ?.textContent.includes('Função avaliada: CA') &&
+                      document.querySelector('#scout-v220-focus-title')
+                        ?.textContent.includes('Função treinada: CA')
+                    """,timeout=20000)
+                    role256=page.evaluate("""() => {
+                      const V=window.CRAQUE_FICHA_INDIVIDUAL_V251;
+                      const c={numero:191,id:'105850811319718',posicao:'PTE'};
+                      return {role:V.activeRole(c,window.SCOUT_POSITION_TRAINING_V246,
+                        localStorage),source:document.querySelector('#ct251-individual-ficha')
+                        ?.textContent||''};
+                    }""")
+                    if (role256['role']['status']!='treinada' or
+                        role256['role']['role']!='CA' or
+                        'Função proposta: CA' not in role256['source']):
+                        problems.append(f"{name}: V256 não alinhou PP/skills com CA: {role256}")
+                    page.screenshot(path=str(OUT/f"{name}_v256_martinelli_CA.png"),
+                        full_page=False,animations="disabled")
+                    page.locator('#ct251-position').select_option('PTE')
+                    page.wait_for_function("""() =>
+                      document.querySelector('#v162-skills-status')
+                        ?.textContent.includes('Função avaliada: PTE') &&
+                      document.querySelector('#scout-v220-focus-title')
+                        ?.textContent.includes('Função original: PTE')
+                    """,timeout=15000)
+                    page.evaluate("""() => {
+                      window.SCOUT_POSITION_TRAINING_V246.confirm({
+                        numero:191,id:'105850811319718',posicao:'PTE'
+                      },'CA',false,localStorage);
+                    }""")
+                    page.reload(wait_until='domcontentloaded')
+                    page.locator('#ct253-integrated-review > summary').click()
+                    if page.locator('#ct251-position').count():
+                        problems.append(f"{name}: V256 manteve posição CA após desfazer treino")
+                    result['confirmed_role_v256']={'CA_confirmed':True,
+                      'skills_compatible':True,'booster_role_synchronized':True,
+                      'revoked':True}
                     # Confirmar PP diferente no jogo deve bloquear TANTO o painel
                     # V251 quanto o editor principal V218, sem alterar dados.
                     page.evaluate("""() => {
