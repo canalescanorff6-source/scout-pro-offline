@@ -201,14 +201,14 @@ let d;try{d=JSON.parse(ds.textContent)}catch(e){return}
 const container=document.querySelector('.profile-content');if(!container)return;
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const css=document.createElement('style');css.textContent=
-'#scout-v162{border:1px solid #326a85;background:linear-gradient(150deg,#102b40,#0e2132);border-radius:18px;padding:18px;margin:16px 0 20px;color:#e9f5ff;scroll-margin-top:15px}'+
+'#scout-v162{border:1px solid #ad9168;background:linear-gradient(150deg,#14283f,#0b1b30);border-radius:18px;padding:18px;margin:16px 0 20px;color:#e9f5ff;scroll-margin-top:15px}'+
 '#scout-v162 h2{margin:4px 0 8px;font-size:clamp(18px,3vw,24px)}#scout-v162 p{font-size:13px;line-height:1.55;margin:7px 0}'+
-'#scout-v162 .v162-meta{font-size:11px;letter-spacing:.08em;color:#a6d9e8;font-weight:800}'+
+'#scout-v162 .v162-meta{font-size:11px;letter-spacing:.08em;color:#e9cc93;font-weight:800}'+
 '#scout-v162 .v162-modes{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}'+
-'#scout-v162 button{background:#1a475f;border:1px solid #4c819a;border-radius:9px;color:white;cursor:pointer;min-height:42px;padding:8px 12px;font-size:13px;font-weight:700}'+
-'#scout-v162 button[aria-pressed=true]{background:#0b8b84;border-color:#81e2d4;color:#fff}'+
+'#scout-v162 button{background:#1a3450;border:1px solid #957751;border-radius:9px;color:white;cursor:pointer;min-height:42px;padding:8px 12px;font-size:13px;font-weight:700}'+
+'#scout-v162 button[aria-pressed=true]{background:#e5c587;border-color:#f3dba9;color:#10243a}'+
 '#scout-v162 .v162-list{display:grid;gap:8px;padding:0;list-style:none;margin:12px 0}'+
-'#scout-v162 .v162-list li{border:1px solid #31536b;background:#11293c;border-radius:10px;padding:10px 12px}'+
+'#scout-v162 .v162-list li{border:1px solid #51647a;background:#142b42;border-radius:10px;padding:10px 12px}'+
 '#scout-v162 .v162-list li p{margin:3px 0 0;color:#b7d6e5}'+
 '#scout-v162 .v162-panels{display:grid;grid-template-columns:1fr 1fr;gap:12px}'+
 '#scout-v162 .v162-panel{border:1px solid #33556b;border-radius:12px;padding:12px;background:#0b1e2d;min-width:0}'+
@@ -348,7 +348,7 @@ function draw(){
  details.appendChild(explain);panel.appendChild(details);
 }
  const note=document.createElement('p');note.className='v162-note';note.textContent=boost.note;panel.appendChild(note);
- const jump=document.createElement('a');jump.href='../revisao-impetos-v103.html?c='+Number(d.capture);jump.textContent='Confirmar o slot, o ímpeto equipado e as opções desta carta ↗';jump.style.color='#8dd8f7';jump.style.fontWeight='700';panel.appendChild(jump);
+ const jump=document.createElement('a');jump.href='../revisao-impetos-v103.html?c='+Number(d.capture);jump.textContent='Confirmar o slot, o ímpeto equipado e as opções desta carta ↗';jump.style.color='#efd096';jump.style.fontWeight='700';panel.appendChild(jump);
 }
 section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',()=>{tactic=b.dataset.tactic;draw();document.dispatchEvent(new CustomEvent('scoutpro:tactic-ui-selected-v220',{detail:{tactic}}))}));
  document.addEventListener('scoutpro:tactic-selected-v220',e=>{if(['posse','normal','rapido','fora','longo'].includes(e.detail?.tactic)){tactic=e.detail.tactic;draw()}});
