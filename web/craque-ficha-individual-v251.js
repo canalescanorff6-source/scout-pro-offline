@@ -282,6 +282,38 @@ function catalogAudit(cards){
  counts.proposalsAreVerified=false;
  return counts;
 }
+/* V260 — indicadores separados para dados numéricos PARCIAIS e
+ * comprovação de uma base completa da versão exata.
+ * O laboratório legado possui snapshots parciais de vários jogadores;
+ * flag verdadeira no índice não equivale a screenshot confirmado.
+ */
+function baseEvidence(card,row,lab){
+ const identity=Boolean(card&&lab&&String(lab.id)===String(card.id)&&
+  norm(lab.name)===norm(card.name)&&Number(lab.pp)===Number(card.pp));
+ const entries=identity&&lab.stats&&typeof lab.stats==='object'&&!Array.isArray(lab.stats)?
+  Object.entries(lab.stats):[];
+ const valid=entries.filter(([name,value])=>String(name).trim()&&value&&
+  typeof value.base==='number'&&Number.isInteger(value.base)&&value.base>=0&&value.base<=120);
+ const recorded=Boolean(identity&&row?.base_stats_confirmados===true&&valid.length>0);
+ const p=lab?.stats_proof;
+ // Salvaguarda estrutural: 1 ou 9 estatísticas jamais comprovam uma
+ // base exaustiva. O patamar de 20 NÃO é uma regra do eFootball, é só um
+ // limite inferior para rejeitar snapshots parciais; ainda exige fonte.
+ const complete=Boolean(recorded&&valid.length>=20&&valid.length===entries.length&&
+  row?.print_edicao_confirmada===true&&p?.schema==='CRAQUE_BASE_PROOF_V260'&&
+  p.confirmed_in_game===true&&p.complete===true&&
+  Number(p.attribute_count)===valid.length&&String(p.card_id)===String(card.id)&&
+  norm(p.edition)===norm(card.versao)&&
+  typeof p.source_ref==='string'&&p.source_ref.trim().length>=6);
+ const note=complete?
+  valid.length+' atributos-base numericamente identificados, com confirmação da edição e referência de origem. Ainda não comprova a build em partidas.':
+  recorded?valid.length+' atributos-base numéricos cadastrados nesta edição, mas sem fonte completa validada. São dados PARCIAIS: não calcular atributos finais nem homologar o treino.':
+  !identity&&lab?.stats&&Object.keys(lab.stats).length?
+   'Laboratório não corresponde ao Card ID, nome ou PP desta edição. Valores ignorados.':
+   'Não há um conjunto completo de atributos-base conferido para esta edição; flag isolada ou print candidato não bastam.';
+ return Object.freeze({identity,recorded,complete,partial:recorded&&!complete,
+  count:valid.length,note});
+}
 /* V252 — documentação individual, NÃO pontuação meta.
  * Prints candidatos e flags gerais não comprovam a edição exata. */
 function proofChecklist(card,index,lab,store){
@@ -290,8 +322,7 @@ function proofChecklist(card,index,lab,store){
   norm(index.edicao)===norm(card.versao));
  const row=matched?index:{};
  const native=String(card?.habilidades_nativas||'').split(';').filter(x=>x.trim()).length;
- const stats=lab?.stats&&typeof lab.stats==='object'&&
-  Object.values(lab.stats).some(x=>x&&Number.isFinite(x.base)&&x.base>=0&&x.base<=120);
+ const base=baseEvidence(card,row,lab);
  let installedSkills='',boostSlot=null,equipmentRecord=null;
  try{
   installedSkills=String(store?.getItem('scoutpro:v162:equipped:'+
@@ -332,9 +363,9 @@ function proofChecklist(card,index,lab,store){
   {id:'booster',name:'Slot de ímpeto conferido pelo usuário',
    documented:Boolean(boosterReported),
    note:'Só o slot confirmado da edição permite avaliar ímpeto equipável.'},
-  {id:'base',name:'Atributos-base numéricos utilizáveis',
-   documented:row.base_stats_confirmados===true&&Boolean(stats),
-   note:'Uma flag sem valores não permite simular status finais.'},
+  {id:'base',name:'Atributos-base completos da edição, com fonte',
+   documented:base.complete,partial:base.partial,
+   note:base.note},
   {id:'body',name:'Biotipo/documentação corporal da edição',
    documented:row.modelo_corporal_documentado===true,
    note:'Biotipo não confirma automaticamente animações.'},
@@ -350,10 +381,11 @@ function proofChecklist(card,index,lab,store){
  ];
  return {matched,checks,documented:checks.filter(x=>x.documented).length,
   pending:checks.filter(x=>!x.documented).length,
+  partial:checks.filter(x=>x.partial===true).length,baseEvidence:base,
   competitivelyVerified:checks.find(x=>x.id==='gameplay').documented&&
     checks.find(x=>x.id==='base').documented&&checks.find(x=>x.id==='budget').documented};
 }
-const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,proofChecklist,signature,compareProposals,
+const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,baseEvidence,proofChecklist,signature,compareProposals,
   exact,sourceFor,related,allocate,buildReview,catalogAudit});
 if(!host?.document)return api;
 const doc=host.document;
@@ -428,12 +460,13 @@ function display(){
  const proof=proofChecklist(card,evidenceByCap.get(Number(card.numero)),lab,host.localStorage);
  const criteria=mk('details','ct251-evidence-details ct251-proof');
  criteria.append(mk('summary','','Fontes desta edição: '+proof.documented+
-  ' documentadas · '+proof.pending+' pendentes · nenhuma homologação automática'));
+  ' documentadas · '+proof.pending+' pendentes ('+proof.partial+
+  ' parciais) · nenhuma homologação automática'));
  const criteriaList=mk('ul','ct251-proof-list');
  for(const item of proof.checks){
   const li=mk('li','',item.name+' — '+
-   (item.documented?'DOCUMENTADO':'PENDENTE')+'. '+item.note);
-  li.dataset.proof=item.documented?'documented':'pending';
+   (item.documented?'DOCUMENTADO':item.partial?'PARCIAL':'PENDENTE')+'. '+item.note);
+  li.dataset.proof=item.documented?'documented':item.partial?'partial':'pending';
   criteriaList.append(li);
  }
  criteria.append(criteriaList);block.append(criteria);
