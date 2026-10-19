@@ -53,7 +53,14 @@ function inspect(input,cards,store){
    continue;
   }
   seen.add(slot);
+  const rawLocal=store.getItem(slot);
   const prior=readSaved(card,store);
+  // Não apagar silenciosamente um registro corrompido ou de outro esquema:
+  // preservar sua cópia até um backup ou reparo manual explícito.
+  if(rawLocal!==null&&rawLocal!==undefined&&!prior){
+   errors.push('Registro local incompatível ou danificado: #'+item.numero);
+   continue;
+  }
   const line={card,item,key:slot,prior};
   records.push(line);
   if(prior){
