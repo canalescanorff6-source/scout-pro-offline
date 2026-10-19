@@ -34,7 +34,7 @@ for(const c of roster){
  const ranked=S.booster(d,'posse',B);
  assert(ranked.primary&&B.CRAFTABLE.includes(ranked.primary.nome),'Ímpeto de posse não calculado '+c.numero);
  assert(ranked.primary.atributos.length===4);
- assert(['slot_nao_documentado','slot_nao_verificado','condicionado_a_slot','comparacao_segundo_fixo','impossivel_na_conta'].includes(ranked.equipStatus));
+ assert(['slot_pendente_no_catalogo','slot_nao_documentado','slot_nao_verificado','condicionado_a_slot','comparacao_segundo_fixo','impossivel_na_conta'].includes(ranked.equipStatus));
  if(!ranked.able)unproven++;if(ranked.primary)withBooster++;inspected++;
 }
 assert.equal(inspected,246);assert.equal(withBooster,246);assert(unproven>=100);
