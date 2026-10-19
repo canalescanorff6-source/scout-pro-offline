@@ -165,8 +165,12 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const knownExtra=validBooster(extra);
  // Apenas um slot confirmado VAZIO pode receber um novo ímpeto.
  // 'ocupado' autoriza comparação, nunca marca a carta como equipável.
- const slotSupported=status==='selecionavel'||status==='possivel';
- // V261: confirmação local de "vazio" não cria slot que o catálogo desconhece.
+ // V262: "PENDENTE / selecionável" classifica-se como POSSÍVEL no motor
+ // legado, não como slot documentalmente existente. A conta marcar "vazio"
+ // não autoriza gastar token se o catálogo permanece ambíguo.
+ const slotSupported=status==='selecionavel';
+ const slotEvidence=status==='selecionavel'?'slot_documentado':
+  status==='possivel'?'slot_pendente':'sem_slot_documentado';
  const able=slotSupported&&verifiedSlot==='vazio';
  const existing=knownExtra||'';
  const equippedName=validBooster(verifiedEquipped)||'';
@@ -176,6 +180,7 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  }
  const note=verifiedSlot==='ausente'?'Você marcou esta carta como sem slot selecionável neste dispositivo. Nenhum ímpeto novo será recomendado.':
  status==='nome_registrado'?'Segundo ímpeto já nomeado no cadastro; não tratar como slot livre ou substituível.':
+ status==='possivel'?'SLOT PENDENTE: o acervo diz apenas "PENDENTE / selecionável", não é prova do slot nesta edição. Conferir a carta e conciliar o registro antes de gastar tokens.':
  !slotSupported?'O catálogo não comprova um segundo slot selecionável nesta edição; mesmo que a conta tenha registro de slot vazio, não autorizar gastos sem reconciliar as evidências.':
  verifiedSlot==='ocupado'?'Você confirmou slot ocupado. A opção abaixo é apenas comparação, nunca substituição automática.':
  verifiedSlot==='vazio'?'Slot selecionável no catálogo e vazio confirmado nesta edição; confira os quatro atributos afetados antes de gastar tokens.':
@@ -183,10 +188,10 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  'Não existe prova documental suficiente de um slot selecionável. Confira no jogo antes de aplicar tokens.';
  // O ranking da carta deve existir independentemente da disponibilidade do slot.
  // "primary" é uma prioridade competitiva, NÃO algo equipado ou autorizado.
- return {status,verifiedSlot,slotSupported,able,knownExtra:existing,confirmedEquipped:equippedName||null,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
+ return {status,verifiedSlot,slotSupported,slotEvidence,able,knownExtra:existing,confirmedEquipped:equippedName||null,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
   confidence:ranked[0]?.confianca||'sem_base_para_ranquear',
   spread:ranked.length>1?Number((ranked[0].score-ranked[1].score).toFixed(2)):null,
-  equipStatus:verifiedSlot==='ausente'?'impossivel_na_conta':status==='nome_registrado'?'comparacao_segundo_fixo':!slotSupported?'slot_nao_documentado':verifiedSlot==='ocupado'?'ocupado_na_conta':able?'condicionado_a_slot':'slot_nao_verificado'};
+  equipStatus:verifiedSlot==='ausente'?'impossivel_na_conta':status==='nome_registrado'?'comparacao_segundo_fixo':status==='possivel'?'slot_pendente_no_catalogo':!slotSupported?'slot_nao_documentado':verifiedSlot==='ocupado'?'ocupado_na_conta':able?'condicionado_a_slot':'slot_nao_verificado'};
 }
 const USER_SLOT_NOTES=Object.freeze({
  24:'Cristiano Ronaldo Big Time #024: o usuário relata dois ímpetos embutidos, sem edição; preservar ambos.',
@@ -300,6 +305,7 @@ function draw(){
  applicability.textContent=boost.equipStatus==='impossivel_na_conta'?'Sua conferência indica que esta carta não possui slot: a escolha é somente comparativa.':
  boost.equipStatus==='comparacao_segundo_fixo'?'Há segundo ímpeto fixo registrado: esta é apenas a melhor alternativa teórica, não uma opção para substituir.':
  boost.equipStatus==='ocupado_na_conta'?'Você confirmou que o segundo slot está ocupado: comparação informativa, sem possibilidade de equipar outro ímpeto.':
+ boost.equipStatus==='slot_pendente_no_catalogo'?'Slot selecionável PENDENTE na edição: prioridade apenas teórica, mesmo que você tenha marcado vazio. Conferir no jogo antes de gastar tokens.':
  boost.equipStatus==='slot_nao_documentado'?'Sem segundo slot comprovado no catálogo: comparação teórica, não gastar tokens nem considerar slot livre.':
  boost.equipStatus==='condicionado_a_slot'?'Indicação para o segundo slot, confirmada localmente como vaga mas ainda não homologada em gameplay.':
  'Recomendação pronta; falta confirmar se esta edição possui segundo slot selecionável. Não exige que você insira um ímpeto para descobrir qual seria o melhor.';
