@@ -489,7 +489,7 @@ def run():
                 first=page.locator('#scout-v208-training tbody tr').first
                 if not first.locator('button[aria-label="Aumentar Chute"]').is_disabled():
                     problems.append(f"{name}: V218 permite ultrapassar PP quando 62 já foram distribuídos")
-                first.locator('button[aria-label="Aumentar Chute"]').click()
+                first.locator('button[aria-label="Reduzir Chute"]').click()
                 page.wait_for_function("""() => {
                     const t=document.querySelector('#scout-v208-training');
                     return t.querySelector('.scout-v208-total').textContent.trim()==='59 / 62' &&
