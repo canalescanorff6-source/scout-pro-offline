@@ -405,10 +405,14 @@ function methodologyGate(card,proof,style,store,review={}){
  const has=id=>byId[id]?.documented===true;
  const role=review?.positionUsed||card.posicao;
  const data={capture:Number(card.numero),id:String(card.id),
-  shown_position:role,role_used:role,attack_style:card.estilo_ataque,
+  // V271: o motor exige PP + vetor da MESMA edição. O antigo gate perdia
+  // o PP, fazendo todo treino parecer sem orçamento no parecer competitivo.
+  edition:card.versao,shown_position:role,role_used:role,attack_style:card.estilo_ataque,
   defence_style:card.estilo_defesa,native_skills:card.habilidades_nativas,
   boost1:card.impeto_fixo,boost2:card.impeto_extra,
-  recommended_levels:hasValidBuild(card)?card.niveis.slice():null};
+  pp:has('budget')&&Number.isInteger(card.pp)?card.pp:null,
+  recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
+  training_provisional:card.treino_proposto_nao_validado===true};
  let manual='',confirmation=null,slot=null;
  try{
   manual=String(store?.getItem('scoutpro:v162:equipped:'+card.numero+':'+card.id)||'');
@@ -456,6 +460,11 @@ function methodologyGate(card,proof,style,store,review={}){
    reason:safeEdition?(boost?.primary?.motivo||'Sem critérios suficientes para comparar ímpetos.'):
     'Card ID ou edição pendente: não calcular escolha de ímpeto confirmada.',
    note:boost?.note||'Motor não disponível.',
+   ppStatus:boost?.primary?.evidencias?.pp_status||'sem_ranking',
+   scoreMargin:boost?.spread??null,
+   budgetNote:boost?.primary?.evidencias?.pp_status==='custo_pp_conferido'?
+    'Vetor e PP coerentes usados apenas como sinal de investimento, não atributos finais.':
+    'Treino sem PP documental utilizável ou ainda provisório: NÃO influenciou o ranking.',
    attributes:safeEdition?(boost?.primary?.atributos||[]):[]},
   missing,competitivelyHomologated:false
  });
@@ -618,7 +627,7 @@ function display(){
    ' Prioridade consultiva; não há aplicação automática.');
  }
  add('Ímpeto',method.booster.name?
-  method.booster.name+' — '+method.booster.note+' '+method.booster.reason+
+  method.booster.name+' — '+method.booster.note+' '+method.booster.reason+' '+method.booster.budgetNote+
    (method.booster.attributes.length?
     ' Quatro atributos afetados: '+method.booster.attributes.join(', ')+'.':''):
   'Nenhuma opção confiável calculável. '+method.booster.note);
