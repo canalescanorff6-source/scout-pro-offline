@@ -835,6 +835,100 @@ function decisionMatrixFromScenarios(scenarios){
   canModifyBuild:false,canEquipSkills:false,canEquipBooster:false
  });
 }
+// V282: impressão DIGITAL DE EVIDÊNCIA, não hash de identidade autorizado
+// para mesclar cartas. Duas cartas podem recomendar a mesma skill por
+// caminhos diferentes; isso exige revisão de fontes, jamais diversidade forçada.
+function individualEvidenceProfile(d,tactic,engine,manualEquipped='',opts={}){
+ if(!DOSSIER_TACTICS.includes(tactic))throw Error('Estilo inválido na ficha individual');
+ const skills=evaluate(d,tactic,manualEquipped,{equippedConfirmed:opts.equippedConfirmed===true});
+ const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
+ const training=investmentAudit(d);
+ const native=splitSkills(d.native_skills||d.habilidades_nativas||'');
+ const nativeProfile=contextNativeProfile(native);
+ const nativeIdentity=fingerprint(native.join(';'));
+ const role=skills.role||null;
+ const style=normal([d.playing_style,d.attack_style,d.defence_style,
+  d.estilo_ataque,d.estilo_defesa].filter(Boolean).join(' '));
+ const recommended=Object.freeze(skills.recommendations.map(x=>Object.freeze({
+  key:x.key,name:x.name,score:x.score,
+  margin:x.marginToNext,criteria:Object.freeze({...x.criterios}),
+  provenance:Object.freeze({
+   functionScore:x.criterios.funcao,tacticScore:x.criterios.tatica,
+   styleScore:x.criterios.estilo,nativeScore:x.criterios.nativas,
+   investmentScore:x.criterios.investimento
+  }),
+  status:'SUGESTAO_SEM_HOMOLOGACAO'
+ })));
+ const proof=Object.freeze({
+  cardId:String(d.id||''),edition:String(d.edition||d.versao||''),
+  capture:Number(d.capture??d.numero),role,style,tactic,
+  originalPosition:String(d.original_position||d.posicao_original||d.shown_position||d.posicao||''),
+  usedPosition:String(d.role_used||d.shown_position||d.posicao||''),
+  nativeFingerprint:nativeIdentity,
+  nativeCount:native.length,unmappedNativeCount:nativeProfile.unknown.length,
+  contextualNativeCount:nativeProfile.known.length,
+  pp:Number.isFinite(Number(d.pp))?Number(d.pp):null,
+  progressStatus:training.status,progressVector:training.levels?Object.freeze([...training.levels]):null,
+  ppEstimated:d.pp_estimado===true,
+  equippedProof:skills.equippedConfirmed,boosterSlotProof:boost.able
+ });
+ const missing=[];
+ if(!proof.cardId||!proof.edition)missing.push('Identidade da edição não completa.');
+ if(!native.length||nativeProfile.unknown.length)missing.push('Habilidades nativas incompletas ou sem interpretação.');
+ if(training.levels===null)missing.push('Vetor de treino não validado no orçamento PP.');
+ if(proof.ppEstimated)missing.push('Orçamento PP estimado, sem confirmação.');
+ if(!skills.equippedConfirmed)missing.push('Lista de habilidades adicionais não confirmada.');
+ if(!boost.able)missing.push('Segundo slot de ímpeto não documentado como livre.');
+ if(!d.base_stats_proof?.confirmed_in_game)missing.push('Atributos-base não validados na mesma edição.');
+ return Object.freeze({
+  schema:'CRAQUE_V282_PERFIL_EVIDENCIA_INDIVIDUAL',
+  proof,recommendations:recommended,
+  suggestedSkillKeys:Object.freeze(recommended.map(x=>x.key)),
+  balancedSkillKeys:Object.freeze(skills.balancedPortfolio.candidates.map(x=>x.key)),
+  firstBooster:boost.primary?.nome||null,
+  boosterMargin:boost.spread,
+  missing:Object.freeze(missing),
+  verdict:'PARECER_DOCUMENTAL_CONSULTIVO',
+  mayChangeBuild:false,maySpendTokens:false,
+  verifiedCreatorBuild:false,verifiedGameplay:false
+ });
+}
+function compareIndividualEvidence(left,right,tactic,engine){
+ const a=individualEvidenceProfile(left,tactic,engine);
+ const b=individualEvidenceProfile(right,tactic,engine);
+ const ap=a.proof,bp=b.proof;
+ const changed=[];
+ const examine=(field,label,leftValue,rightValue)=>{
+  if(JSON.stringify(leftValue)!==JSON.stringify(rightValue))
+   changed.push(Object.freeze({field,label,left:leftValue,right:rightValue}));
+ };
+ examine('role','Função tática',ap.role,bp.role);
+ examine('playingStyle','Estilo ofensivo/defensivo',ap.style,bp.style);
+ examine('native','Habilidades nativas originais',ap.nativeFingerprint,bp.nativeFingerprint);
+ examine('training','Vetor de treino com PP conferido',ap.progressVector,bp.progressVector);
+ examine('pp','Orçamento de PP',ap.pp,bp.pp);
+ examine('edition','Edição da carta',ap.edition,bp.edition);
+ const topSame=a.suggestedSkillKeys.join('|')===b.suggestedSkillKeys.join('|')&&
+  a.suggestedSkillKeys.length>0;
+ const boosterSame=Boolean(a.firstBooster&&b.firstBooster&&a.firstBooster===b.firstBooster);
+ const differentEvidence=changed.some(x=>['role','playingStyle','native','training','pp'].includes(x.field));
+ const assessment=!a.suggestedSkillKeys.length||!b.suggestedSkillKeys.length?
+  'SEM_CANDIDATOS_COMPARAVEIS':
+  topSame&&differentEvidence?'MESMAS_SKILLS_EVIDENCIAS_DIFERENTES_REVISAR':
+  topSame?'MESMAS_SKILLS_PERFIL_SEM_DIVERGENCIA_COMPROVADA':
+  'RECOMENDACOES_DISTINTAS';
+ return Object.freeze({
+  schema:'CRAQUE_V282_COMPARATIVO_SEM_CLONE_FORCADO',
+  left:Object.freeze({cap:ap.capture,id:ap.cardId,edition:ap.edition}),
+  right:Object.freeze({cap:bp.capture,id:bp.cardId,edition:bp.edition}),
+  tactic,assessment,topFiveIdentical:topSame,
+  firstBoosterIdentical:boosterSame,
+  evidenceDeltas:Object.freeze(changed),
+  reviewRequired:topSame&&differentEvidence,
+  warning:'Semelhança não comprova erro de build; validar Card ID, atributos-base e testes da mesma edição.',
+  canApply:false,canChangeTraining:false
+ });
+}
 function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática não reconhecida');
  const skills=evaluate(d,tactic,manualEquipped,{
@@ -852,6 +946,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  const roleApproved=(POSITION[requested]||requested)===(POSITION[original]||original)||
   opts.roleConfirmed===true; // não presumir proficiência treinada
  const training=investmentAudit(d);
+ const individualProfile=individualEvidenceProfile(d,tactic,engine,manualEquipped,opts);
  if(!identity)warnings.push('Conferir Card ID e versão exatos antes de comparar.');
  if(!skills.nativeKnown)warnings.push('Conferir lista de habilidades nativas da versão.');
  else if(skills.unmappedNativeSkills.length)
@@ -953,6 +1048,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    name:x.nome_pt||x.nome,score:x.score
   })),
   evidencePending:warnings,scenarios,decisionMatrix,
+  individualProfile,
   playbook:playbookOf(d,tactic),
   evidenceChecklist:checks,roadmap,documentedIndicators:checksReady,
   totalIndicators:checks.length,tacticalStability,
@@ -975,7 +1071,7 @@ const USER_SLOT_NOTES=Object.freeze({
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
 const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios};
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;
@@ -1193,6 +1289,24 @@ function draw(){
   ]);
  addSection('Checklist de sete verificações independentes',
   dossier.evidenceChecklist.map(c=>(c.ok?'CONFERIDO: ':'PENDENTE: ')+c.label));
+ addSection('V282 · assinatura individual da carta (sem classificação meta)',[
+  'Card ID '+dossier.individualProfile.proof.cardId+
+   ' · edição '+dossier.individualProfile.proof.edition+
+   ' · origem '+dossier.individualProfile.proof.originalPosition+
+   ' · uso '+dossier.individualProfile.proof.usedPosition,
+  'Nativas registradas: '+dossier.individualProfile.proof.nativeCount+
+   ' · nativas especiais catalogadas: '+dossier.individualProfile.proof.contextualNativeCount+
+   ' · desconhecidas: '+dossier.individualProfile.proof.unmappedNativeCount+
+   ' · perfil '+dossier.individualProfile.proof.nativeFingerprint,
+  'PP '+dossier.individualProfile.proof.pp+' · '+dossier.individualProfile.proof.progressStatus+
+   ' · distribuição: '+(dossier.individualProfile.proof.progressVector?.join(' / ')||'SEM PROVA'),
+  ...dossier.individualProfile.recommendations.map((x,i)=>
+   (i+1)+'. '+x.name+' · função '+x.criteria.funcao+
+    ' · tática '+x.criteria.tatica+' · estilo '+x.criteria.estilo+
+    ' · nativas '+x.criteria.nativas+' · investimento '+x.criteria.investimento+
+    ' · NOTA RELATIVA, não atributos finais'),
+  ...dossier.individualProfile.missing.map(x=>'PENDENTE: '+x)
+ ]);
  addSection('V281 · comparador competitivo entre estilos',[
   'Cinco estilos, '+dossier.decisionMatrix.pairCount+' pares comparados; '+
    dossier.decisionMatrix.repeatedPairs+' pares com listas idênticas e '+
