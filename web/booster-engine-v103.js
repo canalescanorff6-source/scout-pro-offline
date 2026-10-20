@@ -105,10 +105,26 @@ function boosterName(value){
  const matched=Object.keys(BOOSTERS).find(k=>plain(k)===plain(cleaned));
  return matched||CANONICAL[plain(cleaned)]||null;
 }
-function levelsOf(card){
+// V267 — um vetor que não fecha com o orçamento da MESMA edição não pode
+// alterar as prioridades de ímpetos. Ausência de PP/nível não é zero PP.
+const progressCost=levels=>levels.reduce((sum,n)=>{
+ for(let i=0;i<n;i++)sum+=1+Math.floor(i/4);
+ return sum;
+},0);
+function trainingAudit(card){
  const values=card.niveis??card.recommended_levels??card.treino_anterior;
- if(!Array.isArray(values)||values.length!==10)return null;
- return values.every(v=>Number.isFinite(Number(v))&&Number(v)>=0)?values.map(Number):null;
+ const pp=card.pp;
+ if(!Array.isArray(values))return Object.freeze({status:'vetor_ausente',levels:null,pp:null,spent:null});
+ if(values.length!==10||!values.every(n=>Number.isInteger(n)&&n>=0&&n<=20))
+  return Object.freeze({status:'vetor_invalido',levels:null,pp:null,spent:null});
+ const spent=progressCost(values);
+ if(!Number.isInteger(pp)||pp<0||pp>238)
+  return Object.freeze({status:'pp_nao_documentados',levels:null,pp:null,spent});
+ if(spent!==pp)
+  return Object.freeze({status:'pp_divergentes',levels:null,pp,spent});
+ if(card.training_provisional===true||card.treino_proposto_nao_validado===true)
+  return Object.freeze({status:'treino_proposto_nao_validado',levels:null,pp,spent});
+ return Object.freeze({status:'custo_pp_conferido',levels:values.slice(),pp,spent});
 }
 function addStat(w,key,value){w[key]=(w[key]||0)+value;}
 function addStats(w,keys,value){for(const k of keys)addStat(w,k,value);}
@@ -171,12 +187,17 @@ function rank(card,tactic){
   addStats(weights,['defaware','awareness','power'],1);
  }
  const nativeFindings=nativeSkillContext(weights,card.habilidades_nativas||card.native_skills||'',role);
- const levels=levelsOf(card);
+ const training=trainingAudit(card);
+ const levels=training.levels;
  const trainingIndices=ROLE_TRAINING[role];
  const mean=levels?trainingIndices.reduce((sum,i)=>sum+levels[i],0)/trainingIndices.length:null;
  // As categorias apenas sinalizam para onde foram direcionados os níveis:
  // não são conversões, não provam que um atributo ficou abaixo de algum limiar.
- const trainingEvidence=levels?'investimento_da_build_sem_atributos_finais':'treino_individual_nao_documentado';
+ const trainingEvidence=levels?'investimento_da_build_sem_atributos_finais':
+  training.status==='pp_divergentes'?'custo_pp_divergente':
+  training.status==='pp_nao_documentados'?'vetor_sem_orcamento_comprovado':
+  training.status==='treino_proposto_nao_validado'?'treino_proposto_a_revisar':
+  'treino_individual_nao_documentado';
  const fixed=boosterName(card.impeto_fixo||card.boost1);
  const extraStatus=slotStatus(card.impeto_extra||card.boost2);
  const extra=extraStatus==='nome_registrado'?boosterName(card.impeto_extra||card.boost2):null;
@@ -230,7 +251,9 @@ function rank(card,tactic){
    funcao_considerada:role,score,atributos:stats.map(k=>label[k]),
    motivo:info.join('; ')+'.',
    confianca:levels?'comparativa_limitada':'baixa',
-   evidencias:{treino:trainingEvidence,impeto_fixo:fixed||null,impeto_extra_registrado:extra||null,
+   evidencias:{treino:trainingEvidence,pp_status:training.status,
+    pp_orcamento:training.pp,pp_investidos:training.spent,
+    impeto_fixo:fixed||null,impeto_extra_registrado:extra||null,
     score_funcao:Number(functionScore.toFixed(2)),score_complemento:Number(trainingScore.toFixed(2)),
     score_contexto:Number(contextScore.toFixed(2)),
     limite:'Sem atributos finais comparados nem teste controlado de partida. Não aplicar automaticamente.'}
@@ -244,7 +267,9 @@ function audit(cards){
   if(ids.has(c.numero))throw Error('Número duplicado '+c.numero);ids.add(c.numero);
   return {numero:c.numero,nome:c.name,card_id:c.id,posicao:c.posicao,estilo_ataque:c.estilo_ataque,estilo_defesa:c.estilo_defesa,
     impeto_fixo:c.impeto_fixo,impeto_extra:c.impeto_extra,status_slot_fonte:slotStatus(c.impeto_extra),
-    base_stats_known:c.base_stats_known,treino_individual_documentado:!!levelsOf(c),ficha:c.arquivo,
+    base_stats_known:c.base_stats_known,
+    treino_individual_documentado:trainingAudit(c).status==='custo_pp_conferido',
+    pp_validacao:trainingAudit(c).status,ficha:c.arquivo,
     recomendacoes:Object.fromEntries(tactics.map(t=>[t,rank(c,t).slice(0,3)]))};
  });
  const summary={total:result.length,selecionavel:result.filter(c=>c.status_slot_fonte==='selecionavel').length,
@@ -254,6 +279,7 @@ function audit(cards){
  return {version:'V104',method:'V200: função, tática, estilo, habilidades nativas e investimento por categoria; sem inferir atributos finais ou slot livre, sem prova de desempenho em partidas',summary,cards:result};
 }
 const api={BOOSTERS,CRAFTABLE,ROLE,POS,tactics,TACTIC_LABEL,PTBR,
+ trainingAudit,progressCost,
  displayName,translationKnown,slotStatus,boosterName,levelsOf,rank,audit};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_BOOSTERS_V103=api;
