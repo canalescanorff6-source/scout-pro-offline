@@ -188,7 +188,7 @@ function playingStyle(w,role,style){
  // Um construtor defensivo precisa preservar saída curta e cobertura;
  // um lateral ofensivo exige apoio e circulação sem presumir aptidão de ponta.
  if(role==='ZG'&&/construcao de jogo|defensor criativo|defensor participativo/.test(style)){
-  addStats(w,['pass','control'],4);addStat(w,'tight',2);addStat(w,'defaware',1);
+  addStat(w,'pass',6);addStat(w,'control',2);addStat(w,'tight',1);addStat(w,'defaware',2);
  }
  if(role==='ZG'&&/destruidor/.test(style)){
   addStats(w,['tackle','defengage'],2);
