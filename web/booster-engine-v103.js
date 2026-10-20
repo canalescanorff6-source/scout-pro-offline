@@ -146,8 +146,12 @@ function nativeSkillContext(w,raw,role){
 }
 function rank(card,tactic){
  if(!tactics.includes(tactic))throw Error('Tática desconhecida');
- const role=POS[card.posicao||card.shown_position||card.role_used];
- if(!role)throw Error('Posição não mapeada: '+(card.posicao||card.shown_position||card.role_used));
+ // V265: a função CONFIRMADA pelo V246/V263 (role_used/shown_position)
+ // prevalece sobre a posição ORIGINAL no catálogo. Ranking não confirma
+ // por si só uma doutrinação: essa prova ocorre na interface da carta.
+ const requestedRole=card.role_used||card.shown_position||card.posicao;
+ const role=POS[String(requestedRole||'').toUpperCase()];
+ if(!role)throw Error('Posição não mapeada: '+requestedRole);
  const weights={...ROLE[role]};
  const style=normStyle([card.estilo_ataque||card.attack_style||'',card.estilo_defesa||card.defence_style||''].join(' '));
  playingStyle(weights,role,style);
@@ -222,7 +226,7 @@ function rank(card,tactic){
   if(nativeFindings.length)info.push('habilidades nativas indicam '+nativeFindings.slice(0,2).join(' e '));
   return {
    nome:name,nome_pt:displayName(name),traducao_documentada:translationKnown(name),
-   score,atributos:stats.map(k=>label[k]),
+   funcao_considerada:role,score,atributos:stats.map(k=>label[k]),
    motivo:info.join('; ')+'.',
    confianca:levels?'comparativa_limitada':'baixa',
    evidencias:{treino:trainingEvidence,impeto_fixo:fixed||null,impeto_extra_registrado:extra||null,
