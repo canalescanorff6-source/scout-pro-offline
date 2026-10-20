@@ -10,12 +10,17 @@ const B=require('../web/booster-engine-v103.js');
 const S=require('../web/skills-booster-v162.js');
 assert.equal(cards.length,246);
 assert.equal(new Set(cards.map(x=>x.numero+'@'+x.id)).size,246);
-let total=0,recorded=0,absent=0;
+let total=0,recorded=0,provisionalCount=0,absent=0;
 for(const c of cards){
  const snapshot=JSON.stringify(c), audit=B.trainingAudit(c);
- if(c.niveis){recorded++;assert.equal(audit.status,'custo_pp_conferido');
+ if(c.niveis){
+  if(c.treino_proposto_nao_validado===true){provisionalCount++;
+   assert.equal(audit.status,'treino_proposto_nao_validado');
+   assert.equal(audit.levels,null);
+  }else{recorded++;assert.equal(audit.status,'custo_pp_conferido');
+   assert.deepEqual(audit.levels,c.niveis);
+  }
   assert.equal(audit.pp,c.pp);assert.equal(audit.spent,c.pp);
-  assert.deepEqual(audit.levels,c.niveis);
  }else{absent++;assert.equal(audit.status,'vetor_ausente');
   assert.equal(audit.levels,null);
  }
@@ -35,12 +40,13 @@ for(const c of cards){
  }
  assert.equal(JSON.stringify(c),snapshot,'Carta alterada #'+c.numero);
 }
-assert.equal(total,1230);assert.equal(recorded+absent,246);
-assert.equal(recorded,162);assert.equal(absent,84);
+assert.equal(total,1230);assert.equal(recorded+provisionalCount+absent,246);
+assert.equal(recorded,161);assert.equal(provisionalCount,1);assert.equal(absent,84);
 const massaro=cards.find(x=>x.numero===1),martinelli=cards.find(x=>x.numero===191);
 assert(massaro&&martinelli&&martinelli.pp===50&&martinelli.max_level===26);
 const exact=B.rank(martinelli,'posse')[0];
-assert.equal(exact.evidencias.pp_status,'custo_pp_conferido');
+assert.equal(exact.evidencias.pp_status,'treino_proposto_nao_validado');
+assert.equal(exact.confianca,'baixa');
 const missingPP={...martinelli,pp:null};
 assert.equal(B.trainingAudit(missingPP).status,'pp_nao_documentados');
 assert.equal(B.rank(missingPP,'posse')[0].confianca,'baixa');
@@ -72,5 +78,5 @@ const sw=read('web/sw.js');
 assert(sw.includes('v267-pp-cost-audit'));
 assert(read('package.json').includes('test-booster-pp-v267.cjs'));
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),original);
-console.log('V267 PASS: '+total+' avaliações; '+recorded+' vetores coerentes, '+absent+
+console.log('V267 PASS: '+total+' avaliações; '+recorded+' vetores coerentes, '+provisionalCount+' provisório(s), '+absent+
  ' ausentes; PP divergente, proposta, dados malformados ignorados; 246 cartas preservadas.');
