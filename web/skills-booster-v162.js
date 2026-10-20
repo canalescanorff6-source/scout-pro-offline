@@ -197,7 +197,9 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const equippedName=validBooster(verifiedEquipped)||'';
  let ranked=[];
  if(engine&&typeof engine.rank==='function'){
-  try{ranked=engine.rank({posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo,impeto_extra:value,niveis:d.recommended_levels||d.niveis,
+  try{ranked=engine.rank({id:d.id,edition:d.edition,base_stats:d.base_stats,
+   base_stats_proof:d.base_stats_proof,base_catalog_proof:d.base_catalog_proof,
+   posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo,impeto_extra:value,niveis:d.recommended_levels||d.niveis,
    pp:d.pp,training_provisional:d.training_provisional===true||
     d.treino_proposto_nao_validado===true,
    habilidades_nativas:d.native_skills||d.habilidades_nativas},tactic).filter(x=>normal(x.nome)!==normal(natural)&&normal(x.nome)!==normal(existing)&&normal(x.nome)!==normal(equippedName));}catch(e){ranked=[]}
@@ -390,7 +392,11 @@ function draw(){
  const summary=document.createElement('summary');summary.textContent='Como esta recomendação foi calculada';details.appendChild(summary);
  const e=boost.primary.evidencias||{};
  const explain=document.createElement('p');
- explain.textContent='Pontuação relativa (não Overall): função '+(e.score_funcao??'—')+' · complementaridade do investimento '+(e.score_complemento??'—')+' · estilo e habilidades '+(e.score_contexto??'—')+'. '+(e.treino==='investimento_da_build_sem_atributos_finais'?
+ explain.textContent='Pontuação relativa (não Overall): função '+(e.score_funcao??'—')+' · complementaridade do investimento '+(e.score_complemento??'—')+' · estilo e habilidades '+(e.score_contexto??'—')+
+ ' · bases comprovadas '+(e.score_base??0)+'. '+
+ (e.base_status==='base_completa_confirmada'?
+  'Atributos-base completos com fonte desta edição: comparação relativa limitada, NÃO atributos finais.':
+  'Atributos-base pendentes ou parciais: ignorados na pontuação. ')+(e.treino==='investimento_da_build_sem_atributos_finais'?
   'Vetor de progresso com custo de PP matematicamente conferido; não comprova atributos finais ou desempenho.':
   e.pp_status==='pp_divergentes'?'ALERTA: custo calculado '+e.pp_investidos+
    ' PP, mas o orçamento da carta informa '+e.pp_orcamento+
@@ -416,7 +422,8 @@ section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',
   if(Number(row.capture)!==Number(d.capture)||String(row.id)!==String(d.id)||
    String(row.name)!==String(d.name)||String(row.edition)!==String(d.edition))return;
   for(const field of ['native_skills','attack_style','defence_style','boost1','boost2',
-   'recommended_levels','base_stats_known']){
+   'recommended_levels','base_stats_known',
+   'base_stats','base_stats_proof','base_catalog_proof']){
    if(Object.hasOwn(row,field))d[field]=row[field];
   }
   draw();
