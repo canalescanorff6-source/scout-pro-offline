@@ -74,7 +74,9 @@ const manualKey='scoutpro:v162:equipped:'+martinelli.numero+':'+martinelli.id;
 const proofKey=S.confirmationKey(martinelli.numero,martinelli.id);
 store.setItem(manualKey,manual);
 store.setItem(proofKey,JSON.stringify({schema:'CRAQUE_ADDITIONAL_V254',
- capture:martinelli.numero,card_id:martinelli.id,confirmed:true,fingerprint:S.fingerprint(manual)}));
+ capture:martinelli.numero,card_id:martinelli.id,edition:martinelli.versao,
+ nativeFingerprint:S.fingerprint(martinelli.habilidades_nativas),
+ confirmed:true,fingerprint:S.fingerprint(manual)}));
 let proofs=V.proofChecklist(martinelli,mIndex,{},store);
 assert.equal(proofs.checks.find(x=>x.id==='additional').documented,true);
 const entry=V.methodologyGate(martinelli,proofs,'posse',store);
