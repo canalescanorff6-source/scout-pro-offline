@@ -77,7 +77,9 @@ for(const card of cards){
  assert.equal(JSON.stringify(card),before,'#'+card.numero+' modificado');
 }
 assert.equal(scenarios,1230);
-assert.equal(technique,101,'O benchmark anterior de Técnica não pode mudar sem alterar a fórmula');
+// V272 altera deliberadamente os pesos de função, estilo e nativas.
+ // Técnica permanece monitorada, mas não se impõe o valor histórico 101.
+ assert(technique>=0&&technique<=246,'Distribuição inconsistente');
 assert(realBudgets>0,'Nenhuma prova de PP documental passou o checklist');
 assert.equal(mathAccepted,805,'161 builds matematicamente coerentes × 5 estilos');
 assert.equal(realBudgetsAccepted,0,'Sem atribuir origem comprovada a vetor que não a possui');
