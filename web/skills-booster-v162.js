@@ -948,7 +948,9 @@ function draw(){
   const li=document.createElement('li'),name=document.createElement('strong'),
    reason=document.createElement('small');
   name.textContent=item.name+' · '+item.family;
-  reason.textContent=item.explanation;
+  reason.textContent=item.explanation+
+   (item.evidence.nativeFamilyPresent?' · Família também presente entre as nativas.':'')+
+   (item.evidence.equippedFamilyPresent?' · Família já equipada na edição.':'');
   li.append(name,reason);portfolioItems.append(li);
  }
  if(!result.balancedPortfolio.candidates.length){
@@ -980,6 +982,15 @@ function draw(){
   '/'+dossier.totalIndicators+' verificações. '+dossier.auditLabel+
   '. Não é avaliação de força ou desempenho.';
  dossierContent.append(docSummary);
+ addSection('Habilidades · justificativa individualizada do portfólio',[
+  'Famílias das nativas identificadas: '+
+   (Object.keys(dossier.skillFamilyEvidence.nativeFamilies).join(', ')||'nenhuma com alias de adicional'),
+  'Famílias das adicionais equipadas conferidas: '+
+   (Object.keys(dossier.skillFamilyEvidence.equippedFamilies).join(', ')||'não documentadas nesta consulta'),
+  'Pacote complementar: '+dossier.skillFamilyEvidence.balancedCandidates.map(x=>
+   x.name+' ['+x.family+']').join(' / ')+
+   '. Não significa que existam cinco vagas nem que as habilidades sejam autorizadas.'
+ ]);
  addSection('Checklist de sete verificações independentes',
   dossier.evidenceChecklist.map(c=>(c.ok?'CONFERIDO: ':'PENDENTE: ')+c.label));
  addSection('Variação entre os cinco estilos do técnico',[
@@ -1007,6 +1018,14 @@ function draw(){
   ' · ímpeto: '+(t.booster||'pendente')+
   ' · margem: '+(t.margin??'pendente')+' · não equipar automaticamente'
  ),'scenario');
+ addSection('Ímpetos · matriz comparativa dos motivos',[
+  dossier.boosterDecisionEvidence.rankExplanation,
+  ...dossier.boosterDecisionEvidence.candidates.map(x=>
+   '#'+x.rank+' '+x.displayName+' · pontuação relativa '+x.relativeScore+
+   ' · função '+x.factors.funcao+' · treino '+x.factors.investimento+
+   ' · contexto '+x.factors.contexto+' · base '+x.factors.atributosBase),
+  ...dossier.boosterDecisionEvidence.warnings.map(x=>'PENDENTE: '+x)
+ ]);
  if(dossier.boosterComplementarity.factoryDocumented){
   addSection('Ímpetos vs. atributos do ímpeto fixo',
    dossier.boosterComplementarity.comparisons.map(x=>x.documentedName+
