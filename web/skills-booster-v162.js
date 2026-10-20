@@ -174,6 +174,69 @@ const POOLS={
  ALA:['double','sole','onepass','through','fighting','heel','firstshot','cutturn','longshot','trackback','weighted','curler','supersub'],
  GO:['gklow','gklong','gkhigh','gkpenalty','fighting','captain','weighted','lowloft','onepass']
 };
+// V281: prioridades POR FUNÇÃO × TÁTICA (consultivas). A média do score
+// base continua dominante; nenhum dado de jogador é alterado. O mapa
+// explica por que Posse, CA rápido, CA normal, Por Fora e Passe Longo
+// não devem receber automaticamente as mesmas cinco skills.
+const ROLE_TACTIC_SKILLS=Object.freeze({
+ CA:{
+  posse:['onepass','sole','heel','double'],normal:['fighting','weighted','acrobatic','onepass'],
+  rapido:['firstshot','through','double','longshot'],fora:['weighted','sole','double','aerial'],
+  longo:['aerial','heading','weighted','fighting']
+ },
+ SA:{
+  posse:['onepass','sole','heel','through'],normal:['fighting','weighted','onepass','trackback'],
+  rapido:['through','firstshot','double','longshot'],fora:['weighted','cutturn','double','sole'],
+  longo:['weighted','acrobatic','fighting','through']
+ },
+ MAT:{
+  posse:['onepass','through','sole','heel'],normal:['fighting','intercept','weighted','onepass'],
+  rapido:['through','double','firstshot','longshot'],fora:['lowloft','weighted','cutturn','sole'],
+  longo:['weighted','lowloft','fighting','longshot']
+ },
+ MLG:{
+  posse:['onepass','through','sole','heel'],normal:['intercept','blocker','fighting','mark'],
+  rapido:['through','double','fighting','trackback'],fora:['lowloft','weighted','sole','cutturn'],
+  longo:['weighted','lowloft','intercept','fighting']
+ },
+ VOL:{
+  posse:['onepass','through','weighted','sole'],normal:['blocker','mark','fighting','intercept'],
+  rapido:['intercept','through','fighting','aerial'],fora:['weighted','lowloft','onepass','sole'],
+  longo:['aerial','lowloft','heading','blocker']
+ },
+ ZG:{
+  posse:['onepass','weighted','sole','intercept'],normal:['blocker','mark','sliding','fighting'],
+  rapido:['intercept','blocker','fighting','clear'],fora:['weighted','lowloft','onepass','intercept'],
+  longo:['aerial','heading','clear','weighted']
+ },
+ LD:{
+  posse:['onepass','through','sole','intercept'],normal:['blocker','mark','fighting','sliding'],
+  rapido:['intercept','through','trackback','fighting'],fora:['weighted','lowloft','sole','onepass'],
+  longo:['aerial','lowloft','clear','fighting']
+ },
+ LE:{
+  posse:['onepass','through','sole','intercept'],normal:['blocker','mark','fighting','sliding'],
+  rapido:['intercept','through','trackback','fighting'],fora:['weighted','lowloft','sole','onepass'],
+  longo:['aerial','lowloft','clear','fighting']
+ },
+ ALA:{
+  posse:['onepass','sole','double','heel'],normal:['trackback','fighting','onepass','weighted'],
+  rapido:['double','firstshot','longshot','through'],fora:['cutturn','weighted','sole','double'],
+  longo:['aerial','weighted','fighting','firstshot']
+ },
+ GO:{
+  posse:['gklow','gklong','fighting'],normal:['gkhigh','gkpenalty','fighting'],
+  rapido:['gklow','gkhigh','fighting'],fora:['gklow','gklong','weighted'],
+  longo:['gklong','gkhigh','fighting']
+ }
+});
+const TACTIC_REASON=Object.freeze({
+ posse:'Tabelas, passe curto, recepção orientada e controle sob pressão.',
+ normal:'Equilíbrio defensivo e primeira ligação segura após recuperar.',
+ rapido:'Ataque ao espaço, passe vertical e ações imediatas na transição.',
+ fora:'Apoio nos corredores e entrada por dentro; cruzar não é obrigatório.',
+ longo:'Apoio à segunda bola, passe longo consciente e duelos no setor.'
+});
 function roleOf(d){return POSITION[d.role_used]||POSITION[d.shown_position]||POSITION[d.posicao]||null}
 // V276: composição de um pacote HIPOTÉTICO complementar.
 // A função evita concentrar 5 sugestões na mesma família. O motor
@@ -348,6 +411,11 @@ function evaluate(d,tactic,manualEquipped,options={}){
   bump(['double','sole','onepass','through','heel'],20);
  if(role==='GO'&&/goleiro defensivo/.test(style))
   bump(['gkhigh','gkpenalty','fighting'],16);
+ // V281: reforço tático limitado e explicável, nunca prova meta ou OVR.
+ // Até quatro recursos funcionais por combinação; cartas com nativas
+ // diferentes continuam excluindo os equipamentos já existentes.
+ const tacticalPriority=(ROLE_TACTIC_SKILLS[role]||{})[tactic]||[];
+ bump(tacticalPriority,28,'tatica');
  // V217: heurísticas transparentes de complementaridade das habilidades NATIVAS
  // cadastradas na própria carta. Não representam bônus medidos ou gameplay validado.
  const synergy=new Map();
@@ -493,6 +561,8 @@ function evaluate(d,tactic,manualEquipped,options={}){
   slotProof:'somente_confirmacao_do_jogador_e_mesma_edicao',
   investmentEvidence:investment.status,
   investmentApplied:investment.levels!==null,
+  tacticalRolePriorities:Object.freeze([...(ROLE_TACTIC_SKILLS[role]?.[tactic]||[])]),
+  tacticalReason:TACTIC_REASON[tactic],
   recommendationMode:equippedConfirmed?'comparacao_com_lista_confirmada':
    'ate_cinco_candidatos_sem_slots_comprovados',
   missing:[...(nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']),...warnings]};
@@ -708,6 +778,63 @@ function evidenceRoadmap(checks,{creatorSource=null}={}){
   mayWriteTraining:false,maySpendTokens:false
  });
 }
+// V281: análise de DIFERENÇAS, não otimização por diversidade artificial.
+// Dez pares dos cinco estilos do técnico revelam recomendações idênticas
+// entre contextos diferentes e explicam quando o acervo não sustenta mudança.
+function decisionMatrixFromScenarios(scenarios){
+ if(!Array.isArray(scenarios)||scenarios.length!==DOSSIER_TACTICS.length||
+  scenarios.some((x,i)=>x.style!==DOSSIER_TACTICS[i]))
+  throw Error('Matriz exige exatamente cinco estilos em ordem documentada');
+ const rows=scenarios.map(x=>Object.freeze({
+  tactic:x.style,topSkill:x.firstSkill||null,topBooster:x.technicalName||null,
+  skills:Object.freeze((x.skillKeys||[]).slice()),
+  balancedSkills:Object.freeze((x.balancedKeys||[]).slice()),
+  skillMargin:x.skillMargin??null,boosterMargin:x.margin??null,
+  canEquip:false
+ }));
+ const pairs=[];
+ for(let i=0;i<rows.length;i++)for(let j=i+1;j<rows.length;j++){
+  const a=rows[i],b=rows[j];
+  const aa=new Set(a.skills),bb=new Set(b.skills);
+  const union=new Set([...aa,...bb]).size;
+  const both=[...aa].filter(x=>bb.has(x)).length;
+  pairs.push(Object.freeze({
+   first:a.tactic,second:b.tactic,
+   sharedSkills:both,totalDistinctSkills:union,
+   overlapPercent:union?Math.round(100*both/union):null,
+   topSkillSame:Boolean(a.topSkill&&b.topSkill&&a.topSkill===b.topSkill),
+   boosterSame:Boolean(a.topBooster&&b.topBooster&&a.topBooster===b.topBooster),
+   verdict:!union?'SEM_CANDIDATOS_CONFERIDOS':
+    both===union?'LISTAS_IDENTICAS':'LISTAS_DIFERENTES'
+  }));
+ }
+ const topSkills=new Set(rows.map(x=>x.topSkill).filter(Boolean));
+ const topBoosters=new Set(rows.map(x=>x.topBooster).filter(Boolean));
+ const populated=rows.filter(x=>x.skills.length>0).length;
+ const highSimilarity=pairs.filter(x=>x.overlapPercent!==null&&x.overlapPercent>=80).length;
+ const identicalLists=pairs.filter(x=>x.verdict==='LISTAS_IDENTICAS').length;
+ const risks=[];
+ if(populated<5)risks.push('Há estilos sem candidato: não transformar ausência de vaga em habilidade equipável.');
+ if(identicalLists>=6)
+  risks.push('Listas de habilidades muito parecidas entre estilos; exigir atributos e testes da edição antes de escolher.');
+ if(topSkills.size===1&&populated===5)
+  risks.push('Primeira habilidade idêntica nos cinco estilos: NÃO é prova de superioridade universal.');
+ if(topBoosters.size===1)
+  risks.push('Primeiro ímpeto idêntico nos cinco estilos: conferir a função e os quatro atributos da mesma versão.');
+ if(rows.some(x=>x.skillMargin!==null&&x.skillMargin<3))
+  risks.push('Prioridades de habilidades próximas; ordem não prova eficácia competitiva.');
+ if(rows.some(x=>x.boosterMargin!==null&&x.boosterMargin<2))
+  risks.push('Ímpetos próximos; não equipar apenas pela diferença de score.');
+ return Object.freeze({
+  schema:'CRAQUE_V281_CROSS_TACTIC_DIAGNOSTIC',tactics:5,pairCount:pairs.length,
+  rows:Object.freeze(rows),pairs:Object.freeze(pairs),
+  repeatedPairs:identicalLists,similarPairs80:highSimilarity,
+  uniqueFirstSkills:topSkills.size,uniqueFirstBoosters:topBoosters.size,
+  warnings:Object.freeze(risks),
+  interpretation:'Sem OVR, gameplay medido, autoria de criador ou eficácia provada.',
+  canModifyBuild:false,canEquipSkills:false,canEquipBooster:false
+ });
+}
 function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática não reconhecida');
  const skills=evaluate(d,tactic,manualEquipped,{
@@ -766,6 +893,9 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   const ranked=booster(d,style,engine,opts.verifiedSlot,opts.verifiedBooster);
   return Object.freeze({
    style,skills:result.recommendations.map(x=>x.name),
+   skillKeys:Object.freeze(result.recommendations.map(x=>x.key)),
+   balancedKeys:Object.freeze(result.balancedPortfolio.candidates.map(x=>x.key)),
+   skillMargin:result.recommendations[0]?.marginToNext??null,
    firstSkill:result.recommendations[0]?.name||null,
    booster:ranked.primary?.nome_pt||ranked.primary?.nome||null,
    technicalName:ranked.primary?.nome||null,
@@ -774,6 +904,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    equipAuthorized:false
   });
  }));
+ const decisionMatrix=decisionMatrixFromScenarios(scenarios);
  const uniqueTopSkills=[...new Set(scenarios.map(x=>x.firstSkill).filter(Boolean))];
  const uniqueBoosters=[...new Set(scenarios.map(x=>x.technicalName).filter(Boolean))];
  const tacticalStability=Object.freeze({
@@ -798,6 +929,8 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    'Defesa','Goleiro 1','Goleiro 2','Goleiro 3'
   ].map((name,i)=>({name,level:training.levels[i]})):[],
   skillCandidateCount:skills.recommendations.length,
+  tacticalReason:skills.tacticalReason,
+  tacticalPriorities:skills.tacticalRolePriorities.map(k=>SKILLS[k]?.name||k),
   skillCandidates:skills.recommendations.map(x=>Object.freeze({
    key:x.key,name:x.name,score:x.score,criteria:{...x.criterios},
    documentReason:x.synergies.slice()
@@ -819,7 +952,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   boosterAlternatives:boosters.alternatives.map(x=>Object.freeze({
    name:x.nome_pt||x.nome,score:x.score
   })),
-  evidencePending:warnings,scenarios,
+  evidencePending:warnings,scenarios,decisionMatrix,
   playbook:playbookOf(d,tactic),
   evidenceChecklist:checks,roadmap,documentedIndicators:checksReady,
   totalIndicators:checks.length,tacticalStability,
@@ -841,8 +974,8 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap};
+const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;
@@ -1038,6 +1171,11 @@ function draw(){
   '/'+dossier.totalIndicators+' verificações. '+dossier.auditLabel+
   '. Não é avaliação de força ou desempenho.';
  dossierContent.append(docSummary);
+ addSection('V281 · prioridades da função na tática escolhida',[
+  dossier.tacticalReason,
+  'Recursos priorizados: '+dossier.tacticalPriorities.join(' / '),
+  'Mudanças por tática são hipóteses de função, não habilidades oficiais comprovadas por criadores.'
+ ]);
  addSection('Habilidades · justificativa individualizada do portfólio',[
   'Famílias das nativas identificadas: '+
    (Object.keys(dossier.skillFamilyEvidence.nativeFamilies).join(', ')||'nenhuma com alias de adicional'),
@@ -1055,6 +1193,17 @@ function draw(){
   ]);
  addSection('Checklist de sete verificações independentes',
   dossier.evidenceChecklist.map(c=>(c.ok?'CONFERIDO: ':'PENDENTE: ')+c.label));
+ addSection('V281 · comparador competitivo entre estilos',[
+  'Cinco estilos, '+dossier.decisionMatrix.pairCount+' pares comparados; '+
+   dossier.decisionMatrix.repeatedPairs+' pares com listas idênticas e '+
+   dossier.decisionMatrix.similarPairs80+' pares com 80% ou mais de sobreposição.',
+  ...dossier.decisionMatrix.pairs.map(p=>
+   tacticLabelFor(p.first)+' × '+tacticLabelFor(p.second)+': '+
+   (p.overlapPercent===null?'sem candidatos equipáveis documentados':
+    p.overlapPercent+'% de habilidades coincidentes')+
+   ' · primeiro ímpeto '+(p.boosterSame?'igual':'diferente ou pendente')),
+  ...dossier.decisionMatrix.warnings.map(w=>'ATENÇÃO: '+w)
+ ]);
  addSection('Variação entre os cinco estilos do técnico',[
   'A habilidade prioritária muda entre '+dossier.tacticalStability.topSkillVariations+
    ' resultados diferentes.',
