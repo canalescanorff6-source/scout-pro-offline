@@ -46,7 +46,7 @@ for(const card of cards){
    seen.add(skill.key);
    assert(!native.has(skill.key),'Skill já nativa #'+card.numero);
    const x=skill.criterios;
-   assert.equal(skill.score,x.funcao+x.tatica+x.estilo+x.nativas);
+   assert.equal(skill.score,x.funcao+x.tatica+x.estilo+x.nativas+(x.investimento||0));
   }
   if(skills.unmappedNativeSkills.length)incompleteNatives++;
   assert(boost.length>0);
