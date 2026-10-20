@@ -11,8 +11,17 @@
 const moduleGet=p=>{if(typeof module!=='object'||!module.exports)return null;try{return require(p)}catch(_){return null}};
 const T=host?.SCOUT_TACTICS_V220||moduleGet('./scout-multitactic-engine-v220.js');
 const I=host?.CRAQUE_INTERPRETATION_V233||moduleGet('./craque-role-intelligence-v233.js');
-const S=host?.SCOUT_RECOMMENDATIONS_V162||moduleGet('./skills-booster-v162.js');
-const B=host?.SCOUT_BOOSTERS_V103||moduleGet('./booster-engine-v103.js');
+// V283: o app-bridge carrega esses motores em outra cadeia assíncrona.
+// Referências resolvidas UMA VEZ na inicialização ficavam nulas em parte das
+// fichas. Consultar a API em tempo de uso e refrescar no evento de prontidão.
+const fallbackS=moduleGet('./skills-booster-v162.js');
+const fallbackB=moduleGet('./booster-engine-v103.js');
+const S=new Proxy({}, {get(_target,key){
+ return (host?.SCOUT_RECOMMENDATIONS_V162||fallbackS)?.[key];
+}});
+const B=new Proxy({}, {get(_target,key){
+ return (host?.SCOUT_BOOSTERS_V103||fallbackB)?.[key];
+}});
 const C=host?.CRAQUE_COMPETITIVE_READINESS_V264||moduleGet('./craque-competitive-readiness-v264.js');
 const STATES=Object.freeze({
  complete:'PP e treino cadastrados · sem validação competitiva',
@@ -863,6 +872,8 @@ async function begin(){
   }
  });
  host.addEventListener('scoutpro:v251:review-updated',display);
+ // Se a ficha inicializou antes de V162/V103, recalcular sem reload.
+ doc.addEventListener('scoutpro:recommendations-ready',display);
  host.addEventListener('craque:data-changed',event=>{
   if(event.detail?.key===host.SCOUT_POSITION_TRAINING_V246?.KEY)display();
  });
