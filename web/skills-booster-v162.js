@@ -495,9 +495,40 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  verifiedSlot==='vazio'?'Slot selecionável no catálogo e vazio confirmado nesta edição; confira os quatro atributos afetados antes de gastar tokens.':
  able?'Slot selecionável indicado no catálogo; confirmação no Plano de Jogo ainda necessária.':
  'Não existe prova documental suficiente de um slot selecionável. Confira no jogo antes de aplicar tokens.';
+ // V276: ímpeto fixo não desaparece: medir a SOBREPOSIÇÃO DOS QUATRO
+ // atributos com cada alternativa, sem concluir que +1 seria desperdiçado.
+ const factory=validBooster(natural);
+ const factoryAxes=engine?.BOOSTERS?.[factory]||[];
+ const axesOf=name=>engine?.BOOSTERS?.[name]||[];
+ const overlapOf=candidate=>{
+  const current=axesOf(candidate?.nome);
+  const common=current.filter(x=>factoryAxes.includes(x));
+  return Object.freeze({technicalName:candidate?.nome||null,
+   documentedName:candidate?.nome_pt||candidate?.nome||null,
+   shared:common.length,sharedStatKeys:common,
+   uniqueStatKeys:current.filter(x=>!factoryAxes.includes(x)),
+   factoryDocumented:factoryAxes.length===4,applyAuthorized:false});
+ };
+ const overlapComparisons=ranked.slice(0,3).map(overlapOf);
+ const primaryOverlap=overlapComparisons[0]?.shared??null;
+ const complementCandidate=factoryAxes.length===4&&ranked.length?
+  ranked.find(candidate=>candidate.score>=ranked[0].score-8&&
+   overlapOf(candidate).shared<primaryOverlap):null;
+ const complementaryAlternative=complementCandidate?
+  Object.freeze({...overlapOf(complementCandidate),relativeScore:complementCandidate.score,
+   warning:'Menor sobreposição não prova resultado superior; comparar com a build real.'}):null;
  // O ranking da carta deve existir independentemente da disponibilidade do slot.
  // "primary" é uma prioridade competitiva, NÃO algo equipado ou autorizado.
  return {status,verifiedSlot,slotSupported,slotEvidence,able,knownExtra:existing,confirmedEquipped:equippedName||null,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
+  complementarity:Object.freeze({
+   factoryName:factory||null,factoryDocumented:factoryAxes.length===4,
+   factoryAxes:Object.freeze(factoryAxes.slice()),
+   comparisons:Object.freeze(overlapComparisons),
+   lowOverlapAlternative:complementaryAlternative,
+   explanation:factoryAxes.length===4?
+    'Comparação apenas dos quatro atributos afetados por cada tipo de ímpeto.':
+    'Ímpeto fixo sem identidade documentada: não calcular sobreposição.'
+  }),
   confidence:ranked[0]?.confianca||'sem_base_para_ranquear',
   spread:ranked.length>1?Number((ranked[0].score-ranked[1].score).toFixed(2)):null,
   equipStatus:verifiedSlot==='ausente'?'impossivel_na_conta':status==='nome_registrado'?'comparacao_segundo_fixo':status==='possivel'?'slot_pendente_no_catalogo':!slotSupported?'slot_nao_documentado':verifiedSlot==='ocupado'?'ocupado_na_conta':able?'condicionado_a_slot':'slot_nao_verificado'};
@@ -658,6 +689,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   skillSlotsVerified:skills.equippedConfirmed,
   boosterName:boosters.primary?.nome_pt||boosters.primary?.nome||null,
   boosterMargin:gap,boosterSlotVerified:boosters.able,
+  boosterComplementarity:boosters.complementarity,
   boosterAlternatives:boosters.alternatives.map(x=>Object.freeze({
    name:x.nome_pt||x.nome,score:x.score
   })),
