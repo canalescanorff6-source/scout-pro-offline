@@ -98,7 +98,8 @@ const contextualMap=new Map();
 for(const [group,names] of Object.entries(CONTEXT_NATIVE_GROUPS))
  for(const name of names){
   const key=normal(name);
-  if(contextualMap.has(key))throw Error('Nativa contextual ambígua: '+name);
+  if(contextualMap.has(key)&&contextualMap.get(key)!==group)
+   throw Error('Nativa contextual de grupos diferentes: '+name);
   contextualMap.set(key,group);
  }
 const contextForNative=name=>contextualMap.get(normal(name))||null;
