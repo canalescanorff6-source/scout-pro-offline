@@ -63,6 +63,9 @@ function checkedEquipment(card,manual,record){
  return Boolean(record&&record.schema==='CRAQUE_ADDITIONAL_V254'&&record.confirmed===true&&
   Number(record.capture)===Number(card.capture)&&String(record.card_id)===String(card.id)&&
   record.fingerprint===fingerprint(manual)&&
+  splitSkills(manual).every(name=>Boolean(keyFor(name)))&&
+  !splitSkills(manual).some(name=>
+   splitSkills(card.native_skills||card.habilidades_nativas||'').some(n=>keyFor(n)===keyFor(name)))&&
   // V266: novas confirmações ligam-se também às nativas da edição.
   // Registros V254 antigos permanecem legíveis; nova confirmação é
   // exigida quando há edição posterior do cadastro nativo.
@@ -340,6 +343,9 @@ const css=document.createElement('style');css.textContent=
 '#scout-v162 .v272-score{color:#eac36c;font-weight:800;font-size:11px;margin-left:8px}'+
 '#scout-v162 .v272-criteria{margin-top:7px;color:#d7dfeb;font-size:11px}'+
 '#scout-v162 .v272-criteria summary{min-height:40px;display:flex;align-items:center;cursor:pointer;color:#d3bb87;font-weight:700}'+
+'#scout-v162 .v272-booster-compare{border:1px solid #596777;padding:10px;border-radius:10px;background:#102637;color:#d8e6ec}'+
+'#scout-v162 .v272-booster-compare summary{min-height:40px;display:flex;align-items:center;cursor:pointer;color:#efcf89}'+
+'#scout-v162 .v272-booster-compare li{margin:8px 0;line-height:1.6;overflow-wrap:anywhere;font-size:11px}'+
 '#scout-v162 .v162-panel{border:1px solid #33556b;border-radius:12px;padding:12px;background:#0b1e2d;min-width:0}'+
 '#scout-v162 .v162-note{color:#d3caa5}#scout-v162 textarea{box-sizing:border-box;width:100%;min-height:62px;background:#081e2d;border:1px solid #5b829a;border-radius:8px;color:white;font-size:14px;padding:10px}'+
 '#scout-v162 .v162-foot{font-size:12px;color:#b9d3dc;border-top:1px solid #35566a;padding-top:10px;margin-top:12px}'+
@@ -406,14 +412,14 @@ function draw(){
  const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103,manuallyVerified.status,manuallyVerified.equipped);
  const remaining=result.slotsRemaining;
  const proposed=result.recommendations;
- verifiedCheck.checked=confirmed;
+ verifiedCheck.checked=result.equippedConfirmed;
  section.querySelectorAll('[data-tactic]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tactic===tactic)));
  section.querySelector('#v162-skills-status').textContent='Função analisada: '+actualPosition+
   ' ('+(roleEvidence==='original'?'posição original':roleEvidence==='treinada'?
   'treino confirmado':'familiaridade confirmada')+'). '+
   'Nativas catalogadas: '+result.knownNative+
   ' · Adicionais informadas (distintas): '+result.manualReportedCount+'/5 · '+
-  (confirmed?'Lista completa conferida · vagas restantes: '+remaining+'. ':
+  (result.equippedConfirmed?'Lista completa conferida · vagas restantes: '+remaining+'. ':
    'LISTA NÃO CONFERIDA: vagas disponíveis desconhecidas. Até cinco candidatos teóricos, não cinco slots livres. ')+
   (result.nativeKnown?'Ordem consultiva por função, tática e habilidades nativas cadastradas; não é homologação de gameplay.':
    'EDIÇÃO SEM NATIVAS DOCUMENTADAS: sugestões provisórias; não gaste tokens sem conferir.')+
@@ -446,10 +452,10 @@ function draw(){
  for(let i=proposed.length;i<(remaining??0);i++){
   const li=document.createElement('li');li.textContent='Vaga '+(result.alreadyEquippedProvided+i+1)+'/5 · Sem habilidade adicional segura nesta base; confirmar compatibilidade e skills atuais antes de preencher.';ul.appendChild(li);
  }
- if(confirmed&&remaining===0){const li=document.createElement('li');li.textContent='Nenhum slot adicional restante: as cinco habilidades equipadas foram conferidas nesta edição. Alternativas são apenas para comparação.';ul.appendChild(li)}
+ if(result.equippedConfirmed&&remaining===0){const li=document.createElement('li');li.textContent='Nenhum slot adicional restante: as cinco habilidades equipadas foram conferidas nesta edição. Alternativas são apenas para comparação.';ul.appendChild(li)}
  if(result.manualOverLimit){const li=document.createElement('li');li.textContent='LISTA INVÁLIDA: mais de cinco habilidades diferentes informadas. Corrija o cadastro antes de usar novas sugestões.';ul.appendChild(li)}
  section.querySelector('#v162-alts').textContent=
-  (confirmed&&remaining===0?'Slots completos: nenhuma sugestão adicional pode ser equipada. ':'Prioridades por função, não instalação automática. ')+
+  (result.equippedConfirmed&&remaining===0?'Slots completos: nenhuma sugestão adicional pode ser equipada. ':'Prioridades por função, não instalação automática. ')+
   (result.alternatives.length?'Opções comparativas: '+result.alternatives.map(x=>x.name).join(' · ')+'.':
    'Confira disponibilidade e compatibilidade no jogo.');
  const source=section.querySelector('#v162-source');source.replaceChildren();
@@ -487,8 +493,17 @@ function draw(){
  const why=document.createElement('p');why.textContent='Por que esta carta: '+boost.primary.motivo;panel.appendChild(why);
  const atr=document.createElement('p');atr.textContent='Atributos afetados pelo ímpeto: '+boost.primary.atributos.join(', ')+'. Não são valores finais calculados.';panel.appendChild(atr);
  if(boost.alternatives.length){
-  const alt=document.createElement('p');alt.textContent='Alternativas a comparar: '+
-   boost.alternatives.map(x=>x.nome_pt||x.nome).join(' / ')+'.';panel.appendChild(alt);
+  const comparison=document.createElement('details');comparison.className='v272-booster-compare';
+  const summary=document.createElement('summary');
+  summary.textContent='Comparar '+(boost.alternatives.length+1)+' ímpetos por atributos';
+  const list=document.createElement('ol');
+  for(const candidate of [boost.primary,...boost.alternatives]){
+   const li=document.createElement('li');
+   li.textContent=(candidate.nome_pt||candidate.nome)+' · '+candidate.score+
+    ' pontos relativos · '+candidate.atributos.join(' / ')+'. '+candidate.motivo;
+   list.appendChild(li);
+  }
+  comparison.append(summary,list);panel.appendChild(comparison);
  }
  const uncertainty=document.createElement('p');uncertainty.className='v200-booster-caution';
  uncertainty.textContent=boost.spread!==null&&boost.spread<2?
