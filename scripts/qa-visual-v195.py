@@ -775,7 +775,7 @@ def run():
                     page.locator('#scout-v220-technical > summary').click()
                 if not page.locator('#scout-v220-advanced-skills').evaluate('(e)=>e.open'):
                     page.locator('#scout-v220-advanced-skills > summary').click()
-                page.locator('#scout-v162 > details > summary').click()
+                page.locator('#scout-v162 > details:not(#v273-dossier) > summary').click()
                 page.locator('#v162-equipped').fill(
                     'Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola; Toque de calcanhar'
                 )
@@ -1647,7 +1647,7 @@ def run():
                         problems.append(f"{name}: V254 inventou slots vagos antes da confirmação")
                     page.locator('#scout-v220-technical > summary').click()
                     page.locator('#scout-v220-advanced-skills > summary').click()
-                    page.locator('#scout-v162 > details > summary').click()
+                    page.locator('#scout-v162 > details:not(#v273-dossier) > summary').click()
                     ta=page.locator('#v162-equipped')
                     ta.fill('Toque duplo; Controle com a sola; Interceptação; Marcação individual; Passe na medida')
                     page.locator('#v254-confirm-equipped').check()
@@ -1673,7 +1673,7 @@ def run():
                     # Alterar texto sem confirmar invalida prova anterior.
                     page.locator('#scout-v220-technical > summary').click()
                     page.locator('#scout-v220-advanced-skills > summary').click()
-                    page.locator('#scout-v162 > details > summary').click()
+                    page.locator('#scout-v162 > details:not(#v273-dossier) > summary').click()
                     ta=page.locator('#v162-equipped')
                     ta.fill('Toque duplo; Controle com a sola')
                     if page.locator('#v254-confirm-equipped').is_checked():
