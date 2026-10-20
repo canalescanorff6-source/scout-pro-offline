@@ -126,6 +126,8 @@ function trainingAudit(card){
   return Object.freeze({status:'treino_proposto_nao_validado',levels:null,pp,spent});
  return Object.freeze({status:'custo_pp_conferido',levels:values.slice(),pp,spent});
 }
+// Compatibilidade da API pública usada por revisões anteriores.
+const levelsOf=card=>trainingAudit(card).levels;
 function addStat(w,key,value){w[key]=(w[key]||0)+value;}
 function addStats(w,keys,value){for(const k of keys)addStat(w,k,value);}
 function playingStyle(w,role,style){
