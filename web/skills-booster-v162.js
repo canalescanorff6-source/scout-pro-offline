@@ -158,6 +158,70 @@ const POOLS={
  GO:['gklow','gklong','gkhigh','gkpenalty','fighting','captain','weighted','lowloft','onepass']
 };
 function roleOf(d){return POSITION[d.role_used]||POSITION[d.shown_position]||POSITION[d.posicao]||null}
+// V276: composição de um pacote HIPOTÉTICO complementar.
+// A função evita concentrar 5 sugestões na mesma família. O motor
+// principal da ficha permanece intacto e os 5 slots só existem se
+// comprovados pelo usuário na edição correta.
+const SKILL_FAMILY=Object.freeze({
+ onepass:'apoio',heel:'apoio',through:'criacao',weighted:'criacao',
+ lowloft:'criacao',sole:'dominio',double:'dominio',cutturn:'dominio',
+ firstshot:'finalizacao',acrobatic:'finalizacao',longshot:'finalizacao',
+ curler:'finalizacao',heading:'jogo_aereo',aerial:'jogo_aereo',
+ intercept:'cobertura',blocker:'cobertura',mark:'cobertura',
+ sliding:'cobertura',clear:'cobertura',fighting:'intensidade',
+ trackback:'intensidade',supersub:'intensidade',captain:'intensidade',
+ gklow:'reposicao',gklong:'reposicao',gkhigh:'reposicao',
+ gkpenalty:'defesa_goleiro'
+});
+const ROLE_FAMILIES=Object.freeze({
+ CA:['finalizacao','apoio','dominio'],SA:['apoio','criacao','dominio'],
+ MAT:['apoio','criacao','dominio'],MLG:['apoio','criacao','cobertura'],
+ VOL:['cobertura','apoio','criacao'],ZG:['cobertura','apoio','jogo_aereo'],
+ LD:['cobertura','apoio','criacao'],LE:['cobertura','apoio','criacao'],
+ ALA:['dominio','apoio','criacao'],GO:['reposicao','defesa_goleiro','intensidade']
+});
+const TACTIC_FAMILIES=Object.freeze({
+ posse:['apoio','criacao','dominio'],normal:['cobertura','apoio'],
+ rapido:['finalizacao','criacao','intensidade'],
+ fora:['criacao','dominio','jogo_aereo'],
+ longo:['jogo_aereo','criacao','intensidade']
+});
+function composePortfolio(ranked,role,tactic,limit){
+ if(!Number.isInteger(limit)||limit<0||limit>5)throw Error('Limite de cinco slots inválido');
+ const pool=Array.isArray(ranked)?ranked:[],roleNeeds=ROLE_FAMILIES[role]||[],
+  tacticNeeds=TACTIC_FAMILIES[tactic]||[];
+ const chosen=[],seen=new Set(),families=new Map();
+ for(let i=0;i<Math.min(limit,pool.length);i++){
+  const options=pool.filter(s=>!seen.has(s.key)).map(s=>{
+   const family=SKILL_FAMILY[s.key]||'outros';
+   const n=families.get(family)||0;
+   const roleBonus=roleNeeds.includes(family)&&n===0?16:0;
+   const tacticBonus=tacticNeeds.includes(family)&&n===0?10:0;
+   const redundancyPenalty=n?12*n:0;
+   return {skill:s,family,roleBonus,tacticBonus,redundancyPenalty,
+    adjustedScore:s.score+roleBonus+tacticBonus-redundancyPenalty};
+  }).sort((a,b)=>b.adjustedScore-a.adjustedScore||
+   b.skill.score-a.skill.score||a.skill.key.localeCompare(b.skill.key));
+  const best=options[0];if(!best)break;
+  chosen.push(Object.freeze({
+   key:best.skill.key,name:best.skill.name,family:best.family,
+   baseScore:best.skill.score,relativeScore:best.adjustedScore,
+   explanation:(best.roleBonus?'Lacuna funcional prioritária. ':'')+
+    (best.tacticBonus?'Complementa o estilo de jogo. ':'')+
+    (best.redundancyPenalty?'Família já representada no pacote. ':'')+
+    'Seleção heurística; confirmar em jogo.',
+   equipAuthorized:false
+  }));
+  seen.add(best.skill.key);
+  families.set(best.family,(families.get(best.family)||0)+1);
+ }
+ return Object.freeze({
+  kind:'ALTERNATIVA_EQUILIBRADA_CONSULTIVA',role,tactic,
+  candidates:Object.freeze(chosen),families:Object.freeze(Object.fromEntries(families)),
+  slotCountConfirmed:false,mayApply:false,
+  warning:'Até cinco candidatos complementares; não representam vagas livres ou skill de criador.'
+ });
+}
 function evaluate(d,tactic,manualEquipped,options={}){
  if(!['posse','normal','rapido','fora','longo'].includes(tactic))throw Error('Tática inválida');
  const role=roleOf(d);if(!role)return {role:null,recommendations:[],nativeKnown:false,missing:['Posição da carta não cadastrada']};
@@ -353,6 +417,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const equippedConfirmed=options.equippedConfirmed===true&&!requiresReconciliation;
  const slotsRemaining=equippedConfirmed&&!overLimit?Math.max(0,5-distinctExtras.length):null;
  const limit=overLimit?0:equippedConfirmed?slotsRemaining:5;
+ const balancedPortfolio=composePortfolio(ranked,role,tactic,limit);
  const warnings=[
   ...(unmappedNative.length?['Nativas cadastradas fora do vocabulário de recomendações: '+
    [...new Set(unmappedNative)].slice(0,5).join(', ')+
@@ -373,6 +438,8 @@ function evaluate(d,tactic,manualEquipped,options={}){
   contextualNativeGroups:{...contextNatives.groups},
   contextualEvidence:'nome_cadastrado_sem_efeito_de_gameplay_validado',
   recommendations:ranked.slice(0,limit),alternatives:ranked.slice(limit,limit+3),
+  balancedPortfolio:Object.freeze({...balancedPortfolio,
+   slotCountConfirmed:equippedConfirmed,mayApply:false}),
   synergyDetected:synergy.size>0,
   inference:'CONSULTIVA_SEM_OVR_OU_TESTE_DE_GAMEPLAY',
   perfil:ROLE_LABEL[role]||role,estilos_registrados:style,rankings_condicionais:true,
@@ -616,7 +683,7 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
