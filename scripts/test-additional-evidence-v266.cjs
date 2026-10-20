@@ -31,7 +31,7 @@ for(const c of cards){
    const p=skill.criterios;
    assert(p&&Object.keys(p).sort().join(',')==='estilo,funcao,investimento,nativas,tatica');
    assert(Object.values(p).every(Number.isFinite));
-   assert.equal(skill.score,p.funcao+p.tatica+p.estilo+p.nativas);
+   assert.equal(skill.score,p.funcao+p.tatica+p.estilo+p.nativas+p.investimento);
    assert(Array.isArray(skill.synergies));
   }
   checks++;
