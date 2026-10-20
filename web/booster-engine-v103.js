@@ -144,6 +144,12 @@ function baseStatsAudit(card){
  const index=card.base_catalog_proof||null;
  const edition=String(card.versao||card.edition||'');
  const id=String(card.id||card.card_id||'');
+ // V268: aliases conflitantes são bloqueio de identidade, não escolha
+ // silenciosa de um único campo (outro Pack / mesmo jogador).
+ if((card.versao&&card.edition&&
+    plain(card.versao)!==plain(card.edition))||
+   (card.id&&card.card_id&&String(card.id)!==String(card.card_id)))
+  return Object.freeze({...initial,status:'identidade_da_base_divergente'});
  const numeric=entries.every(([name,value])=>name.trim()&&value&&
   Number.isInteger(value.base)&&value.base>=0&&value.base<=120);
  const identified=Boolean(id&&edition&&proof?.schema==='CRAQUE_BASE_PROOF_V260'&&
