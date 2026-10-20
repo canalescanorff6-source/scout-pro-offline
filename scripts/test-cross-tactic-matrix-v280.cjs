@@ -83,7 +83,9 @@ const warnings=[...grouped.entries()].filter(([,rows])=>rows.length>=2&&
 for(const group of warnings){
  assert(group.players.length>=2);
  assert(group.distinctNativeProfiles>=2);
- assert.equal(new Set(group.players.map(x=>x.cardId)).size,group.players.length);
+ // O catálogo possui IDs ainda pendentes e alguns ID repetidos entre
+ // edições distintas. Não inventar unicidade de Card ID nem de Player ID.
+ assert.equal(new Set(group.players.map(x=>x.cap)).size,group.players.length);
 }
 const simple=tactic=>( {style:tactic,skillKeys:['onepass','through'],
  balancedKeys:['onepass','through'],firstSkill:'Passe de primeira',technicalName:'Technique',
@@ -104,7 +106,19 @@ assert(empty.pairs.every(p=>p.overlapPercent===null&&p.verdict==='SEM_CANDIDATOS
 assert.throws(()=>S.decisionMatrixFromScenarios([]),/exatamente cinco/);
 const noProof={...cards.find(x=>x.numero===191)};
 assert.equal(noProof.pp,50);assert.equal(noProof.max_level,26);
+const placeholderCards=cards.filter(x=>/pendente|não inferido|nao inferido/i.test(String(x.id)));
+const byCardId=new Map();
+for(const c of cards){
+ const group=byCardId.get(String(c.id))||[];
+ group.push({cap:c.numero,edition:c.versao});
+ byCardId.set(String(c.id),group);
+}
+const reusedIdentifiers=[...byCardId.entries()]
+ .filter(([id,group])=>group.length>1&&!/pendente|não inferido|nao inferido/i.test(id))
+ .map(([id,group])=>({cardId:id,editions:group}));
 const result={schema:'CRAQUE_V280_COMPARADOR_COMPETITIVO',cards:246,scenarios,pairs,
+ pendingIdentityCards:placeholderCards.map(x=>({cap:x.numero,id:x.id,edition:x.versao})),
+ reusedIdentityGroups:reusedIdentifiers,
  identicalPairs,highOverlapPairs,noSkillPairCount,
  uniformTopSkill,uniformTopBooster,missingBase,provisional,
  differentNativeProfilesWithSameRecommendations:warnings.length,
