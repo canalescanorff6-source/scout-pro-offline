@@ -58,7 +58,12 @@ const fingerprint=s=>[...new Set(splitSkills(s).map(x=>keyFor(x)||'unmapped:'+no
 function checkedEquipment(card,manual,record){
  return Boolean(record&&record.schema==='CRAQUE_ADDITIONAL_V254'&&record.confirmed===true&&
   Number(record.capture)===Number(card.capture)&&String(record.card_id)===String(card.id)&&
-  record.fingerprint===fingerprint(manual));
+  record.fingerprint===fingerprint(manual)&&
+  // V266: novas confirmações ligam-se também às nativas da edição.
+  // Registros V254 antigos permanecem legíveis; nova confirmação é
+  // exigida quando há edição posterior do cadastro nativo.
+  (!Object.hasOwn(record,'nativeFingerprint')||
+   record.nativeFingerprint===fingerprint(card.native_skills||card.habilidades_nativas||'')));
 }
 const POSITION={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',ZG:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA'};
 const POOLS={
@@ -80,7 +85,9 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const native=splitSkills(d.native_skills||d.habilidades_nativas);
  const nativeKnown=Boolean(native.length);
  const equipped=splitSkills(manualEquipped);
+ const nativeIds=new Set(native.map(name=>keyFor(name)||'unmapped:'+normal(name)));
  const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
+ const unmappedNative=native.filter(name=>!keyFor(name));
  // Cinco slots são físicos. Grafias PT-BR/EN da mesma habilidade contam uma vez;
  // nenhuma habilidade nativa registrada conta como adicional equipado.
  const userMap=new Map();
@@ -88,18 +95,24 @@ function evaluate(d,tactic,manualEquipped,options={}){
   const identity=keyFor(name)||'unmapped:'+normal(name);
   if(identity&&!userMap.has(identity))userMap.set(identity,name);
  }
- const nativeManualConflicts=[...userMap].filter(([id])=>nativeKeys.has(id)).map(([,name])=>name);
- const distinctExtras=[...userMap].filter(([id])=>!nativeKeys.has(id));
+ const nativeManualConflicts=[...userMap].filter(([id])=>nativeIds.has(id)).map(([,name])=>name);
+ const distinctExtras=[...userMap].filter(([id])=>!nativeIds.has(id));
  const used=new Set([...nativeKeys,...userMap.keys()].filter(id=>!id.startsWith('unmapped:')));
  const style=normal([d.playing_style,d.attack_style,d.defence_style,d.estilo_ataque,d.estilo_defesa].filter(Boolean).join(' '));
  const pool=POOLS[role];const scorer=new Map;
- pool.forEach((key,i)=>scorer.set(key,200-i*10));
- const bump=(names,amount)=>names.forEach(k=>{if(scorer.has(k))scorer.set(k,scorer.get(k)+amount)});
- if(tactic==='posse')bump(['onepass','through','sole','double','heel','intercept','blocker'],22);
- if(tactic==='normal')bump(['intercept','fighting','weighted','blocker','through'],16);
- if(tactic==='rapido')bump(['through','firstshot','double','longshot','fighting','intercept'],18);
- if(tactic==='fora')bump(['weighted','lowloft','onepass','sole','double','through','aerial','gklong'],23);
- if(tactic==='longo')bump(['weighted','lowloft','aerial','heading','firstshot','fighting','intercept','gklong'],24);
+ const factors=new Map();
+ pool.forEach((key,i)=>{const base=200-i*10;scorer.set(key,base);
+  factors.set(key,{funcao:base,tatica:0,estilo:0,nativas:0});});
+ const bump=(names,amount,source='estilo')=>names.forEach(k=>{
+  if(!scorer.has(k))return;
+  scorer.set(k,scorer.get(k)+amount);
+  factors.get(k)[source]+=amount;
+ });
+ if(tactic==='posse')bump(['onepass','through','sole','double','heel','intercept','blocker'],22,'tatica');
+ if(tactic==='normal')bump(['intercept','fighting','weighted','blocker','through'],16,'tatica');
+ if(tactic==='rapido')bump(['through','firstshot','double','longshot','fighting','intercept'],18,'tatica');
+ if(tactic==='fora')bump(['weighted','lowloft','onepass','sole','double','through','aerial','gklong'],23,'tatica');
+ if(tactic==='longo')bump(['weighted','lowloft','aerial','heading','firstshot','fighting','intercept','gklong'],24,'tatica');
  if(/pivo|homem de area|target/.test(style))bump(['heading','aerial','onepass','heel'],34);
  if(/infiltr|puxa marcacao|arrastar defesa|matador|artilheiro|oportunista/.test(style))bump(['firstshot','through','onepass','acrobatic'],18);
  if(/armador|orquestrador|classico|criativo/.test(style))bump(['onepass','through','weighted','sole','heel'],23);
@@ -115,6 +128,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
   for(const id of targets){
    if(!scorer.has(id)||used.has(id))continue;
    scorer.set(id,scorer.get(id)+modifier);
+   factors.get(id).nativas+=modifier;
    const notes=synergy.get(id)||[];
    notes.push(explanation);
    synergy.set(id,notes);
@@ -136,7 +150,9 @@ function evaluate(d,tactic,manualEquipped,options={}){
  // Prioridade depende apenas da função, da tática e do estilo, não do OVR.
  const ranked=[...scorer.entries()].filter(([key])=>!used.has(key))
   .sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))
-  .map(([key,score])=>({...SKILLS[key],score,synergies:synergy.get(key)||[]}));
+  .map(([key,score])=>({...SKILLS[key],score,
+   criterios:Object.freeze({...factors.get(key)}),
+   synergies:synergy.get(key)||[]}));
  const overLimit=distinctExtras.length>5;
  // A lista manual pode estar INCOMPLETA. Não declarar espaços livres
  // ou cinco skills aplicáveis até o usuário conferir no Plano de Jogo.
@@ -144,6 +160,9 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const slotsRemaining=equippedConfirmed&&!overLimit?Math.max(0,5-distinctExtras.length):null;
  const limit=overLimit?0:equippedConfirmed?slotsRemaining:5;
  const warnings=[
+  ...(unmappedNative.length?['Nativas cadastradas fora do vocabulário de recomendações: '+
+   [...new Set(unmappedNative)].slice(0,5).join(', ')+
+   '. Isso NÃO prova que essas habilidades estejam ausentes da carta.']:[]),
   ...(overLimit?['Foram informadas mais de cinco habilidades adicionais distintas: revisar no jogo.']:[]),
   ...(nativeManualConflicts.length?['Informadas também como adicionais, mas já aparecem nas nativas cadastradas: '+nativeManualConflicts.join(', ')]:[])
  ];
@@ -151,6 +170,8 @@ function evaluate(d,tactic,manualEquipped,options={}){
   alreadyEquippedProvided:Math.min(5,distinctExtras.length),
   manualReportedCount:distinctExtras.length,nativeManualConflicts,manualOverLimit:overLimit,
   equippedConfirmed,slotsRemaining,
+  requiresReconciliation:overLimit||nativeManualConflicts.length>0,
+  unmappedNativeSkills:unmappedNative.slice(),
   recommendations:ranked.slice(0,limit),alternatives:ranked.slice(limit,limit+3),
   synergyDetected:synergy.size>0,
   missing:[...(nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']),...warnings]};
@@ -296,9 +317,19 @@ function draw(){
    'LISTA NÃO CONFERIDA: vagas disponíveis desconhecidas. Até cinco candidatos teóricos, não cinco slots livres. ')+
   (result.nativeKnown?'Ordem consultiva por função, tática e habilidades nativas cadastradas; não é homologação de gameplay.':
    'EDIÇÃO SEM NATIVAS DOCUMENTADAS: sugestões provisórias; não gaste tokens sem conferir.')+
+  (result.requiresReconciliation?
+   ' CONFLITO: revisar a lista antes de consumir tokens; as prioridades abaixo são apenas comparações.':'')+
   (result.missing.length?' Atenção: '+result.missing.join(' '):'');
  const ul=section.querySelector('#v162-skills');ul.replaceChildren();
- for(const s of proposed){const li=document.createElement('li'),b=document.createElement('strong'),p=document.createElement('p');b.textContent=s.name;p.textContent=s.why+(s.synergies?.length?' Critério de complementaridade (hipótese): '+s.synergies.join('; ')+'.':'');li.append(b,p);ul.appendChild(li)}
+ for(const s of proposed){const li=document.createElement('li'),b=document.createElement('strong'),p=document.createElement('p');
+  b.textContent=s.name;
+  const f=s.criterios||{};
+  p.textContent=s.why+
+   (s.synergies?.length?' Complementaridade documental (hipótese): '+s.synergies.join('; ')+'.':'')+
+   ' Critérios: função '+(f.funcao??'—')+', tática '+(f.tatica??'—')+
+   ', estilo '+(f.estilo??'—')+', nativas '+(f.nativas??'—')+
+   '. Pontuações relativas, não atributos finais.';
+  li.append(b,p);ul.appendChild(li)}
  for(let i=proposed.length;i<(remaining??0);i++){
   const li=document.createElement('li');li.textContent='Vaga '+(result.alreadyEquippedProvided+i+1)+'/5 · Sem habilidade adicional segura nesta base; confirmar compatibilidade e skills atuais antes de preencher.';ul.appendChild(li);
  }
@@ -386,6 +417,13 @@ section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',
 section.querySelector('#v162-save').addEventListener('click',()=>{
  const proposedText=ta.value.trim().slice(0,700);
  const requested=verifiedCheck.checked;
+ const precheck=evaluate(d,tactic,proposedText,{equippedConfirmed:true});
+ if(requested&&precheck.requiresReconciliation){
+  section.querySelector('#v162-feedback').textContent=
+   'CONFERÊNCIA NÃO SALVA: há habilidade nativa repetida entre adicionais ou mais de cinco diferentes. Revise o Plano de Jogo.';
+  verifiedCheck.checked=false;
+  return;
+ }
  let saved=false;
  try{
   // A impressão digital vincula a confirmação à lista e à edição.
@@ -395,6 +433,7 @@ section.querySelector('#v162-save').addEventListener('click',()=>{
    localStorage.setItem(verifyKey,JSON.stringify({
     schema:'CRAQUE_ADDITIONAL_V254',capture:Number(d.capture),
     card_id:String(d.id),confirmed:true,fingerprint:fingerprint(proposedText),
+    nativeFingerprint:fingerprint(d.native_skills||d.habilidades_nativas||''),
     confirmed_at:new Date().toISOString()
    }));
   }else localStorage.removeItem(verifyKey);
