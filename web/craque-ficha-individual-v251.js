@@ -368,7 +368,7 @@ function proofChecklist(card,index,lab,store){
   {id:'additional',name:'Lista completa de habilidades adicionais conferida na conta',
    documented:additionalDocumented,
    note:additionalDocumented?
-    'Confirmação vinculada ao CAP, Card ID, edição, nativas e lista atual; não comprova gameplay.':
+    'Confirmação local V254 vinculada ao CAP, Card ID, edição, nativas e lista atual; não comprova gameplay.':
     'Lista digitada ou incompleta não confirma slots. Conferir todas as habilidades equipadas na V254, inclusive quando forem zero.'},
   {id:'booster',name:'Slot de ímpeto conferido pelo usuário',
    documented:Boolean(boosterReported),
