@@ -602,9 +602,9 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
   try{ranked=engine.rank({id:d.id,edition:d.edition,base_stats:d.base_stats,
    base_stats_proof:d.base_stats_proof,base_catalog_proof:d.base_catalog_proof,
    posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo,impeto_extra:value,niveis:d.recommended_levels||d.niveis,
-   pp:d.pp,pp_estimado:d.pp_estimado===true||d.pp_estimated===true,
-    training_provisional:d.training_provisional===true||
+   pp:d.pp,training_provisional:d.training_provisional===true||
     d.treino_proposto_nao_validado===true,
+    pp_estimado:d.pp_estimado===true||d.pp_estimated===true,
    habilidades_nativas:d.native_skills||d.habilidades_nativas},tactic).filter(x=>!unavailable.has(x.nome));}catch(e){ranked=[]}
  }
  const note=verifiedSlot==='ausente'?'Você marcou esta carta como sem slot selecionável neste dispositivo. Nenhum ímpeto novo será recomendado.':
