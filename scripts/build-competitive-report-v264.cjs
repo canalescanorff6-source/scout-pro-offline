@@ -40,6 +40,10 @@ for(const card of cards){
    status:readiness.label,
    PP_do_catalogo:card.pp,
    treino_original:Array.isArray(card.niveis)?card.niveis.slice():null,
+   auditoria_pp:readiness.trainingAuditStatus,
+   pp_custo_calculado:readiness.ppCalculado,
+   orcamento_de_pp:readiness.ppOrcamento,
+   treino_com_prova_matematica:readiness.sources.training,
    proposta_matematica_nao_homologada:permitted&&review.proposal?.levels?
     review.proposal.levels.slice():null,
    habilidades_adicionais_hipoteses:permitted?advice.skills.candidates.map((s,i)=>({
