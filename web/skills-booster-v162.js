@@ -496,6 +496,19 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  });
  if(base?.status!=='base_completa_confirmada')
   warnings.push('Atributos-base completos não confirmados: não alegar build meta ou status final.');
+ // V275: checklist CADASTRAL; não é indicador meta ou teste em partidas.
+ const checks=Object.freeze([
+  {key:'identidade',ok:identity,label:'Card ID e edição identificáveis'},
+  {key:'posicao',ok:roleApproved,label:'Posição nativa ou doutrinação confirmada'},
+  {key:'nativas',ok:skills.nativeKnown&&!skills.unmappedNativeSkills.length,
+   label:'Nativas catalogadas sem nomes desconhecidos'},
+  {key:'pp',ok:training.levels!==null,label:'PP e vetor coerentes e não provisórios'},
+  {key:'adicionais',ok:skills.equippedConfirmed,label:'Cinco slots de adicionais conferidos nesta edição'},
+  {key:'impeto',ok:boosters.able,label:'Slot selecionável e vazio comprovado na conta'},
+  {key:'atributos',ok:base?.status==='base_completa_confirmada',
+   label:'Atributos-base com fonte da edição'}
+ ]);
+ const checksReady=checks.filter(c=>c.ok).length;
  const scenarios=Object.freeze(DOSSIER_TACTICS.map(style=>{
   const result=evaluate(d,style,manualEquipped,{
    equippedConfirmed:opts.equippedConfirmed===true
@@ -511,6 +524,16 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    equipAuthorized:false
   });
  }));
+ const uniqueTopSkills=[...new Set(scenarios.map(x=>x.firstSkill).filter(Boolean))];
+ const uniqueBoosters=[...new Set(scenarios.map(x=>x.technicalName).filter(Boolean))];
+ const tacticalStability=Object.freeze({
+  tacticsCompared:scenarios.length,
+  topSkillVariations:uniqueTopSkills.length,
+  boosterVariations:uniqueBoosters.length,
+  skillIdenticalInFive:uniqueTopSkills.length===1,
+  boosterIdenticalInFive:uniqueBoosters.length===1,
+  interpretation:'Comparação de rankings, não prova de eficácia em campo'
+ });
  return Object.freeze({
   schema:'CRAQUE_DOSSIER_COMPETITIVO_V273',
   cap:Number(d.capture??d.numero),cardId:id,edition,role:position,
@@ -536,6 +559,12 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    name:x.nome_pt||x.nome,score:x.score
   })),
   evidencePending:warnings,scenarios,
+  evidenceChecklist:checks,documentedIndicators:checksReady,
+  totalIndicators:checks.length,tacticalStability,
+  auditLabel:checksReady===checks.length?
+   'Cadastro completo nos critérios locais; validação competitiva externa ainda pendente':
+   'Cadastro parcial: '+(checks.length-checksReady)+' confirmação(ões) pendente(s)',
+  sourcePublication:null,creatorVerified:false,realMatchValidated:false,
   competitivelyApproved:false,maySpendTokensAutomatically:false,
   note:'Não é ficha de Rentão/Blackjhon sem Card ID e vídeo exatos; análise heurística condicional.'
  });
@@ -586,6 +615,7 @@ const css=document.createElement('style');css.textContent=
 '#scout-v162 #v273-dossier li{overflow-wrap:anywhere;padding:4px 0}'+
 '#scout-v162 #v273-dossier .v273-tactic{padding:7px 9px;margin:4px 0;border:1px solid #39576e;border-radius:8px;background:#102939;font-size:12px;line-height:1.5}'+
 '#scout-v162 #v273-dossier .v274-audit{font-size:12px;line-height:1.65;color:#e6dac1;border:1px solid #806b4f;border-radius:10px;padding:10px;margin:10px 0;background:#182b3b}'+
+'#scout-v162 #v273-dossier .v275-doc-summary{color:#f2d594;font-weight:800;line-height:1.65;overflow-wrap:anywhere}'+
 '#scout-v162 .v162-panel{border:1px solid #33556b;border-radius:12px;padding:12px;background:#0b1e2d;min-width:0}'+
 '#scout-v162 .v162-note{color:#d3caa5}#scout-v162 textarea{box-sizing:border-box;width:100%;min-height:62px;background:#081e2d;border:1px solid #5b829a;border-radius:8px;color:white;font-size:14px;padding:10px}'+
 '#scout-v162 .v162-foot{font-size:12px;color:#b9d3dc;border-top:1px solid #35566a;padding-top:10px;margin-top:12px}'+
@@ -700,6 +730,20 @@ function draw(){
   'CAP '+dossier.cap+' / Card ID '+dossier.cardId+' · '+dossier.edition,
   'Progresso: '+dossier.trainingStatus+' · nativas: '+dossier.nativeCoverage+
    ' · cinco adicionais: '+(dossier.skillSlotsVerified?'conferidos':'vagas não comprovadas')
+ ]);
+ const docSummary=document.createElement('p');docSummary.className='v275-doc-summary';
+ docSummary.textContent='EVIDÊNCIAS DO CADASTRO · '+dossier.documentedIndicators+
+  '/'+dossier.totalIndicators+' verificações. '+dossier.auditLabel+
+  '. Não é avaliação de força ou desempenho.';
+ dossierContent.append(docSummary);
+ addSection('Checklist de sete verificações independentes',
+  dossier.evidenceChecklist.map(c=>(c.ok?'CONFERIDO: ':'PENDENTE: ')+c.label));
+ addSection('Variação entre os cinco estilos do técnico',[
+  'A habilidade prioritária muda entre '+dossier.tacticalStability.topSkillVariations+
+   ' resultados diferentes.',
+  'O ímpeto prioritário muda entre '+dossier.tacticalStability.boosterVariations+
+   ' resultados diferentes.',
+  'Estabilidade da opção não equivale a desempenho superior em campo.'
  ]);
  if(dossier.contextualNatives.length){
   addSection('Habilidades nativas especiais cadastradas (não são adicionais)',
