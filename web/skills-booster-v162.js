@@ -583,6 +583,7 @@ const css=document.createElement('style');css.textContent=
 '#scout-v162 #v273-dossier ul{font-size:12px;line-height:1.65;padding-left:22px;margin:8px 0}'+
 '#scout-v162 #v273-dossier li{overflow-wrap:anywhere;padding:4px 0}'+
 '#scout-v162 #v273-dossier .v273-tactic{padding:7px 9px;margin:4px 0;border:1px solid #39576e;border-radius:8px;background:#102939;font-size:12px;line-height:1.5}'+
+'#scout-v162 #v273-dossier .v274-audit{font-size:12px;line-height:1.65;color:#e6dac1;border:1px solid #806b4f;border-radius:10px;padding:10px;margin:10px 0;background:#182b3b}'+
 '#scout-v162 .v162-panel{border:1px solid #33556b;border-radius:12px;padding:12px;background:#0b1e2d;min-width:0}'+
 '#scout-v162 .v162-note{color:#d3caa5}#scout-v162 textarea{box-sizing:border-box;width:100%;min-height:62px;background:#081e2d;border:1px solid #5b829a;border-radius:8px;color:white;font-size:14px;padding:10px}'+
 '#scout-v162 .v162-foot{font-size:12px;color:#b9d3dc;border-top:1px solid #35566a;padding-top:10px;margin-top:12px}'+
@@ -671,7 +672,8 @@ function draw(){
   (result.missing.length?' Atenção: '+result.missing.join(' '):'');
  const proofline=section.querySelector('#v272-proofline');
  proofline.textContent='LEITURA DA CARTA · '+result.perfil+' · '+tacticLabelFor(tactic)+
-  ' · nativas: '+result.nativeCoverage+' · investimento: '+result.investmentEvidence+
+  ' · nativas: '+result.nativeCoverage+' · especiais: '+result.contextualNativeSkills.length+
+  ' · investimento: '+result.investmentEvidence+
   ' · PP: '+(boost.primary?.evidencias?.pp_status||'pendente')+
   ' · segundo ímpeto: '+boost.slotEvidence+
   ' · SEM homologação por OVR ou gameplay.';
@@ -695,6 +697,15 @@ function draw(){
   'Progresso: '+dossier.trainingStatus+' · nativas: '+dossier.nativeCoverage+
    ' · cinco adicionais: '+(dossier.skillSlotsVerified?'conferidos':'vagas não comprovadas')
  ]);
+ if(dossier.contextualNatives.length){
+  addSection('Habilidades nativas especiais cadastradas (não são adicionais)',
+   dossier.contextualNatives.map(c=>c.name+' · contexto: '+c.group+
+    ' · efeito específico NÃO validado na edição'));
+ }
+ if(dossier.unmappedNative.length){
+  addSection('Nativas pendentes de interpretação, preservadas sem substituição',
+   dossier.unmappedNative);
+ }
  if(dossier.trainingCategories.length)addSection('Vetor registrado (níveis por categoria, não atributos finais)',
   dossier.trainingCategories.map(c=>c.name+': '+c.level));
  addSection('Comparação conservadora: todos os estilos',dossier.scenarios.map(t=>
@@ -702,6 +713,9 @@ function draw(){
   ' · ímpeto: '+(t.booster||'pendente')+
   ' · margem: '+(t.margin??'pendente')+' · não equipar automaticamente'
  ),'scenario');
+ const auditNote=document.createElement('p');auditNote.className='v274-audit';
+ auditNote.textContent='AUDITORIA DE FONTES: habilidades especiais são nomes nativos cadastrados, não tokens selecionáveis. Sem comprovação de builds de Rentão/Blackjhon, atributos finais ou desempenho em partidas nesta edição. Não gastar fichas ou ímpetos apenas pela nota.';
+ dossierContent.append(auditNote);
  addSection('Provas e conferências prioritárias',
   dossier.evidencePending.length?dossier.evidencePending:
    ['Informações cadastrais sem bloqueios automáticos; gameplay e validação humana continuam necessários.']);
