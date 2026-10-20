@@ -114,7 +114,10 @@ function evaluate(d,tactic,manualEquipped,options={}){
  if(tactic==='fora')bump(['weighted','lowloft','onepass','sole','double','through','aerial','gklong'],23,'tatica');
  if(tactic==='longo')bump(['weighted','lowloft','aerial','heading','firstshot','fighting','intercept','gklong'],24,'tatica');
  if(/pivo|homem de area|target/.test(style))bump(['heading','aerial','onepass','heel'],34);
- if(/infiltr|puxa marcacao|arrastar defesa|matador|artilheiro|oportunista/.test(style))bump(['firstshot','through','onepass','acrobatic'],18);
+ // V269: quem puxa marcação/infiltra para criar apoio não recebe, por padrão,
+ // a mesma priorização de chute de primeira de um Artilheiro.
+ if(/infiltr|puxa marcacao|arrastar defesa/.test(style))bump(['onepass','through','heel','sole','weighted'],24);
+ if(/matador|artilheiro|oportunista/.test(style))bump(['firstshot','through','onepass','acrobatic'],18);
  if(/armador|orquestrador|classico|criativo/.test(style))bump(['onepass','through','weighted','sole','heel'],23);
  if(/destruidor|primeiro volante|lateral defensivo|defensor criativo/.test(style))bump(['intercept','blocker','mark','onepass'],22);
  if(/versatil|todo o terreno/.test(style))bump(['fighting','onepass','intercept'],18);
@@ -182,7 +185,14 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const position=POSITION[d.role_used]?d.role_used:d.shown_position||d.role_used||d.posicao;
  const natural=String(d.boost1||d.impeto_fixo||'').replace(/\s*\+\d+.*/,'').trim();
  const extra=String(value).replace(/\s*\+\d+.*/,'').trim();
- const validBooster=s=>engine&&Object.keys(engine.BOOSTERS||{}).find(x=>normal(x)===normal(s));
+ // V269: nomes PT-BR (inclusive +1/+2), técnicos EN e aliases do motor
+ // representam o MESMO ímpeto; o registro na conta jamais reaparece como
+ // uma recomendação distinta só por diferença de idioma.
+ const validBooster=s=>{
+  const name=engine?.boosterName?.(s);
+  return name&&Object.hasOwn(engine.BOOSTERS||{},name)?name:
+   Object.keys(engine?.BOOSTERS||{}).find(x=>normal(x)===normal(s))||'';
+ };
  const knownExtra=validBooster(extra);
  // Apenas um slot confirmado VAZIO pode receber um novo ímpeto.
  // 'ocupado' autoriza comparação, nunca marca a carta como equipável.
@@ -195,6 +205,7 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const able=slotSupported&&verifiedSlot==='vazio';
  const existing=knownExtra||'';
  const equippedName=validBooster(verifiedEquipped)||'';
+ const unavailable=new Set([validBooster(natural),knownExtra,equippedName].filter(Boolean));
  let ranked=[];
  if(engine&&typeof engine.rank==='function'){
   try{ranked=engine.rank({id:d.id,edition:d.edition,base_stats:d.base_stats,
@@ -202,7 +213,7 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
    posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo,impeto_extra:value,niveis:d.recommended_levels||d.niveis,
    pp:d.pp,training_provisional:d.training_provisional===true||
     d.treino_proposto_nao_validado===true,
-   habilidades_nativas:d.native_skills||d.habilidades_nativas},tactic).filter(x=>normal(x.nome)!==normal(natural)&&normal(x.nome)!==normal(existing)&&normal(x.nome)!==normal(equippedName));}catch(e){ranked=[]}
+   habilidades_nativas:d.native_skills||d.habilidades_nativas},tactic).filter(x=>!unavailable.has(x.nome));}catch(e){ranked=[]}
  }
  const note=verifiedSlot==='ausente'?'Você marcou esta carta como sem slot selecionável neste dispositivo. Nenhum ímpeto novo será recomendado.':
  status==='nome_registrado'?'Segundo ímpeto já nomeado no cadastro; não tratar como slot livre ou substituível.':
