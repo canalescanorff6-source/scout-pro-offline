@@ -158,6 +158,70 @@ const POOLS={
  GO:['gklow','gklong','gkhigh','gkpenalty','fighting','captain','weighted','lowloft','onepass']
 };
 function roleOf(d){return POSITION[d.role_used]||POSITION[d.shown_position]||POSITION[d.posicao]||null}
+// V276: composição de um pacote HIPOTÉTICO complementar.
+// A função evita concentrar 5 sugestões na mesma família. O motor
+// principal da ficha permanece intacto e os 5 slots só existem se
+// comprovados pelo usuário na edição correta.
+const SKILL_FAMILY=Object.freeze({
+ onepass:'apoio',heel:'apoio',through:'criacao',weighted:'criacao',
+ lowloft:'criacao',sole:'dominio',double:'dominio',cutturn:'dominio',
+ firstshot:'finalizacao',acrobatic:'finalizacao',longshot:'finalizacao',
+ curler:'finalizacao',heading:'jogo_aereo',aerial:'jogo_aereo',
+ intercept:'cobertura',blocker:'cobertura',mark:'cobertura',
+ sliding:'cobertura',clear:'cobertura',fighting:'intensidade',
+ trackback:'intensidade',supersub:'intensidade',captain:'intensidade',
+ gklow:'reposicao',gklong:'reposicao',gkhigh:'reposicao',
+ gkpenalty:'defesa_goleiro'
+});
+const ROLE_FAMILIES=Object.freeze({
+ CA:['finalizacao','apoio','dominio'],SA:['apoio','criacao','dominio'],
+ MAT:['apoio','criacao','dominio'],MLG:['apoio','criacao','cobertura'],
+ VOL:['cobertura','apoio','criacao'],ZG:['cobertura','apoio','jogo_aereo'],
+ LD:['cobertura','apoio','criacao'],LE:['cobertura','apoio','criacao'],
+ ALA:['dominio','apoio','criacao'],GO:['reposicao','defesa_goleiro','intensidade']
+});
+const TACTIC_FAMILIES=Object.freeze({
+ posse:['apoio','criacao','dominio'],normal:['cobertura','apoio'],
+ rapido:['finalizacao','criacao','intensidade'],
+ fora:['criacao','dominio','jogo_aereo'],
+ longo:['jogo_aereo','criacao','intensidade']
+});
+function composePortfolio(ranked,role,tactic,limit){
+ if(!Number.isInteger(limit)||limit<0||limit>5)throw Error('Limite de cinco slots inválido');
+ const pool=Array.isArray(ranked)?ranked:[],roleNeeds=ROLE_FAMILIES[role]||[],
+  tacticNeeds=TACTIC_FAMILIES[tactic]||[];
+ const chosen=[],seen=new Set(),families=new Map();
+ for(let i=0;i<Math.min(limit,pool.length);i++){
+  const options=pool.filter(s=>!seen.has(s.key)).map(s=>{
+   const family=SKILL_FAMILY[s.key]||'outros';
+   const n=families.get(family)||0;
+   const roleBonus=roleNeeds.includes(family)&&n===0?16:0;
+   const tacticBonus=tacticNeeds.includes(family)&&n===0?10:0;
+   const redundancyPenalty=n?12*n:0;
+   return {skill:s,family,roleBonus,tacticBonus,redundancyPenalty,
+    adjustedScore:s.score+roleBonus+tacticBonus-redundancyPenalty};
+  }).sort((a,b)=>b.adjustedScore-a.adjustedScore||
+   b.skill.score-a.skill.score||a.skill.key.localeCompare(b.skill.key));
+  const best=options[0];if(!best)break;
+  chosen.push(Object.freeze({
+   key:best.skill.key,name:best.skill.name,family:best.family,
+   baseScore:best.skill.score,relativeScore:best.adjustedScore,
+   explanation:(best.roleBonus?'Lacuna funcional prioritária. ':'')+
+    (best.tacticBonus?'Complementa o estilo de jogo. ':'')+
+    (best.redundancyPenalty?'Família já representada no pacote. ':'')+
+    'Seleção heurística; confirmar em jogo.',
+   equipAuthorized:false
+  }));
+  seen.add(best.skill.key);
+  families.set(best.family,(families.get(best.family)||0)+1);
+ }
+ return Object.freeze({
+  kind:'ALTERNATIVA_EQUILIBRADA_CONSULTIVA',role,tactic,
+  candidates:Object.freeze(chosen),families:Object.freeze(Object.fromEntries(families)),
+  slotCountConfirmed:false,mayApply:false,
+  warning:'Até cinco candidatos complementares; não representam vagas livres ou skill de criador.'
+ });
+}
 function evaluate(d,tactic,manualEquipped,options={}){
  if(!['posse','normal','rapido','fora','longo'].includes(tactic))throw Error('Tática inválida');
  const role=roleOf(d);if(!role)return {role:null,recommendations:[],nativeKnown:false,missing:['Posição da carta não cadastrada']};
@@ -353,6 +417,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const equippedConfirmed=options.equippedConfirmed===true&&!requiresReconciliation;
  const slotsRemaining=equippedConfirmed&&!overLimit?Math.max(0,5-distinctExtras.length):null;
  const limit=overLimit?0:equippedConfirmed?slotsRemaining:5;
+ const balancedPortfolio=composePortfolio(ranked,role,tactic,limit);
  const warnings=[
   ...(unmappedNative.length?['Nativas cadastradas fora do vocabulário de recomendações: '+
    [...new Set(unmappedNative)].slice(0,5).join(', ')+
@@ -373,6 +438,8 @@ function evaluate(d,tactic,manualEquipped,options={}){
   contextualNativeGroups:{...contextNatives.groups},
   contextualEvidence:'nome_cadastrado_sem_efeito_de_gameplay_validado',
   recommendations:ranked.slice(0,limit),alternatives:ranked.slice(limit,limit+3),
+  balancedPortfolio:Object.freeze({...balancedPortfolio,
+   slotCountConfirmed:equippedConfirmed,mayApply:false}),
   synergyDetected:synergy.size>0,
   inference:'CONSULTIVA_SEM_OVR_OU_TESTE_DE_GAMEPLAY',
   perfil:ROLE_LABEL[role]||role,estilos_registrados:style,rankings_condicionais:true,
@@ -428,9 +495,40 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  verifiedSlot==='vazio'?'Slot selecionável no catálogo e vazio confirmado nesta edição; confira os quatro atributos afetados antes de gastar tokens.':
  able?'Slot selecionável indicado no catálogo; confirmação no Plano de Jogo ainda necessária.':
  'Não existe prova documental suficiente de um slot selecionável. Confira no jogo antes de aplicar tokens.';
+ // V276: ímpeto fixo não desaparece: medir a SOBREPOSIÇÃO DOS QUATRO
+ // atributos com cada alternativa, sem concluir que +1 seria desperdiçado.
+ const factory=validBooster(natural);
+ const factoryAxes=engine?.BOOSTERS?.[factory]||[];
+ const axesOf=name=>engine?.BOOSTERS?.[name]||[];
+ const overlapOf=candidate=>{
+  const current=axesOf(candidate?.nome);
+  const common=current.filter(x=>factoryAxes.includes(x));
+  return Object.freeze({technicalName:candidate?.nome||null,
+   documentedName:candidate?.nome_pt||candidate?.nome||null,
+   shared:common.length,sharedStatKeys:common,
+   uniqueStatKeys:current.filter(x=>!factoryAxes.includes(x)),
+   factoryDocumented:factoryAxes.length===4,applyAuthorized:false});
+ };
+ const overlapComparisons=ranked.slice(0,3).map(overlapOf);
+ const primaryOverlap=overlapComparisons[0]?.shared??null;
+ const complementCandidate=factoryAxes.length===4&&ranked.length?
+  ranked.find(candidate=>candidate.score>=ranked[0].score-8&&
+   overlapOf(candidate).shared<primaryOverlap):null;
+ const complementaryAlternative=complementCandidate?
+  Object.freeze({...overlapOf(complementCandidate),relativeScore:complementCandidate.score,
+   warning:'Menor sobreposição não prova resultado superior; comparar com a build real.'}):null;
  // O ranking da carta deve existir independentemente da disponibilidade do slot.
  // "primary" é uma prioridade competitiva, NÃO algo equipado ou autorizado.
  return {status,verifiedSlot,slotSupported,slotEvidence,able,knownExtra:existing,confirmedEquipped:equippedName||null,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
+  complementarity:Object.freeze({
+   factoryName:factory||null,factoryDocumented:factoryAxes.length===4,
+   factoryAxes:Object.freeze(factoryAxes.slice()),
+   comparisons:Object.freeze(overlapComparisons),
+   lowOverlapAlternative:complementaryAlternative,
+   explanation:factoryAxes.length===4?
+    'Comparação apenas dos quatro atributos afetados por cada tipo de ímpeto.':
+    'Ímpeto fixo sem identidade documentada: não calcular sobreposição.'
+  }),
   confidence:ranked[0]?.confianca||'sem_base_para_ranquear',
   spread:ranked.length>1?Number((ranked[0].score-ranked[1].score).toFixed(2)):null,
   equipStatus:verifiedSlot==='ausente'?'impossivel_na_conta':status==='nome_registrado'?'comparacao_segundo_fixo':status==='possivel'?'slot_pendente_no_catalogo':!slotSupported?'slot_nao_documentado':verifiedSlot==='ocupado'?'ocupado_na_conta':able?'condicionado_a_slot':'slot_nao_verificado'};
@@ -591,6 +689,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   skillSlotsVerified:skills.equippedConfirmed,
   boosterName:boosters.primary?.nome_pt||boosters.primary?.nome||null,
   boosterMargin:gap,boosterSlotVerified:boosters.able,
+  boosterComplementarity:boosters.complementarity,
   boosterAlternatives:boosters.alternatives.map(x=>Object.freeze({
    name:x.nome_pt||x.nome,score:x.score
   })),
@@ -616,7 +715,7 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
@@ -636,6 +735,12 @@ const css=document.createElement('style');css.textContent=
 '#scout-v162 .v162-list li{border:1px solid #36556d;background:linear-gradient(120deg,#0b2435,#132e40);border-radius:12px;padding:12px}'+
 '#scout-v162 .v162-list li p{margin:3px 0 0;color:#b7d6e5}'+
 '#scout-v162 .v162-panels{display:grid;grid-template-columns:1fr 1fr;gap:12px}'+
+'#scout-v162 .v276-portfolio{border:1px solid rgba(232,195,120,.55);background:linear-gradient(120deg,#192e3f,#0d2333);border-radius:12px;padding:13px;margin:13px 0}'+
+'#scout-v162 .v276-portfolio h3{margin:0 0 5px;color:#f6d99c;font-size:14px}'+
+'#scout-v162 .v276-portfolio ol{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:8px;padding:0;margin:8px 0;list-style:none}'+
+'#scout-v162 .v276-portfolio li{border:1px solid #3d5368;border-radius:9px;background:#102638;padding:9px;font-size:12px;line-height:1.5;overflow-wrap:anywhere}'+
+'#scout-v162 .v276-portfolio small{color:#bdcbd8;font-size:11px;display:block;margin-top:4px}'+
+'#scout-v162 .v276-boostnote{color:#f0d29a;font-size:12px;padding:9px;border-left:3px solid #d5ab5a;background:#162b3b;border-radius:7px}'+
 '#scout-v162 .v272-proofline{font-size:11px;color:#f1d79a;padding:9px 11px;border:1px solid rgba(234,195,108,.35);background:#142737;border-radius:10px;margin:10px 0;line-height:1.6;overflow-wrap:anywhere}'+
 '#scout-v162 .v272-skill-reason{display:block;font-size:12px;color:#c4d7e5;line-height:1.5;margin-top:5px}'+
 '#scout-v162 .v272-skill-rank{display:inline-flex;align-items:center;justify-content:center;min-width:26px;padding:4px 7px;margin-right:8px;border-radius:8px;background:#3b3540;color:#f9d996;font-size:11px;border:1px solid #7f694d}'+
@@ -666,6 +771,7 @@ const section=document.createElement('section');section.id='scout-v162';section.
 section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA V162</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
 '<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button><button type="button" data-tactic="fora" aria-pressed="false">Por Fora</button><button type="button" data-tactic="longo" aria-pressed="false">Passe Longo</button></div>'+
 '<p id="v272-proofline" class="v272-proofline" aria-live="polite"></p>'+
+'<section id="v276-portfolio" class="v276-portfolio" aria-label="Portfólio complementar de habilidades"></section>'+
 '<details id="v273-dossier"><summary>Laudo competitivo desta carta · 5 estilos e evidências</summary><div id="v273-dossier-content"></div></details><div class="v162-panels"><article class="v162-panel"><h3>Até 5 habilidades adicionais · ordem por edição</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
 '<details><summary>Informar habilidades adicionais desta edição</summary><p>Separe os nomes por ponto e vírgula. Sem conferência, esta é apenas uma lista parcial: não presumimos que os outros slots estejam vazios.</p><textarea id="v162-equipped" aria-label="Habilidades adicionais já equipadas" placeholder="Ex.: Passe de primeira; Toque duplo"></textarea><label class="v254-confirm-line"><input type="checkbox" id="v254-confirm-equipped"><span>Conferi no Plano de Jogo: esta lista contém TODAS as habilidades adicionais equipadas nesta edição exata, inclusive se estiver vazia.</span></label><button id="v162-save" type="button">Salvar conferência e recalcular</button><p id="v162-feedback" aria-live="polite"></p></details>'+
 '<p class="v162-foot">Recomendações teóricas baseadas nas habilidades registradas, no estilo e na função da carta. Não são testes comprovados em partidas; verifique habilidades nativas, compatibilidade e slot antes de usar tokens. Nenhuma escolha é aplicada automaticamente.</p>';
@@ -752,6 +858,31 @@ function draw(){
   ' · SEM homologação por OVR ou gameplay.';
  // Parecer auditável de 246 edições: campos de perfil e pendências.
  // Sem HTML do jogador e sem duplicar a ficha principal.
+ const portfolioSection=section.querySelector('#v276-portfolio');
+ portfolioSection.replaceChildren();
+ const portfolioHeading=document.createElement('h3');
+ portfolioHeading.textContent='Alternativa equilibrada · até 5 habilidades';
+ const portfolioDescription=document.createElement('p');
+ portfolioDescription.textContent=
+  'Uma combinação alternativa por função, tática e cobertura entre habilidades. '+
+  (result.equippedConfirmed?'Vagas informadas: '+remaining+'. ':
+   'Sem confirmação dos cinco slots: esta lista NÃO equivale a habilidades equipáveis. ')+
+  'Não é uma build de Rentão ou Blackjhon sem fonte da edição exata.';
+ portfolioSection.append(portfolioHeading,portfolioDescription);
+ const portfolioItems=document.createElement('ol');
+ for(const item of result.balancedPortfolio.candidates){
+  const li=document.createElement('li'),name=document.createElement('strong'),
+   reason=document.createElement('small');
+  name.textContent=item.name+' · '+item.family;
+  reason.textContent=item.explanation;
+  li.append(name,reason);portfolioItems.append(li);
+ }
+ if(!result.balancedPortfolio.candidates.length){
+  const empty=document.createElement('li');
+  empty.textContent='Nenhuma sugestão adicional segura nesta combinação de dados/slots.';
+  portfolioItems.append(empty);
+ }
+ portfolioSection.append(portfolioItems);
  const dossierContent=section.querySelector('#v273-dossier-content');
  dossierContent.replaceChildren();
  const addSection=(heading,values,cssClass='')=>{
@@ -802,6 +933,19 @@ function draw(){
   ' · ímpeto: '+(t.booster||'pendente')+
   ' · margem: '+(t.margin??'pendente')+' · não equipar automaticamente'
  ),'scenario');
+ if(dossier.boosterComplementarity.factoryDocumented){
+  addSection('Ímpetos vs. atributos do ímpeto fixo',
+   dossier.boosterComplementarity.comparisons.map(x=>x.documentedName+
+    ' · '+x.shared+'/4 atributos coincidentes com o fixo · '+
+    'diferentes: '+x.uniqueStatKeys.join(', ')));
+  if(dossier.boosterComplementarity.lowOverlapAlternative){
+   addSection('Alternativa de menor sobreposição (sem prova de superioridade)',[
+    dossier.boosterComplementarity.lowOverlapAlternative.documentedName+
+    ' · pontuação '+dossier.boosterComplementarity.lowOverlapAlternative.relativeScore+
+    ' · '+dossier.boosterComplementarity.lowOverlapAlternative.warning
+   ]);
+  }
+ }
  const auditNote=document.createElement('p');auditNote.className='v274-audit';
  auditNote.textContent='AUDITORIA DE FONTES: habilidades especiais são nomes nativos cadastrados, não tokens selecionáveis. Sem comprovação de builds de Rentão/Blackjhon, atributos finais ou desempenho em partidas nesta edição. Não gastar fichas ou ímpetos apenas pela nota.';
  dossierContent.append(auditNote);
@@ -862,6 +1006,17 @@ function draw(){
  boost.equipStatus==='condicionado_a_slot'?'Indicação para o segundo slot, confirmada localmente como vaga mas ainda não homologada em gameplay.':
  'Recomendação pronta; falta confirmar se esta edição possui segundo slot selecionável. Não exige que você insira um ímpeto para descobrir qual seria o melhor.';
  panel.appendChild(applicability);
+ if(boost.complementarity.factoryDocumented&&boost.primary){
+  const overlap=boost.complementarity.comparisons[0];
+  const caution=document.createElement('p');caution.className='v276-boostnote';
+  caution.textContent='Complementaridade com o ímpeto fixo: '+overlap.shared+
+   ' de 4 atributos coincidem. '+(overlap.shared>=3?
+    'ALTA SOBREPOSIÇÃO: compare a alternativa e os atributos da build.':
+    'Sobreposição informativa, não estimativa de ganho.')+
+   (boost.complementarity.lowOverlapAlternative?
+    ' Alternativa menos repetitiva: '+boost.complementarity.lowOverlapAlternative.documentedName+'.':'');
+  panel.append(caution);
+ }
  if(boost.primary){
  if(!boost.primary.traducao_documentada){
   const translation=document.createElement('p');
