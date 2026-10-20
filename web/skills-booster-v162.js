@@ -331,11 +331,19 @@ function evaluate(d,tactic,manualEquipped,options={}){
  }
  // O histórico de sugestões genéricas não aumenta a nota da carta.
  // Prioridade depende apenas da função, da tática e do estilo, não do OVR.
+ // Desempate V275: preservar prioridade da função, não ordem alfabética.
+ const poolRank=new Map(pool.map((key,i)=>[key,i]));
  const ranked=[...scorer.entries()].filter(([key])=>!used.has(key))
-  .sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))
-  .map(([key,score])=>({...SKILLS[key],score,
+  .sort((a,b)=>b[1]-a[1]||poolRank.get(a[0])-poolRank.get(b[0]))
+  .map(([key,score],i,list)=>({
+   ...SKILLS[key],score,
+   marginToNext:i+1<list.length?Number((score-list[i+1][1]).toFixed(2)):null,
+   priorityNote:i+1<list.length&&score-list[i+1][1]<3?
+    'PRIORIDADES PRÓXIMAS — comparar a mesma edição em jogo':
+    'Ordem consultiva por função e estilo',
    criterios:Object.freeze({...factors.get(key)}),
-   synergies:synergy.get(key)||[]}));
+   synergies:synergy.get(key)||[]
+  }));
  const overLimit=distinctExtras.length>5;
  const requiresReconciliation=overLimit||nativeManualConflicts.length>0||unmappedEquipped.length>0;
  // A lista manual pode estar INCOMPLETA. Não declarar espaços livres
@@ -428,6 +436,32 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
 // V273: dossiê competitivo de uma edição, sem dependências mutáveis.
 // Referências de criadores são critério de rigor; nunca atribuir autoria.
 const DOSSIER_TACTICS=Object.freeze(['posse','normal','rapido','fora','longo']);
+const PLAYBOOK_ROLE=Object.freeze({
+ CA:{task:'Aproveite o espaço liberado pela tabela curta.',support:'Aproxime SA ou MAT antes da recepção.',risk:'Evite girar de costas com o defensor colado.'},
+ SA:{task:'Recuar para apoiar os CAs e atacar a segunda bola.',support:'Use a devolução de primeira na zona central.',risk:'Não transforme o SA em ponta aberto por padrão.'},
+ MAT:{task:'Receba entre a defesa e os volantes adversários.',support:'Busque triângulos com VOL e CA.',risk:'Sob marcação, devolva antes de tentar girar.'},
+ MLG:{task:'Ofereça passe curto atrás do MAT.',support:'Alterne apoio com o primeiro volante.',risk:'Não avance os dois meias sem cobertura.'},
+ VOL:{task:'Proteja os zagueiros e inicie o primeiro passe.',support:'Receba orientado e conecte aos meias.',risk:'Não force passes pelo centro contra dois marcadores.'},
+ ZG:{task:'Proteja a profundidade e procure saída curta.',support:'Conecte VOL ou lateral defensivo.',risk:'Evite perseguir atacante deixando espaço na zaga.'},
+ LD:{task:'Dê opção de passe e mantenha equilíbrio defensivo.',support:'Apoie VOL e meia sem subir simultaneamente ao outro lateral.',risk:'Proteja o corredor quando perder a bola.'},
+ LE:{task:'Dê opção de passe e mantenha equilíbrio defensivo.',support:'Apoie VOL e meia sem subir simultaneamente ao outro lateral.',risk:'Proteja o corredor quando perder a bola.'},
+ ALA:{task:'Receba e entre por dentro quando houver espaço.',support:'Combine com MAT/SA para liberar passagem central.',risk:'Não dependa de cruzamentos para uma equipe de posse central.'},
+ GO:{task:'Leia a pressão antes da reposição.',support:'Priorize o defensor/volante livre para a saída curta.',risk:'Não force passe rasteiro quando a pressão fecha a linha.'}
+});
+const PLAYBOOK_TACTIC=Object.freeze({
+ posse:'Circule com calma, triangule e finalize após criar espaço.',
+ normal:'Ao recuperar, prefira o primeiro passe seguro antes de acelerar.',
+ rapido:'Explore a desorganização com dois ou três passes objetivos.',
+ fora:'Aproxime o apoio do corredor, mas procure entrada por dentro; cruzar é opcional.',
+ longo:'Explore a segunda bola com apoio, sem rifar passes curtos livres.'
+});
+function playbookOf(d,tactic){
+ if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida no guia');
+ const role=roleOf(d),guide=PLAYBOOK_ROLE[role];
+ if(!guide)return Object.freeze({role:null,steps:[],warning:'Posição não cadastrada'});
+ return Object.freeze({role,tactic,steps:Object.freeze([guide.task,guide.support,PLAYBOOK_TACTIC[tactic]]),
+  warning:guide.risk,evidence:'ORIENTACAO_CONDICIONAL_NAO_TESTADA_EM_PARTIDAS'});
+}
 const archetypeOf=d=>{
  const role=roleOf(d);
  const style=normal([d.attack_style||d.estilo_ataque,
@@ -559,6 +593,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    name:x.nome_pt||x.nome,score:x.score
   })),
   evidencePending:warnings,scenarios,
+  playbook:playbookOf(d,tactic),
   evidenceChecklist:checks,documentedIndicators:checksReady,
   totalIndicators:checks.length,tacticalStability,
   auditLabel:checksReady===checks.length?
@@ -579,7 +614,7 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
@@ -756,6 +791,8 @@ function draw(){
  }
  if(dossier.trainingCategories.length)addSection('Vetor registrado (níveis por categoria, não atributos finais)',
   dossier.trainingCategories.map(c=>c.name+': '+c.level));
+ addSection('Como jogar nesta função (orientação, não teste de partidas)',
+  [...dossier.playbook.steps,'Evitar: '+dossier.playbook.warning]);
  addSection('Comparação conservadora: todos os estilos',dossier.scenarios.map(t=>
   tacticLabelFor(t.style)+' · skill inicial: '+(t.firstSkill||'nenhuma')+
   ' · ímpeto: '+(t.booster||'pendente')+
@@ -775,7 +812,7 @@ function draw(){
    p=document.createElement('p'),score=document.createElement('span');
   rank.className='v272-skill-rank';rank.textContent=String(i+1).padStart(2,'0');
   b.textContent=skill.name;score.className='v272-score';score.textContent='· '+skill.score+' pts relativos';
-  reason.className='v272-skill-reason';reason.textContent=skill.why;
+  reason.className='v272-skill-reason';reason.textContent=skill.why+' '+skill.priorityNote;
   const factors=skill.criterios||{};
   breakdown.className='v272-criteria';summary.textContent='Entender por que esta habilidade foi priorizada';
   p.textContent='Critérios: função '+(factors.funcao??'—')+' · tática '+(factors.tatica??'—')+
