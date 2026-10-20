@@ -62,6 +62,8 @@ const fingerprint=s=>[...new Set(splitSkills(s).map(x=>keyFor(x)||'unmapped:'+no
 function checkedEquipment(card,manual,record){
  return Boolean(record&&record.schema==='CRAQUE_ADDITIONAL_V254'&&record.confirmed===true&&
   Number(record.capture)===Number(card.capture)&&String(record.card_id)===String(card.id)&&
+  (!Object.hasOwn(record,'edition')||
+   String(record.edition)===String(card.edition||card.versao||''))&&
   record.fingerprint===fingerprint(manual)&&
   splitSkills(manual).every(name=>Boolean(keyFor(name)))&&
   !splitSkills(manual).some(name=>
@@ -331,11 +333,19 @@ function evaluate(d,tactic,manualEquipped,options={}){
  }
  // O histórico de sugestões genéricas não aumenta a nota da carta.
  // Prioridade depende apenas da função, da tática e do estilo, não do OVR.
+ // Desempate V275: preservar prioridade da função, não ordem alfabética.
+ const poolRank=new Map(pool.map((key,i)=>[key,i]));
  const ranked=[...scorer.entries()].filter(([key])=>!used.has(key))
-  .sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))
-  .map(([key,score])=>({...SKILLS[key],score,
+  .sort((a,b)=>b[1]-a[1]||poolRank.get(a[0])-poolRank.get(b[0]))
+  .map(([key,score],i,list)=>({
+   ...SKILLS[key],score,
+   marginToNext:i+1<list.length?Number((score-list[i+1][1]).toFixed(2)):null,
+   priorityNote:i+1<list.length&&score-list[i+1][1]<3?
+    'PRIORIDADES PRÓXIMAS — comparar a mesma edição em jogo':
+    'Ordem consultiva por função e estilo',
    criterios:Object.freeze({...factors.get(key)}),
-   synergies:synergy.get(key)||[]}));
+   synergies:synergy.get(key)||[]
+  }));
  const overLimit=distinctExtras.length>5;
  const requiresReconciliation=overLimit||nativeManualConflicts.length>0||unmappedEquipped.length>0;
  // A lista manual pode estar INCOMPLETA. Não declarar espaços livres
@@ -428,6 +438,32 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
 // V273: dossiê competitivo de uma edição, sem dependências mutáveis.
 // Referências de criadores são critério de rigor; nunca atribuir autoria.
 const DOSSIER_TACTICS=Object.freeze(['posse','normal','rapido','fora','longo']);
+const PLAYBOOK_ROLE=Object.freeze({
+ CA:{task:'Aproveite o espaço liberado pela tabela curta.',support:'Aproxime SA ou MAT antes da recepção.',risk:'Evite girar de costas com o defensor colado.'},
+ SA:{task:'Recuar para apoiar os CAs e atacar a segunda bola.',support:'Use a devolução de primeira na zona central.',risk:'Não transforme o SA em ponta aberto por padrão.'},
+ MAT:{task:'Receba entre a defesa e os volantes adversários.',support:'Busque triângulos com VOL e CA.',risk:'Sob marcação, devolva antes de tentar girar.'},
+ MLG:{task:'Ofereça passe curto atrás do MAT.',support:'Alterne apoio com o primeiro volante.',risk:'Não avance os dois meias sem cobertura.'},
+ VOL:{task:'Proteja os zagueiros e inicie o primeiro passe.',support:'Receba orientado e conecte aos meias.',risk:'Não force passes pelo centro contra dois marcadores.'},
+ ZG:{task:'Proteja a profundidade e procure saída curta.',support:'Conecte VOL ou lateral defensivo.',risk:'Evite perseguir atacante deixando espaço na zaga.'},
+ LD:{task:'Dê opção de passe e mantenha equilíbrio defensivo.',support:'Apoie VOL e meia sem subir simultaneamente ao outro lateral.',risk:'Proteja o corredor quando perder a bola.'},
+ LE:{task:'Dê opção de passe e mantenha equilíbrio defensivo.',support:'Apoie VOL e meia sem subir simultaneamente ao outro lateral.',risk:'Proteja o corredor quando perder a bola.'},
+ ALA:{task:'Receba e entre por dentro quando houver espaço.',support:'Combine com MAT/SA para liberar passagem central.',risk:'Não dependa de cruzamentos para uma equipe de posse central.'},
+ GO:{task:'Leia a pressão antes da reposição.',support:'Priorize o defensor/volante livre para a saída curta.',risk:'Não force passe rasteiro quando a pressão fecha a linha.'}
+});
+const PLAYBOOK_TACTIC=Object.freeze({
+ posse:'Circule com calma, triangule e finalize após criar espaço.',
+ normal:'Ao recuperar, prefira o primeiro passe seguro antes de acelerar.',
+ rapido:'Explore a desorganização com dois ou três passes objetivos.',
+ fora:'Aproxime o apoio do corredor, mas procure entrada por dentro; cruzar é opcional.',
+ longo:'Explore a segunda bola com apoio, sem rifar passes curtos livres.'
+});
+function playbookOf(d,tactic){
+ if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida no guia');
+ const role=roleOf(d),guide=PLAYBOOK_ROLE[role];
+ if(!guide)return Object.freeze({role:null,steps:[],warning:'Posição não cadastrada'});
+ return Object.freeze({role,tactic,steps:Object.freeze([guide.task,guide.support,PLAYBOOK_TACTIC[tactic]]),
+  warning:guide.risk,evidence:'ORIENTACAO_CONDICIONAL_NAO_TESTADA_EM_PARTIDAS'});
+}
 const archetypeOf=d=>{
  const role=roleOf(d);
  const style=normal([d.attack_style||d.estilo_ataque,
@@ -467,12 +503,13 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  const boosters=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
  const edition=String(d.edition||d.versao||'');
  const id=String(d.id||'');
- const identity=Boolean(id&&!/pendente|confirmar|invalid/i.test(id+' '+edition));
+ const identity=Boolean(id.trim()&&edition.trim()&&
+  !/pendente|confirmar|invalid|desconhecid|nao informado/i.test(id+' '+edition));
  const warnings=[];
- const original=String(d.shown_position||d.posicao||'');
- const requested=String(d.role_used||original);
+ const original=String(d.original_position||d.posicao_original||d.shown_position||d.posicao||'');
+ const requested=String(d.role_used||d.shown_position||original);
  const position=roleOf(d);
- const roleApproved=requested===original||
+ const roleApproved=(POSITION[requested]||requested)===(POSITION[original]||original)||
   opts.roleConfirmed===true; // não presumir proficiência treinada
  const training=investmentAudit(d);
  if(!identity)warnings.push('Conferir Card ID e versão exatos antes de comparar.');
@@ -495,6 +532,19 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  });
  if(base?.status!=='base_completa_confirmada')
   warnings.push('Atributos-base completos não confirmados: não alegar build meta ou status final.');
+ // V275: checklist CADASTRAL; não é indicador meta ou teste em partidas.
+ const checks=Object.freeze([
+  {key:'identidade',ok:identity,label:'Card ID e edição identificáveis'},
+  {key:'posicao',ok:roleApproved,label:'Posição nativa ou doutrinação confirmada'},
+  {key:'nativas',ok:skills.nativeKnown&&!skills.unmappedNativeSkills.length,
+   label:'Nativas catalogadas sem nomes desconhecidos'},
+  {key:'pp',ok:training.levels!==null,label:'PP e vetor coerentes e não provisórios'},
+  {key:'adicionais',ok:skills.equippedConfirmed,label:'Cinco slots de adicionais conferidos nesta edição'},
+  {key:'impeto',ok:boosters.able,label:'Slot selecionável e vazio comprovado na conta'},
+  {key:'atributos',ok:base?.status==='base_completa_confirmada',
+   label:'Atributos-base com fonte da edição'}
+ ]);
+ const checksReady=checks.filter(c=>c.ok).length;
  const scenarios=Object.freeze(DOSSIER_TACTICS.map(style=>{
   const result=evaluate(d,style,manualEquipped,{
    equippedConfirmed:opts.equippedConfirmed===true
@@ -510,6 +560,16 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    equipAuthorized:false
   });
  }));
+ const uniqueTopSkills=[...new Set(scenarios.map(x=>x.firstSkill).filter(Boolean))];
+ const uniqueBoosters=[...new Set(scenarios.map(x=>x.technicalName).filter(Boolean))];
+ const tacticalStability=Object.freeze({
+  tacticsCompared:scenarios.length,
+  topSkillVariations:uniqueTopSkills.length,
+  boosterVariations:uniqueBoosters.length,
+  skillIdenticalInFive:uniqueTopSkills.length===1,
+  boosterIdenticalInFive:uniqueBoosters.length===1,
+  interpretation:'Comparação de rankings, não prova de eficácia em campo'
+ });
  return Object.freeze({
   schema:'CRAQUE_DOSSIER_COMPETITIVO_V273',
   cap:Number(d.capture??d.numero),cardId:id,edition,role:position,
@@ -535,6 +595,13 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    name:x.nome_pt||x.nome,score:x.score
   })),
   evidencePending:warnings,scenarios,
+  playbook:playbookOf(d,tactic),
+  evidenceChecklist:checks,documentedIndicators:checksReady,
+  totalIndicators:checks.length,tacticalStability,
+  auditLabel:checksReady===checks.length?
+   'Cadastro completo nos critérios locais; validação competitiva externa ainda pendente':
+   'Cadastro parcial: '+(checks.length-checksReady)+' confirmação(ões) pendente(s)',
+  sourcePublication:null,creatorVerified:false,realMatchValidated:false,
   competitivelyApproved:false,maySpendTokensAutomatically:false,
   note:'Não é ficha de Rentão/Blackjhon sem Card ID e vídeo exatos; análise heurística condicional.'
  });
@@ -549,7 +616,7 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
@@ -585,6 +652,7 @@ const css=document.createElement('style');css.textContent=
 '#scout-v162 #v273-dossier li{overflow-wrap:anywhere;padding:4px 0}'+
 '#scout-v162 #v273-dossier .v273-tactic{padding:7px 9px;margin:4px 0;border:1px solid #39576e;border-radius:8px;background:#102939;font-size:12px;line-height:1.5}'+
 '#scout-v162 #v273-dossier .v274-audit{font-size:12px;line-height:1.65;color:#e6dac1;border:1px solid #806b4f;border-radius:10px;padding:10px;margin:10px 0;background:#182b3b}'+
+'#scout-v162 #v273-dossier .v275-doc-summary{color:#f2d594;font-weight:800;line-height:1.65;overflow-wrap:anywhere}'+
 '#scout-v162 .v162-panel{border:1px solid #33556b;border-radius:12px;padding:12px;background:#0b1e2d;min-width:0}'+
 '#scout-v162 .v162-note{color:#d3caa5}#scout-v162 textarea{box-sizing:border-box;width:100%;min-height:62px;background:#081e2d;border:1px solid #5b829a;border-radius:8px;color:white;font-size:14px;padding:10px}'+
 '#scout-v162 .v162-foot{font-size:12px;color:#b9d3dc;border-top:1px solid #35566a;padding-top:10px;margin-top:12px}'+
@@ -624,7 +692,7 @@ const equipmentConfirmed=()=>checkedEquipment(d,extra,readProof());
 verifiedCheck.checked=equipmentConfirmed();
 ta.addEventListener('input',()=>{if(fingerprint(ta.value)!==fingerprint(extra))verifiedCheck.checked=false});
 let tactic='posse';
-const originalPosition=String(d.shown_position||d.role_used||d.posicao||'');
+const originalPosition=String(d.original_position||d.posicao_original||d.shown_position||d.role_used||d.posicao||'');
 let actualPosition=originalPosition,roleEvidence='original';
 function setConfirmedRole(event){
  const detail=event||{};
@@ -641,12 +709,16 @@ function setConfirmedRole(event){
  if(!valid)return false;
  actualPosition=requested;
  roleEvidence=requested===native?'original':proof.status;
+ // Preserva posição NATIVA em vez de chamar CA a posição original de um PTE.
+ d.original_position=originalPosition;
  d.shown_position=requested;d.role_used=requested;
  draw();return true;
 }
 function draw(){
  let manuallyVerified={};
- try{const val=JSON.parse(localStorage.getItem('scoutpro:v103:booster:'+Number(d.capture))||'null');if(val&&String(val.card_id)===String(d.id))manuallyVerified=val}catch(e){}
+ try{const val=JSON.parse(localStorage.getItem('scoutpro:v103:booster:'+Number(d.capture))||'null');if(val&&String(val.card_id)===String(d.id)&&
+  (!Object.hasOwn(val,'edition')||String(val.edition)===String(d.edition||d.versao||'')))
+  manuallyVerified=val}catch(e){}
  const confirmed=equipmentConfirmed();
  const result=evaluate(d,tactic,extra,{equippedConfirmed:confirmed});
  const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103,manuallyVerified.status,manuallyVerified.equipped);
@@ -698,6 +770,20 @@ function draw(){
   'Progresso: '+dossier.trainingStatus+' · nativas: '+dossier.nativeCoverage+
    ' · cinco adicionais: '+(dossier.skillSlotsVerified?'conferidos':'vagas não comprovadas')
  ]);
+ const docSummary=document.createElement('p');docSummary.className='v275-doc-summary';
+ docSummary.textContent='EVIDÊNCIAS DO CADASTRO · '+dossier.documentedIndicators+
+  '/'+dossier.totalIndicators+' verificações. '+dossier.auditLabel+
+  '. Não é avaliação de força ou desempenho.';
+ dossierContent.append(docSummary);
+ addSection('Checklist de sete verificações independentes',
+  dossier.evidenceChecklist.map(c=>(c.ok?'CONFERIDO: ':'PENDENTE: ')+c.label));
+ addSection('Variação entre os cinco estilos do técnico',[
+  'A habilidade prioritária muda entre '+dossier.tacticalStability.topSkillVariations+
+   ' resultados diferentes.',
+  'O ímpeto prioritário muda entre '+dossier.tacticalStability.boosterVariations+
+   ' resultados diferentes.',
+  'Estabilidade da opção não equivale a desempenho superior em campo.'
+ ]);
  if(dossier.contextualNatives.length){
   addSection('Habilidades nativas especiais cadastradas (não são adicionais)',
    dossier.contextualNatives.map(c=>c.name+' · contexto: '+c.group+
@@ -709,6 +795,8 @@ function draw(){
  }
  if(dossier.trainingCategories.length)addSection('Vetor registrado (níveis por categoria, não atributos finais)',
   dossier.trainingCategories.map(c=>c.name+': '+c.level));
+ addSection('Como jogar nesta função (orientação, não teste de partidas)',
+  [...dossier.playbook.steps,'Evitar: '+dossier.playbook.warning]);
  addSection('Comparação conservadora: todos os estilos',dossier.scenarios.map(t=>
   tacticLabelFor(t.style)+' · skill inicial: '+(t.firstSkill||'nenhuma')+
   ' · ímpeto: '+(t.booster||'pendente')+
@@ -728,7 +816,7 @@ function draw(){
    p=document.createElement('p'),score=document.createElement('span');
   rank.className='v272-skill-rank';rank.textContent=String(i+1).padStart(2,'0');
   b.textContent=skill.name;score.className='v272-score';score.textContent='· '+skill.score+' pts relativos';
-  reason.className='v272-skill-reason';reason.textContent=skill.why;
+  reason.className='v272-skill-reason';reason.textContent=skill.why+' '+skill.priorityNote;
   const factors=skill.criterios||{};
   breakdown.className='v272-criteria';summary.textContent='Entender por que esta habilidade foi priorizada';
   p.textContent='Critérios: função '+(factors.funcao??'—')+' · tática '+(factors.tatica??'—')+
@@ -754,6 +842,8 @@ function draw(){
  const named=boost.status==='nome_registrado';
  const verifiedLabel=({vazio:'Slot vazio confirmado por você',ocupado:'Slot ocupado confirmado por você',ausente:'Sem slot, conforme sua conferência',pendente:'Verificação pendente'})[manuallyVerified.status]||'Ainda não conferido neste dispositivo';
  line('Estado de sua conta: '+verifiedLabel+(manuallyVerified.equipped?' · '+manuallyVerified.equipped:''));
+ if(manuallyVerified.status&&!Object.hasOwn(manuallyVerified,'edition'))
+  line('Conferência legada sem edição explícita: confira o slot no jogo antes de gastar ímpetos.');
  if(USER_SLOT_NOTES[Number(d.capture)])line('Relato seu (a confirmar na tela do jogo): '+USER_SLOT_NOTES[Number(d.capture)]);
  const panel=section.querySelector('#v162-booster');panel.replaceChildren();
  const title=document.createElement('p');title.style.fontWeight='800';
@@ -862,7 +952,8 @@ section.querySelector('#v162-save').addEventListener('click',()=>{
   if(requested){
    localStorage.setItem(verifyKey,JSON.stringify({
     schema:'CRAQUE_ADDITIONAL_V254',capture:Number(d.capture),
-    card_id:String(d.id),confirmed:true,fingerprint:fingerprint(proposedText),
+    card_id:String(d.id),edition:String(d.edition||d.versao||''),
+    confirmed:true,fingerprint:fingerprint(proposedText),
     nativeFingerprint:fingerprint(d.native_skills||d.habilidades_nativas||''),
     confirmed_at:new Date().toISOString()
    }));
