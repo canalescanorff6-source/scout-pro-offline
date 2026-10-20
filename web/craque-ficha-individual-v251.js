@@ -405,12 +405,14 @@ function methodologyGate(card,proof,style,store,review={}){
  const has=id=>byId[id]?.documented===true;
  const role=review?.positionUsed||card.posicao;
  const data={capture:Number(card.numero),id:String(card.id),
-  // V271: o motor exige PP + vetor da MESMA edição. O antigo gate perdia
-  // o PP, fazendo todo treino parecer sem orçamento no parecer competitivo.
+  // V271: custo de PP matematicamente coerente é sinal consultivo de
+  // INVESTIMENTO, mesmo sem prova da origem do nível. A confirmação
+  // documental ('budget') continua independente; proposta não validada
+  // é bloqueada dentro de trainingAudit.
   edition:card.versao,shown_position:role,role_used:role,attack_style:card.estilo_ataque,
   defence_style:card.estilo_defesa,native_skills:card.habilidades_nativas,
   boost1:card.impeto_fixo,boost2:card.impeto_extra,
-  pp:has('budget')&&Number.isInteger(card.pp)?card.pp:null,
+  pp:hasValidBuild(card)&&card.pp_estimado!==true?Number(card.pp):null,
   recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
   training_provisional:card.treino_proposto_nao_validado===true};
  let manual='',confirmation=null,slot=null;
@@ -461,10 +463,13 @@ function methodologyGate(card,proof,style,store,review={}){
     'Card ID ou edição pendente: não calcular escolha de ímpeto confirmada.',
    note:boost?.note||'Motor não disponível.',
    ppStatus:boost?.primary?.evidencias?.pp_status||'sem_ranking',
+   budgetOriginConfirmed:has('budget'),
    scoreMargin:boost?.spread??null,
    budgetNote:boost?.primary?.evidencias?.pp_status==='custo_pp_conferido'?
-    'Vetor e PP coerentes usados apenas como sinal de investimento, não atributos finais.':
-    'Treino sem PP documental utilizável ou ainda provisório: NÃO influenciou o ranking.',
+    (has('budget')?
+     'Custo do PP conferido e origem documentada; comparação de investimento, não atributos finais.':
+     'Custo de PP conferido matematicamente, mas ORIGEM NÃO DOCUMENTADA; sinal consultivo, nunca build homologada.'):
+    'Treino sem PP matematicamente utilizável ou ainda provisório: NÃO influenciou o ranking.',
    attributes:safeEdition?(boost?.primary?.atributos||[]):[]},
   missing,competitivelyHomologated:false
  });
