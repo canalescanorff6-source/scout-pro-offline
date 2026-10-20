@@ -1504,6 +1504,10 @@ def run():
                         problems.append(f"{name}: V251 confundiu sem build com ficha registrada")
                     # V283: sensibilidade na ficha ÚNICA, fechada inicialmente.
                     risk=v251.locator('.ct283-sensitivity')
+                    try:
+                        risk.wait_for(state='attached',timeout=14000)
+                    except Exception:
+                        pass
                     if risk.count()!=1:
                         problems.append(f"{name}: seção de sensibilidade V283 ausente ou duplicada")
                     else:
