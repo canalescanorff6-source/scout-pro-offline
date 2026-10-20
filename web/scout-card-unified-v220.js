@@ -19,7 +19,7 @@ function nativeDetails(card,tactic){
   const manual=localGet('scoutpro:v162:equipped:'+cap+':'+id)||'';
   const manualProof=parse(localGet(R.confirmationKey?.(cap,id)||
    'scoutpro:v254:additional-confirmed:'+cap+'@'+id));
-  const complete=R.checkedEquipment?.({capture:cap,id},manual,manualProof)===true;
+  const complete=R.checkedEquipment?.({...card,capture:cap,id},manual,manualProof)===true;
   try{results=R.evaluate(card,tactic,manual,{equippedConfirmed:complete})}catch(_e){results=null}
   const slot=parse(localGet('scoutpro:v103:booster:'+cap));
   const verified=slot&&String(slot.card_id)===id?slot:{};
