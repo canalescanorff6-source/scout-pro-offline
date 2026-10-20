@@ -598,8 +598,15 @@ function display(){
   const status=mk('section','ct264-status');
   status.dataset.readiness=readiness.classification;
   status.append(mk('strong','',readiness.label));
+  // V279: leitura humana do status de PP sem esconder pendências.
+  const trainingLabel={
+   registrada_sem_homologacao:'Vetor e custo de PP conferidos; sem homologação',
+   proposta_nao_homologada:'Treino proposto, ainda não validado no jogo',
+   orcamento_pp_divergente:'PP divergentes: vetor não utilizado no ranking',
+   ausente_ou_pendente:'Sem treino verificável para esta edição'
+  }[readiness.training]||'Auditoria de treino pendente';
   status.append(mk('p','',
-   'Treino: '+readiness.training+' · Habilidades: '+readiness.additional+
+   'Treino: '+trainingLabel+' · Habilidades: '+readiness.additional+
    ' · Ímpeto: '+readiness.booster+'.'));
   const reasons=mk('details','ct251-evidence-details ct264-pendencies');
   reasons.append(mk('summary','',

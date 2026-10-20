@@ -70,7 +70,10 @@ assert.equal(martinelli.pp,50);
 const validProof=V.proofChecklist(martinelli,index.get(191),labOf(martinelli),null);
 const entry=C.assess(martinelli,validProof,'posse',V.methodologyGate(martinelli,validProof,'posse',null));
 assert.equal(entry.sources.identity,true);
-assert.equal(entry.training,'registrada_sem_homologacao');
+assert.equal(entry.training,'proposta_nao_homologada');
+assert.equal(entry.trainingAuditStatus,'treino_proposto_nao_validado');
+assert.equal(entry.sources.training,false);
+assert(entry.missing.includes('Treino proposto ainda não validado no jogo'));
 assert.equal(entry.competitivelyHomologated,false);
 const fabricated={...martinelli,id:'PENDENTE - confirmar'};
 const fabricatedProof={...validProof,matched:true,
