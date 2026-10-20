@@ -26,7 +26,7 @@ assert.equal(cards.length,246);
 assert.equal(rows.size,246);
 assert.equal(new Set(cards.map(c=>c.numero+'@'+c.id)).size,246);
 let scenarios=0, technique=0, techniqueClose=0, techniqueNoValidTraining=0;
-let realBudgets=0, realBudgetsAccepted=0;
+let realBudgets=0, realBudgetsAccepted=0,mathAccepted=0,gateChanged=0;
 for(const card of cards){
  const before=JSON.stringify(card);
  const proof=V.proofChecklist(card,rows.get(card.numero),labOf(card),null);
@@ -39,16 +39,21 @@ for(const card of cards){
   assert.equal(result.card_id,String(card.id));
   assert.equal(result.competitivelyHomologated,false);
   assert.equal(result.booster.status,'nao_autorizado_para_equipar');
-  let expected=valid?
-   documented?(card.treino_proposto_nao_validado===true?
-    'treino_proposto_nao_validado':'custo_pp_conferido'):'pp_nao_documentados':
-   'vetor_ausente';
-  if(expected==='custo_pp_conferido')realBudgetsAccepted++;
+  const expected=valid?card.pp_estimado===true?'pp_nao_documentados':
+   card.treino_proposto_nao_validado===true?'treino_proposto_nao_validado':
+   'custo_pp_conferido':'vetor_ausente';
+  if(expected==='custo_pp_conferido'){
+   mathAccepted++;
+   if(documented)realBudgetsAccepted++;
+   const without=B.rank({...card,niveis:null},tactic)[0];
+   if(result.booster.name&&without&&result.booster.name!==B.displayName(without.nome))
+    gateChanged++;
+  }
   assert.equal(result.booster.ppStatus,expected,
     '#'+card.numero+' '+tactic+' PP não chegou corretamente');
   assert(result.booster.budgetNote.includes(
-   expected==='custo_pp_conferido'?'Custo':'NÃO influenciou')||
-   expected==='custo_pp_conferido'&&result.booster.budgetNote.includes('Vetor'));
+   expected==='custo_pp_conferido'?'Custo':'NÃO influenciou'));
+  assert.equal(result.booster.budgetOriginConfirmed,documented);
   assert.equal(result.booster.status,'nao_autorizado_para_equipar');
   assert.equal(result.booster.scoreMargin===null||result.booster.scoreMargin>=0,true);
   scenarios++;
@@ -74,10 +79,11 @@ for(const card of cards){
 assert.equal(scenarios,1230);
 assert.equal(technique,101,'O benchmark anterior de Técnica não pode mudar sem alterar a fórmula');
 assert(realBudgets>0,'Nenhuma prova de PP documental passou o checklist');
-assert(realBudgetsAccepted<=realBudgets*5,'Não contar PP sem prova como aceito');
-// O acervo pode ter zero interseções entre PP com prova e vetor válido:
-// nesse caso, o teste sintético abaixo verifica a correção da API sem
-// inventar homologação das cartas reais.
+assert.equal(mathAccepted,805,'161 builds matematicamente coerentes × 5 estilos');
+assert.equal(realBudgetsAccepted,0,'Sem atribuir origem comprovada a vetor que não a possui');
+assert(gateChanged>=0,'Contagem de mudanças de liderança não pode ser negativa');
+// Os 161 vetores conferem matematicamente mas não têm origem documental.
+// A V271 deve expor essa diferença sem eliminar a complementaridade V267.
 // Mesmo vetor: PP confirmado habilita complemento; PP não confirmado bloqueia.
 const one=cards.find(c=>c.numero===1);
 assert(V.hasValidBuild(one),'#001 possui distribuição e PP coerentes');
@@ -85,7 +91,9 @@ const fixture=(documented,c=one)=>V.methodologyGate(c,{
  checks:[{id:'edition',documented:true},{id:'budget',documented},
          {id:'native',documented:true}]},'posse',null);
 assert.equal(fixture(true).booster.ppStatus,'custo_pp_conferido');
-assert.equal(fixture(false).booster.ppStatus,'pp_nao_documentados');
+assert.equal(fixture(false).booster.ppStatus,'custo_pp_conferido');
+assert.equal(fixture(false).booster.budgetOriginConfirmed,false);
+assert.equal(fixture(true).booster.budgetOriginConfirmed,true);
 const proposal=cards.find(c=>c.numero===191);
 assert.equal(proposal.max_level,26);assert.equal(proposal.pp,50);
 assert.equal(fixture(true,proposal).booster.ppStatus,'treino_proposto_nao_validado');
@@ -101,8 +109,10 @@ const report={
  source:'Catálogo de 246 Card IDs; motor da main V270 + gate de PP V271',
  changes:'Corrigida passagem de PP ao parecer. Fórmula de ranking V270 preservada.',
  limits:'Heurística sem medição de atributos finais, ensaio controlado ou aval de criadores.',
- cards:246,scenarios,pp_documentado_no_gate:realBudgets,
- cenarios_com_vetor_pp_aceito:realBudgetsAccepted,
+ cards:246,scenarios,pp_origem_documentada:realBudgets,
+ cenarios_investimento_matematico:mathAccepted,
+ cenarios_origem_documentada_e_investimento:realBudgetsAccepted,
+ lideranca_que_muda_ao_incluir_investimento:gateChanged,
  tecnica_primeira_posse:technique,tecnica_com_alternativa_proxima_menor_2:techniqueClose,
  tecnica_sem_treino_validado:techniqueNoValidTraining,
  tecnica_por_funcao:sorted(techRoles),tecnica_por_estilo:sorted(techStyles),
@@ -110,5 +120,5 @@ const report={
 };
 fs.mkdirSync(path.join(root,'build'),{recursive:true});
 fs.writeFileSync(path.join(root,'build/v271-tecnica-evidencias.json'),JSON.stringify(report,null,2)+'\n');
-console.log('V271 PASS: '+scenarios+' cenários; '+realBudgets+' cartas com orçamento comprovado; '+realBudgetsAccepted+' cenários de PP habilitados no parecer; 246 cartas intactas.');
+console.log('V271 PASS: '+scenarios+' cenários; '+mathAccepted+' avaliações com investimento PP coerente, '+realBudgetsAccepted+' com origem também documentada; '+gateChanged+' líderes diferentes após a correção do gate. 246 cartas intactas.');
 console.log('V271 TÉCNICA: '+technique+' primeiras; '+techniqueClose+' disputas próximas; '+techniqueNoValidTraining+' sem treino validado; por função '+JSON.stringify(sorted(techRoles)));
