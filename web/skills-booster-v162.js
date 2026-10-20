@@ -62,6 +62,8 @@ const fingerprint=s=>[...new Set(splitSkills(s).map(x=>keyFor(x)||'unmapped:'+no
 function checkedEquipment(card,manual,record){
  return Boolean(record&&record.schema==='CRAQUE_ADDITIONAL_V254'&&record.confirmed===true&&
   Number(record.capture)===Number(card.capture)&&String(record.card_id)===String(card.id)&&
+  (!Object.hasOwn(record,'edition')||
+   String(record.edition)===String(card.edition||card.versao||''))&&
   record.fingerprint===fingerprint(manual)&&
   splitSkills(manual).every(name=>Boolean(keyFor(name)))&&
   !splitSkills(manual).some(name=>
@@ -714,7 +716,9 @@ function setConfirmedRole(event){
 }
 function draw(){
  let manuallyVerified={};
- try{const val=JSON.parse(localStorage.getItem('scoutpro:v103:booster:'+Number(d.capture))||'null');if(val&&String(val.card_id)===String(d.id))manuallyVerified=val}catch(e){}
+ try{const val=JSON.parse(localStorage.getItem('scoutpro:v103:booster:'+Number(d.capture))||'null');if(val&&String(val.card_id)===String(d.id)&&
+  (!Object.hasOwn(val,'edition')||String(val.edition)===String(d.edition||d.versao||'')))
+  manuallyVerified=val}catch(e){}
  const confirmed=equipmentConfirmed();
  const result=evaluate(d,tactic,extra,{equippedConfirmed:confirmed});
  const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103,manuallyVerified.status,manuallyVerified.equipped);
@@ -838,6 +842,8 @@ function draw(){
  const named=boost.status==='nome_registrado';
  const verifiedLabel=({vazio:'Slot vazio confirmado por você',ocupado:'Slot ocupado confirmado por você',ausente:'Sem slot, conforme sua conferência',pendente:'Verificação pendente'})[manuallyVerified.status]||'Ainda não conferido neste dispositivo';
  line('Estado de sua conta: '+verifiedLabel+(manuallyVerified.equipped?' · '+manuallyVerified.equipped:''));
+ if(manuallyVerified.status&&!Object.hasOwn(manuallyVerified,'edition'))
+  line('Conferência legada sem edição explícita: confira o slot no jogo antes de gastar ímpetos.');
  if(USER_SLOT_NOTES[Number(d.capture)])line('Relato seu (a confirmar na tela do jogo): '+USER_SLOT_NOTES[Number(d.capture)]);
  const panel=section.querySelector('#v162-booster');panel.replaceChildren();
  const title=document.createElement('p');title.style.fontWeight='800';
@@ -946,7 +952,8 @@ section.querySelector('#v162-save').addEventListener('click',()=>{
   if(requested){
    localStorage.setItem(verifyKey,JSON.stringify({
     schema:'CRAQUE_ADDITIONAL_V254',capture:Number(d.capture),
-    card_id:String(d.id),confirmed:true,fingerprint:fingerprint(proposedText),
+    card_id:String(d.id),edition:String(d.edition||d.versao||''),
+    confirmed:true,fingerprint:fingerprint(proposedText),
     nativeFingerprint:fingerprint(d.native_skills||d.habilidades_nativas||''),
     confirmed_at:new Date().toISOString()
    }));
