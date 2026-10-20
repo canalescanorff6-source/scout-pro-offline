@@ -442,6 +442,10 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   archetype:archetypeOf(d),style:tactic,identityConfirmed:identity,
   nativeCoverage:skills.nativeCoverage,unmappedNative:skills.unmappedNativeSkills.slice(),
   trainingStatus:training.status,sourceConfirmed:false,
+  trainingCategories:training.levels?[
+   'Chute','Passe','Drible','Destreza','Força inferior','Jogo aéreo',
+   'Defesa','Goleiro 1','Goleiro 2','Goleiro 3'
+  ].map((name,i)=>({name,level:training.levels[i]})):[],
   skillCandidateCount:skills.recommendations.length,
   skillCandidates:skills.recommendations.map(x=>Object.freeze({
    key:x.key,name:x.name,score:x.score,criteria:{...x.criterios},
@@ -497,6 +501,12 @@ const css=document.createElement('style');css.textContent=
 '#scout-v162 .v272-booster-compare{border:1px solid #596777;padding:10px;border-radius:10px;background:#102637;color:#d8e6ec}'+
 '#scout-v162 .v272-booster-compare summary{min-height:40px;display:flex;align-items:center;cursor:pointer;color:#efcf89}'+
 '#scout-v162 .v272-booster-compare li{margin:8px 0;line-height:1.6;overflow-wrap:anywhere;font-size:11px}'+
+'#scout-v162 #v273-dossier{border:1px solid #8b7552;background:linear-gradient(125deg,#172b3c,#0b1d2e);border-radius:12px;margin:12px 0;padding:12px;color:#e6edf2}'+
+'#scout-v162 #v273-dossier summary{min-height:44px;cursor:pointer;color:#f2d594;font-weight:850;line-height:1.6}'+
+'#scout-v162 #v273-dossier h4{font-size:13px;color:#f1d9a2;margin:12px 0 6px}'+
+'#scout-v162 #v273-dossier ul{font-size:12px;line-height:1.65;padding-left:22px;margin:8px 0}'+
+'#scout-v162 #v273-dossier li{overflow-wrap:anywhere;padding:4px 0}'+
+'#scout-v162 #v273-dossier .v273-tactic{padding:7px 9px;margin:4px 0;border:1px solid #39576e;border-radius:8px;background:#102939;font-size:12px;line-height:1.5}'+
 '#scout-v162 .v162-panel{border:1px solid #33556b;border-radius:12px;padding:12px;background:#0b1e2d;min-width:0}'+
 '#scout-v162 .v162-note{color:#d3caa5}#scout-v162 textarea{box-sizing:border-box;width:100%;min-height:62px;background:#081e2d;border:1px solid #5b829a;border-radius:8px;color:white;font-size:14px;padding:10px}'+
 '#scout-v162 .v162-foot{font-size:12px;color:#b9d3dc;border-top:1px solid #35566a;padding-top:10px;margin-top:12px}'+
@@ -509,7 +519,8 @@ document.head.appendChild(css);
 const section=document.createElement('section');section.id='scout-v162';section.setAttribute('aria-label','Recomendações de habilidades e ímpetos por carta');
 section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA V162</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
 '<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button><button type="button" data-tactic="fora" aria-pressed="false">Por Fora</button><button type="button" data-tactic="longo" aria-pressed="false">Passe Longo</button></div>'+
-'<p id="v272-proofline" class="v272-proofline" aria-live="polite"></p><div class="v162-panels"><article class="v162-panel"><h3>Até 5 habilidades adicionais · ordem por edição</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
+'<p id="v272-proofline" class="v272-proofline" aria-live="polite"></p>'+
+'<details id="v273-dossier"><summary>Laudo competitivo desta carta · 5 estilos e evidências</summary><div id="v273-dossier-content"></div></details><div class="v162-panels"><article class="v162-panel"><h3>Até 5 habilidades adicionais · ordem por edição</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
 '<details><summary>Informar habilidades adicionais desta edição</summary><p>Separe os nomes por ponto e vírgula. Sem conferência, esta é apenas uma lista parcial: não presumimos que os outros slots estejam vazios.</p><textarea id="v162-equipped" aria-label="Habilidades adicionais já equipadas" placeholder="Ex.: Passe de primeira; Toque duplo"></textarea><label class="v254-confirm-line"><input type="checkbox" id="v254-confirm-equipped"><span>Conferi no Plano de Jogo: esta lista contém TODAS as habilidades adicionais equipadas nesta edição exata, inclusive se estiver vazia.</span></label><button id="v162-save" type="button">Salvar conferência e recalcular</button><p id="v162-feedback" aria-live="polite"></p></details>'+
 '<p class="v162-foot">Recomendações teóricas baseadas nas habilidades registradas, no estilo e na função da carta. Não são testes comprovados em partidas; verifique habilidades nativas, compatibilidade e slot antes de usar tokens. Nenhuma escolha é aplicada automaticamente.</p>';
 // V192: mostrar as cinco habilidades dentro da ficha PRINCIPAL, sem cópia do painel.
@@ -561,6 +572,11 @@ function draw(){
  const confirmed=equipmentConfirmed();
  const result=evaluate(d,tactic,extra,{equippedConfirmed:confirmed});
  const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103,manuallyVerified.status,manuallyVerified.equipped);
+ const dossier=evidenceDossier(d,tactic,host.SCOUT_BOOSTERS_V103,extra,{
+  equippedConfirmed:confirmed,verifiedSlot:manuallyVerified.status,
+  verifiedBooster:manuallyVerified.equipped,
+  roleConfirmed:roleEvidence==='treinada'||roleEvidence==='familiar'
+ });
  const remaining=result.slotsRemaining;
  const proposed=result.recommendations;
  verifiedCheck.checked=result.equippedConfirmed;
@@ -583,6 +599,36 @@ function draw(){
   ' · PP: '+(boost.primary?.evidencias?.pp_status||'pendente')+
   ' · segundo ímpeto: '+boost.slotEvidence+
   ' · SEM homologação por OVR ou gameplay.';
+ // Parecer auditável de 246 edições: campos de perfil e pendências.
+ // Sem HTML do jogador e sem duplicar a ficha principal.
+ const dossierContent=section.querySelector('#v273-dossier-content');
+ dossierContent.replaceChildren();
+ const addSection=(heading,values,cssClass='')=>{
+  const h=document.createElement('h4');h.textContent=heading;dossierContent.append(h);
+  if(cssClass==='scenario'){
+   for(const value of values){const p=document.createElement('p');p.className='v273-tactic';p.textContent=value;dossierContent.append(p)}
+  }else{
+   const list=document.createElement('ul');
+   for(const value of values){const li=document.createElement('li');li.textContent=value;list.append(li)}
+   dossierContent.append(list);
+  }
+ };
+ addSection('Perfil tático de origem',[
+  dossier.archetype+' · posição usada: '+dossier.positionUsed+' · '+dossier.roleLabel,
+  'CAP '+dossier.cap+' / Card ID '+dossier.cardId+' · '+dossier.edition,
+  'Progresso: '+dossier.trainingStatus+' · nativas: '+dossier.nativeCoverage+
+   ' · cinco adicionais: '+(dossier.skillSlotsVerified?'conferidos':'vagas não comprovadas')
+ ]);
+ if(dossier.trainingCategories.length)addSection('Vetor registrado (níveis por categoria, não atributos finais)',
+  dossier.trainingCategories.map(c=>c.name+': '+c.level));
+ addSection('Comparação conservadora: todos os estilos',dossier.scenarios.map(t=>
+  tacticLabelFor(t.style)+' · skill inicial: '+(t.firstSkill||'nenhuma')+
+  ' · ímpeto: '+(t.booster||'pendente')+
+  ' · margem: '+(t.margin??'pendente')+' · não equipar automaticamente'
+ ),'scenario');
+ addSection('Provas e conferências prioritárias',
+  dossier.evidencePending.length?dossier.evidencePending:
+   ['Informações cadastrais sem bloqueios automáticos; gameplay e validação humana continuam necessários.']);
  const ul=section.querySelector('#v162-skills');ul.replaceChildren();
  for(const [i,skill] of proposed.entries()){
   const li=document.createElement('li'),rank=document.createElement('span'),
