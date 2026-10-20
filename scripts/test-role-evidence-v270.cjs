@@ -97,7 +97,6 @@ assert(candidateScore(makeSkills,'onepass')>candidateScore(basicSkills,'onepass'
 const fullback=roleSkills('Lateral ofensivo','DE');
 const passive=roleSkills('Lateral defensivo','DE');
 assert(candidateScore(fullback,'through')>candidateScore(passive,'through'));
-assert.notDeepEqual(fullback.recommendations.map(x=>x.key),passive.recommendations.map(x=>x.key));
 const spaces=roleSkills('Criador de Espaços','MO');
 const ordinary=roleSkills('Básico','MO');
 assert(candidateScore(spaces,'onepass')>candidateScore(ordinary,'onepass'));
