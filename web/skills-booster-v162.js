@@ -76,6 +76,33 @@ const POSITION={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG
 const ROLE_LABEL=Object.freeze({CA:'Centroavante',SA:'Segundo atacante',MAT:'Meia-atacante',
  MLG:'Meia de ligação',VOL:'Volante',ZG:'Zagueiro',LD:'Lateral direito',
  LE:'Lateral esquerdo',ALA:'Ala / ponta',GO:'Goleiro'});
+// V273: somente investimento documentado no vetor registrado da MESMA carta.
+// Não representa atributo final e é zero se o orçamento não fecha, estiver
+// ausente/estimado ou a proposta ainda não tiver sido aprovada.
+const TRAINING_CATEGORY=Object.freeze({
+ firstshot:0,acrobatic:0,longshot:0,curler:0,
+ onepass:1,through:1,weighted:1,lowloft:1,
+ double:2,sole:2,heel:2,cutturn:2,
+ fighting:4,trackback:4,supersub:4,
+ intercept:6,blocker:6,mark:6,sliding:6,clear:6,
+ aerial:5,heading:5
+});
+function investmentAudit(d){
+ const levels=d?.recommended_levels??d?.niveis;
+ const pp=d?.pp;
+ if(!Array.isArray(levels)||levels.length!==10||
+  !levels.every(n=>Number.isInteger(n)&&n>=0&&n<=20))
+  return Object.freeze({status:'vetor_indisponivel',levels:null});
+ if(!Number.isInteger(pp)||pp<0||pp>238||d.training_provisional===true||
+  d.treino_proposto_nao_validado===true||d.pp_estimado===true)
+  return Object.freeze({status:'nao_confirmado_ou_provisorio',levels:null});
+ const spent=levels.reduce((cost,n)=>{
+  for(let i=0;i<n;i++)cost+=1+Math.floor(i/4);
+  return cost;
+ },0);
+ if(spent!==pp)return Object.freeze({status:'pp_divergente',levels:null});
+ return Object.freeze({status:'investimento_matematico',levels:levels.slice(),pp,spent});
+}
 const POOLS={
  CA:['firstshot','onepass','through','sole','heel','acrobatic','longshot','fighting','heading','aerial','double','curler','supersub','weighted'],
  SA:['onepass','through','double','sole','firstshot','heel','longshot','fighting','curler','weighted','cutturn','acrobatic','trackback','supersub'],
@@ -110,10 +137,11 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const distinctExtras=[...userMap].filter(([id])=>!nativeIds.has(id));
  const used=new Set([...nativeKeys,...userMap.keys()].filter(id=>!id.startsWith('unmapped:')));
  const style=normal([d.playing_style,d.attack_style,d.defence_style,d.estilo_ataque,d.estilo_defesa].filter(Boolean).join(' '));
+ const investment=investmentAudit(d);
  const pool=POOLS[role];const scorer=new Map;
  const factors=new Map();
  pool.forEach((key,i)=>{const base=200-i*10;scorer.set(key,base);
-  factors.set(key,{funcao:base,tatica:0,estilo:0,nativas:0});});
+  factors.set(key,{funcao:base,tatica:0,estilo:0,nativas:0,investimento:0});});
  const bump=(names,amount,source='estilo')=>names.forEach(k=>{
   if(!scorer.has(k))return;
   scorer.set(k,scorer.get(k)+amount);
@@ -218,6 +246,16 @@ function evaluate(d,tactic,manualEquipped,options={}){
   ['onepass','fighting','intercept'],9,'Recomposição nativa com circulação curta');
  support(nativeKeys.has('gklow')&&role==='GO'&&tactic==='posse',
   ['gklong','captain','fighting'],8,'Reposição baixa nativa, diversificar saídas');
+ // Investimento é um discriminador DOCUMENTAL limitado a 0..8 pontos;
+ // um nível não diz que a carta tem atributo final mais alto ou baixo.
+ // Não cria build, não inventa vetor e não usa Overall.
+ if(investment.levels)for(const key of pool){
+  const category=TRAINING_CATEGORY[key];
+  if(category===undefined)continue;
+  const points=Math.min(8,Math.round(investment.levels[category]*.4));
+  scorer.set(key,scorer.get(key)+points);
+  factors.get(key).investimento+=points;
+ }
  // O histórico de sugestões genéricas não aumenta a nota da carta.
  // Prioridade depende apenas da função, da tática e do estilo, não do OVR.
  const ranked=[...scorer.entries()].filter(([key])=>!used.has(key))
@@ -254,6 +292,10 @@ function evaluate(d,tactic,manualEquipped,options={}){
   perfil:ROLE_LABEL[role]||role,estilos_registrados:style,rankings_condicionais:true,
   nativeCoverage:nativeKnown?(unmappedNative.length?'parcial':'lista_reconhecida'):'nativas_ausentes',
   slotProof:'somente_confirmacao_do_jogador_e_mesma_edicao',
+  investmentEvidence:investment.status,
+  investmentApplied:investment.levels!==null,
+  recommendationMode:equippedConfirmed?'comparacao_com_lista_confirmada':
+   'ate_cinco_candidatos_sem_slots_comprovados',
   missing:[...(nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']),...warnings]};
 }
 function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
@@ -317,7 +359,7 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,TRAINING_CATEGORY,investmentAudit,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
@@ -428,7 +470,7 @@ function draw(){
   (result.missing.length?' Atenção: '+result.missing.join(' '):'');
  const proofline=section.querySelector('#v272-proofline');
  proofline.textContent='LEITURA DA CARTA · '+result.perfil+' · '+tacticLabelFor(tactic)+
-  ' · nativas: '+result.nativeCoverage+
+  ' · nativas: '+result.nativeCoverage+' · investimento: '+result.investmentEvidence+
   ' · PP: '+(boost.primary?.evidencias?.pp_status||'pendente')+
   ' · segundo ímpeto: '+boost.slotEvidence+
   ' · SEM homologação por OVR ou gameplay.';
@@ -445,6 +487,7 @@ function draw(){
   breakdown.className='v272-criteria';summary.textContent='Entender por que esta habilidade foi priorizada';
   p.textContent='Critérios: função '+(factors.funcao??'—')+' · tática '+(factors.tatica??'—')+
    ' · estilo '+(factors.estilo??'—')+' · nativas '+(factors.nativas??'—')+
+   ' · investimento PP '+(factors.investimento??'—')+
    '. '+(skill.synergies?.length?skill.synergies.join('; ')+'. ':'')+
    'A pontuação é comparativa, não prova status finais nem desempenho.';
   breakdown.append(summary,p);li.append(rank,b,score,reason,breakdown);ul.appendChild(li);
