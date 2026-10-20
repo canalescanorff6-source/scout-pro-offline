@@ -345,16 +345,16 @@ function proofChecklist(card,index,lab,store){
  }catch(_){equipmentRecord=null}
  // V259: digitar habilidades não comprova slots. Só a confirmação V254
  // vigente para CAP+Card ID e a impressão digital da lista é prova local.
- const identity={capture:Number(card.numero),id:String(card.id),shown_position:card.posicao,
-  native_skills:card.habilidades_nativas};
+ const identity={capture:Number(card.numero),id:String(card.id),edition:String(card.versao||''),
+  shown_position:card.posicao,native_skills:card.habilidades_nativas};
  const checked=Boolean(S?.checkedEquipment?.(identity,installedSkills,equipmentRecord));
  const extra=checked?S.evaluate(identity,'posse',installedSkills,{equippedConfirmed:true}):null;
  const knownNames=installedSkills.split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean)
   .every(x=>Boolean(S?.keyFor?.(x)));
  const additionalDocumented=checked&&Boolean(extra)&&knownNames&&
   !extra.manualOverLimit&&extra.nativeManualConflicts.length===0;
- const boosterReported=boostSlot&&String(boostSlot.card_id)===String(card.id)&&
-  ['vazio','ocupado','ausente'].includes(boostSlot.status);
+ const boosterEvidence=S?.boosterRecordEvidence?.(identity,boostSlot);
+ const boosterReported=boosterEvidence?.valid===true;
  const checks=[
   {id:'edition',name:'CAP e Card ID vinculados à edição do catálogo',
    documented:matched&&!['sem_card_id','card_id_compartilhado'].includes(row.id_status),
@@ -368,7 +368,7 @@ function proofChecklist(card,index,lab,store){
   {id:'additional',name:'Lista completa de habilidades adicionais conferida na conta',
    documented:additionalDocumented,
    note:additionalDocumented?
-    'Confirmação local V254 vinculada ao CAP, Card ID e lista atual; não comprova gameplay.':
+    'Confirmação vinculada ao CAP, Card ID, edição, nativas e lista atual; não comprova gameplay.':
     'Lista digitada ou incompleta não confirma slots. Conferir todas as habilidades equipadas na V254, inclusive quando forem zero.'},
   {id:'booster',name:'Slot de ímpeto conferido pelo usuário',
    documented:Boolean(boosterReported),
