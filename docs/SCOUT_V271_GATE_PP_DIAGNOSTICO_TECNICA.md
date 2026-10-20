@@ -8,18 +8,18 @@ O motor V103 recebeu na ficha principal V251 um `recommended_levels`, mas a fun�
 
 ## Correção
 
-- Propagar `edition`, `pp` (somente com orçamento documentalmente aceito no checklist da mesma edição) e `training_provisional` ao motor.
-- Não usar vetor não validado (incluindo Martinelli #191 nível 26 / PP 50, ainda marcado como proposto) ou PP divergentes.
-- Exibir no parecer principal se o treino/PP entrou no ranking como sinal **consultivo** ou foi ignorado, sem confundir custo matemático conferido com gameplay validado.
+- Propagar `edition`, `pp` (quando a build do catálogo fecha **matematicamente** no mesmo orçamento) e `training_provisional` ao motor. Prova documental de origem é rastreada **separadamente**: custo matemático não equivale a PP homologado.
+- Não usar vetor proposto (incluindo Martinelli #191 nível 26 / PP 50), PP divergente, PP estimado ou dados ausentes. Vetores coerentes sem fonte documental ficam como **sinais consultivos**, não status finais ou recomendações homologadas.
+- Exibir no parecer principal se o vetor de PP entrou como sinal **consultivo**, se a origem de nível/PP foi confirmada pelo usuário e quando o vetor foi ignorado. Não confundir custo matemático com gameplay.
 - Expor status de PP e distância entre ímpetos calculados na API da ficha para auditoria; não alterar nenhum atributo-base, peso competitivo V270, habilidade nativa, equipamento, PP ou treino aprovado.
 
 ## Diagnóstico obrigatório de Técnica
 
 `scripts/test-pp-methodology-technique-v271.cjs` roda **246 cartas × 5 táticas**, compara gate real com checklist V251, impede falso PP comprovado, garante identidade, imutabilidade do catálogo, ausência de autorização para gastar tokens e protege os vetores provisórios. O teste também:
 
-- Calcula os **101** casos em que Técnica lidera Posse; não força redução numérica.
-- Segmenta por função e estilo documentados, mede proximidade com a alternativa e separa casos sem treino validado.
-- Produz `build/v271-tecnica-evidencias.json` contendo CAP/Card ID, nome, função, segundo ímpeto, margem, fonte de PP e status de base de cada caso.
+- Calcula os **101** casos em que Técnica lidera Posse (49 alas, 24 meias, 19 MAT, 5 SA, 3 VOL, 1 CA no diagnóstico inicial). Não força redução numérica.
+- Segmenta por função e estilo documentados, mede proximidade com a alternativa (4 com margem menor que 2 pontos) e separa 36 casos sem treino utilizável.
+- Produz `build/v271-tecnica-evidencias.json` com CAP/Card ID, função, segundo ímpeto, margem, custo de PP e status de base por caso. O relatório mede também quantos líderes mudaram por recepção correta de PP no parecer.
 - Nenhuma sugestão é atribuída a Blackjhon/Rentão sem vídeo da **mesma carta**; não há alegação de partida testada.
 
 ## Condições de liberação
