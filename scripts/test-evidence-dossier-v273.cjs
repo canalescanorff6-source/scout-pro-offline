@@ -113,7 +113,7 @@ assert(read('web/sw.js').includes('v273-individual-evidence'));
 assert(read('package.json').includes('test-evidence-dossier-v273.cjs'));
 const report={schema:'CRAQUE_V273_AUDITORIA_246_X_5',limit:
  'Comparações heurísticas. Mesmo grupo/lista não comprova erro de treino; verificar as fontes da edição.',
- cards:246,scenarios,investment_valid:math,provisional,missing,
+ total_cards:246,scenarios,investment_valid:math,provisional,missing,
  scenarios_with_unmapped_native:mappedPartial,
  skill_recommendations_with_investment_signal:invested,
  duplicate_groups:identical.length,duplicate_appearances:clones,
