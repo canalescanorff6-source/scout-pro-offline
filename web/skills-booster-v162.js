@@ -735,6 +735,12 @@ const css=document.createElement('style');css.textContent=
 '#scout-v162 .v162-list li{border:1px solid #36556d;background:linear-gradient(120deg,#0b2435,#132e40);border-radius:12px;padding:12px}'+
 '#scout-v162 .v162-list li p{margin:3px 0 0;color:#b7d6e5}'+
 '#scout-v162 .v162-panels{display:grid;grid-template-columns:1fr 1fr;gap:12px}'+
+'#scout-v162 .v276-portfolio{border:1px solid rgba(232,195,120,.55);background:linear-gradient(120deg,#192e3f,#0d2333);border-radius:12px;padding:13px;margin:13px 0}'+
+'#scout-v162 .v276-portfolio h3{margin:0 0 5px;color:#f6d99c;font-size:14px}'+
+'#scout-v162 .v276-portfolio ol{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:8px;padding:0;margin:8px 0;list-style:none}'+
+'#scout-v162 .v276-portfolio li{border:1px solid #3d5368;border-radius:9px;background:#102638;padding:9px;font-size:12px;line-height:1.5;overflow-wrap:anywhere}'+
+'#scout-v162 .v276-portfolio small{color:#bdcbd8;font-size:11px;display:block;margin-top:4px}'+
+'#scout-v162 .v276-boostnote{color:#f0d29a;font-size:12px;padding:9px;border-left:3px solid #d5ab5a;background:#162b3b;border-radius:7px}'+
 '#scout-v162 .v272-proofline{font-size:11px;color:#f1d79a;padding:9px 11px;border:1px solid rgba(234,195,108,.35);background:#142737;border-radius:10px;margin:10px 0;line-height:1.6;overflow-wrap:anywhere}'+
 '#scout-v162 .v272-skill-reason{display:block;font-size:12px;color:#c4d7e5;line-height:1.5;margin-top:5px}'+
 '#scout-v162 .v272-skill-rank{display:inline-flex;align-items:center;justify-content:center;min-width:26px;padding:4px 7px;margin-right:8px;border-radius:8px;background:#3b3540;color:#f9d996;font-size:11px;border:1px solid #7f694d}'+
@@ -765,6 +771,7 @@ const section=document.createElement('section');section.id='scout-v162';section.
 section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA V162</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
 '<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button><button type="button" data-tactic="fora" aria-pressed="false">Por Fora</button><button type="button" data-tactic="longo" aria-pressed="false">Passe Longo</button></div>'+
 '<p id="v272-proofline" class="v272-proofline" aria-live="polite"></p>'+
+'<section id="v276-portfolio" class="v276-portfolio" aria-label="Portfólio complementar de habilidades"></section>'+
 '<details id="v273-dossier"><summary>Laudo competitivo desta carta · 5 estilos e evidências</summary><div id="v273-dossier-content"></div></details><div class="v162-panels"><article class="v162-panel"><h3>Até 5 habilidades adicionais · ordem por edição</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
 '<details><summary>Informar habilidades adicionais desta edição</summary><p>Separe os nomes por ponto e vírgula. Sem conferência, esta é apenas uma lista parcial: não presumimos que os outros slots estejam vazios.</p><textarea id="v162-equipped" aria-label="Habilidades adicionais já equipadas" placeholder="Ex.: Passe de primeira; Toque duplo"></textarea><label class="v254-confirm-line"><input type="checkbox" id="v254-confirm-equipped"><span>Conferi no Plano de Jogo: esta lista contém TODAS as habilidades adicionais equipadas nesta edição exata, inclusive se estiver vazia.</span></label><button id="v162-save" type="button">Salvar conferência e recalcular</button><p id="v162-feedback" aria-live="polite"></p></details>'+
 '<p class="v162-foot">Recomendações teóricas baseadas nas habilidades registradas, no estilo e na função da carta. Não são testes comprovados em partidas; verifique habilidades nativas, compatibilidade e slot antes de usar tokens. Nenhuma escolha é aplicada automaticamente.</p>';
@@ -851,6 +858,31 @@ function draw(){
   ' · SEM homologação por OVR ou gameplay.';
  // Parecer auditável de 246 edições: campos de perfil e pendências.
  // Sem HTML do jogador e sem duplicar a ficha principal.
+ const portfolioSection=section.querySelector('#v276-portfolio');
+ portfolioSection.replaceChildren();
+ const portfolioHeading=document.createElement('h3');
+ portfolioHeading.textContent='Alternativa equilibrada · até 5 habilidades';
+ const portfolioDescription=document.createElement('p');
+ portfolioDescription.textContent=
+  'Uma combinação alternativa por função, tática e cobertura entre habilidades. '+
+  (result.equippedConfirmed?'Vagas informadas: '+remaining+'. ':
+   'Sem confirmação dos cinco slots: esta lista NÃO equivale a habilidades equipáveis. ')+
+  'Não é uma build de Rentão ou Blackjhon sem fonte da edição exata.';
+ portfolioSection.append(portfolioHeading,portfolioDescription);
+ const portfolioItems=document.createElement('ol');
+ for(const item of result.balancedPortfolio.candidates){
+  const li=document.createElement('li'),name=document.createElement('strong'),
+   reason=document.createElement('small');
+  name.textContent=item.name+' · '+item.family;
+  reason.textContent=item.explanation;
+  li.append(name,reason);portfolioItems.append(li);
+ }
+ if(!result.balancedPortfolio.candidates.length){
+  const empty=document.createElement('li');
+  empty.textContent='Nenhuma sugestão adicional segura nesta combinação de dados/slots.';
+  portfolioItems.append(empty);
+ }
+ portfolioSection.append(portfolioItems);
  const dossierContent=section.querySelector('#v273-dossier-content');
  dossierContent.replaceChildren();
  const addSection=(heading,values,cssClass='')=>{
@@ -901,6 +933,19 @@ function draw(){
   ' · ímpeto: '+(t.booster||'pendente')+
   ' · margem: '+(t.margin??'pendente')+' · não equipar automaticamente'
  ),'scenario');
+ if(dossier.boosterComplementarity.factoryDocumented){
+  addSection('Ímpetos vs. atributos do ímpeto fixo',
+   dossier.boosterComplementarity.comparisons.map(x=>x.documentedName+
+    ' · '+x.shared+'/4 atributos coincidentes com o fixo · '+
+    'diferentes: '+x.uniqueStatKeys.join(', ')));
+  if(dossier.boosterComplementarity.lowOverlapAlternative){
+   addSection('Alternativa de menor sobreposição (sem prova de superioridade)',[
+    dossier.boosterComplementarity.lowOverlapAlternative.documentedName+
+    ' · pontuação '+dossier.boosterComplementarity.lowOverlapAlternative.relativeScore+
+    ' · '+dossier.boosterComplementarity.lowOverlapAlternative.warning
+   ]);
+  }
+ }
  const auditNote=document.createElement('p');auditNote.className='v274-audit';
  auditNote.textContent='AUDITORIA DE FONTES: habilidades especiais são nomes nativos cadastrados, não tokens selecionáveis. Sem comprovação de builds de Rentão/Blackjhon, atributos finais ou desempenho em partidas nesta edição. Não gastar fichas ou ímpetos apenas pela nota.';
  dossierContent.append(auditNote);
@@ -961,6 +1006,17 @@ function draw(){
  boost.equipStatus==='condicionado_a_slot'?'Indicação para o segundo slot, confirmada localmente como vaga mas ainda não homologada em gameplay.':
  'Recomendação pronta; falta confirmar se esta edição possui segundo slot selecionável. Não exige que você insira um ímpeto para descobrir qual seria o melhor.';
  panel.appendChild(applicability);
+ if(boost.complementarity.factoryDocumented&&boost.primary){
+  const overlap=boost.complementarity.comparisons[0];
+  const caution=document.createElement('p');caution.className='v276-boostnote';
+  caution.textContent='Complementaridade com o ímpeto fixo: '+overlap.shared+
+   ' de 4 atributos coincidem. '+(overlap.shared>=3?
+    'ALTA SOBREPOSIÇÃO: compare a alternativa e os atributos da build.':
+    'Sobreposição informativa, não estimativa de ganho.')+
+   (boost.complementarity.lowOverlapAlternative?
+    ' Alternativa menos repetitiva: '+boost.complementarity.lowOverlapAlternative.documentedName+'.':'');
+  panel.append(caution);
+ }
  if(boost.primary){
  if(!boost.primary.traducao_documentada){
   const translation=document.createElement('p');
