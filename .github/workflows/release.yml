@@ -134,6 +134,14 @@ jobs:
           path: build/v283-sensitivity-246x5.json
           if-no-files-found: warn
           retention-days: 30
+      - name: Dossiê V284 — 246 cartas, 5 estilos, 5 habilidades e 4 atributos dos ímpetos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-v284-laboratorio-competitivo-246x5
+          path: build/v284-competitive-decisions-246x5.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs
