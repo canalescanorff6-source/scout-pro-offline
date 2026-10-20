@@ -37,6 +37,7 @@ for(const card of cards){
   styles.push({
    estilo:tactic,funcao_original:card.posicao,
    classificacao:readiness.classification,
+   evidencias_documentais_completas:readiness.documentaryComplete,
    status:readiness.label,
    PP_do_catalogo:card.pp,
    treino_original:Array.isArray(card.niveis)?card.niveis.slice():null,
