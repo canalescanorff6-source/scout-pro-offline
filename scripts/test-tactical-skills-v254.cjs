@@ -17,14 +17,15 @@ assert.deepEqual(B.tactics,goal);
 assert.deepEqual(goal.map(x=>B.TACTIC_LABEL[x]),[
  'Posse de Bola','Contra-Ataque Normal','Contra-Ataque Rápido','Por Fora','Passe Longo'
 ]);
-const fake={capture:991,id:'TESTE_ID_EDICAO_991',shown_position:'MO',
+const fake={capture:991,id:'TESTE_ID_EDICAO_991',edition:'EPIC-TESTE-991',shown_position:'MO',
  native_skills:'Passe de primeira',attack_style:'Armador criativo'};
 assert.equal(S.fingerprint('Passe de primeira; One Touch Pass'),'onepass');
 assert.equal(S.fingerprint('One Touch Pass; Passe de primeira'),'onepass');
 const full=['Toque duplo','Controle com a sola','Passe em profundidade',
  'Espírito guerreiro','Passe na medida'].join('; ');
 const proof={
- schema:'CRAQUE_ADDITIONAL_V254',capture:991,card_id:fake.id,
+ schema:'CRAQUE_ADDITIONAL_V254',capture:991,card_id:fake.id,edition:fake.edition,
+ nativeFingerprint:S.fingerprint(fake.native_skills),
  confirmed:true,fingerprint:S.fingerprint(full)
 };
 assert(S.checkedEquipment(fake,full,proof));
@@ -35,6 +36,8 @@ assert(!S.checkedEquipment(fake,full+'; Bloqueador',proof),
  'Editar a lista invalida confirmação antiga');
 assert(!S.checkedEquipment(fake,full,{...proof,confirmed:false}));
 assert(!S.checkedEquipment(fake,full,{...proof,fingerprint:'fraude'}));
+assert(!S.checkedEquipment(fake,full,{...proof,edition:undefined}));
+assert(!S.checkedEquipment(fake,full,{...proof,nativeFingerprint:undefined}));
 const partial=S.evaluate(fake,'posse',full);
 assert.equal(partial.equippedConfirmed,false);
 assert.equal(partial.slotsRemaining,null,'Lista não marcada como completa não comprova vagas');
