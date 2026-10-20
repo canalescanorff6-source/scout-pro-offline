@@ -465,6 +465,10 @@ function methodologyGate(card,proof,style,store,review={}){
    ppStatus:boost?.primary?.evidencias?.pp_status||'sem_ranking',
    budgetOriginConfirmed:has('budget'),
    scoreMargin:boost?.spread??null,
+   comparison:boost?.alternatives?.map(x=>({
+    name:x.nome_pt||x.nome,score:x.score,attributes:x.atributos.slice(),
+    documentedTranslation:x.traducao_documentada===true
+   }))||[],
    budgetNote:boost?.primary?.evidencias?.pp_status==='custo_pp_conferido'?
     (has('budget')?
      'Custo do PP conferido e origem documentada; comparação de investimento, não atributos finais.':
