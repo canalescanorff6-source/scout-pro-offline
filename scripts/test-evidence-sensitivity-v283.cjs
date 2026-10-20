@@ -80,6 +80,8 @@ const unified=read('web/scout-card-unified-v220.js');
 assert(unified.includes('R.boosterRecordEvidence?.({...card,capture:cap,id},slot)'));
 const fiche=read('web/craque-ficha-individual-v251.js');
 assert(fiche.includes('S?.boosterRecordEvidence?.(data,record)?.valid===true'));
+assert(fiche.includes('const S=new Proxy(')&&fiche.includes('const B=new Proxy('));
+assert(fiche.includes("doc.addEventListener('scoutpro:recommendations-ready',display)"));
 assert(fiche.includes('S.evidenceSensitivityV283(input,active,B)')||
  fiche.includes('S.evidenceSensitivityV283({'));
 assert(read('web/sw.js').includes('v283-slot-evidence-sensitivity'));
