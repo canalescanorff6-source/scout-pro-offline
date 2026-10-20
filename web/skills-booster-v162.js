@@ -443,7 +443,7 @@ function draw(){
   reason.className='v272-skill-reason';reason.textContent=skill.why;
   const factors=skill.criterios||{};
   breakdown.className='v272-criteria';summary.textContent='Entender por que esta habilidade foi priorizada';
-  p.textContent='Função '+(factors.funcao??'—')+' · tática '+(factors.tatica??'—')+
+  p.textContent='Critérios: função '+(factors.funcao??'—')+' · tática '+(factors.tatica??'—')+
    ' · estilo '+(factors.estilo??'—')+' · nativas '+(factors.nativas??'—')+
    '. '+(skill.synergies?.length?skill.synergies.join('; ')+'. ':'')+
    'A pontuação é comparativa, não prova status finais nem desempenho.';
