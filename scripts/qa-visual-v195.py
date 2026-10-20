@@ -1526,7 +1526,7 @@ def run():
                     else:
                         if lab284.evaluate('(e)=>e.open'):
                             problems.append(f"{name}: laboratório V284 ocupa a tela inicial")
-                        lab284.locator('summary').click()
+                        lab284.locator('summary').first.click()
                         if lab284.locator('.ct284-decision-skills > li').count()<1:
                             problems.append(f"{name}: ranking de habilidades V284 ausente")
                         if lab284.locator('.ct284-booster-rank > li').count()<1:
