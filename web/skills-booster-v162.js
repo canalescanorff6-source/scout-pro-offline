@@ -72,6 +72,45 @@ function checkedEquipment(card,manual,record){
   (!Object.hasOwn(record,'nativeFingerprint')||
    record.nativeFingerprint===fingerprint(card.native_skills||card.habilidades_nativas||'')));
 }
+// V274: vocabulário de habilidades NATIVAS ESPECIAIS do próprio catálogo.
+// Não são skills adicionais selecionáveis; não inventar traduções KONAMI,
+// efeitos numéricos, equivalência com skill comum ou autorização de token.
+// O grupo é uma indicação tática ampla para comparação humana.
+const CONTEXT_NATIVE_GROUPS=Object.freeze({
+ conducao:['Marseille Turn','Scissors Feint','Chop Turn','Flip Flap',
+  'Sombrero','Scotch Move','Momentum Dribbling','Acceleration Burst',
+  'Magnetic Feet','Pedalada'],
+ distribuicao:['Outside Curler','Phenomenal Pass','Visionary Pass',
+  'No Look Pass','Game-changing Pass','Passe sem olhar',
+  'Passe fenomenal','Curva para Fora'],
+ amplitude:['Pinpoint Crossing','Edged Crossing','Edge Crossing',
+  'Cruzamento preciso','Long Throw'],
+ finalizacao:['Rising Shot','Dipping Shot','Chip Shot Control','Knuckle Shot',
+  'Phenomenal Finishing','Low Screamer','Blitz Curler','Bullet Header',
+  'Folha seca'],
+ defesa:['Aerial Fort','Fortress','Long Reach Tackle','Long-reach Tackle',
+  'GK Directing Defence','GK Directing Defense'],
+ especial:['Gamesmanship','Penalty Specialist','Rabona','Willpower',
+  'GK Spirit Roar','Attacking Surge','Astúcia','Pressionante',
+  'Especialista em pênalti']
+});
+const contextualMap=new Map();
+for(const [group,names] of Object.entries(CONTEXT_NATIVE_GROUPS))
+ for(const name of names){
+  const key=normal(name);
+  if(contextualMap.has(key))throw Error('Nativa contextual ambígua: '+name);
+  contextualMap.set(key,group);
+ }
+const contextForNative=name=>contextualMap.get(normal(name))||null;
+const contextNativeProfile=native=>{
+ const groups=new Map(),known=[],unknown=[];
+ for(const name of splitSkills(native)){
+  const type=contextForNative(name);
+  if(type){known.push({name,group:type});groups.set(type,(groups.get(type)||0)+1);}
+  else if(!keyFor(name))unknown.push(name);
+ }
+ return Object.freeze({known,unknown,groups:Object.fromEntries(groups)});
+};
 const POSITION={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',ZG:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA'};
 const ROLE_LABEL=Object.freeze({CA:'Centroavante',SA:'Segundo atacante',MAT:'Meia-atacante',
  MLG:'Meia de ligação',VOL:'Volante',ZG:'Zagueiro',LD:'Lateral direito',
@@ -124,7 +163,8 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const equipped=splitSkills(manualEquipped);
  const nativeIds=new Set(native.map(name=>keyFor(name)||'unmapped:'+normal(name)));
  const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
- const unmappedNative=native.filter(name=>!keyFor(name));
+ const contextNatives=contextNativeProfile(native);
+ const unmappedNative=contextNatives.unknown;
  // Cinco slots são físicos. Grafias PT-BR/EN da mesma habilidade contam uma vez;
  // nenhuma habilidade nativa registrada conta como adicional equipado.
  const userMap=new Map();
@@ -246,6 +286,38 @@ function evaluate(d,tactic,manualEquipped,options={}){
   ['onepass','fighting','intercept'],9,'Recomposição nativa com circulação curta');
  support(nativeKeys.has('gklow')&&role==='GO'&&tactic==='posse',
   ['gklong','captain','fighting'],8,'Reposição baixa nativa, diversificar saídas');
+ // V274: sinais contextuais das nativas ESPECIAIS reconhecidas.
+ // Apenas desempates consultivos (no máximo 6 por candidata); nomes
+ // cadastrados ≠ habilidade adicional disponível para equipar.
+ const contextGroup=contextNatives.groups;
+ const contextualBump=(group,targets,amount,reason)=>{
+  if(!contextGroup[group])return;
+  const limited=Math.min(6,amount);
+  for(const key of targets){
+   if(!scorer.has(key)||used.has(key))continue;
+   scorer.set(key,scorer.get(key)+limited);
+   factors.get(key).nativas+=limited;
+   const notes=synergy.get(key)||[];
+   notes.push(reason+' (nativa especial documentada; hipótese)');
+   synergy.set(key,notes);
+  }
+ };
+ if(['CA','SA','MAT','MLG','ALA'].includes(role)){
+  contextualBump('conducao',['sole','onepass','through'],5,
+   'Condução especial registrada; complementar com recepção e apoio');
+  contextualBump('finalizacao',['onepass','through','sole'],4,
+   'Finalização especial registrada; alternativa de criação de espaço');
+ }
+ if(['MAT','MLG','VOL','SA','ZG','LD','LE'].includes(role))
+  contextualBump('distribuicao',['onepass','through','weighted'],5,
+   'Distribuição especial registrada; reforçar circulação curta');
+ if(['VOL','ZG','LD','LE'].includes(role))
+  contextualBump('defesa',['intercept','blocker','onepass'],5,
+   'Recursos defensivos especiais registrados; conferir cobertura e saída');
+ if(['LD','LE','ALA','MLG'].includes(role)&&tactic==='fora')
+  contextualBump('amplitude',['weighted','lowloft','onepass'],4,
+   'Habilidade nativa de amplitude; comparar para tática Por Fora');
+ // Grupo "especial" permanece sem efeito heurístico até evidência.
  // Investimento é um discriminador DOCUMENTAL limitado a 0..8 pontos;
  // um nível não diz que a carta tem atributo final mais alto ou baixo.
  // Não cria build, não inventa vetor e não usa Overall.
@@ -286,6 +358,9 @@ function evaluate(d,tactic,manualEquipped,options={}){
   equippedConfirmed,slotsRemaining,
   requiresReconciliation,
   unmappedNativeSkills:unmappedNative.slice(),
+  contextualNativeSkills:contextNatives.known.slice(),
+  contextualNativeGroups:{...contextNatives.groups},
+  contextualEvidence:'nome_cadastrado_sem_efeito_de_gameplay_validado',
   recommendations:ranked.slice(0,limit),alternatives:ranked.slice(limit,limit+3),
   synergyDetected:synergy.size>0,
   inference:'CONSULTIVA_SEM_OVR_OU_TESTE_DE_GAMEPLAY',
@@ -441,6 +516,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   originalPosition:original,positionUsed:requested,roleApproved,
   archetype:archetypeOf(d),style:tactic,identityConfirmed:identity,
   nativeCoverage:skills.nativeCoverage,unmappedNative:skills.unmappedNativeSkills.slice(),
+  contextualNatives:skills.contextualNativeSkills.map(x=>({...x})),
   trainingStatus:training.status,sourceConfirmed:false,
   trainingCategories:training.levels?[
    'Chute','Passe','Drible','Destreza','Força inferior','Jogo aéreo',
@@ -472,7 +548,7 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,TRAINING_CATEGORY,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
