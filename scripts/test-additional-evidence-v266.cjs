@@ -76,6 +76,9 @@ const ui=read('web/skills-booster-v162.js');
 assert(ui.includes('nativeFingerprint:fingerprint(d.native_skills||d.habilidades_nativas'));
 assert(ui.includes('if(requested&&precheck.requiresReconciliation)'));
 assert(ui.includes('Critérios: função '));
+const unified=read('web/scout-card-unified-v220.js');
+assert(unified.includes('R.checkedEquipment?.({...card,capture:cap,id},manual,manualProof)'),
+ 'V266: painel unificado tem de conferir nativeFingerprint com as nativas da edição');
 assert(read('web/sw.js').includes('v266-additional-evidence'));
 assert(read('package.json').includes('test-additional-evidence-v266.cjs'));
 assert.equal(JSON.stringify(cards),baseline);
