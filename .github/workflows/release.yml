@@ -86,6 +86,14 @@ jobs:
           path: build/v275-competitive-evidence-246x5.json
           if-no-files-found: warn
           retention-days: 30
+      - name: Relatório V276 - cinco skills e quatro eixos dos ímpetos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-v276-portfolio-boosters-246x5
+          path: build/v276-portfolio-boosters-246x5.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs
