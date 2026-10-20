@@ -929,6 +929,45 @@ function compareIndividualEvidence(left,right,tactic,engine){
   canApply:false,canChangeTraining:false
  });
 }
+// V282: decompor como a escolha do técnico alterou os cinco CRITÉRIOS
+// de uma skill, sem confundir ausência no top-8 com pontuação zero.
+function tacticalSkillDelta(d,first,second){
+ if(!DOSSIER_TACTICS.includes(first)||!DOSSIER_TACTICS.includes(second))
+  throw Error('Comparação exige dois estilos conhecidos');
+ const a=evaluate(d,first),b=evaluate(d,second);
+ const collect=result=>new Map([...result.recommendations,...result.alternatives].map(x=>[x.key,x]));
+ const left=collect(a),right=collect(b);
+ const keys=[...new Set([...a.recommendations.map(x=>x.key),
+  ...b.recommendations.map(x=>x.key)])];
+ const lines=keys.map(key=>{
+  const x=left.get(key),y=right.get(key);
+  const fields=['funcao','tatica','estilo','nativas','investimento'];
+  const factors=Object.fromEntries(fields.map(field=>[field,Object.freeze({
+   first:x?.criterios?.[field]??null,second:y?.criterios?.[field]??null,
+   delta:x&&y?y.criterios[field]-x.criterios[field]:null
+  })]));
+  return Object.freeze({
+   key,name:x?.name||y?.name||key,
+   firstRank:a.recommendations.findIndex(z=>z.key===key)+1||null,
+   secondRank:b.recommendations.findIndex(z=>z.key===key)+1||null,
+   firstScore:x?.score??null,secondScore:y?.score??null,
+   scoreDelta:x&&y?y.score-x.score:null,
+   factors:Object.freeze(factors),comparable:Boolean(x&&y),
+   caveat:x&&y?'Diferença da fórmula documentada, não ganho no jogo.':
+    'Fora do conjunto de até oito opções de um estilo; não inferir nota zero.'
+  });
+ });
+ return Object.freeze({
+  schema:'CRAQUE_V282_DELTA_TATICO',
+  first,second,
+  firstTop:a.recommendations[0]?.key||null,
+  secondTop:b.recommendations[0]?.key||null,
+  sameFirst:!!a.recommendations[0]&&a.recommendations[0].key===b.recommendations[0]?.key,
+  rows:Object.freeze(lines),
+  interpretation:'Valores relativos e rastreáveis, sem alteração de habilidade equipada.',
+  changesAuthorized:false
+ });
+}
 function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática não reconhecida');
  const skills=evaluate(d,tactic,manualEquipped,{
@@ -1049,6 +1088,8 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   })),
   evidencePending:warnings,scenarios,decisionMatrix,
   individualProfile,
+  tacticCounterfactuals:Object.freeze(DOSSIER_TACTICS
+   .filter(x=>x!==tactic).map(x=>tacticalSkillDelta(d,tactic,x))),
   playbook:playbookOf(d,tactic),
   evidenceChecklist:checks,roadmap,documentedIndicators:checksReady,
   totalIndicators:checks.length,tacticalStability,
@@ -1071,7 +1112,7 @@ const USER_SLOT_NOTES=Object.freeze({
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
 const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence};
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;
@@ -1307,6 +1348,15 @@ function draw(){
     ' · NOTA RELATIVA, não atributos finais'),
   ...dossier.individualProfile.missing.map(x=>'PENDENTE: '+x)
  ]);
+ addSection('V282 · por que a prioridade muda com o técnico?',
+  dossier.tacticCounterfactuals.map(x=>
+   tacticLabelFor(x.first)+' × '+tacticLabelFor(x.second)+
+   ' · primeira skill '+(x.sameFirst?'mantida':'diferente')+
+   ' · '+x.rows.filter(z=>z.comparable&&z.scoreDelta!==0).length+
+   ' candidatos com nota relativa alterada; '+x.rows
+    .filter(z=>z.comparable&&z.scoreDelta!==0).slice(0,2)
+    .map(z=>z.name+' (diferença '+(z.scoreDelta>0?'+':'')+z.scoreDelta+')')
+    .join(', ')+'.' ));
  addSection('V281 · comparador competitivo entre estilos',[
   'Cinco estilos, '+dossier.decisionMatrix.pairCount+' pares comparados; '+
    dossier.decisionMatrix.repeatedPairs+' pares com listas idênticas e '+
