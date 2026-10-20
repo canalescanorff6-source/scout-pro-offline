@@ -63,7 +63,8 @@ const record=(c,level)=>({schema:'CRAQUE_PROGRESS_REVIEW_V248',numero:c.numero,
 const skillsKey='scoutpro:v162:equipped:'+martinelli.numero+':'+martinelli.id;
 const boostKey='scoutpro:v103:booster:'+martinelli.numero;
 stored.set(skillsKey,'Passe de primeira; Toque duplo');
-stored.set(boostKey,JSON.stringify({card_id:martinelli.id,edition:martinelli.versao,status:'vazio'}));
+stored.set(boostKey,JSON.stringify({schema:'CRAQUE_BOOST_SLOT_V283',capture:martinelli.numero,
+ card_id:martinelli.id,edition:martinelli.versao,status:'vazio'}));
 let selected=V.proofChecklist(martinelli,map.get(191),{},storage);
 let selectedChecks=Object.fromEntries(selected.checks.map(x=>[x.id,x.documented]));
 assert.equal(selectedChecks.additional,false,
@@ -72,7 +73,8 @@ assert.equal(selectedChecks.booster,true,'Slot confirmado com Card ID e edição
 stored.set(boostKey,JSON.stringify({card_id:martinelli.id,status:'vazio'}));
 assert.equal(V.proofChecklist(martinelli,map.get(191),{},storage).checks.find(x=>x.id==='booster').documented,false,
  'Prova legada sem versão precisa de reconfirmação, não de autorização.');
-stored.set(boostKey,JSON.stringify({card_id:martinelli.id,edition:martinelli.versao,status:'vazio'}));
+stored.set(boostKey,JSON.stringify({schema:'CRAQUE_BOOST_SLOT_V283',capture:martinelli.numero,
+ card_id:martinelli.id,edition:martinelli.versao,status:'vazio'}));
 const V254=require('../web/skills-booster-v162.js');
 const confirmedManual=storage.getItem(skillsKey);
 const confirmedKey=V254.confirmationKey(martinelli.numero,martinelli.id);
