@@ -39,7 +39,7 @@ for(const c of cards){
  assert.equal(JSON.stringify(c),snapshot,'Carta original alterada');
 }
 assert.equal(checks,1230);
-const d={capture:991,id:'CARTA_991',shown_position:'MAT',
+const d={capture:991,id:'CARTA_991',edition:'EPIC-EXEMPLO-991',shown_position:'MAT',
  native_skills:'Passe de primeira; Phenomenal Pass; One-touch Pass; Skill fora do vocabulário'};
 const r=S.evaluate(d,'posse','Phenomenal Pass; Toque duplo',{equippedConfirmed:true});
 assert.equal(r.requiresReconciliation,true,
@@ -65,7 +65,7 @@ assert.equal(six.requiresReconciliation,true);
 assert.equal(six.recommendations.length,0);
 const selected='Toque duplo; Controle com a sola';
 const proof={
- schema:'CRAQUE_ADDITIONAL_V254',capture:991,card_id:'CARTA_991',
+ schema:'CRAQUE_ADDITIONAL_V254',capture:991,card_id:'CARTA_991',edition:'EPIC-EXEMPLO-991',
  confirmed:true,fingerprint:S.fingerprint(selected),
  nativeFingerprint:S.fingerprint(d.native_skills)
 };
@@ -75,10 +75,11 @@ assert.equal(S.checkedEquipment({...d,native_skills:d.native_skills+'; Bloqueado
 assert.equal(S.checkedEquipment({...d,id:'OUTRA_CARTA'},selected,proof),false);
 assert.equal(S.checkedEquipment(d,selected+'; Bloqueador',proof),false);
 assert.equal(S.checkedEquipment(d,selected,{...proof,nativeFingerprint:'corrompido'}),false);
-// Confirmações legadas V254 continuam legíveis; novas edições exigem
-// assinatura das nativas. Não invalidar indiscriminadamente dados antigos.
+// Dados legados ficam legíveis mas NÃO são provas de slots atuais.
 const legacy={...proof};delete legacy.nativeFingerprint;
-assert(S.checkedEquipment(d,selected,legacy));
+assert.equal(S.checkedEquipment(d,selected,legacy),false);
+assert.equal(S.checkedEquipment(d,selected,{...proof,edition:undefined}),false);
+assert.equal(S.checkedEquipment({...d,edition:'OUTRA_EDICAO'},selected,proof),false);
 const ui=read('web/skills-booster-v162.js');
 assert(ui.includes('nativeFingerprint:fingerprint(d.native_skills||d.habilidades_nativas'));
 assert(ui.includes('if(requested&&precheck.requiresReconciliation)'));
