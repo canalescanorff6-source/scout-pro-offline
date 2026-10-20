@@ -365,7 +365,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
   synergyDetected:synergy.size>0,
   inference:'CONSULTIVA_SEM_OVR_OU_TESTE_DE_GAMEPLAY',
   perfil:ROLE_LABEL[role]||role,estilos_registrados:style,rankings_condicionais:true,
-  nativeCoverage:nativeKnown?(unmappedNative.length?'parcial':'lista_reconhecida'):'nativas_ausentes',
+  nativeCoverage:nativeKnown?(unmappedNative.length?'parcial':contextNatives.known.length?'contextual_sem_efeito_validado':'lista_reconhecida'):'nativas_ausentes',
   slotProof:'somente_confirmacao_do_jogador_e_mesma_edicao',
   investmentEvidence:investment.status,
   investmentApplied:investment.levels!==null,
