@@ -32,13 +32,19 @@ for(const c of cards){
   niveis:c.niveis,boost1:c.impeto_fixo,boost2:c.impeto_extra};
  for(const t of styles){
   const ranked=B.rank(data,t);
-  assert(ranked.length>=2,'Sem ímpetos #'+c.numero+' '+c.posicao+' '+t);
+  // Goleiro só possui Saving/Goalkeeping; ímpetos fixos existentes são
+  // excluídos, e lista vazia é correta se não há outro tipo elegível.
+  assert(role==='GO'?ranked.length<=2:ranked.length>=2,
+   'Ranking não esperado #'+c.numero+' '+c.posicao+' '+t);
   assert(ranked.every(x=>x.funcao_considerada===role),'Função divergente #'+c.numero);
   assert(ranked.every(x=>Array.isArray(x.atributos)&&x.atributos.length===4));
   const adapted=S.booster({...data,capture:c.numero,id:c.id},t,B);
-  assert(adapted.primary,'Adapter sem ímpeto para #'+c.numero);
-  assert.equal(adapted.primary.funcao_considerada,role);
-  assert.equal(adapted.primary.nome,ranked[0].nome);
+  if(ranked.length){
+   assert(adapted.primary,'Adapter sem ímpeto para #'+c.numero);
+   assert.equal(adapted.primary.funcao_considerada,role);
+   assert.equal(adapted.primary.nome,ranked[0].nome);
+  }else assert.equal(adapted.primary,null,
+   'Não inventar terceiro tipo de ímpeto elegível para goleiro');
   assert.equal(adapted.able,false,'Sem confirmar slot local: não equipável');
   evaluations++;
  }
