@@ -46,7 +46,11 @@ for(const [raw,key] of Object.entries({
  'passe de primeira':'onepass','passe em profundidade':'through',
  'passe a rasgar':'through','passe ponderado':'weighted','recuar para marcar':'trackback',
  'corte para tras e giro':'cutturn','super reserva':'supersub','capitao':'captain','bloqueador':'blocker',
- 'superioridade aerea':'aerial','interceptacao':'intercept'
+ 'superioridade aerea':'aerial','interceptacao':'intercept',
+ 'passe de calcanhar':'heel','passe rasteiro de primeira':'onepass',
+ 'passe infiltrado':'through','passe a rasgar defesa':'through',
+ 'sangue frio':'fighting','marcacao individual':'mark',
+ 'chute de primeira intencional':'firstshot'
 
 }))if(!aliasMap.has(normal(raw)))aliasMap.set(normal(raw),key);
 const keyFor=s=>aliasMap.get(normal(s))||'';
@@ -96,6 +100,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
   if(identity&&!userMap.has(identity))userMap.set(identity,name);
  }
  const nativeManualConflicts=[...userMap].filter(([id])=>nativeIds.has(id)).map(([,name])=>name);
+ const unmappedEquipped=[...userMap].filter(([id])=>id.startsWith('unmapped:')).map(([,name])=>name);
  const distinctExtras=[...userMap].filter(([id])=>!nativeIds.has(id));
  const used=new Set([...nativeKeys,...userMap.keys()].filter(id=>!id.startsWith('unmapped:')));
  const style=normal([d.playing_style,d.attack_style,d.defence_style,d.estilo_ataque,d.estilo_defesa].filter(Boolean).join(' '));
@@ -127,7 +132,37 @@ function evaluate(d,tactic,manualEquipped,options={}){
  if((role==='LD'||role==='LE')&&/lateral ofensivo|lateral atacante|lateral movel/.test(style))
   bump(['onepass','weighted','through','sole'],18);
  if(/versatil|todo o terreno/.test(style))bump(['fighting','onepass','intercept'],18);
- if(/goleiro ofensivo/.test(style))bump(['gklow','gklong'],25);
+ if(/goleiro ofensivo|goleiro adiantado|gr ofensivo/.test(style))bump(['gklow','gklong'],25);
+ // V272: 12 ramificações de função e estilo, sem automatizar slot/PP.
+ // Perfis são heurísticos ancorados no estilo documentado da mesma carta.
+ if((role==='CA'||role==='SA')&&/pivo|homem de area/.test(style))
+  bump(['onepass','heel','heading','aerial','sole'],24);
+ if((role==='CA'||role==='SA')&&/matador|artilheiro|oportunista/.test(style))
+  bump(['firstshot','acrobatic','through','longshot'],19);
+ if((role==='CA'||role==='SA')&&/puxa marcacao|arrastar defesa/.test(style))
+  bump(['onepass','heel','through','sole','weighted'],21);
+ if((role==='SA'||role==='MAT')&&/jogador de infiltracao|criador de espacos/.test(style))
+  bump(['through','onepass','double','sole','firstshot'],19);
+ if((role==='MAT'||role==='MLG')&&/orquestrador|armador criativo|classico/.test(style))
+  bump(['onepass','through','weighted','heel','sole'],17);
+ if(role==='MLG'&&/meia versatil|todo o terreno/.test(style))
+  bump(['intercept','fighting','onepass','weighted'],19);
+ if(role==='VOL'&&/primeiro volante|trinco/.test(style))
+  bump(['intercept','blocker','onepass','mark'],20);
+ if(role==='VOL'&&/orquestrador|meia versatil/.test(style))
+  bump(['onepass','weighted','through','intercept'],17);
+ if(role==='ZG'&&/destruidor/.test(style))
+  bump(['intercept','blocker','mark','aerial','fighting'],18);
+ if(role==='ZG'&&/construcao de jogo|defensor criativo/.test(style))
+  bump(['onepass','weighted','through','blocker'],18);
+ if((role==='LD'||role==='LE')&&/lateral defensivo/.test(style))
+  bump(['intercept','blocker','mark','fighting'],17);
+ if((role==='LD'||role==='LE')&&/lateral ofensivo|lateral atacante|lateral movel/.test(style))
+  bump(['onepass','through','weighted','fighting','intercept'],16);
+ if(role==='ALA'&&/ala produtivo|lateral movel/.test(style))
+  bump(['double','sole','onepass','through','heel'],20);
+ if(role==='GO'&&/goleiro defensivo/.test(style))
+  bump(['gkhigh','gkpenalty','fighting'],16);
  // V217: heurísticas transparentes de complementaridade das habilidades NATIVAS
  // cadastradas na própria carta. Não representam bônus medidos ou gameplay validado.
  const synergy=new Map();
@@ -155,6 +190,28 @@ function evaluate(d,tactic,manualEquipped,options={}){
   'Apoiar saída curta após ações defensivas cadastradas');
  support(nativeKeys.has('longshot')&&nativeKeys.has('curler'),['onepass','double'],7,
   'Diversificar criação de jogadas de carta com finalizações longas');
+ // Complementariedade por lacunas documentadas: somente o que a carta
+ // REALMENTE possui, nunca criar nativas nem garantir um resultado em campo.
+ support(nativeKeys.has('onepass')&&!nativeKeys.has('through'),
+  ['through','weighted','heel'],12,'Apoio curto nativo com opção de penetração');
+ support(nativeKeys.has('through')&&!nativeKeys.has('onepass'),
+  ['onepass','heel','sole'],12,'Passe em profundidade nativo com tabela curta');
+ support(nativeKeys.has('intercept')&&!nativeKeys.has('blocker')&&
+  ['VOL','ZG','LD','LE','MLG'].includes(role),
+  ['blocker','mark','onepass'],13,'Interceptação nativa com defesa posicional');
+ support(nativeKeys.has('blocker')&&!nativeKeys.has('intercept')&&
+  ['VOL','ZG','LD','LE'].includes(role),
+  ['intercept','mark','fighting'],13,'Bloqueio nativo com leitura de linhas');
+ support(nativeKeys.has('aerial')&&!nativeKeys.has('heading')&&
+  ['CA','ZG','VOL'].includes(role),
+  ['heading','fighting'],10,'Duelos aéreos nativos sem cabeceio registrado');
+ support(nativeKeys.has('firstshot')&&!nativeKeys.has('onepass')&&
+  ['CA','SA','MAT'].includes(role),
+  ['onepass','heel'],11,'Finalização nativa com devolução de primeira');
+ support(nativeKeys.has('trackback')&&role==='ALA',
+  ['onepass','fighting','intercept'],9,'Recomposição nativa com circulação curta');
+ support(nativeKeys.has('gklow')&&role==='GO'&&tactic==='posse',
+  ['gklong','captain','fighting'],8,'Reposição baixa nativa, diversificar saídas');
  // O histórico de sugestões genéricas não aumenta a nota da carta.
  // Prioridade depende apenas da função, da tática e do estilo, não do OVR.
  const ranked=[...scorer.entries()].filter(([key])=>!used.has(key))
@@ -163,9 +220,10 @@ function evaluate(d,tactic,manualEquipped,options={}){
    criterios:Object.freeze({...factors.get(key)}),
    synergies:synergy.get(key)||[]}));
  const overLimit=distinctExtras.length>5;
+ const requiresReconciliation=overLimit||nativeManualConflicts.length>0||unmappedEquipped.length>0;
  // A lista manual pode estar INCOMPLETA. Não declarar espaços livres
  // ou cinco skills aplicáveis até o usuário conferir no Plano de Jogo.
- const equippedConfirmed=options.equippedConfirmed===true;
+ const equippedConfirmed=options.equippedConfirmed===true&&!requiresReconciliation;
  const slotsRemaining=equippedConfirmed&&!overLimit?Math.max(0,5-distinctExtras.length):null;
  const limit=overLimit?0:equippedConfirmed?slotsRemaining:5;
  const warnings=[
@@ -173,16 +231,22 @@ function evaluate(d,tactic,manualEquipped,options={}){
    [...new Set(unmappedNative)].slice(0,5).join(', ')+
    '. Isso NÃO prova que essas habilidades estejam ausentes da carta.']:[]),
   ...(overLimit?['Foram informadas mais de cinco habilidades adicionais distintas: revisar no jogo.']:[]),
+  ...(unmappedEquipped.length?['Adicionais informadas com nomenclatura não reconhecida: '+
+   unmappedEquipped.slice(0,5).join(', ')+
+   '. Não confirmar cinco vagas até conferir os nomes no jogo.']:[]),
   ...(nativeManualConflicts.length?['Informadas também como adicionais, mas já aparecem nas nativas cadastradas: '+nativeManualConflicts.join(', ')]:[])
  ];
  return {role,nativeKnown,knownNative:native.length,
   alreadyEquippedProvided:Math.min(5,distinctExtras.length),
-  manualReportedCount:distinctExtras.length,nativeManualConflicts,manualOverLimit:overLimit,
+  manualReportedCount:distinctExtras.length,nativeManualConflicts,unmappedEquipped,manualOverLimit:overLimit,
   equippedConfirmed,slotsRemaining,
-  requiresReconciliation:overLimit||nativeManualConflicts.length>0,
+  requiresReconciliation,
   unmappedNativeSkills:unmappedNative.slice(),
   recommendations:ranked.slice(0,limit),alternatives:ranked.slice(limit,limit+3),
   synergyDetected:synergy.size>0,
+  inference:'CONSULTIVA_SEM_OVR_OU_TESTE_DE_GAMEPLAY',
+  nativeCoverage:nativeKnown?(unmappedNative.length?'parcial':'lista_reconhecida'):'nativas_ausentes',
+  slotProof:'somente_confirmacao_do_jogador_e_mesma_edicao',
   missing:[...(nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']),...warnings]};
 }
 function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
