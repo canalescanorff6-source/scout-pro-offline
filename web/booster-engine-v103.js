@@ -211,6 +211,30 @@ function nativeSkillContext(w,raw,role){
  const skills=normStyle(raw).toLowerCase();
  const has=s=>s.test(skills);
  const findings=[];
+ // V274: leitura conservadora dos nomes NATIVOS ESPECIAIS cadastrados.
+ // São sinais de função para desempate, NÃO habilidade adicional
+ // selecionável, tradução oficial ou atributo final demonstrado.
+ if(has(/phenomenal pass|visionary pass|no look pass|game.changing pass|passe fenomenal|passe sem olhar/)){
+  addStat(w,'pass',3);addStat(w,'control',1);
+  findings.push('distribuição especial cadastrada (efeito exato não validado)');
+ }
+ if(has(/outside curler|curva para fora/)){
+  addStat(w,'curl',2);addStat(w,'pass',1);
+  findings.push('curva externa registrada (uso específico a conferir)');
+ }
+ if(has(/marseille turn|scissors feint|chop turn|flip flap|sombrero|scotch move|pedalada|momentum dribbling|magnetic feet/)){
+  addStat(w,'tight',2);addStat(w,'dribble',2);
+  findings.push('recurso de condução especial registrado');
+ }
+ if((role==='ZG'||role==='VOL'||role==='LD'||role==='LE')&&
+    has(/aerial fort|fortress|long.reach tackle/)){
+  addStat(w,'defaware',2);addStat(w,'tackle',1);
+  findings.push('recurso defensivo especial registrado');
+ }
+ if(role==='GO'&&has(/gk directing defen[cs]e|gk spirit roar/)){
+  addStat(w,'gkaware',2);
+  findings.push('habilidade especial de goleiro registrada');
+ }
  // Complementaridade baseada só em skills documentadas, sem estatística
  // final presumida. Ambas as grafias PT-BR / EN indicam o mesmo sinal.
  if(has(/interception|interceptacao|blocker|bloqueador|man marking|marcacao individual/)){
@@ -400,6 +424,7 @@ function rank(card,tactic){
     impeto_fixo:fixed||null,impeto_extra_registrado:extra||null,
     score_funcao:Number(functionScore.toFixed(2)),score_complemento:Number(trainingScore.toFixed(2)),
     score_contexto:Number(contextScore.toFixed(2)),
+    nativas_contextuais_registradas:nativeFindings.slice(0,6),
     participacao_contexto:Number((contextScore/Math.max(1,Math.abs(score))*100).toFixed(1)),
     atributos_finais_documentados:verifiedBase.status==='base_completa_confirmada'?false:null,
     atributos_finais_comprovados:false,
