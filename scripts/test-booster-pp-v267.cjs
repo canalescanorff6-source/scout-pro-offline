@@ -27,7 +27,8 @@ for(const c of cards){
  const d={capture:c.numero,id:c.id,shown_position:c.posicao,role_used:c.posicao,
   native_skills:c.habilidades_nativas,boost1:c.impeto_fixo,
   boost2:c.impeto_extra,attack_style:c.estilo_ataque,
-  defence_style:c.estilo_defesa,recommended_levels:c.niveis,pp:c.pp};
+  defence_style:c.estilo_defesa,recommended_levels:c.niveis,pp:c.pp,
+  training_provisional:c.treino_proposto_nao_validado===true};
  for(const style of B.tactics){
   const choices=B.rank(c,style),adapted=S.booster(d,style,B);
   assert.equal(adapted.primary?.nome,choices[0]?.nome);
