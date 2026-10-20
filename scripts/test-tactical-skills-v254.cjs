@@ -51,8 +51,12 @@ const withNative=S.evaluate(fake,'posse',
  {equippedConfirmed:true});
 assert.equal(withNative.alreadyEquippedProvided,2,
  'Habilidade nativa e alias duplicados não ocupam dois slots');
-assert.equal(withNative.slotsRemaining,3);
-assert.equal(withNative.recommendations.length,3);
+// V272 reforça a segurança: o usuário declarou uma habilidade nativa na
+// lista de adicionais. Não deduzir vaga livre até reconciliar essa lista.
+assert.equal(withNative.requiresReconciliation,true);
+assert.equal(withNative.equippedConfirmed,false);
+assert.equal(withNative.slotsRemaining,null);
+assert(withNative.recommendations.length<=5);
 assert(!withNative.recommendations.some(x=>['onepass','double','intercept'].includes(x.key)));
 const excess=S.evaluate(fake,'normal',
  full+'; Interceptação',{equippedConfirmed:true});
