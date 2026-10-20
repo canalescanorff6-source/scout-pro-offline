@@ -674,6 +674,40 @@ const archetypeOf=d=>{
  if(role==='GO')return 'Goleiro de construção ou defesa, conforme estilo';
  return 'Perfil por função cadastrada, estilo específico pendente';
 };
+// V278 — plano de investigação conservador. A prioridade é corrigir a PROVA,
+// não alterar valores da carta para produzir um resultado aparentemente meta.
+function evidenceRoadmap(checks,{creatorSource=null}={}){
+ const priority={identidade:1,posicao:2,nativas:3,pp:4,adicionais:5,impeto:6,atributos:7};
+ const task={
+  identidade:'Localize captura da edição com Card ID e versão exatos.',
+  posicao:'Confira as posições eficazes e o treino de posição desta versão no jogo.',
+  nativas:'Confira todas as habilidades nativas na captura da mesma edição.',
+  pp:'Confira nível máximo, PP disponível e distribuição de treino completa.',
+  adicionais:'Confira quais dos cinco slots estão ocupados e reconfirme a lista.',
+  impeto:'Confira ímpeto fixo, existência do segundo slot e se ele está vazio.',
+  atributos:'Registre atributos-base da edição antes de inferir atributos finais.'
+ };
+ const missing=checks.filter(x=>!x.ok)
+  .sort((a,b)=>priority[a.key]-priority[b.key])
+  .map(x=>Object.freeze({key:x.key,action:task[x.key],blocking:true}));
+ const source=creatorSource&&typeof creatorSource==='object'?
+  creatorSource:null;
+ // Uma URL isolada não comprova a mesma carta ou aprovação de criador.
+ const hasCreatorCandidate=Boolean(source&&
+  typeof source.url==='string'&&/^https:\/\//i.test(source.url));
+ return Object.freeze({
+  kind:'ROTEIRO_DOCUMENTAL_SEM_ALTERAR_BUILD',
+  checked:checks.filter(x=>x.ok).length,total:checks.length,
+  missing:Object.freeze(missing),
+  firstAction:missing[0]?.action||
+   'Rever a edição no jogo e testar a função em partidas antes de aprovar a build.',
+  videoSourceCandidate:hasCreatorCandidate,
+  sourceStatus:hasCreatorCandidate?'VIDEO_CANDIDATO_NAO_VERIFICADO':
+   'VIDEO_EXATO_AINDA_NAO_DOCUMENTADO',
+  creatorAttributionAllowed:false,competitiveApproval:false,
+  mayWriteTraining:false,maySpendTokens:false
+ });
+}
 function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática não reconhecida');
  const skills=evaluate(d,tactic,manualEquipped,{
@@ -724,6 +758,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    label:'Atributos-base com fonte da edição'}
  ]);
  const checksReady=checks.filter(c=>c.ok).length;
+ const roadmap=evidenceRoadmap(checks,{creatorSource:opts.creatorSource});
  const scenarios=Object.freeze(DOSSIER_TACTICS.map(style=>{
   const result=evaluate(d,style,manualEquipped,{
    equippedConfirmed:opts.equippedConfirmed===true
@@ -786,7 +821,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   })),
   evidencePending:warnings,scenarios,
   playbook:playbookOf(d,tactic),
-  evidenceChecklist:checks,documentedIndicators:checksReady,
+  evidenceChecklist:checks,roadmap,documentedIndicators:checksReady,
   totalIndicators:checks.length,tacticalStability,
   auditLabel:checksReady===checks.length?
    'Cadastro completo nos critérios locais; validação competitiva externa ainda pendente':
@@ -807,7 +842,7 @@ const USER_SLOT_NOTES=Object.freeze({
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
 const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence};
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;
@@ -1012,6 +1047,12 @@ function draw(){
    x.name+' ['+x.family+']').join(' / ')+
    '. Não significa que existam cinco vagas nem que as habilidades sejam autorizadas.'
  ]);
+ addSection('Ordem segura para melhorar esta ficha',
+  [dossier.roadmap.firstAction,
+   ...dossier.roadmap.missing.slice(1).map(x=>x.action),
+   'Fonte de treino de Rentão/Blackjhon: '+dossier.roadmap.sourceStatus+
+    ' · atribuição não autorizada sem comparação exata do vídeo com esta edição.'
+  ]);
  addSection('Checklist de sete verificações independentes',
   dossier.evidenceChecklist.map(c=>(c.ok?'CONFERIDO: ':'PENDENTE: ')+c.label));
  addSection('Variação entre os cinco estilos do técnico',[
