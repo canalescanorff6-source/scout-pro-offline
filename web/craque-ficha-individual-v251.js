@@ -465,6 +465,10 @@ function methodologyGate(card,proof,style,store,review={}){
    ppStatus:boost?.primary?.evidencias?.pp_status||'sem_ranking',
    budgetOriginConfirmed:has('budget'),
    scoreMargin:boost?.spread??null,
+   comparison:boost?.alternatives?.map(x=>({
+    name:x.nome_pt||x.nome,score:x.score,attributes:x.atributos.slice(),
+    documentedTranslation:x.traducao_documentada===true
+   }))||[],
    budgetNote:boost?.primary?.evidencias?.pp_status==='custo_pp_conferido'?
     (has('budget')?
      'Custo do PP conferido e origem documentada; comparação de investimento, não atributos finais.':
@@ -636,6 +640,14 @@ function display(){
    (method.booster.attributes.length?
     ' Quatro atributos afetados: '+method.booster.attributes.join(', ')+'.':''):
   'Nenhuma opção confiável calculável. '+method.booster.note);
+ if(method.booster.comparison.length){
+  const margin=method.booster.scoreMargin;
+  add('Comparação de ímpetos',
+   'Distância relativa ao segundo colocado: '+(margin===null?'indisponível':margin)+
+   '. Alternativas: '+method.booster.comparison.map(x=>x.name+
+    ' ('+x.score+' pontos; '+x.attributes.join(', ')+')').join(' / ')+
+   '. Diferença de score não é ganho comprovado em jogo.');
+ }
  if(method.missing.length)
   add('Evidências a completar',method.missing.join('; ')+'.');
  add('Critério de referência',

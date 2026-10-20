@@ -44,7 +44,7 @@ LD:{speed:5,accel:5,stamina:5,defaware:7,tackle:6,defengage:5,pass:4,physical:3,
 LE:{speed:5,accel:5,stamina:5,defaware:7,tackle:6,defengage:5,pass:4,physical:3,tight:2,balance:2},
 ALA:{speed:5,accel:6,dribble:6,tight:5,balance:5,control:5,pass:4,finish:3,stamina:3},
 GO:{gkaware:9,gkreflex:9,gkreach:9,gkparry:8,gkcatch:6}};
-const POS={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA',MLE:'ALA'};
+const POS={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',GR:'GO',GO:'GO',ZG:'ZG',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA',MLE:'ALA'};
 const label={awareness:'consciência ofensiva',finish:'finalização',accel:'aceleração',control:'controle de bola',power:'força do chute',physical:'contato físico',speed:'velocidade',pass:'passe rasteiro',loft:'passe alto',tight:'posse apertada',dribble:'drible',balance:'equilíbrio',heading:'cabeceio',jump:'salto',stamina:'resistência',curl:'efeito',placekick:'bola parada',defaware:'consciência defensiva',tackle:'desarme',defengage:'dedicação defensiva',aggression:'agressividade',gkaware:'consciência de goleiro',gkparry:'desvio de goleiro',gkreflex:'reflexos de goleiro',gkreach:'alcance de goleiro',gkcatch:'firmeza de goleiro'};
 const tactics=['posse','normal','rapido','fora','longo'];
 const TACTIC_LABEL=Object.freeze({
@@ -182,6 +182,15 @@ function playingStyle(w,role,style){
  rule(/matador|oportunista|artilheiro/,{awareness:3,finish:3,accel:1,power:1});
  rule(/orquestrador|criador de espacos|armador|classico.{0,5}10/,{control:5,tight:5,pass:7,balance:3});
  rule(/versatil|todo o terreno/,{stamina:3,pass:3,defaware:2,control:2});
+ // V272: variantes documentadas da mesma edição, com dupla função.
+ if(role==='VOL'&&/primeiro volante|trinco|orquestrador/.test(style))
+  addStats(w,['pass','defaware','defengage'],3);
+ if(role==='MLG'&&/meia versatil|todo o terreno/.test(style))
+  addStats(w,['stamina','defaware','pass'],2);
+ if(role==='SA'&&/arrastar defesa|puxa marcacao|jogador de infiltracao/.test(style))
+  addStats(w,['control','pass','awareness'],3);
+ if(role==='ALA'&&/ala produtivo|lateral movel|armador criativo/.test(style))
+  addStats(w,['tight','pass','dribble'],3);
  rule(/destruidor|lateral defensivo|primeiro volante|trinco/,{defaware:3,tackle:3,defengage:2,physical:1});
  rule(/ala produtivo|ala rapido|driblador|ala movel/,{dribble:3,tight:3,speed:2,accel:3});
  // V270: interpretar estilos exatos já presentes no catálogo, não OVR.
@@ -202,6 +211,20 @@ function nativeSkillContext(w,raw,role){
  const skills=normStyle(raw).toLowerCase();
  const has=s=>s.test(skills);
  const findings=[];
+ // Complementaridade baseada só em skills documentadas, sem estatística
+ // final presumida. Ambas as grafias PT-BR / EN indicam o mesmo sinal.
+ if(has(/interception|interceptacao|blocker|bloqueador|man marking|marcacao individual/)){
+  addStats(w,['defaware','tackle','defengage'],2);
+  findings.push('interceptação, bloqueio e marcação cadastrados');
+ }
+ if(has(/weighted pass|passe ponderado|passe na medida|low lofted pass|passe meio levantado/)){
+  addStats(w,['pass','loft'],2);
+  findings.push('distribuição em apoio e saída de bola');
+ }
+ if(has(/fighting spirit|espirito guerreiro|track back|volta para marcar/)){
+  addStats(w,['stamina','physical'],2);
+  findings.push('recomposição e esforço documentados');
+ }
  if(has(/one.touch pass|one touch pass|passe de primeira|through passing|passe em profundidade/)){
   addStats(w,['pass','control'],2);addStat(w,'tight',1);
   findings.push('tabelas e passes de apoio');
@@ -313,7 +336,44 @@ function rank(card,tactic){
    if(/first.time shot|phenomenal finishing|low screamer|long.range shooting|chute de primeira|finalizacao de primeira|chute de longa distancia|finalizacao de longa distancia/i.test(normStyle(card.habilidades_nativas||card.native_skills||''))&&name==='Shooting')contextScore+=3;
    if(levels&&levels[4]<=5&&name==='Off the Ball')contextScore+=2;
   }
-  if((role==='MAT'||role==='MLG')&&name==='Passing'&&/orquestrador|armador|classico/.test(style))contextScore+=2;
+  // V272: desempates por arquétipo de campo, sem usar OVR ou inventar bases.
+  // Prioridade respeita a função utilizada na formação, não apenas a posição de origem.
+  if(role==='ZG'){
+   if(/construcao de jogo|defensor criativo|defensor participativo/.test(style)&&
+    ['Regista','Passing','Rebuilding'].includes(name))contextScore+=4;
+   if(/destruidor/.test(style)&&['Shutdown','Duelling','Stealing','Defending'].includes(name))
+    contextScore+=4;
+   if(tactic==='posse'&&/one.touch pass|passe de primeira|weighted pass|passe ponderado/.test(style+' '+normStyle(card.habilidades_nativas||card.native_skills||''))&&
+    name==='Regista')contextScore+=2;
+  }
+  if(role==='VOL'){
+   if(/primeiro volante|trinco/.test(style)&&['Rebuilding','Regista','Shutdown'].includes(name))
+    contextScore+=4;
+   if(/versatil|orquestrador/.test(style)&&['Regista','Passing','Ball Protection'].includes(name))
+    contextScore+=3;
+  }
+  if(role==='LD'||role==='LE'){
+   if(/lateral ofensivo|lateral atacante|lateral movel/.test(style)&&
+    ['Agility','Passing','Ball Protection'].includes(name))contextScore+=3;
+   if(/lateral defensivo/.test(style)&&['Shutdown','Duelling','Defending'].includes(name))
+    contextScore+=3;
+  }
+  if(role==='ALA'){
+   if(/ala produtivo|ala movel|armador criativo/.test(style)&&
+    ['Ball-carrying','Fantasista','Ball Protection'].includes(name))contextScore+=4;
+   if(tactic==='fora'&&name==='Crossing')contextScore+=3;
+   if(tactic==='posse'&&name==='Passing'&&/armador criativo/.test(style))contextScore+=3;
+  }
+  if(role==='SA'&&/arrastar defesa|puxa marcacao/.test(style)&&
+   ['Passing','Offence Creator','Ball Protection'].includes(name))contextScore+=3;
+  if((role==='MAT'||role==='MLG')){
+   if(name==='Passing'&&/orquestrador|armador|classico/.test(style))contextScore+=2;
+   if(/meia versatil|todo o terreno/.test(style)&&
+    ['Regista','Ball Protection','Hard Worker'].includes(name))contextScore+=3;
+   if(/criador de espacos|jogador de infiltracao/.test(style)&&
+    ['Offence Creator','Off the Ball','Fantasista'].includes(name))contextScore+=3;
+  }
+  if(role==='GO'&&tactic==='posse'&&name==='Goalkeeping')contextScore+=1;
   const score=Math.round((functionScore+trainingScore+contextScore+baseScore)*100)/100;
   const ordered=stats.slice().sort((a,b)=>(weights[b]||0)-(weights[a]||0));
   const axes=[label[ordered[0]],label[ordered[1]]];
@@ -328,6 +388,9 @@ function rank(card,tactic){
    funcao_considerada:role,score,atributos:stats.map(k=>label[k]),
    motivo:info.join('; ')+'.',
    confianca:levels?'comparativa_limitada':'baixa',
+   perfil_documental:style||'sem estilo registrado',
+   recomendacao_condicional:true,
+   status_validacao:'HIPOTESE_COMPETITIVA_SEM_HOMOLOGACAO',
    evidencias:{treino:trainingEvidence,pp_status:training.status,
     base_status:verifiedBase.status,
     base_count:verifiedBase.count,base_atributos_mapeados:verifiedBase.recognized,
@@ -337,6 +400,9 @@ function rank(card,tactic){
     impeto_fixo:fixed||null,impeto_extra_registrado:extra||null,
     score_funcao:Number(functionScore.toFixed(2)),score_complemento:Number(trainingScore.toFixed(2)),
     score_contexto:Number(contextScore.toFixed(2)),
+    participacao_contexto:Number((contextScore/Math.max(1,Math.abs(score))*100).toFixed(1)),
+    atributos_finais_documentados:verifiedBase.status==='base_completa_confirmada'?false:null,
+    atributos_finais_comprovados:false,
     limite:'Sem atributos finais comparados nem teste controlado de partida. Não aplicar automaticamente.'}
   };
  }).sort((a,b)=>b.score-a.score||a.nome.localeCompare(b.nome));
