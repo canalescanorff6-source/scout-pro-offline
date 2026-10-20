@@ -543,12 +543,47 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const complementCandidate=factoryAxes.length===4&&ranked.length?
   ranked.find(candidate=>candidate.score>=ranked[0].score-8&&
    overlapOf(candidate).shared<primaryOverlap):null;
+ // Os componentes de score são rastreáveis, não atributos finais.
+ const rankedEvidence=Object.freeze(ranked.slice(0,3).map((item,i)=>Object.freeze({
+  technicalName:item.nome,displayName:item.nome_pt||item.nome,
+  rank:i+1,relativeScore:item.score,
+  marginFromFirst:Number((ranked[0].score-item.score).toFixed(2)),
+  factors:Object.freeze({
+   funcao:item.evidencias?.score_funcao??null,
+   investimento:item.evidencias?.score_complemento??null,
+   contexto:item.evidencias?.score_contexto??null,
+   atributosBase:item.evidencias?.score_base??null
+  }),
+  trainingStatus:item.evidencias?.pp_status||'pendente',
+  baseStatus:item.evidencias?.base_status||'pendente',
+  applyAuthorized:false
+ })));
+ const evidenceWarnings=[];
+ if(!factoryAxes.length)evidenceWarnings.push('Ímpeto fixo não identificado: não calcular redundância.');
+ if(!slotSupported)evidenceWarnings.push('Segundo slot não comprovado na edição.');
+ if(verifiedSlot!=='vazio')evidenceWarnings.push('Vaga real não confirmada como vazia na conta.');
+ if(!ranked[0])evidenceWarnings.push('Sem ímpeto compatível para ranquear.');
+ else{
+  if(ranked[0].evidencias?.pp_status!=='custo_pp_conferido')
+   evidenceWarnings.push('Treino individual não homologado; investimento não é evidência de atributo final.');
+  if(ranked[0].evidencias?.base_status!=='base_completa_confirmada')
+   evidenceWarnings.push('Atributos-base da edição ainda sem comprovação completa.');
+  if(ranked.length>1&&ranked[0].score-ranked[1].score<2)
+   evidenceWarnings.push('Ímpetos próximos: diferença relativa não comprova superioridade.');
+ }
  const complementaryAlternative=complementCandidate?
   Object.freeze({...overlapOf(complementCandidate),relativeScore:complementCandidate.score,
    warning:'Menor sobreposição não prova resultado superior; comparar com a build real.'}):null;
  // O ranking da carta deve existir independentemente da disponibilidade do slot.
  // "primary" é uma prioridade competitiva, NÃO algo equipado ou autorizado.
  return {status,verifiedSlot,slotSupported,slotEvidence,able,knownExtra:existing,confirmedEquipped:equippedName||null,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
+  decisionEvidence:Object.freeze({
+   rankExplanation:'Nota relativa de função, investimento, contexto e base registrada; não é desempenho em jogo.',
+   candidates:rankedEvidence,
+   warnings:Object.freeze(evidenceWarnings),
+   status:able?'ELEGIVEL_SOMENTE_PARA_COMPARACAO':'SEM_AUTORIZACAO_DE_APLICACAO',
+   canSpendTokens:false
+  }),
   complementarity:Object.freeze({
    factoryName:factory||null,factoryDocumented:factoryAxes.length===4,
    factoryAxes:Object.freeze(factoryAxes.slice()),
@@ -719,6 +754,16 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   boosterName:boosters.primary?.nome_pt||boosters.primary?.nome||null,
   boosterMargin:gap,boosterSlotVerified:boosters.able,
   boosterComplementarity:boosters.complementarity,
+  boosterDecisionEvidence:boosters.decisionEvidence,
+  skillFamilyEvidence:Object.freeze({
+   nativeFamilies:Object.freeze({...skills.balancedPortfolio.nativeFamilyCounts}),
+   equippedFamilies:Object.freeze({...skills.balancedPortfolio.equippedFamilyCounts}),
+   proposedFamilies:Object.freeze({...skills.balancedPortfolio.families}),
+   balancedCandidates:Object.freeze(skills.balancedPortfolio.candidates.map(x=>Object.freeze({
+    name:x.name,family:x.family,score:x.relativeScore,evidence:{...x.evidence}
+   }))),
+   applyAuthorized:false
+  }),
   boosterAlternatives:boosters.alternatives.map(x=>Object.freeze({
    name:x.nome_pt||x.nome,score:x.score
   })),
