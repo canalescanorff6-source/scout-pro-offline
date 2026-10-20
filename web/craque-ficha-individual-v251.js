@@ -707,6 +707,74 @@ function display(){
   for(const warning of sensitivity.warnings)list.append(mk('li','',warning));
   section.append(list);block.append(section);
  }
+ // V284: laboratório detalhado único, sempre recolhido por padrão.
+ // Reusa apenas a edição canônica; não altera build, habilidades ou slots.
+ if(sensitiveSource&&typeof S?.competitiveDecisionBoardV284==='function'){
+  const selectedData={...sensitiveSource,original_position:card.posicao,
+   role_used:check.positionUsed||card.posicao,shown_position:card.posicao};
+  const board=S.competitiveDecisionBoardV284(selectedData,active,B,'',{
+   roleConfirmed:check.positionUsed===card.posicao||check.roleApproved===true
+  });
+  const panel=mk('details','ct251-evidence-details ct284-decision-lab');
+  panel.append(mk('summary','','Laboratório competitivo V284 · cinco habilidades, ímpetos e prova'));
+  panel.append(mk('p','ct251-caution',
+   'Análise por CAP '+board.identity.capture+' · Card ID '+board.identity.cardId+
+   ' · '+board.identity.edition+'. Sugestões calculadas; nunca equipamentos aplicados.'));
+  panel.append(mk('h4','','01 · Cinco habilidades adicionais por função e estilo'));
+  const lskills=mk('ol','ct284-decision-skills');
+  for(const skill of board.skills){
+   const li=mk('li','');
+   li.append(mk('strong','',skill.rank+' · '+skill.name+' · família '+skill.family));
+   li.append(mk('p','',skill.explanation.join(' ')));
+   if(skill.synergy.length)li.append(mk('small','','Nativas/sinergias registradas: '+skill.synergy.join('; ')+'.'));
+   lskills.append(li);
+  }
+  if(!board.skills.length)lskills.append(mk('li','',
+   'Sem candidatas seguras: slots ou posição precisam de conferência.'));
+  panel.append(lskills);
+  if(board.alternativeSkills.length){
+   const alts=mk('details','ct251-evidence-details');
+   alts.append(mk('summary','','Alternativas próximas · não são piores por definição'));
+   const list=mk('ul','');
+   for(const skill of board.alternativeSkills)
+    list.append(mk('li','',skill.name+' · família '+skill.family+
+     ' · diferença heurística do primeiro: '+(skill.gapFromFirst??'—')+
+     '. Sem teste comparativo, não há desempenho superior comprovado.'));
+   alts.append(list);panel.append(alts);
+  }
+  panel.append(mk('p','ct251-caution',
+   'Portfólio equilibrado: '+board.portfolio.balanced.map(x=>x.name).join(', ')+
+   '. Interseção com a lista principal: '+board.portfolio.sharedWithPrimary+
+   '. Diferenças entre portfólios são opções de comparação, não correções obrigatórias.'));
+  panel.append(mk('h4','','02 · Ímpetos · quatro atributos e alternativas reais'));
+  const lbs=mk('ol','ct284-booster-rank');
+  for(const booster of board.boosters){
+   const li=mk('li','');
+   li.append(mk('strong','',booster.rank+' · '+booster.name+
+    ' · nota relativa '+booster.score));
+   li.append(mk('p','','Quatro atributos: '+booster.axes.join(', ')+
+    '. Coincidem com o ímpeto fixo em '+(booster.fixedKnown?
+    booster.sharedWithFixed+' dos quatro atributos':'quantidade não comprovada')+
+    '. '+booster.explanation));
+   li.append(mk('small','','Critérios: função '+booster.factors.function+
+    '; treino '+booster.factors.training+'; contexto '+booster.factors.context+
+    '; base '+booster.factors.base+'. Não gastar tokens com base na nota.'));
+   lbs.append(li);
+  }
+  if(!board.boosters.length)lbs.append(mk('li','','Sem opção documentada para esta função.'));
+  panel.append(lbs);
+  panel.append(mk('p','ct251-caution',
+   'Segundo slot: '+board.boosterEligibility.catalogSlot+
+   ' · conta: '+board.boosterEligibility.manualSlot+
+   '. A comparação não comprova slot disponível.'));
+  panel.append(mk('h4','','03 · Evidências e próximos passos para homologação'));
+  const readiness=mk('ul','ct284-pending');
+  for(const gap of board.pending)
+   readiness.append(mk('li','',gap.action));
+  panel.append(readiness);
+  panel.append(mk('small','','Sem indicação de autoria, aprovação de criador, atributos finais ou gameplay comprovado.'));
+  block.append(panel);
+ }
  if(check.related.length){
   // V258: ampliar a conferência sem criar uma segunda ficha, nem copiar
   // treino entre edições com mesmo orçamento ou função.

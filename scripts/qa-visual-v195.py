@@ -1518,6 +1518,23 @@ def run():
                             problems.append(f"{name}: V283 sem comparação de nativas e PP")
                         page.screenshot(path=str(OUT/f"{name}_v283_sensitivity.png"),
                             full_page=False,animations="disabled")
+                    # V284: laboratório dentro da mesma ficha, fechado por padrão.
+                    lab284=v251.locator('.ct284-decision-lab')
+                    lab284.wait_for(state='attached',timeout=18000)
+                    if lab284.count()!=1:
+                        problems.append(f"{name}: laboratório V284 duplicado ou ausente")
+                    else:
+                        if lab284.evaluate('(e)=>e.open'):
+                            problems.append(f"{name}: laboratório V284 ocupa a tela inicial")
+                        lab284.locator('summary').first.click()
+                        if lab284.locator('.ct284-decision-skills > li').count()<1:
+                            problems.append(f"{name}: ranking de habilidades V284 ausente")
+                        if lab284.locator('.ct284-booster-rank > li').count()<1:
+                            problems.append(f"{name}: matriz de ímpetos V284 ausente")
+                        if lab284.locator('.ct284-pending > li').count()<1:
+                            problems.append(f"{name}: pendências documentais V284 ausentes")
+                        page.screenshot(path=str(OUT/f"{name}_v284_laboratorio.png"),
+                            full_page=False,animations="disabled")
                     if '68 / 68 PP' not in v251.inner_text():
                         problems.append(f"{name}: V251 não fechou PP de Sergi Cardona")
                     pos=page.locator('#scout-v218-status')
