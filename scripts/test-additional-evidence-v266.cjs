@@ -50,8 +50,10 @@ assert.equal(r.alreadyEquippedProvided,1);
 // invalida o certificado de vagas; recomendações permanecem consultivas.
 assert.equal(r.equippedConfirmed,false);
 assert.equal(r.slotsRemaining,null);
-assert(r.missing.some(x=>x.includes('fora do vocabulário')));
-assert(r.unmappedNativeSkills.includes('Phenomenal Pass'));
+assert(!r.missing.some(x=>x.includes('fora do vocabulário')));
+assert(r.contextualNativeSkills.some(x=>x.name==='Phenomenal Pass'&&x.group==='distribuicao'));
+assert(!r.unmappedNativeSkills.includes('Phenomenal Pass'));
+assert.equal(r.nativeCoverage,'contextual_sem_efeito_validado');
 assert(!r.recommendations.some(x=>x.key==='onepass'));
 const six=S.evaluate(d,'posse',
  'Toque duplo; Controle com a sola; Toque de calcanhar; Interceptação; Bloqueador; Marcação individual',
