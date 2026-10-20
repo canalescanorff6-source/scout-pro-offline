@@ -602,7 +602,8 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
   try{ranked=engine.rank({id:d.id,edition:d.edition,base_stats:d.base_stats,
    base_stats_proof:d.base_stats_proof,base_catalog_proof:d.base_catalog_proof,
    posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo,impeto_extra:value,niveis:d.recommended_levels||d.niveis,
-   pp:d.pp,training_provisional:d.training_provisional===true||
+   pp:d.pp,pp_estimado:d.pp_estimado===true||d.pp_estimated===true,
+    training_provisional:d.training_provisional===true||
     d.treino_proposto_nao_validado===true,
    habilidades_nativas:d.native_skills||d.habilidades_nativas},tactic).filter(x=>!unavailable.has(x.nome));}catch(e){ranked=[]}
  }
@@ -870,7 +871,7 @@ function individualEvidenceProfile(d,tactic,engine,manualEquipped='',opts={}){
   nativeFingerprint:nativeIdentity,
   nativeCount:native.length,unmappedNativeCount:nativeProfile.unknown.length,
   contextualNativeCount:nativeProfile.known.length,
-  pp:Number.isFinite(Number(d.pp))?Number(d.pp):null,
+  pp:d.pp===null||d.pp===undefined||d.pp===''?null:(Number.isInteger(Number(d.pp))?Number(d.pp):null),
   progressStatus:training.status,progressVector:training.levels?Object.freeze([...training.levels]):null,
   ppEstimated:d.pp_estimado===true,
   equippedProof:skills.equippedConfirmed,boosterSlotProof:boost.able
@@ -1148,7 +1149,7 @@ function evidenceSensitivityV283(d,tactic,engine){
   alerts.push('CAP, Card ID ou edição ausentes.');
  if(!proof.nativeCount||proof.unmappedNativeCount)
   alerts.push('Habilidades nativas ausentes ou parcialmente interpretadas.');
- if(proof.progressStatus!=='custo_pp_conferido')
+ if(proof.progressStatus!=='investimento_matematico')
   alerts.push('Treino não utilizável para calcular atributos finais.');
  if(proof.ppEstimated)alerts.push('PP ainda estimados.');
  if(!proof.equippedProof)alerts.push('Cinco slots de adicionais não reconfirmados nesta edição.');
@@ -1165,8 +1166,141 @@ function evidenceSensitivityV283(d,tactic,engine){
   meaning:'Retirar sinais mede sensibilidade da heurística, não rendimento, ganho numérico ou aprovação de criador.'
  });
 }
+// V284 — laboratório comparativo de decisões em cada edição.
+ // Não converte score em eficácia, não cria PP, slot ou aprovação de criador.
+function competitiveDecisionBoardV284(d,tactic,engine,manualEquipped='',opts={}){
+ if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida V284');
+ const cap=Number(d.capture??d.numero),id=String(d.id||''),edition=String(d.edition||d.versao||'');
+ const result=evaluate(d,tactic,manualEquipped,{equippedConfirmed:opts.equippedConfirmed===true});
+ const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
+ const training=investmentAudit(d);
+ const native=splitSkills(d.native_skills||d.habilidades_nativas||'');
+ const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
+ const original=String(d.original_position||d.posicao_original||d.posicao||d.shown_position||'');
+ const used=String(d.role_used||d.shown_position||d.posicao||'');
+ const alternate=normal(original)!==normal(used);
+ const identityOK=Number.isInteger(cap)&&cap>=1&&Boolean(id.trim()&&edition.trim())&&
+  !/pendente|confirmar|desconhecid|invalid/i.test(id+' '+edition);
+ const base=engine?.baseStatsAudit?.({
+  id,versao:edition,base_stats:d.base_stats,
+  base_stats_proof:d.base_stats_proof,base_catalog_proof:d.base_catalog_proof
+ })||{status:'base_nao_documentada'};
+ const nativeFamilies={};
+ for(const key of nativeKeys){
+  const family=SKILL_FAMILY[key];
+  if(family)nativeFamilies[family]=(nativeFamilies[family]||0)+1;
+ }
+ const list=result.recommendations||[];
+ const alternatives=(result.alternatives||[]).slice(0,3);
+ const skills=Object.freeze(list.slice(0,5).map((item,i)=>{
+  const family=SKILL_FAMILY[item.key]||'nao_classificada';
+  const relativeGap=i+1<list.length?Number((item.score-list[i+1].score).toFixed(2)):null;
+  const factor=item.criterios||{};
+  const explanation=[
+   'Função '+(result.role||'pendente')+' em '+TACTIC_REASON[tactic],
+   'Família '+family+'; prioridade relativa '+(i+1)+'.',
+   factor.estilo>0?'Estilo registrado contribuiu para a prioridade.':'Sem bônus contextual do estilo.',
+   factor.nativas>0?'Complementaridade com habilidades nativas catalogadas.':'Sem sinal adicional das nativas nessa candidata.',
+   factor.investimento>0?'Vetor de PP coerente influenciou apenas como investimento.':'PP não utilizados para reforçar esta habilidade.',
+   nativeFamilies[family]?'Há habilidade nativa da mesma família; não significa duplicata.':'Nenhuma nativa dessa família foi reconhecida.',
+   relativeGap!==null&&relativeGap<3?'Diferença estreita: não inferir superioridade em jogo.':'Ranking heurístico; não representa teste de partidas.'
+  ];
+  return Object.freeze({
+   key:item.key,name:item.name,rank:i+1,family,
+   score:item.score,marginToNext:relativeGap,
+   factors:Object.freeze({...factor}),
+   factorSum:Number(Object.values(factor).reduce((s,n)=>s+Number(n||0),0).toFixed(2)),
+   nativeFamilyCount:nativeFamilies[family]||0,
+   synergy:Object.freeze((item.synergies||[]).slice()),
+   explanation:Object.freeze(explanation),
+   status:'RECOMENDACAO_CALCULADA_NAO_EQUIPADA',canEquip:false
+  });
+ }));
+ const alternativeSkills=Object.freeze(alternatives.map(item=>Object.freeze({
+  key:item.key,name:item.name,score:item.score,family:SKILL_FAMILY[item.key]||'nao_classificada',
+  gapFromFirst:list[0]?Number((list[0].score-item.score).toFixed(2)):null,
+  warning:'Alternativa consultiva; posição não é comprovação de inferioridade.'
+ })));
+ const balanced=Object.freeze(result.balancedPortfolio.candidates.map(x=>Object.freeze({
+  key:x.key,name:x.name,family:x.family,score:x.relativeScore,
+  reason:x.explanation,canApply:false
+ })));
+ const setA=new Set(skills.map(x=>x.key)),setB=new Set(balanced.map(x=>x.key));
+ const shared=[...setA].filter(x=>setB.has(x)).length;
+ const topBoost=[boost.primary,...boost.alternatives].filter(Boolean).slice(0,3);
+ const factory=boost.complementarity.factoryAxes||[];
+ const boosters=Object.freeze(topBoost.map((b,i)=>{
+  const axes=engine?.BOOSTERS?.[b.nome]||[];
+  const sharedAxes=axes.filter(a=>factory.includes(a));
+  const evidence=b.evidencias||{};
+  return Object.freeze({
+   key:b.nome,name:b.nome_pt||b.nome,rank:i+1,score:b.score,
+   axes:Object.freeze((b.atributos||[]).slice()),
+   affectedKeys:Object.freeze(axes.slice()),sharedWithFixed:sharedAxes.length,
+   sharedKeys:Object.freeze(sharedAxes),fixedKnown:factory.length===4,
+   factors:Object.freeze({
+    function:Number(evidence.score_funcao||0),training:Number(evidence.score_complemento||0),
+    context:Number(evidence.score_contexto||0),base:Number(evidence.score_base||0)
+   }),
+   baseStatus:evidence.base_status||'pendente',trainingStatus:evidence.pp_status||'pendente',
+   comparisonGap:topBoost[0]?Number((topBoost[0].score-b.score).toFixed(2)):null,
+   explanation:factory.length===4?
+    'Comparação dos quatro atributos com ímpeto fixo; sobreposição não é desperdício.':
+    'Ímpeto fixo não identificado; não calcular ganho por sobreposição.',
+   canSpendTokens:false,canApply:false
+  });
+ }));
+ const gaps=[];
+ if(!identityOK)gaps.push({key:'identidade',action:'Conferir captura, Card ID e edição.'});
+ if(alternate&&opts.roleConfirmed!==true)
+  gaps.push({key:'posicao',action:'Confirmar proficiência da posição alternativa.'});
+ if(!native.length||result.unmappedNativeSkills?.length)
+  gaps.push({key:'nativas',action:'Conferir nativas e especiais da mesma edição.'});
+ if(!training.levels)
+  gaps.push({key:'pp',action:'Conferir nível máximo, PP de origem e distribuição registrada.'});
+ if(base.status!=='base_completa_confirmada')
+  gaps.push({key:'base',action:'Anexar atributos-base e fonte da edição exata.'});
+ if(!result.equippedConfirmed)
+  gaps.push({key:'adicionais',action:'Conferir TODOS os cinco slots de habilidades adicionais.'});
+ if(!boost.able)
+  gaps.push({key:'impeto',action:'Conferir existência e estado do segundo slot no jogo.'});
+ gaps.push({key:'gameplay',action:'Comparar partidas controladas e vídeo da mesma edição; sem atribuir autoria.'});
+ return Object.freeze({
+  schema:'CRAQUE_V284_LABORATORIO_DECISAO',
+  identity:Object.freeze({capture:cap,cardId:id,edition,originalPosition:original,
+   usedPosition:used,alternatePosition:alternate,
+   roleEvidence:alternate?(opts.roleConfirmed===true?'CONFIRMADA_PELO_USUARIO':'PENDENTE'):'POSICAO_CADASTRADA'}),
+  tactic,role:result.role||null,archetype:archetypeOf(d),
+  evidence:Object.freeze({
+   identity:identityOK?'CADASTRO_IDENTIFICADO':'PENDENTE',
+   natives:native.length&&!(result.unmappedNativeSkills||[]).length?
+    'NOMES_CADASTRADOS':'PENDENTE',
+   training:training.status,
+   base:base.status,
+   equipped:result.equippedConfirmed?'LISTA_CONFERIDA_NA_CONTA':'SLOTS_DESCONHECIDOS',
+   secondBooster:boost.able?'INDICADO_E_VAZIO_CONFERIDO':'NAO_CONFERIDO',
+   gameplay:'SEM_TESTE_COMPARATIVO_COMPROVADO'
+  }),
+  skills,alternativeSkills,
+  portfolio:Object.freeze({balanced,sharedWithPrimary:shared,
+   mainCount:skills.length,balancedCount:balanced.length,
+   divergent:skills.map(x=>x.key).join('|')!==balanced.map(x=>x.key).join('|'),
+   meaning:'Duas estratégias de seleção para comparação; não são cinco slots livres.'}),
+  boosters,boosterEligibility:Object.freeze({
+   catalogSlot:boost.slotEvidence,manualSlot:boost.verifiedSlot||'nao_confirmado',
+   canSpendTokens:false,fixed:boost.complementarity.factoryName||null
+  }),
+  pending:Object.freeze(gaps.map(x=>Object.freeze(x))),
+  checks:Object.freeze({skillNamesUnique:new Set(skills.map(x=>x.key)).size===skills.length,
+   boosterAllFourAxes:boosters.every(x=>x.affectedKeys.length===4),
+   evidenceCount:gaps.length-1}),
+  noAutomaticApplication:true,mayModifyTraining:false,maySpendTokens:false,
+  creatorEndorsement:false,gameplayValidated:false,
+  disclaimer:'Rankings são heurísticos e específicos aos registros desta edição; não comprovam desempenho, atributos finais nem autoria.'
+ });
+}
 const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283};
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283,competitiveDecisionBoardV284};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;
