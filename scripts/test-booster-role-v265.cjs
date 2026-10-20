@@ -13,7 +13,9 @@ assert.equal(new Set(cards.map(x=>x.numero+'@'+x.id)).size,246);
 assert.equal(B.POS.LE,'LE');assert.equal(B.POS.DE,'LE');
 assert.equal(B.POS.LD,'LD');assert.equal(B.POS.MLE,'ALA');
 assert.equal(B.ROLE.LE.defaware,B.ROLE.LD.defaware);
-assert.deepEqual(B.ROLE_TRAINING.LE,B.ROLE_TRAINING.LD);
+assert.deepEqual(B.rank({posicao:'LE'},'posse').map(x=>[x.nome,x.score]),
+ B.rank({posicao:'LD'},'posse').map(x=>[x.nome,x.score]),
+ 'LE e LD conservam pesos numéricos equivalentes sem trocar a identidade lateral');
 const positions=[...new Set(cards.map(x=>x.posicao))];
 assert(positions.every(p=>B.POS[p]),'Posições sem função: '+positions.filter(p=>!B.POS[p]));
 const styles=['posse','normal','rapido','fora','longo'];
