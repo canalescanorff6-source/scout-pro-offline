@@ -76,6 +76,33 @@ const POSITION={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG
 const ROLE_LABEL=Object.freeze({CA:'Centroavante',SA:'Segundo atacante',MAT:'Meia-atacante',
  MLG:'Meia de ligação',VOL:'Volante',ZG:'Zagueiro',LD:'Lateral direito',
  LE:'Lateral esquerdo',ALA:'Ala / ponta',GO:'Goleiro'});
+// V273: somente investimento documentado no vetor registrado da MESMA carta.
+// Não representa atributo final e é zero se o orçamento não fecha, estiver
+// ausente/estimado ou a proposta ainda não tiver sido aprovada.
+const TRAINING_CATEGORY=Object.freeze({
+ firstshot:0,acrobatic:0,longshot:0,curler:0,
+ onepass:1,through:1,weighted:1,lowloft:1,
+ double:2,sole:2,heel:2,cutturn:2,
+ fighting:4,trackback:4,supersub:4,
+ intercept:6,blocker:6,mark:6,sliding:6,clear:6,
+ aerial:5,heading:5
+});
+function investmentAudit(d){
+ const levels=d?.recommended_levels??d?.niveis;
+ const pp=d?.pp;
+ if(!Array.isArray(levels)||levels.length!==10||
+  !levels.every(n=>Number.isInteger(n)&&n>=0&&n<=20))
+  return Object.freeze({status:'vetor_indisponivel',levels:null});
+ if(!Number.isInteger(pp)||pp<0||pp>238||d.training_provisional===true||
+  d.treino_proposto_nao_validado===true||d.pp_estimado===true||d.pp_estimated===true)
+  return Object.freeze({status:'nao_confirmado_ou_provisorio',levels:null});
+ const spent=levels.reduce((cost,n)=>{
+  for(let i=0;i<n;i++)cost+=1+Math.floor(i/4);
+  return cost;
+ },0);
+ if(spent!==pp)return Object.freeze({status:'pp_divergente',levels:null});
+ return Object.freeze({status:'investimento_matematico',levels:levels.slice(),pp,spent});
+}
 const POOLS={
  CA:['firstshot','onepass','through','sole','heel','acrobatic','longshot','fighting','heading','aerial','double','curler','supersub','weighted'],
  SA:['onepass','through','double','sole','firstshot','heel','longshot','fighting','curler','weighted','cutturn','acrobatic','trackback','supersub'],
@@ -110,10 +137,11 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const distinctExtras=[...userMap].filter(([id])=>!nativeIds.has(id));
  const used=new Set([...nativeKeys,...userMap.keys()].filter(id=>!id.startsWith('unmapped:')));
  const style=normal([d.playing_style,d.attack_style,d.defence_style,d.estilo_ataque,d.estilo_defesa].filter(Boolean).join(' '));
+ const investment=investmentAudit(d);
  const pool=POOLS[role];const scorer=new Map;
  const factors=new Map();
  pool.forEach((key,i)=>{const base=200-i*10;scorer.set(key,base);
-  factors.set(key,{funcao:base,tatica:0,estilo:0,nativas:0});});
+  factors.set(key,{funcao:base,tatica:0,estilo:0,nativas:0,investimento:0});});
  const bump=(names,amount,source='estilo')=>names.forEach(k=>{
   if(!scorer.has(k))return;
   scorer.set(k,scorer.get(k)+amount);
@@ -218,6 +246,16 @@ function evaluate(d,tactic,manualEquipped,options={}){
   ['onepass','fighting','intercept'],9,'Recomposição nativa com circulação curta');
  support(nativeKeys.has('gklow')&&role==='GO'&&tactic==='posse',
   ['gklong','captain','fighting'],8,'Reposição baixa nativa, diversificar saídas');
+ // Investimento é um discriminador DOCUMENTAL limitado a 0..8 pontos;
+ // um nível não diz que a carta tem atributo final mais alto ou baixo.
+ // Não cria build, não inventa vetor e não usa Overall.
+ if(investment.levels)for(const key of pool){
+  const category=TRAINING_CATEGORY[key];
+  if(category===undefined)continue;
+  const points=Math.min(8,Math.round(investment.levels[category]*.4));
+  scorer.set(key,scorer.get(key)+points);
+  factors.get(key).investimento+=points;
+ }
  // O histórico de sugestões genéricas não aumenta a nota da carta.
  // Prioridade depende apenas da função, da tática e do estilo, não do OVR.
  const ranked=[...scorer.entries()].filter(([key])=>!used.has(key))
@@ -254,6 +292,10 @@ function evaluate(d,tactic,manualEquipped,options={}){
   perfil:ROLE_LABEL[role]||role,estilos_registrados:style,rankings_condicionais:true,
   nativeCoverage:nativeKnown?(unmappedNative.length?'parcial':'lista_reconhecida'):'nativas_ausentes',
   slotProof:'somente_confirmacao_do_jogador_e_mesma_edicao',
+  investmentEvidence:investment.status,
+  investmentApplied:investment.levels!==null,
+  recommendationMode:equippedConfirmed?'comparacao_com_lista_confirmada':
+   'ate_cinco_candidatos_sem_slots_comprovados',
   missing:[...(nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']),...warnings]};
 }
 function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
@@ -307,6 +349,119 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
   spread:ranked.length>1?Number((ranked[0].score-ranked[1].score).toFixed(2)):null,
   equipStatus:verifiedSlot==='ausente'?'impossivel_na_conta':status==='nome_registrado'?'comparacao_segundo_fixo':status==='possivel'?'slot_pendente_no_catalogo':!slotSupported?'slot_nao_documentado':verifiedSlot==='ocupado'?'ocupado_na_conta':able?'condicionado_a_slot':'slot_nao_verificado'};
 }
+// V273: dossiê competitivo de uma edição, sem dependências mutáveis.
+// Referências de criadores são critério de rigor; nunca atribuir autoria.
+const DOSSIER_TACTICS=Object.freeze(['posse','normal','rapido','fora','longo']);
+const archetypeOf=d=>{
+ const role=roleOf(d);
+ const style=normal([d.attack_style||d.estilo_ataque,
+  d.defence_style||d.estilo_defesa].join(' '));
+ if(['CA','SA'].includes(role)&&/pivo|homem de area/.test(style))
+  return 'Referência de apoio e jogo de costas';
+ if(['CA','SA'].includes(role)&&/puxa marcacao|arrastar defesa/.test(style))
+  return 'Atacante de apoio e arraste da defesa';
+ if(['CA','SA'].includes(role)&&/artilheiro|matador|oportunista/.test(style))
+  return 'Finalizador de infiltração e tabelas';
+ if(role==='MAT'&&/infiltr|criador de espacos/.test(style))
+  return 'Meia de ruptura entre linhas';
+ if(['MAT','MLG'].includes(role)&&/armador|orquestrador|classico/.test(style))
+  return 'Organizador de circulação e último passe';
+ if(role==='MLG'&&/versatil|todo o terreno/.test(style))
+  return 'Meia de conexão e recomposição';
+ if(role==='VOL'&&/primeiro volante|trinco|destruidor/.test(style))
+  return 'Volante de cobertura e primeiro passe';
+ if(role==='ZG'&&/construcao de jogo|defensor criativo/.test(style))
+  return 'Zagueiro construtor para saída curta';
+ if(role==='ZG'&&/destruidor/.test(style))
+  return 'Zagueiro de duelo e proteção';
+ if(['LD','LE'].includes(role)&&/lateral ofensivo|lateral atacante|lateral movel/.test(style))
+  return 'Lateral de apoio e conexão';
+ if(['LD','LE'].includes(role)&&/lateral defensivo/.test(style))
+  return 'Lateral de cobertura defensiva';
+ if(role==='ALA'&&/ala produtivo/.test(style))
+  return 'Ala de condução e entrada por dentro';
+ if(role==='GO')return 'Goleiro de construção ou defesa, conforme estilo';
+ return 'Perfil por função cadastrada, estilo específico pendente';
+};
+function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
+ if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática não reconhecida');
+ const skills=evaluate(d,tactic,manualEquipped,{
+  equippedConfirmed:opts.equippedConfirmed===true
+ });
+ const boosters=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
+ const edition=String(d.edition||d.versao||'');
+ const id=String(d.id||'');
+ const identity=Boolean(id&&!/pendente|confirmar|invalid/i.test(id+' '+edition));
+ const warnings=[];
+ const original=String(d.shown_position||d.posicao||'');
+ const requested=String(d.role_used||original);
+ const position=roleOf(d);
+ const roleApproved=requested===original||
+  opts.roleConfirmed===true; // não presumir proficiência treinada
+ const training=investmentAudit(d);
+ if(!identity)warnings.push('Conferir Card ID e versão exatos antes de comparar.');
+ if(!skills.nativeKnown)warnings.push('Conferir lista de habilidades nativas da versão.');
+ else if(skills.unmappedNativeSkills.length)
+  warnings.push('Há '+skills.unmappedNativeSkills.length+
+   ' habilidade(s) nativa(s) ainda sem interpretação do motor. Não assumir ausência.');
+ if(training.levels===null)
+  warnings.push('Conferir vetor de treino e custo PP com a mesma edição. Não propor substituição.');
+ if(!roleApproved)warnings.push('Proficiência da posição utilizada ainda não confirmada.');
+ if(!skills.equippedConfirmed)warnings.push('Conferir lista integral dos cinco slots de habilidade.');
+ if(!boosters.able)warnings.push('Conferir elegibilidade e estado do segundo slot de ímpeto.');
+ if(skills.requiresReconciliation)warnings.push('Resolver conflito de nomes/equipamentos antes de gastar fichas.');
+ const gap=boosters.spread;
+ if(gap!==null&&gap<2)
+  warnings.push('Ímpetos com pontuação próxima: só selecionar após comparação real da edição.');
+ const base=engine?.baseStatsAudit?.({
+  id,versao:edition,base_stats:d.base_stats,
+  base_stats_proof:d.base_stats_proof,base_catalog_proof:d.base_catalog_proof
+ });
+ if(base?.status!=='base_completa_confirmada')
+  warnings.push('Atributos-base completos não confirmados: não alegar build meta ou status final.');
+ const scenarios=Object.freeze(DOSSIER_TACTICS.map(style=>{
+  const result=evaluate(d,style,manualEquipped,{
+   equippedConfirmed:opts.equippedConfirmed===true
+  });
+  const ranked=booster(d,style,engine,opts.verifiedSlot,opts.verifiedBooster);
+  return Object.freeze({
+   style,skills:result.recommendations.map(x=>x.name),
+   firstSkill:result.recommendations[0]?.name||null,
+   booster:ranked.primary?.nome_pt||ranked.primary?.nome||null,
+   technicalName:ranked.primary?.nome||null,
+   margin:ranked.spread,
+   confidence:ranked.confidence,
+   equipAuthorized:false
+  });
+ }));
+ return Object.freeze({
+  schema:'CRAQUE_DOSSIER_COMPETITIVO_V273',
+  cap:Number(d.capture??d.numero),cardId:id,edition,role:position,
+  roleLabel:ROLE_LABEL[position]||'Não reconhecido',
+  originalPosition:original,positionUsed:requested,roleApproved,
+  archetype:archetypeOf(d),style:tactic,identityConfirmed:identity,
+  nativeCoverage:skills.nativeCoverage,unmappedNative:skills.unmappedNativeSkills.slice(),
+  trainingStatus:training.status,sourceConfirmed:false,
+  trainingCategories:training.levels?[
+   'Chute','Passe','Drible','Destreza','Força inferior','Jogo aéreo',
+   'Defesa','Goleiro 1','Goleiro 2','Goleiro 3'
+  ].map((name,i)=>({name,level:training.levels[i]})):[],
+  skillCandidateCount:skills.recommendations.length,
+  skillCandidates:skills.recommendations.map(x=>Object.freeze({
+   key:x.key,name:x.name,score:x.score,criteria:{...x.criterios},
+   documentReason:x.synergies.slice()
+  })),
+  skillSlotsVerified:skills.equippedConfirmed,
+  boosterName:boosters.primary?.nome_pt||boosters.primary?.nome||null,
+  boosterMargin:gap,boosterSlotVerified:boosters.able,
+  boosterAlternatives:boosters.alternatives.map(x=>Object.freeze({
+   name:x.nome_pt||x.nome,score:x.score
+  })),
+  evidencePending:warnings,scenarios,
+  competitivelyApproved:false,maySpendTokensAutomatically:false,
+  note:'Não é ficha de Rentão/Blackjhon sem Card ID e vídeo exatos; análise heurística condicional.'
+ });
+}
 const tacticLabelFor=t=>({
  posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',
  fora:'Por Fora',longo:'Passe Longo'
@@ -317,7 +472,7 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,TRAINING_CATEGORY,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
@@ -346,6 +501,12 @@ const css=document.createElement('style');css.textContent=
 '#scout-v162 .v272-booster-compare{border:1px solid #596777;padding:10px;border-radius:10px;background:#102637;color:#d8e6ec}'+
 '#scout-v162 .v272-booster-compare summary{min-height:40px;display:flex;align-items:center;cursor:pointer;color:#efcf89}'+
 '#scout-v162 .v272-booster-compare li{margin:8px 0;line-height:1.6;overflow-wrap:anywhere;font-size:11px}'+
+'#scout-v162 #v273-dossier{border:1px solid #8b7552;background:linear-gradient(125deg,#172b3c,#0b1d2e);border-radius:12px;margin:12px 0;padding:12px;color:#e6edf2}'+
+'#scout-v162 #v273-dossier summary{min-height:44px;cursor:pointer;color:#f2d594;font-weight:850;line-height:1.6}'+
+'#scout-v162 #v273-dossier h4{font-size:13px;color:#f1d9a2;margin:12px 0 6px}'+
+'#scout-v162 #v273-dossier ul{font-size:12px;line-height:1.65;padding-left:22px;margin:8px 0}'+
+'#scout-v162 #v273-dossier li{overflow-wrap:anywhere;padding:4px 0}'+
+'#scout-v162 #v273-dossier .v273-tactic{padding:7px 9px;margin:4px 0;border:1px solid #39576e;border-radius:8px;background:#102939;font-size:12px;line-height:1.5}'+
 '#scout-v162 .v162-panel{border:1px solid #33556b;border-radius:12px;padding:12px;background:#0b1e2d;min-width:0}'+
 '#scout-v162 .v162-note{color:#d3caa5}#scout-v162 textarea{box-sizing:border-box;width:100%;min-height:62px;background:#081e2d;border:1px solid #5b829a;border-radius:8px;color:white;font-size:14px;padding:10px}'+
 '#scout-v162 .v162-foot{font-size:12px;color:#b9d3dc;border-top:1px solid #35566a;padding-top:10px;margin-top:12px}'+
@@ -358,7 +519,8 @@ document.head.appendChild(css);
 const section=document.createElement('section');section.id='scout-v162';section.setAttribute('aria-label','Recomendações de habilidades e ímpetos por carta');
 section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA V162</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
 '<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button><button type="button" data-tactic="fora" aria-pressed="false">Por Fora</button><button type="button" data-tactic="longo" aria-pressed="false">Passe Longo</button></div>'+
-'<p id="v272-proofline" class="v272-proofline" aria-live="polite"></p><div class="v162-panels"><article class="v162-panel"><h3>Até 5 habilidades adicionais · ordem por edição</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
+'<p id="v272-proofline" class="v272-proofline" aria-live="polite"></p>'+
+'<details id="v273-dossier"><summary>Laudo competitivo desta carta · 5 estilos e evidências</summary><div id="v273-dossier-content"></div></details><div class="v162-panels"><article class="v162-panel"><h3>Até 5 habilidades adicionais · ordem por edição</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
 '<details><summary>Informar habilidades adicionais desta edição</summary><p>Separe os nomes por ponto e vírgula. Sem conferência, esta é apenas uma lista parcial: não presumimos que os outros slots estejam vazios.</p><textarea id="v162-equipped" aria-label="Habilidades adicionais já equipadas" placeholder="Ex.: Passe de primeira; Toque duplo"></textarea><label class="v254-confirm-line"><input type="checkbox" id="v254-confirm-equipped"><span>Conferi no Plano de Jogo: esta lista contém TODAS as habilidades adicionais equipadas nesta edição exata, inclusive se estiver vazia.</span></label><button id="v162-save" type="button">Salvar conferência e recalcular</button><p id="v162-feedback" aria-live="polite"></p></details>'+
 '<p class="v162-foot">Recomendações teóricas baseadas nas habilidades registradas, no estilo e na função da carta. Não são testes comprovados em partidas; verifique habilidades nativas, compatibilidade e slot antes de usar tokens. Nenhuma escolha é aplicada automaticamente.</p>';
 // V192: mostrar as cinco habilidades dentro da ficha PRINCIPAL, sem cópia do painel.
@@ -410,6 +572,11 @@ function draw(){
  const confirmed=equipmentConfirmed();
  const result=evaluate(d,tactic,extra,{equippedConfirmed:confirmed});
  const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103,manuallyVerified.status,manuallyVerified.equipped);
+ const dossier=evidenceDossier(d,tactic,host.SCOUT_BOOSTERS_V103,extra,{
+  equippedConfirmed:confirmed,verifiedSlot:manuallyVerified.status,
+  verifiedBooster:manuallyVerified.equipped,
+  roleConfirmed:roleEvidence==='treinada'||roleEvidence==='familiar'
+ });
  const remaining=result.slotsRemaining;
  const proposed=result.recommendations;
  verifiedCheck.checked=result.equippedConfirmed;
@@ -428,10 +595,40 @@ function draw(){
   (result.missing.length?' Atenção: '+result.missing.join(' '):'');
  const proofline=section.querySelector('#v272-proofline');
  proofline.textContent='LEITURA DA CARTA · '+result.perfil+' · '+tacticLabelFor(tactic)+
-  ' · nativas: '+result.nativeCoverage+
+  ' · nativas: '+result.nativeCoverage+' · investimento: '+result.investmentEvidence+
   ' · PP: '+(boost.primary?.evidencias?.pp_status||'pendente')+
   ' · segundo ímpeto: '+boost.slotEvidence+
   ' · SEM homologação por OVR ou gameplay.';
+ // Parecer auditável de 246 edições: campos de perfil e pendências.
+ // Sem HTML do jogador e sem duplicar a ficha principal.
+ const dossierContent=section.querySelector('#v273-dossier-content');
+ dossierContent.replaceChildren();
+ const addSection=(heading,values,cssClass='')=>{
+  const h=document.createElement('h4');h.textContent=heading;dossierContent.append(h);
+  if(cssClass==='scenario'){
+   for(const value of values){const p=document.createElement('p');p.className='v273-tactic';p.textContent=value;dossierContent.append(p)}
+  }else{
+   const list=document.createElement('ul');
+   for(const value of values){const li=document.createElement('li');li.textContent=value;list.append(li)}
+   dossierContent.append(list);
+  }
+ };
+ addSection('Perfil tático de origem',[
+  dossier.archetype+' · posição usada: '+dossier.positionUsed+' · '+dossier.roleLabel,
+  'CAP '+dossier.cap+' / Card ID '+dossier.cardId+' · '+dossier.edition,
+  'Progresso: '+dossier.trainingStatus+' · nativas: '+dossier.nativeCoverage+
+   ' · cinco adicionais: '+(dossier.skillSlotsVerified?'conferidos':'vagas não comprovadas')
+ ]);
+ if(dossier.trainingCategories.length)addSection('Vetor registrado (níveis por categoria, não atributos finais)',
+  dossier.trainingCategories.map(c=>c.name+': '+c.level));
+ addSection('Comparação conservadora: todos os estilos',dossier.scenarios.map(t=>
+  tacticLabelFor(t.style)+' · skill inicial: '+(t.firstSkill||'nenhuma')+
+  ' · ímpeto: '+(t.booster||'pendente')+
+  ' · margem: '+(t.margin??'pendente')+' · não equipar automaticamente'
+ ),'scenario');
+ addSection('Provas e conferências prioritárias',
+  dossier.evidencePending.length?dossier.evidencePending:
+   ['Informações cadastrais sem bloqueios automáticos; gameplay e validação humana continuam necessários.']);
  const ul=section.querySelector('#v162-skills');ul.replaceChildren();
  for(const [i,skill] of proposed.entries()){
   const li=document.createElement('li'),rank=document.createElement('span'),
@@ -445,6 +642,7 @@ function draw(){
   breakdown.className='v272-criteria';summary.textContent='Entender por que esta habilidade foi priorizada';
   p.textContent='Critérios: função '+(factors.funcao??'—')+' · tática '+(factors.tatica??'—')+
    ' · estilo '+(factors.estilo??'—')+' · nativas '+(factors.nativas??'—')+
+   ' · investimento PP '+(factors.investimento??'—')+
    '. '+(skill.synergies?.length?skill.synergies.join('; ')+'. ':'')+
    'A pontuação é comparativa, não prova status finais nem desempenho.';
   breakdown.append(summary,p);li.append(rank,b,score,reason,breakdown);ul.appendChild(li);

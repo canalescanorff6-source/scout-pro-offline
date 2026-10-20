@@ -29,9 +29,9 @@ for(const c of cards){
   for(const skill of r.recommendations.concat(r.alternatives)){
    assert(!nativeIds.has(skill.key),'Não repetir nativa #'+c.numero);
    const p=skill.criterios;
-   assert(p&&Object.keys(p).sort().join(',')==='estilo,funcao,nativas,tatica');
+   assert(p&&Object.keys(p).sort().join(',')==='estilo,funcao,investimento,nativas,tatica');
    assert(Object.values(p).every(Number.isFinite));
-   assert.equal(skill.score,p.funcao+p.tatica+p.estilo+p.nativas);
+   assert.equal(skill.score,p.funcao+p.tatica+p.estilo+p.nativas+p.investimento);
    assert(Array.isArray(skill.synergies));
   }
   checks++;
