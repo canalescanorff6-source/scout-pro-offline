@@ -45,12 +45,20 @@ const skills='Passe de primeira; Toque duplo';
 const report=()=>V.proofChecklist(m,row,{},store).checks.find(x=>x.id==='additional');
 const confirm=manual=>({
  schema:'CRAQUE_ADDITIONAL_V254',capture:m.numero,card_id:m.id,
+ edition:m.versao,nativeFingerprint:S.fingerprint(m.habilidades_nativas),
  confirmed:true,fingerprint:S.fingerprint(manual)
 });
 store.setItem(manualKey,skills);
 assert.equal(report().documented,false,'Texto parcial não equivale a lista validada');
 store.setItem(proofKey,JSON.stringify(confirm(skills)));
 assert.equal(report().documented,true,'Confirmação da edição exata e lista atual é legítima');
+store.setItem(proofKey,JSON.stringify({...confirm(skills),edition:'OUTRA_EDICAO'}));
+assert.equal(report().documented,false,'Não aceitar confirmação de outra edição com mesmo Card ID');
+store.setItem(proofKey,JSON.stringify({...confirm(skills),edition:undefined}));
+assert.equal(report().documented,false,'V254 sem edição não comprova slots da edição atual');
+store.setItem(proofKey,JSON.stringify({...confirm(skills),nativeFingerprint:undefined}));
+assert.equal(report().documented,false,'Prova antiga sem assinatura das nativas exige reconfirmação');
+store.setItem(proofKey,JSON.stringify(confirm(skills)));
 assert.match(report().note,/V254/);
 store.setItem(manualKey,skills+'; Bloqueador');
 assert.equal(report().documented,false,'Editar a lista invalida a confirmação');
