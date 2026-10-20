@@ -437,7 +437,7 @@ function audit(cards){
  if(!Array.isArray(cards)||cards.length!==246)throw Error('Acervo incompleto: esperado 246');
  const ids=new Set;const result=cards.map(c=>{
   if(ids.has(c.numero))throw Error('Número duplicado '+c.numero);ids.add(c.numero);
-  return {numero:c.numero,nome:c.name,card_id:c.id,posicao:c.posicao,estilo_ataque:c.estilo_ataque,estilo_defesa:c.estilo_defesa,
+  return {numero:c.numero,nome:c.name,card_id:c.id,edition:c.versao,posicao:c.posicao,estilo_ataque:c.estilo_ataque,estilo_defesa:c.estilo_defesa,
     impeto_fixo:c.impeto_fixo,impeto_extra:c.impeto_extra,status_slot_fonte:slotStatus(c.impeto_extra),
     base_stats_known:c.base_stats_known,
     treino_individual_documentado:trainingAudit(c).status==='custo_pp_conferido',

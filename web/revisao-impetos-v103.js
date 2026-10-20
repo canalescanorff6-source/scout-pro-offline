@@ -1,6 +1,8 @@
 (()=>{'use strict';
-const E=window.SCOUT_BOOSTERS_V103;
-if(!E || !Array.isArray(E.CRAFTABLE)){document.body.textContent='Motor de ímpetos V104 indisponível.';return}
+const E=window.SCOUT_BOOSTERS_V103,R=window.SCOUT_RECOMMENDATIONS_V162;
+if(!E||!R||!Array.isArray(E.CRAFTABLE)||!R.boosterRecordEvidence){
+ document.body.textContent='Motores de evidência/ímpetos indisponíveis.';return
+}
 const $=id=>document.getElementById(id);
 const safe=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 let all=[],visible=[],selected=0,imageByNumber={},report=null;
@@ -9,7 +11,21 @@ const optionsFor=(c,key,saved)=>{
  const current=saved?.status==='ocupado'&&saved.equipped?E.boosterName(saved.equipped):null;
  return (c.recomendacoes[key]||[]).filter(b=>b.nome!==current);
 };
-function read(c){try{const saved=JSON.parse(localStorage.getItem(storage(c))||'null')||{};return saved.card_id&&String(saved.card_id)!==String(c.card_id)?{}:saved}catch(e){return {}}}
+// V283: a chave histórica CAP permanece intacta para backup e consulta.
+// Registros antigos não passam como prova ativa sem CAP + Card ID + edição.
+const identity=c=>({capture:c.numero,id:c.card_id,edition:c.edition});
+const matches=(c,s)=>s?.schema==='CRAQUE_BOOST_SLOT_V283'&&
+ Number(s.capture)===Number(c.numero)&&String(s.card_id)===String(c.card_id)&&
+ String(s.edition)===String(c.edition)&&Boolean(String(c.edition||'').trim());
+function read(c){try{
+ const saved=JSON.parse(localStorage.getItem(storage(c))||'null');
+ return matches(c,saved)&&
+  (saved.status==='pendente'||R.boosterRecordEvidence(identity(c),saved).valid)?saved:{};
+}catch(e){return {}}}
+function oldRecord(c){try{
+ const saved=JSON.parse(localStorage.getItem(storage(c))||'null');
+ return Boolean(saved&&!matches(c,saved));
+}catch(e){return false}}
 function statusText(c){
 return ({selecionavel:'Esta edição tem indicação de slot selecionável, mas NÃO há confirmação se está vazio na sua conta.',
 possivel:'Slot possivelmente selecionável: é necessário conferir no eFootball.',
@@ -23,7 +39,7 @@ if(!c){$('player-name').textContent='Nenhum resultado';$('tactics').replaceChild
 $('player').value=String(c.numero);
 $('art').src=imageByNumber[c.numero]||'';$('art').alt='Arte original de '+c.nome;
 $('player-name').textContent='#'+c.numero+' · '+c.nome;
-$('identity').textContent='Card ID: '+c.card_id+' · Posição: '+c.posicao+' · Estilo: '+c.estilo_ataque;
+$('identity').textContent='Card ID: '+c.card_id+' · Posição: '+c.posicao+' · Edição: '+c.edition+' · Estilo: '+c.estilo_ataque;
 $('fixed').textContent='Ímpeto nativo registrado: '+c.impeto_fixo;
 $('extra').textContent='Segundo ímpeto no banco: '+c.impeto_extra;
 const reports={
@@ -60,7 +76,10 @@ $('comparison').textContent=!hasEvidence?
 $('choose-posse').disabled=saved.status==='ausente'||c.status_slot_fonte==='nome_registrado'||!recommendations.length;
 $('planned').disabled=c.status_slot_fonte==='nome_registrado';
 if(c.status_slot_fonte==='nome_registrado')$('comparison').textContent='Já existe segundo ímpeto nomeado. Não presuma que ele seja selecionável ou substituível. Confira a edição na tela do jogo.';
-$('feedback').textContent=saved.updated?'Verificação salva neste dispositivo.':'Ainda sem verificação local deste slot.';
+$('feedback').textContent=saved.updated?
+ 'Conferência vinculada a CAP, Card ID e edição. Salva somente neste dispositivo.':
+ oldRecord(c)?'Registro antigo preservado, mas sem prova da edição. Reconfirme o slot nesta carta.':
+ 'Ainda sem verificação local deste slot.';
 }
 function applyFilter(){
 const q=$('search').value.trim().toLowerCase().replace('#',''),filter=$('filter').value;
@@ -81,7 +100,8 @@ $('next').onclick=()=>{if(selected<visible.length-1){selected++;render()}};
 $('save').onclick=()=>{const c=visible[selected];if(!c)return;const status=$('actual').value,equipped=status==='ocupado'?$('equipped').value:'',planned=$('planned').value;
 if(planned&&!E.CRAFTABLE.includes(planned)){$('feedback').textContent='Escolha um dos ímpetos regulares selecionáveis.';return}
 if(status==='ocupado'&&!equipped&&!confirm('O espaço foi marcado como ocupado, mas sem nome do ímpeto. Salvar assim mesmo?'))return;
-try{localStorage.setItem(storage(c),JSON.stringify({card_id:c.card_id,status,equipped,planned,note:$('note').value.trim().slice(0,150),updated:new Date().toISOString(),source:'conferencia manual no eFootball'}));$('feedback').textContent='Estado salvo apenas neste dispositivo.';if(['verificado_vazio','verificado_ocupado','verificado_ausente'].includes($('filter').value)){applyFilter()}else if(selected<visible.length-1){selected++;render();}else render();refreshMetrics();}catch(e){$('feedback').textContent='Falha ao salvar: '+e.message}};
+try{localStorage.setItem(storage(c),JSON.stringify({schema:'CRAQUE_BOOST_SLOT_V283',capture:c.numero,
+ edition:c.edition,card_id:c.card_id,status,equipped,planned,note:$('note').value.trim().slice(0,150),updated:new Date().toISOString(),source:'conferencia manual no eFootball'}));$('feedback').textContent='Estado salvo apenas neste dispositivo.';if(['verificado_vazio','verificado_ocupado','verificado_ausente'].includes($('filter').value)){applyFilter()}else if(selected<visible.length-1){selected++;render();}else render();refreshMetrics();}catch(e){$('feedback').textContent='Falha ao salvar: '+e.message}};
 $('export').onclick=csv;
 $('choose-posse').onclick=()=>{
  const c=visible[selected];if(!c||$('actual').value==='ausente')return;

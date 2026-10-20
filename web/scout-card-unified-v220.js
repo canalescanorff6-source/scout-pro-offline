@@ -22,8 +22,8 @@ function nativeDetails(card,tactic){
   const complete=R.checkedEquipment?.({...card,capture:cap,id},manual,manualProof)===true;
   try{results=R.evaluate(card,tactic,manual,{equippedConfirmed:complete})}catch(_e){results=null}
   const slot=parse(localGet('scoutpro:v103:booster:'+cap));
-  const verified=slot&&String(slot.card_id)===id?slot:{};
-  try{booster=R.booster(card,tactic,B,verified.status,verified.equipped)}catch(_e){booster=null}
+  const verified=R.boosterRecordEvidence?.({...card,capture:cap,id},slot);
+  try{booster=R.booster(card,tactic,B,verified?.status,verified?.equipped)}catch(_e){booster=null}
  }
  return {skills:results,booster,budget};
 }

@@ -72,9 +72,13 @@ assert.equal(S.checkedEquipment(d,many,{...proof,fingerprint:S.fingerprint(many)
 const legacy={...proof};delete legacy.edition;delete legacy.nativeFingerprint;
 assert.equal(S.checkedEquipment(d,manual,legacy),false);
 assert.equal(S.checkedEquipment(d,'',{...proof,fingerprint:S.fingerprint('')}),true);
-const confirmedBoost={card_id:d.id,edition:d.edition,status:'vazio',equipped:''};
+const confirmedBoost={schema:'CRAQUE_BOOST_SLOT_V283',capture:d.capture,
+ card_id:d.id,edition:d.edition,status:'vazio',equipped:''};
 assert.equal(S.boosterRecordEvidence(d,confirmedBoost).valid,true);
 assert.equal(S.boosterRecordEvidence(d,confirmedBoost).status,'vazio');
+assert.equal(S.boosterRecordEvidence(d,{...confirmedBoost,capture:d.capture+1}).valid,false);
+assert.equal(S.boosterRecordEvidence(d,{...confirmedBoost,schema:undefined}).valid,false);
+assert.equal(S.boosterRecordEvidence(d,{...confirmedBoost,equipped:'Agility'}).valid,false);
 assert.equal(S.boosterRecordEvidence(d,{...confirmedBoost,edition:null}).valid,false);
 assert.equal(S.boosterRecordEvidence(d,{...confirmedBoost,card_id:'outra'}).valid,false);
 assert.equal(S.boosterRecordEvidence(d,{...confirmedBoost,status:'indefinido'}).valid,false);

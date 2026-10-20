@@ -79,16 +79,19 @@ function checkedEquipment(card,manual,record){
 }
 function boosterRecordEvidence(card,record){
  const edition=String(card.edition||card.versao||'');
- const valid=Boolean(record&&edition.trim()&&
+ const cap=Number(card.capture??card.numero);
+ const valid=Boolean(record&&record.schema==='CRAQUE_BOOST_SLOT_V283'&&
+  Number.isInteger(cap)&&cap>=1&&Number(record.capture)===cap&&edition.trim()&&
   Object.hasOwn(record,'edition')&&String(record.edition)===edition&&
   String(record.card_id)===String(card.id)&&
-  ['vazio','ocupado','ausente'].includes(String(record.status)));
+  ['vazio','ocupado','ausente'].includes(String(record.status))&&
+  (record.status==='ocupado'||!String(record.equipped||'').trim()));
  return Object.freeze({
   valid,status:valid?record.status:null,equipped:valid?(record.equipped||''):null,
   legacy:!!record&&!valid,
   reason:!record?'Nenhuma conferência salva do segundo ímpeto.':
-   valid?'Conferência vinculada a Card ID e edição.':
-   'Conferência legada ou de outra edição: confirme novamente o slot no jogo.'
+   valid?'Conferência vinculada a CAP, Card ID e edição.':
+   'Conferência antiga, incompleta ou de outra carta: reconfirme o slot na edição exata.'
  });
 }
 // V274: vocabulário de habilidades NATIVAS ESPECIAIS do próprio catálogo.
@@ -1111,8 +1114,59 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
+// V283 — testar se o ranking muda quando sinais reais são retirados,
+// sem simular atributos finais, criar cartas ou autorizar equipamento.
+function evidenceSensitivityV283(d,tactic,engine){
+ if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida na sensibilidade V283');
+ const original=individualEvidenceProfile(d,tactic,engine);
+ const variants=[
+  {factor:'nativas',label:'Sem sinais das habilidades nativas',
+   card:{...d,native_skills:'',habilidades_nativas:''}},
+  {factor:'treino',label:'Sem distribuição de PP',
+   card:{...d,recommended_levels:null,niveis:null,
+    training_provisional:true,treino_proposto_nao_validado:true}}
+ ];
+ const asKeys=p=>p.suggestedSkillKeys.join('|');
+ const comparisons=variants.map(v=>{
+  const scenario=individualEvidenceProfile(v.card,tactic,engine);
+  const allKeys=[...original.suggestedSkillKeys,...scenario.suggestedSkillKeys];
+  const changedSkillPositions=Math.max(
+   original.suggestedSkillKeys.length,scenario.suggestedSkillKeys.length)-
+   allKeys.filter((_,i)=>original.suggestedSkillKeys[i]===scenario.suggestedSkillKeys[i]&&i<original.suggestedSkillKeys.length).length;
+  return Object.freeze({
+   factor:v.factor,label:v.label,
+   originalTopFive:Object.freeze(original.suggestedSkillKeys.slice()),
+   scenarioTopFive:Object.freeze(scenario.suggestedSkillKeys.slice()),
+   skillsChanged:asKeys(original)!==asKeys(scenario),changedSkillPositions,
+   originalBooster:original.firstBooster||null,
+   scenarioBooster:scenario.firstBooster||null,
+   boosterChanged:(original.firstBooster||null)!==(scenario.firstBooster||null),
+   mayApply:false});
+ });
+ const proof=original.proof,alerts=[];
+ if(!proof.cardId||!proof.edition||!Number.isInteger(proof.capture))
+  alerts.push('CAP, Card ID ou edição ausentes.');
+ if(!proof.nativeCount||proof.unmappedNativeCount)
+  alerts.push('Habilidades nativas ausentes ou parcialmente interpretadas.');
+ if(proof.progressStatus!=='custo_pp_conferido')
+  alerts.push('Treino não utilizável para calcular atributos finais.');
+ if(proof.ppEstimated)alerts.push('PP ainda estimados.');
+ if(!proof.equippedProof)alerts.push('Cinco slots de adicionais não reconfirmados nesta edição.');
+ if(!proof.boosterSlotProof)alerts.push('Slot de ímpeto não confirmado na edição e na conta.');
+ if(comparisons.some(x=>x.skillsChanged||x.boosterChanged))
+  alerts.push('Prioridades mudam sem algumas evidências: conferir fontes da carta.');
+ return Object.freeze({
+  schema:'CRAQUE_V283_SENSIBILIDADE_EVIDENCIAS',
+  identity:Object.freeze({capture:proof.capture,cardId:proof.cardId,edition:proof.edition}),
+  tactic,sourceTopFive:Object.freeze(original.suggestedSkillKeys.slice()),
+  sourceBooster:original.firstBooster||null,
+  comparisons:Object.freeze(comparisons),warnings:Object.freeze(alerts),
+  changesAuthorized:false,equipAuthorized:false,creatorApproval:false,
+  meaning:'Retirar sinais mede sensibilidade da heurística, não rendimento, ganho numérico ou aprovação de criador.'
+ });
+}
 const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta};
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;

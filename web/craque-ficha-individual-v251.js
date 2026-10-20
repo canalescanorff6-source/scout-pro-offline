@@ -11,8 +11,17 @@
 const moduleGet=p=>{if(typeof module!=='object'||!module.exports)return null;try{return require(p)}catch(_){return null}};
 const T=host?.SCOUT_TACTICS_V220||moduleGet('./scout-multitactic-engine-v220.js');
 const I=host?.CRAQUE_INTERPRETATION_V233||moduleGet('./craque-role-intelligence-v233.js');
-const S=host?.SCOUT_RECOMMENDATIONS_V162||moduleGet('./skills-booster-v162.js');
-const B=host?.SCOUT_BOOSTERS_V103||moduleGet('./booster-engine-v103.js');
+// V283: o app-bridge carrega esses motores em outra cadeia assíncrona.
+// Referências resolvidas UMA VEZ na inicialização ficavam nulas em parte das
+// fichas. Consultar a API em tempo de uso e refrescar no evento de prontidão.
+const fallbackS=moduleGet('./skills-booster-v162.js');
+const fallbackB=moduleGet('./booster-engine-v103.js');
+const S=new Proxy({}, {get(_target,key){
+ return (host?.SCOUT_RECOMMENDATIONS_V162||fallbackS)?.[key];
+}});
+const B=new Proxy({}, {get(_target,key){
+ return (host?.SCOUT_BOOSTERS_V103||fallbackB)?.[key];
+}});
 const C=host?.CRAQUE_COMPETITIVE_READINESS_V264||moduleGet('./craque-competitive-readiness-v264.js');
 const STATES=Object.freeze({
  complete:'PP e treino cadastrados · sem validação competitiva',
@@ -422,8 +431,7 @@ function methodologyGate(card,proof,style,store,review={}){
  }catch(_){confirmation=null}
  try{
   const record=JSON.parse(store?.getItem('scoutpro:v103:booster:'+card.numero)||'null');
-  if(record&&String(record.card_id)===String(card.id)&&
-   ['vazio','ocupado','ausente'].includes(record.status))slot=record;
+  if(S?.boosterRecordEvidence?.(data,record)?.valid===true)slot=record;
  }catch(_){slot=null}
  const confirmed=Boolean(S?.checkedEquipment?.(data,manual,confirmation)&&has('additional'));
  let skills=null,boost=null;
@@ -661,6 +669,44 @@ function display(){
   'Triagem competitiva inspirada nos critérios de Blackjhon e Rentão; '+
   'NENHUMA recomendação atribuída ou aprovada por eles sem vídeo da edição exata.');
  audit.append(methodList);block.append(audit);
+ // V283: análise de sensibilidade recolhível, sem segunda ficha e sem gravação.
+ const exactSource=sourceFor(card,raw,lab,evidenceByCap.get(card.numero));
+ // Caso a ficha HTML antiga diverja da fonte central, avaliar somente o
+ // catálogo canônico, sem importação de PP/atributos daquela ficha.
+ const sensitiveSource=exactSource||{
+  capture:Number(card.numero),id:String(card.id),edition:String(card.versao||''),
+  original_position:card.posicao,shown_position:card.posicao,
+  role_used:card.posicao,attack_style:card.estilo_ataque,
+  defence_style:card.estilo_defesa,native_skills:card.habilidades_nativas,
+  boost1:card.impeto_fixo,boost2:card.impeto_extra,
+  pp:card.pp_estimado===true?null:Number(card.pp),
+  pp_estimado:card.pp_estimado===true,
+  recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
+  training_provisional:card.treino_proposto_nao_validado===true
+ };
+ if(typeof S?.evidenceSensitivityV283==='function'){
+  const sensitivity=S.evidenceSensitivityV283({
+   ...sensitiveSource,original_position:card.posicao,
+   role_used:check.positionUsed||card.posicao,shown_position:card.posicao
+  },active,B);
+  const section=mk('details','ct251-evidence-details ct283-sensitivity');
+  section.append(mk('summary','','Sensibilidade de habilidades e ímpetos · comparar evidências'));
+  section.append(mk('p','','Retiramos um sinal por vez para medir a estabilidade das recomendações. Nada é aplicado, validado ou equipado.'));
+  if(!exactSource)section.append(mk('p','ct251-warning',
+   'Fonte HTML da ficha não conciliada com o catálogo: os sinais abaixo vêm apenas dos registros canônicos da edição. A confirmação documental permanece pendente.'));
+  const list=mk('ul','');
+  const names=keys=>keys.map(k=>S.SKILLS[k]?.name||k).join(', ')||'nenhuma';
+  for(const variant of sensitivity.comparisons){
+   list.append(mk('li','',variant.label+' — '+(variant.skillsChanged?
+    variant.changedSkillPositions+' posições de prioridade mudaram. ':
+    'O top cinco permaneceu igual. ')+
+    (variant.boosterChanged?'O primeiro ímpeto mudou. ':'O primeiro ímpeto permaneceu igual. ')+
+    'Com evidências: '+names(variant.originalTopFive)+
+    '. Sem o sinal: '+names(variant.scenarioTopFive)+'.'));
+  }
+  for(const warning of sensitivity.warnings)list.append(mk('li','',warning));
+  section.append(list);block.append(section);
+ }
  if(check.related.length){
   // V258: ampliar a conferência sem criar uma segunda ficha, nem copiar
   // treino entre edições com mesmo orçamento ou função.
@@ -826,6 +872,8 @@ async function begin(){
   }
  });
  host.addEventListener('scoutpro:v251:review-updated',display);
+ // Se a ficha inicializou antes de V162/V103, recalcular sem reload.
+ doc.addEventListener('scoutpro:recommendations-ready',display);
  host.addEventListener('craque:data-changed',event=>{
   if(event.detail?.key===host.SCOUT_POSITION_TRAINING_V246?.KEY)display();
  });
