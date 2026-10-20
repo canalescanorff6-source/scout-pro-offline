@@ -128,6 +128,45 @@ function trainingAudit(card){
 }
 // Compatibilidade da API pública usada por revisões anteriores.
 const levelsOf=card=>trainingAudit(card).levels;
+/* V268 — números parciais ou flags sem prova NÃO podem interferir no
+ * ranking. Mesma edição, Card ID, fonte, >=20 bases e índice validado.
+ * A comparação relativa não calcula atributos FINAIS nem prova gameplay. */
+const baseStatNames=Object.freeze(Object.fromEntries(
+ Object.entries(label).map(([stat,name])=>[plain(name),stat])));
+function baseStatsAudit(card){
+ const source=card?.base_stats;
+ const entries=source&&typeof source==='object'&&!Array.isArray(source)?
+  Object.entries(source):[];
+ const initial=Object.freeze({status:entries.length?'base_parcial_sem_prova':'base_nao_documentada',
+  values:null,count:entries.length,recognized:0,source:null});
+ if(!entries.length)return initial;
+ const proof=card.base_stats_proof||null;
+ const index=card.base_catalog_proof||null;
+ const edition=String(card.versao||card.edition||'');
+ const id=String(card.id||card.card_id||'');
+ const numeric=entries.every(([name,value])=>name.trim()&&value&&
+  Number.isInteger(value.base)&&value.base>=0&&value.base<=120);
+ const identified=Boolean(id&&edition&&proof?.schema==='CRAQUE_BASE_PROOF_V260'&&
+  proof.confirmed_in_game===true&&proof.complete===true&&
+  String(proof.card_id)===id&&String(proof.edition)===edition&&
+  Number(proof.attribute_count)===entries.length&&
+  String(proof.source_ref||'').trim().length>=6&&
+  index?.base_stats_confirmados===true&&
+  index?.print_edicao_confirmada===true);
+ if(!identified||!numeric||entries.length<20)
+  return Object.freeze({...initial,status:'base_parcial_sem_prova'});
+ const values={};
+ for(const [name,record] of entries){
+  const stat=baseStatNames[plain(name)];
+  if(stat)values[stat]=record.base;
+ }
+ if(Object.keys(values).length<16)
+  return Object.freeze({...initial,status:'base_mapeamento_incompleto',
+   recognized:Object.keys(values).length});
+ return Object.freeze({status:'base_completa_confirmada',
+  values:Object.freeze(values),count:entries.length,
+  recognized:Object.keys(values).length,source:String(proof.source_ref).trim()});
+}
 function addStat(w,key,value){w[key]=(w[key]||0)+value;}
 function addStats(w,keys,value){for(const k of keys)addStat(w,k,value);}
 function playingStyle(w,role,style){
@@ -190,6 +229,7 @@ function rank(card,tactic){
  }
  const nativeFindings=nativeSkillContext(weights,card.habilidades_nativas||card.native_skills||'',role);
  const training=trainingAudit(card);
+ const verifiedBase=baseStatsAudit(card);
  const levels=training.levels;
  const trainingIndices=ROLE_TRAINING[role];
  const mean=levels?trainingIndices.reduce((sum,i)=>sum+levels[i],0)/trainingIndices.length:null;
@@ -223,6 +263,23 @@ function rank(card,tactic){
   }
   // Evita uma recomendação baseada exclusivamente em "corrigir" nível baixo.
   trainingScore=Math.max(-4,Math.min(4,trainingScore));
+  let baseScore=0;
+  if(verifiedBase.status==='base_completa_confirmada'){
+   const entries=Object.entries(verifiedBase.values)
+    .filter(([key])=>(weights[key]||0)>0);
+   const reference=entries.length?entries.reduce((sum,[,v])=>sum+v,0)/entries.length:null;
+   if(reference!==null){
+    const matched=stats.filter(key=>Object.hasOwn(verifiedBase.values,key));
+    // Métrica consultiva: comparação RELATIVA entre os dados-base
+    // documentados da própria edição, jamais status final previsto.
+    if(matched.length>=2){
+     baseScore=matched.reduce((sum,key)=>sum+
+      (reference-verifiedBase.values[key])/20*
+      Math.max(.35,Math.min(1.1,(weights[key]||0)/7)),0);
+     baseScore=Math.max(-2,Math.min(2,baseScore));
+    }
+   }
+  }
   let contextScore=0;
   if(role==='CA'||role==='SA'){
    const pivot=/pivo|homem de area|target/.test(style);
@@ -239,7 +296,7 @@ function rank(card,tactic){
    if(levels&&levels[4]<=5&&name==='Off the Ball')contextScore+=2;
   }
   if((role==='MAT'||role==='MLG')&&name==='Passing'&&/orquestrador|armador|classico/.test(style))contextScore+=2;
-  const score=Math.round((functionScore+trainingScore+contextScore)*100)/100;
+  const score=Math.round((functionScore+trainingScore+contextScore+baseScore)*100)/100;
   const ordered=stats.slice().sort((a,b)=>(weights[b]||0)-(weights[a]||0));
   const axes=[label[ordered[0]],label[ordered[1]]];
   const info=[
@@ -254,6 +311,10 @@ function rank(card,tactic){
    motivo:info.join('; ')+'.',
    confianca:levels?'comparativa_limitada':'baixa',
    evidencias:{treino:trainingEvidence,pp_status:training.status,
+    base_status:verifiedBase.status,
+    base_count:verifiedBase.count,base_atributos_mapeados:verifiedBase.recognized,
+    base_fonte:verifiedBase.source,
+    score_base:Number(baseScore.toFixed(2)),
     pp_orcamento:training.pp,pp_investidos:training.spent,
     impeto_fixo:fixed||null,impeto_extra_registrado:extra||null,
     score_funcao:Number(functionScore.toFixed(2)),score_complemento:Number(trainingScore.toFixed(2)),
@@ -281,7 +342,7 @@ function audit(cards){
  return {version:'V104',method:'V200: função, tática, estilo, habilidades nativas e investimento por categoria; sem inferir atributos finais ou slot livre, sem prova de desempenho em partidas',summary,cards:result};
 }
 const api={BOOSTERS,CRAFTABLE,ROLE,POS,tactics,TACTIC_LABEL,PTBR,
- trainingAudit,progressCost,
+ trainingAudit,progressCost,baseStatsAudit,BASE_STAT_LABELS:label,
  displayName,translationKnown,slotStatus,boosterName,levelsOf,rank,audit};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_BOOSTERS_V103=api;
