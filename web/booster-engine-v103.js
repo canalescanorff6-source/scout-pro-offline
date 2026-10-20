@@ -44,7 +44,7 @@ LD:{speed:5,accel:5,stamina:5,defaware:7,tackle:6,defengage:5,pass:4,physical:3,
 LE:{speed:5,accel:5,stamina:5,defaware:7,tackle:6,defengage:5,pass:4,physical:3,tight:2,balance:2},
 ALA:{speed:5,accel:6,dribble:6,tight:5,balance:5,control:5,pass:4,finish:3,stamina:3},
 GO:{gkaware:9,gkreflex:9,gkreach:9,gkparry:8,gkcatch:6}};
-const POS={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA'};
+const POS={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA',MLE:'ALA'};
 const label={awareness:'consciência ofensiva',finish:'finalização',accel:'aceleração',control:'controle de bola',power:'força do chute',physical:'contato físico',speed:'velocidade',pass:'passe rasteiro',loft:'passe alto',tight:'posse apertada',dribble:'drible',balance:'equilíbrio',heading:'cabeceio',jump:'salto',stamina:'resistência',curl:'efeito',placekick:'bola parada',defaware:'consciência defensiva',tackle:'desarme',defengage:'dedicação defensiva',aggression:'agressividade',gkaware:'consciência de goleiro',gkparry:'desvio de goleiro',gkreflex:'reflexos de goleiro',gkreach:'alcance de goleiro',gkcatch:'firmeza de goleiro'};
 const tactics=['posse','normal','rapido','fora','longo'];
 const TACTIC_LABEL=Object.freeze({
