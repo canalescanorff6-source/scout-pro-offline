@@ -122,6 +122,9 @@ function trainingAudit(card){
   return Object.freeze({status:'pp_nao_documentados',levels:null,pp:null,spent});
  if(spent!==pp)
   return Object.freeze({status:'pp_divergentes',levels:null,pp,spent});
+ // V284: orçamento estimado não vira comprovado por fechar aritmeticamente.
+ if(card.pp_estimado===true||card.pp_estimated===true)
+  return Object.freeze({status:'pp_estimado_sem_prova',levels:null,pp,spent});
  if(card.training_provisional===true||card.treino_proposto_nao_validado===true)
   return Object.freeze({status:'treino_proposto_nao_validado',levels:null,pp,spent});
  return Object.freeze({status:'custo_pp_conferido',levels:values.slice(),pp,spent});
@@ -303,6 +306,7 @@ function rank(card,tactic){
  const trainingEvidence=levels?'investimento_da_build_sem_atributos_finais':
   training.status==='pp_divergentes'?'custo_pp_divergente':
   training.status==='pp_nao_documentados'?'vetor_sem_orcamento_comprovado':
+  training.status==='pp_estimado_sem_prova'?'orcamento_estimado_a_conferir':
   training.status==='treino_proposto_nao_validado'?'treino_proposto_a_revisar':
   'treino_individual_nao_documentado';
  const fixed=boosterName(card.impeto_fixo||card.boost1);
