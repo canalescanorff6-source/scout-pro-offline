@@ -184,6 +184,18 @@ function playingStyle(w,role,style){
  rule(/versatil|todo o terreno/,{stamina:3,pass:3,defaware:2,control:2});
  rule(/destruidor|lateral defensivo|primeiro volante|trinco/,{defaware:3,tackle:3,defengage:2,physical:1});
  rule(/ala produtivo|ala rapido|driblador|ala movel/,{dribble:3,tight:3,speed:2,accel:3});
+ // V270: interpretar estilos exatos já presentes no catálogo, não OVR.
+ // Um construtor defensivo precisa preservar saída curta e cobertura;
+ // um lateral ofensivo exige apoio e circulação sem presumir aptidão de ponta.
+ if(role==='ZG'&&/construcao de jogo|defensor criativo|defensor participativo/.test(style)){
+  addStat(w,'pass',6);addStat(w,'control',2);addStat(w,'tight',1);addStat(w,'defaware',2);
+ }
+ if(role==='ZG'&&/destruidor/.test(style)){
+  addStats(w,['tackle','defengage'],2);
+ }
+ if((role==='LD'||role==='LE')&&/lateral ofensivo|lateral atacante|lateral movel/.test(style)){
+  addStat(w,'pass',4);addStat(w,'tight',2);addStat(w,'stamina',2);addStat(w,'speed',1);
+ }
  if(role==='CA'&&/pivo/.test(style)){addStat(w,'awareness',-1);addStat(w,'finish',-1)}
 }
 function nativeSkillContext(w,raw,role){
@@ -198,7 +210,7 @@ function nativeSkillContext(w,raw,role){
   addStats(w,['tight','control','dribble'],2);
   findings.push('domínio e giro curto');
  }
- if(has(/long.range shooting|long.range curler|first.time shot|phenomenal finishing|low screamer|precisao a distancia|efeito de longe/)){
+ if(has(/long.range shooting|long.range curler|first.time shot|phenomenal finishing|low screamer|precisao a distancia|efeito de longe|chute de primeira|finalizacao de primeira|chute de longa distancia|finalizacao de longa distancia/)){
   addStat(w,'power',2);addStat(w,'finish',1);
   findings.push('finalização já prevista nas habilidades');
  }
@@ -298,7 +310,7 @@ function rank(card,tactic){
    if(pivot&&['Offence Creator','Ball Protection','Technique','Aerial'].includes(name))contextScore+=4.5;
    if(runner&&name==='Shooting')contextScore+=3;
    // Chute de primeira e finalizações especiais tornam Shooting uma alternativa real.
-   if(/first.time shot|phenomenal finishing|low screamer|long.range shooting/i.test(card.habilidades_nativas||card.native_skills||'')&&name==='Shooting')contextScore+=3;
+   if(/first.time shot|phenomenal finishing|low screamer|long.range shooting|chute de primeira|finalizacao de primeira|chute de longa distancia|finalizacao de longa distancia/i.test(normStyle(card.habilidades_nativas||card.native_skills||''))&&name==='Shooting')contextScore+=3;
    if(levels&&levels[4]<=5&&name==='Off the Ball')contextScore+=2;
   }
   if((role==='MAT'||role==='MLG')&&name==='Passing'&&/orquestrador|armador|classico/.test(style))contextScore+=2;

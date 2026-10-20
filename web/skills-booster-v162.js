@@ -118,8 +118,14 @@ function evaluate(d,tactic,manualEquipped,options={}){
  // a mesma priorização de chute de primeira de um Artilheiro.
  if(/infiltr|puxa marcacao|arrastar defesa/.test(style))bump(['onepass','through','heel','sole','weighted'],24);
  if(/matador|artilheiro|oportunista/.test(style))bump(['firstshot','through','onepass','acrobatic'],18);
- if(/armador|orquestrador|classico|criativo/.test(style))bump(['onepass','through','weighted','sole','heel'],23);
+ if(/armador|orquestrador|classico|criativo|criador de espacos/.test(style))bump(['onepass','through','weighted','sole','heel'],23);
  if(/destruidor|primeiro volante|lateral defensivo|defensor criativo/.test(style))bump(['intercept','blocker','mark','onepass'],22);
+ // V270: perfis de saída de bola e lateral ofensivo existentes no catálogo.
+ // Somente desempate consultivo por função/estilo; não instala skills.
+ if(role==='ZG'&&/construcao de jogo|defensor criativo|defensor participativo/.test(style))
+  bump(['onepass','weighted','through','sole'],18);
+ if((role==='LD'||role==='LE')&&/lateral ofensivo|lateral atacante|lateral movel/.test(style))
+  bump(['onepass','weighted','through','sole'],18);
  if(/versatil|todo o terreno/.test(style))bump(['fighting','onepass','intercept'],18);
  if(/goleiro ofensivo/.test(style))bump(['gklow','gklong'],25);
  // V217: heurísticas transparentes de complementaridade das habilidades NATIVAS
