@@ -174,6 +174,69 @@ const POOLS={
  ALA:['double','sole','onepass','through','fighting','heel','firstshot','cutturn','longshot','trackback','weighted','curler','supersub'],
  GO:['gklow','gklong','gkhigh','gkpenalty','fighting','captain','weighted','lowloft','onepass']
 };
+// V280: prioridades POR FUNÇÃO × TÁTICA (consultivas). A média do score
+// base continua dominante; nenhum dado de jogador é alterado. O mapa
+// explica por que Posse, CA rápido, CA normal, Por Fora e Passe Longo
+// não devem receber automaticamente as mesmas cinco skills.
+const ROLE_TACTIC_SKILLS=Object.freeze({
+ CA:{
+  posse:['onepass','sole','heel','double'],normal:['fighting','weighted','acrobatic','onepass'],
+  rapido:['firstshot','through','double','longshot'],fora:['weighted','sole','double','aerial'],
+  longo:['aerial','heading','weighted','fighting']
+ },
+ SA:{
+  posse:['onepass','sole','heel','through'],normal:['fighting','weighted','onepass','trackback'],
+  rapido:['through','firstshot','double','longshot'],fora:['weighted','cutturn','double','sole'],
+  longo:['weighted','acrobatic','fighting','through']
+ },
+ MAT:{
+  posse:['onepass','through','sole','heel'],normal:['fighting','intercept','weighted','onepass'],
+  rapido:['through','double','firstshot','longshot'],fora:['lowloft','weighted','cutturn','sole'],
+  longo:['weighted','lowloft','fighting','longshot']
+ },
+ MLG:{
+  posse:['onepass','through','sole','heel'],normal:['intercept','blocker','fighting','mark'],
+  rapido:['through','double','fighting','trackback'],fora:['lowloft','weighted','sole','cutturn'],
+  longo:['weighted','lowloft','intercept','fighting']
+ },
+ VOL:{
+  posse:['onepass','through','weighted','sole'],normal:['blocker','mark','fighting','intercept'],
+  rapido:['intercept','through','fighting','aerial'],fora:['weighted','lowloft','onepass','sole'],
+  longo:['aerial','lowloft','heading','blocker']
+ },
+ ZG:{
+  posse:['onepass','weighted','sole','intercept'],normal:['blocker','mark','sliding','fighting'],
+  rapido:['intercept','blocker','fighting','clear'],fora:['weighted','lowloft','onepass','intercept'],
+  longo:['aerial','heading','clear','weighted']
+ },
+ LD:{
+  posse:['onepass','through','sole','intercept'],normal:['blocker','mark','fighting','sliding'],
+  rapido:['intercept','through','trackback','fighting'],fora:['weighted','lowloft','sole','onepass'],
+  longo:['aerial','lowloft','clear','fighting']
+ },
+ LE:{
+  posse:['onepass','through','sole','intercept'],normal:['blocker','mark','fighting','sliding'],
+  rapido:['intercept','through','trackback','fighting'],fora:['weighted','lowloft','sole','onepass'],
+  longo:['aerial','lowloft','clear','fighting']
+ },
+ ALA:{
+  posse:['onepass','sole','double','heel'],normal:['trackback','fighting','onepass','weighted'],
+  rapido:['double','firstshot','longshot','through'],fora:['cutturn','weighted','sole','double'],
+  longo:['aerial','weighted','fighting','firstshot']
+ },
+ GO:{
+  posse:['gklow','gklong','fighting'],normal:['gkhigh','gkpenalty','fighting'],
+  rapido:['gklow','gkhigh','fighting'],fora:['gklow','gklong','weighted'],
+  longo:['gklong','gkhigh','fighting']
+ }
+});
+const TACTIC_REASON=Object.freeze({
+ posse:'Tabelas, passe curto, recepção orientada e controle sob pressão.',
+ normal:'Equilíbrio defensivo e primeira ligação segura após recuperar.',
+ rapido:'Ataque ao espaço, passe vertical e ações imediatas na transição.',
+ fora:'Apoio nos corredores e entrada por dentro; cruzar não é obrigatório.',
+ longo:'Apoio à segunda bola, passe longo consciente e duelos no setor.'
+});
 function roleOf(d){return POSITION[d.role_used]||POSITION[d.shown_position]||POSITION[d.posicao]||null}
 // V276: composição de um pacote HIPOTÉTICO complementar.
 // A função evita concentrar 5 sugestões na mesma família. O motor
@@ -348,6 +411,11 @@ function evaluate(d,tactic,manualEquipped,options={}){
   bump(['double','sole','onepass','through','heel'],20);
  if(role==='GO'&&/goleiro defensivo/.test(style))
   bump(['gkhigh','gkpenalty','fighting'],16);
+ // V280: reforço tático limitado e explicável, nunca prova meta ou OVR.
+ // Até quatro recursos funcionais por combinação; cartas com nativas
+ // diferentes continuam excluindo os equipamentos já existentes.
+ const tacticalPriority=(ROLE_TACTIC_SKILLS[role]||{})[tactic]||[];
+ bump(tacticalPriority,28,'tatica');
  // V217: heurísticas transparentes de complementaridade das habilidades NATIVAS
  // cadastradas na própria carta. Não representam bônus medidos ou gameplay validado.
  const synergy=new Map();
@@ -493,6 +561,8 @@ function evaluate(d,tactic,manualEquipped,options={}){
   slotProof:'somente_confirmacao_do_jogador_e_mesma_edicao',
   investmentEvidence:investment.status,
   investmentApplied:investment.levels!==null,
+  tacticalRolePriorities:Object.freeze([...(ROLE_TACTIC_SKILLS[role]?.[tactic]||[])]),
+  tacticalReason:TACTIC_REASON[tactic],
   recommendationMode:equippedConfirmed?'comparacao_com_lista_confirmada':
    'ate_cinco_candidatos_sem_slots_comprovados',
   missing:[...(nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']),...warnings]};
@@ -859,6 +929,8 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    'Defesa','Goleiro 1','Goleiro 2','Goleiro 3'
   ].map((name,i)=>({name,level:training.levels[i]})):[],
   skillCandidateCount:skills.recommendations.length,
+  tacticalReason:skills.tacticalReason,
+  tacticalPriorities:skills.tacticalRolePriorities.map(k=>SKILLS[k]?.name||k),
   skillCandidates:skills.recommendations.map(x=>Object.freeze({
    key:x.key,name:x.name,score:x.score,criteria:{...x.criterios},
    documentReason:x.synergies.slice()
@@ -902,7 +974,7 @@ const USER_SLOT_NOTES=Object.freeze({
  172:'Courtois #172: o usuário relata um espaço selecionável; o banco não confirma o slot. Conferir no jogo.',
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
@@ -1099,6 +1171,11 @@ function draw(){
   '/'+dossier.totalIndicators+' verificações. '+dossier.auditLabel+
   '. Não é avaliação de força ou desempenho.';
  dossierContent.append(docSummary);
+ addSection('V280 · prioridades da função na tática escolhida',[
+  dossier.tacticalReason,
+  'Recursos priorizados: '+dossier.tacticalPriorities.join(' / '),
+  'Mudanças por tática são hipóteses de função, não habilidades oficiais comprovadas por criadores.'
+ ]);
  addSection('Habilidades · justificativa individualizada do portfólio',[
   'Famílias das nativas identificadas: '+
    (Object.keys(dossier.skillFamilyEvidence.nativeFamilies).join(', ')||'nenhuma com alias de adicional'),
