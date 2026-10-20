@@ -467,12 +467,13 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  const boosters=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
  const edition=String(d.edition||d.versao||'');
  const id=String(d.id||'');
- const identity=Boolean(id&&!/pendente|confirmar|invalid/i.test(id+' '+edition));
+ const identity=Boolean(id.trim()&&edition.trim()&&
+  !/pendente|confirmar|invalid|desconhecid|nao informado/i.test(id+' '+edition));
  const warnings=[];
- const original=String(d.shown_position||d.posicao||'');
- const requested=String(d.role_used||original);
+ const original=String(d.original_position||d.posicao_original||d.shown_position||d.posicao||'');
+ const requested=String(d.role_used||d.shown_position||original);
  const position=roleOf(d);
- const roleApproved=requested===original||
+ const roleApproved=(POSITION[requested]||requested)===(POSITION[original]||original)||
   opts.roleConfirmed===true; // não presumir proficiência treinada
  const training=investmentAudit(d);
  if(!identity)warnings.push('Conferir Card ID e versão exatos antes de comparar.');
@@ -624,7 +625,7 @@ const equipmentConfirmed=()=>checkedEquipment(d,extra,readProof());
 verifiedCheck.checked=equipmentConfirmed();
 ta.addEventListener('input',()=>{if(fingerprint(ta.value)!==fingerprint(extra))verifiedCheck.checked=false});
 let tactic='posse';
-const originalPosition=String(d.shown_position||d.role_used||d.posicao||'');
+const originalPosition=String(d.original_position||d.posicao_original||d.shown_position||d.role_used||d.posicao||'');
 let actualPosition=originalPosition,roleEvidence='original';
 function setConfirmedRole(event){
  const detail=event||{};
@@ -641,6 +642,8 @@ function setConfirmedRole(event){
  if(!valid)return false;
  actualPosition=requested;
  roleEvidence=requested===native?'original':proof.status;
+ // Preserva posição NATIVA em vez de chamar CA a posição original de um PTE.
+ d.original_position=originalPosition;
  d.shown_position=requested;d.role_used=requested;
  draw();return true;
 }
