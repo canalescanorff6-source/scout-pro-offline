@@ -186,7 +186,18 @@ const TACTIC_FAMILIES=Object.freeze({
  fora:['criacao','dominio','jogo_aereo'],
  longo:['jogo_aereo','criacao','intensidade']
 });
-function composePortfolio(ranked,role,tactic,limit){
+function composePortfolio(ranked,role,tactic,limit,context={}){
+ // Contexto APENAS de nativas/adicionais com identidade canônica reconhecida;
+ // habilidades especiais não são equipáveis nem recebem equivalência presumida.
+ const knownNatives=new Set((context.nativeKeys||[]).filter(k=>SKILL_FAMILY[k]));
+ const knownEquipped=new Set((context.equippedKeys||[]).filter(k=>SKILL_FAMILY[k]));
+ const nativeFamilyCounts=new Map(),equippedFamilyCounts=new Map();
+ for(const key of knownNatives){
+  const family=SKILL_FAMILY[key];nativeFamilyCounts.set(family,(nativeFamilyCounts.get(family)||0)+1);
+ }
+ for(const key of knownEquipped){
+  const family=SKILL_FAMILY[key];equippedFamilyCounts.set(family,(equippedFamilyCounts.get(family)||0)+1);
+ }
  if(!Number.isInteger(limit)||limit<0||limit>5)throw Error('Limite de cinco slots inválido');
  const pool=Array.isArray(ranked)?ranked:[],roleNeeds=ROLE_FAMILIES[role]||[],
   tacticNeeds=TACTIC_FAMILIES[tactic]||[];
@@ -198,18 +209,32 @@ function composePortfolio(ranked,role,tactic,limit){
    const roleBonus=roleNeeds.includes(family)&&n===0?16:0;
    const tacticBonus=tacticNeeds.includes(family)&&n===0?10:0;
    const redundancyPenalty=n?12*n:0;
+   // Nativa da mesma família não significa skill equivalente: peso é leve,
+   // nunca bloqueio. Família já equipada pesa mais, pois ocupa slot real.
+   const nativeOverlapPenalty=(nativeFamilyCounts.get(family)||0)>0?7:0;
+   const equippedOverlapPenalty=(equippedFamilyCounts.get(family)||0)>0?12:0;
    return {skill:s,family,roleBonus,tacticBonus,redundancyPenalty,
-    adjustedScore:s.score+roleBonus+tacticBonus-redundancyPenalty};
+    nativeOverlapPenalty,equippedOverlapPenalty,
+    adjustedScore:s.score+roleBonus+tacticBonus-redundancyPenalty-
+     nativeOverlapPenalty-equippedOverlapPenalty};
   }).sort((a,b)=>b.adjustedScore-a.adjustedScore||
    b.skill.score-a.skill.score||a.skill.key.localeCompare(b.skill.key));
   const best=options[0];if(!best)break;
   chosen.push(Object.freeze({
    key:best.skill.key,name:best.skill.name,family:best.family,
    baseScore:best.skill.score,relativeScore:best.adjustedScore,
+   evidence:Object.freeze({nativeFamilyPresent:best.nativeOverlapPenalty>0,
+    equippedFamilyPresent:best.equippedOverlapPenalty>0,
+    currentFamilySelected:families.get(best.family)||0,
+    roleBonus:best.roleBonus,tacticBonus:best.tacticBonus,
+    nativePenalty:best.nativeOverlapPenalty,equippedPenalty:best.equippedOverlapPenalty,
+    repetitionPenalty:best.redundancyPenalty}),
    explanation:(best.roleBonus?'Lacuna funcional prioritária. ':'')+
     (best.tacticBonus?'Complementa o estilo de jogo. ':'')+
     (best.redundancyPenalty?'Família já representada no pacote. ':'')+
-    'Seleção heurística; confirmar em jogo.',
+    (best.nativeOverlapPenalty?'Há skill nativa da mesma família; não é habilidade idêntica. ':'')+
+    (best.equippedOverlapPenalty?'Há habilidade equipada da mesma família; verifique complementaridade. ':'')+
+    'Seleção heurística; confirmar na carta exata.',
    equipAuthorized:false
   }));
   seen.add(best.skill.key);
@@ -218,6 +243,8 @@ function composePortfolio(ranked,role,tactic,limit){
  return Object.freeze({
   kind:'ALTERNATIVA_EQUILIBRADA_CONSULTIVA',role,tactic,
   candidates:Object.freeze(chosen),families:Object.freeze(Object.fromEntries(families)),
+  nativeFamilyCounts:Object.freeze(Object.fromEntries(nativeFamilyCounts)),
+  equippedFamilyCounts:Object.freeze(Object.fromEntries(equippedFamilyCounts)),
   slotCountConfirmed:false,mayApply:false,
   warning:'Até cinco candidatos complementares; não representam vagas livres ou skill de criador.'
  });
@@ -417,7 +444,9 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const equippedConfirmed=options.equippedConfirmed===true&&!requiresReconciliation;
  const slotsRemaining=equippedConfirmed&&!overLimit?Math.max(0,5-distinctExtras.length):null;
  const limit=overLimit?0:equippedConfirmed?slotsRemaining:5;
- const balancedPortfolio=composePortfolio(ranked,role,tactic,limit);
+ const balancedPortfolio=composePortfolio(ranked,role,tactic,limit,{
+  nativeKeys:[...nativeKeys],equippedKeys:[...used].filter(k=>!nativeKeys.has(k))
+ });
  const warnings=[
   ...(unmappedNative.length?['Nativas cadastradas fora do vocabulário de recomendações: '+
    [...new Set(unmappedNative)].slice(0,5).join(', ')+
