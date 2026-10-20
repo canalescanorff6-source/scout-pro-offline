@@ -79,7 +79,8 @@ let assessed=0;
 for(const card of cards){
  const d={capture:card.numero,id:card.id,shown_position:card.posicao,
   attack_style:card.estilo_ataque,defence_style:card.estilo_defesa,
-  native_skills:card.habilidades_nativas,
+  native_skills:card.habilidades_nativas,pp:card.pp,
+  training_provisional:card.treino_proposto_nao_validado===true,
   boost1:card.impeto_fixo,boost2:card.impeto_extra,
   recommended_levels:card.niveis};
  for(const mode of goal){
