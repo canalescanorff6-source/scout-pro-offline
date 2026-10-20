@@ -59,20 +59,37 @@ const splitSkills=s=>Array.isArray(s)?s:String(s||'').split(/[;\n,]+/).map(x=>x.
 // Editar o texto invalida automaticamente a confirmação antiga.
 const confirmationKey=(cap,id)=>'scoutpro:v254:additional-confirmed:'+Number(cap)+'@'+String(id);
 const fingerprint=s=>[...new Set(splitSkills(s).map(x=>keyFor(x)||'unmapped:'+normal(x)))].sort().join('|');
+// V278: não confiar em confirmação antiga sem vínculo EXPLÍCITO da edição.
+// Registros legados são preservados para leitura; sua prova deixa de liberar
+// slots até o usuário reconfirmar na carta exata, sem migrar automaticamente.
 function checkedEquipment(card,manual,record){
+ const names=splitSkills(manual);
+ const native=splitSkills(card.native_skills||card.habilidades_nativas||'');
+ const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
+ const equippedKeys=names.map(keyFor);
+ const edition=String(card.edition||card.versao||'');
  return Boolean(record&&record.schema==='CRAQUE_ADDITIONAL_V254'&&record.confirmed===true&&
+  edition.trim()&&String(record.edition||'')===edition&&
   Number(record.capture)===Number(card.capture)&&String(record.card_id)===String(card.id)&&
-  (!Object.hasOwn(record,'edition')||
-   String(record.edition)===String(card.edition||card.versao||''))&&
   record.fingerprint===fingerprint(manual)&&
-  splitSkills(manual).every(name=>Boolean(keyFor(name)))&&
-  !splitSkills(manual).some(name=>
-   splitSkills(card.native_skills||card.habilidades_nativas||'').some(n=>keyFor(n)===keyFor(name)))&&
-  // V266: novas confirmações ligam-se também às nativas da edição.
-  // Registros V254 antigos permanecem legíveis; nova confirmação é
-  // exigida quando há edição posterior do cadastro nativo.
-  (!Object.hasOwn(record,'nativeFingerprint')||
-   record.nativeFingerprint===fingerprint(card.native_skills||card.habilidades_nativas||'')));
+  Object.hasOwn(record,'nativeFingerprint')&&
+  record.nativeFingerprint===fingerprint(native.join(';'))&&
+  names.length<=5&&new Set(equippedKeys).size===names.length&&
+  equippedKeys.every(key=>Boolean(key)&&!nativeKeys.has(key)));
+}
+function boosterRecordEvidence(card,record){
+ const edition=String(card.edition||card.versao||'');
+ const valid=Boolean(record&&edition.trim()&&
+  Object.hasOwn(record,'edition')&&String(record.edition)===edition&&
+  String(record.card_id)===String(card.id)&&
+  ['vazio','ocupado','ausente'].includes(String(record.status)));
+ return Object.freeze({
+  valid,status:valid?record.status:null,equipped:valid?(record.equipped||''):null,
+  legacy:!!record&&!valid,
+  reason:!record?'Nenhuma conferência salva do segundo ímpeto.':
+   valid?'Conferência vinculada a Card ID e edição.':
+   'Conferência legada ou de outra edição: confirme novamente o slot no jogo.'
+ });
 }
 // V274: vocabulário de habilidades NATIVAS ESPECIAIS do próprio catálogo.
 // Não são skills adicionais selecionáveis; não inventar traduções KONAMI,
@@ -790,7 +807,7 @@ const USER_SLOT_NOTES=Object.freeze({
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
 const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment};
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;
@@ -896,9 +913,12 @@ function setConfirmedRole(event){
 }
 function draw(){
  let manuallyVerified={};
- try{const val=JSON.parse(localStorage.getItem('scoutpro:v103:booster:'+Number(d.capture))||'null');if(val&&String(val.card_id)===String(d.id)&&
-  (!Object.hasOwn(val,'edition')||String(val.edition)===String(d.edition||d.versao||'')))
-  manuallyVerified=val}catch(e){}
+ let boosterProof=boosterRecordEvidence(d,null);
+ try{
+  const val=JSON.parse(localStorage.getItem('scoutpro:v103:booster:'+Number(d.capture))||'null');
+  boosterProof=boosterRecordEvidence(d,val);
+  if(boosterProof.valid)manuallyVerified=val;
+ }catch(e){}
  const confirmed=equipmentConfirmed();
  const result=evaluate(d,tactic,extra,{equippedConfirmed:confirmed});
  const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103,manuallyVerified.status,manuallyVerified.equipped);
@@ -929,6 +949,7 @@ function draw(){
   ' · investimento: '+result.investmentEvidence+
   ' · PP: '+(boost.primary?.evidencias?.pp_status||'pendente')+
   ' · segundo ímpeto: '+boost.slotEvidence+
+  (boosterProof.legacy?' · PROVA ANTIGA: confirmar novamente o slot no jogo.':'')+
   ' · SEM homologação por OVR ou gameplay.';
  // Parecer auditável de 246 edições: campos de perfil e pendências.
  // Sem HTML do jogador e sem duplicar a ficha principal.
