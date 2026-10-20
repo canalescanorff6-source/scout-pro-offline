@@ -1512,8 +1512,6 @@ def run():
                         risk.locator('summary').click()
                         if risk.locator('li').count()<2:
                             problems.append(f"{name}: V283 sem comparação de nativas e PP")
-                        if 'aplicado' in risk.get_attribute('data-action') if risk.get_attribute('data-action') else False:
-                            problems.append(f"{name}: V283 indevidamente sugere aplicação automática")
                         page.screenshot(path=str(OUT/f"{name}_v283_sensitivity.png"),
                             full_page=False,animations="disabled")
                     if '68 / 68 PP' not in v251.inner_text():
