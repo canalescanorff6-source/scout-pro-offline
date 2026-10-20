@@ -422,8 +422,7 @@ function methodologyGate(card,proof,style,store,review={}){
  }catch(_){confirmation=null}
  try{
   const record=JSON.parse(store?.getItem('scoutpro:v103:booster:'+card.numero)||'null');
-  if(record&&String(record.card_id)===String(card.id)&&
-   ['vazio','ocupado','ausente'].includes(record.status))slot=record;
+  if(S?.boosterRecordEvidence?.(data,record)?.valid===true)slot=record;
  }catch(_){slot=null}
  const confirmed=Boolean(S?.checkedEquipment?.(data,manual,confirmation)&&has('additional'));
  let skills=null,boost=null;
@@ -661,6 +660,29 @@ function display(){
   'Triagem competitiva inspirada nos critérios de Blackjhon e Rentão; '+
   'NENHUMA recomendação atribuída ou aprovada por eles sem vídeo da edição exata.');
  audit.append(methodList);block.append(audit);
+ // V283: análise de sensibilidade recolhível, sem segunda ficha e sem gravação.
+ const sensitiveSource=sourceFor(card,raw,lab,evidenceByCap.get(card.numero));
+ if(sensitiveSource&&typeof S?.evidenceSensitivityV283==='function'){
+  const sensitivity=S.evidenceSensitivityV283({
+   ...sensitiveSource,original_position:card.posicao,
+   role_used:check.positionUsed||card.posicao,shown_position:card.posicao
+  },active,B);
+  const section=mk('details','ct251-evidence-details ct283-sensitivity');
+  section.append(mk('summary','','Sensibilidade de habilidades e ímpetos · comparar evidências'));
+  section.append(mk('p','','Retiramos um sinal por vez para medir a estabilidade das recomendações. Nada é aplicado, validado ou equipado.'));
+  const list=mk('ul','');
+  const names=keys=>keys.map(k=>S.SKILLS[k]?.name||k).join(', ')||'nenhuma';
+  for(const variant of sensitivity.comparisons){
+   list.append(mk('li','',variant.label+' — '+(variant.skillsChanged?
+    variant.changedSkillPositions+' posições de prioridade mudaram. ':
+    'O top cinco permaneceu igual. ')+
+    (variant.boosterChanged?'O primeiro ímpeto mudou. ':'O primeiro ímpeto permaneceu igual. ')+
+    'Com evidências: '+names(variant.originalTopFive)+
+    '. Sem o sinal: '+names(variant.scenarioTopFive)+'.'));
+  }
+  for(const warning of sensitivity.warnings)list.append(mk('li','',warning));
+  section.append(list);block.append(section);
+ }
  if(check.related.length){
   // V258: ampliar a conferência sem criar uma segunda ficha, nem copiar
   // treino entre edições com mesmo orçamento ou função.
