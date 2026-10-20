@@ -186,7 +186,18 @@ const TACTIC_FAMILIES=Object.freeze({
  fora:['criacao','dominio','jogo_aereo'],
  longo:['jogo_aereo','criacao','intensidade']
 });
-function composePortfolio(ranked,role,tactic,limit){
+function composePortfolio(ranked,role,tactic,limit,context={}){
+ // Contexto APENAS de nativas/adicionais com identidade canônica reconhecida;
+ // habilidades especiais não são equipáveis nem recebem equivalência presumida.
+ const knownNatives=new Set((context.nativeKeys||[]).filter(k=>SKILL_FAMILY[k]));
+ const knownEquipped=new Set((context.equippedKeys||[]).filter(k=>SKILL_FAMILY[k]));
+ const nativeFamilyCounts=new Map(),equippedFamilyCounts=new Map();
+ for(const key of knownNatives){
+  const family=SKILL_FAMILY[key];nativeFamilyCounts.set(family,(nativeFamilyCounts.get(family)||0)+1);
+ }
+ for(const key of knownEquipped){
+  const family=SKILL_FAMILY[key];equippedFamilyCounts.set(family,(equippedFamilyCounts.get(family)||0)+1);
+ }
  if(!Number.isInteger(limit)||limit<0||limit>5)throw Error('Limite de cinco slots inválido');
  const pool=Array.isArray(ranked)?ranked:[],roleNeeds=ROLE_FAMILIES[role]||[],
   tacticNeeds=TACTIC_FAMILIES[tactic]||[];
@@ -198,18 +209,32 @@ function composePortfolio(ranked,role,tactic,limit){
    const roleBonus=roleNeeds.includes(family)&&n===0?16:0;
    const tacticBonus=tacticNeeds.includes(family)&&n===0?10:0;
    const redundancyPenalty=n?12*n:0;
+   // Nativa da mesma família não significa skill equivalente: peso é leve,
+   // nunca bloqueio. Família já equipada pesa mais, pois ocupa slot real.
+   const nativeOverlapPenalty=(nativeFamilyCounts.get(family)||0)>0?7:0;
+   const equippedOverlapPenalty=(equippedFamilyCounts.get(family)||0)>0?12:0;
    return {skill:s,family,roleBonus,tacticBonus,redundancyPenalty,
-    adjustedScore:s.score+roleBonus+tacticBonus-redundancyPenalty};
+    nativeOverlapPenalty,equippedOverlapPenalty,
+    adjustedScore:s.score+roleBonus+tacticBonus-redundancyPenalty-
+     nativeOverlapPenalty-equippedOverlapPenalty};
   }).sort((a,b)=>b.adjustedScore-a.adjustedScore||
    b.skill.score-a.skill.score||a.skill.key.localeCompare(b.skill.key));
   const best=options[0];if(!best)break;
   chosen.push(Object.freeze({
    key:best.skill.key,name:best.skill.name,family:best.family,
    baseScore:best.skill.score,relativeScore:best.adjustedScore,
+   evidence:Object.freeze({nativeFamilyPresent:best.nativeOverlapPenalty>0,
+    equippedFamilyPresent:best.equippedOverlapPenalty>0,
+    currentFamilySelected:families.get(best.family)||0,
+    roleBonus:best.roleBonus,tacticBonus:best.tacticBonus,
+    nativePenalty:best.nativeOverlapPenalty,equippedPenalty:best.equippedOverlapPenalty,
+    repetitionPenalty:best.redundancyPenalty}),
    explanation:(best.roleBonus?'Lacuna funcional prioritária. ':'')+
     (best.tacticBonus?'Complementa o estilo de jogo. ':'')+
     (best.redundancyPenalty?'Família já representada no pacote. ':'')+
-    'Seleção heurística; confirmar em jogo.',
+    (best.nativeOverlapPenalty?'Há skill nativa da mesma família; não é habilidade idêntica. ':'')+
+    (best.equippedOverlapPenalty?'Há habilidade equipada da mesma família; verifique complementaridade. ':'')+
+    'Seleção heurística; confirmar na carta exata.',
    equipAuthorized:false
   }));
   seen.add(best.skill.key);
@@ -218,6 +243,8 @@ function composePortfolio(ranked,role,tactic,limit){
  return Object.freeze({
   kind:'ALTERNATIVA_EQUILIBRADA_CONSULTIVA',role,tactic,
   candidates:Object.freeze(chosen),families:Object.freeze(Object.fromEntries(families)),
+  nativeFamilyCounts:Object.freeze(Object.fromEntries(nativeFamilyCounts)),
+  equippedFamilyCounts:Object.freeze(Object.fromEntries(equippedFamilyCounts)),
   slotCountConfirmed:false,mayApply:false,
   warning:'Até cinco candidatos complementares; não representam vagas livres ou skill de criador.'
  });
@@ -417,7 +444,9 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const equippedConfirmed=options.equippedConfirmed===true&&!requiresReconciliation;
  const slotsRemaining=equippedConfirmed&&!overLimit?Math.max(0,5-distinctExtras.length):null;
  const limit=overLimit?0:equippedConfirmed?slotsRemaining:5;
- const balancedPortfolio=composePortfolio(ranked,role,tactic,limit);
+ const balancedPortfolio=composePortfolio(ranked,role,tactic,limit,{
+  nativeKeys:[...nativeKeys],equippedKeys:[...used].filter(k=>!nativeKeys.has(k))
+ });
  const warnings=[
   ...(unmappedNative.length?['Nativas cadastradas fora do vocabulário de recomendações: '+
    [...new Set(unmappedNative)].slice(0,5).join(', ')+
@@ -514,12 +543,47 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const complementCandidate=factoryAxes.length===4&&ranked.length?
   ranked.find(candidate=>candidate.score>=ranked[0].score-8&&
    overlapOf(candidate).shared<primaryOverlap):null;
+ // Os componentes de score são rastreáveis, não atributos finais.
+ const rankedEvidence=Object.freeze(ranked.slice(0,3).map((item,i)=>Object.freeze({
+  technicalName:item.nome,displayName:item.nome_pt||item.nome,
+  rank:i+1,relativeScore:item.score,
+  marginFromFirst:Number((ranked[0].score-item.score).toFixed(2)),
+  factors:Object.freeze({
+   funcao:item.evidencias?.score_funcao??null,
+   investimento:item.evidencias?.score_complemento??null,
+   contexto:item.evidencias?.score_contexto??null,
+   atributosBase:item.evidencias?.score_base??null
+  }),
+  trainingStatus:item.evidencias?.pp_status||'pendente',
+  baseStatus:item.evidencias?.base_status||'pendente',
+  applyAuthorized:false
+ })));
+ const evidenceWarnings=[];
+ if(!factoryAxes.length)evidenceWarnings.push('Ímpeto fixo não identificado: não calcular redundância.');
+ if(!slotSupported)evidenceWarnings.push('Segundo slot não comprovado na edição.');
+ if(verifiedSlot!=='vazio')evidenceWarnings.push('Vaga real não confirmada como vazia na conta.');
+ if(!ranked[0])evidenceWarnings.push('Sem ímpeto compatível para ranquear.');
+ else{
+  if(ranked[0].evidencias?.pp_status!=='custo_pp_conferido')
+   evidenceWarnings.push('Treino individual não homologado; investimento não é evidência de atributo final.');
+  if(ranked[0].evidencias?.base_status!=='base_completa_confirmada')
+   evidenceWarnings.push('Atributos-base da edição ainda sem comprovação completa.');
+  if(ranked.length>1&&ranked[0].score-ranked[1].score<2)
+   evidenceWarnings.push('Ímpetos próximos: diferença relativa não comprova superioridade.');
+ }
  const complementaryAlternative=complementCandidate?
   Object.freeze({...overlapOf(complementCandidate),relativeScore:complementCandidate.score,
    warning:'Menor sobreposição não prova resultado superior; comparar com a build real.'}):null;
  // O ranking da carta deve existir independentemente da disponibilidade do slot.
  // "primary" é uma prioridade competitiva, NÃO algo equipado ou autorizado.
  return {status,verifiedSlot,slotSupported,slotEvidence,able,knownExtra:existing,confirmedEquipped:equippedName||null,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
+  decisionEvidence:Object.freeze({
+   rankExplanation:'Nota relativa de função, investimento, contexto e base registrada; não é desempenho em jogo.',
+   candidates:rankedEvidence,
+   warnings:Object.freeze(evidenceWarnings),
+   status:able?'ELEGIVEL_SOMENTE_PARA_COMPARACAO':'SEM_AUTORIZACAO_DE_APLICACAO',
+   canSpendTokens:false
+  }),
   complementarity:Object.freeze({
    factoryName:factory||null,factoryDocumented:factoryAxes.length===4,
    factoryAxes:Object.freeze(factoryAxes.slice()),
@@ -690,6 +754,16 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   boosterName:boosters.primary?.nome_pt||boosters.primary?.nome||null,
   boosterMargin:gap,boosterSlotVerified:boosters.able,
   boosterComplementarity:boosters.complementarity,
+  boosterDecisionEvidence:boosters.decisionEvidence,
+  skillFamilyEvidence:Object.freeze({
+   nativeFamilies:Object.freeze({...skills.balancedPortfolio.nativeFamilyCounts}),
+   equippedFamilies:Object.freeze({...skills.balancedPortfolio.equippedFamilyCounts}),
+   proposedFamilies:Object.freeze({...skills.balancedPortfolio.families}),
+   balancedCandidates:Object.freeze(skills.balancedPortfolio.candidates.map(x=>Object.freeze({
+    name:x.name,family:x.family,score:x.relativeScore,evidence:{...x.evidence}
+   }))),
+   applyAuthorized:false
+  }),
   boosterAlternatives:boosters.alternatives.map(x=>Object.freeze({
    name:x.nome_pt||x.nome,score:x.score
   })),
@@ -874,7 +948,9 @@ function draw(){
   const li=document.createElement('li'),name=document.createElement('strong'),
    reason=document.createElement('small');
   name.textContent=item.name+' · '+item.family;
-  reason.textContent=item.explanation;
+  reason.textContent=item.explanation+
+   (item.evidence.nativeFamilyPresent?' · Família também presente entre as nativas.':'')+
+   (item.evidence.equippedFamilyPresent?' · Família já equipada na edição.':'');
   li.append(name,reason);portfolioItems.append(li);
  }
  if(!result.balancedPortfolio.candidates.length){
@@ -906,6 +982,15 @@ function draw(){
   '/'+dossier.totalIndicators+' verificações. '+dossier.auditLabel+
   '. Não é avaliação de força ou desempenho.';
  dossierContent.append(docSummary);
+ addSection('Habilidades · justificativa individualizada do portfólio',[
+  'Famílias das nativas identificadas: '+
+   (Object.keys(dossier.skillFamilyEvidence.nativeFamilies).join(', ')||'nenhuma com alias de adicional'),
+  'Famílias das adicionais equipadas conferidas: '+
+   (Object.keys(dossier.skillFamilyEvidence.equippedFamilies).join(', ')||'não documentadas nesta consulta'),
+  'Pacote complementar: '+dossier.skillFamilyEvidence.balancedCandidates.map(x=>
+   x.name+' ['+x.family+']').join(' / ')+
+   '. Não significa que existam cinco vagas nem que as habilidades sejam autorizadas.'
+ ]);
  addSection('Checklist de sete verificações independentes',
   dossier.evidenceChecklist.map(c=>(c.ok?'CONFERIDO: ':'PENDENTE: ')+c.label));
  addSection('Variação entre os cinco estilos do técnico',[
@@ -933,6 +1018,14 @@ function draw(){
   ' · ímpeto: '+(t.booster||'pendente')+
   ' · margem: '+(t.margin??'pendente')+' · não equipar automaticamente'
  ),'scenario');
+ addSection('Ímpetos · matriz comparativa dos motivos',[
+  dossier.boosterDecisionEvidence.rankExplanation,
+  ...dossier.boosterDecisionEvidence.candidates.map(x=>
+   '#'+x.rank+' '+x.displayName+' · pontuação relativa '+x.relativeScore+
+   ' · função '+x.factors.funcao+' · treino '+x.factors.investimento+
+   ' · contexto '+x.factors.contexto+' · base '+x.factors.atributosBase),
+  ...dossier.boosterDecisionEvidence.warnings.map(x=>'PENDENTE: '+x)
+ ]);
  if(dossier.boosterComplementarity.factoryDocumented){
   addSection('Ímpetos vs. atributos do ímpeto fixo',
    dossier.boosterComplementarity.comparisons.map(x=>x.documentedName+
