@@ -197,7 +197,10 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const equippedName=validBooster(verifiedEquipped)||'';
  let ranked=[];
  if(engine&&typeof engine.rank==='function'){
-  try{ranked=engine.rank({posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo,impeto_extra:value,niveis:d.recommended_levels||d.niveis,habilidades_nativas:d.native_skills||d.habilidades_nativas},tactic).filter(x=>normal(x.nome)!==normal(natural)&&normal(x.nome)!==normal(existing)&&normal(x.nome)!==normal(equippedName));}catch(e){ranked=[]}
+  try{ranked=engine.rank({posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo,impeto_extra:value,niveis:d.recommended_levels||d.niveis,
+   pp:d.pp,training_provisional:d.training_provisional===true||
+    d.treino_proposto_nao_validado===true,
+   habilidades_nativas:d.native_skills||d.habilidades_nativas},tactic).filter(x=>normal(x.nome)!==normal(natural)&&normal(x.nome)!==normal(existing)&&normal(x.nome)!==normal(equippedName));}catch(e){ranked=[]}
  }
  const note=verifiedSlot==='ausente'?'Você marcou esta carta como sem slot selecionável neste dispositivo. Nenhum ímpeto novo será recomendado.':
  status==='nome_registrado'?'Segundo ímpeto já nomeado no cadastro; não tratar como slot livre ou substituível.':
@@ -387,7 +390,15 @@ function draw(){
  const summary=document.createElement('summary');summary.textContent='Como esta recomendação foi calculada';details.appendChild(summary);
  const e=boost.primary.evidencias||{};
  const explain=document.createElement('p');
- explain.textContent='Pontuação relativa (não Overall): função '+(e.score_funcao??'—')+' · complementaridade do investimento '+(e.score_complemento??'—')+' · estilo e habilidades '+(e.score_contexto??'—')+'. '+(e.treino==='investimento_da_build_sem_atributos_finais'?'Treino registrado, porém sem atributos finais certificados.':'Treino individual sem documentação suficiente.')+' Ímpeto fixo informado: '+(e.impeto_fixo||'não comprovado')+'.';
+ explain.textContent='Pontuação relativa (não Overall): função '+(e.score_funcao??'—')+' · complementaridade do investimento '+(e.score_complemento??'—')+' · estilo e habilidades '+(e.score_contexto??'—')+'. '+(e.treino==='investimento_da_build_sem_atributos_finais'?
+  'Vetor de progresso com custo de PP matematicamente conferido; não comprova atributos finais ou desempenho.':
+  e.pp_status==='pp_divergentes'?'ALERTA: custo calculado '+e.pp_investidos+
+   ' PP, mas o orçamento da carta informa '+e.pp_orcamento+
+   '. O motor IGNOROU o vetor ao ranquear ímpetos.':
+  e.pp_status==='pp_nao_documentados'?'PP não documentados: vetor IGNORADO.':
+  e.pp_status==='treino_proposto_nao_validado'?'Treino proposto não validado: vetor IGNORADO.':
+  'Sem vetor documental utilizável para comparar investimento de PP.')+
+  ' Ímpeto fixo informado: '+(e.impeto_fixo||'não comprovado')+'.';
  details.appendChild(explain);panel.appendChild(details);
 }
  const note=document.createElement('p');note.className='v162-note';note.textContent=boost.note;panel.appendChild(note);

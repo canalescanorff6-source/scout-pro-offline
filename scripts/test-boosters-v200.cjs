@@ -15,7 +15,8 @@ for(const c of cards){
  byId.set(c.numero,c);
  const d={capture:c.numero,id:c.id,shown_position:c.posicao,role_used:c.posicao,attack_style:c.estilo_ataque,
   defence_style:c.estilo_defesa,boost1:c.impeto_fixo,boost2:c.impeto_extra,
-  recommended_levels:c.niveis,native_skills:c.habilidades_nativas};
+  recommended_levels:c.niveis,native_skills:c.habilidades_nativas,
+  pp:c.pp,training_provisional:c.treino_proposto_nao_validado===true};
  if(Array.isArray(c.niveis)&&c.niveis.length===10)withTrain++;else withoutTrain++;
  for(const tactic of B.tactics){
   const list=B.rank(c,tactic);
