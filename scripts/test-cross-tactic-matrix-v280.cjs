@@ -5,6 +5,14 @@ const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p
 const raw=read('web/SCOUT_V69_AUDITORIA.json'),cards=JSON.parse(raw).cards;
 const S=require('../web/skills-booster-v162.js'),B=require('../web/booster-engine-v103.js');
 const initial=JSON.stringify(cards);
+const roles=Object.keys(S.ROLE_TACTIC_SKILLS);
+assert.equal(roles.length,10,'Dez funções devem receber lente tática própria');
+for(const role of roles)for(const tactic of B.tactics){
+ const keys=S.ROLE_TACTIC_SKILLS[role][tactic];
+ assert(Array.isArray(keys)&&keys.length>=2&&keys.length<=4);
+ assert.equal(new Set(keys).size,keys.length);
+ assert(keys.every(x=>Boolean(S.SKILLS[x])),'Skill inexistente na função '+role+' / '+tactic);
+}
 assert.equal(cards.length,246);assert.equal(new Set(cards.map(c=>c.numero+'@'+c.id)).size,246);
 const grouped=new Map(),files=[];
 let scenarios=0,pairs=0,identicalPairs=0,highOverlapPairs=0,
@@ -31,6 +39,8 @@ for(const c of cards){
  assert.equal(matrix.uniqueFirstBoosters,new Set(matrix.rows.map(x=>x.topBooster).filter(Boolean)).size);
  for(const row of matrix.rows){
   const result=S.evaluate(d,row.tactic),booster=S.booster(d,row.tactic,B);
+  assert.deepEqual(result.tacticalRolePriorities,S.ROLE_TACTIC_SKILLS[result.role][row.tactic]);
+  assert.equal(result.tacticalReason,S.TACTIC_REASON[row.tactic]);
   assert.deepEqual(row.skills,result.recommendations.map(x=>x.key));
   assert.deepEqual(row.balancedSkills,result.balancedPortfolio.candidates.map(x=>x.key));
   assert.equal(row.topSkill,result.recommendations[0]?.name||null);
