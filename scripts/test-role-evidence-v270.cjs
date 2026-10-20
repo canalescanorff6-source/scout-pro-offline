@@ -54,7 +54,7 @@ for(const card of cards){
    assert(!ids.has(s.key),'Habilidade duplicada #'+card.numero);ids.add(s.key);
    assert(!natives.has(s.key),'Habilidade já nativa #'+card.numero);
    const f=s.criterios;
-   assert.equal(s.score,f.funcao+f.tatica+f.estilo+f.nativas);
+   assert.equal(s.score,f.funcao+f.tatica+f.estilo+f.nativas+(f.investimento||0));
   }
   assert(boosters.length>0);
   for(const item of boosters){
