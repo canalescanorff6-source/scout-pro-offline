@@ -41,9 +41,10 @@ MLG:{control:5,tight:5,dribble:3,pass:7,defaware:4,tackle:2,stamina:4,balance:4,
 VOL:{pass:6,tight:3,defaware:7,tackle:6,defengage:6,physical:4,stamina:4,accel:3,speed:3,balance:2},
 ZG:{defaware:7,tackle:7,defengage:7,speed:4,accel:5,physical:5,jump:4,heading:3,pass:2,stamina:2},
 LD:{speed:5,accel:5,stamina:5,defaware:7,tackle:6,defengage:5,pass:4,physical:3,tight:2,balance:2},
+LE:{speed:5,accel:5,stamina:5,defaware:7,tackle:6,defengage:5,pass:4,physical:3,tight:2,balance:2},
 ALA:{speed:5,accel:6,dribble:6,tight:5,balance:5,control:5,pass:4,finish:3,stamina:3},
 GO:{gkaware:9,gkreflex:9,gkreach:9,gkparry:8,gkcatch:6}};
-const POS={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LD',LE:'LD',DC:'ZG',ZC:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA'};
+const POS={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DD:'LD',LD:'LD',DE:'LE',LE:'LE',DC:'ZG',ZC:'ZG',GR:'GO',GO:'GO',PTD:'ALA',PTE:'ALA',MLD:'ALA',MLE:'ALA'};
 const label={awareness:'consciência ofensiva',finish:'finalização',accel:'aceleração',control:'controle de bola',power:'força do chute',physical:'contato físico',speed:'velocidade',pass:'passe rasteiro',loft:'passe alto',tight:'posse apertada',dribble:'drible',balance:'equilíbrio',heading:'cabeceio',jump:'salto',stamina:'resistência',curl:'efeito',placekick:'bola parada',defaware:'consciência defensiva',tackle:'desarme',defengage:'dedicação defensiva',aggression:'agressividade',gkaware:'consciência de goleiro',gkparry:'desvio de goleiro',gkreflex:'reflexos de goleiro',gkreach:'alcance de goleiro',gkcatch:'firmeza de goleiro'};
 const tactics=['posse','normal','rapido','fora','longo'];
 const TACTIC_LABEL=Object.freeze({
@@ -85,7 +86,7 @@ const TRAINING_GROUP={
 const ROLE_TRAINING={
  CA:[0,1,2,3,4,5],SA:[0,1,2,3,4,5],MAT:[0,1,2,3,4],
  MLG:[1,2,3,4,6],VOL:[1,2,3,4,5,6],ZG:[1,3,4,5,6],
- LD:[1,2,3,4,5,6],ALA:[0,1,2,3,4],GO:[7,8,9]
+ LD:[1,2,3,4,5,6],LE:[1,2,3,4,5,6],ALA:[0,1,2,3,4],GO:[7,8,9]
 };
 const CANONICAL={
  'fisicalidade':'Physicality','instinto artilheiro':"Striker's Instinct",
