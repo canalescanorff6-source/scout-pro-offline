@@ -53,8 +53,12 @@ function related(card,cards){
     details:'Mesmo PP, posição, estilo ofensivo e distribuição. Comparação só documental; não significa mesma performance.'
    }));
 }
-function sourceFor(card,raw){
+function sourceFor(card,raw,lab,index){
  if(!exact(card,raw)||Number(card.pp)!==Number(raw.pp))return null;
+ // V268: só disponibilizar números-base no ranking quando o mesmo
+ // laboratório e o índice desta edição passaram pela prova V260.
+ const base=baseEvidence(card,index,lab);
+ const baseVerified=base.complete===true;
  // Catálogo confirmado por CAP + Card ID + edição. Não copiar para outras cartas.
  return {
   capture:Number(card.numero),id:String(card.id),name:card.name,edition:card.versao,
@@ -62,6 +66,10 @@ function sourceFor(card,raw){
   attack_style:card.estilo_ataque,defence_style:card.estilo_defesa,
   boost1:card.impeto_fixo,boost2:card.impeto_extra,
   native_skills:card.habilidades_nativas,
+  base_stats:baseVerified?lab.stats:null,
+  base_stats_proof:baseVerified?lab.stats_proof:null,
+  base_catalog_proof:baseVerified?{
+   base_stats_confirmados:true,print_edicao_confirmada:true}:null,
   pp:Number(card.pp),pp_estimated:card.pp_estimado===true,
   recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
   base_stats_known:card.base_stats_known===true,
@@ -772,7 +780,7 @@ async function begin(){
  const initial=root.querySelector('.scout-v220-tab[aria-pressed="true"]');
  active=initial?.dataset.tactic||'posse';
  // Corrigir o catálogo informativo da interface APENAS para a edição exata.
- const canonical=sourceFor(card,raw);
+ const canonical=sourceFor(card,raw,lab,evidenceByCap.get(card.numero));
  if(canonical){
   host.dispatchEvent(new host.CustomEvent('scoutpro:v251:canonical-data',{
    detail:canonical
