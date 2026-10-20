@@ -69,11 +69,16 @@
   if(!base)pending.push('Atributos-base completos desta versão');
   if(!video)pending.push('Print/vídeo comprovando a edição exata');
   if(!field)pending.push('Comparação controlada em partidas');
-  const classification=!identity?'blocked':field&&budget&&base&&video&&training?
+  // V280: o nível "gameplay" exige todos os nove requisitos documentais.
+  // Nativas, cinco adicionais e slot físico não podem ser ignorados.
+  // Mesmo com 9/9, o status continua consultivo, sem homologação automática.
+  const documentaryComplete=Boolean(identity&&training&&budget&&natives&&
+   equipment&&slot&&base&&video&&field);
+  const classification=!identity?'blocked':documentaryComplete?
    'gameplay':training?'registered':'review';
   return Object.freeze({
    capture:Number(card.numero),card_id:id,style,
-   classification,label:STATUS[classification],
+   classification,label:STATUS[classification],documentaryComplete,
    allowedToPresentCandidates:identity,
    allowedToReplaceApprovedBuild:false,
    canSpendTokensAutomatically:false,
