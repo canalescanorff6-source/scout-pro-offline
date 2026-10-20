@@ -1502,6 +1502,20 @@ def run():
                     v251.wait_for(state='visible',timeout=22000)
                     if v251.get_attribute('data-review')!='no_build':
                         problems.append(f"{name}: V251 confundiu sem build com ficha registrada")
+                    # V283: sensibilidade na ficha ÚNICA, fechada inicialmente.
+                    risk=v251.locator('.ct283-sensitivity')
+                    if risk.count()!=1:
+                        problems.append(f"{name}: seção de sensibilidade V283 ausente ou duplicada")
+                    else:
+                        if risk.evaluate('(e)=>e.open'):
+                            problems.append(f"{name}: V283 abriu explicações extensas por padrão")
+                        risk.locator('summary').click()
+                        if risk.locator('li').count()<2:
+                            problems.append(f"{name}: V283 sem comparação de nativas e PP")
+                        if 'aplicado' in risk.get_attribute('data-action') if risk.get_attribute('data-action') else False:
+                            problems.append(f"{name}: V283 indevidamente sugere aplicação automática")
+                        page.screenshot(path=str(OUT/f"{name}_v283_sensitivity.png"),
+                            full_page=False,animations="disabled")
                     if '68 / 68 PP' not in v251.inner_text():
                         problems.append(f"{name}: V251 não fechou PP de Sergi Cardona")
                     pos=page.locator('#scout-v218-status')
