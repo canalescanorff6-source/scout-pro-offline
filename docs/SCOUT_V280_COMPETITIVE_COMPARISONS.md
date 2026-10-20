@@ -3,6 +3,13 @@
 ## Escopo e continuidade
 Mesmo projeto `canalescanorff6-source/scout-pro-offline`, partindo da V279 `v1.1.670` (main `571fd197d71801dcbe1b627b50e19a58974271de`). Não substitui builds, cartas, versões, Card IDs, imagens, PP, habilidades ou ímpetos homologados.
 
+## Revisão adicional de individualização tática
+- O ranking das cinco habilidades recebe um bloco **POR FUNÇÃO × ESTILO** com 10 funções e cinco modelos de técnico = 50 contextos, além das sinergias nativas já existentes.
+- A prioridade extra é limitada a 28 pontos relativos por habilidade funcional listada e documentada no código. Ela não gera novos pontos de progresso, habilidade nativa, alteração de build ou promessa de desempenho.
+- São privilegiados apoios curtos em Posse, cobertura no CA Normal, passe vertical e finalização em CA Rápido, apoio de corredor com entrada por dentro em Por Fora e segunda bola em Passe Longo — somente quando a função comporta.
+- As prioridades e a justificativa aparecem na própria ficha. A matriz V280 quantifica as semelhanças restantes em vez de criar uma meta arbitrária de diversidade.
+- A regressão valida 50 células da matriz de funções e todos os 1.230 cenários.
+
 ## Implementações
 1. O dossiê de cada carta compara **cinco estilos de jogo do técnico** no mesmo local.
 2. Forma **10 pares por carta** em vez de verificar apenas cada estilo isolado.
