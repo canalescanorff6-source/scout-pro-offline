@@ -661,8 +661,21 @@ function display(){
   'NENHUMA recomendação atribuída ou aprovada por eles sem vídeo da edição exata.');
  audit.append(methodList);block.append(audit);
  // V283: análise de sensibilidade recolhível, sem segunda ficha e sem gravação.
- const sensitiveSource=sourceFor(card,raw,lab,evidenceByCap.get(card.numero));
- if(sensitiveSource&&typeof S?.evidenceSensitivityV283==='function'){
+ const exactSource=sourceFor(card,raw,lab,evidenceByCap.get(card.numero));
+ // Caso a ficha HTML antiga diverja da fonte central, avaliar somente o
+ // catálogo canônico, sem importação de PP/atributos daquela ficha.
+ const sensitiveSource=exactSource||{
+  capture:Number(card.numero),id:String(card.id),edition:String(card.versao||''),
+  original_position:card.posicao,shown_position:card.posicao,
+  role_used:card.posicao,attack_style:card.estilo_ataque,
+  defence_style:card.estilo_defesa,native_skills:card.habilidades_nativas,
+  boost1:card.impeto_fixo,boost2:card.impeto_extra,
+  pp:card.pp_estimado===true?null:Number(card.pp),
+  pp_estimado:card.pp_estimado===true,
+  recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
+  training_provisional:card.treino_proposto_nao_validado===true
+ };
+ if(typeof S?.evidenceSensitivityV283==='function'){
   const sensitivity=S.evidenceSensitivityV283({
    ...sensitiveSource,original_position:card.posicao,
    role_used:check.positionUsed||card.posicao,shown_position:card.posicao
@@ -670,6 +683,8 @@ function display(){
   const section=mk('details','ct251-evidence-details ct283-sensitivity');
   section.append(mk('summary','','Sensibilidade de habilidades e ímpetos · comparar evidências'));
   section.append(mk('p','','Retiramos um sinal por vez para medir a estabilidade das recomendações. Nada é aplicado, validado ou equipado.'));
+  if(!exactSource)section.append(mk('p','ct251-warning',
+   'Fonte HTML da ficha não conciliada com o catálogo: os sinais abaixo vêm apenas dos registros canônicos da edição. A confirmação documental permanece pendente.'));
   const list=mk('ul','');
   const names=keys=>keys.map(k=>S.SKILLS[k]?.name||k).join(', ')||'nenhuma';
   for(const variant of sensitivity.comparisons){
