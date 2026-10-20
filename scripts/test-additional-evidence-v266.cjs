@@ -46,7 +46,10 @@ assert.equal(r.requiresReconciliation,true,
  'Mesmo uma nativa fora do vocabulário não pode contar como adicional');
 assert.equal(r.nativeManualConflicts.length,1);
 assert.equal(r.alreadyEquippedProvided,1);
-assert.equal(r.slotsRemaining,4);
+// V272: native duplicada mesmo quando nome original é desconhecido
+// invalida o certificado de vagas; recomendações permanecem consultivas.
+assert.equal(r.equippedConfirmed,false);
+assert.equal(r.slotsRemaining,null);
 assert(r.missing.some(x=>x.includes('fora do vocabulário')));
 assert(r.unmappedNativeSkills.includes('Phenomenal Pass'));
 assert(!r.recommendations.some(x=>x.key==='onepass'));
