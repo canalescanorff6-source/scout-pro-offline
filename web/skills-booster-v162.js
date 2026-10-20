@@ -708,6 +708,63 @@ function evidenceRoadmap(checks,{creatorSource=null}={}){
   mayWriteTraining:false,maySpendTokens:false
  });
 }
+// V280: análise de DIFERENÇAS, não otimização por diversidade artificial.
+// Dez pares dos cinco estilos do técnico revelam recomendações idênticas
+// entre contextos diferentes e explicam quando o acervo não sustenta mudança.
+function decisionMatrixFromScenarios(scenarios){
+ if(!Array.isArray(scenarios)||scenarios.length!==DOSSIER_TACTICS.length||
+  scenarios.some((x,i)=>x.style!==DOSSIER_TACTICS[i]))
+  throw Error('Matriz exige exatamente cinco estilos em ordem documentada');
+ const rows=scenarios.map(x=>Object.freeze({
+  tactic:x.style,topSkill:x.firstSkill||null,topBooster:x.technicalName||null,
+  skills:Object.freeze((x.skillKeys||[]).slice()),
+  balancedSkills:Object.freeze((x.balancedKeys||[]).slice()),
+  skillMargin:x.skillMargin??null,boosterMargin:x.margin??null,
+  canEquip:false
+ }));
+ const pairs=[];
+ for(let i=0;i<rows.length;i++)for(let j=i+1;j<rows.length;j++){
+  const a=rows[i],b=rows[j];
+  const aa=new Set(a.skills),bb=new Set(b.skills);
+  const union=new Set([...aa,...bb]).size;
+  const both=[...aa].filter(x=>bb.has(x)).length;
+  pairs.push(Object.freeze({
+   first:a.tactic,second:b.tactic,
+   sharedSkills:both,totalDistinctSkills:union,
+   overlapPercent:union?Math.round(100*both/union):null,
+   topSkillSame:Boolean(a.topSkill&&b.topSkill&&a.topSkill===b.topSkill),
+   boosterSame:Boolean(a.topBooster&&b.topBooster&&a.topBooster===b.topBooster),
+   verdict:!union?'SEM_CANDIDATOS_CONFERIDOS':
+    both===union?'LISTAS_IDENTICAS':'LISTAS_DIFERENTES'
+  }));
+ }
+ const topSkills=new Set(rows.map(x=>x.topSkill).filter(Boolean));
+ const topBoosters=new Set(rows.map(x=>x.topBooster).filter(Boolean));
+ const populated=rows.filter(x=>x.skills.length>0).length;
+ const highSimilarity=pairs.filter(x=>x.overlapPercent!==null&&x.overlapPercent>=80).length;
+ const identicalLists=pairs.filter(x=>x.verdict==='LISTAS_IDENTICAS').length;
+ const risks=[];
+ if(populated<5)risks.push('Há estilos sem candidato: não transformar ausência de vaga em habilidade equipável.');
+ if(identicalLists>=6)
+  risks.push('Listas de habilidades muito parecidas entre estilos; exigir atributos e testes da edição antes de escolher.');
+ if(topSkills.size===1&&populated===5)
+  risks.push('Primeira habilidade idêntica nos cinco estilos: NÃO é prova de superioridade universal.');
+ if(topBoosters.size===1)
+  risks.push('Primeiro ímpeto idêntico nos cinco estilos: conferir a função e os quatro atributos da mesma versão.');
+ if(rows.some(x=>x.skillMargin!==null&&x.skillMargin<3))
+  risks.push('Prioridades de habilidades próximas; ordem não prova eficácia competitiva.');
+ if(rows.some(x=>x.boosterMargin!==null&&x.boosterMargin<2))
+  risks.push('Ímpetos próximos; não equipar apenas pela diferença de score.');
+ return Object.freeze({
+  schema:'CRAQUE_V280_CROSS_TACTIC_DIAGNOSTIC',tactics:5,pairCount:pairs.length,
+  rows:Object.freeze(rows),pairs:Object.freeze(pairs),
+  repeatedPairs:identicalLists,similarPairs80:highSimilarity,
+  uniqueFirstSkills:topSkills.size,uniqueFirstBoosters:topBoosters.size,
+  warnings:Object.freeze(risks),
+  interpretation:'Sem OVR, gameplay medido, autoria de criador ou eficácia provada.',
+  canModifyBuild:false,canEquipSkills:false,canEquipBooster:false
+ });
+}
 function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática não reconhecida');
  const skills=evaluate(d,tactic,manualEquipped,{
@@ -766,6 +823,9 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   const ranked=booster(d,style,engine,opts.verifiedSlot,opts.verifiedBooster);
   return Object.freeze({
    style,skills:result.recommendations.map(x=>x.name),
+   skillKeys:Object.freeze(result.recommendations.map(x=>x.key)),
+   balancedKeys:Object.freeze(result.balancedPortfolio.candidates.map(x=>x.key)),
+   skillMargin:result.recommendations[0]?.marginToNext??null,
    firstSkill:result.recommendations[0]?.name||null,
    booster:ranked.primary?.nome_pt||ranked.primary?.nome||null,
    technicalName:ranked.primary?.nome||null,
@@ -774,6 +834,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
    equipAuthorized:false
   });
  }));
+ const decisionMatrix=decisionMatrixFromScenarios(scenarios);
  const uniqueTopSkills=[...new Set(scenarios.map(x=>x.firstSkill).filter(Boolean))];
  const uniqueBoosters=[...new Set(scenarios.map(x=>x.technicalName).filter(Boolean))];
  const tacticalStability=Object.freeze({
@@ -819,7 +880,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
   boosterAlternatives:boosters.alternatives.map(x=>Object.freeze({
    name:x.nome_pt||x.nome,score:x.score
   })),
-  evidencePending:warnings,scenarios,
+  evidencePending:warnings,scenarios,decisionMatrix,
   playbook:playbookOf(d,tactic),
   evidenceChecklist:checks,roadmap,documentedIndicators:checksReady,
   totalIndicators:checks.length,tacticalStability,
@@ -842,7 +903,7 @@ const USER_SLOT_NOTES=Object.freeze({
  236:"Eto'o #236: o usuário relata ímpeto fixo e outro selecionável; nome e edição seguem pendentes."
 });
 const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap};
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;
@@ -1055,6 +1116,17 @@ function draw(){
   ]);
  addSection('Checklist de sete verificações independentes',
   dossier.evidenceChecklist.map(c=>(c.ok?'CONFERIDO: ':'PENDENTE: ')+c.label));
+ addSection('V280 · comparador competitivo entre estilos',[
+  'Cinco estilos, '+dossier.decisionMatrix.pairCount+' pares comparados; '+
+   dossier.decisionMatrix.repeatedPairs+' pares com listas idênticas e '+
+   dossier.decisionMatrix.similarPairs80+' pares com 80% ou mais de sobreposição.',
+  ...dossier.decisionMatrix.pairs.map(p=>
+   tacticLabelFor(p.first)+' × '+tacticLabelFor(p.second)+': '+
+   (p.overlapPercent===null?'sem candidatos equipáveis documentados':
+    p.overlapPercent+'% de habilidades coincidentes')+
+   ' · primeiro ímpeto '+(p.boosterSame?'igual':'diferente ou pendente')),
+  ...dossier.decisionMatrix.warnings.map(w=>'ATENÇÃO: '+w)
+ ]);
  addSection('Variação entre os cinco estilos do técnico',[
   'A habilidade prioritária muda entre '+dossier.tacticalStability.topSkillVariations+
    ' resultados diferentes.',
