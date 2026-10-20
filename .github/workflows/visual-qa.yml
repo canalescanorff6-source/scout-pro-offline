@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   screenshots:
-    name: Capturas visuais 360px 390px 1366px
+    name: Capturas visuais em 8 resoluções Android e Windows
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
