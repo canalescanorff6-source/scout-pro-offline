@@ -10,7 +10,7 @@ Além disso, o modo de assinatura legado fazia `apksigner verify`, mas não comp
 ## Correções efetivas
 - Exigir `github.ref == 'refs/heads/main'` **e** `needs.android.outputs.signed == 'true'` na etapa de release.
 - Validar hash SHA256 do APK oficial **antes** da chamada de publicação.
-- Baixar os dois instaladores e publicá-los no **mesmo job/ação GitHub Release**, após validações de integridade e paridade Android/Windows. Isso reduz a possibilidade de uma release Windows incompleta; não é transação atômica da API do GitHub.
+- Baixar os dois instaladores, exigir tag e release ainda inexistentes, e carregar os pacotes no **mesmo job/ação GitHub Release em modo rascunho**. Conferir remotamente os cinco artefatos e só então promover a release para visível e latest. Uma falha de upload preserva o rascunho para revisão em vez de atualizar os clientes com apenas Windows. A API não fornece transação atômica geral; a promoção é o momento de exposição.
 - Barrar certificados Android divergentes do certificado oficial V99 também no caminho de assinatura legado, sem revelar nem modificar chaves.
 - Atualizar os verificadores do workflow e acrescentar cenários positivos/negativos e registro JSON reproduzível em `scripts/test-coordinated-release-v297.cjs`.
 - Preservar todos os dados, imagens, Card IDs, PP, builds, nativas e ímpetos das 246 cartas.
