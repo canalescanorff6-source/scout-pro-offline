@@ -584,14 +584,14 @@ function methodologyGate(card,proof,style,store,review={}){
   }):null,
   booster:{status:ppConflict?'bloqueado_pp_divergentes':boosterStatus,slotState:slot?.status||'nao_conferido',
    slotEvidence:boost?.slotEvidence||'sem_slot_documentado',
-   equipStatus:boost?.equipStatus||'slot_nao_verificado',
+   equipStatus:ppConflict?'bloqueado_pp_divergentes':boost?.equipStatus||'slot_nao_verificado',
    name:!ppConflict&&safeEdition?(boost?.primary?.nome_pt||boost?.primary?.nome||null):null,
    reason:ppConflict?'Ranking suspenso até reconciliar os pontos de progresso da edição.':safeEdition?(boost?.primary?.motivo||'Sem critérios suficientes para comparar ímpetos.'):
     'Card ID ou edição pendente: não calcular escolha de ímpeto confirmada.',
    note:ppConflict?'PP divergentes: confira novamente nível/PP antes de usar o ranking.':boost?.note||'Motor não disponível.',
-   ppStatus:boost?.primary?.evidencias?.pp_status||'sem_ranking',
+   ppStatus:ppConflict?'pp_divergentes':boost?.primary?.evidencias?.pp_status||'sem_ranking',
    documentaryConfidence:ppConflict?'PENDENTE_PP_DIVERGENTES':boost?.primary?.estado_confianca||'PENDENTE_SEM_RANKING',
-   confidenceReason:boost?.primary?.confianca||'pendente',
+   confidenceReason:ppConflict?'pendente':boost?.primary?.confianca||'pendente',
    budgetOriginConfirmed:!ppConflict&&has('budget'),
    scoreMargin:ppConflict?null:boost?.spread??null,
    comparison:!ppConflict?boost?.alternatives?.map(x=>({
