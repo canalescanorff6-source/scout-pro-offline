@@ -20,7 +20,9 @@ const points=levels=>{
 function validated(card,raw){
  if(!card||!raw||raw.schema!==SCHEMA||raw.confirmed_in_game!==true||
   Number(card.numero)!==Number(raw.numero)||String(card.id)!==String(raw.card_id)||
-  String(card.name)!==String(raw.name)||ppForLevel(raw.level)!==raw.pp)return null;
+  String(card.name)!==String(raw.name)||
+  typeof raw.edition!=='string'||!raw.edition.trim()||
+  raw.edition!==String(card.versao||'')||ppForLevel(raw.level)!==raw.pp)return null;
  return raw;
 }
 function localReview(card,storage){

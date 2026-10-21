@@ -17,6 +17,10 @@ function validate(card,record){
   Number(record.numero)!==Number(card.numero)||
   String(record.card_id)!==String(card.id)||
   String(record.name)!==String(card.name)||
+  // V296: registro antigo sem edição continua armazenado, mas sua prova
+  // não autoriza nível/PP até reconfirmar a edição exata desta carta.
+  typeof record.edition!=='string'||!record.edition.trim()||
+  record.edition!==String(card.versao||'')||
   record.confirmed_in_game!==true||
   budget(record.level)===null||record.pp!==budget(record.level))return null;
  return record;
@@ -71,11 +75,15 @@ function render(){
  $('v248-more').hidden=result.length<=limit;
  $('v248-cards').innerHTML=result.slice(0,limit).map(c=>{
   const saved=readSaved(c,storage()),s=status(c);
+  const storedRaw=storage()?.getItem(key(c));
+  const needsReconfirmation=storedRaw!=null&&!saved;
   const art=images.get(c.numero)||'';
   const label={pendente:'Nível máximo a conferir',registrado:'Nível documentado',confirmado_localmente:'Conferido por você',divergente:'PP divergentes'}[s];
   const level=saved?.level??(Number.isInteger(c.max_level)?c.max_level:null);
   const pp=saved?.pp??c.pp;
-  const explanation=s==='divergente'?
+  const explanation=needsReconfirmation?
+   'Existe uma conferência antiga ou incompatível, sem prova da edição atual. Ela foi preservada, mas é necessária reconfirmação no jogo.':
+   s==='divergente'?
    'Sua confirmação indica '+saved.pp+' PP, mas o catálogo contém '+c.pp+' PP. Exporte o registro para revisão; a build original NÃO foi substituída.':
    s==='pendente'?'O catálogo registra '+c.pp+' PP, mas ainda não há comprovação do nível máximo desta edição.':
    s==='registrado'?'Nível/PP da fonte documentada; é possível conferir novamente na conta.':
@@ -116,7 +124,7 @@ function save(e){
  if(pp===null||!form.elements.confirmed.checked)return note('Informe e confirme o nível máximo exibido no jogo.',true);
  const record={
   schema:SCHEMA,numero:card.numero,card_id:String(card.id),name:card.name,
-  level:input,pp,confirmed_in_game:true,source:'conferência manual no eFootball',
+  edition:String(card.versao),level:input,pp,confirmed_in_game:true,source:'conferência manual no eFootball',
   confirmed_at:new Date().toISOString()
  };
  if(!validate(card,record))return note('Não foi possível validar a edição. Nenhum dado foi salvo.',true);

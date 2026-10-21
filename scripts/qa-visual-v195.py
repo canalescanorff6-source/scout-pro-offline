@@ -9,6 +9,7 @@ import shutil
 import sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from qa_competitive_v289 import run_competitive_qa
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "artifacts" / "visual-qa"
@@ -1710,7 +1711,7 @@ def run():
                       localStorage.setItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id,
                         JSON.stringify({schema:'CRAQUE_PROGRESS_REVIEW_V248',
                           numero:Number(c.capture),card_id:String(c.id),name:String(c.name),
-                          level:27,pp:52,confirmed_in_game:true,
+                          edition:String(c.edition),level:27,pp:52,confirmed_in_game:true,
                           source:'conferência manual no eFootball',
                           confirmed_at:new Date().toISOString()}));
                     }""")
@@ -1727,6 +1728,25 @@ def run():
                         problems.append(f"{name}: V252 manteve editor habilitado com PP 52 vs 50")
                     if 'PP DIVERGENTES' not in martinelli_v251.inner_text():
                         problems.append(f"{name}: V252 não informou a divergência de PP da edição")
+                    # V299: o checklist documental também deve suspender a prova
+                    # de nível/PP; quando a divergência é desfeita, recupera.
+                    budget_pending=page.locator('#ct251-individual-ficha .ct251-proof-list li').filter(
+                        has_text='Nível máximo e PP comprovados pelo usuário')
+                    if (budget_pending.count()!=1 or
+                        budget_pending.get_attribute('data-proof')!='pending' or
+                        'PP DIVERGENTES' not in (budget_pending.text_content() or '')):
+                        problems.append(f"{name}: V299 marcou PP divergentes como orçamento DOCUMENTADO")
+                    # V299: PP divergentes suspendem todos os laboratórios
+                    # V283–V287, não apenas o parecer primário V298.
+                    pp_guard=page.locator('#ct251-individual-ficha .ct299-pp-gate')
+                    if (pp_guard.count()!=1 or
+                        pp_guard.get_attribute('data-review')!='pp_divergentes' or
+                        '52 PP' not in pp_guard.inner_text()):
+                        problems.append(f"{name}: V299 não exibiu bloqueio único dos laboratórios por PP divergentes")
+                    for gated in ['ct283-sensitivity','ct284-decision-lab',
+                                  'ct285-quality-lab','ct286-strategic','ct287-evidence-council']:
+                        if page.locator('#ct251-individual-ficha .'+gated).count():
+                            problems.append(f"{name}: V299 exibiu {gated} apesar dos PP divergentes")
                     page.screenshot(path=str(OUT/f"{name}_v252_pp_divergentes.png"),
                       full_page=False,animations="disabled")
                     page.evaluate("""() => {
@@ -1739,6 +1759,14 @@ def run():
                     if (page.locator('#scout-v218-status').get_attribute('data-mode')=='blocked' or
                         page.locator('#ct251-individual-ficha').get_attribute('data-review')!='complete'):
                         problems.append(f"{name}: V252 não recuperou o treino após desfazer PP divergente")
+                    if page.locator('#ct251-individual-ficha .ct299-pp-gate').count():
+                        problems.append(f"{name}: V299 não removeu o aviso após desfazer conflito de PP")
+                    budget_reconciled=page.locator('#ct251-individual-ficha .ct251-proof-list li').filter(
+                        has_text='Nível máximo e PP comprovados pelo usuário')
+                    if budget_reconciled.count()!=1 or budget_reconciled.get_attribute('data-proof')!='documented':
+                        problems.append(f"{name}: V299 não restaurou a prova de nível/PP do Martinelli após reconciliação")
+                    if not page.locator('#ct251-individual-ficha .ct284-decision-lab').count():
+                        problems.append(f"{name}: V299 não reativou os laboratórios após reconciliação dos PP")
                     result['ficha_individual_v251']={'tested':True,'levels':68,
                        'pending_blocked':True,'martinelli_26_50':True,
                        'v252_proof_matrix':True,'v252_budget_guard':True}
@@ -1796,6 +1824,11 @@ def run():
                     result['skill_slots_v254']={'not_assumed':True,'five_full':True,
                        'edition_persisted':True,'editing_invalidated':True,
                        'tactic_labels_ok':True}
+                if name in ('mobile_320', 'mobile_390', 'windows_1151', 'windows_1920'):
+                    try:
+                        result['competitive_v289'] = run_competitive_qa(page, URL, OUT, name)
+                    except Exception as error:
+                        problems.append(f'{name}: fluxo competitivo V289: {error}')
                 results[name] = result
                 context.close()
         finally:

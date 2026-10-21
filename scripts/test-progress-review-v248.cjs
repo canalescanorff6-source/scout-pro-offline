@@ -29,11 +29,15 @@ const unknown=cards.find(c=>!Number.isInteger(c.max_level));
 assert(unknown);
 const candidate=Math.min(120,Math.floor(unknown.pp/2)+1);
 const proof={
- schema:A.SCHEMA,numero:unknown.numero,card_id:String(unknown.id),name:unknown.name,
+ schema:A.SCHEMA,numero:unknown.numero,card_id:String(unknown.id),name:unknown.name,edition:unknown.versao,
  level:candidate,pp:A.budget(candidate),confirmed_in_game:true,
  source:'conferência manual no eFootball',confirmed_at:'2026-10-19T00:00:00.000Z'
 };
 assert(A.validate(unknown,proof));
+assert.equal(A.validate({...unknown,versao:'Nova edição com o mesmo CAP e ID'},proof),null,
+ 'Alterar edição mantendo CAP, Card ID e nome invalida a prova');
+assert.equal(A.validate(unknown,{...proof,edition:undefined}),null,
+ 'Comprovante legado V248 sem edição permanece armazenado mas não válido');
 assert.equal(A.validate({...unknown,id:'outra-edicao'},proof),null);
 assert.equal(A.validate(unknown,{...proof,numero:191}),null);
 assert.equal(A.validate(unknown,{...proof,pp:999}),null);

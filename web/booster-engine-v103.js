@@ -270,7 +270,27 @@ function nativeSkillContext(w,raw,role){
  }
  return findings;
 }
-function rank(card,tactic){
+function additionalSkillEvidence(card,equipment={}){
+ const manual=typeof equipment.manualEquipped==='string'?equipment.manualEquipped:'';
+ const empty={confirmed:false,findings:[],weights:{}};
+ if(!equipment.equipmentRecord)return empty;
+ const api=host?.SCOUT_RECOMMENDATIONS_V162||
+  (typeof module==='object'&&module.exports?require('./skills-booster-v162.js'):null);
+ const profile={...card,capture:card.capture??card.numero,
+  edition:card.edition||card.versao,native_skills:card.native_skills||card.habilidades_nativas,
+  shown_position:card.role_used||card.shown_position||card.posicao};
+ const context=api?.verifiedRecommendationContextV288?.(profile,{
+  manualEquipped:manual,equipmentRecord:equipment.equipmentRecord});
+ if(!context?.skills.confirmed)return empty;
+ const weights={};
+ // A prova usa aliases canônicos; o cálculo precisa usar a mesma identidade.
+ // Ex.: Passe a rasgar / Passe infiltrado / Through Passing são "through".
+ const canonical=api.fingerprint(manual).split('|').filter(Boolean)
+  .map(key=>api.SKILLS[key]?.aliases?.[0]||api.SKILLS[key]?.name||'').join(';');
+ const findings=nativeSkillContext(weights,canonical,POS[String(profile.shown_position||'').toUpperCase()]);
+ return {confirmed:true,findings,weights};
+}
+function rank(card,tactic,equipment={}){
  if(!tactics.includes(tactic))throw Error('Tática desconhecida');
  // V265: a função CONFIRMADA pelo V246/V263 (role_used/shown_position)
  // prevalece sobre a posição ORIGINAL no catálogo. Ranking não confirma
@@ -296,9 +316,29 @@ function rank(card,tactic){
   addStats(weights,['defaware','awareness','power'],1);
  }
  const nativeFindings=nativeSkillContext(weights,card.habilidades_nativas||card.native_skills||'',role);
+ const additional=additionalSkillEvidence(card,equipment);
  const training=trainingAudit(card);
  const verifiedBase=baseStatsAudit(card);
  const levels=training.levels;
+ // V292: nota heurística não pode virar alegação de prova da mesma edição.
+ // CAP/Card ID, origem de PP e inventário nativo têm estados separados.
+ const cap=Number(card.capture??card.numero);
+ const id=String(card.id||card.card_id||'').trim();
+ const edition=String(card.edition||card.versao||'').trim();
+ const identityDocumented=Boolean(Number.isInteger(cap)&&cap>0&&/^\d+$/.test(id)&&edition&&
+  !/pendente|confirmar|invalid|desconhecid|nao informado|não informado/i.test(edition));
+ const nativeText=String(card.habilidades_nativas||card.native_skills||'').trim();
+ const nativeCataloged=Boolean(nativeText)&&
+  !/^(pendente|a confirmar|confirmar|desconhecid|nao informad|sem registro)/i.test(normStyle(nativeText));
+ const level=card.max_level;
+ const progressOriginVerified=Number.isInteger(level)&&level>=1&&level<=120&&
+  Number(card.pp)===2*(level-1)&&
+  /^informado_pelo_usuario_/.test(String(card.pp_origem||''))&&
+  card.pp_estimado!==true&&card.pp_estimated!==true;
+ const confidenceStatus=!identityDocumented?'PENDENTE_IDENTIDADE':
+  !nativeCataloged?'PENDENTE_NATIVAS':
+  !progressOriginVerified?'BAIXA_SEM_PROVA_NIVEL_PP':
+  !levels?'BAIXA_SEM_BUILD_CONFERIDA':'COMPARACAO_LIMITADA';
  const trainingIndices=ROLE_TRAINING[role];
  const mean=levels?trainingIndices.reduce((sum,i)=>sum+levels[i],0)/trainingIndices.length:null;
  // As categorias apenas sinalizam para onde foram direcionados os níveis:
@@ -402,7 +442,11 @@ function rank(card,tactic){
     ['Offence Creator','Off the Ball','Fantasista'].includes(name))contextScore+=3;
   }
   if(role==='GO'&&tactic==='posse'&&name==='Goalkeeping')contextScore+=1;
-  const score=Math.round((functionScore+trainingScore+contextScore+baseScore)*100)/100;
+  // Complementaridade relativa das skills instaladas, isolada do score de
+  // nativas. Não cria atributo final nem duplica confirmação por booleano.
+  const additionalScore=additional.confirmed?Math.min(3,stats.reduce((sum,key)=>
+   sum+Math.max(0,additional.weights[key]||0)*.35,0)):0;
+  const score=Math.round((functionScore+trainingScore+contextScore+baseScore+additionalScore)*100)/100;
   const ordered=stats.slice().sort((a,b)=>(weights[b]||0)-(weights[a]||0));
   const axes=[label[ordered[0]],label[ordered[1]]];
   const info=[
@@ -411,15 +455,24 @@ function rank(card,tactic){
    levels?'níveis de treino servem apenas como sinal de investimento, sem atributos finais medidos':'níveis individuais indisponíveis; recomendação provisória'
   ];
   if(nativeFindings.length)info.push('habilidades nativas indicam '+nativeFindings.slice(0,2).join(' e '));
+  if(!identityDocumented)info.push('Card ID ou edição sem identificação segura: ímpeto pendente');
+  else if(!nativeCataloged)info.push('habilidades nativas ausentes/provisórias: confiança pendente');
+  else if(!progressOriginVerified)info.push('nível máximo e origem dos PP a confirmar');
+  if(additionalScore>0)info.push('adicionais conferidas oferecem contexto complementar; sem bônus de atributo presumido');
   return {
    nome:name,nome_pt:displayName(name),traducao_documentada:translationKnown(name),
    funcao_considerada:role,score,atributos:stats.map(k=>label[k]),
    motivo:info.join('; ')+'.',
-   confianca:levels?'comparativa_limitada':'baixa',
+   confianca:confidenceStatus.startsWith('PENDENTE')?'pendente':
+    confidenceStatus==='COMPARACAO_LIMITADA'?'comparativa_limitada':'baixa',
+   estado_confianca:confidenceStatus,
    perfil_documental:style||'sem estilo registrado',
    recomendacao_condicional:true,
    status_validacao:'HIPOTESE_COMPETITIVA_SEM_HOMOLOGACAO',
    evidencias:{treino:trainingEvidence,pp_status:training.status,
+    identidade_documental:Boolean(identityDocumented),nativas_no_catalogo:nativeCataloged,
+    nivel_pp_origem_conferida:progressOriginVerified,
+    nivel_pp_matematico:training.status==='custo_pp_conferido',
     base_status:verifiedBase.status,
     base_count:verifiedBase.count,base_atributos_mapeados:verifiedBase.recognized,
     base_fonte:verifiedBase.source,
@@ -428,6 +481,9 @@ function rank(card,tactic){
     impeto_fixo:fixed||null,impeto_extra_registrado:extra||null,
     score_funcao:Number(functionScore.toFixed(2)),score_complemento:Number(trainingScore.toFixed(2)),
     score_contexto:Number(contextScore.toFixed(2)),
+    score_adicionais:Number(additionalScore.toFixed(2)),
+    adicionais_conferidas:additional.confirmed,
+    adicionais_contextuais:additional.findings.slice(),
     nativas_contextuais_registradas:nativeFindings.slice(0,6),
     participacao_contexto:Number((contextScore/Math.max(1,Math.abs(score))*100).toFixed(1)),
     atributos_finais_documentados:verifiedBase.status==='base_completa_confirmada'?false:null,
@@ -455,7 +511,7 @@ function audit(cards){
  return {version:'V104',method:'V200: função, tática, estilo, habilidades nativas e investimento por categoria; sem inferir atributos finais ou slot livre, sem prova de desempenho em partidas',summary,cards:result};
 }
 const api={BOOSTERS,CRAFTABLE,ROLE,POS,tactics,TACTIC_LABEL,PTBR,
- trainingAudit,progressCost,baseStatsAudit,BASE_STAT_LABELS:label,
+ trainingAudit,progressCost,baseStatsAudit,additionalSkillEvidence,BASE_STAT_LABELS:label,
  displayName,translationKnown,slotStatus,boosterName,levelsOf,rank,audit};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_BOOSTERS_V103=api;

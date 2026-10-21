@@ -22,7 +22,7 @@ for(const c of cards){
   const list=B.rank(c,tactic);
   assert(list.length>=1,'Deve haver opção consultiva '+c.numero+' '+tactic);
   assert(list.every(z=>B.CRAFTABLE.includes(z.nome)&&Number.isFinite(z.score)&&z.atributos.length===4),'Tipo regular e quatro atributos '+c.numero);
-  assert(list.every(z=>z.confianca==='comparativa_limitada'||z.confianca==='baixa'),'Sem confiança fictícia '+c.numero);
+  assert(list.every(z=>['comparativa_limitada','baixa','pendente'].includes(z.confianca)),'Sem confiança fictícia '+c.numero);
   assert(list.every(z=>z.evidencias.limite.includes('Sem atributos finais')),'Proveniência individual '+c.numero);
   assert.equal(new Set(list.map(z=>z.nome)).size,list.length,'Nunca duplicar candidatos');
   const natural=B.boosterName(c.impeto_fixo),registered=B.slotStatus(c.impeto_extra)==='nome_registrado'?B.boosterName(c.impeto_extra):null;
@@ -41,7 +41,9 @@ for(const c of cards){
 assert.equal(withTrain+withoutTrain,246);
 assert(withoutTrain>0,'Cartas sem níveis finais documentados não podem ser fingidas');
 assert.equal(B.rank({...byId.get(1),niveis:null},'posse')[0].confianca,'baixa');
-assert.equal(B.rank(byId.get(1),'posse')[0].confianca,'comparativa_limitada');
+// V292: orçamento matematicamente cabível NÃO equivale a nível/PP com origem.
+assert.equal(B.rank(byId.get(1),'posse')[0].confianca,'baixa');
+assert.equal(B.rank(byId.get(1),'posse')[0].estado_confianca,'BAIXA_SEM_PROVA_NIVEL_PP');
 const possePivot=B.rank({...byId.get(33),estilo_ataque:'Pivô'},'posse');
 const posseRunner=B.rank({...byId.get(33),estilo_ataque:'Artilheiro'},'posse');
 const posseLink=B.rank({...byId.get(1),estilo_ataque:'Puxa marcação'},'posse');

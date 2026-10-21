@@ -89,6 +89,9 @@ function sourceFor(card,raw,lab,index){
  };
 }
 const recognizedStyles=new Set(['posse','normal','rapido','fora','longo']);
+// Chave contém todos os sinais matemáticos, nunca CAP/nome/Overall. As
+// cópias de saída impedem um rascunho de contaminar outra ficha no cache.
+const allocationCache=new Map();
  // Revisão V248/V250: só a mesma edição, confirmação explícita de nível
  // e PP coerentes. Esse registro é declaração do usuário, não prova externa.
  function localLevelReview(card,store){
@@ -101,6 +104,8 @@ const recognizedStyles=new Set(['posse','normal','rapido','fora','longo']);
     Number(value.numero)!==Number(card.numero)||
     String(value.card_id)!==String(card.id)||
     String(value.name)!==String(card.name)||
+    typeof value.edition!=='string'||!value.edition.trim()||
+    value.edition!==String(card.versao||'')||
     !Number.isInteger(value.level)||value.level<1||value.level>120||
     value.pp!==2*(value.level-1))return null;
    return Object.freeze({level:value.level,pp:value.pp,source:'conferencia_local_usuario'});
@@ -113,6 +118,8 @@ const recognizedStyles=new Set(['posse','normal','rapido','fora','longo']);
  */
 function allocate(weights,role,pp,baseline){
  if(!T||!Number.isInteger(pp)||pp<0||pp>300||!Array.isArray(weights)||weights.length!==10)return null;
+ const cacheKey=JSON.stringify([weights,role,pp,T.valid(baseline)?baseline:null]);
+ if(allocationCache.has(cacheKey))return allocationCache.get(cacheKey)?.slice()||null;
  const allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
  let dp=Array(pp+1).fill(null);dp[0]={utility:0,levels:Array(10).fill(0)};
  for(const i of allowed){
@@ -135,7 +142,97 @@ function allocate(weights,role,pp,baseline){
   }
   dp=next;
  }
- return dp[pp]&&T.total(dp[pp].levels)===pp?dp[pp].levels:null;
+ const result=dp[pp]&&T.total(dp[pp].levels)===pp?dp[pp].levels:null;
+ if(allocationCache.size>=256)allocationCache.delete(allocationCache.keys().next().value);
+ allocationCache.set(cacheKey,result?.slice()||null);
+ return result?.slice()||null;
+}
+/* V289: comparação MULTIOBJETIVO de investimento, não de status finais.
+ * A fronteira é somente dos candidatos gerados por até seis perfis. Não é
+ * busca exaustiva nem prova de que um treino seja melhor em partidas.
+ */
+function trainingFrontier(weights,role,pp,baseline,options={}){
+ const pending=reason=>Object.freeze({status:'PENDENTE',budgetStatus:'PENDENTE',
+  reason,candidates:Object.freeze([]),axes:Object.freeze([]),exhaustive:false,
+  mayApply:false,gameplayValidated:false});
+ if(!T||!Object.hasOwn(T.BASE,role)||!Number.isInteger(pp)||pp<0||pp>238||
+  !Array.isArray(weights)||weights.length!==10||
+  !weights.every(n=>Number.isFinite(n)&&n>=0))
+  return pending('Função, pesos ou orçamento de PP sem dados válidos.');
+ const allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ if(!allowed.some(i=>weights[i]>0))return pending('Sem prioridades documentais para comparar investimento.');
+ const definitions=role==='GO'?[
+  {key:'goleiro1',label:'Goleiro 1',indices:[7]},
+  {key:'goleiro2',label:'Goleiro 2',indices:[8]},
+  {key:'goleiro3',label:'Goleiro 3',indices:[9]}
+ ]:[
+  {key:'ataque',label:'Finalização e desmarque',indices:[0,3]},
+  {key:'apoio',label:'Passe e domínio',indices:[1,2]},
+  {key:'mobilidade',label:'Destreza e pernas',indices:[3,4]},
+  {key:'duelos',label:'Jogo aéreo e defesa',indices:[5,6]}
+ ];
+ const axes=definitions.filter(a=>a.indices.some(i=>weights[i]>0));
+ const baselineStatus=options.baselineProvisional===true?'treino_experimental_sem_validacao':
+  !T.valid(baseline)?'nao_documentado':T.total(baseline)!==pp?
+  'orcamento_divergente':baseline.some((n,i)=>n>0&&!allowed.includes(i))?
+  'categorias_fora_do_modelo':'compativel';
+ const registered=baselineStatus==='compativel'?baseline:null;
+ const primary=allocate(weights,role,pp,registered);
+ if(!primary)return pending('Não foi encontrado vetor viável com custo exato.');
+ const reference=registered||primary;
+ const candidates=[],seen=new Map();
+ const add=(levels,label,isRegistered=false)=>{
+  if(!T.valid(levels)||T.total(levels)!==pp)return null;
+  const key=levels.join(',');
+  if(seen.has(key)){
+   const existing=seen.get(key);existing.origins.push(label);
+   if(isRegistered)existing.registered=true;return existing.id;
+  }
+  const objectives=Object.fromEntries(axes.map(a=>{
+   const denominator=a.indices.reduce((sum,i)=>sum+weights[i],0);
+   // Utilidade decrescente e monótona de NÍVEIS, sem converter em atributos.
+   const value=a.indices.reduce((sum,i)=>sum+weights[i]*Math.log1p(levels[i]),0)/denominator;
+   return [a.key,Number(value.toFixed(8))];
+  }));
+  const changes=levels.map((after,i)=>({index:i,category:T.CATEGORIES[i],
+   before:reference[i],after,deltaLevels:after-reference[i],
+   deltaPP:T.ppCost(after)-T.ppCost(reference[i]),
+   nextCost:after<20?T.ppCost(after+1)-T.ppCost(after):null
+  })).filter(x=>x.deltaLevels!==0);
+  const candidate={id:'candidato-'+candidates.length,label,origins:[label],
+   registered:isRegistered,levels:levels.slice(),spent:pp,objectives,changes,
+   addedPP:changes.reduce((sum,x)=>sum+Math.max(0,x.deltaPP),0),
+   removedPP:changes.reduce((sum,x)=>sum+Math.max(0,-x.deltaPP),0),
+   mayApply:false,status:'ESTIMADO'};
+  candidates.push(candidate);seen.set(key,candidate);return candidate.id;
+ };
+ if(registered)add(registered,'Treino registrado · sem nova aprovação',true);
+ const primaryId=add(primary,'Proposta contextual');
+ for(const axis of axes){
+  const trial=weights.map((w,i)=>allowed.includes(i)?w*(axis.indices.includes(i)?1.7:.8):0);
+  add(allocate(trial,role,pp,registered),'Ênfase experimental: '+axis.label);
+ }
+ add(allocate(weights.map((w,i)=>allowed.includes(i)?Math.sqrt(w)*5:0),role,pp,registered),
+  'Equilíbrio experimental entre categorias');
+ for(const candidate of candidates){
+  candidate.dominatedBy=candidates.filter(other=>other!==candidate&&
+   axes.every(a=>other.objectives[a.key]>=candidate.objectives[a.key]-1e-8)&&
+   axes.some(a=>other.objectives[a.key]>candidate.objectives[a.key]+1e-8)).map(x=>x.id);
+  candidate.onFrontier=candidate.dominatedBy.length===0;
+ }
+ return Object.freeze({status:'ESTIMADO',budgetStatus:'CALCULADO',pp,role,
+  axes:Object.freeze(axes.map(a=>Object.freeze({...a,indices:Object.freeze(a.indices.slice())}))),
+  candidates:Object.freeze(candidates.map(c=>Object.freeze({...c,
+   levels:Object.freeze(c.levels),objectives:Object.freeze(c.objectives),
+   origins:Object.freeze(c.origins),changes:Object.freeze(c.changes.map(Object.freeze)),
+   dominatedBy:Object.freeze(c.dominatedBy)}))),
+  primaryId,reference:Object.freeze(reference.slice()),
+  referenceSource:registered?'treino_registrado':'proposta_contextual',baselineStatus,
+  frontierIds:Object.freeze(candidates.filter(c=>c.onFrontier).map(c=>c.id)),
+  exhaustive:false,generatedProfiles:axes.length+2,mayApply:false,gameplayValidated:false,
+  method:'Eixos relativos de investimento com utilidade logarítmica; categorias sobrepostas não são atributos finais.',
+  warning:'Fronteira apenas entre os candidatos calculados. Não comprova superioridade competitiva, atributos finais ou build de criador.'
+ });
 }
 /* V253 — comparar uma proposta com outras edições de função/orçamento
  * iguais. Nunca inventar diferenças por nome, Card ID ou Overall.
@@ -160,12 +257,12 @@ function compareProposals(card,cards,style,role,levels,opts={}){
    boost1:peer.impeto_fixo,boost2:peer.impeto_extra,
    pp:Number(peer.pp),pp_estimated:peer.pp_estimado===true,
    base_stats_known:peer.base_stats_known===true,
-   recommended_levels:hasValidBuild(peer)?peer.niveis:null
+   recommended_levels:hasValidBuild(peer)&&peer.treino_proposto_nao_validado!==true?peer.niveis:null
   };
   const interpretation=I.interpret(profile,style,{});
   if(!interpretation||interpretation.role!==role)continue;
   const alternate=allocate(interpretation.weights,role,pp,
-   hasValidBuild(peer)?peer.niveis:null);
+   hasValidBuild(peer)&&peer.treino_proposto_nao_validado!==true?peer.niveis:null);
   if(!T.valid(alternate)||T.total(alternate)!==pp)continue;
   compared++;
   if(!alternate.every((value,i)=>value===levels[i]))continue;
@@ -219,6 +316,9 @@ function buildReview(card,raw,lab,all,style,opts={}){
  // do catálogo seguem intactas.
  const interpreted={...aligned,shown_position:mapped,role_used:mapped};
  const levelKnown=confirmedLevel(card)||Boolean(localProof),buildKnown=hasValidBuild(card);
+ // V291: uma distribuição experimental pode ser comparada, mas jamais
+ // orientar a função de otimização como se fosse uma build aprovada.
+ const baselineUsable=buildKnown&&card.treino_proposto_nao_validado!==true;
  const status=levelKnown?(buildKnown?'complete':'no_build'):'no_level';
  const nativeMismatch=norm(card.habilidades_nativas)!==norm(raw.native_skills);
  const boostMismatch=norm(card.impeto_fixo)!==norm(raw.boost1);
@@ -237,11 +337,13 @@ function buildReview(card,raw,lab,all,style,opts={}){
   ' e '+localProof.pp+' PP conferidos localmente pelo usuário na edição exata. Não equivalem a atributos-base nem gameplay confirmados.');
  if(!buildKnown)
   differences.push('Sem distribuição de treino documentada; proposta matemática não equivale a ficha aprovada.');
+ if(buildKnown&&!baselineUsable)
+  differences.push('Treino experimental cadastrado: comparação permitida, mas vetor provisório não ancora a otimização.');
  if(shared.length)differences.push('Distribuição repetida em '+shared.length+' outra(s) carta(s); comparar habilidades, corpo e gameplay, sem forçar diferenciação.');
  const canDraft=levelKnown&&context&&Number.isInteger(aligned.pp);
  let proposal=null,changed=null,specificity=null;
  if(canDraft){
-  const levels=allocate(context.weights,context.role,aligned.pp,buildKnown?card.niveis:null);
+  const levels=allocate(context.weights,context.role,aligned.pp,baselineUsable?card.niveis:null);
   if(levels&&T.total(levels)===aligned.pp){
    const diffs=buildKnown?levels.map((n,i)=>({
     name:T.CATEGORIES[i],before:card.niveis[i],after:n,delta:n-card.niveis[i]
@@ -249,6 +351,8 @@ function buildReview(card,raw,lab,all,style,opts={}){
    specificity=compareProposals(card,all,style,context.role,levels,opts);
    proposal={
     levels,spent:aligned.pp,style,role:context.role,
+    baselineUsable,baselineStatus:baselineUsable?'vetor_registrado_nao_provisorio':
+     buildKnown?'vetor_experimental_ignorado':'sem_vetor_de_referencia',
     source:'hipotese_matematica_v251_sem_status_finais',
     note:'Distribuição consultiva por função, estilo e habilidades documentais. NÃO validada por Rentão, Blackjhon ou partidas.',
     differsFromRegistered:buildKnown?diffs.length>0:null
@@ -263,6 +367,7 @@ function buildReview(card,raw,lab,all,style,opts={}){
   capture:aligned.capture,card_id:aligned.id,style,role:context?.role||roleOf(card),
   pp:aligned.pp,level:levelKnown?(localProof?.level??card.max_level):null,
   original:buildKnown?card.niveis.slice():null,
+  trainingProvisional:card.treino_proposto_nao_validado===true,
   tacticLabel:T.styleFor(style)?.label,context,
   nativeSkills:String(card.habilidades_nativas||'').split(';').map(s=>s.trim()).filter(Boolean),
   boosterFixed:card.impeto_fixo,boosterExtra:card.impeto_extra,
@@ -341,6 +446,8 @@ function proofChecklist(card,index,lab,store){
   norm(index.edicao)===norm(card.versao));
  const row=matched?index:{};
  const native=String(card?.habilidades_nativas||'').split(';').filter(x=>x.trim()).length;
+ const localProgress=localLevelReview(card,store);
+ const progressConflict=Boolean(localProgress&&localProgress.pp!==Number(card.pp));
  const base=baseEvidence(card,row,lab);
  let installedSkills='',boostSlot=null,equipmentRecord=null;
  try{
@@ -357,11 +464,16 @@ function proofChecklist(card,index,lab,store){
  const identity={capture:Number(card.numero),id:String(card.id),edition:String(card.versao||''),
   shown_position:card.posicao,native_skills:card.habilidades_nativas};
  const checked=Boolean(S?.checkedEquipment?.(identity,installedSkills,equipmentRecord));
- const extra=checked?S.evaluate(identity,'posse',installedSkills,{equippedConfirmed:true}):null;
+ // V300: a checagem externa V254 não dispensa o recibo na avaliação.
+ // O motor V294 exige equipmentRecord para evitar confirmações por flag.
+ const extra=checked?S.evaluate(identity,'posse',installedSkills,{
+  equippedConfirmed:true,equipmentRecord
+ }):null;
  const knownNames=installedSkills.split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean)
   .every(x=>Boolean(S?.keyFor?.(x)));
- const additionalDocumented=checked&&Boolean(extra)&&knownNames&&
-  !extra.manualOverLimit&&extra.nativeManualConflicts.length===0;
+ const additionalDocumented=checked&&extra?.equippedConfirmed===true&&knownNames&&
+  extra.requiresReconciliation!==true&&!extra.manualOverLimit&&
+  extra.nativeManualConflicts.length===0;
  const boosterEvidence=S?.boosterRecordEvidence?.(identity,boostSlot);
  const boosterReported=boosterEvidence?.valid===true;
  const checks=[
@@ -369,8 +481,12 @@ function proofChecklist(card,index,lab,store){
    documented:matched&&!['sem_card_id','card_id_compartilhado'].includes(row.id_status),
    note:'Identidade cadastral não substitui print da versão.'},
   {id:'budget',name:'Nível máximo e PP comprovados pelo usuário',
-   documented:confirmedLevel(card)||Boolean(localLevelReview(card,store)),
-   note:'PP matematicamente fechados não homologam builds.'},
+   documented:!progressConflict&&(confirmedLevel(card)||Boolean(localProgress)),
+   note:progressConflict?
+    'PP DIVERGENTES: conferência local indica '+localProgress.pp+' PP (nível '+
+    localProgress.level+'), mas catálogo registra '+card.pp+
+    ' PP. Conferência documental SUSPENSA até reconciliação da mesma edição.':
+    'PP matematicamente fechados não homologam builds.'},
   {id:'native',name:'Habilidades nativas documentadas',
    documented:matched&&native>0&&native===row.nativas_documentadas,
    note:'Cadastro não comprova habilidades equipadas.'},
@@ -413,6 +529,11 @@ function methodologyGate(card,proof,style,store,review={}){
  const byId=Object.fromEntries((proof?.checks||[]).map(x=>[x.id,x]));
  const has=id=>byId[id]?.documented===true;
  const role=review?.positionUsed||card.posicao;
+ // V298: declaração local da V248 somente conta após a prova exata V296.
+ // Divergência de nível/PP já bloqueava a ficha de treino, mas o parecer
+ // competitivo seguia exibindo ranking de ímpetos como se o PP fosse válido.
+ const localProgress=localLevelReview(card,store);
+ const ppConflict=Boolean(localProgress&&localProgress.pp!==Number(card.pp));
  const data={capture:Number(card.numero),id:String(card.id),
   // V271: custo de PP matematicamente coerente é sinal consultivo de
   // INVESTIMENTO, mesmo sem prova da origem do nível. A confirmação
@@ -421,9 +542,10 @@ function methodologyGate(card,proof,style,store,review={}){
   edition:card.versao,shown_position:role,role_used:role,attack_style:card.estilo_ataque,
   defence_style:card.estilo_defesa,native_skills:card.habilidades_nativas,
   boost1:card.impeto_fixo,boost2:card.impeto_extra,
-  pp:hasValidBuild(card)&&card.pp_estimado!==true?Number(card.pp):null,
-  recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
-  training_provisional:card.treino_proposto_nao_validado===true};
+  pp:!ppConflict&&hasValidBuild(card)&&card.pp_estimado!==true?Number(card.pp):null,
+  max_level:card.max_level,pp_origem:card.pp_origem,
+  recommended_levels:!ppConflict&&hasValidBuild(card)?card.niveis.slice():null,
+  training_provisional:card.treino_proposto_nao_validado===true||ppConflict};
  let manual='',confirmation=null,slot=null;
  try{
   manual=String(store?.getItem('scoutpro:v162:equipped:'+card.numero+':'+card.id)||'');
@@ -435,13 +557,17 @@ function methodologyGate(card,proof,style,store,review={}){
  }catch(_){slot=null}
  const confirmed=Boolean(S?.checkedEquipment?.(data,manual,confirmation)&&has('additional'));
  let skills=null,boost=null;
- try{skills=S?.evaluate?.(data,style,manual,{equippedConfirmed:confirmed})||null}catch(_){}
+ try{skills=S?.evaluate?.(data,style,manual,{equippedConfirmed:confirmed,
+  equipmentRecord:confirmed?confirmation:null})||null}catch(_){}
  try{boost=S?.booster?.(data,style,B,slot?.status,slot?.equipped)||null}catch(_){}
  const trained=hasValidBuild(card),budget=has('budget');
- const proven=trained&&budget&&has('base')&&has('video')&&has('gameplay');
+ const proven=!ppConflict&&trained&&budget&&has('base')&&has('video')&&has('gameplay');
  const training={
-  status:proven?'evidencia_para_avaliacao_competitiva':trained?'treino_registrado_nao_homologado':'sem_treino_validado',
-  note:proven?'Há referências declaradas para base, edição e partidas; revisão humana ainda obrigatória.':
+  status:ppConflict?'pp_divergentes_bloqueado':proven?'evidencia_para_avaliacao_competitiva':trained?'treino_registrado_nao_homologado':'sem_treino_validado',
+  note:ppConflict?'PP DIVERGENTES: você confirmou nível '+localProgress.level+
+   ' ('+localProgress.pp+' PP) na edição exata, mas o catálogo registra '+
+   card.pp+' PP. Reconciliar antes de comparar treino e ímpetos; nenhum dado foi alterado.':
+   proven?'Há referências declaradas para base, edição e partidas; revisão humana ainda obrigatória.':
    trained?'Build do catálogo preservada. PP fechados não comprovam atributos finais nem desempenho.':
    'Sem distribuição original comprovada; não substituir por hipótese matemática.'
  };
@@ -454,35 +580,43 @@ function methodologyGate(card,proof,style,store,review={}){
   synergy:x.synergies||[]
  }));
  const skillStatus=confirmed?'lista_conferida_localmente':'slots_nao_conferidos';
- const boosterStatus=safeEdition&&boost?.able&&has('booster')?'slot_elegivel_para_comparacao':
+ const boosterStatus=!ppConflict&&safeEdition&&boost?.able&&has('booster')?'slot_elegivel_para_comparacao':
   'nao_autorizado_para_equipar';
  const gapIds=['edition','budget','native','additional','booster','base','video','gameplay'];
  const missing=gapIds.filter(id=>!has(id)).map(id=>byId[id]?.name||id);
  return Object.freeze({
   capture:Number(card.numero),card_id:String(card.id),style,role,
   training,skills:{status:skillStatus,slots:confirmed?skills?.slotsRemaining:null,
+   trainingConflict:ppConflict,
+   investmentEvidence:ppConflict?'pp_divergentes_nao_utilizar':'avaliar_investimento_individual',
    candidates:skillList,nativeKnown:skills?.nativeKnown===true,
    nativeEvidence:has('native')?'catalogo_documental':'habilidades_nativas_pendentes'},
-  booster:{status:boosterStatus,slotState:slot?.status||'nao_conferido',
+  progressConflict:ppConflict?Object.freeze({
+   localLevel:localProgress.level,localPP:localProgress.pp,catalogPP:Number(card.pp),
+   reason:'Nível e PP locais divergem do catálogo da edição exata; revisão necessária.'
+  }):null,
+  booster:{status:ppConflict?'bloqueado_pp_divergentes':boosterStatus,slotState:slot?.status||'nao_conferido',
    slotEvidence:boost?.slotEvidence||'sem_slot_documentado',
-   equipStatus:boost?.equipStatus||'slot_nao_verificado',
-   name:safeEdition?(boost?.primary?.nome_pt||boost?.primary?.nome||null):null,
-   reason:safeEdition?(boost?.primary?.motivo||'Sem critérios suficientes para comparar ímpetos.'):
+   equipStatus:ppConflict?'bloqueado_pp_divergentes':boost?.equipStatus||'slot_nao_verificado',
+   name:!ppConflict&&safeEdition?(boost?.primary?.nome_pt||boost?.primary?.nome||null):null,
+   reason:ppConflict?'Ranking suspenso até reconciliar os pontos de progresso da edição.':safeEdition?(boost?.primary?.motivo||'Sem critérios suficientes para comparar ímpetos.'):
     'Card ID ou edição pendente: não calcular escolha de ímpeto confirmada.',
-   note:boost?.note||'Motor não disponível.',
-   ppStatus:boost?.primary?.evidencias?.pp_status||'sem_ranking',
-   budgetOriginConfirmed:has('budget'),
-   scoreMargin:boost?.spread??null,
-   comparison:boost?.alternatives?.map(x=>({
+   note:ppConflict?'PP divergentes: confira novamente nível/PP antes de usar o ranking.':boost?.note||'Motor não disponível.',
+   ppStatus:ppConflict?'pp_divergentes':boost?.primary?.evidencias?.pp_status||'sem_ranking',
+   documentaryConfidence:ppConflict?'PENDENTE_PP_DIVERGENTES':boost?.primary?.estado_confianca||'PENDENTE_SEM_RANKING',
+   confidenceReason:ppConflict?'pendente':boost?.primary?.confianca||'pendente',
+   budgetOriginConfirmed:!ppConflict&&has('budget'),
+   scoreMargin:ppConflict?null:boost?.spread??null,
+   comparison:!ppConflict?boost?.alternatives?.map(x=>({
     name:x.nome_pt||x.nome,score:x.score,attributes:x.atributos.slice(),
     documentedTranslation:x.traducao_documentada===true
-   }))||[],
-   budgetNote:boost?.primary?.evidencias?.pp_status==='custo_pp_conferido'?
+   }))||[]:[],
+   budgetNote:ppConflict?'PP divergentes: custo e ranking aguardam reconciliação.':boost?.primary?.evidencias?.pp_status==='custo_pp_conferido'?
     (has('budget')?
      'Custo do PP conferido e origem documentada; comparação de investimento, não atributos finais.':
      'Custo de PP conferido matematicamente, mas ORIGEM NÃO DOCUMENTADA; sinal consultivo, nunca build homologada.'):
     'Treino sem PP matematicamente utilizável ou ainda provisório: NÃO influenciou o ranking.',
-   attributes:safeEdition?(boost?.primary?.atributos||[]):[]},
+   attributes:!ppConflict&&safeEdition?(boost?.primary?.atributos||[]):[]},
   missing,competitivelyHomologated:false
  });
 }
@@ -499,7 +633,7 @@ function confirmedRole(card,wanted,positionTraining,store){
   rejected:proposed};
 }
 const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,baseEvidence,proofChecklist,methodologyGate,confirmedRole,signature,compareProposals,
-  exact,sourceFor,related,allocate,buildReview,catalogAudit});
+  exact,sourceFor,related,allocate,trainingFrontier,buildReview,catalogAudit});
 if(!host?.document)return api;
 const doc=host.document;
 const mk=(tag,cls,value)=>{
@@ -507,6 +641,94 @@ const mk=(tag,cls,value)=>{
  if(value!==undefined)e.textContent=String(value);
  return e;
 };
+function trainingComparison(check,source){
+ const details=mk('details','ct289-training-comparison');
+ details.id='ct289-training-comparison';details.dataset.tactic=check.style;
+ details.append(mk('summary','','Comparar distribuições e custo das escolhas'));
+ let rendered=false;
+ details.addEventListener('toggle',()=>{
+  if(!details.open||rendered)return;
+  rendered=true;
+  if(!S?.verifiedRecommendationContextV288?.(source||{},{}).identity.valid){
+   details.append(mk('p','ct251-warning',
+    'Comparação desta edição pendente: confirme o Card ID e a versão exatos antes de gerar alternativas.'));return;
+  }
+  const result=trainingFrontier(check.context?.weights,check.role,check.pp,check.original,
+   {baselineProvisional:check.trainingProvisional===true});
+  if(result.status==='PENDENTE'){
+   details.append(mk('p','ct251-warning',result.reason));return;
+  }
+  const content=mk('div','ct289-comparison-content');
+  content.append(mk('p','ct289-comparison-note',
+   'CALCULADO · custo de PP. ESTIMADO · adequação à função. '+
+   (check.trainingProvisional?'Treino cadastrado ainda experimental: não usado como âncora nem como proposta registrada aprovada. ':'')+
+   result.warning));
+  const label=mk('label','ct289-comparison-label','Distribuição em comparação');
+  const select=mk('select','ct289-candidate-select');select.id='ct289-candidate-select';
+  for(const candidate of result.candidates){
+   const op=mk('option','',candidate.origins.join(' / '));op.value=candidate.id;
+   select.append(op);
+  }
+  label.append(select);content.append(label);
+  const summary=mk('p','ct289-comparison-summary');summary.setAttribute('aria-live','polite');
+  const wrap=mk('div','ct289-table-wrap'),table=mk('table','ct289-cost-table');
+  table.append(mk('caption','',result.referenceSource==='treino_registrado'?
+   'Custo comparado ao treino registrado':'Custo comparado à proposta contextual'));
+  const head=mk('thead',''),hr=mk('tr','');
+  for(const title of ['Categoria','Referência','Cenário','Δ PP']){
+   const cell=mk('th','',title);cell.scope='col';hr.append(cell);
+  }
+  head.append(hr);table.append(head);
+  const body=mk('tbody','');table.append(body);wrap.append(table);
+  const axes=mk('ul','ct289-axes');
+  const scenario=mk('div','ct289-scenario');scenario.setAttribute('aria-live','polite');
+  const render=()=>{
+   const chosen=result.candidates.find(c=>c.id===select.value);
+   if(!chosen)return;
+   summary.textContent=chosen.spent+' / '+result.pp+' PP · '+chosen.removedPP+
+    ' PP redirecionados entre categorias. '+
+    (chosen.onFrontier?'Alternativa sem dominância entre os candidatos comparados.':
+     'Outra alternativa cobre melhor os eixos deste modelo; isso não mede desempenho em jogo.');
+   body.replaceChildren();axes.replaceChildren();scenario.replaceChildren();
+   chosen.levels.forEach((value,i)=>{
+    if(check.role==='GO'?i<7:i>=7)return;
+    const delta=T.ppCost(value)-T.ppCost(result.reference[i]);
+    const row=mk('tr','');row.dataset.deltaPp=String(delta);
+    const name=mk('th','',T.CATEGORIES[i]);name.scope='row';
+    row.append(name,mk('td','',result.reference[i]+' nv. / '+T.ppCost(result.reference[i])+' PP'),
+     mk('td','',value+' nv. / '+T.ppCost(value)+' PP'),
+     mk('td','',delta>0?'+'+delta:String(delta)));
+    body.append(row);
+   });
+   for(const axis of result.axes)axes.append(mk('li','',axis.label+': '+
+    chosen.objectives[axis.key].toFixed(2)+' · índice de investimento'));
+   let manual='',equipmentRecord=null,boosterRecord=null;
+   try{
+    manual=host.localStorage?.getItem('scoutpro:v162:equipped:'+check.capture+':'+check.card_id)||'';
+    equipmentRecord=JSON.parse(host.localStorage?.getItem(S.confirmationKey(check.capture,check.card_id))||'null');
+    boosterRecord=JSON.parse(host.localStorage?.getItem('scoutpro:v103:booster:'+check.capture)||'null');
+   }catch(_){}
+   const experimental=S?.trainingScenario?.({...source,role_used:check.positionUsed,
+    shown_position:check.positionUsed},check.style,chosen.levels,B,manual,{equipmentRecord,boosterRecord});
+   if(experimental?.status==='ESTIMADO'){
+    scenario.append(mk('strong','','Complementos neste cenário experimental'));
+    scenario.append(mk('p','', 'Habilidades: '+
+     (experimental.skills.recommendations.map(x=>x.name).join(' · ')||'nenhuma candidata adicional')));
+    scenario.append(mk('p','','Ímpetos para comparar: '+
+     (experimental.boosters.map(x=>x.nome_pt||x.nome).join(' · ')||'pendentes')));
+    scenario.append(mk('small','',experimental.warning+
+     ' A lista de ímpetos não comprova disponibilidade de slot.'));
+   }else scenario.append(mk('p','',experimental?.reason||
+    'Motor de complementos ainda indisponível; comparação de PP não confirma equipamentos.'));
+  };
+  select.value=result.primaryId;select.addEventListener('change',render);
+  content.append(summary,wrap,axes,scenario);
+  content.append(mk('p','ct289-comparison-note',
+   'Comparar não grava o treino. Próximos investimentos custam mais PP conforme o nível da categoria; o total permanece exato.'));
+  details.append(content);details.dataset.ready='true';render();
+ });
+ return details;
+}
 let card=null,raw=null,lab=null,all=null,active='posse',block=null,positionSelected=null,evidenceByCap=new Map();
 let lastRolePublished=null;
 function display(){
@@ -566,7 +788,34 @@ function display(){
    label.append(select);block.append(label);
   }
  }
+ const renderProof=proof=>{
+  const criteria=mk('details','ct251-evidence-details ct251-proof');
+  criteria.append(mk('summary','','Fontes desta edição: '+proof.documented+
+   ' documentadas · '+proof.pending+' pendentes ('+proof.partial+
+   ' parciais) · nenhuma homologação automática'));
+  const criteriaList=mk('ul','ct251-proof-list');
+  for(const item of proof.checks){
+   const li=mk('li','',item.name+' — '+
+    (item.documented?'DOCUMENTADO':item.partial?'PARCIAL':'PENDENTE')+'. '+item.note);
+   li.dataset.proof=item.documented?'documented':item.partial?'partial':'pending';
+   criteriaList.append(li);
+  }
+  criteria.append(criteriaList);block.append(criteria);
+ };
  if(check.status==='unsupported'){
+  // V299: a ficha volta antes dos comparadores se houver PP divergentes;
+  // exibir a prova da edição e o aviso AQUI, sem renderizar V283–V287.
+  const locallyVerified=localLevelReview(card,host.localStorage);
+  if(locallyVerified&&locallyVerified.pp!==Number(card.pp)){
+   const budgetEvidence=proofChecklist(card,evidenceByCap.get(Number(card.numero)),lab,host.localStorage);
+   renderProof(budgetEvidence);
+   const note=mk('p','ct251-warning ct299-pp-gate',
+    'PP DIVERGENTES (nível '+locallyVerified.level+': '+
+    locallyVerified.pp+' PP conferidos; catálogo: '+card.pp+
+    ' PP). Comparadores de treinamento, habilidades baseadas no investimento e ímpetos V283–V287 suspensos até a reconciliação desta edição. Habilidades já registradas não foram apagadas.');
+   note.dataset.review='pp_divergentes';
+   block.append(note);
+  }
   block.append(mk('p','ct251-warning',check.reason));
   return;
  }
@@ -584,18 +833,7 @@ function display(){
     check.evidenceLevel==='conferencia_local_usuario'?'PP/nível conferidos neste dispositivo':'PP sem nível comprovado'));
  block.append(chips);
  const proof=proofChecklist(card,evidenceByCap.get(Number(card.numero)),lab,host.localStorage);
- const criteria=mk('details','ct251-evidence-details ct251-proof');
- criteria.append(mk('summary','','Fontes desta edição: '+proof.documented+
-  ' documentadas · '+proof.pending+' pendentes ('+proof.partial+
-  ' parciais) · nenhuma homologação automática'));
- const criteriaList=mk('ul','ct251-proof-list');
- for(const item of proof.checks){
-  const li=mk('li','',item.name+' — '+
-   (item.documented?'DOCUMENTADO':item.partial?'PARCIAL':'PENDENTE')+'. '+item.note);
-  li.dataset.proof=item.documented?'documented':item.partial?'partial':'pending';
-  criteriaList.append(li);
- }
- criteria.append(criteriaList);block.append(criteria);
+ renderProof(proof);
  // V261: parecer compacto dentro da ficha principal; mantém o painel de
  // habilidades existente sem duplicar slots ou oferecer botão de aplicação.
  const method=methodologyGate(card,proof,active,host.localStorage,check);
@@ -641,6 +879,9 @@ function display(){
   'Lista completa conferida neste dispositivo; '+method.skills.slots+
   ' vagas informadas. Sugestões táticas continuam consultivas.':
   'Lista completa não confirmada nesta edição. Nenhuma vaga é presumida.');
+ if(method.skills.trainingConflict)
+  add('Habilidades e PP',
+   'PP DIVERGENTES: o inventário de habilidades previamente conferidas permanece registrado, mas recomendações são apenas funcionais e não podem usar a build antiga como prova de investimento.');
  if(method.skills.nativeEvidence!=='catalogo_documental')
   add('Prova das habilidades nativas',
    'Lista nativa incompleta ou sem correspondência documental: todas as prioridades são provisórias.');
@@ -651,7 +892,7 @@ function display(){
    ' Prioridade consultiva; não há aplicação automática.');
  }
  add('Ímpeto',method.booster.name?
-  method.booster.name+' — '+method.booster.note+' '+method.booster.reason+' '+method.booster.budgetNote+
+  method.booster.name+' — confiança documental: '+method.booster.documentaryConfidence+'. '+method.booster.note+' '+method.booster.reason+' '+method.booster.budgetNote+
    (method.booster.attributes.length?
     ' Quatro atributos afetados: '+method.booster.attributes.join(', ')+'.':''):
   'Nenhuma opção confiável calculável. '+method.booster.note);
@@ -684,6 +925,17 @@ function display(){
   recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
   training_provisional:card.treino_proposto_nao_validado===true
  };
+ // V299: V283–V287 usam seus próprios rankings. Quando a V298 detectou PP
+ // divergentes, não renderizar laboratórios que ainda exibiriam treino e
+ // ímpetos como se o orçamento antigo pudesse ser utilizado.
+ if(method.progressConflict){
+  const reviewPending=mk('p','ct251-warning ct299-pp-gate',
+   'PP DIVERGENTES (nível '+method.progressConflict.localLevel+': '+
+   method.progressConflict.localPP+' PP conferidos; catálogo: '+
+   method.progressConflict.catalogPP+' PP). Comparadores de treinamento, habilidades baseadas no investimento e ímpetos V283–V287 suspensos até a reconciliação desta edição. Habilidades já registradas não foram apagadas.');
+  reviewPending.dataset.review='pp_divergentes';
+  block.append(reviewPending);
+ }else{
  if(typeof S?.evidenceSensitivityV283==='function'){
   const sensitivity=S.evidenceSensitivityV283({
    ...sensitiveSource,original_position:card.posicao,
@@ -751,6 +1003,14 @@ function display(){
      'estado declarado: '+verifiedContext.booster.status:
      'sem conferência válida da edição')+
     '. Nenhuma habilidade ou ímpeto é aplicado automaticamente.'));
+   // V293: mostrar o motivo detalhado da reconciliação, e não apenas
+   // "pendente". O alerta não modifica a declaração salva na conta.
+   const slotWarning=verifiedContext.booster.catalogConflict||
+    verifiedContext.booster.equippedNamePending;
+   const slotReason=mk('p',slotWarning?'ct251-warning':'',
+    verifiedContext.booster.reason);
+   if(slotWarning)slotReason.setAttribute('role','alert');
+   status.append(slotReason);
    panel.append(status);
   }
   panel.append(mk('h4','','01 · Cinco habilidades adicionais por função e estilo'));
@@ -1049,6 +1309,7 @@ function display(){
   }
   block.append(panel);
  }
+ } // V299 — encerra os laboratórios condicionados à reconciliação de PP.
  if(check.related.length){
   // V258: ampliar a conferência sem criar uma segunda ficha, nem copiar
   // treino entre edições com mesmo orçamento ou função.
@@ -1107,6 +1368,7 @@ function display(){
    grid.append(item);
   }
   comp.append(grid);
+  comp.append(trainingComparison(check,sensitiveSource));
   // Nomes das categorias e sinais REAIS que alteram seus pesos nesta edição.
   const explanations=mk('details','ct253-reasons');
   explanations.append(mk('summary','','Por que o sistema distribuiu esses pontos?'));

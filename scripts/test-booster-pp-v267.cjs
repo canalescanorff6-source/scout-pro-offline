@@ -35,7 +35,13 @@ for(const c of cards){
   assert(choices.every(x=>x.evidencias.pp_status===audit.status));
   assert(choices.every(x=>x.evidencias.pp_investidos===audit.spent));
   assert(choices.every(x=>x.evidencias.pp_orcamento===audit.pp));
-  assert(choices.every(x=>x.confianca===(audit.levels?'comparativa_limitada':'baixa')));
+  // V292: fechar custo PP é condição matemática, não prova da edição,
+  // das nativas ou do nível de origem. O ranking pode ficar PENDENTE.
+  const documentary=choices[0].estado_confianca;
+  const expectedConfidence=documentary.startsWith('PENDENTE')?'pendente':
+   documentary==='COMPARACAO_LIMITADA'?'comparativa_limitada':'baixa';
+  assert(choices.every(x=>x.confianca===expectedConfidence));
+  if(!audit.levels)assert.notEqual(expectedConfidence,'comparativa_limitada');
   assert(choices.every(x=>x.evidencias.limite.includes('Sem atributos finais')));
   total++;
  }
@@ -73,7 +79,7 @@ assert.deepEqual(B.rank(provisional,'posse').map(x=>[x.nome,x.score]),
 assert.equal(B.progressCost(martinelli.niveis),50);
 assert.equal(B.progressCost(massaro.niveis),62);
 const code=read('web/skills-booster-v162.js');
-assert(code.includes('pp:d.pp,training_provisional:d.training_provisional===true'));
+assert(code.includes('pp:d.pp,max_level:d.max_level,pp_origem:d.pp_origem,'));
 assert(code.includes('ALERTA: custo calculado '));
 const sw=read('web/sw.js');
 assert(sw.includes('v267-pp-cost-audit'));

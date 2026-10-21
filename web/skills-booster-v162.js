@@ -42,7 +42,7 @@ for(const [raw,key] of Object.entries({
  'cabeçada':'heading','cabecada':'heading',
  'afastamento acrobatico':'clear','corte acrobatico':'clear','reposicao alta do go':'gkhigh',
  'arremesso longo do go':'gklong','pegador de penaltis':'gkpenalty',
- 'comandante da defesa go':'captain','controle com a sola':'sole',
+ 'controle com a sola':'sole',
  'passe de primeira':'onepass','passe em profundidade':'through',
  'passe a rasgar':'through','passe ponderado':'weighted','recuar para marcar':'trackback',
  'corte para tras e giro':'cutturn','super reserva':'supersub','capitao':'captain','bloqueador':'blocker',
@@ -55,10 +55,34 @@ for(const [raw,key] of Object.entries({
 }))if(!aliasMap.has(normal(raw)))aliasMap.set(normal(raw),key);
 const keyFor=s=>aliasMap.get(normal(s))||'';
 const splitSkills=s=>Array.isArray(s)?s:String(s||'').split(/[;\n,]+/).map(x=>x.trim()).filter(Boolean);
+// V291: inventário ausente NÃO significa carta sem habilidades nativas.
+// Marcadores provisórios não podem funcionar como lista conferida da edição.
+const nativeInventoryUsable=names=>names.length>0&&names.every(name=>
+ !/^(pendente|a confirmar|confirmar|desconhecid|nao informad|nao cadastr|sem registro|indefinid|unknown|undefined|n a\b)/.test(normal(name)));
 // A confirmação só vale para a edição exata e para ESTA lista de habilidades.
 // Editar o texto invalida automaticamente a confirmação antiga.
+// V293: o validador de confiança é utilizado também pelas APIs internas.
+// O catálogo auditado contém Card IDs numéricos ou marcadores de pendência;
+// não aceitar comprovantes associados a um marcador como se fosse um ID real.
+const identityEvidenceV293=card=>{
+ const cap=Number(card.capture??card.numero);
+ const id=String(card.id??card.card_id??'').trim();
+ const edition=String(card.edition??card.versao??'').trim();
+ return Number.isInteger(cap)&&cap>0&&/^\d+$/.test(id)&&edition.length>0&&
+  !/pendente|confirmar|invalid|desconhecid|nao informado|não informado/i.test(edition);
+};
 const confirmationKey=(cap,id)=>'scoutpro:v254:additional-confirmed:'+Number(cap)+'@'+String(id);
 const fingerprint=s=>[...new Set(splitSkills(s).map(x=>keyFor(x)||'unmapped:'+normal(x)))].sort().join('|');
+const GK_SKILL_KEYS=new Set(['gklow','gkhigh','gklong','gkpenalty']);
+// Compatibilidade funcional, não afirmação de que todo candidato esteja
+// disponível no menu de treino da edição. Ausência de prova continua pendente.
+function skillEligibility(card,key){
+ const role=roleOf(card);
+ if(!SKILLS[key])return 'habilidade_nao_reconhecida';
+ if(!role)return 'posicao_pendente';
+ if(GK_SKILL_KEYS.has(key)&&role!=='GO')return role?'incompativel_com_jogador_de_linha':'posicao_pendente';
+ return 'candidata_funcional';
+}
 // V278: não confiar em confirmação antiga sem vínculo EXPLÍCITO da edição.
 // Registros legados são preservados para leitura; sua prova deixa de liberar
 // slots até o usuário reconfirmar na carta exata, sem migrar automaticamente.
@@ -68,28 +92,45 @@ function checkedEquipment(card,manual,record){
  const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
  const equippedKeys=names.map(keyFor);
  const edition=String(card.edition||card.versao||'');
- return Boolean(record&&record.schema==='CRAQUE_ADDITIONAL_V254'&&record.confirmed===true&&
+ return Boolean(identityEvidenceV293(card)&&record&&record.schema==='CRAQUE_ADDITIONAL_V254'&&record.confirmed===true&&
   edition.trim()&&String(record.edition||'')===edition&&
   Number(record.capture)===Number(card.capture)&&String(record.card_id)===String(card.id)&&
   record.fingerprint===fingerprint(manual)&&
   Object.hasOwn(record,'nativeFingerprint')&&
   record.nativeFingerprint===fingerprint(native.join(';'))&&
-  names.length<=5&&new Set(equippedKeys).size===names.length&&
-  equippedKeys.every(key=>Boolean(key)&&!nativeKeys.has(key)));
+  nativeInventoryUsable(native)&&Boolean(roleOf(card))&&names.length<=5&&new Set(equippedKeys).size===names.length&&
+  equippedKeys.every(key=>Boolean(key)&&!nativeKeys.has(key)&&
+   skillEligibility(card,key)==='candidata_funcional'));
 }
 function boosterRecordEvidence(card,record){
  const edition=String(card.edition||card.versao||'');
  const cap=Number(card.capture??card.numero);
- const valid=Boolean(record&&record.schema==='CRAQUE_BOOST_SLOT_V283'&&
-  Number.isInteger(cap)&&cap>=1&&Number(record.capture)===cap&&edition.trim()&&
+ const rawCatalog=String(card.boost2??card.impeto_extra??'').trim();
+ // Nome de segundo ímpeto já cadastrado não pode ser simultaneamente
+ // comprovante de uma vaga vazia. Outros estados do catálogo permanecem
+ // incertos: a conta nunca é inferida do catálogo.
+ const catalogNamed=rawCatalog.length>0&&
+  !/^(slot selecion[aá]vel|pendente|nenhum|n[aã]o|—|-)/i.test(rawCatalog);
+ const badCatalogConflict=Boolean(catalogNamed&&record?.status==='vazio');
+ const equippedTypeValid=record?.equipped==null||typeof record.equipped==='string';
+ const equippedName=typeof record?.equipped==='string'?record.equipped.trim():'';
+ const valid=Boolean(identityEvidenceV293(card)&&record&&
+  record.schema==='CRAQUE_BOOST_SLOT_V283'&&
+  Number.isInteger(cap)&&cap>=1&&Number(record.capture)===cap&&
   Object.hasOwn(record,'edition')&&String(record.edition)===edition&&
   String(record.card_id)===String(card.id)&&
   ['vazio','ocupado','ausente'].includes(String(record.status))&&
-  (record.status==='ocupado'||!String(record.equipped||'').trim()));
+  equippedTypeValid&&!badCatalogConflict&&
+  (record.status==='ocupado'||!equippedName));
  return Object.freeze({
-  valid,status:valid?record.status:null,equipped:valid?(record.equipped||''):null,
-  legacy:!!record&&!valid,
+  valid,status:valid?record.status:null,equipped:valid?equippedName:null,
+  equippedNamePending:Boolean(valid&&record.status==='ocupado'&&!equippedName),
+  catalogConflict:badCatalogConflict,legacy:!!record&&!valid,
   reason:!record?'Nenhuma conferência salva do segundo ímpeto.':
+   badCatalogConflict?'Conflito: o catálogo registra um segundo ímpeto, mas a conta foi marcada como slot vazio. Reconciliar a edição.':
+   !identityEvidenceV293(card)?'CAP, Card ID ou edição pendentes: não homologar conferência.':
+   valid&&record.status==='ocupado'&&!equippedName?
+    'Slot marcado como ocupado; nome do ímpeto não informado. Comparação sem excluir equipamento desconhecido.':
    valid?'Conferência vinculada a CAP, Card ID e edição.':
    'Conferência antiga, incompleta ou de outra carta: reconfirme o slot na edição exata.'
  });
@@ -111,7 +152,7 @@ const CONTEXT_NATIVE_GROUPS=Object.freeze({
   'Phenomenal Finishing','Low Screamer','Blitz Curler','Bullet Header',
   'Folha seca'],
  defesa:['Aerial Fort','Fortress','Long Reach Tackle','Long-reach Tackle',
-  'GK Directing Defence','GK Directing Defense'],
+  'GK Directing Defence','GK Directing Defense','Comandante da defesa GO'],
  especial:['Gamesmanship','Penalty Specialist','Rabona','Willpower',
   'GK Spirit Roar','Attacking Surge','Astúcia','Pressionante',
   'Especialista em pênalti']
@@ -336,7 +377,9 @@ function evaluate(d,tactic,manualEquipped,options={}){
  if(!['posse','normal','rapido','fora','longo'].includes(tactic))throw Error('Tática inválida');
  const role=roleOf(d);if(!role)return {role:null,recommendations:[],nativeKnown:false,missing:['Posição da carta não cadastrada']};
  const native=splitSkills(d.native_skills||d.habilidades_nativas);
- const nativeKnown=Boolean(native.length);
+ const nativeKnown=nativeInventoryUsable(native);
+ const identityKnown=Boolean(String(d.id||'').trim()&&String(d.edition||d.versao||'').trim()&&
+  !/pendente|confirmar|invalid|desconhecid/i.test(String(d.id)+' '+String(d.edition||d.versao)));
  const equipped=splitSkills(manualEquipped);
  const nativeIds=new Set(native.map(name=>keyFor(name)||'unmapped:'+normal(name)));
  const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
@@ -352,13 +395,29 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const nativeManualConflicts=[...userMap].filter(([id])=>nativeIds.has(id)).map(([,name])=>name);
  const unmappedEquipped=[...userMap].filter(([id])=>id.startsWith('unmapped:')).map(([,name])=>name);
  const distinctExtras=[...userMap].filter(([id])=>!nativeIds.has(id));
+ const incompatibleEquipped=[...userMap].filter(([key])=>
+  SKILLS[key]&&skillEligibility(d,key)!=='candidata_funcional').map(([,name])=>name);
+ const overLimit=distinctExtras.length>5;
+ // V294: uma flag booleana desacompanhada do recibo V254 nunca
+ // comprova cinco vagas. Validar a própria edição/lista/nativas na entrada
+ // do motor, não apenas no adaptador ou na UI.
+ const proofRequested=options.equippedConfirmed===true;
+ const receiptValidated=Boolean(identityKnown&&nativeKnown&&
+  checkedEquipment(d,manualEquipped,options.equipmentRecord||null));
+ const requiresReconciliation=!nativeKnown||overLimit||nativeManualConflicts.length>0||
+  unmappedEquipped.length>0||incompatibleEquipped.length>0||
+  (proofRequested&&!receiptValidated);
+ const equippedConfirmed=proofRequested&&!requiresReconciliation&&receiptValidated;
+ const additionalEvidenceConfirmed=equippedConfirmed;
+ const confirmedAdditionalKeys=additionalEvidenceConfirmed?
+  new Set(distinctExtras.map(([key])=>key)):new Set();
  const used=new Set([...nativeKeys,...userMap.keys()].filter(id=>!id.startsWith('unmapped:')));
  const style=normal([d.playing_style,d.attack_style,d.defence_style,d.estilo_ataque,d.estilo_defesa].filter(Boolean).join(' '));
  const investment=investmentAudit(d);
  const pool=POOLS[role];const scorer=new Map;
  const factors=new Map();
  pool.forEach((key,i)=>{const base=200-i*10;scorer.set(key,base);
-  factors.set(key,{funcao:base,tatica:0,estilo:0,nativas:0,investimento:0});});
+  factors.set(key,{funcao:base,tatica:0,estilo:0,nativas:0,adicionais:0,investimento:0});});
  const bump=(names,amount,source='estilo')=>names.forEach(k=>{
   if(!scorer.has(k))return;
   scorer.set(k,scorer.get(k)+amount);
@@ -499,6 +558,29 @@ function evaluate(d,tactic,manualEquipped,options={}){
  if(['LD','LE','ALA','MLG'].includes(role)&&tactic==='fora')
   contextualBump('amplitude',['weighted','lowloft','onepass'],4,
    'Habilidade nativa de amplitude; comparar para tática Por Fora');
+ // V289: adicionais CONFERIDAS complementam recursos já instalados. Cada
+ // candidata recebe no máximo 8 pontos heurísticos, nunca um bônus de status.
+ const additionalPairs=[
+  ['firstshot',['onepass','through','sole'],'Finalização de primeira equipada; comparar apoio e recepção.'],
+  ['onepass',['through','heel','sole'],'Passe de primeira equipado; comparar penetração e giro.'],
+  ['through',['onepass','weighted','sole'],'Passe em profundidade equipado; comparar tabelas e domínio.'],
+  ['double',['onepass','through','sole'],'Toque duplo equipado; conectar condução e circulação.'],
+  ['sole',['onepass','through','double'],'Controle com a sola equipado; comparar saída e distribuição.'],
+  ['intercept',['blocker','onepass','mark'],'Interceptação equipada; complementar cobertura e saída.'],
+  ['blocker',['intercept','onepass','mark'],'Bloqueador equipado; complementar leitura e distribuição.'],
+  ['aerial',['heading','onepass','fighting'],'Recurso aéreo equipado; comparar cabeceio e apoio.'],
+  ['gklow',['gklong','captain','fighting'],'Reposição baixa equipada; comparar alternativas de saída.']
+ ];
+ for(const [existing,targets,note] of additionalPairs){
+  if(!confirmedAdditionalKeys.has(existing))continue;
+  for(const key of targets){
+   if(!scorer.has(key)||used.has(key))continue;
+   const amount=Math.min(tactic==='posse'?6:4,8-factors.get(key).adicionais);
+   if(amount<=0)continue;
+   scorer.set(key,scorer.get(key)+amount);factors.get(key).adicionais+=amount;
+   synergy.set(key,[...(synergy.get(key)||[]),note+' Hipótese, sem efeito numérico medido.']);
+  }
+ }
  // Grupo "especial" permanece sem efeito heurístico até evidência.
  // Investimento é um discriminador DOCUMENTAL limitado a 0..8 pontos;
  // um nível não diz que a carta tem atributo final mais alto ou baixo.
@@ -523,19 +605,33 @@ function evaluate(d,tactic,manualEquipped,options={}){
     'PRIORIDADES PRÓXIMAS — comparar a mesma edição em jogo':
     'Ordem consultiva por função e estilo',
    criterios:Object.freeze({...factors.get(key)}),
-   synergies:synergy.get(key)||[]
+   synergies:synergy.get(key)||[],
+   decision:Object.freeze({
+    status:nativeKnown&&identityKnown?'ESTIMADO':'PENDENTE',priority:i+1,
+    category:(ROLE_FAMILIES[role]||[]).includes(SKILL_FAMILY[key])&&
+     tacticalPriority.includes(key)?'essencial_na_hipotese':
+     i<5?'complementar':'situacional',
+    confidence:!nativeKnown||!identityKnown?'pendente':additionalEvidenceConfirmed&&!unmappedNative.length?'limitada':'baixa',
+    reason:SKILLS[key].why,
+    situation:TACTIC_REASON[tactic]+' Função '+role+'.',
+    attributeRelation:investment.levels&&TRAINING_CATEGORY[key]!==undefined?
+     investment.levels[TRAINING_CATEGORY[key]]+' níveis investidos na categoria relacionada; não é atributo final.':
+     'Sem atributos finais confirmados para quantificar o benefício.',
+    nativeRelation:(synergy.get(key)||[]).join(' ')||'Recurso ausente da lista nativa registrada; conferir a edição.',
+    alternative:list.slice(i+1).find(([other])=>SKILL_FAMILY[other]===SKILL_FAMILY[key])?.[0]||null,
+    eligibility:skillEligibility(d,key),mayApply:false
+   })
   }));
- const overLimit=distinctExtras.length>5;
- const requiresReconciliation=overLimit||nativeManualConflicts.length>0||unmappedEquipped.length>0;
  // A lista manual pode estar INCOMPLETA. Não declarar espaços livres
  // ou cinco skills aplicáveis até o usuário conferir no Plano de Jogo.
- const equippedConfirmed=options.equippedConfirmed===true&&!requiresReconciliation;
  const slotsRemaining=equippedConfirmed&&!overLimit?Math.max(0,5-distinctExtras.length):null;
  const limit=overLimit?0:equippedConfirmed?slotsRemaining:5;
  const balancedPortfolio=composePortfolio(ranked,role,tactic,limit,{
   nativeKeys:[...nativeKeys],equippedKeys:[...used].filter(k=>!nativeKeys.has(k))
  });
  const warnings=[
+  ...(proofRequested&&!receiptValidated?['Confirmação solicitada sem recibo válido de CAP, Card ID, edição, lista equipada e inventário nativo. Vagas continuam desconhecidas.']:[]),
+  ...(!nativeKnown?['Inventário nativo ausente ou provisório: não confirmar vagas antes de conferir a edição exata.']:[]),
   ...(unmappedNative.length?['Nativas cadastradas fora do vocabulário de recomendações: '+
    [...new Set(unmappedNative)].slice(0,5).join(', ')+
    '. Isso NÃO prova que essas habilidades estejam ausentes da carta.']:[]),
@@ -544,12 +640,14 @@ function evaluate(d,tactic,manualEquipped,options={}){
    unmappedEquipped.slice(0,5).join(', ')+
    '. Não confirmar cinco vagas até conferir os nomes no jogo.']:[]),
   ...(nativeManualConflicts.length?['Informadas também como adicionais, mas já aparecem nas nativas cadastradas: '+nativeManualConflicts.join(', ')]:[])
+  ,...(incompatibleEquipped.length?['Recursos de goleiro incompatíveis com a função registrada: '+incompatibleEquipped.join(', ')+'. Reconcilie a lista antes de confirmar vagas.']:[])
  ];
  return {role,nativeKnown,knownNative:native.length,
   alreadyEquippedProvided:Math.min(5,distinctExtras.length),
   manualReportedCount:distinctExtras.length,nativeManualConflicts,unmappedEquipped,manualOverLimit:overLimit,
   equippedConfirmed,slotsRemaining,
-  requiresReconciliation,
+  requiresReconciliation,incompatibleEquipped,
+  equippedSynergyApplied:ranked.some(x=>x.criterios.adicionais>0),
   unmappedNativeSkills:unmappedNative.slice(),
   contextualNativeSkills:contextNatives.known.slice(),
   contextualNativeGroups:{...contextNatives.groups},
@@ -571,7 +669,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
    'ate_cinco_candidatos_sem_slots_comprovados',
   missing:[...(nativeKnown?[]:['Habilidades nativas da edição não documentadas: confirme antes de gastar tokens.']),...warnings]};
 }
-function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
+function booster(d,tactic,engine,verifiedSlot,verifiedEquipped,equipment={}){
  const value=String(d.boost2||d.impeto_extra||'');
  const status=engine?.slotStatus?engine.slotStatus(value):(/^SLOT SELECION[AÁ]VEL/i.test(value)?'selecionavel':'indefinido');
  const position=POSITION[d.role_used]?d.role_used:d.shown_position||d.role_used||d.posicao;
@@ -597,22 +695,24 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  const able=slotSupported&&verifiedSlot==='vazio';
  const existing=knownExtra||'';
  const equippedName=validBooster(verifiedEquipped)||'';
+ const occupiedUnidentified=verifiedSlot==='ocupado'&&!equippedName;
  const unavailable=new Set([validBooster(natural),knownExtra,equippedName].filter(Boolean));
  let ranked=[];
  if(engine&&typeof engine.rank==='function'){
-  try{ranked=engine.rank({id:d.id,edition:d.edition,base_stats:d.base_stats,
+  try{ranked=engine.rank({capture:d.capture??d.numero,id:d.id,edition:d.edition||d.versao,base_stats:d.base_stats,
    base_stats_proof:d.base_stats_proof,base_catalog_proof:d.base_catalog_proof,
    posicao:position,estilo_ataque:d.attack_style||d.estilo_ataque,estilo_defesa:d.defence_style||d.estilo_defesa,impeto_fixo:d.boost1||d.impeto_fixo,impeto_extra:value,niveis:d.recommended_levels||d.niveis,
-   pp:d.pp,training_provisional:d.training_provisional===true||
+   pp:d.pp,max_level:d.max_level,pp_origem:d.pp_origem,
+   training_provisional:d.training_provisional===true||
     d.treino_proposto_nao_validado===true,
     pp_estimado:d.pp_estimado===true||d.pp_estimated===true,
-   habilidades_nativas:d.native_skills||d.habilidades_nativas},tactic).filter(x=>!unavailable.has(x.nome));}catch(e){ranked=[]}
+   habilidades_nativas:d.native_skills||d.habilidades_nativas},tactic,equipment).filter(x=>!unavailable.has(x.nome));}catch(e){ranked=[]}
  }
  const note=verifiedSlot==='ausente'?'Você marcou esta carta como sem slot selecionável neste dispositivo. Nenhum ímpeto novo será recomendado.':
  status==='nome_registrado'?'Segundo ímpeto já nomeado no cadastro; não tratar como slot livre ou substituível.':
  status==='possivel'?'SLOT PENDENTE: o acervo diz apenas "PENDENTE / selecionável", não é prova do slot nesta edição. Conferir a carta e conciliar o registro antes de gastar tokens.':
  !slotSupported?'O catálogo não comprova um segundo slot selecionável nesta edição; mesmo que a conta tenha registro de slot vazio, não autorizar gastos sem reconciliar as evidências.':
- verifiedSlot==='ocupado'?'Você confirmou slot ocupado. A opção abaixo é apenas comparação, nunca substituição automática.':
+ verifiedSlot==='ocupado'?(occupiedUnidentified?'Slot ocupado, mas ímpeto equipado não identificado: o ranking pode incluir o já instalado e serve apenas para pesquisa.':'Você confirmou slot ocupado. A opção abaixo é apenas comparação, nunca substituição automática.'):
  verifiedSlot==='vazio'?'Slot selecionável no catálogo e vazio confirmado nesta edição; confira os quatro atributos afetados antes de gastar tokens.':
  able?'Slot selecionável indicado no catálogo; confirmação no Plano de Jogo ainda necessária.':
  'Não existe prova documental suficiente de um slot selecionável. Confira no jogo antes de aplicar tokens.';
@@ -644,7 +744,8 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
    funcao:item.evidencias?.score_funcao??null,
    investimento:item.evidencias?.score_complemento??null,
    contexto:item.evidencias?.score_contexto??null,
-   atributosBase:item.evidencias?.score_base??null
+   atributosBase:item.evidencias?.score_base??null,
+   adicionais:item.evidencias?.score_adicionais??0
   }),
   trainingStatus:item.evidencias?.pp_status||'pendente',
   baseStatus:item.evidencias?.base_status||'pendente',
@@ -654,6 +755,7 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
  if(!factoryAxes.length)evidenceWarnings.push('Ímpeto fixo não identificado: não calcular redundância.');
  if(!slotSupported)evidenceWarnings.push('Segundo slot não comprovado na edição.');
  if(verifiedSlot!=='vazio')evidenceWarnings.push('Vaga real não confirmada como vazia na conta.');
+ if(occupiedUnidentified)evidenceWarnings.push('Nome do ímpeto equipado ainda desconhecido: não usar o ranking como lista de itens disponíveis.');
  if(!ranked[0])evidenceWarnings.push('Sem ímpeto compatível para ranquear.');
  else{
   if(ranked[0].evidencias?.pp_status!=='custo_pp_conferido')
@@ -668,7 +770,8 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped){
    warning:'Menor sobreposição não prova resultado superior; comparar com a build real.'}):null;
  // O ranking da carta deve existir independentemente da disponibilidade do slot.
  // "primary" é uma prioridade competitiva, NÃO algo equipado ou autorizado.
- return {status,verifiedSlot,slotSupported,slotEvidence,able,knownExtra:existing,confirmedEquipped:equippedName||null,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
+ return {status,verifiedSlot,slotSupported,slotEvidence,able,knownExtra:existing,confirmedEquipped:equippedName||null,
+  occupiedUnidentified,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
   decisionEvidence:Object.freeze({
    rankExplanation:'Nota relativa de função, investimento, contexto e base registrada; não é desempenho em jogo.',
    candidates:rankedEvidence,
@@ -845,8 +948,8 @@ function decisionMatrixFromScenarios(scenarios){
 // caminhos diferentes; isso exige revisão de fontes, jamais diversidade forçada.
 function individualEvidenceProfile(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Estilo inválido na ficha individual');
- const skills=evaluate(d,tactic,manualEquipped,{equippedConfirmed:opts.equippedConfirmed===true});
- const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
+ const skills=evaluate(d,tactic,manualEquipped,{...opts,equippedConfirmed:opts.equippedConfirmed===true});
+ const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
  const training=investmentAudit(d);
  const native=splitSkills(d.native_skills||d.habilidades_nativas||'');
  const nativeProfile=contextNativeProfile(native);
@@ -976,9 +1079,9 @@ function tacticalSkillDelta(d,first,second){
 function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática não reconhecida');
  const skills=evaluate(d,tactic,manualEquipped,{
-  equippedConfirmed:opts.equippedConfirmed===true
+  ...opts,equippedConfirmed:opts.equippedConfirmed===true
  });
- const boosters=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
+ const boosters=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
  const edition=String(d.edition||d.versao||'');
  const id=String(d.id||'');
  const identity=Boolean(id.trim()&&edition.trim()&&
@@ -1027,9 +1130,9 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  const roadmap=evidenceRoadmap(checks,{creatorSource:opts.creatorSource});
  const scenarios=Object.freeze(DOSSIER_TACTICS.map(style=>{
   const result=evaluate(d,style,manualEquipped,{
-   equippedConfirmed:opts.equippedConfirmed===true
+   ...opts,equippedConfirmed:opts.equippedConfirmed===true
   });
-  const ranked=booster(d,style,engine,opts.verifiedSlot,opts.verifiedBooster);
+  const ranked=booster(d,style,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
   return Object.freeze({
    style,skills:result.recommendations.map(x=>x.name),
    skillKeys:Object.freeze(result.recommendations.map(x=>x.key)),
@@ -1172,8 +1275,8 @@ function evidenceSensitivityV283(d,tactic,engine){
 function competitiveDecisionBoardV284(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida V284');
  const cap=Number(d.capture??d.numero),id=String(d.id||''),edition=String(d.edition||d.versao||'');
- const result=evaluate(d,tactic,manualEquipped,{equippedConfirmed:opts.equippedConfirmed===true});
- const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
+ const result=evaluate(d,tactic,manualEquipped,{...opts,equippedConfirmed:opts.equippedConfirmed===true});
+ const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
  const training=investmentAudit(d);
  const native=splitSkills(d.native_skills||d.habilidades_nativas||'');
  const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
@@ -1307,7 +1410,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática V285 inválida');
  const board=competitiveDecisionBoardV284(d,tactic,engine,manualEquipped,opts);
  const original=evaluate(d,tactic,manualEquipped,{
-  equippedConfirmed:opts.equippedConfirmed===true
+  ...opts,equippedConfirmed:opts.equippedConfirmed===true
  });
  const own=Object.freeze({
   id:String(d.id||''),edition:String(d.edition||d.versao||''),
@@ -1340,7 +1443,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
    mayChangeBuild:false
   });
   const evaluated=evaluate(variant.data,tactic,manualEquipped,{
-   equippedConfirmed:opts.equippedConfirmed===true
+   ...opts,equippedConfirmed:opts.equippedConfirmed===true
   });
   const after=cleanList(evaluated.recommendations);
   const differences=[];
@@ -1349,7 +1452,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
     position:i+1,before:originalFive[i]||null,after:after[i]||null
    }));
   }
-  const rebuilt=booster(variant.data,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
+  const rebuilt=booster(variant.data,tactic,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
   const next=rebuilt.primary?.nome||null;
   return Object.freeze({
    factor:variant.key,label:variant.label,tested:true,
@@ -1362,9 +1465,9 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
  }));
  const rotation=Object.freeze(DOSSIER_TACTICS.map(style=>{
   const curr=evaluate(d,style,manualEquipped,{
-   equippedConfirmed:opts.equippedConfirmed===true
+   ...opts,equippedConfirmed:opts.equippedConfirmed===true
   });
-  const boost=booster(d,style,engine,opts.verifiedSlot,opts.verifiedBooster);
+  const boost=booster(d,style,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
   const top=curr.recommendations.slice(0,5).map(x=>x.key);
   const topSet=new Set(top);
   return Object.freeze({tactic:style,label:engine?.TACTIC_LABEL?.[style]||style,
@@ -1496,7 +1599,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
 function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida V286');
  const base=evaluate(d,tactic,manualEquipped,{
-  equippedConfirmed:opts.equippedConfirmed===true});
+  ...opts,equippedConfirmed:opts.equippedConfirmed===true});
  const role=base.role,cap=Number(d.capture??d.numero),
   id=String(d.id||''),edition=String(d.edition||d.versao||'');
  const identityOK=Number.isInteger(cap)&&cap>0&&id.trim()&&edition.trim()&&
@@ -1570,7 +1673,7 @@ function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
    sameNativeFamily:Boolean(nativeFamilies[family(key)]),
    equipAuthorized:false});
  });
- const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
+ const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
  const fixed=boost.complementarity.factoryAxes||[];
  const options=[boost.primary,...boost.alternatives].filter(Boolean).map((x,i)=>{
   const axes=engine?.BOOSTERS?.[x.nome]||[];
@@ -1627,19 +1730,59 @@ function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
 
 // V288 — único contrato de confirmação por edição para todos os motores e a UI.
 // Registros válidos são declarações do usuário no dispositivo, não prova de jogo.
+function trainingScenario(d,tactic,levels,engine,manualEquipped='',proof={}){
+ if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida para simulação');
+ const pending=reason=>Object.freeze({status:'PENDENTE',reason,
+  mayApply:false,maySpendTokens:false,boosters:Object.freeze([]),skills:null});
+ const context=verifiedRecommendationContextV288(d,{...proof,manualEquipped});
+ if(!context.identity.valid||!roleOf(d))return pending('Identidade ou função da edição pendente.');
+ const max=d.max_level,pp=d.pp;
+ if(!Number.isInteger(max)||max<1||max>120||!Number.isInteger(pp)||
+  pp!==2*(max-1)||d.pp_estimado===true||d.pp_estimated===true||
+  !/^informado_pelo_usuario_/.test(String(d.pp_origem||'')))
+  return pending('Sem orçamento documental da edição para recalcular este cenário.');
+ if(!engine?.rank||!Array.isArray(levels)||levels.length!==10||
+  !levels.every(n=>Number.isInteger(n)&&n>=0&&n<=20)||engine.progressCost(levels)!==pp)
+  return pending('Cenário sem vetor válido de custo exato.');
+ const allowed=roleOf(d)==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ if(levels.some((value,i)=>value>0&&!allowed.includes(i)))
+  return pending('Cenário usa categorias fora do modelo de comparação desta função.');
+ // Overlay transitório para reaproveitar o cálculo de INVESTIMENTO. Nunca é
+ // salvo, devolvido como cadastro ou promovido a treino aprovado. Os retornos
+ // são remarcados explicitamente como simulação antes de chegar à interface.
+ const overlay={...d,recommended_levels:levels.slice(),niveis:levels.slice(),
+  training_provisional:false,treino_proposto_nao_validado:false};
+ const skills=evaluate(overlay,tactic,manualEquipped,context.options);
+ const boost=booster(overlay,tactic,engine,context.options.verifiedSlot,
+  context.options.verifiedBooster,context.options);
+ const ranked=[boost.primary,...boost.alternatives].filter(Boolean);
+ return Object.freeze({status:'ESTIMADO',budgetStatus:'CALCULADO',
+  sourceTrainingStatus:engine.trainingAudit(d).status,
+  skills:Object.freeze({...skills,investmentEvidence:'simulacao_custo_pp_exato',
+   recommendationMode:'SIMULACAO_EXPERIMENTAL'}),
+  boosters:Object.freeze(ranked.slice(0,3).map(item=>Object.freeze({...item,
+   status_validacao:'SIMULACAO_EXPERIMENTAL',confianca:'experimental',
+   evidencias:Object.freeze({...item.evidencias,pp_status:'simulacao_custo_pp_exato',
+    treino:'simulacao_experimental_sem_gravacao',atributos_finais_comprovados:false})}))),
+  mayApply:false,maySpendTokens:false,
+  warning:'Prévia de complementaridade de investimento. Não altera atributos reais, treino salvo, adicionais ou ímpetos.'
+ });
+}
 function verifiedRecommendationContextV288(card,proof={}){
  const manual=typeof proof.manualEquipped==='string'?proof.manualEquipped:'';
  const cap=Number(card.capture??card.numero),id=String(card.id||''),
   edition=String(card.edition||card.versao||'');
- const identityValid=Number.isInteger(cap)&&cap>0&&id.trim()&&edition.trim()&&
-  !/pendente|confirmar|invalid|desconhecid/i.test(id+' '+edition);
- const equipmentValid=Boolean(identityValid&&
+ const identityValid=identityEvidenceV293(card);
+ const nativeInventoryAvailable=nativeInventoryUsable(splitSkills(card.native_skills||card.habilidades_nativas));
+ const equipmentValid=Boolean(identityValid&&nativeInventoryAvailable&&
   checkedEquipment(card,manual,proof.equipmentRecord||null));
  const booster=boosterRecordEvidence(card,proof.boosterRecord||null);
  const equipped=equipmentValid?splitSkills(manual):[];
  const boosterStatus=identityValid&&booster.valid?booster.status:null;
  const options=Object.freeze({
   equippedConfirmed:equipmentValid,
+  manualEquipped:manual,
+  equipmentRecord:equipmentValid?Object.freeze({...proof.equipmentRecord}):null,
   verifiedSlot:boosterStatus,
   verifiedBooster:identityValid&&booster.valid?booster.equipped:null
  });
@@ -1651,7 +1794,8 @@ function verifiedRecommendationContextV288(card,proof={}){
   skills:Object.freeze({
    confirmed:equipmentValid,occupied:equipmentValid?equipped.length:null,
    remaining,recordPresent:Boolean(proof.equipmentRecord),
-   reason:!identityValid?'Card ID ou edição pendentes: não homologar slots.':equipmentValid?
+   reason:!identityValid?'Card ID ou edição pendentes: não homologar slots.':!nativeInventoryAvailable?
+    'Inventário nativo ausente ou provisório: vagas desconhecidas até conferir a edição exata.':equipmentValid?
     'Declaração local com vínculo CAP, Card ID, edição, lista e nativas.':
     proof.equipmentRecord?
     'Registro de habilidade incompatível, legado ou sem confirmação da edição atual.':
@@ -1662,6 +1806,8 @@ function verifiedRecommendationContextV288(card,proof={}){
    valid:Boolean(identityValid&&booster.valid),status:boosterStatus,
    catalogSlotNotImplied:true,
    legacy:booster.legacy,
+   equippedNamePending:booster.equippedNamePending,
+   catalogConflict:booster.catalogConflict,
    maySpendTokens:false,
    reason:identityValid?booster.reason:
     'Identidade da edição pendente: comprovante não libera o slot.'
@@ -1835,7 +1981,7 @@ function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
   note:'Respeita a metodologia criteriosa de análise por versão; não atribui aprovação ou fichas a Rentão/Blackjhon.'
  });
 }
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={identityEvidenceV293,SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,skillEligibility,investmentAudit,trainingScenario,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283,competitiveDecisionBoardV284,competitiveQualityLabV285,strategicPortfolioV286,professionalEvidenceCouncilV287,verifiedRecommendationContextV288};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
@@ -1948,11 +2094,13 @@ function draw(){
   boosterProof=boosterRecordEvidence(d,val);
   if(boosterProof.valid)manuallyVerified=val;
  }catch(e){}
- const confirmed=equipmentConfirmed();
- const result=evaluate(d,tactic,extra,{equippedConfirmed:confirmed});
- const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103,manuallyVerified.status,manuallyVerified.equipped);
+ const verified=verifiedRecommendationContextV288(d,{manualEquipped:extra,
+  equipmentRecord:readProof(),boosterRecord:manuallyVerified});
+ const confirmed=verified.skills.confirmed;
+ const result=evaluate(d,tactic,extra,verified.options);
+ const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103,verified.booster.status,verified.options.verifiedBooster,verified.options);
  const dossier=evidenceDossier(d,tactic,host.SCOUT_BOOSTERS_V103,extra,{
-  equippedConfirmed:confirmed,verifiedSlot:manuallyVerified.status,
+  ...verified.options,equippedConfirmed:confirmed,verifiedSlot:verified.booster.status,
   verifiedBooster:manuallyVerified.equipped,
   roleConfirmed:roleEvidence==='treinada'||roleEvidence==='familiar'
  });
@@ -1984,15 +2132,17 @@ function draw(){
  // Sem HTML do jogador e sem duplicar a ficha principal.
  const portfolioSection=section.querySelector('#v276-portfolio');
  portfolioSection.replaceChildren();
- const portfolioHeading=document.createElement('h3');
- portfolioHeading.textContent='Alternativa equilibrada · até 5 habilidades';
+ const portfolioCompare=document.createElement('details');
+ const portfolioHeading=document.createElement('summary');
+ portfolioHeading.textContent='Comparar outra combinação de habilidades';
  const portfolioDescription=document.createElement('p');
  portfolioDescription.textContent=
   'Uma combinação alternativa por função, tática e cobertura entre habilidades. '+
   (result.equippedConfirmed?'Vagas informadas: '+remaining+'. ':
    'Sem confirmação dos cinco slots: esta lista NÃO equivale a habilidades equipáveis. ')+
   'Não é uma build de Rentão ou Blackjhon sem fonte da edição exata.';
- portfolioSection.append(portfolioHeading,portfolioDescription);
+ portfolioCompare.append(portfolioHeading,portfolioDescription);
+ portfolioSection.append(portfolioCompare);
  const portfolioItems=document.createElement('ol');
  for(const item of result.balancedPortfolio.candidates){
   const li=document.createElement('li'),name=document.createElement('strong'),
@@ -2008,7 +2158,7 @@ function draw(){
   empty.textContent='Nenhuma sugestão adicional segura nesta combinação de dados/slots.';
   portfolioItems.append(empty);
  }
- portfolioSection.append(portfolioItems);
+ portfolioCompare.append(portfolioItems);
  const dossierContent=section.querySelector('#v273-dossier-content');
  dossierContent.replaceChildren();
  const addSection=(heading,values,cssClass='')=>{
@@ -2157,9 +2307,13 @@ function draw(){
   breakdown.className='v272-criteria';summary.textContent='Entender por que esta habilidade foi priorizada';
   p.textContent='Critérios: função '+(factors.funcao??'—')+' · tática '+(factors.tatica??'—')+
    ' · estilo '+(factors.estilo??'—')+' · nativas '+(factors.nativas??'—')+
+   ' · adicionais conferidas '+(factors.adicionais??0)+
    ' · investimento PP '+(factors.investimento??'—')+
    '. '+(skill.synergies?.length?skill.synergies.join('; ')+'. ':'')+
-   'A pontuação é comparativa, não prova status finais nem desempenho.';
+   'A pontuação é comparativa, não prova status finais nem desempenho. '+
+   (skill.decision?'Uso: '+skill.decision.situation+' '+skill.decision.attributeRelation+
+    ' Confiança '+skill.decision.confidence+' · '+skill.decision.status+'. '+
+    (skill.decision.alternative?'Alternativa funcional: '+SKILLS[skill.decision.alternative].name+'. ':''):'');
   breakdown.append(summary,p);li.append(rank,b,score,reason,breakdown);ul.appendChild(li);
  }
  for(let i=proposed.length;i<(remaining??0);i++){
@@ -2243,6 +2397,8 @@ function draw(){
  const explain=document.createElement('p');
  explain.textContent='Pontuação relativa (não Overall): função '+(e.score_funcao??'—')+' · complementaridade do investimento '+(e.score_complemento??'—')+' · estilo e habilidades '+(e.score_contexto??'—')+
  ' · bases comprovadas '+(e.score_base??0)+'. '+
+ 'Adicionais conferidas: '+(e.adicionais_conferidas?'sim':'não')+
+ ' · contribuição relativa '+(e.score_adicionais??0)+'. '+
  (e.base_status==='base_completa_confirmada'?
   'Atributos-base completos com fonte desta edição: comparação relativa limitada, NÃO atributos finais.':
   'Atributos-base pendentes ou parciais: ignorados na pontuação. ')+(e.treino==='investimento_da_build_sem_atributos_finais'?
@@ -2284,10 +2440,20 @@ section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',
 section.querySelector('#v162-save').addEventListener('click',()=>{
  const proposedText=ta.value.trim().slice(0,700);
  const requested=verifiedCheck.checked;
- const precheck=evaluate(d,tactic,proposedText,{equippedConfirmed:true});
- if(requested&&precheck.requiresReconciliation){
+ // V294: antes de salvar, validar a LISTA em modo de pré-conferência.
+ // Só depois construir e verificar o recibo V254. Exigir recibo anterior
+ // aqui impediria o usuário de confirmar pela primeira vez.
+ const precheck=evaluate(d,tactic,proposedText,{equippedConfirmed:false});
+ const pendingReceipt={schema:'CRAQUE_ADDITIONAL_V254',capture:Number(d.capture),
+  card_id:String(d.id),edition:String(d.edition||d.versao||''),
+  confirmed:true,fingerprint:fingerprint(proposedText),
+  nativeFingerprint:fingerprint(d.native_skills||d.habilidades_nativas||''),
+  confirmed_at:new Date().toISOString()};
+ const canConfirm=checkedEquipment(d,proposedText,pendingReceipt);
+ if(requested&&(precheck.requiresReconciliation||!canConfirm)){
   section.querySelector('#v162-feedback').textContent=
-   'CONFERÊNCIA NÃO SALVA: há habilidade nativa repetida entre adicionais ou mais de cinco diferentes. Revise o Plano de Jogo.';
+   'CONFERÊNCIA NÃO SALVA: '+(precheck.missing.join(' ')||
+    'CAP, Card ID, edição, nativas ou lista incompatíveis. Reconfira no jogo.');
   verifiedCheck.checked=false;
   return;
  }
@@ -2296,15 +2462,8 @@ section.querySelector('#v162-save').addEventListener('click',()=>{
   // A impressão digital vincula a confirmação à lista e à edição.
   // Falha entre os writes invalida a marca antiga pelo fingerprint.
   localStorage.setItem(storage,proposedText);
-  if(requested){
-   localStorage.setItem(verifyKey,JSON.stringify({
-    schema:'CRAQUE_ADDITIONAL_V254',capture:Number(d.capture),
-    card_id:String(d.id),edition:String(d.edition||d.versao||''),
-    confirmed:true,fingerprint:fingerprint(proposedText),
-    nativeFingerprint:fingerprint(d.native_skills||d.habilidades_nativas||''),
-    confirmed_at:new Date().toISOString()
-   }));
-  }else localStorage.removeItem(verifyKey);
+  if(requested)localStorage.setItem(verifyKey,JSON.stringify(pendingReceipt));
+  else localStorage.removeItem(verifyKey);
   extra=proposedText;saved=true;
   section.querySelector('#v162-feedback').textContent=requested?
    'Lista completa confirmada nesta edição. Vagas disponíveis recalculadas.':

@@ -57,7 +57,7 @@ const storage={getItem:k=>stored.has(k)?stored.get(k):null,
  setItem:(k,v)=>stored.set(k,String(v)),removeItem:k=>stored.delete(k)};
 const key=c=>'scoutpro:v248:level-review:'+c.numero+'@'+c.id;
 const record=(c,level)=>({schema:'CRAQUE_PROGRESS_REVIEW_V248',numero:c.numero,
- card_id:String(c.id),name:c.name,level,pp:2*(level-1),
+ card_id:String(c.id),name:c.name,edition:c.versao,level,pp:2*(level-1),
  confirmed_in_game:true,source:'conferência manual no eFootball',
  confirmed_at:'2026-10-19T06:00:00.000Z'});
 const skillsKey='scoutpro:v162:equipped:'+martinelli.numero+':'+martinelli.id;
@@ -115,6 +115,7 @@ assert(mismatch.reason.includes('52 PP')&&mismatch.reason.includes('50 PP'));
 // Não misturar a carta com outra edição, nem aceitar local manipulado.
 stored.set(key(martinelli),JSON.stringify({...record(martinelli,27),card_id:'versao-inexistente'}));
 assert.equal(V.localLevelReview(martinelli,storage),null);
+assert.equal(V.localLevelReview(martinelli,{getItem:()=>JSON.stringify(Object.fromEntries(Object.entries(record(martinelli,26)).filter(([k])=>k!=='edition')))}),null);
 assert.equal(V.buildReview(martinelli,raw,{},audit,'posse',{store:storage}).status,'complete');
 stored.clear();
 // Nível ainda ausente no catálogo, mas confirmado LOCALMENTE com PP exatos.

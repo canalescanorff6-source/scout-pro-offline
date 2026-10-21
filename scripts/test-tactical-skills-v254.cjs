@@ -17,7 +17,7 @@ assert.deepEqual(B.tactics,goal);
 assert.deepEqual(goal.map(x=>B.TACTIC_LABEL[x]),[
  'Posse de Bola','Contra-Ataque Normal','Contra-Ataque Rápido','Por Fora','Passe Longo'
 ]);
-const fake={capture:991,id:'TESTE_ID_EDICAO_991',edition:'EPIC-TESTE-991',shown_position:'MO',
+const fake={capture:991,id:'990000991',edition:'EPIC-TESTE-991',shown_position:'MO',
  native_skills:'Passe de primeira',attack_style:'Armador criativo'};
 assert.equal(S.fingerprint('Passe de primeira; One Touch Pass'),'onepass');
 assert.equal(S.fingerprint('One Touch Pass; Passe de primeira'),'onepass');
@@ -29,6 +29,8 @@ const proof={
  confirmed:true,fingerprint:S.fingerprint(full)
 };
 assert(S.checkedEquipment(fake,full,proof));
+assert(!S.checkedEquipment({...fake,id:'TESTE_ID_EDICAO_991'},full,proof),
+ 'Identificador textual de teste não equivale ao Card ID numérico da edição');
 assert(!S.checkedEquipment({...fake,id:'OUTRO_CARD_ID'},full,proof),
  'Não transferir confirmação entre versões homônimas');
 assert(!S.checkedEquipment({...fake,capture:992},full,proof));
@@ -42,7 +44,7 @@ const partial=S.evaluate(fake,'posse',full);
 assert.equal(partial.equippedConfirmed,false);
 assert.equal(partial.slotsRemaining,null,'Lista não marcada como completa não comprova vagas');
 assert(partial.recommendations.length>0);
-const complete=S.evaluate(fake,'posse',full,{equippedConfirmed:true});
+const complete=S.evaluate(fake,'posse',full,{equippedConfirmed:true,equipmentRecord:proof});
 assert.equal(complete.equippedConfirmed,true);
 assert.equal(complete.alreadyEquippedProvided,5);
 assert.equal(complete.slotsRemaining,0);
@@ -68,7 +70,8 @@ assert.equal(excess.slotsRemaining,null);
 assert.equal(excess.recommendations.length,0,
  'Mais de cinco adicionais não representa espaço liberado para equipar');
 for(const mode of goal){
- const optimistic=S.evaluate(fake,mode,'',{equippedConfirmed:true});
+ const optimistic=S.evaluate(fake,mode,'',{equippedConfirmed:true,
+  equipmentRecord:{...proof,fingerprint:S.fingerprint('')}});
  assert.equal(optimistic.slotsRemaining,5);
  assert(optimistic.recommendations.length>0&&optimistic.recommendations.length<=5);
  const unknown=S.evaluate(fake,mode,'');
@@ -115,7 +118,9 @@ assert(ui.includes('id="v254-confirm-equipped"'));
 assert(ui.includes("schema:'CRAQUE_ADDITIONAL_V254'"));
 assert(ui.includes('confirmed:true,fingerprint:fingerprint(proposedText)'));
 assert(ui.includes("host.dispatchEvent(new CustomEvent('craque:data-changed'"));
-assert(unified.includes('R.checkedEquipment?.('));
+assert(unified.includes('R.verifiedRecommendationContextV288?.('),
+ 'A ficha usa a prova unificada que valida lista, nativas e identidade');
+assert(unified.includes('equipmentRecord:manualProof,boosterRecord:slot'));
 assert(unified.includes('remaining=skills.slotsRemaining'));
 assert(unified.includes("'Slots não conferidos'"));
 assert(unified.includes('booster.primary.nome_pt||booster.primary.nome'));

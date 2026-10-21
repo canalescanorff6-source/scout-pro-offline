@@ -11,7 +11,7 @@ const V=require('../web/craque-progress-consistency-v249.js');
 const memory=new Map();
 const store={getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,String(v)),removeItem:k=>memory.delete(k)};
 const confirmed=(card,level)=>({
- schema:P.SCHEMA,numero:card.numero,card_id:card.id,name:card.name,level,
+ schema:P.SCHEMA,numero:card.numero,card_id:card.id,name:card.name,edition:card.versao,level,
  pp:P.budget(level),confirmed_in_game:true,
  confirmed_at:'2026-10-19T02:20:00.000Z',source:'conferência manual no eFootball'
 });
@@ -67,6 +67,8 @@ assert.equal(JSON.stringify(unknown),originalSnapshot,'Não alterar build origin
 assert.equal(P.state(unknown,P.readSaved(unknown,store)),'divergente');
 for(const bad of [
  {...disagreeing,card_id:'outra-edicao'},
+ {...disagreeing,edition:'outro pacote, mesmo Card ID'},
+ {...disagreeing,edition:undefined},
  {...disagreeing,confirmed_in_game:false},
  {...disagreeing,level:121},
  {...disagreeing,name:'homônimo'},

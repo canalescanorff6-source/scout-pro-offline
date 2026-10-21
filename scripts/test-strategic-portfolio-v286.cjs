@@ -84,15 +84,18 @@ assert(shortageProof.maxCandidates<5);
 const fullyLoaded=cards.find(c=>S.evaluate(adapt(c),'posse').rankedCandidates.length>=5);
 const synthetic=adapt(fullyLoaded);
 const lockedSkills=S.evaluate(synthetic,'posse').recommendations.slice(0,4).map(x=>x.name).join(';');
+const receipt=manual=>({schema:'CRAQUE_ADDITIONAL_V254',confirmed:true,
+ capture:synthetic.capture,card_id:synthetic.id,edition:synthetic.edition,
+ fingerprint:S.fingerprint(manual),nativeFingerprint:S.fingerprint(synthetic.native_skills)});
 const withEquipped=S.strategicPortfolioV286(synthetic,'posse',B,lockedSkills,{
- equippedConfirmed:true
+ equippedConfirmed:true,equipmentRecord:receipt(lockedSkills)
 });
 assert.equal(withEquipped.slotsConfirmed,true);
 assert.equal(withEquipped.maxCandidates,1);
 assert.equal(withEquipped.selected.length,1);
+const allSkills=S.evaluate(synthetic,'posse').recommendations.slice(0,5).map(x=>x.name).join(';');
 const withNoSlot=S.strategicPortfolioV286(synthetic,'posse',B,
- S.evaluate(synthetic,'posse').recommendations.slice(0,5).map(x=>x.name).join(';'),
- {equippedConfirmed:true});
+ allSkills,{equippedConfirmed:true,equipmentRecord:receipt(allSkills)});
 assert.equal(withNoSlot.maxCandidates,0);
 assert.equal(withNoSlot.selected.length,0);
 assert.equal(withNoSlot.evaluatedCombos,1);
