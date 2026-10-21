@@ -69,6 +69,7 @@ const GK_SKILL_KEYS=new Set(['gklow','gkhigh','gklong','gkpenalty']);
 function skillEligibility(card,key){
  const role=roleOf(card);
  if(!SKILLS[key])return 'habilidade_nao_reconhecida';
+ if(!role)return 'posicao_pendente';
  if(GK_SKILL_KEYS.has(key)&&role!=='GO')return role?'incompativel_com_jogador_de_linha':'posicao_pendente';
  return 'candidata_funcional';
 }
@@ -87,7 +88,7 @@ function checkedEquipment(card,manual,record){
   record.fingerprint===fingerprint(manual)&&
   Object.hasOwn(record,'nativeFingerprint')&&
   record.nativeFingerprint===fingerprint(native.join(';'))&&
-  nativeInventoryUsable(native)&&names.length<=5&&new Set(equippedKeys).size===names.length&&
+  nativeInventoryUsable(native)&&Boolean(roleOf(card))&&names.length<=5&&new Set(equippedKeys).size===names.length&&
   equippedKeys.every(key=>Boolean(key)&&!nativeKeys.has(key)&&
    skillEligibility(card,key)==='candidata_funcional'));
 }
