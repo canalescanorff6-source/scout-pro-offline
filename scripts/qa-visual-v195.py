@@ -1711,7 +1711,7 @@ def run():
                       localStorage.setItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id,
                         JSON.stringify({schema:'CRAQUE_PROGRESS_REVIEW_V248',
                           numero:Number(c.capture),card_id:String(c.id),name:String(c.name),
-                          level:27,pp:52,confirmed_in_game:true,
+                          edition:String(c.edition),level:27,pp:52,confirmed_in_game:true,
                           source:'conferência manual no eFootball',
                           confirmed_at:new Date().toISOString()}));
                     }""")
