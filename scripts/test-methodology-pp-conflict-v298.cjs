@@ -32,6 +32,9 @@ for(const c of cards){
   assert.equal(m.progressConflict.catalogPP,c.pp);
   assert(m.training.note.includes('PP DIVERGENTES'));
   assert.equal(m.booster.status,'bloqueado_pp_divergentes');
+  assert.equal(m.booster.equipStatus,'bloqueado_pp_divergentes');
+  assert.equal(m.booster.ppStatus,'pp_divergentes');
+  assert.equal(m.booster.confidenceReason,'pendente');
   assert.equal(m.booster.documentaryConfidence,'PENDENTE_PP_DIVERGENTES');
   assert.equal(m.booster.budgetOriginConfirmed,false);
   assert.equal(m.booster.name,null);
