@@ -325,8 +325,8 @@ function rank(card,tactic,equipment={}){
  const cap=Number(card.capture??card.numero);
  const id=String(card.id||card.card_id||'').trim();
  const edition=String(card.edition||card.versao||'').trim();
- const identityDocumented=Number.isInteger(cap)&&cap>0&&id&&edition&&
-  !/pendente|confirmar|invalid|desconhecid/i.test(id+' '+edition);
+ const identityDocumented=Boolean(Number.isInteger(cap)&&cap>0&&/^\d+$/.test(id)&&edition&&
+  !/pendente|confirmar|invalid|desconhecid|nao informado|não informado/i.test(edition));
  const nativeText=String(card.habilidades_nativas||card.native_skills||'').trim();
  const nativeCataloged=Boolean(nativeText)&&
   !/^(pendente|a confirmar|confirmar|desconhecid|nao informad|sem registro)/i.test(normStyle(nativeText));
