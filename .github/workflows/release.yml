@@ -176,6 +176,14 @@ jobs:
           path: build/v288-account-proof-246x5.json
           if-no-files-found: warn
           retention-days: 30
+      - name: V289 — inventário nativo e prova dos cinco slots, 246 cartas × cinco estilos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-v289-native-proof-246x5
+          path: build/v289-native-inventory-proof-246x5.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs
