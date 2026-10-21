@@ -1728,6 +1728,17 @@ def run():
                         problems.append(f"{name}: V252 manteve editor habilitado com PP 52 vs 50")
                     if 'PP DIVERGENTES' not in martinelli_v251.inner_text():
                         problems.append(f"{name}: V252 não informou a divergência de PP da edição")
+                    # V299: PP divergentes suspendem todos os laboratórios
+                    # V283–V287, não apenas o parecer primário V298.
+                    pp_guard=page.locator('#ct251-individual-ficha .ct299-pp-gate')
+                    if (pp_guard.count()!=1 or
+                        pp_guard.get_attribute('data-review')!='pp_divergentes' or
+                        '52 PP' not in pp_guard.inner_text()):
+                        problems.append(f"{name}: V299 não exibiu bloqueio único dos laboratórios por PP divergentes")
+                    for gated in ['ct283-sensitivity','ct284-decision-lab',
+                                  'ct285-quality-lab','ct286-strategic','ct287-evidence-council']:
+                        if page.locator('#ct251-individual-ficha .'+gated).count():
+                            problems.append(f"{name}: V299 exibiu {gated} apesar dos PP divergentes")
                     page.screenshot(path=str(OUT/f"{name}_v252_pp_divergentes.png"),
                       full_page=False,animations="disabled")
                     page.evaluate("""() => {
@@ -1740,6 +1751,10 @@ def run():
                     if (page.locator('#scout-v218-status').get_attribute('data-mode')=='blocked' or
                         page.locator('#ct251-individual-ficha').get_attribute('data-review')!='complete'):
                         problems.append(f"{name}: V252 não recuperou o treino após desfazer PP divergente")
+                    if page.locator('#ct251-individual-ficha .ct299-pp-gate').count():
+                        problems.append(f"{name}: V299 não removeu o aviso após desfazer conflito de PP")
+                    if not page.locator('#ct251-individual-ficha .ct284-decision-lab').count():
+                        problems.append(f"{name}: V299 não reativou os laboratórios após reconciliação dos PP")
                     result['ficha_individual_v251']={'tested':True,'levels':68,
                        'pending_blocked':True,'martinelli_26_50':True,
                        'v252_proof_matrix':True,'v252_budget_guard':True}
