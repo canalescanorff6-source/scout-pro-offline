@@ -349,3 +349,37 @@ body[data-page="detail"] .ct264-pendencies>summary{
  #ct251-individual-ficha .ct285-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  #ct251-individual-ficha .ct285-quality-lab > :not(summary){margin-inline:10px;max-width:calc(100% - 20px)}
 }
+
+/* V286 — apresentação premium da decisão por conjunto, sem copiar ficha. */
+#ct251-individual-ficha .ct286-strategic{
+ border:1px solid rgba(232,196,108,.5);border-radius:13px;margin-top:14px;
+ background:linear-gradient(130deg,#122a39,#071b27);color:#eee7d6;overflow:hidden;
+}
+#ct251-individual-ficha .ct286-strategic > summary{
+ color:#f3d397;font-weight:800;cursor:pointer;padding:13px;min-height:44px;
+ line-height:1.45;overflow-wrap:anywhere;
+}
+#ct251-individual-ficha .ct286-strategic > :not(summary){
+ margin:10px 12px 14px;max-width:calc(100% - 24px);
+}
+#ct251-individual-ficha .ct286-head strong{color:#f0cf8b}
+#ct251-individual-ficha .ct286-comparison{
+ display:grid;grid-template-columns:minmax(0,1fr);gap:10px;
+}
+#ct251-individual-ficha .ct286-side{
+ padding:12px;border:1px solid #4b6570;border-radius:11px;
+ background:rgba(13,34,47,.8);min-width:0;overflow-wrap:anywhere;
+}
+#ct251-individual-ficha .ct286-side h5{color:#edd093;margin:0 0 10px;font-size:14px}
+#ct251-individual-ficha .ct286-chosen{border-color:#b39154}
+#ct251-individual-ficha .ct286-new-list li{margin:0 0 10px}
+#ct251-individual-ficha .ct286-new-list strong{display:block;color:#f4dfa9}
+#ct251-individual-ficha .ct286-new-list small{color:#bfdae1;line-height:1.5}
+#ct251-individual-ficha .ct286-explanation{font-size:12px;color:#d2d8d2;line-height:1.65}
+#ct251-individual-ficha .ct286-pending li{margin-bottom:7px}
+#ct251-individual-ficha .ct286-pending li[data-severity=bloqueio]{color:#f0b5a3}
+#ct251-individual-ficha .ct286-boosters p{overflow-wrap:anywhere}
+#ct251-individual-ficha .ct286-strategic h5{color:#edd093;font-size:14px}
+@media(min-width:760px){
+ #ct251-individual-ficha .ct286-comparison{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
