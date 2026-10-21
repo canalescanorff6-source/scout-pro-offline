@@ -45,7 +45,10 @@ for(const c of cards){
     'Habilidades nativas ausentes não podem liberar vagas: CAP '+c.numero);
    assert.equal(locally.skills.confirmed,false);
    assert.equal(locally.skills.remaining,null);
-   assert.match(locally.skills.reason,/nativas|inventário/i);
+   // O bloqueio de identidade tem precedência sobre o de nativas. Ambos
+   // impedem confirmação de vagas; não presumir qual mensagem prevalece.
+   assert.match(locally.skills.reason,locally.identity.valid?
+    /nativas|inventário/i:/card id|edição/i);
    const proposal=S.evaluate(d,tactic,'',{equippedConfirmed:true});
    assert.equal(proposal.equippedConfirmed,false);
    assert.equal(proposal.slotsRemaining,null);
