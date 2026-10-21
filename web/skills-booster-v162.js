@@ -1703,10 +1703,15 @@ function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
    action:'Comparar partidas em condições semelhantes e registrar resultado; heurísticas não provam meta.'}
  ];
  const pending=checks.filter(x=>!x.ok);
- const ranking=new Map(opinion.skillReasons.map(x=>[x.key,x]));
+ // Frequência V287 usa o PACOTE V286 efetivamente proposto em cada estilo,
+ // não o antigo top cinco individual, pois a otimização pode promover uma skill.
+ const tacticalPackages=DOSSIER_TACTICS.map(style=>Object.freeze({
+  tactic:style,selected:style===tactic?main.selected:
+   strategicPortfolioV286(d,style,engine,manual,options).selected
+ }));
  const skillCouncil=main.selected.map(x=>{
-  const baseRank=ranking.get(x.key);
-  const tactical=opinion.tacticalMatrix.filter(v=>v.skills.includes(x.key)).map(v=>v.tactic);
+  const tactical=tacticalPackages.filter(v=>
+   v.selected.some(s=>s.key===x.key)).map(v=>v.tactic);
   const sourceWarnings=[];
   if(!nativeAligned)sourceWarnings.push('nativas sem alinhamento documental completo');
   if(!level.levels)sourceWarnings.push('PP não utilizado para comprovar');
