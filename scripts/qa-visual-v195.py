@@ -624,14 +624,16 @@ def run():
                     problems.append(f"{name}: V303 CA Normal e CA Rápido exibem distribuição idêntica em Massaro")
                 page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
                 page.locator('#scout-v218-edit').click()
-                # Partir do vetor registrado 62/62: liberar PP diminuindo Chute
-                # e realocar em Passe, em vez de aumentar um orçamento já cheio.
-                page.locator('#scout-v208-training tbody tr').first.locator('button[aria-label="Reduzir Chute"]').click()
-                page.locator('#scout-v208-training tbody tr').nth(1).locator('button[aria-label="Aumentar Passe"]').click()
-                page.wait_for_function("""() => {
+                # V303: o ponto inicial NÃO é mais a ficha de Posse. Reduzir
+                # uma categoria positiva e verificar o rascunho local por estilo,
+                # sem presumir os níveis antigos de Chute/Passe.
+                positive=next(i for i,v in enumerate(rapido_levels) if v>0)
+                row=page.locator('#scout-v208-training tbody tr').nth(positive)
+                row.locator('.scout-v218-step').first.click()
+                page.wait_for_function("""(args) => {
                   const cells=[...document.querySelectorAll('#scout-v208-training tbody tr .scout-v218-level')];
-                  return Number(cells[0]?.textContent)===9 && Number(cells[1]?.textContent)===6;
-                }""",timeout=10000)
+                  return Number(cells[args.i]?.textContent)===args.old-1;
+                }""",arg={"i":positive,"old":rapido_levels[positive]},timeout=10000)
                 adjusted=page.evaluate("""() =>
                     [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v218-level')]
                      .map(x=>Number(x.textContent))
