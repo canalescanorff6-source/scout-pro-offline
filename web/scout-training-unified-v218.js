@@ -75,7 +75,7 @@ function mount(doc){
  let custom=!!saved,sourceLabel=String(saved?.source||'');
  let editing=false;
  let activeTactic='posse',styleLabel='Posse de Bola',suggested=null;
- let autoPreview=false,referenceOnly=false;
+ let autoPreview=!saved&&!original,referenceOnly=false;
  const keyForTactic=()=>activeTactic==='posse'?storageKey:storageKey+':tactic:'+activeTactic;
  const head=panel.querySelector('#scout-v208-heading');
  if(head){
@@ -219,7 +219,7 @@ function mount(doc){
   if(activeTactic==='posse'){
    current=savedForStyle?savedForStyle.levels.slice():original?original.slice():null;
    custom=Boolean(savedForStyle);sourceLabel=savedForStyle?.source||'';
-   autoPreview=false;referenceOnly=false;
+   autoPreview=!savedForStyle&&!original;referenceOnly=false;
   }else{
    current=savedForStyle?savedForStyle.levels.slice():suggested?suggested.slice():original?original.slice():null;
    autoPreview=!savedForStyle;referenceOnly=!savedForStyle&&!suggested&&!!original;
