@@ -110,8 +110,14 @@ if(inCard){
  const engine220=document.createElement('script');engine220.src=v189Root+'scout-multitactic-engine-v220.js';
  engine220.onload=()=>{
   const loadCardUI=()=>{
-   const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';
-   document.head.appendChild(ui220);
+   const startUI=()=>{
+    const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';
+    document.head.appendChild(ui220);
+   };
+   const managers=document.createElement('script');
+   managers.src=v189Root+'craque-managers-v302.js';
+   managers.onload=startUI;managers.onerror=startUI;
+   document.head.appendChild(managers);
    // V251 precisa da interpretação V233 e da familiaridade EXATA V246.
    // Jamais deduzir posição treinada de Overall calculado.
    const loadV251=()=>{
