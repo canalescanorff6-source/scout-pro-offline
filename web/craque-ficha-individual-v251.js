@@ -160,7 +160,7 @@ function compareProposals(card,cards,style,role,levels,opts={}){
    boost1:peer.impeto_fixo,boost2:peer.impeto_extra,
    pp:Number(peer.pp),pp_estimated:peer.pp_estimado===true,
    base_stats_known:peer.base_stats_known===true,
-   recommended_levels:hasValidBuild(peer)?peer.niveis:null
+   recommended_levels:hasValidBuild(peer)&&peer.treino_proposto_nao_validado!==true?peer.niveis:null
   };
   const interpretation=I.interpret(profile,style,{});
   if(!interpretation||interpretation.role!==role)continue;
