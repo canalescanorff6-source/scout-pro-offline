@@ -465,8 +465,16 @@ jobs:
           # ambas as publicações, mesmo se o APK for sintaticamente válido.
           APKSIGNER="$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)"
           test -x "$APKSIGNER"
-          ACTUAL_CERT="$("$APKSIGNER" verify --print-certs "$APK" | awk -F': ' '/^Signer #1 certificate SHA-256 digest:/{print $2; exit}' | tr '[:upper:]' '[:lower:]' | tr -d ':')"
+          # O formato da linha de certificado varia entre versões do
+          # apksigner; o script V99 já conferiu a identidade fixa no APK.
+          # Parsear o SHA-256 completo do RELATÓRIO CRIPTOGRAFICAMENTE
+          # VERIFICADO, sem depender de label textual nem imprimir chaves.
           EXPECTED_CERT='818a2b4144234810b9e6e68bddb1ccb1cf9f3b6636dcc0adc31536a4fec02c04'
+          CERT_REPORT="$("$APKSIGNER" verify --verbose --print-certs "$APK")"
+          ACTUAL_CERT="$(printf '%s\\n' "$CERT_REPORT" |
+            grep -Eoi '([[:xdigit:]]{2}:){31}[[:xdigit:]]{2}|[[:xdigit:]]{64}' |
+            tr -d ':' | tr '[:upper:]' '[:lower:]' |
+            grep -Fx "$EXPECTED_CERT" | head -n 1 || true)"
           if [[ -z "$ACTUAL_CERT" || "$ACTUAL_CERT" != "$EXPECTED_CERT" ]]; then
             echo 'ERRO: certificado Android diferente da identidade oficial fixa. Nenhuma release será publicada.' >&2
             exit 1

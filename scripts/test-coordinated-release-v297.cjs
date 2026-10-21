@@ -32,7 +32,14 @@ for(const s of ['draft: true','make_latest: false','--draft=false --latest',
 const cert=signer.match(/const expectedCert='([0-9a-f]{64})'/)?.[1];
 assert(cert,'Certificado oficial V99 precisa estar documentado');
 assert(android.includes("EXPECTED_CERT='"+cert+"'"));
-assert(android.includes('"$APKSIGNER" verify --print-certs "$APK"'));
+assert(android.includes('"$APKSIGNER" verify --verbose --print-certs "$APK"'),
+ 'A conferência deve usar o mesmo relatório verificado pelo assinador V99');
+assert(android.includes("grep -Eoi '([[:xdigit:]]{2}:){31}[[:xdigit:]]{2}|[[:xdigit:]]{64}'"),
+ 'Aceitar formatos apksigner com ou sem dois-pontos nas impressões SHA256');
+assert(android.includes('grep -Fx "$EXPECTED_CERT"'),
+ 'Somente o digest SHA256 completo da identidade V99 é permitido');
+assert(!android.includes("awk -F': ' '/^Signer #1"),
+ 'É proibido depender do label frágil de uma versão específica do apksigner');
 assert(android.includes('"$ACTUAL_CERT" != "$EXPECTED_CERT"'));
 assert(android.includes("grep -Fq \"package: name='br.com.scoutpro.offline'"));
 assert(android.includes("if: steps.keys.outputs.signed == 'true'"));
