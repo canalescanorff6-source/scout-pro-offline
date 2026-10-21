@@ -153,3 +153,14 @@ body[data-page=friends] input[type=file]{max-width:100%;font-size:12px;min-heigh
 .friend-analysis-dialog>.friends-feedback{margin-top:11px}
 @media(max-width:760px){.friend-analysis-content{grid-template-columns:minmax(0,1fr)}.friend-analysis-meta{grid-template-columns:minmax(0,1fr)}.friend-analysis-panel:nth-child(n){grid-column:1/-1;grid-row:auto}.friend-analysis-tabs button{flex:1 1 calc(50% - 5px)}.friend-analysis-dialog{max-height:88vh;padding:12px}.friend-analysis-dialog .friends-dialog-actions{position:sticky;bottom:-12px;background:#0c2932;padding:12px 4px;border-top:1px solid #477063}}
 @media print{body[data-page=friends]>*:not(#friend-analysis-dialog){display:none!important}.friend-analysis-dialog{display:block!important;position:static;width:100%;max-height:none;overflow:visible;border:0;color:#000;background:#fff}.friend-analysis-content{display:block}.friend-analysis-panel{break-inside:avoid;page-break-inside:avoid;color:#000;background:#fff}}
+
+/* V304 — Coleção Bruno Santos CD, apartada das 246 cartas oficiais. */
+.friends-featured-owner{display:flex;gap:clamp(12px,4vw,24px);align-items:center;margin:16px 0 22px;padding:clamp(15px,3vw,24px);border:1px solid rgba(227,194,113,.62);background:linear-gradient(127deg,#123e39,#0c2935 64%,#111e30);box-shadow:0 12px 35px #0003}
+.friends-featured-art{border-radius:12px;padding:8px;background:#071b1a;border:1px solid rgba(225,185,102,.42);width:112px;min-width:112px;display:grid;place-items:center}
+.friends-featured-art img{display:block;max-width:100%;width:96px;aspect-ratio:80/104;object-fit:contain;border-radius:5px}
+.friends-featured-info{display:grid;justify-items:start;gap:10px;min-width:0}
+.friends-featured-info h2{color:#f4d998;margin:0;font-size:clamp(20px,4vw,29px)}
+.friends-featured-info p{font-size:13px;line-height:1.55;color:#c5d9d1;margin:0}
+.friends-featured-info strong{color:#f6e4b1}
+.friends-featured-info button{min-height:46px;padding:11px 14px;cursor:pointer}
+@media(max-width:540px){.friends-featured-owner{align-items:flex-start;gap:12px;padding:13px}.friends-featured-art{width:78px;min-width:78px;padding:5px}.friends-featured-art img{width:66px}.friends-featured-info h2{font-size:20px}.friends-featured-info p{font-size:12px}.friends-featured-info button{font-size:12px;max-width:100%}}
