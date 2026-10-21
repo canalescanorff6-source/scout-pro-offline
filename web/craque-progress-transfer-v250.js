@@ -19,6 +19,8 @@ function valid(card,item){
   Number.isInteger(item.numero)&&item.numero===Number(card.numero)&&
   typeof item.card_id==='string'&&item.card_id===String(card.id)&&
   typeof item.name==='string'&&item.name===String(card.name)&&
+  typeof item.edition==='string'&&item.edition.trim().length>0&&
+  item.edition===String(card.versao||'')&&
   budget(item.level)!==null&&item.pp===budget(item.level)&&
   typeof item.source==='string'&&item.source.length<=150&&
   typeof item.confirmed_at==='string'&&
@@ -28,7 +30,7 @@ function valid(card,item){
 }
 function equalRecord(a,b){
  return a&&b&&a.numero===b.numero&&a.card_id===b.card_id&&
-  a.level===b.level&&a.pp===b.pp;
+  a.edition===b.edition&&a.level===b.level&&a.pp===b.pp;
 }
 function inspect(input,cards,store){
  if(!Array.isArray(cards)||cards.length!==246)
@@ -47,7 +49,8 @@ function inspect(input,cards,store){
   const card=byNo.get(item?.numero);
   const slot=card?key(card):null;
   if(!valid(card,item)){
-   errors.push('Edição ou registro não comprovado: #'+String(item?.numero??'?'));
+   errors.push('Edição não vinculada ou registro inválido: #'+String(item?.numero??'?')+
+    '. Confira versão/Card ID e reconfirme no jogo antes de importar.');
    continue;
   }
   if(seen.has(slot)){
