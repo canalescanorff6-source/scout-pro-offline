@@ -58,7 +58,7 @@ assert(card.includes('scoutpro:card-shell-ready-v302'));
 const js=read('web/craque-managers-v302.js');
 assert(js.includes("scoutpro:tactic-ui-selected-v220"));
 assert(js.includes("scoutpro:manager-selected-v302"));
-assert(js.includes("host.localStorage.setItem(KEY"));
+assert(js.includes("host.localStorage.setItem(localKey"),'Seleção salva para cada edição CAP+Card ID');
 assert(!js.includes('createElement(\'img\')'),
  'Retratos sem permissão não podem aparecer automaticamente');
 const sw=read('web/sw.js'),stamp=read('scripts/stamp-bundle-v189.cjs');
