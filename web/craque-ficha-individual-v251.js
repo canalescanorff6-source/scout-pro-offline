@@ -743,7 +743,7 @@ function display(){
  // V301: só gerar prévia automática para edição identificada, PP exatos
  // e nível efetivamente documentado. Não aplicar a build e não gravar dados.
  if(check.canDraft===true&&check.sourceCompatible===true&&
-  /^\\d+$/.test(String(card.id))&&T.valid(check.proposal?.levels)&&
+  /^[0-9]+$/.test(String(card.id))&&T.valid(check.proposal?.levels)&&
   T.total(check.proposal.levels)===check.pp){
   host.dispatchEvent(new host.CustomEvent('scoutpro:v301:preview-ready',{
    detail:{cap:Number(card.numero),card_id:String(card.id),tactic:active,
