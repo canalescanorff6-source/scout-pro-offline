@@ -712,14 +712,47 @@ function display(){
  if(sensitiveSource&&typeof S?.competitiveDecisionBoardV284==='function'){
   const selectedData={...sensitiveSource,original_position:card.posicao,
    role_used:check.positionUsed||card.posicao,shown_position:card.posicao};
-  const board=S.competitiveDecisionBoardV284(selectedData,active,B,'',{
-   roleConfirmed:check.positionUsed===card.posicao||check.roleApproved===true
+  // V288: única fonte de confirmação para todos os laboratórios desta ficha.
+  let localManual='',localEquipmentRecord=null,localBoosterRecord=null;
+  try{
+   localManual=String(host.localStorage?.getItem('scoutpro:v162:equipped:'+
+    Number(card.numero)+':'+String(card.id))||'');
+   localEquipmentRecord=JSON.parse(host.localStorage?.getItem(
+    S.confirmationKey(Number(card.numero),String(card.id)))||'null');
+   localBoosterRecord=JSON.parse(host.localStorage?.getItem('scoutpro:v103:booster:'+
+    Number(card.numero))||'null');
+  }catch(_){}
+  // selectedData tem as nativas canônicas: exigidas no fingerprint V254.
+  const verifiedContext=S?.verifiedRecommendationContextV288?.(selectedData,{
+   manualEquipped:localManual,equipmentRecord:localEquipmentRecord,
+   boosterRecord:localBoosterRecord
+  });
+  const proofOptions=verifiedContext?.options||{};
+  const board=S.competitiveDecisionBoardV284(selectedData,active,B,localManual,{
+   ...proofOptions,roleConfirmed:check.positionUsed===card.posicao||check.roleApproved===true
   });
   const panel=mk('details','ct251-evidence-details ct284-decision-lab');
   panel.append(mk('summary','','Laboratório competitivo V284 · cinco habilidades, ímpetos e prova'));
   panel.append(mk('p','ct251-caution',
    'Análise por CAP '+board.identity.capture+' · Card ID '+board.identity.cardId+
    ' · '+board.identity.edition+'. Sugestões calculadas; nunca equipamentos aplicados.'));
+  if(verifiedContext){
+   const status=mk('div','ct288-proof-status');
+   status.dataset.skills=verifiedContext.skills.confirmed?'confirmed':'pending';
+   status.dataset.booster=verifiedContext.booster.valid?
+    verifiedContext.booster.status:'pending';
+   status.append(mk('strong','',verifiedContext.skills.confirmed?
+    'Habilidades conferidas · '+verifiedContext.skills.occupied+
+    ' ocupadas · '+verifiedContext.skills.remaining+' vagas informadas':
+    'Habilidades adicionais não conferidas · vagas desconhecidas'));
+   status.append(mk('p','',verifiedContext.skills.reason));
+   status.append(mk('p','',
+    'Ímpeto adicional: '+(verifiedContext.booster.valid?
+     'estado declarado: '+verifiedContext.booster.status:
+     'sem conferência válida da edição')+
+    '. Nenhuma habilidade ou ímpeto é aplicado automaticamente.'));
+   panel.append(status);
+  }
   panel.append(mk('h4','','01 · Cinco habilidades adicionais por função e estilo'));
   const lskills=mk('ol','ct284-decision-skills');
   for(const skill of board.skills){
@@ -775,8 +808,8 @@ function display(){
   panel.append(mk('small','','Sem indicação de autoria, aprovação de criador, atributos finais ou gameplay comprovado.'));
   // V285: segunda opinião recolhível dentro da mesma ficha.
   if(typeof S?.competitiveQualityLabV285==='function'){
-   const review=S.competitiveQualityLabV285(selectedData,active,B,'',{
-    roleConfirmed:check.positionUsed===card.posicao||check.roleApproved===true
+   const review=S.competitiveQualityLabV285(selectedData,active,B,localManual,{
+    ...proofOptions,roleConfirmed:check.positionUsed===card.posicao||check.roleApproved===true
    });
    const lab285=mk('details','ct251-evidence-details ct285-quality-lab');
    lab285.append(mk('summary','','V285 · Segunda opinião competitiva · cinco estilos'));
@@ -851,7 +884,7 @@ function display(){
    panel.append(lab285);
    // V286: comparação do PACOTE, sem criar outra ficha nem equipar habilidade.
    if(typeof S?.strategicPortfolioV286==='function'){
-    const improved=S.strategicPortfolioV286(selectedData,active,B);
+    const improved=S.strategicPortfolioV286(selectedData,active,B,localManual,proofOptions);
     const opt=mk('details','ct251-evidence-details ct286-strategic');
     opt.append(mk('summary','','V286 · Cinco habilidades como conjunto · ímpetos e evidências'));
     const intro=mk('div','ct286-head');
@@ -864,6 +897,10 @@ function display(){
     if(!improved.identity.valid)
      opt.append(mk('p','ct251-warning',
       'CAP/Card ID/edição não conciliados: não usar como build confirmada.'));
+    if(verifiedContext?.skills.confirmed)
+     opt.append(mk('p','ct288-slot-note',
+      'Esta edição informa '+verifiedContext.skills.remaining+
+      ' slot(s) adicional(is) livre(s); a proposta respeita esse limite.'));
     if(improved.insufficientCandidates)
      opt.append(mk('p','ct251-warning',
       'Só '+improved.maxCandidates+' habilidades candidatas distintas restaram após excluir nativas. '+
@@ -886,7 +923,10 @@ function display(){
       ' · prioridade original #'+item.rankingBase+'. '+item.reason));
      ranked.append(li);
     }
-    if(!ranked.children.length)ranked.append(mk('li','','Sem candidatas disponíveis.'));
+    if(!ranked.children.length)ranked.append(mk('li','',
+      verifiedContext?.skills.confirmed&&verifiedContext.skills.remaining===0?
+      'Os cinco slots estão ocupados na conta; sem vagas informadas.':
+      'Sem candidatas distintas disponíveis; não inventar habilidades.'));
     now.append(ranked);comparison.append(old,now);opt.append(comparison);
     opt.append(mk('p','ct286-explanation',improved.skillSelectionNote+
      ' Cobertura funcional: '+improved.utility.coverageRole+
@@ -922,23 +962,11 @@ function display(){
     panel.append(opt);
     // V287: conselho documental integra índice + cadastro + V286 sem inventar prints.
     if(typeof S?.professionalEvidenceCouncilV287==='function'){
-     let equipmentRecord=null,manual='',boostSlot=null;
-     try{
-      manual=String(host.localStorage?.getItem('scoutpro:v162:equipped:'+
-       Number(card.numero)+':'+String(card.id))||'');
-      equipmentRecord=JSON.parse(host.localStorage?.getItem(
-       S.confirmationKey(Number(card.numero),String(card.id)))||'null');
-      boostSlot=JSON.parse(host.localStorage?.getItem('scoutpro:v103:booster:'+
-       Number(card.numero))||'null');
-     }catch(_){}
-     const editionIdentity={capture:Number(card.numero),id:String(card.id),
-      edition:String(card.versao)};
-     const additionalEvidence=S.checkedEquipment(editionIdentity,manual,equipmentRecord);
-     const boosterEvidence=S.boosterRecordEvidence(editionIdentity,boostSlot);
      const audited=S.professionalEvidenceCouncilV287(selectedData,active,B,
       evidenceByCap.get(Number(card.numero)),{
-       manualEquipped:manual,equippedConfirmed:additionalEvidence,
-       equipmentRecord,boosterRecord:boostSlot
+       manualEquipped:localManual,
+       equippedConfirmed:proofOptions.equippedConfirmed===true,
+       equipmentRecord:localEquipmentRecord,boosterRecord:localBoosterRecord
       });
      const audit287=mk('details','ct251-evidence-details ct287-evidence-council');
      audit287.dataset.confidence=audited.confidence;
@@ -984,7 +1012,10 @@ function display(){
       skills.append(item);
      }
      if(!audited.skillCouncil.length)
-      skills.append(mk('li','','Nenhuma skill nova autorizada por dados suficientes.'));
+      skills.append(mk('li','',
+       verifiedContext?.skills.confirmed&&verifiedContext.skills.remaining===0?
+       'Os cinco slots adicionais da conta estão ocupados; nenhuma vaga informada.':
+       'Sem sugestão adicional elegível; não preencher slots com habilidades inventadas.'));
      audit287.append(skills);
      audit287.append(mk('h5','','Ímpetos · eixos por função, fixo e sensibilidade'));
      const boostList=mk('ol','ct287-booster-council');

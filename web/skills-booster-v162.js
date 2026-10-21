@@ -1624,17 +1624,63 @@ function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
  });
 }
 
+
+// V288 — único contrato de confirmação por edição para todos os motores e a UI.
+// Registros válidos são declarações do usuário no dispositivo, não prova de jogo.
+function verifiedRecommendationContextV288(card,proof={}){
+ const manual=typeof proof.manualEquipped==='string'?proof.manualEquipped:'';
+ const cap=Number(card.capture??card.numero),id=String(card.id||''),
+  edition=String(card.edition||card.versao||'');
+ const identityValid=Number.isInteger(cap)&&cap>0&&id.trim()&&edition.trim()&&
+  !/pendente|confirmar|invalid|desconhecid/i.test(id+' '+edition);
+ const equipmentValid=Boolean(identityValid&&
+  checkedEquipment(card,manual,proof.equipmentRecord||null));
+ const booster=boosterRecordEvidence(card,proof.boosterRecord||null);
+ const equipped=equipmentValid?splitSkills(manual):[];
+ const boosterStatus=identityValid&&booster.valid?booster.status:null;
+ const options=Object.freeze({
+  equippedConfirmed:equipmentValid,
+  verifiedSlot:boosterStatus,
+  verifiedBooster:identityValid&&booster.valid?booster.equipped:null
+ });
+ const remaining=equipmentValid?Math.max(0,5-equipped.length):null;
+ return Object.freeze({
+  schema:'CRAQUE_V288_CONTEXTO_CONFERENCIA',
+  identity:Object.freeze({capture:cap,cardId:id,edition,valid:Boolean(identityValid)}),
+  manualEquipped:manual,options,
+  skills:Object.freeze({
+   confirmed:equipmentValid,occupied:equipmentValid?equipped.length:null,
+   remaining,recordPresent:Boolean(proof.equipmentRecord),
+   reason:!identityValid?'Card ID ou edição pendentes: não homologar slots.':equipmentValid?
+    'Declaração local com vínculo CAP, Card ID, edição, lista e nativas.':
+    proof.equipmentRecord?
+    'Registro de habilidade incompatível, legado ou sem confirmação da edição atual.':
+    'Cinco slots de habilidades não conferidos na conta.',
+   mayApply:false
+  }),
+  booster:Object.freeze({
+   valid:Boolean(identityValid&&booster.valid),status:boosterStatus,
+   catalogSlotNotImplied:true,
+   legacy:booster.legacy,
+   maySpendTokens:false,
+   reason:identityValid?booster.reason:
+    'Identidade da edição pendente: comprovante não libera o slot.'
+  }),
+  noGameplayConfirmation:true,noAutomaticApplication:true
+ });
+}
 // V287 — prontuário de fontes + consenso de conjunto e ímpeto; somente hipótese.
 function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Estilo tático inválido V287');
  // A confirmação de slots exige a LISTA real, não uma flag desacompanhada.
  const manual=typeof opts.manualEquipped==='string'?opts.manualEquipped:'';
- const verifiedEquipment=opts.equippedConfirmed===true&&
-  checkedEquipment(d,manual,opts.equipmentRecord);
- const boosterProof=boosterRecordEvidence(d,opts.boosterRecord||null);
- const options={...opts,equippedConfirmed:verifiedEquipment,
-  verifiedSlot:boosterProof.valid?boosterProof.status:null,
-  verifiedBooster:boosterProof.valid?boosterProof.equipped:null};
+ const context=verifiedRecommendationContextV288(d,{
+  manualEquipped:manual,equipmentRecord:opts.equipmentRecord,
+  boosterRecord:opts.boosterRecord
+ });
+ const options={...opts,...context.options,
+  equippedConfirmed:opts.equippedConfirmed===true&&context.options.equippedConfirmed};
+ const verifiedEquipment=options.equippedConfirmed;
  const main=strategicPortfolioV286(d,tactic,engine,manual,options);
  const opinion=competitiveQualityLabV285(d,tactic,engine,manual,options);
  const cap=Number(d.capture??d.numero),id=String(d.id||''),
@@ -1790,7 +1836,7 @@ function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
  });
 }
 const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283,competitiveDecisionBoardV284,competitiveQualityLabV285,strategicPortfolioV286,professionalEvidenceCouncilV287};
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283,competitiveDecisionBoardV284,competitiveQualityLabV285,strategicPortfolioV286,professionalEvidenceCouncilV287,verifiedRecommendationContextV288};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;

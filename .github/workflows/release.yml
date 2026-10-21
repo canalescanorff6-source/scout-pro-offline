@@ -168,6 +168,14 @@ jobs:
             build/v287-evidence-queue-246.csv
           if-no-files-found: warn
           retention-days: 30
+      - name: V288 — auditoria de provas dos 5 slots e ímpetos por edição
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-v288-account-proof-246x5
+          path: build/v288-account-proof-246x5.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs

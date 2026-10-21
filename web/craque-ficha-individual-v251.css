@@ -446,3 +446,31 @@ body[data-page="detail"] .ct264-pendencies>summary{
 @media(min-width:900px){
  #ct251-individual-ficha .ct287-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
 }
+
+
+/* V288: estado de equipamento com confirmação vinculada à edição, sem confundir
+ * recomendação consultiva com vagas disponíveis na conta. */
+#ct251-individual-ficha .ct288-proof-status{
+ display:grid;gap:5px;padding:12px 13px;
+ border:1px solid #b39154;border-radius:12px;
+ background:linear-gradient(120deg,rgba(32,53,63,.9),rgba(13,30,40,.94));
+ color:#f5ecd6;min-width:0;overflow-wrap:anywhere;
+}
+#ct251-individual-ficha .ct288-proof-status[data-skills=pending]{
+ border-color:#8f7864;
+}
+#ct251-individual-ficha .ct288-proof-status strong{
+ font-size:13px;line-height:1.5;color:#f6d397;
+}
+#ct251-individual-ficha .ct288-proof-status p{
+ font-size:12px;line-height:1.55;margin:0;color:#cddcdd;
+}
+#ct251-individual-ficha .ct288-slot-note{
+ margin-top:10px;border-left:3px solid #d3ae67;padding:7px 10px;
+ background:rgba(12,33,46,.85);font-size:12px;
+ color:#e8d8b7;overflow-wrap:anywhere;
+}
+@media(max-width:390px){
+ #ct251-individual-ficha .ct288-proof-status{padding:10px 11px}
+ #ct251-individual-ficha .ct288-proof-status strong{font-size:12px}
+}
