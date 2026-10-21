@@ -23,7 +23,8 @@ for(const c of cards){
   assert(r.recommendations.length<=5);
   assert.equal(r.slotsRemaining,null);
   assert.equal(r.equippedConfirmed,false);
-  assert.equal(r.requiresReconciliation,false);
+  // V291: nenhum inventário nativo significa confirmação de vagas bloqueada.
+  assert.equal(r.requiresReconciliation,!String(c.habilidades_nativas||'').trim());
   if(r.unmappedNativeSkills.length)mappedNativePartial++;
   const nativeIds=new Set(String(c.habilidades_nativas||'').split(';').map(S.keyFor).filter(Boolean));
   for(const skill of r.recommendations.concat(r.alternatives)){
