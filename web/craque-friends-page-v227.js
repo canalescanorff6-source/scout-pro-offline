@@ -90,6 +90,7 @@ function makeCard(card){
  info.append(el('strong','',card.name));
  if(card.edition)info.append(el('small','friends-edition',card.edition));
  info.append(el('small','',(card.position||'Posição pendente')+' · '+(card.rarity||'Raridade não informada')));
+ if(card.style)info.append(el('small','friends-playstyle','Estilo: '+card.style));
  if(card.cardId)info.append(el('small','','Card ID: '+card.cardId));
  if(card.level!==null||card.pp!==null)info.append(el('small','',[(card.level!==null?'Nível '+card.level:null),(card.pp!==null?card.pp+' PP':null)].filter(Boolean).join(' · ')));
  const actions=el('div','friends-actions');
