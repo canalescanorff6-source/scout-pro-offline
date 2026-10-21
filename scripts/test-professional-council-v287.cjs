@@ -123,6 +123,15 @@ const mismatched=S.professionalEvidenceCouncilV287(identity,'posse',B,
  {...rowsByCap.get(first.numero),card_id:'IDENTIDADE_ERRADA'});
 assert.equal(mismatched.evidence.documentaryIndex,'SEM_VINCULO_EXATO');
 assert(mismatched.pending.some(x=>x.key==='source'));
+const wrongPP=S.professionalEvidenceCouncilV287(identity,'posse',B,
+ {...rowsByCap.get(first.numero),pp:Number(first.pp)+2});
+assert(wrongPP.pending.some(x=>x.key==='source'),'PP divergente invalida vínculo');
+const wrongName=S.professionalEvidenceCouncilV287(identity,'posse',B,
+ {...rowsByCap.get(first.numero),nome:'ATLETA DE OUTRA EDICAO'});
+assert(wrongName.pending.some(x=>x.key==='source'),'Nome divergente invalida vínculo');
+const wrongPosition=S.professionalEvidenceCouncilV287(identity,'posse',B,
+ {...rowsByCap.get(first.numero),posicao:'POSICAO_ADULTERADA'});
+assert(wrongPosition.pending.some(x=>x.key==='source'),'Posição original divergente invalida vínculo');
 const slotCard=cards.find(x=>B.slotStatus(x.impeto_extra)==='selecionavel');
 assert(slotCard);
 const cap=adapt(slotCard),goodRecord={schema:'CRAQUE_BOOST_SLOT_V283',
