@@ -61,6 +61,16 @@ const nativeInventoryUsable=names=>names.length>0&&names.every(name=>
  !/^(pendente|a confirmar|confirmar|desconhecid|nao informad|nao cadastr|sem registro|indefinid|unknown|undefined|n a\b)/.test(normal(name)));
 // A confirmação só vale para a edição exata e para ESTA lista de habilidades.
 // Editar o texto invalida automaticamente a confirmação antiga.
+// V293: o validador de confiança é utilizado também pelas APIs internas.
+// O catálogo auditado contém Card IDs numéricos ou marcadores de pendência;
+// não aceitar comprovantes associados a um marcador como se fosse um ID real.
+const identityEvidenceV293=card=>{
+ const cap=Number(card.capture??card.numero);
+ const id=String(card.id??card.card_id??'').trim();
+ const edition=String(card.edition??card.versao??'').trim();
+ return Number.isInteger(cap)&&cap>0&&/^\d+$/.test(id)&&edition.length>0&&
+  !/pendente|confirmar|invalid|desconhecid|nao informado|não informado/i.test(edition);
+};
 const confirmationKey=(cap,id)=>'scoutpro:v254:additional-confirmed:'+Number(cap)+'@'+String(id);
 const fingerprint=s=>[...new Set(splitSkills(s).map(x=>keyFor(x)||'unmapped:'+normal(x)))].sort().join('|');
 const GK_SKILL_KEYS=new Set(['gklow','gkhigh','gklong','gkpenalty']);
@@ -82,7 +92,7 @@ function checkedEquipment(card,manual,record){
  const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
  const equippedKeys=names.map(keyFor);
  const edition=String(card.edition||card.versao||'');
- return Boolean(record&&record.schema==='CRAQUE_ADDITIONAL_V254'&&record.confirmed===true&&
+ return Boolean(identityEvidenceV293(card)&&record&&record.schema==='CRAQUE_ADDITIONAL_V254'&&record.confirmed===true&&
   edition.trim()&&String(record.edition||'')===edition&&
   Number(record.capture)===Number(card.capture)&&String(record.card_id)===String(card.id)&&
   record.fingerprint===fingerprint(manual)&&
@@ -95,16 +105,32 @@ function checkedEquipment(card,manual,record){
 function boosterRecordEvidence(card,record){
  const edition=String(card.edition||card.versao||'');
  const cap=Number(card.capture??card.numero);
- const valid=Boolean(record&&record.schema==='CRAQUE_BOOST_SLOT_V283'&&
-  Number.isInteger(cap)&&cap>=1&&Number(record.capture)===cap&&edition.trim()&&
+ const rawCatalog=String(card.boost2??card.impeto_extra??'').trim();
+ // Nome de segundo ímpeto já cadastrado não pode ser simultaneamente
+ // comprovante de uma vaga vazia. Outros estados do catálogo permanecem
+ // incertos: a conta nunca é inferida do catálogo.
+ const catalogNamed=rawCatalog.length>0&&
+  !/^(slot selecion[aá]vel|pendente|nenhum|n[aã]o|—|-)/i.test(rawCatalog);
+ const badCatalogConflict=Boolean(catalogNamed&&record?.status==='vazio');
+ const equippedTypeValid=record?.equipped==null||typeof record.equipped==='string';
+ const equippedName=typeof record?.equipped==='string'?record.equipped.trim():'';
+ const valid=Boolean(identityEvidenceV293(card)&&record&&
+  record.schema==='CRAQUE_BOOST_SLOT_V283'&&
+  Number.isInteger(cap)&&cap>=1&&Number(record.capture)===cap&&
   Object.hasOwn(record,'edition')&&String(record.edition)===edition&&
   String(record.card_id)===String(card.id)&&
   ['vazio','ocupado','ausente'].includes(String(record.status))&&
-  (record.status==='ocupado'||!String(record.equipped||'').trim()));
+  equippedTypeValid&&!badCatalogConflict&&
+  (record.status==='ocupado'||!equippedName));
  return Object.freeze({
-  valid,status:valid?record.status:null,equipped:valid?(record.equipped||''):null,
-  legacy:!!record&&!valid,
+  valid,status:valid?record.status:null,equipped:valid?equippedName:null,
+  equippedNamePending:Boolean(valid&&record.status==='ocupado'&&!equippedName),
+  catalogConflict:badCatalogConflict,legacy:!!record&&!valid,
   reason:!record?'Nenhuma conferência salva do segundo ímpeto.':
+   badCatalogConflict?'Conflito: o catálogo registra um segundo ímpeto, mas a conta foi marcada como slot vazio. Reconciliar a edição.':
+   !identityEvidenceV293(card)?'CAP, Card ID ou edição pendentes: não homologar conferência.':
+   valid&&record.status==='ocupado'&&!equippedName?
+    'Slot marcado como ocupado; nome do ímpeto não informado. Comparação sem excluir equipamento desconhecido.':
    valid?'Conferência vinculada a CAP, Card ID e edição.':
    'Conferência antiga, incompleta ou de outra carta: reconfirme o slot na edição exata.'
  });
@@ -1736,8 +1762,7 @@ function verifiedRecommendationContextV288(card,proof={}){
  const manual=typeof proof.manualEquipped==='string'?proof.manualEquipped:'';
  const cap=Number(card.capture??card.numero),id=String(card.id||''),
   edition=String(card.edition||card.versao||'');
- const identityValid=Number.isInteger(cap)&&cap>0&&id.trim()&&edition.trim()&&
-  !/pendente|confirmar|invalid|desconhecid/i.test(id+' '+edition);
+ const identityValid=identityEvidenceV293(card);
  const nativeInventoryAvailable=nativeInventoryUsable(splitSkills(card.native_skills||card.habilidades_nativas));
  const equipmentValid=Boolean(identityValid&&nativeInventoryAvailable&&
   checkedEquipment(card,manual,proof.equipmentRecord||null));
@@ -1771,6 +1796,8 @@ function verifiedRecommendationContextV288(card,proof={}){
    valid:Boolean(identityValid&&booster.valid),status:boosterStatus,
    catalogSlotNotImplied:true,
    legacy:booster.legacy,
+   equippedNamePending:booster.equippedNamePending,
+   catalogConflict:booster.catalogConflict,
    maySpendTokens:false,
    reason:identityValid?booster.reason:
     'Identidade da edição pendente: comprovante não libera o slot.'
@@ -1944,7 +1971,7 @@ function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
   note:'Respeita a metodologia criteriosa de análise por versão; não atribui aprovação ou fichas a Rentão/Blackjhon.'
  });
 }
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,skillEligibility,investmentAudit,trainingScenario,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={identityEvidenceV293,SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,skillEligibility,investmentAudit,trainingScenario,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283,competitiveDecisionBoardV284,competitiveQualityLabV285,strategicPortfolioV286,professionalEvidenceCouncilV287,verifiedRecommendationContextV288};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
