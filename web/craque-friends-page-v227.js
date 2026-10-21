@@ -13,11 +13,25 @@ const el=(tag,className,text)=>{
 };
 try{data=api.read(localStorage)}
 catch(e){data=api.empty();locked=true;status(e.message+' Não faça novos cadastros até restaurar o backup da central de dados.');}
+// V304: agregar a coleção solicitada sem importar para as 246 cartas e
+// sem recriar uma carta que a pessoa tenha excluído posteriormente.
+const bruno=window.CRAQUE_BRUNO_V304;
+if(!locked&&bruno){
+ try{data=bruno.seed(data,api,localStorage).data}
+ catch(e){status('Não foi possível registrar a coleção Bruno Santos CD: '+e.message+
+  '. Seus acervos existentes foram mantidos.')}
+}
 const getOwner=()=>data.owners.find(x=>x.id===selected);
+const brunoOwner=()=>data.owners.find(x=>bruno?.normalize(x.name)===bruno.normalize(bruno.NAME));
 const personCards=id=>data.cards.filter(x=>x.ownerId===id);
 function restoreSelection(){
  try{const id=sessionStorage.getItem('craque:v227:selected-owner');if(data.owners.some(x=>x.id===id))selected=id;}
  catch(_e){}
+ try{
+  if(new URLSearchParams(location.search).get('colecao')==='bruno-santos-cd'&&brunoOwner())
+   selected=brunoOwner().id;
+ }catch(_e){}
+ if(!selected&&brunoOwner())selected=brunoOwner().id;
  if(!selected&&data.owners.length)selected=data.owners[0].id;
 }
 restoreSelection();
@@ -37,6 +51,21 @@ function save(next,message){
 }
 function button(text,cls,onClick){
  const b=el('button',cls,text);b.type='button';b.onclick=onClick;return b;
+}
+function renderBruno(){
+ const owner=brunoOwner(),button=$('bruno-open-collection'),counter=$('bruno-featured-count');
+ const cover=$('bruno-featured-card-art');
+ if(cover&&bruno?.PHOTO&&!cover.src.startsWith('data:image/'))cover.src=bruno.PHOTO;
+ if(counter)counter.textContent=owner?personCards(owner.id).length+
+  ' carta'+(personCards(owner.id).length===1?'':'s'):'Acervo ainda não disponível';
+ if(button){
+  button.disabled=!owner||locked;
+  button.onclick=()=>{
+   if(!owner||locked)return;
+   selectOwner(owner.id);
+   $('friend-selected')?.scrollIntoView({block:'start',behavior:'smooth'});
+  };
+ }
 }
 function renderPeople(){
  const root=$('friend-people');root.replaceChildren();
@@ -106,7 +135,7 @@ function renderCards(){
  $('friend-cards-empty').textContent=current.length?'Nenhuma carta encontrada neste filtro.':'Ainda não há cartas nesta coleção. Toque em “Nova carta” para cadastrar a primeira.';
 }
 function render(){
- renderPeople();renderCards();
+ renderBruno();renderPeople();renderCards();
  const disabled=locked;for(const id of ['friend-person-name','friend-new-card','friend-rename','friend-export','friend-delete','friend-import']){
   const control=$(id);if(control)control.disabled=disabled;
  }
