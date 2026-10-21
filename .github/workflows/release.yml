@@ -250,6 +250,14 @@ jobs:
           path: build/v299-unified-pp-lab-guard.json
           if-no-files-found: warn
           retention-days: 30
+      - name: V300 — evidências V254 em cinco táticas por carta
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-v300-receipt-246x5
+          path: build/v300-additional-receipt-246x5.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs
