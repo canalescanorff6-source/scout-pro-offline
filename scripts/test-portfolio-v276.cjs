@@ -83,7 +83,7 @@ assert.equal(scenarios,1230);
 assert.equal(JSON.stringify(cards),initial);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),original);
 // Balanceamento não troca a ordem oficial das 5 prioridades; é uma alternativa.
-const base={shown_position:'CA',attack_style:'Artilheiro',native_skills:'Heading'}; // Fixture V291: inventário conhecido
+const base={capture:976,id:'976000976',edition:'TESTE-V276',shown_position:'CA',attack_style:'Artilheiro',native_skills:'Heading'}; // Fixture V291: inventário conhecido
 const r=S.evaluate(base,'posse');
 assert.equal(r.recommendations.length,5);
 assert(r.balancedPortfolio.candidates.length===5);
@@ -91,15 +91,18 @@ assert(r.balancedPortfolio.candidates.every(x=>x.key&&x.family));
 assert(S.composePortfolio([], 'CA','posse',5).candidates.length===0);
 assert.throws(()=>S.composePortfolio([], 'CA','posse',6),/Limite/);
 // Slots conferidos: no máximo as vagas reais, SEM aplicação automática.
+const receipt=(manual)=>({schema:'CRAQUE_ADDITIONAL_V254',confirmed:true,
+ capture:base.capture,card_id:base.id,edition:base.edition,
+ fingerprint:S.fingerprint(manual),nativeFingerprint:S.fingerprint(base.native_skills)});
 const with4=S.evaluate(base,'posse',
  'Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola',
- {equippedConfirmed:true});
+ {equippedConfirmed:true,equipmentRecord:receipt('Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola')});
 assert.equal(with4.slotsRemaining,1);
 assert.equal(with4.balancedPortfolio.candidates.length,1);
 assert.equal(with4.balancedPortfolio.mayApply,false);
 const with5=S.evaluate(base,'posse',
  'Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola; Espírito guerreiro',
- {equippedConfirmed:true});
+ {equippedConfirmed:true,equipmentRecord:receipt('Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola; Espírito guerreiro')});
 assert.equal(with5.slotsRemaining,0);
 assert.equal(with5.balancedPortfolio.candidates.length,0);
 const native=S.evaluate({...base,native_skills:'Passe de primeira; Controle com a sola'},'posse');
