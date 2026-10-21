@@ -86,7 +86,9 @@ assert.equal(S.checkedEquipment(d,selected,{...proof,edition:undefined}),false);
 assert.equal(S.checkedEquipment({...d,edition:'OUTRA_EDICAO'},selected,proof),false);
 const ui=read('web/skills-booster-v162.js');
 assert(ui.includes('nativeFingerprint:fingerprint(d.native_skills||d.habilidades_nativas'));
-assert(ui.includes('if(requested&&precheck.requiresReconciliation)'));
+assert(ui.includes('if(requested&&(precheck.requiresReconciliation||!canConfirm))'));
+assert(ui.includes('checkedEquipment(d,proposedText,pendingReceipt)'),
+ 'A primeira confirmação exige recibo novo antes de gravar, nunca flag vazia');
 assert(ui.includes('Critérios: função '));
 const unified=read('web/scout-card-unified-v220.js');
 assert(unified.includes('R.verifiedRecommendationContextV288?.({...card,capture:cap,id},{'),
