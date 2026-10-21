@@ -398,11 +398,17 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const incompatibleEquipped=[...userMap].filter(([key])=>
   SKILLS[key]&&skillEligibility(d,key)!=='candidata_funcional').map(([,name])=>name);
  const overLimit=distinctExtras.length>5;
+ // V294: uma flag booleana desacompanhada do recibo V254 nunca
+ // comprova cinco vagas. Validar a própria edição/lista/nativas na entrada
+ // do motor, não apenas no adaptador ou na UI.
+ const proofRequested=options.equippedConfirmed===true;
+ const receiptValidated=Boolean(identityKnown&&nativeKnown&&
+  checkedEquipment(d,manualEquipped,options.equipmentRecord||null));
  const requiresReconciliation=!nativeKnown||overLimit||nativeManualConflicts.length>0||
-  unmappedEquipped.length>0||incompatibleEquipped.length>0;
- const equippedConfirmed=options.equippedConfirmed===true&&!requiresReconciliation;
- const additionalEvidenceConfirmed=equippedConfirmed&&identityKnown&&
-  checkedEquipment(d,manualEquipped,options.equipmentRecord);
+  unmappedEquipped.length>0||incompatibleEquipped.length>0||
+  (proofRequested&&!receiptValidated);
+ const equippedConfirmed=proofRequested&&!requiresReconciliation&&receiptValidated;
+ const additionalEvidenceConfirmed=equippedConfirmed;
  const confirmedAdditionalKeys=additionalEvidenceConfirmed?
   new Set(distinctExtras.map(([key])=>key)):new Set();
  const used=new Set([...nativeKeys,...userMap.keys()].filter(id=>!id.startsWith('unmapped:')));
@@ -624,6 +630,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
   nativeKeys:[...nativeKeys],equippedKeys:[...used].filter(k=>!nativeKeys.has(k))
  });
  const warnings=[
+  ...(proofRequested&&!receiptValidated?['Confirmação solicitada sem recibo válido de CAP, Card ID, edição, lista equipada e inventário nativo. Vagas continuam desconhecidas.']:[]),
   ...(!nativeKnown?['Inventário nativo ausente ou provisório: não confirmar vagas antes de conferir a edição exata.']:[]),
   ...(unmappedNative.length?['Nativas cadastradas fora do vocabulário de recomendações: '+
    [...new Set(unmappedNative)].slice(0,5).join(', ')+
