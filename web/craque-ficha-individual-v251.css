@@ -383,3 +383,66 @@ body[data-page="detail"] .ct264-pendencies>summary{
 @media(min-width:760px){
  #ct251-individual-ficha .ct286-comparison{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+
+/* V287 — conselho de evidências: abertura opcional, celular primeiro. */
+#ct251-individual-ficha .ct287-evidence-council{
+ border:1px solid rgba(211,181,117,.5);border-radius:13px;
+ margin:15px 0 0;background:linear-gradient(145deg,#152f3a,#0c202d);
+ color:#f2eadd;max-width:100%;overflow:hidden;
+}
+#ct251-individual-ficha .ct287-evidence-council > summary{
+ cursor:pointer;min-height:44px;padding:13px 12px;
+ color:#f5d48b;font-weight:800;line-height:1.5;
+}
+#ct251-individual-ficha .ct287-evidence-council > :not(summary){
+ margin:12px;max-width:calc(100% - 24px);
+ overflow-wrap:anywhere;
+}
+#ct251-individual-ficha .ct287-status{
+ padding:9px 11px;border-inline-start:4px solid #cda85d;
+ background:#183541;border-radius:6px;color:#f5e7cc;line-height:1.6;
+}
+#ct251-individual-ficha .ct287-evidence-council[data-confidence="BLOQUEADO_POR_EVIDENCIA"] .ct287-status{
+ border-inline-start-color:#de9d82;
+}
+#ct251-individual-ficha .ct287-metrics{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;
+}
+#ct251-individual-ficha .ct287-metric{
+ padding:12px 9px;border:1px solid #47606b;border-radius:10px;
+ background:rgba(10,29,43,.8);min-width:0;
+}
+#ct251-individual-ficha .ct287-metric strong{
+ display:block;color:#f4d493;font-size:21px;font-variant-numeric:tabular-nums;
+}
+#ct251-individual-ficha .ct287-metric small{
+ display:block;color:#c8d8dd;line-height:1.5;
+}
+#ct251-individual-ficha .ct287-evidence-council h5{
+ color:#f0cc83;font-size:14px;line-height:1.5;
+}
+#ct251-individual-ficha .ct287-priority,
+#ct251-individual-ficha .ct287-skill-council,
+#ct251-individual-ficha .ct287-booster-council{
+ padding-inline-start:20px;display:grid;gap:9px;
+}
+#ct251-individual-ficha .ct287-priority li,
+#ct251-individual-ficha .ct287-skill-council li,
+#ct251-individual-ficha .ct287-booster-council li{
+ background:rgba(7,28,39,.78);border:1px solid #3b5962;
+ border-radius:9px;padding:10px;line-height:1.55;
+ overflow-wrap:anywhere;
+}
+#ct251-individual-ficha .ct287-priority li[data-severity="bloqueio"]{
+ border-inline-start:3px solid #dfa08a;
+}
+#ct251-individual-ficha .ct287-evidence-council li strong{color:#f1d59f}
+#ct251-individual-ficha .ct287-evidence-council li p{margin:5px 0}
+#ct251-individual-ficha .ct287-evidence-council small{color:#b9ced4}
+#ct251-individual-ficha .ct287-interpretation{
+ color:#e4dac5;background:#1e3642;padding:9px;border-radius:8px;
+}
+@media(min-width:900px){
+ #ct251-individual-ficha .ct287-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
+}

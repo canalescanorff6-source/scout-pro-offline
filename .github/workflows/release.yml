@@ -158,6 +158,16 @@ jobs:
           path: build/v286-strategic-portfolios-246x5.json
           if-no-files-found: warn
           retention-days: 30
+      - name: V287 — relatório por edição e fila de revisão de evidências
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-v287-evidencias-246x5
+          path: |
+            build/v287-evidence-council-246x5.json
+            build/v287-evidence-queue-246.csv
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs

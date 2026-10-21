@@ -1571,6 +1571,26 @@ def run():
                                     problems.append(f"{name}: V286 causou overflow horizontal")
                                 page.screenshot(path=str(OUT/f"{name}_v286_portfolio.png"),
                                     full_page=False,animations="disabled")
+                            # V287: conferir o conselho e suas evidências por edição.
+                            audit287=lab284.locator('.ct287-evidence-council')
+                            if audit287.count()!=1:
+                                problems.append(f"{name}: conselho V287 ausente ou duplicado")
+                            else:
+                                if audit287.evaluate('(e)=>e.open'):
+                                    problems.append(f"{name}: V287 aberto por padrão")
+                                audit287.locator(':scope > summary').click()
+                                if audit287.locator('.ct287-metric').count()!=4:
+                                    problems.append(f"{name}: V287 sem resumo de quatro indicadores")
+                                if audit287.locator('.ct287-priority > li').count()<1:
+                                    problems.append(f"{name}: V287 sem evidências pendentes")
+                                if audit287.locator('.ct287-skill-council > li').count()<1:
+                                    problems.append(f"{name}: V287 sem conselho de habilidades")
+                                if audit287.locator('.ct287-booster-council > li').count()<1:
+                                    problems.append(f"{name}: V287 sem análise de ímpetos")
+                                if audit287.evaluate('(e)=>e.scrollWidth>e.clientWidth+6'):
+                                    problems.append(f"{name}: V287 com overflow horizontal")
+                                page.screenshot(path=str(OUT/f"{name}_v287_conselho.png"),
+                                    full_page=False,animations="disabled")
                             page.screenshot(path=str(OUT/f"{name}_v285_segunda_opiniao.png"),
                                 full_page=False,animations="disabled")
                         page.screenshot(path=str(OUT/f"{name}_v284_laboratorio.png"),
