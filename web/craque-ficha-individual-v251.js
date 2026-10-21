@@ -849,6 +849,79 @@ function display(){
     'Parecer sem validação em jogo. Referências a Rentão e Blackjhon indicam rigor metodológico, '+
     'não autoria ou aprovação de qualquer build desta edição.'));
    panel.append(lab285);
+   // V286: comparação do PACOTE, sem criar outra ficha nem equipar habilidade.
+   if(typeof S?.strategicPortfolioV286==='function'){
+    const improved=S.strategicPortfolioV286(selectedData,active,B);
+    const opt=mk('details','ct251-evidence-details ct286-strategic');
+    opt.append(mk('summary','','V286 · Cinco habilidades como conjunto · ímpetos e evidências'));
+    const intro=mk('div','ct286-head');
+    intro.append(mk('strong','',improved.adopted?
+     'Proposta de conjunto complementar · sem substituir build aprovada':
+     'Ordem original preservada · sem mudanças artificiais'));
+    intro.append(mk('p','',improved.evaluatedCombos+' combinações avaliadas; diferença '+
+     improved.improvement+' pontos relativos. Não representa ganho comprovado em jogo.'));
+    opt.append(intro);
+    if(!improved.identity.valid)
+     opt.append(mk('p','ct251-warning',
+      'CAP/Card ID/edição não conciliados: não usar como build confirmada.'));
+    if(improved.insufficientCandidates)
+     opt.append(mk('p','ct251-warning',
+      'Só '+improved.maxCandidates+' habilidades candidatas distintas restaram após excluir nativas. '+
+      'Não vamos inventar outra para completar cinco.'));
+    const comparison=mk('div','ct286-comparison');
+    const old=mk('section','ct286-side');
+    old.append(mk('h5','','Antes · cinco candidatas por nota individual'));
+    const oldList=mk('ol','');
+    for(const key of improved.baseline)
+     oldList.append(mk('li','',S.SKILLS[key]?.name||key));
+    old.append(oldList);
+    const now=mk('section','ct286-side ct286-chosen');
+    now.append(mk('h5','','V286 · pacote completo por complementaridade'));
+    const ranked=mk('ol','ct286-new-list');
+    for(const item of improved.selected){
+     const li=mk('li','');
+     li.append(mk('strong','',item.name));
+     li.append(mk('small','','Família '+item.family+
+      (item.sameNativeFamily?' · nativa desta família já cadastrada':'')+
+      ' · prioridade original #'+item.rankingBase+'. '+item.reason));
+     ranked.append(li);
+    }
+    if(!ranked.children.length)ranked.append(mk('li','','Sem candidatas disponíveis.'));
+    now.append(ranked);comparison.append(old,now);opt.append(comparison);
+    opt.append(mk('p','ct286-explanation',improved.skillSelectionNote+
+     ' Cobertura funcional: '+improved.utility.coverageRole+
+     ' · tática: '+improved.utility.coverageTactic+
+     ' · sinergias: '+improved.utility.bonus+
+     ' · repetição: −'+improved.utility.repeat+
+     ' · sobreposição familiar nativa: −'+improved.utility.nativeOverlap+'.'));
+    const links=mk('ul','ct286-synergies');
+    for(const item of improved.utility.synergies)
+     links.append(mk('li','',item.reason));
+    if(!links.children.length)
+     links.append(mk('li','','Nenhuma sinergia adicional justificou alterar a ordem anterior.'));
+    opt.append(mk('h5','','Combinações táticas encontradas'),links);
+    const boosters=mk('div','ct286-boosters');
+    const explain=item=>item?item.name+' · '+item.axes.join(', ')+
+     (item.sharedFixed===null?' · ímpeto fixo sem eixos comprovados.':
+      ' · '+item.sharedFixed+'/4 atributos compartilhados com o fixo.')+
+     ' Comparação apenas; sem gastar tokens.':'Sem ímpeto classificável.';
+    boosters.append(mk('h5','','Ímpetos · melhor prioridade e alternativa contextual'),
+     mk('p','','Primeiro: '+explain(improved.boosters.primary)),
+     mk('p','','Alternativa: '+(improved.boosters.complementaryAlternative?
+      explain(improved.boosters.complementaryAlternative):
+      'Não há alternativa próxima com complementaridade diferente comprovável.')));
+    opt.append(boosters);
+    const pending=mk('ol','ct286-pending');
+    for(const gap of improved.priorityQueue){
+     const item=mk('li','',gap.what);item.dataset.severity=gap.level;pending.append(item);
+    }
+    opt.append(mk('h5','','Pendências por ordem de prova'),pending);
+    opt.append(mk('p','ct251-caution',
+     'Análise consultiva baseada nos dados desta edição. Não altera builds, PP, slots ou equipamentos '+
+     'e não atribui aprovação a criadores sem fonte da edição exata.'));
+    panel.append(opt);
+   }
+
   }
   block.append(panel);
  }
