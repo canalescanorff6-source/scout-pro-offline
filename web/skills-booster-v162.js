@@ -370,7 +370,9 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const requiresReconciliation=overLimit||nativeManualConflicts.length>0||
   unmappedEquipped.length>0||incompatibleEquipped.length>0;
  const equippedConfirmed=options.equippedConfirmed===true&&!requiresReconciliation;
- const confirmedAdditionalKeys=equippedConfirmed?
+ const additionalEvidenceConfirmed=equippedConfirmed&&identityKnown&&
+  checkedEquipment(d,manualEquipped,options.equipmentRecord);
+ const confirmedAdditionalKeys=additionalEvidenceConfirmed?
   new Set(distinctExtras.map(([key])=>key)):new Set();
  const used=new Set([...nativeKeys,...userMap.keys()].filter(id=>!id.startsWith('unmapped:')));
  const style=normal([d.playing_style,d.attack_style,d.defence_style,d.estilo_ataque,d.estilo_defesa].filter(Boolean).join(' '));
@@ -572,7 +574,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
     category:(ROLE_FAMILIES[role]||[]).includes(SKILL_FAMILY[key])&&
      tacticalPriority.includes(key)?'essencial_na_hipotese':
      i<5?'complementar':'situacional',
-    confidence:!nativeKnown||!identityKnown?'pendente':equippedConfirmed&&!unmappedNative.length?'limitada':'baixa',
+    confidence:!nativeKnown||!identityKnown?'pendente':additionalEvidenceConfirmed&&!unmappedNative.length?'limitada':'baixa',
     reason:SKILLS[key].why,
     situation:TACTIC_REASON[tactic]+' Função '+role+'.',
     attributeRelation:investment.levels&&TRAINING_CATEGORY[key]!==undefined?
@@ -903,7 +905,7 @@ function decisionMatrixFromScenarios(scenarios){
 // caminhos diferentes; isso exige revisão de fontes, jamais diversidade forçada.
 function individualEvidenceProfile(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Estilo inválido na ficha individual');
- const skills=evaluate(d,tactic,manualEquipped,{equippedConfirmed:opts.equippedConfirmed===true});
+ const skills=evaluate(d,tactic,manualEquipped,{...opts,equippedConfirmed:opts.equippedConfirmed===true});
  const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
  const training=investmentAudit(d);
  const native=splitSkills(d.native_skills||d.habilidades_nativas||'');
@@ -1034,7 +1036,7 @@ function tacticalSkillDelta(d,first,second){
 function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática não reconhecida');
  const skills=evaluate(d,tactic,manualEquipped,{
-  equippedConfirmed:opts.equippedConfirmed===true
+  ...opts,equippedConfirmed:opts.equippedConfirmed===true
  });
  const boosters=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
  const edition=String(d.edition||d.versao||'');
@@ -1085,7 +1087,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
  const roadmap=evidenceRoadmap(checks,{creatorSource:opts.creatorSource});
  const scenarios=Object.freeze(DOSSIER_TACTICS.map(style=>{
   const result=evaluate(d,style,manualEquipped,{
-   equippedConfirmed:opts.equippedConfirmed===true
+   ...opts,equippedConfirmed:opts.equippedConfirmed===true
   });
   const ranked=booster(d,style,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
   return Object.freeze({
@@ -1230,7 +1232,7 @@ function evidenceSensitivityV283(d,tactic,engine){
 function competitiveDecisionBoardV284(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida V284');
  const cap=Number(d.capture??d.numero),id=String(d.id||''),edition=String(d.edition||d.versao||'');
- const result=evaluate(d,tactic,manualEquipped,{equippedConfirmed:opts.equippedConfirmed===true});
+ const result=evaluate(d,tactic,manualEquipped,{...opts,equippedConfirmed:opts.equippedConfirmed===true});
  const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
  const training=investmentAudit(d);
  const native=splitSkills(d.native_skills||d.habilidades_nativas||'');
@@ -1365,7 +1367,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática V285 inválida');
  const board=competitiveDecisionBoardV284(d,tactic,engine,manualEquipped,opts);
  const original=evaluate(d,tactic,manualEquipped,{
-  equippedConfirmed:opts.equippedConfirmed===true
+  ...opts,equippedConfirmed:opts.equippedConfirmed===true
  });
  const own=Object.freeze({
   id:String(d.id||''),edition:String(d.edition||d.versao||''),
@@ -1398,7 +1400,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
    mayChangeBuild:false
   });
   const evaluated=evaluate(variant.data,tactic,manualEquipped,{
-   equippedConfirmed:opts.equippedConfirmed===true
+   ...opts,equippedConfirmed:opts.equippedConfirmed===true
   });
   const after=cleanList(evaluated.recommendations);
   const differences=[];
@@ -1420,7 +1422,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
  }));
  const rotation=Object.freeze(DOSSIER_TACTICS.map(style=>{
   const curr=evaluate(d,style,manualEquipped,{
-   equippedConfirmed:opts.equippedConfirmed===true
+   ...opts,equippedConfirmed:opts.equippedConfirmed===true
   });
   const boost=booster(d,style,engine,opts.verifiedSlot,opts.verifiedBooster,{...opts,manualEquipped});
   const top=curr.recommendations.slice(0,5).map(x=>x.key);
@@ -1554,7 +1556,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
 function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida V286');
  const base=evaluate(d,tactic,manualEquipped,{
-  equippedConfirmed:opts.equippedConfirmed===true});
+  ...opts,equippedConfirmed:opts.equippedConfirmed===true});
  const role=base.role,cap=Number(d.capture??d.numero),
   id=String(d.id||''),edition=String(d.edition||d.versao||'');
  const identityOK=Number.isInteger(cap)&&cap>0&&id.trim()&&edition.trim()&&
@@ -1699,13 +1701,18 @@ function trainingScenario(d,tactic,levels,engine,manualEquipped='',proof={}){
  if(!engine?.rank||!Array.isArray(levels)||levels.length!==10||
   !levels.every(n=>Number.isInteger(n)&&n>=0&&n<=20)||engine.progressCost(levels)!==pp)
   return pending('Cenário sem vetor válido de custo exato.');
+ const allowed=roleOf(d)==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ if(levels.some((value,i)=>value>0&&!allowed.includes(i)))
+  return pending('Cenário usa categorias fora do modelo de comparação desta função.');
  // Overlay transitório para reaproveitar o cálculo de INVESTIMENTO. Nunca é
  // salvo, devolvido como cadastro ou promovido a treino aprovado. Os retornos
  // são remarcados explicitamente como simulação antes de chegar à interface.
  const overlay={...d,recommended_levels:levels.slice(),niveis:levels.slice(),
   training_provisional:false,treino_proposto_nao_validado:false};
  const skills=evaluate(overlay,tactic,manualEquipped,context.options);
- const ranked=engine.rank(overlay,tactic,context.options);
+ const boost=booster(overlay,tactic,engine,context.options.verifiedSlot,
+  context.options.verifiedBooster,context.options);
+ const ranked=[boost.primary,...boost.alternatives].filter(Boolean);
  return Object.freeze({status:'ESTIMADO',budgetStatus:'CALCULADO',
   sourceTrainingStatus:engine.trainingAudit(d).status,
   skills:Object.freeze({...skills,investmentEvidence:'simulacao_custo_pp_exato',
@@ -2044,7 +2051,7 @@ function draw(){
  const verified=verifiedRecommendationContextV288(d,{manualEquipped:extra,
   equipmentRecord:readProof(),boosterRecord:manuallyVerified});
  const confirmed=verified.skills.confirmed;
- const result=evaluate(d,tactic,extra,{equippedConfirmed:confirmed});
+ const result=evaluate(d,tactic,extra,verified.options);
  const boost=booster(d,tactic,host.SCOUT_BOOSTERS_V103,verified.booster.status,verified.options.verifiedBooster,verified.options);
  const dossier=evidenceDossier(d,tactic,host.SCOUT_BOOSTERS_V103,extra,{
   ...verified.options,equippedConfirmed:confirmed,verifiedSlot:verified.booster.status,

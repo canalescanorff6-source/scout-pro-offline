@@ -283,7 +283,11 @@ function additionalSkillEvidence(card,equipment={}){
   manualEquipped:manual,equipmentRecord:equipment.equipmentRecord});
  if(!context?.skills.confirmed)return empty;
  const weights={};
- const findings=nativeSkillContext(weights,manual,POS[String(profile.shown_position||'').toUpperCase()]);
+ // A prova usa aliases canônicos; o cálculo precisa usar a mesma identidade.
+ // Ex.: Passe a rasgar / Passe infiltrado / Through Passing são "through".
+ const canonical=api.fingerprint(manual).split('|').filter(Boolean)
+  .map(key=>api.SKILLS[key]?.aliases?.[0]||api.SKILLS[key]?.name||'').join(';');
+ const findings=nativeSkillContext(weights,canonical,POS[String(profile.shown_position||'').toUpperCase()]);
  return {confirmed:true,findings,weights};
 }
 function rank(card,tactic,equipment={}){

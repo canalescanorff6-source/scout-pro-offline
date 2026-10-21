@@ -28,7 +28,8 @@ run('especial de GO não equivale à Liderança selecionável',()=>{
 });
 run('adicional conferida oferece complementaridade separada das nativas',()=>{
  const plain=S.evaluate(d,'posse','Chute de primeira');
- const checked=S.evaluate(d,'posse','Chute de primeira',{equippedConfirmed:true});
+ const checked=S.evaluate(d,'posse','Chute de primeira',{
+  equippedConfirmed:true,equipmentRecord:proof(d,'Chute de primeira')});
  const a=plain.rankedCandidates.find(x=>x.key==='onepass');
  const b=checked.rankedCandidates.find(x=>x.key==='onepass');
  assert(b.score>a.score);
@@ -39,8 +40,10 @@ run('adicional conferida oferece complementaridade separada das nativas',()=>{
  assert(!checked.recommendations.some(x=>x.key==='firstshot'));
 });
 run('nomes equivalentes e lista inválida não fabricam contexto',()=>{
- const a=S.evaluate(d,'posse','First-time Shot',{equippedConfirmed:true});
- const b=S.evaluate(d,'posse','Chute de primeira',{equippedConfirmed:true});
+ const a=S.evaluate(d,'posse','First-time Shot',{
+  equippedConfirmed:true,equipmentRecord:proof(d,'First-time Shot')});
+ const b=S.evaluate(d,'posse','Chute de primeira',{
+  equippedConfirmed:true,equipmentRecord:proof(d,'Chute de primeira')});
  assert.deepEqual(a.rankedCandidates,b.rankedCandidates);
  const invalid=S.evaluate(d,'posse','Chute de primeira; Heading',{equippedConfirmed:true});
  assert.equal(invalid.equippedSynergyApplied,false);
@@ -97,4 +100,42 @@ run('ficha principal usa a mesma prova para habilidades e ímpetos',()=>{
  assert.equal(blocked.skills.equippedConfirmed,false);
  assert.equal(blocked.skills.slotsRemaining,null);
  assert.equal(blocked.booster.primary.evidencias.adicionais_conferidas,false);
+});
+run('bônus adicional rejeita flag isolada e opções verificadas de outra edição',()=>{
+ const manual='Chute de primeira',record=proof(d,manual);
+ const options=S.verifiedRecommendationContextV288(d,{manualEquipped:manual,equipmentRecord:record}).options;
+ assert(S.evaluate(d,'posse',manual,options).equippedSynergyApplied);
+ assert.equal(S.evaluate(d,'posse',manual,{equippedConfirmed:true}).equippedSynergyApplied,false);
+ for(const card of [{...d,edition:'Outra edição'},{...d,id:'PENDENTE'},
+  {...d,native_skills:d.native_skills+'; Interceptação'},{...d,capture:41}]){
+  assert.equal(S.evaluate(card,'posse',manual,options).equippedSynergyApplied,false);
+ }
+ assert.equal(S.evaluate(d,'posse','Passe em profundidade',options).equippedSynergyApplied,false);
+ const portfolio=S.strategicPortfolioV286(d,'posse',B,manual,options);
+ assert(portfolio.selected.some(x=>x.factors.adicionais>0),'Propagar prova até o portfólio');
+});
+run('aliases confirmados da mesma skill produzem exatamente o mesmo ranking de ímpetos',()=>{
+ const aliases=['Through Passing','Passe em profundidade','Passe a rasgar','Passe infiltrado'];
+ const rank=manual=>B.rank(d,'posse',{manualEquipped:manual,equipmentRecord:proof(d,manual)});
+ for(const manual of aliases)assert.deepEqual(rank(manual),rank(aliases[0]));
+});
+const martinelli=require('../web/SCOUT_V69_AUDITORIA.json').cards.find(c=>c.numero===191);
+const scenarioCard={capture:martinelli.numero,id:martinelli.id,edition:martinelli.versao,
+ shown_position:martinelli.posicao,attack_style:martinelli.estilo_ataque,
+ native_skills:martinelli.habilidades_nativas,boost1:martinelli.impeto_fixo,
+ boost2:martinelli.impeto_extra,pp:martinelli.pp,max_level:martinelli.max_level,
+ pp_origem:martinelli.pp_origem,recommended_levels:martinelli.niveis,training_provisional:true};
+run('cenário exclui o ímpeto ocupado comprovado da mesma edição',()=>{
+ const record={schema:'CRAQUE_BOOST_SLOT_V283',capture:scenarioCard.capture,
+  card_id:scenarioCard.id,edition:scenarioCard.edition,status:'ocupado',equipped:'Technique'};
+ const result=S.trainingScenario(scenarioCard,'posse',martinelli.niveis,B,'',{boosterRecord:record});
+ assert.equal(result.status,'ESTIMADO');
+ assert(!result.boosters.some(x=>x.nome==='Technique'));
+ assert.equal(result.maySpendTokens,false);
+});
+run('cenário respeita as categorias de função do mesmo comparador',()=>{
+ const onlyGO=[0,0,0,0,0,0,0,6,11,11];
+ assert.equal(B.progressCost(onlyGO),50);
+ assert.equal(S.trainingScenario(scenarioCard,'posse',onlyGO,B).status,'PENDENTE');
+ assert.equal(S.trainingScenario({...scenarioCard,shown_position:'GO'},'posse',martinelli.niveis,B).status,'PENDENTE');
 });
