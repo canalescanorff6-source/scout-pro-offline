@@ -679,7 +679,7 @@ function display(){
   role_used:card.posicao,attack_style:card.estilo_ataque,
   defence_style:card.estilo_defesa,native_skills:card.habilidades_nativas,
   boost1:card.impeto_fixo,boost2:card.impeto_extra,
-  pp:card.pp_estimado===true?null:Number(card.pp),
+  pp:card.pp_estimado===true||card.pp===null||card.pp===undefined||card.pp===''?null:Number(card.pp),
   pp_estimado:card.pp_estimado===true,
   recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
   training_provisional:card.treino_proposto_nao_validado===true
