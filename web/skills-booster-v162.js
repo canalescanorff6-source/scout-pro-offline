@@ -688,6 +688,7 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped,equipment={}){
  const able=slotSupported&&verifiedSlot==='vazio';
  const existing=knownExtra||'';
  const equippedName=validBooster(verifiedEquipped)||'';
+ const occupiedUnidentified=verifiedSlot==='ocupado'&&!equippedName;
  const unavailable=new Set([validBooster(natural),knownExtra,equippedName].filter(Boolean));
  let ranked=[];
  if(engine&&typeof engine.rank==='function'){
@@ -704,7 +705,7 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped,equipment={}){
  status==='nome_registrado'?'Segundo ímpeto já nomeado no cadastro; não tratar como slot livre ou substituível.':
  status==='possivel'?'SLOT PENDENTE: o acervo diz apenas "PENDENTE / selecionável", não é prova do slot nesta edição. Conferir a carta e conciliar o registro antes de gastar tokens.':
  !slotSupported?'O catálogo não comprova um segundo slot selecionável nesta edição; mesmo que a conta tenha registro de slot vazio, não autorizar gastos sem reconciliar as evidências.':
- verifiedSlot==='ocupado'?'Você confirmou slot ocupado. A opção abaixo é apenas comparação, nunca substituição automática.':
+ verifiedSlot==='ocupado'?(occupiedUnidentified?'Slot ocupado, mas ímpeto equipado não identificado: o ranking pode incluir o já instalado e serve apenas para pesquisa.':'Você confirmou slot ocupado. A opção abaixo é apenas comparação, nunca substituição automática.'):
  verifiedSlot==='vazio'?'Slot selecionável no catálogo e vazio confirmado nesta edição; confira os quatro atributos afetados antes de gastar tokens.':
  able?'Slot selecionável indicado no catálogo; confirmação no Plano de Jogo ainda necessária.':
  'Não existe prova documental suficiente de um slot selecionável. Confira no jogo antes de aplicar tokens.';
@@ -747,6 +748,7 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped,equipment={}){
  if(!factoryAxes.length)evidenceWarnings.push('Ímpeto fixo não identificado: não calcular redundância.');
  if(!slotSupported)evidenceWarnings.push('Segundo slot não comprovado na edição.');
  if(verifiedSlot!=='vazio')evidenceWarnings.push('Vaga real não confirmada como vazia na conta.');
+ if(occupiedUnidentified)evidenceWarnings.push('Nome do ímpeto equipado ainda desconhecido: não usar o ranking como lista de itens disponíveis.');
  if(!ranked[0])evidenceWarnings.push('Sem ímpeto compatível para ranquear.');
  else{
   if(ranked[0].evidencias?.pp_status!=='custo_pp_conferido')
@@ -761,7 +763,8 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped,equipment={}){
    warning:'Menor sobreposição não prova resultado superior; comparar com a build real.'}):null;
  // O ranking da carta deve existir independentemente da disponibilidade do slot.
  // "primary" é uma prioridade competitiva, NÃO algo equipado ou autorizado.
- return {status,verifiedSlot,slotSupported,slotEvidence,able,knownExtra:existing,confirmedEquipped:equippedName||null,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
+ return {status,verifiedSlot,slotSupported,slotEvidence,able,knownExtra:existing,confirmedEquipped:equippedName||null,
+  occupiedUnidentified,natural,primary:ranked[0]||null,alternatives:ranked.slice(1,3),note,
   decisionEvidence:Object.freeze({
    rankExplanation:'Nota relativa de função, investimento, contexto e base registrada; não é desempenho em jogo.',
    candidates:rankedEvidence,
