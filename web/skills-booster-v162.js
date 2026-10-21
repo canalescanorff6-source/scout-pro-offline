@@ -55,6 +55,11 @@ for(const [raw,key] of Object.entries({
 }))if(!aliasMap.has(normal(raw)))aliasMap.set(normal(raw),key);
 const keyFor=s=>aliasMap.get(normal(s))||'';
 const splitSkills=s=>Array.isArray(s)?s:String(s||'').split(/[;\n,]+/).map(x=>x.trim()).filter(Boolean);
+// V289: uma lista ausente/provisória de habilidades nativas NÃO é prova
+// de que a carta possua zero nativas. Exigir inventário cadastrado para
+// conferir elegibilidade de adicionais; preservar registros locais legados.
+const nativeInventoryUsable=names=>names.length>0&&names.every(name=>
+ !/^(pendente|a confirmar|confirmar|desconhecid|nao informad|nao cadastr|sem registro|indefinid|unknown|undefined|n a\b)/.test(normal(name)));
 // A confirmação só vale para a edição exata e para ESTA lista de habilidades.
 // Editar o texto invalida automaticamente a confirmação antiga.
 const confirmationKey=(cap,id)=>'scoutpro:v254:additional-confirmed:'+Number(cap)+'@'+String(id);
@@ -74,7 +79,7 @@ function checkedEquipment(card,manual,record){
   record.fingerprint===fingerprint(manual)&&
   Object.hasOwn(record,'nativeFingerprint')&&
   record.nativeFingerprint===fingerprint(native.join(';'))&&
-  names.length<=5&&new Set(equippedKeys).size===names.length&&
+  nativeInventoryUsable(native)&&names.length<=5&&new Set(equippedKeys).size===names.length&&
   equippedKeys.every(key=>Boolean(key)&&!nativeKeys.has(key)));
 }
 function boosterRecordEvidence(card,record){
@@ -336,7 +341,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
  if(!['posse','normal','rapido','fora','longo'].includes(tactic))throw Error('Tática inválida');
  const role=roleOf(d);if(!role)return {role:null,recommendations:[],nativeKnown:false,missing:['Posição da carta não cadastrada']};
  const native=splitSkills(d.native_skills||d.habilidades_nativas);
- const nativeKnown=Boolean(native.length);
+ const nativeKnown=nativeInventoryUsable(native);
  const equipped=splitSkills(manualEquipped);
  const nativeIds=new Set(native.map(name=>keyFor(name)||'unmapped:'+normal(name)));
  const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
@@ -526,7 +531,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
    synergies:synergy.get(key)||[]
   }));
  const overLimit=distinctExtras.length>5;
- const requiresReconciliation=overLimit||nativeManualConflicts.length>0||unmappedEquipped.length>0;
+ const requiresReconciliation=!nativeKnown||overLimit||nativeManualConflicts.length>0||unmappedEquipped.length>0;
  // A lista manual pode estar INCOMPLETA. Não declarar espaços livres
  // ou cinco skills aplicáveis até o usuário conferir no Plano de Jogo.
  const equippedConfirmed=options.equippedConfirmed===true&&!requiresReconciliation;
@@ -536,6 +541,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
   nativeKeys:[...nativeKeys],equippedKeys:[...used].filter(k=>!nativeKeys.has(k))
  });
  const warnings=[
+  ...(!nativeKnown?['Habilidades nativas ausentes ou provisórias: não é possível conferir a elegibilidade dos cinco slots até cadastrar a lista da edição exata.']:[]),
   ...(unmappedNative.length?['Nativas cadastradas fora do vocabulário de recomendações: '+
    [...new Set(unmappedNative)].slice(0,5).join(', ')+
    '. Isso NÃO prova que essas habilidades estejam ausentes da carta.']:[]),
@@ -1633,7 +1639,8 @@ function verifiedRecommendationContextV288(card,proof={}){
   edition=String(card.edition||card.versao||'');
  const identityValid=Number.isInteger(cap)&&cap>0&&id.trim()&&edition.trim()&&
   !/pendente|confirmar|invalid|desconhecid/i.test(id+' '+edition);
- const equipmentValid=Boolean(identityValid&&
+ const nativeInventoryAvailable=nativeInventoryUsable(splitSkills(card.native_skills||card.habilidades_nativas));
+ const equipmentValid=Boolean(identityValid&&nativeInventoryAvailable&&
   checkedEquipment(card,manual,proof.equipmentRecord||null));
  const booster=boosterRecordEvidence(card,proof.boosterRecord||null);
  const equipped=equipmentValid?splitSkills(manual):[];
@@ -1651,7 +1658,8 @@ function verifiedRecommendationContextV288(card,proof={}){
   skills:Object.freeze({
    confirmed:equipmentValid,occupied:equipmentValid?equipped.length:null,
    remaining,recordPresent:Boolean(proof.equipmentRecord),
-   reason:!identityValid?'Card ID ou edição pendentes: não homologar slots.':equipmentValid?
+   reason:!identityValid?'Card ID ou edição pendentes: não homologar slots.':!nativeInventoryAvailable?
+    'Inventário de habilidades nativas ausente ou provisório: confirmar a edição antes de declarar vagas elegíveis.':equipmentValid?
     'Declaração local com vínculo CAP, Card ID, edição, lista e nativas.':
     proof.equipmentRecord?
     'Registro de habilidade incompatível, legado ou sem confirmação da edição atual.':
@@ -2287,7 +2295,7 @@ section.querySelector('#v162-save').addEventListener('click',()=>{
  const precheck=evaluate(d,tactic,proposedText,{equippedConfirmed:true});
  if(requested&&precheck.requiresReconciliation){
   section.querySelector('#v162-feedback').textContent=
-   'CONFERÊNCIA NÃO SALVA: há habilidade nativa repetida entre adicionais ou mais de cinco diferentes. Revise o Plano de Jogo.';
+   'CONFERÊNCIA NÃO SALVA: faltam nativas documentadas, há nomes adicionais não reconhecidos, repetição com nativas ou mais de cinco habilidades. Confira a edição no Plano de Jogo.';
   verifiedCheck.checked=false;
   return;
  }
