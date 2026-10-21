@@ -1299,8 +1299,198 @@ function competitiveDecisionBoardV284(d,tactic,engine,manualEquipped='',opts={})
   disclaimer:'Rankings são heurísticos e específicos aos registros desta edição; não comprovam desempenho, atributos finais nem autoria.'
  });
 }
+
+// V285 — segunda opinião competitiva, NÃO mais uma ficha ou build gravada.
+// Mede individualização, sensibilidade e custo de oportunidade por edição.
+function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
+ if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática V285 inválida');
+ const board=competitiveDecisionBoardV284(d,tactic,engine,manualEquipped,opts);
+ const original=evaluate(d,tactic,manualEquipped,{
+  equippedConfirmed:opts.equippedConfirmed===true
+ });
+ const own=Object.freeze({
+  id:String(d.id||''),edition:String(d.edition||d.versao||''),
+  capture:Number(d.capture??d.numero),
+  position:board.identity.usedPosition,role:board.role
+ });
+ const skills=splitSkills(d.native_skills||d.habilidades_nativas||'');
+ const nativeProfile=contextNativeProfile(skills);
+ const hasSource=skills.length>0&&nativeProfile.unknown.length===0;
+ const variants=[
+  {key:'sem_nativas',label:'Sem habilidades nativas',isPresent:skills.length>0,
+   data:{...d,native_skills:'',habilidades_nativas:''}},
+  {key:'sem_pp',label:'Sem vetor PP',isPresent:board.evidence.training==='investimento_matematico',
+   data:{...d,recommended_levels:null,niveis:null,
+    training_provisional:true,treino_proposto_nao_validado:true}},
+  {key:'sem_estilo',label:'Sem estilo ofensivo/defensivo',isPresent:Boolean(
+   String(d.playing_style||d.attack_style||d.defence_style||d.estilo_ataque||d.estilo_defesa||'').trim()),
+   data:{...d,playing_style:'',attack_style:'',defence_style:'',
+    estilo_ataque:'',estilo_defesa:''}}
+ ];
+ const originalFive=original.recommendations.slice(0,5).map(x=>x.key);
+ const originalBoost=board.boosters[0]?.key||null;
+ const cleanList=arr=>arr.slice(0,5).map(x=>x.key);
+ const tests=Object.freeze(variants.map(variant=>{
+  if(!variant.isPresent)return Object.freeze({
+   factor:variant.key,label:variant.label,tested:false,
+   reason:'Sinal não documentado ou matematicamente indisponível; não há remoção válida para testar.',
+   changedSkills:0,changedBooster:false,unchangedPositions:null,
+   chosenMoves:Object.freeze([]),boosterBefore:originalBoost,boosterAfter:null,
+   mayChangeBuild:false
+  });
+  const evaluated=evaluate(variant.data,tactic,manualEquipped,{
+   equippedConfirmed:opts.equippedConfirmed===true
+  });
+  const after=cleanList(evaluated.recommendations);
+  const differences=[];
+  for(let i=0;i<Math.max(originalFive.length,after.length);i++){
+   if(originalFive[i]!==after[i])differences.push(Object.freeze({
+    position:i+1,before:originalFive[i]||null,after:after[i]||null
+   }));
+  }
+  const rebuilt=booster(variant.data,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
+  const next=rebuilt.primary?.nome||null;
+  return Object.freeze({
+   factor:variant.key,label:variant.label,tested:true,
+   reason:'Experimento de remoção de entrada; não mede rendimento real.',
+   changedSkills:differences.length,changedBooster:originalBoost!==next,
+   unchangedPositions:5-differences.length,
+   chosenMoves:Object.freeze(differences),boosterBefore:originalBoost,
+   boosterAfter:next,mayChangeBuild:false
+  });
+ }));
+ const rotation=Object.freeze(DOSSIER_TACTICS.map(style=>{
+  const curr=evaluate(d,style,manualEquipped,{
+   equippedConfirmed:opts.equippedConfirmed===true
+  });
+  const boost=booster(d,style,engine,opts.verifiedSlot,opts.verifiedBooster);
+  const top=curr.recommendations.slice(0,5).map(x=>x.key);
+  const topSet=new Set(top);
+  return Object.freeze({tactic:style,label:engine?.TACTIC_LABEL?.[style]||style,
+   role:curr.role,skills:Object.freeze(top),booster:boost.primary?.nome||null,
+   overlapsWithSelected:originalFive.filter(k=>topSet.has(k)).length,
+   sameOrder:top.join('|')===originalFive.join('|'),
+   mayApply:false
+  });
+ }));
+ const pairs=[];
+ for(let i=0;i<rotation.length;i++)for(let j=i+1;j<rotation.length;j++){
+  const x=rotation[i],y=rotation[j];
+  pairs.push(Object.freeze({
+   first:x.tactic,second:y.tactic,
+   sameFiveInOrder:x.skills.join('|')===y.skills.join('|'),
+   sharedFive:x.skills.filter(k=>y.skills.includes(k)).length,
+   sameBooster:x.booster===y.booster
+  }));
+ }
+ const duplicates=pairs.filter(p=>p.sameFiveInOrder).length;
+ const nativeNames=new Set(skills.map(keyFor).filter(Boolean));
+ const main=Object.freeze(board.skills.map((skill,i)=>{
+  const definition=SKILLS[skill.key]||{};
+  const next=board.skills[i+1]||board.alternativeSkills[0]||null;
+  const gap=next?Number((skill.score-next.score).toFixed(2)):null;
+  const bestFamily=skill.family;
+  const selected=rotation.filter(r=>r.skills.includes(skill.key)).map(r=>r.tactic);
+  const relevance=selected.length===5?'constante_nos_cinco_estilos':
+   selected.length>1?'comum_a_multiplos_estilos':'mais_especifica_de_estilo';
+  const nativeSignal=skill.factors.nativas||0;
+  const missingEvidence=[];
+  if(!hasSource)missingEvidence.push('nativas incompletas ou sem interpretação');
+  if(board.evidence.training!=='investimento_matematico')missingEvidence.push('treino individual não comprovado');
+  if(board.evidence.equipped!=='LISTA_CONFERIDA_NA_CONTA')missingEvidence.push('cinco slots não conferidos');
+  const competitor=next?Object.freeze({
+   key:next.key,name:next.name,difference:gap,
+   verdict:gap<3?'PRIORIDADE_PROXIMA_SEM_VENCEDOR_PROVADO':'VANTAGEM_HEURISTICA_NAO_VALIDADA'
+  }):null;
+  return Object.freeze({
+   key:skill.key,name:skill.name,family:bestFamily,rank:skill.rank,
+   role:board.role,tactic,score:skill.score,
+   explanation:definition.why||'Conferir habilidade oficial da edição.',
+   fieldTask:PLAYBOOK_ROLE[board.role]?.task||'Confirmar função.',
+   fieldSupport:PLAYBOOK_ROLE[board.role]?.support||'Confirmar apoio.',
+   fieldRisk:PLAYBOOK_ROLE[board.role]?.risk||'Não presumir sinergia.',
+   trainingSignal:skill.factors.investimento||0,nativeSignal,
+   sourceNativeCount:skills.length,nativeIdentityRecognized:nativeNames.has(skill.key),
+   familyPresentNative:skill.nativeFamilyCount>0,
+   usedInTactics:Object.freeze(selected),tacticalRelevance:relevance,
+   closeCompetitor:competitor,
+   requires:Object.freeze(missingEvidence),
+   recommendationOnly:true,neverEquippedByApp:true
+  });
+ }));
+ const boosters=Object.freeze(board.boosters.map((b,i)=>{
+  const competitor=board.boosters[i+1]||null;
+  const near=competitor&&b.score-competitor.score<2;
+  const supported=board.boosterEligibility.catalogSlot==='slot_documentado';
+  const verified=board.boosterEligibility.manualSlot==='vazio';
+  const axisList=engine?.BOOSTERS?.[b.key]||[];
+  return Object.freeze({
+   key:b.key,name:b.name,rank:b.rank,fourAxes:Object.freeze(axisList.slice()),
+   sharedWithFixed:b.fixedKnown?b.sharedWithFixed:null,
+   independentOfFixed:b.fixedKnown?4-b.sharedWithFixed:null,
+   relativeScore:b.score,
+   nextGap:competitor?Number((b.score-competitor.score).toFixed(2)):null,
+   nearAlternative:Boolean(near),
+   argument:near?'As notas próximas não distinguem o rendimento prático.':
+    'A ordem é apenas heurística; comparar os quatro atributos e a função.',
+   slotInCatalog:supported,slotEmptyInAccount:verified,
+   eligibilityForManualReview:supported&&verified,
+   unverifiedBase:b.baseStatus!=='base_completa_confirmada',
+   unverifiedTraining:b.trainingStatus!=='custo_pp_conferido',
+   maySpendTokens:false,mayApply:false
+  });
+ }));
+ const missing=[
+  ...board.pending.filter(x=>x.key!=='gameplay').map(x=>Object.freeze({
+   key:x.key,what:x.action,priority:
+    ['identidade','posicao','nativas'].includes(x.key)?'identidade':
+    ['pp','base'].includes(x.key)?'fonte':'equipamento'
+  })),
+  {key:'gameplay',what:'Validar comparação em partidas e vídeo do mesmo Card ID e edição.',
+   priority:'homologacao'}
+ ];
+ const guards=Object.freeze({
+  duplicateSkills:board.checks.skillNamesUnique,
+  identityNotFaked:board.evidence.identity==='CADASTRO_IDENTIFICADO'||
+   board.pending.some(x=>x.key==='identidade'),
+  noInventedSecondSlot:!(board.boosterEligibility.manualSlot==='vazio'&&
+    board.boosterEligibility.catalogSlot!=='slot_documentado'&&
+    boosters.some(x=>x.eligibilityForManualReview)),
+  noAutomaticTraining:board.mayModifyTraining===false,
+  noTokens:boosters.every(x=>!x.maySpendTokens),
+  noGameplayClaim:board.gameplayValidated===false,
+  noCreatorAttribution:board.creatorEndorsement===false,
+  sourceHasFiveTactics:rotation.length===5,
+  fourAxesEach:boosters.every(b=>b.fourAxes.length===4)
+ });
+ return Object.freeze({
+  schema:'CRAQUE_V285_SEGUNDA_OPINIAO_COMPETITIVA',
+  identity:own,tactic,styleLabel:engine?.TACTIC_LABEL?.[tactic]||tactic,
+  skillReasons:main,boosterReasons:boosters,
+  evidenceAblation:tests,tacticalMatrix:rotation,
+  tacticPairs:Object.freeze(pairs),
+  summary:Object.freeze({
+   sameFivePairs:duplicates,comparablePairs:pairs.length,
+   exactlySameFiveAllStyles:duplicates===10,
+   distinctSkillSets:new Set(rotation.map(x=>x.skills.join('|'))).size,
+   uniqueFirstBoosters:new Set(rotation.map(x=>x.booster).filter(Boolean)).size,
+   nativeMapped:nativeProfile.known.length,
+   nativeUnmapped:nativeProfile.unknown.length,
+   sourceNativeTotal:skills.length,
+   trainingEvidence:board.evidence.training,
+   secondSlotEvidence:board.evidence.secondBooster,
+   unsupportedClaims:false,
+   repeatedSkillsDoNotImplyBadBuild:true
+  }),
+  evidenceTasks:Object.freeze(missing.map(x=>Object.freeze(x))),
+  guards,readiness:'PARECER_CONSULTIVO_SEM_HOMOLOGACAO',
+  mayAlterOriginalBuild:false,mayEquipSkill:false,
+  maySpendTokens:false,creatorSourceVerified:false,
+  note:'Blackjhon e Rentão são padrões de rigor; este relatório não atribui uma build a eles sem verificação de vídeo e carta exatos.'
+ });
+}
 const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283,competitiveDecisionBoardV284};
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283,competitiveDecisionBoardV284,competitiveQualityLabV285};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;

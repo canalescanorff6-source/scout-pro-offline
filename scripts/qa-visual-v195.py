@@ -1533,6 +1533,28 @@ def run():
                             problems.append(f"{name}: matriz de ímpetos V284 ausente")
                         if lab284.locator('.ct284-pending > li').count()<1:
                             problems.append(f"{name}: pendências documentais V284 ausentes")
+                        # V285: testar painel único, fechado inicialmente e sem duplicação.
+                        lab285=lab284.locator('.ct285-quality-lab')
+                        if lab285.count()!=1:
+                            problems.append(f"{name}: segunda opinião V285 ausente ou duplicada")
+                        else:
+                            if lab285.evaluate('(e)=>e.open'):
+                                problems.append(f"{name}: V285 não está recolhida por padrão")
+                            lab285.locator(':scope > summary').click()
+                            if lab285.locator('.ct285-stat').count()!=4:
+                                problems.append(f"{name}: V285 não mostra os quatro indicadores")
+                            if lab285.locator('.ct285-tactic').count()!=5:
+                                problems.append(f"{name}: V285 não mostra os cinco estilos")
+                            if lab285.locator('.ct285-skill > strong').count()<1:
+                                problems.append(f"{name}: V285 sem justificativa individual de habilidade")
+                            if lab285.locator('.ct285-experiments > li').count()!=3:
+                                problems.append(f"{name}: V285 sem três ablações")
+                            if lab285.locator('.ct285-tasks > li').count()<1:
+                                problems.append(f"{name}: V285 sem pendências")
+                            if lab285.evaluate('(e)=>e.scrollWidth>e.clientWidth+6'):
+                                problems.append(f"{name}: painel V285 com overflow horizontal")
+                            page.screenshot(path=str(OUT/f"{name}_v285_segunda_opiniao.png"),
+                                full_page=False,animations="disabled")
                         page.screenshot(path=str(OUT/f"{name}_v284_laboratorio.png"),
                             full_page=False,animations="disabled")
                     if '68 / 68 PP' not in v251.inner_text():
