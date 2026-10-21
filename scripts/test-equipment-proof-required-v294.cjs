@@ -63,7 +63,7 @@ assert(count.fullReceiptsAccepted>0);
 assert.equal(count.recordMismatchesBlocked,1230);
 const primary=adapt(cards.find(c=>c.numero===1));
 assert(S.identityEvidenceV293(primary));
-const manual='Chute de primeira';
+const manual='Passe de primeira';
 const receiptSingle=receipt(primary,manual);
 const accepted=S.evaluate(primary,'posse',manual,{
  equippedConfirmed:true,equipmentRecord:receiptSingle});
@@ -73,7 +73,7 @@ assert.equal(S.evaluate(primary,'posse',manual,{
  equippedConfirmed:false,equipmentRecord:receiptSingle}).slotsRemaining,null,
  'Recibo salvo sem declaração atual não concede vaga por si');
 assert.equal(S.evaluate(primary,'posse',manual,{
- equippedConfirmed:true,equipmentRecord:receipt(primary,'Passe de primeira')}).slotsRemaining,null);
+ equippedConfirmed:true,equipmentRecord:receipt(primary,'Toque duplo')}).slotsRemaining,null);
 assert.equal(S.evaluate({...primary,native_skills:'PENDENTE - confirmar'},'posse','',{
  equippedConfirmed:true,equipmentRecord:receipt({...primary,native_skills:'PENDENTE - confirmar'})}).slotsRemaining,null);
 assert.equal(JSON.stringify(cards),snapshot);
