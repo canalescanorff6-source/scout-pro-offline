@@ -184,6 +184,14 @@ jobs:
           path: build/v289-native-inventory-proof-246x5.json
           if-no-files-found: warn
           retention-days: 30
+      - name: V290 — propostas por estilo sem vetor experimental como âncora
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-v290-baseline-pp-experimental
+          path: build/v290-training-baseline-audit.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs
