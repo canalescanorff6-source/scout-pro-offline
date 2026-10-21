@@ -9,6 +9,7 @@ V298 passou a bloquear o parecer principal de ímpetos quando o comprovante loca
 ## Alterações
 
 - Preservar `progressConflict` do parecer V298 como fonte única do alerta de orçamento.
+- Também bloquear o item `budget` do checklist V252 enquanto o comprovante local da mesma edição indicar PP diferentes, inclusive quando um nível documentado já exista no catálogo; restaurar DOCUMENTADO após reconciliação.
 - Quando o conflito é válido, exibir o aviso `ct299-pp-gate` na ficha principal e suspender a renderização dos laboratórios comparativos V283–V287. O usuário poderá reconfirmar os PP e reabrir esses módulos.
 - Continuar exibindo fichas, identidade da carta e habilidade nativa/adicional previamente cadastrada. Uma conferência V254 do inventário de habilidades **não é apagada** pelo conflito de nível/PP.
 - Habilidades funcionais permanecem apenas **consultivas** e recebem nota explícita de que não provam investimento enquanto os PP divergirem.
