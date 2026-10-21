@@ -114,7 +114,7 @@ function mount(doc){
  actions.append(clear);
  wrap.append(heading,title,introduction,selectLabel,styleLabel,actions,explanation);
  const tabs=doc.getElementById('scout-v220-tabs');
- if(tabs)tabs.insertAdjacentElement('beforebegin',wrap);
+ if(tabs)tabs.insertAdjacentElement('afterend',wrap);
  else hero.append(wrap);
  ui={wrap,select,style,explanation};
  function render(){
