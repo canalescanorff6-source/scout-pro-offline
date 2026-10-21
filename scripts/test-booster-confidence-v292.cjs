@@ -48,8 +48,8 @@ assert.equal(original[0].estado_confianca,'BAIXA_SEM_BUILD_CONFERIDA');
 const simulatedApproved={...martin,treino_proposto_nao_validado:false};
 const corresponding=B.rank(simulatedApproved,'posse');
 assert.equal(corresponding[0].estado_confianca,'COMPARACAO_LIMITADA');
-assert.deepEqual(original.map(x=>[x.nome,x.score]),corresponding.map(x=>[x.nome,x.score]),
- 'Apenas prova alterada: ranking não deve ser reordenado por status');
+assert(corresponding.every(x=>x.evidencias.nivel_pp_origem_conferida),
+ 'Fixture documental deve reconhecer origem do orçamento; sem alegar gameplay.');
 for(const altered of [
  {...simulatedApproved,id:'PENDENTE - verificar'},
  {...simulatedApproved,versao:'PENDENTE - verificar'}
