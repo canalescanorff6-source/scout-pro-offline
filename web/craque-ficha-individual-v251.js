@@ -938,9 +938,7 @@ function display(){
      const audited=S.professionalEvidenceCouncilV287(selectedData,active,B,
       evidenceByCap.get(Number(card.numero)),{
        manualEquipped:manual,equippedConfirmed:additionalEvidence,
-       equipmentRecord,
-       verifiedSlot:boosterEvidence.valid?boosterEvidence.status:null,
-       verifiedBooster:boosterEvidence.valid?boosterEvidence.equipped:null
+       equipmentRecord,boosterRecord:boostSlot
       });
      const audit287=mk('details','ct251-evidence-details ct287-evidence-council');
      audit287.dataset.confidence=audited.confidence;
