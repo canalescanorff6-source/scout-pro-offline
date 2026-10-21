@@ -1451,7 +1451,8 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
  ];
  const guards=Object.freeze({
   duplicateSkills:board.checks.skillNamesUnique,
-  exactIdentity:board.evidence.identity==='CADASTRO_IDENTIFICADO',
+  identityNotFaked:board.evidence.identity==='CADASTRO_IDENTIFICADO'||
+   board.pending.some(x=>x.key==='identidade'),
   noInventedSecondSlot:!(board.boosterEligibility.manualSlot==='vazio'&&
     board.boosterEligibility.catalogSlot!=='slot_documentado'&&
     boosters.some(x=>x.eligibilityForManualReview)),
