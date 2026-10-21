@@ -44,7 +44,7 @@ const partial=S.evaluate(fake,'posse',full);
 assert.equal(partial.equippedConfirmed,false);
 assert.equal(partial.slotsRemaining,null,'Lista não marcada como completa não comprova vagas');
 assert(partial.recommendations.length>0);
-const complete=S.evaluate(fake,'posse',full,{equippedConfirmed:true});
+const complete=S.evaluate(fake,'posse',full,{equippedConfirmed:true,equipmentRecord:proof});
 assert.equal(complete.equippedConfirmed,true);
 assert.equal(complete.alreadyEquippedProvided,5);
 assert.equal(complete.slotsRemaining,0);
@@ -70,7 +70,8 @@ assert.equal(excess.slotsRemaining,null);
 assert.equal(excess.recommendations.length,0,
  'Mais de cinco adicionais não representa espaço liberado para equipar');
 for(const mode of goal){
- const optimistic=S.evaluate(fake,mode,'',{equippedConfirmed:true});
+ const optimistic=S.evaluate(fake,mode,'',{equippedConfirmed:true,
+  equipmentRecord:{...proof,fingerprint:S.fingerprint('')}});
  assert.equal(optimistic.slotsRemaining,5);
  assert(optimistic.recommendations.length>0&&optimistic.recommendations.length<=5);
  const unknown=S.evaluate(fake,mode,'');
