@@ -165,7 +165,7 @@ function compareProposals(card,cards,style,role,levels,opts={}){
   const interpretation=I.interpret(profile,style,{});
   if(!interpretation||interpretation.role!==role)continue;
   const alternate=allocate(interpretation.weights,role,pp,
-   hasValidBuild(peer)?peer.niveis:null);
+   hasValidBuild(peer)&&peer.treino_proposto_nao_validado!==true?peer.niveis:null);
   if(!T.valid(alternate)||T.total(alternate)!==pp)continue;
   compared++;
   if(!alternate.every((value,i)=>value===levels[i]))continue;
@@ -219,6 +219,10 @@ function buildReview(card,raw,lab,all,style,opts={}){
  // do catálogo seguem intactas.
  const interpreted={...aligned,shown_position:mapped,role_used:mapped};
  const levelKnown=confirmedLevel(card)||Boolean(localProof),buildKnown=hasValidBuild(card);
+// V290: vetor matematicamente cabível não é âncora aprovada. Treinos
+// explicitamente provisórios são exibidos para comparação, mas não
+// influenciam a função de custo nem os pares hipotéticos.
+ const baselineUsable=buildKnown&&card.treino_proposto_nao_validado!==true;
  const status=levelKnown?(buildKnown?'complete':'no_build'):'no_level';
  const nativeMismatch=norm(card.habilidades_nativas)!==norm(raw.native_skills);
  const boostMismatch=norm(card.impeto_fixo)!==norm(raw.boost1);
@@ -237,11 +241,13 @@ function buildReview(card,raw,lab,all,style,opts={}){
   ' e '+localProof.pp+' PP conferidos localmente pelo usuário na edição exata. Não equivalem a atributos-base nem gameplay confirmados.');
  if(!buildKnown)
   differences.push('Sem distribuição de treino documentada; proposta matemática não equivale a ficha aprovada.');
+ if(buildKnown&&!baselineUsable)
+  differences.push('Treino cadastrado como proposta experimental: seus pontos são exibidos para comparação, mas não influenciam a otimização como referência validada.');
  if(shared.length)differences.push('Distribuição repetida em '+shared.length+' outra(s) carta(s); comparar habilidades, corpo e gameplay, sem forçar diferenciação.');
  const canDraft=levelKnown&&context&&Number.isInteger(aligned.pp);
  let proposal=null,changed=null,specificity=null;
  if(canDraft){
-  const levels=allocate(context.weights,context.role,aligned.pp,buildKnown?card.niveis:null);
+  const levels=allocate(context.weights,context.role,aligned.pp,baselineUsable?card.niveis:null);
   if(levels&&T.total(levels)===aligned.pp){
    const diffs=buildKnown?levels.map((n,i)=>({
     name:T.CATEGORIES[i],before:card.niveis[i],after:n,delta:n-card.niveis[i]
@@ -249,6 +255,8 @@ function buildReview(card,raw,lab,all,style,opts={}){
    specificity=compareProposals(card,all,style,context.role,levels,opts);
    proposal={
     levels,spent:aligned.pp,style,role:context.role,
+    baselineUsable,baselineStatus:baselineUsable?'vetor_registrado_nao_provisorio':
+     buildKnown?'vetor_experimental_ignorado':'sem_vetor_de_referencia',
     source:'hipotese_matematica_v251_sem_status_finais',
     note:'Distribuição consultiva por função, estilo e habilidades documentais. NÃO validada por Rentão, Blackjhon ou partidas.',
     differsFromRegistered:buildKnown?diffs.length>0:null
