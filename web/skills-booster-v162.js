@@ -1629,27 +1629,29 @@ function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
 // Registros válidos são declarações do usuário no dispositivo, não prova de jogo.
 function verifiedRecommendationContextV288(card,proof={}){
  const manual=typeof proof.manualEquipped==='string'?proof.manualEquipped:'';
- const equipmentValid=checkedEquipment(card,manual,proof.equipmentRecord||null);
+ const cap=Number(card.capture??card.numero),id=String(card.id||''),
+  edition=String(card.edition||card.versao||'');
+ const identityValid=Number.isInteger(cap)&&cap>0&&id.trim()&&edition.trim()&&
+  !/pendente|confirmar|invalid|desconhecid/i.test(id+' '+edition);
+ const equipmentValid=Boolean(identityValid&&
+  checkedEquipment(card,manual,proof.equipmentRecord||null));
  const booster=boosterRecordEvidence(card,proof.boosterRecord||null);
  const equipped=equipmentValid?splitSkills(manual):[];
- const boosterStatus=booster.valid?booster.status:null;
+ const boosterStatus=identityValid&&booster.valid?booster.status:null;
  const options=Object.freeze({
   equippedConfirmed:equipmentValid,
   verifiedSlot:boosterStatus,
-  verifiedBooster:booster.valid?booster.equipped:null
+  verifiedBooster:identityValid&&booster.valid?booster.equipped:null
  });
  const remaining=equipmentValid?Math.max(0,5-equipped.length):null;
  return Object.freeze({
   schema:'CRAQUE_V288_CONTEXTO_CONFERENCIA',
-  identity:Object.freeze({
-   capture:Number(card.capture??card.numero),cardId:String(card.id||''),
-   edition:String(card.edition||card.versao||'')
-  }),
+  identity:Object.freeze({capture:cap,cardId:id,edition,valid:Boolean(identityValid)}),
   manualEquipped:manual,options,
   skills:Object.freeze({
    confirmed:equipmentValid,occupied:equipmentValid?equipped.length:null,
    remaining,recordPresent:Boolean(proof.equipmentRecord),
-   reason:equipmentValid?
+   reason:!identityValid?'Card ID ou edição pendentes: não homologar slots.':equipmentValid?
     'Declaração local com vínculo CAP, Card ID, edição, lista e nativas.':
     proof.equipmentRecord?
     'Registro de habilidade incompatível, legado ou sem confirmação da edição atual.':
@@ -1657,11 +1659,12 @@ function verifiedRecommendationContextV288(card,proof={}){
    mayApply:false
   }),
   booster:Object.freeze({
-   valid:booster.valid,status:boosterStatus,
+   valid:Boolean(identityValid&&booster.valid),status:boosterStatus,
    catalogSlotNotImplied:true,
    legacy:booster.legacy,
    maySpendTokens:false,
-   reason:booster.reason
+   reason:identityValid?booster.reason:
+    'Identidade da edição pendente: comprovante não libera o slot.'
   }),
   noGameplayConfirmation:true,noAutomaticApplication:true
  });
