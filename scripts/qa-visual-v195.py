@@ -1540,7 +1540,7 @@ def run():
                         else:
                             if lab285.evaluate('(e)=>e.open'):
                                 problems.append(f"{name}: V285 não está recolhida por padrão")
-                            lab285.locator('> summary').click()
+                            lab285.locator(':scope > summary').click()
                             if lab285.locator('.ct285-stat').count()!=4:
                                 problems.append(f"{name}: V285 não mostra os quatro indicadores")
                             if lab285.locator('.ct285-tactic').count()!=5:
