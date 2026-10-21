@@ -149,7 +149,7 @@ function allocate(weights,role,pp,baseline){
  * A fronteira é somente dos candidatos gerados por até seis perfis. Não é
  * busca exaustiva nem prova de que um treino seja melhor em partidas.
  */
-function trainingFrontier(weights,role,pp,baseline){
+function trainingFrontier(weights,role,pp,baseline,options={}){
  const pending=reason=>Object.freeze({status:'PENDENTE',budgetStatus:'PENDENTE',
   reason,candidates:Object.freeze([]),axes:Object.freeze([]),exhaustive:false,
   mayApply:false,gameplayValidated:false});
@@ -170,7 +170,8 @@ function trainingFrontier(weights,role,pp,baseline){
   {key:'duelos',label:'Jogo aéreo e defesa',indices:[5,6]}
  ];
  const axes=definitions.filter(a=>a.indices.some(i=>weights[i]>0));
- const baselineStatus=!T.valid(baseline)?'nao_documentado':T.total(baseline)!==pp?
+ const baselineStatus=options.baselineProvisional===true?'treino_experimental_sem_validacao':
+  !T.valid(baseline)?'nao_documentado':T.total(baseline)!==pp?
   'orcamento_divergente':baseline.some((n,i)=>n>0&&!allowed.includes(i))?
   'categorias_fora_do_modelo':'compativel';
  const registered=baselineStatus==='compativel'?baseline:null;
@@ -254,12 +255,12 @@ function compareProposals(card,cards,style,role,levels,opts={}){
    boost1:peer.impeto_fixo,boost2:peer.impeto_extra,
    pp:Number(peer.pp),pp_estimated:peer.pp_estimado===true,
    base_stats_known:peer.base_stats_known===true,
-   recommended_levels:hasValidBuild(peer)?peer.niveis:null
+   recommended_levels:hasValidBuild(peer)&&peer.treino_proposto_nao_validado!==true?peer.niveis:null
   };
   const interpretation=I.interpret(profile,style,{});
   if(!interpretation||interpretation.role!==role)continue;
   const alternate=allocate(interpretation.weights,role,pp,
-   hasValidBuild(peer)?peer.niveis:null);
+   hasValidBuild(peer)&&peer.treino_proposto_nao_validado!==true?peer.niveis:null);
   if(!T.valid(alternate)||T.total(alternate)!==pp)continue;
   compared++;
   if(!alternate.every((value,i)=>value===levels[i]))continue;
@@ -313,6 +314,9 @@ function buildReview(card,raw,lab,all,style,opts={}){
  // do catálogo seguem intactas.
  const interpreted={...aligned,shown_position:mapped,role_used:mapped};
  const levelKnown=confirmedLevel(card)||Boolean(localProof),buildKnown=hasValidBuild(card);
+ // V291: uma distribuição experimental pode ser comparada, mas jamais
+ // orientar a função de otimização como se fosse uma build aprovada.
+ const baselineUsable=buildKnown&&card.treino_proposto_nao_validado!==true;
  const status=levelKnown?(buildKnown?'complete':'no_build'):'no_level';
  const nativeMismatch=norm(card.habilidades_nativas)!==norm(raw.native_skills);
  const boostMismatch=norm(card.impeto_fixo)!==norm(raw.boost1);
@@ -331,11 +335,13 @@ function buildReview(card,raw,lab,all,style,opts={}){
   ' e '+localProof.pp+' PP conferidos localmente pelo usuário na edição exata. Não equivalem a atributos-base nem gameplay confirmados.');
  if(!buildKnown)
   differences.push('Sem distribuição de treino documentada; proposta matemática não equivale a ficha aprovada.');
+ if(buildKnown&&!baselineUsable)
+  differences.push('Treino experimental cadastrado: comparação permitida, mas vetor provisório não ancora a otimização.');
  if(shared.length)differences.push('Distribuição repetida em '+shared.length+' outra(s) carta(s); comparar habilidades, corpo e gameplay, sem forçar diferenciação.');
  const canDraft=levelKnown&&context&&Number.isInteger(aligned.pp);
  let proposal=null,changed=null,specificity=null;
  if(canDraft){
-  const levels=allocate(context.weights,context.role,aligned.pp,buildKnown?card.niveis:null);
+  const levels=allocate(context.weights,context.role,aligned.pp,baselineUsable?card.niveis:null);
   if(levels&&T.total(levels)===aligned.pp){
    const diffs=buildKnown?levels.map((n,i)=>({
     name:T.CATEGORIES[i],before:card.niveis[i],after:n,delta:n-card.niveis[i]
@@ -343,6 +349,8 @@ function buildReview(card,raw,lab,all,style,opts={}){
    specificity=compareProposals(card,all,style,context.role,levels,opts);
    proposal={
     levels,spent:aligned.pp,style,role:context.role,
+    baselineUsable,baselineStatus:baselineUsable?'vetor_registrado_nao_provisorio':
+     buildKnown?'vetor_experimental_ignorado':'sem_vetor_de_referencia',
     source:'hipotese_matematica_v251_sem_status_finais',
     note:'Distribuição consultiva por função, estilo e habilidades documentais. NÃO validada por Rentão, Blackjhon ou partidas.',
     differsFromRegistered:buildKnown?diffs.length>0:null
@@ -357,6 +365,7 @@ function buildReview(card,raw,lab,all,style,opts={}){
   capture:aligned.capture,card_id:aligned.id,style,role:context?.role||roleOf(card),
   pp:aligned.pp,level:levelKnown?(localProof?.level??card.max_level):null,
   original:buildKnown?card.niveis.slice():null,
+  trainingProvisional:card.treino_proposto_nao_validado===true,
   tacticLabel:T.styleFor(style)?.label,context,
   nativeSkills:String(card.habilidades_nativas||'').split(';').map(s=>s.trim()).filter(Boolean),
   boosterFixed:card.impeto_fixo,boosterExtra:card.impeto_extra,
@@ -613,13 +622,16 @@ function trainingComparison(check,source){
    details.append(mk('p','ct251-warning',
     'Comparação desta edição pendente: confirme o Card ID e a versão exatos antes de gerar alternativas.'));return;
   }
-  const result=trainingFrontier(check.context?.weights,check.role,check.pp,check.original);
+  const result=trainingFrontier(check.context?.weights,check.role,check.pp,check.original,
+   {baselineProvisional:check.trainingProvisional===true});
   if(result.status==='PENDENTE'){
    details.append(mk('p','ct251-warning',result.reason));return;
   }
   const content=mk('div','ct289-comparison-content');
   content.append(mk('p','ct289-comparison-note',
-   'CALCULADO · custo de PP. ESTIMADO · adequação à função. '+result.warning));
+   'CALCULADO · custo de PP. ESTIMADO · adequação à função. '+
+   (check.trainingProvisional?'Treino cadastrado ainda experimental: não usado como âncora nem como proposta registrada aprovada. ':'')+
+   result.warning));
   const label=mk('label','ct289-comparison-label','Distribuição em comparação');
   const select=mk('select','ct289-candidate-select');select.id='ct289-candidate-select';
   for(const candidate of result.candidates){
