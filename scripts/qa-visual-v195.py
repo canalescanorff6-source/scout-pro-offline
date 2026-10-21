@@ -525,6 +525,31 @@ def run():
                     document.querySelector('#scout-v208-training tbody tr .scout-v208-level').textContent.trim()==='10'
                 """,timeout=10000)
 
+                # V302: técnicos por versão com troca real de estilo e Overload pendente.
+                manager=page.locator('#ct-manager-v302')
+                manager.wait_for(state='attached',timeout=20000)
+                if manager.evaluate('(e)=>e.open'):
+                    problems.append(f"{name}: painel V302 deveria iniciar recolhido sem técnico escolhido")
+                manager.locator('summary').click()
+                page.locator('#ct-manager-select').select_option('CT-MGR-001')
+                page.wait_for_function("""() =>
+                    document.querySelector('#ct-manager-style')?.value==='rapido' &&
+                    document.querySelector('#scout-v220-tabs [data-tactic="rapido"]')?.getAttribute('aria-pressed')==='true'
+                """,timeout=12000)
+                if 'Jürgen Klopp' not in page.locator('#ct-manager-details').inner_text():
+                    problems.append(f"{name}: técnico V302 não exibiu versão exata")
+                page.locator('#ct-manager-style').select_option('overload')
+                page.wait_for_function("""() =>
+                    document.querySelector('#ct-manager-details')?.textContent.includes('motor de PP') &&
+                    document.querySelector('#scout-v220-tabs [data-tactic="rapido"]')?.getAttribute('aria-pressed')==='true'
+                """,timeout=12000)
+                page.screenshot(path=str(OUT / f"{name}_v302_manager_selection.png"),full_page=False,animations="disabled")
+                page.locator('#ct-manager-style').select_option('posse')
+                page.wait_for_function("""() =>
+                    document.querySelector('#scout-v220-tabs [data-tactic="posse"]')?.getAttribute('aria-pressed')==='true'
+                """,timeout=12000)
+                manager.locator('.ct-manager-actions button').click()
+                manager.locator('summary').click()
                 # V220: uma ficha principal para os CINCO estilos, sem segunda ficha concorrente.
                 main_tabs=page.locator('#scout-v220-tabs button[data-tactic]')
                 if main_tabs.count()!=5:
