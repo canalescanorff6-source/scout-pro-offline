@@ -1728,6 +1728,14 @@ def run():
                         problems.append(f"{name}: V252 manteve editor habilitado com PP 52 vs 50")
                     if 'PP DIVERGENTES' not in martinelli_v251.inner_text():
                         problems.append(f"{name}: V252 não informou a divergência de PP da edição")
+                    # V299: o checklist documental também deve suspender a prova
+                    # de nível/PP; quando a divergência é desfeita, recupera.
+                    budget_pending=page.locator('#ct251-individual-ficha .ct251-proof-list li').filter(
+                        has_text='Nível máximo e PP comprovados pelo usuário')
+                    if (budget_pending.count()!=1 or
+                        budget_pending.get_attribute('data-proof')!='pending' or
+                        'PP DIVERGENTES' not in (budget_pending.text_content() or '')):
+                        problems.append(f"{name}: V299 marcou PP divergentes como orçamento DOCUMENTADO")
                     # V299: PP divergentes suspendem todos os laboratórios
                     # V283–V287, não apenas o parecer primário V298.
                     pp_guard=page.locator('#ct251-individual-ficha .ct299-pp-gate')
@@ -1753,6 +1761,10 @@ def run():
                         problems.append(f"{name}: V252 não recuperou o treino após desfazer PP divergente")
                     if page.locator('#ct251-individual-ficha .ct299-pp-gate').count():
                         problems.append(f"{name}: V299 não removeu o aviso após desfazer conflito de PP")
+                    budget_reconciled=page.locator('#ct251-individual-ficha .ct251-proof-list li').filter(
+                        has_text='Nível máximo e PP comprovados pelo usuário')
+                    if budget_reconciled.count()!=1 or budget_reconciled.get_attribute('data-proof')!='documented':
+                        problems.append(f"{name}: V299 não restaurou a prova de nível/PP do Martinelli após reconciliação")
                     if not page.locator('#ct251-individual-ficha .ct284-decision-lab').count():
                         problems.append(f"{name}: V299 não reativou os laboratórios após reconciliação dos PP")
                     result['ficha_individual_v251']={'tested':True,'levels':68,
