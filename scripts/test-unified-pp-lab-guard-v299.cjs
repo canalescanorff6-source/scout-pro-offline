@@ -5,6 +5,8 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const root=path.resolve(__dirname,'..');
 const original=fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8');
 const cards=JSON.parse(original).cards;
+const evidenceRows=JSON.parse(fs.readFileSync(path.join(root,'web/SCOUT_V221_EVIDENCE_INDEX.json'),'utf8')).cards;
+const evidenceByCap=new Map(evidenceRows.map(row=>[Number(row.numero),row]));
 const F=require('../web/craque-ficha-individual-v251.js');
 const T=require('../web/scout-multitactic-engine-v220.js');
 const S=require('../web/skills-booster-v162.js');
@@ -24,6 +26,16 @@ for(const c of cards){
  const record=makeRecord(c,level);
  assert.notEqual(record.pp,c.pp);
  const obsolete={...record};delete obsolete.edition;
+ const saved={getItem:k=>k===key(c)?JSON.stringify(record):null};
+ const conflictProof=F.proofChecklist(c,evidenceByCap.get(c.numero),{},saved);
+ const conflictBudget=conflictProof.checks.find(x=>x.id==='budget');
+ assert.equal(conflictBudget.documented,false,'Conflito não pode ser DOCUMENTADO no checklist #'+c.numero);
+ assert(conflictBudget.note.includes('PP DIVERGENTES'));
+ const agreeLevel=expectedLevel;
+ const agreed={getItem:k=>k===key(c)?JSON.stringify(makeRecord(c,agreeLevel)):null};
+ const agreedBudget=F.proofChecklist(c,evidenceByCap.get(c.numero),{},agreed)
+  .checks.find(x=>x.id==='budget');
+ assert.equal(agreedBudget.documented,true,'Confirmar PP equivalentes libera a prova documental #'+c.numero);
  for(const tactic of T.STYLES){
   const conflicted=F.methodologyGate(c,proof,tactic.id,{
    getItem:k=>k===key(c)?JSON.stringify(record):null
@@ -72,7 +84,8 @@ assert.equal(fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf
 fs.mkdirSync(path.join(root,'build'),{recursive:true});
 fs.writeFileSync(path.join(root,'build/v299-unified-pp-lab-guard.json'),JSON.stringify({
  schema:'CRAQUE_V299_UNIFIED_PP_LAB_GUARD',cards:246,tactics:5,
- conflicts:blocked,legacyReceiptsIgnored:staleIgnored,secondaryLabsSuspendedOnConflict:true,
+ conflicts:blocked,legacyReceiptsIgnored:staleIgnored,budgetsSuppressedOnConflict:246,
+ secondaryLabsSuspendedOnConflict:true,
  equipmentEvidencePreserved:true,dataMutated:false,gameplayValidated:false
 },null,2)+'\n');
 console.log('V299 PASS: '+blocked+' conflitos, '+staleIgnored+
