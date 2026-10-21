@@ -1012,7 +1012,10 @@ function display(){
       skills.append(item);
      }
      if(!audited.skillCouncil.length)
-      skills.append(mk('li','','Nenhuma skill nova autorizada por dados suficientes.'));
+      skills.append(mk('li','',
+       verifiedContext?.skills.confirmed&&verifiedContext.skills.remaining===0?
+       'Os cinco slots adicionais da conta estão ocupados; nenhuma vaga informada.':
+       'Sem sugestão adicional elegível; não preencher slots com habilidades inventadas.'));
      audit287.append(skills);
      audit287.append(mk('h5','','Ímpetos · eixos por função, fixo e sensibilidade'));
      const boostList=mk('ol','ct287-booster-council');
