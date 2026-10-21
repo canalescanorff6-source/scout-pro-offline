@@ -428,6 +428,18 @@ jobs:
 
           grep -Fq "package: name='br.com.scoutpro.offline' versionCode='${{ github.run_number }}' versionName='1.1.${{ github.run_number }}'" /tmp/scout-apk-badging.txt
           echo "Pacote oficial legível por aapt: identificador e versão confirmados."
+          # V297: também no modo legacy, a assinatura deve corresponder ao
+          # certificado fixo da instalação oficial. Chave diferente BLOQUEIA
+          # ambas as publicações, mesmo se o APK for sintaticamente válido.
+          APKSIGNER="$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)"
+          test -x "$APKSIGNER"
+          ACTUAL_CERT="$("$APKSIGNER" verify --print-certs "$APK" | awk -F': ' '/^Signer #1 certificate SHA-256 digest:/{print $2; exit}' | tr '[:upper:]' '[:lower:]' | tr -d ':')"
+          EXPECTED_CERT='818a2b4144234810b9e6e68bddb1ccb1cf9f3b6636dcc0adc31536a4fec02c04'
+          if [[ -z "$ACTUAL_CERT" || "$ACTUAL_CERT" != "$EXPECTED_CERT" ]]; then
+            echo 'ERRO: certificado Android diferente da identidade oficial fixa. Nenhuma release será publicada.' >&2
+            exit 1
+          fi
+          echo "APK assinado com certificado oficial fixo V99."
       - name: Arquivar APK de teste
         uses: actions/upload-artifact@v4
         with:
@@ -448,9 +460,12 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+  # V297: uma única publicação conjunta. Se faltar assinatura oficial Android,
+  # não lançar Windows isolado e deixar o atualizador Android sem equivalente.
   release:
-    name: Publicar atualização Windows após CI GREEN
+    name: Publicar Android e Windows somente com ambos oficiais
     needs: [validate, windows, android]
+    if: ${{ github.ref == 'refs/heads/main' && needs.android.outputs.signed == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -463,6 +478,10 @@ jobs:
         with:
           name: scout-pro-android-teste
           path: android-verify
+      - uses: actions/download-artifact@v4
+        with:
+          name: scout-pro-android-assinado
+          path: assets
       - name: Garantir a mesma interface no Android e no Windows
         shell: bash
         run: |
@@ -482,15 +501,19 @@ jobs:
               raise SystemExit('PARIDADE INVALIDA: commit de origem nao corresponde ao build.')
           print('PARIDADE CONFIRMADA: Windows e Android sao',windows['version'],windows['git_revision'][:12],windows['bundle_fingerprint'])
           PY
-      - name: Verificar instalador e manifesto de atualização Windows
+      - name: Conferir os dois pacotes antes de publicar
         shell: bash
         run: |
           set -euo pipefail
           test -s assets/latest.yml
           test "$(find assets -maxdepth 1 -name 'ScoutPRO-Setup-*.exe' -type f | wc -l)" -eq 1
           grep -q "version: 1.1.${{ github.run_number }}" assets/latest.yml
+          test -s assets/ScoutPRO-Android.apk
+          test -s assets/ScoutPRO-Android.apk.sha256
+          (cd assets && sha256sum -c ScoutPRO-Android.apk.sha256)
+          test -s android-verify/scout-build-info.json
           ls -lh assets
-      - name: Publicar Windows para atualização automática
+      - name: Publicar atualização conjunta Android e Windows
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.1.${{ github.run_number }}
@@ -501,34 +524,6 @@ jobs:
             assets/ScoutPRO-Setup-*.exe
             assets/*.blockmap
             assets/latest.yml
-          fail_on_unmatched_files: true
-
-  release_android:
-    name: Anexar APK oficial somente com assinatura permanente
-    needs: [validate, windows, android, release]
-    if: ${{ needs.android.outputs.signed == 'true' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: scout-pro-android-assinado
-          path: assets
-      - name: Verificar o APK assinado
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -s assets/ScoutPRO-Android.apk
-          test -s assets/ScoutPRO-Android.apk.sha256
-          cd assets
-          sha256sum -c ScoutPRO-Android.apk.sha256
-      - name: Adicionar APK oficial à mesma versão publicada
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v1.1.${{ github.run_number }}
-          make_latest: true
-          files: |
             assets/ScoutPRO-Android.apk
             assets/ScoutPRO-Android.apk.sha256
           fail_on_unmatched_files: true
