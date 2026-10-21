@@ -1280,6 +1280,35 @@ def run():
                 # V227: acervos de outras pessoas isolados, sem tocar as 246 cartas oficiais.
                 page.goto(URL + "/outros-elencos-v227.html", wait_until="domcontentloaded", timeout=35000)
                 page.locator("#friend-person-name").wait_for(timeout=12000)
+                # V304: coleção Bruno Santos CD criada uma única vez, com
+                # Zico 106 SA e dados pendentes. Nunca tocar nas 246 próprias.
+                if page.locator("#bruno-featured").count()!=1 or (
+                    page.locator("#friend-people .friends-person").count()!=1):
+                    problems.append(f"{name}: V304 coleção Bruno não apareceu em Outros Elencos")
+                page.locator("#bruno-open-collection").click()
+                page.locator("#friend-cards .friends-card").first.wait_for(timeout=15000)
+                cover_valid=page.locator("#bruno-featured-card-art").evaluate(
+                    "(e)=>e.complete && e.naturalWidth>0")
+                if not cover_valid:
+                    problems.append(f"{name}: V304 imagem enviada da carta Zico não renderizou")
+                first=page.locator("#friend-cards .friends-card").first.inner_text()
+                if ("Zico" not in first or "106 SA" not in first or
+                    "Armador criativo" not in first):
+                    problems.append(f"{name}: V304 Zico 106 SA ausente do Bruno")
+                recorded=page.evaluate("""() => {
+                  const coll=JSON.parse(localStorage.getItem('scoutpro:v227:friends-collections'));
+                  const owner=coll.owners.find(x=>x.name==='Bruno Santos CD');
+                  const c=coll.cards.find(x=>x.ownerId===owner?.id && x.name==='Zico');
+                  return {id:c?.cardId,pp:c?.pp,level:c?.level,position:c?.position,
+                    image:c?.image?.startsWith('data:image/jpeg;base64,'),
+                    teams:coll.owners.length,cards:coll.cards.length}
+                }""")
+                if recorded!={'id':'','pp':None,'level':None,'position':'SA',
+                    'image':True,'teams':1,'cards':1}:
+                    problems.append(f"{name}: V304 inventou dados ou falhou ao guardar Zico: {recorded}")
+                page.reload(wait_until="domcontentloaded")
+                if page.locator("#friend-people .friends-person").count()!=1:
+                    problems.append(f"{name}: V304 duplicou Bruno ao recarregar")
                 page.locator("#friend-person-name").fill("Acervo da Ana")
                 page.locator("#friend-person-form button[type=submit]").click()
                 page.locator("#friend-new-card").click()
@@ -1349,7 +1378,7 @@ def run():
                 page.locator("#friend-dialog-save").click()
                 if page.locator("#friend-cards .friends-card").count()!=1:
                     problems.append(f"{name}: V227 Bruno não conseguiu ter sua própria carta Messi")
-                page.locator("#friend-people .friends-person").first.click()
+                page.locator("#friend-people .friends-person").filter(has_text="Acervo da Ana").click()
                 card_text=page.locator("#friend-cards .friends-card").first.inner_text()
                 if "Épico de Ana" not in card_text or "Show Time de Bruno" in card_text:
                     problems.append(f"{name}: V227 acervos misturados ao voltar para Ana")
@@ -1365,8 +1394,8 @@ def run():
                     page.locator("#scout-backup-modal").wait_for(state='visible',timeout=12000)
                     page.locator("#scout-close").click()
                 page.reload(wait_until="domcontentloaded")
-                if page.locator("#friend-people .friends-person").count()!=2:
-                    problems.append(f"{name}: V227 coleções desapareceram após recarregar")
+                if page.locator("#friend-people .friends-person").count()!=3:
+                    problems.append(f"{name}: V227/V304 coleções desapareceram após recarregar")
                 stored_guests=page.evaluate("""() => {
                   const v=JSON.parse(localStorage.getItem('scoutpro:v227:friends-collections')||'null');
                   return {owners:v?.owners?.length||0,cards:v?.cards?.length||0,
@@ -1374,7 +1403,7 @@ def run():
                    horizontalOverflow:document.documentElement.scrollWidth-innerWidth}
                 }""")
                 result['friends_v227']=stored_guests
-                if stored_guests['owners']!=2 or stored_guests['cards']!=2 or stored_guests['horizontalOverflow']>8:
+                if stored_guests['owners']!=3 or stored_guests['cards']!=3 or stored_guests['horizontalOverflow']>8:
                     problems.append(f"{name}: V227 isolamento/persistência/layout falhou {stored_guests}")
                 page.screenshot(path=str(OUT / f"{name}_friends_v227.png"),full_page=False,animations="disabled")
                 if errors:
