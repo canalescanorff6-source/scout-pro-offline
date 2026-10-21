@@ -2440,10 +2440,20 @@ section.querySelectorAll('[data-tactic]').forEach(b=>b.addEventListener('click',
 section.querySelector('#v162-save').addEventListener('click',()=>{
  const proposedText=ta.value.trim().slice(0,700);
  const requested=verifiedCheck.checked;
- const precheck=evaluate(d,tactic,proposedText,{equippedConfirmed:true});
- if(requested&&precheck.requiresReconciliation){
+ // V294: antes de salvar, validar a LISTA em modo de pré-conferência.
+ // Só depois construir e verificar o recibo V254. Exigir recibo anterior
+ // aqui impediria o usuário de confirmar pela primeira vez.
+ const precheck=evaluate(d,tactic,proposedText,{equippedConfirmed:false});
+ const pendingReceipt={schema:'CRAQUE_ADDITIONAL_V254',capture:Number(d.capture),
+  card_id:String(d.id),edition:String(d.edition||d.versao||''),
+  confirmed:true,fingerprint:fingerprint(proposedText),
+  nativeFingerprint:fingerprint(d.native_skills||d.habilidades_nativas||''),
+  confirmed_at:new Date().toISOString()};
+ const canConfirm=checkedEquipment(d,proposedText,pendingReceipt);
+ if(requested&&(precheck.requiresReconciliation||!canConfirm)){
   section.querySelector('#v162-feedback').textContent=
-   'CONFERÊNCIA NÃO SALVA: '+precheck.missing.join(' ');
+   'CONFERÊNCIA NÃO SALVA: '+(precheck.missing.join(' ')||
+    'CAP, Card ID, edição, nativas ou lista incompatíveis. Reconfira no jogo.');
   verifiedCheck.checked=false;
   return;
  }
@@ -2452,15 +2462,8 @@ section.querySelector('#v162-save').addEventListener('click',()=>{
   // A impressão digital vincula a confirmação à lista e à edição.
   // Falha entre os writes invalida a marca antiga pelo fingerprint.
   localStorage.setItem(storage,proposedText);
-  if(requested){
-   localStorage.setItem(verifyKey,JSON.stringify({
-    schema:'CRAQUE_ADDITIONAL_V254',capture:Number(d.capture),
-    card_id:String(d.id),edition:String(d.edition||d.versao||''),
-    confirmed:true,fingerprint:fingerprint(proposedText),
-    nativeFingerprint:fingerprint(d.native_skills||d.habilidades_nativas||''),
-    confirmed_at:new Date().toISOString()
-   }));
-  }else localStorage.removeItem(verifyKey);
+  if(requested)localStorage.setItem(verifyKey,JSON.stringify(pendingReceipt));
+  else localStorage.removeItem(verifyKey);
   extra=proposedText;saved=true;
   section.querySelector('#v162-feedback').textContent=requested?
    'Lista completa confirmada nesta edição. Vagas disponíveis recalculadas.':
