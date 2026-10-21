@@ -773,6 +773,83 @@ function display(){
    readiness.append(mk('li','',gap.action));
   panel.append(readiness);
   panel.append(mk('small','','Sem indicação de autoria, aprovação de criador, atributos finais ou gameplay comprovado.'));
+  // V285: segunda opinião recolhível dentro da mesma ficha.
+  if(typeof S?.competitiveQualityLabV285==='function'){
+   const review=S.competitiveQualityLabV285(selectedData,active,B,'',{
+    roleConfirmed:check.positionUsed===card.posicao||check.roleApproved===true
+   });
+   const lab285=mk('details','ct251-evidence-details ct285-quality-lab');
+   lab285.append(mk('summary','','V285 · Segunda opinião competitiva · cinco estilos'));
+   lab285.append(mk('p','ct285-subtitle',
+    'Comparação de prioridades por edição; não muda a ficha principal nem homologa resultados.'));
+   const stats=mk('div','ct285-stat-grid');
+   for(const pair of [
+    [review.summary.distinctSkillSets+'/5','Conjuntos de cinco habilidades'],
+    [review.summary.sameFivePairs+'/10','Pares de táticas com ordem idêntica'],
+    [review.summary.uniqueFirstBoosters,'Ímpetos líderes diferentes'],
+    [review.summary.nativeMapped+'/'+review.summary.sourceNativeTotal,'Nativas interpretadas/cadastradas']]){
+    const stat=mk('div','ct285-stat');
+    stat.append(mk('strong','',String(pair[0])),mk('span','',pair[1]));stats.append(stat);
+   }
+   lab285.append(stats);
+   if(review.summary.exactlySameFiveAllStyles)
+    lab285.append(mk('p','ct251-warning',
+     'Top cinco idêntico nos cinco estilos: isso exige comparação individual, mas não prova uma ficha ruim.'));
+   lab285.append(mk('h4','','01 · Cinco habilidades explicadas para o campo'));
+   const reasons=mk('ol','ct285-skill-reasons');
+   for(const s of review.skillReasons){
+    const li=mk('li','ct285-skill');
+    li.append(mk('strong','',s.rank+' · '+s.name));
+    li.append(mk('p','',s.explanation+' Função: '+s.fieldTask+' Apoio: '+s.fieldSupport));
+    li.append(mk('small','','Risco: '+s.fieldRisk+
+     ' · presente em '+s.usedInTactics.length+'/5 estilos'+
+     (s.familyPresentNative?' · há nativa da mesma família':'')+
+     (s.closeCompetitor?' · concorrente '+s.closeCompetitor.name+
+       ', diferença relativa '+s.closeCompetitor.difference:'')+'.'));
+    reasons.append(li);
+   }
+   if(!reasons.children.length)reasons.append(mk('li','','Sem candidatas verificáveis.'));
+   lab285.append(reasons);
+   lab285.append(mk('h4','','02 · Robustez ao retirar sinais da carta'));
+   const experiments=mk('ul','ct285-experiments');
+   for(const x of review.evidenceAblation)
+    experiments.append(mk('li','',x.label+': '+
+     (x.tested?x.changedSkills+' posições das cinco habilidades mudaram; '+
+      (x.changedBooster?'ímpeto líder mudou.':'ímpeto líder não mudou.'):
+      'sem sinal documentado para retirar.')+' '+x.reason));
+   lab285.append(experiments);
+   lab285.append(mk('h4','','03 · Matriz das cinco estratégias'));
+   const tactics=mk('div','ct285-tactics');
+   for(const item of review.tacticalMatrix){
+    const entry=mk('div','ct285-tactic');entry.dataset.tactic=item.tactic;
+    entry.append(mk('strong','',item.label+(item.tactic===active?' · ativa':'')));
+    entry.append(mk('p','',item.skills.map(k=>S.SKILLS[k]?.name||k).join(' · ')||'Nenhuma'));
+    entry.append(mk('small','',
+     'Ímpeto: '+(B?.PTBR?.[item.booster]||item.booster||'indisponível')+
+     ' · '+item.overlapsWithSelected+'/5 habilidades compartilhadas.'));
+    tactics.append(entry);
+   }
+   lab285.append(tactics);
+   lab285.append(mk('h4','','04 · Ímpetos: quatro atributos, fixo e elegibilidade'));
+   const boosters=mk('ol','ct285-boosters');
+   for(const b of review.boosterReasons)
+    boosters.append(mk('li','',b.name+' · '+b.fourAxes.join(', ')+'. '+
+     b.argument+(b.sharedWithFixed===null?
+     ' Fixo ainda não identificado.':' Compartilha '+b.sharedWithFixed+
+     ' dos quatro atributos com o fixo.')+
+     (b.eligibilityForManualReview?' Slot registrado no catálogo e vazio na conta.':
+      ' Slot não comprovado; não gastar tokens.')));
+   if(!boosters.children.length)boosters.append(mk('li','','Sem candidato confirmado.'));
+   lab285.append(boosters);
+   lab285.append(mk('h4','','05 · Pendências para uma homologação competitiva'));
+   const gaps=mk('ol','ct285-tasks');
+   for(const item of review.evidenceTasks)gaps.append(mk('li','',item.what));
+   lab285.append(gaps);
+   lab285.append(mk('p','ct251-caution',
+    'Parecer sem validação em jogo. Referências a Rentão e Blackjhon indicam rigor metodológico, '+
+    'não autoria ou aprovação de qualquer build desta edição.'));
+   panel.append(lab285);
+  }
   block.append(panel);
  }
  if(check.related.length){
