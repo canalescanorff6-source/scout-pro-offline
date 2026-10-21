@@ -942,6 +942,14 @@ function display(){
      'estado declarado: '+verifiedContext.booster.status:
      'sem conferência válida da edição')+
     '. Nenhuma habilidade ou ímpeto é aplicado automaticamente.'));
+   // V293: mostrar o motivo detalhado da reconciliação, e não apenas
+   // "pendente". O alerta não modifica a declaração salva na conta.
+   const slotWarning=verifiedContext.booster.catalogConflict||
+    verifiedContext.booster.equippedNamePending;
+   const slotReason=mk('p',slotWarning?'ct251-warning':'',
+    verifiedContext.booster.reason);
+   if(slotWarning)slotReason.setAttribute('role','alert');
+   status.append(slotReason);
    panel.append(status);
   }
   panel.append(mk('h4','','01 · Cinco habilidades adicionais por função e estilo'));
