@@ -210,6 +210,14 @@ jobs:
           path: build/v293-receipt-integrity-246x5.json
           if-no-files-found: warn
           retention-days: 30
+      - name: V294 — auditoria das cinco vagas por comprovante da edição
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-v294-five-slot-proof-246x5
+          path: build/v294-five-slot-proof-246x5.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs
