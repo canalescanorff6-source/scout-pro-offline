@@ -92,7 +92,8 @@ assert(totals.identityPending>0);
 assert(totals.sourceNamedConflicts>0);
 assert(totals.declaredEmptyAccepted>0);
 assert.equal(totals.skillsRejectedOnPendingIdentity,totals.identityPending);
-const known=adapt(cards.find(c=>c.numero===191));
+const martin=cards.find(c=>c.numero===191);
+const known=adapt(martin);
 assert(S.identityEvidenceV293(known));
 for(const change of [
  {...known,id:'PENDENTE - associação anterior invalidada'},
