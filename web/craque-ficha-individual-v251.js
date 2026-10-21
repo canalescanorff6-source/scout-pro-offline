@@ -518,6 +518,11 @@ function methodologyGate(card,proof,style,store,review={}){
  const byId=Object.fromEntries((proof?.checks||[]).map(x=>[x.id,x]));
  const has=id=>byId[id]?.documented===true;
  const role=review?.positionUsed||card.posicao;
+ // V298: declaração local da V248 somente conta após a prova exata V296.
+ // Divergência de nível/PP já bloqueava a ficha de treino, mas o parecer
+ // competitivo seguia exibindo ranking de ímpetos como se o PP fosse válido.
+ const localProgress=localLevelReview(card,store);
+ const ppConflict=Boolean(localProgress&&localProgress.pp!==Number(card.pp));
  const data={capture:Number(card.numero),id:String(card.id),
   // V271: custo de PP matematicamente coerente é sinal consultivo de
   // INVESTIMENTO, mesmo sem prova da origem do nível. A confirmação
@@ -526,10 +531,10 @@ function methodologyGate(card,proof,style,store,review={}){
   edition:card.versao,shown_position:role,role_used:role,attack_style:card.estilo_ataque,
   defence_style:card.estilo_defesa,native_skills:card.habilidades_nativas,
   boost1:card.impeto_fixo,boost2:card.impeto_extra,
-  pp:hasValidBuild(card)&&card.pp_estimado!==true?Number(card.pp):null,
+  pp:!ppConflict&&hasValidBuild(card)&&card.pp_estimado!==true?Number(card.pp):null,
   max_level:card.max_level,pp_origem:card.pp_origem,
-  recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
-  training_provisional:card.treino_proposto_nao_validado===true};
+  recommended_levels:!ppConflict&&hasValidBuild(card)?card.niveis.slice():null,
+  training_provisional:card.treino_proposto_nao_validado===true||ppConflict};
  let manual='',confirmation=null,slot=null;
  try{
   manual=String(store?.getItem('scoutpro:v162:equipped:'+card.numero+':'+card.id)||'');
@@ -545,10 +550,13 @@ function methodologyGate(card,proof,style,store,review={}){
   equipmentRecord:confirmed?confirmation:null})||null}catch(_){}
  try{boost=S?.booster?.(data,style,B,slot?.status,slot?.equipped)||null}catch(_){}
  const trained=hasValidBuild(card),budget=has('budget');
- const proven=trained&&budget&&has('base')&&has('video')&&has('gameplay');
+ const proven=!ppConflict&&trained&&budget&&has('base')&&has('video')&&has('gameplay');
  const training={
-  status:proven?'evidencia_para_avaliacao_competitiva':trained?'treino_registrado_nao_homologado':'sem_treino_validado',
-  note:proven?'Há referências declaradas para base, edição e partidas; revisão humana ainda obrigatória.':
+  status:ppConflict?'pp_divergentes_bloqueado':proven?'evidencia_para_avaliacao_competitiva':trained?'treino_registrado_nao_homologado':'sem_treino_validado',
+  note:ppConflict?'PP DIVERGENTES: você confirmou nível '+localProgress.level+
+   ' ('+localProgress.pp+' PP) na edição exata, mas o catálogo registra '+
+   card.pp+' PP. Reconciliar antes de comparar treino e ímpetos; nenhum dado foi alterado.':
+   proven?'Há referências declaradas para base, edição e partidas; revisão humana ainda obrigatória.':
    trained?'Build do catálogo preservada. PP fechados não comprovam atributos finais nem desempenho.':
    'Sem distribuição original comprovada; não substituir por hipótese matemática.'
  };
@@ -561,7 +569,7 @@ function methodologyGate(card,proof,style,store,review={}){
   synergy:x.synergies||[]
  }));
  const skillStatus=confirmed?'lista_conferida_localmente':'slots_nao_conferidos';
- const boosterStatus=safeEdition&&boost?.able&&has('booster')?'slot_elegivel_para_comparacao':
+ const boosterStatus=!ppConflict&&safeEdition&&boost?.able&&has('booster')?'slot_elegivel_para_comparacao':
   'nao_autorizado_para_equipar';
  const gapIds=['edition','budget','native','additional','booster','base','video','gameplay'];
  const missing=gapIds.filter(id=>!has(id)).map(id=>byId[id]?.name||id);
@@ -570,28 +578,32 @@ function methodologyGate(card,proof,style,store,review={}){
   training,skills:{status:skillStatus,slots:confirmed?skills?.slotsRemaining:null,
    candidates:skillList,nativeKnown:skills?.nativeKnown===true,
    nativeEvidence:has('native')?'catalogo_documental':'habilidades_nativas_pendentes'},
-  booster:{status:boosterStatus,slotState:slot?.status||'nao_conferido',
+  progressConflict:ppConflict?Object.freeze({
+   localLevel:localProgress.level,localPP:localProgress.pp,catalogPP:Number(card.pp),
+   reason:'Nível e PP locais divergem do catálogo da edição exata; revisão necessária.'
+  }):null,
+  booster:{status:ppConflict?'bloqueado_pp_divergentes':boosterStatus,slotState:slot?.status||'nao_conferido',
    slotEvidence:boost?.slotEvidence||'sem_slot_documentado',
    equipStatus:boost?.equipStatus||'slot_nao_verificado',
-   name:safeEdition?(boost?.primary?.nome_pt||boost?.primary?.nome||null):null,
-   reason:safeEdition?(boost?.primary?.motivo||'Sem critérios suficientes para comparar ímpetos.'):
+   name:!ppConflict&&safeEdition?(boost?.primary?.nome_pt||boost?.primary?.nome||null):null,
+   reason:ppConflict?'Ranking suspenso até reconciliar os pontos de progresso da edição.':safeEdition?(boost?.primary?.motivo||'Sem critérios suficientes para comparar ímpetos.'):
     'Card ID ou edição pendente: não calcular escolha de ímpeto confirmada.',
-   note:boost?.note||'Motor não disponível.',
+   note:ppConflict?'PP divergentes: confira novamente nível/PP antes de usar o ranking.':boost?.note||'Motor não disponível.',
    ppStatus:boost?.primary?.evidencias?.pp_status||'sem_ranking',
-   documentaryConfidence:boost?.primary?.estado_confianca||'PENDENTE_SEM_RANKING',
+   documentaryConfidence:ppConflict?'PENDENTE_PP_DIVERGENTES':boost?.primary?.estado_confianca||'PENDENTE_SEM_RANKING',
    confidenceReason:boost?.primary?.confianca||'pendente',
-   budgetOriginConfirmed:has('budget'),
-   scoreMargin:boost?.spread??null,
-   comparison:boost?.alternatives?.map(x=>({
+   budgetOriginConfirmed:!ppConflict&&has('budget'),
+   scoreMargin:ppConflict?null:boost?.spread??null,
+   comparison:!ppConflict?boost?.alternatives?.map(x=>({
     name:x.nome_pt||x.nome,score:x.score,attributes:x.atributos.slice(),
     documentedTranslation:x.traducao_documentada===true
-   }))||[],
-   budgetNote:boost?.primary?.evidencias?.pp_status==='custo_pp_conferido'?
+   }))||[]:[],
+   budgetNote:ppConflict?'PP divergentes: custo e ranking aguardam reconciliação.':boost?.primary?.evidencias?.pp_status==='custo_pp_conferido'?
     (has('budget')?
      'Custo do PP conferido e origem documentada; comparação de investimento, não atributos finais.':
      'Custo de PP conferido matematicamente, mas ORIGEM NÃO DOCUMENTADA; sinal consultivo, nunca build homologada.'):
     'Treino sem PP matematicamente utilizável ou ainda provisório: NÃO influenciou o ranking.',
-   attributes:safeEdition?(boost?.primary?.atributos||[]):[]},
+   attributes:!ppConflict&&safeEdition?(boost?.primary?.atributos||[]):[]},
   missing,competitivelyHomologated:false
  });
 }
