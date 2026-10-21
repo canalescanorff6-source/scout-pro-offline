@@ -521,13 +521,29 @@ jobs:
           (cd assets && sha256sum -c ScoutPRO-Android.apk.sha256)
           test -s android-verify/scout-build-info.json
           ls -lh assets
-      - name: Publicar atualização conjunta Android e Windows
+      - name: Proibir colisão com versões oficiais existentes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="v1.1.${{ github.run_number }}"
+          STATUS="$(curl -sS -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG")"
+          if [[ "$STATUS" != '404' ]]; then
+            echo "ERRO: não criar ou sobrescrever release $TAG (HTTP $STATUS)." >&2
+            exit 1
+          fi
+      - name: Enviar Android e Windows para uma release em rascunho
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.1.${{ github.run_number }}
           name: Scout PRO v1.1.${{ github.run_number }}
           generate_release_notes: true
-          make_latest: true
+          draft: true
+          make_latest: false
           files: |
             assets/ScoutPRO-Setup-*.exe
             assets/*.blockmap
@@ -535,3 +551,27 @@ jobs:
             assets/ScoutPRO-Android.apk
             assets/ScoutPRO-Android.apk.sha256
           fail_on_unmatched_files: true
+      - name: Conferir no GitHub os cinco artefatos antes de ativar os atualizadores
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="v1.1.${{ github.run_number }}"
+          gh release view "$TAG" --repo "${{ github.repository }}" --json isDraft --jq '.isDraft' | grep -Fxq 'true'
+          FILES="$(gh release view "$TAG" --repo "${{ github.repository }}" --json assets --jq '.assets[].name')"
+          SETUP="$(basename "$(find assets -maxdepth 1 -type f -name 'ScoutPRO-Setup-*.exe' -print -quit)")"
+          for REQUIRED in "$SETUP" "$SETUP.blockmap" latest.yml ScoutPRO-Android.apk ScoutPRO-Android.apk.sha256; do
+            printf '%s\n' "$FILES" | grep -Fxq "$REQUIRED" || {
+              echo "ERRO: arquivo $REQUIRED ausente na release rascunho." >&2
+              exit 1
+            }
+          done
+      - name: Ativar release conjunta somente após conferência remota
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release edit "v1.1.${{ github.run_number }}" \
+            --repo "${{ github.repository }}" --draft=false --latest
