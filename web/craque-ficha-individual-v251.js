@@ -104,6 +104,8 @@ const allocationCache=new Map();
     Number(value.numero)!==Number(card.numero)||
     String(value.card_id)!==String(card.id)||
     String(value.name)!==String(card.name)||
+    typeof value.edition!=='string'||!value.edition.trim()||
+    value.edition!==String(card.versao||'')||
     !Number.isInteger(value.level)||value.level<1||value.level>120||
     value.pp!==2*(value.level-1))return null;
    return Object.freeze({level:value.level,pp:value.pp,source:'conferencia_local_usuario'});
