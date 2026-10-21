@@ -41,6 +41,10 @@ jobs:
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
         run: npm run desktop:win
+      - name: Verificar manifesto e SHA512 real do instalador Windows
+        run: |
+          node scripts/ensure-windows-update-manifest.cjs
+          node scripts/verify-windows-update-manifest.cjs --dir dist --version 1.1.${{ github.run_number }}
       - name: Verificar instalador Windows
         shell: pwsh
         run: |
