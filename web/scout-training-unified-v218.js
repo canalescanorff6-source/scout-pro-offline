@@ -115,7 +115,8 @@ function mount(doc){
  const status=table.querySelector('.scout-v208-total');
  const readNote=doc.getElementById('scout-v208-note');
  function writeLocal(){
-  if(localPPMismatch()||!valid(current))return false;
+  if(localPPMismatch())return false;
+  if(!valid(current))return false;
   try{
    host.localStorage.setItem(keyForTactic(),JSON.stringify({train:current.slice(),source:'V220 · '+sourceLabel,updated:new Date().toISOString(),id,card:filename,tactic:activeTactic}));
    return true;
@@ -169,7 +170,8 @@ function mount(doc){
   status.textContent=(spent===null?'—':spent)+' / '+budget;
   btnEdit.textContent=editing?'Concluir edição':'Editar pontos';
   btnReset.disabled=activeTactic==='posse'?!custom:false;
-  btnEdit.disabled=Boolean(clash)||!valid(current);
+  btnEdit.disabled=Boolean(clash);
+  if(!valid(current))btnEdit.disabled=true;
   if(clash)btnReset.disabled=true;
   btnReset.textContent=activeTactic==='posse'?'Restaurar treino registrado':'Restaurar hipótese inicial';
   const headerText=head?.querySelector('span:last-child');if(headerText)headerText.textContent=activeTactic==='posse'?(officialValid?'Treino registrado · Posse':'Treino em revisão · Posse'):'Prévia experimental · '+styleLabel;
