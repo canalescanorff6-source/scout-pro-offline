@@ -20,4 +20,8 @@ for(const f of ['name: scout-pro-android-assinado','assets/ScoutPRO-Android.apk'
 if(!wf.includes('APKSIGNER')||!wf.includes('EXPECTED_CERT')||!wf.includes('ACTUAL_CERT'))throw Error('APK sem conferência do certificado oficial');
 if(!apkJob.includes('sha256sum -c ScoutPRO-Android.apk.sha256'))throw Error('APK oficial exige verificação SHA256');
 if(!wf.includes('(cd release-out && sha256sum ScoutPRO-Android.apk > ScoutPRO-Android.apk.sha256)'))throw Error('Checksum do APK deve ser relativo ao artefato da Release');
+const officialSigner=fs.readFileSync(path.join(base,'scripts/official-android-sign-v99.cjs'),'utf8');
+const expectedCert=officialSigner.match(/const expectedCert='([0-9a-f]{64})'/)?.[1];
+if(!expectedCert||!wf.includes("EXPECTED_CERT='"+expectedCert+"'"))throw Error('Certificado de release diferente da identidade oficial V99');
+if(!apkJob.includes('sha256sum -c ScoutPRO-Android.apk.sha256'))throw Error('Release sem checksum do APK');
 console.log('V297 PASSOU: release única Android + Windows, condicionada à main, à assinatura oficial e ao SHA256 do APK.');
