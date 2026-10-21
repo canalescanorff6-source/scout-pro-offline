@@ -528,9 +528,8 @@ def run():
                 # V302: técnicos por versão com troca real de estilo e Overload pendente.
                 manager=page.locator('#ct-manager-v302')
                 manager.wait_for(state='attached',timeout=20000)
-                if manager.evaluate('(e)=>e.open'):
-                    problems.append(f"{name}: painel V302 deveria iniciar recolhido sem técnico escolhido")
-                manager.locator('summary').click()
+                if not manager.evaluate('(e)=>e.open'):
+                    problems.append(f"{name}: painel V303 deve abrir visível para escolha do técnico")
                 page.locator('#ct-manager-select').select_option('CT-MGR-001')
                 page.wait_for_function("""() =>
                     document.querySelector('#ct-manager-style')?.value==='rapido' &&
@@ -597,7 +596,7 @@ def run():
                 # A mesma carta deve guardar o rascunho de contra-ataque independentemente da Posse.
                 page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
                 page.wait_for_function("""() =>
-                    document.querySelector('#scout-v218-status')?.textContent.includes('REFERÊNCIA DO CADASTRO') &&
+                    document.querySelector('#scout-v218-status')?.textContent.includes('HIPÓTESE') &&
                     document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='62 / 62' &&
                     document.querySelector('#scout-v220-tabs [data-tactic="rapido"]')?.getAttribute('aria-pressed')==='true'
                 """, timeout=12000)
@@ -605,6 +604,25 @@ def run():
                     [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v208-level')]
                       .map(x=>Number(x.textContent.trim()))
                 """)
+                if len(rapido_levels)!=10 or sum(rapido_levels)==0:
+                    problems.append(f"{name}: CA Rápido V303 não gerou níveis por estilo")
+                rapido_skill_names=page.locator('#scout-v220-skill-list strong').all_inner_texts()
+                if len(rapido_skill_names)<1:
+                    problems.append(f"{name}: CA Rápido perdeu sugestões contextuais de habilidades")
+                rapido_boost=page.locator('#scout-v220-booster-name').inner_text()
+                if not rapido_boost or rapido_boost=='—':
+                    problems.append(f"{name}: CA Rápido perdeu o ímpeto consultivo")
+                page.locator('#scout-v220-tabs [data-tactic="normal"]').click()
+                page.wait_for_function("""() =>
+                    document.querySelector('#scout-v220-tabs [data-tactic="normal"]')?.getAttribute('aria-pressed')==='true'
+                """,timeout=10000)
+                normal_levels=page.evaluate("""() =>
+                    [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v208-level')]
+                      .map(x=>Number(x.textContent.trim()))
+                """)
+                if normal_levels==rapido_levels:
+                    problems.append(f"{name}: V303 CA Normal e CA Rápido exibem distribuição idêntica em Massaro")
+                page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
                 page.locator('#scout-v218-edit').click()
                 # Partir do vetor registrado 62/62: liberar PP diminuindo Chute
                 # e realocar em Passe, em vez de aumentar um orçamento já cheio.
@@ -640,7 +658,7 @@ def run():
                       const btn=document.querySelector('#scout-v220-tabs [data-tactic="'+tactic+'"]');
                       return btn?.getAttribute('aria-pressed')==='true' &&
                         document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='62 / 62' &&
-                        document.querySelector('#scout-v218-status')?.textContent.includes('REFERÊNCIA DO CADASTRO');
+                        document.querySelector('#scout-v218-status')?.textContent.includes('HIPÓTESE');
                     }""",arg=tactic,timeout=10000)
                     booster=page.locator('#scout-v220-booster-name').inner_text().strip()
                     if not booster or booster in ('—','Calculando…'):
