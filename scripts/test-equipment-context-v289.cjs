@@ -2,6 +2,7 @@
 const assert=require('node:assert/strict');
 const S=require('../web/skills-booster-v162.js');
 const B=require('../web/booster-engine-v103.js');
+const fs=require('node:fs'),vm=require('node:vm');
 const d={capture:40,id:'88029918268889',edition:'Epic — Manchester United FC 99-00',
  shown_position:'CA',native_skills:'Heading',attack_style:'Artilheiro',
  boost1:'Shooting +2',boost2:'PENDENTE'};
@@ -75,4 +76,25 @@ run('ímpeto usa apenas adicional conferida da mesma edição',()=>{
  assert(boost.primary.evidencias.adicionais_conferidas);
  assert.equal(boost.decisionEvidence.canSpendTokens,false);
  assert.equal(boost.able,false,'Comprovar skill não comprova slot de ímpeto');
+});
+run('ficha principal usa a mesma prova para habilidades e ímpetos',()=>{
+ const manual='Passe de primeira',record=proof(d,manual),memory=new Map([
+  ['scoutpro:v162:equipped:'+d.capture+':'+d.id,manual],
+  [S.confirmationKey(d.capture,d.id),JSON.stringify(record)]
+ ]);
+ const window={SCOUT_RECOMMENDATIONS_V162:S,SCOUT_BOOSTERS_V103:B,
+  SCOUT_TACTICS_V220:require('../web/scout-multitactic-engine-v220.js'),
+  localStorage:{getItem:key=>memory.get(key)||null}};
+ const exported={exports:{}};
+ vm.runInNewContext(fs.readFileSync(require.resolve('../web/scout-card-unified-v220.js'),'utf8'),{window,module:exported});
+ const actual=exported.exports.nativeDetails(d,'posse');
+ assert.equal(actual.skills.equippedConfirmed,true);
+ assert.equal(actual.booster.primary.evidencias.adicionais_conferidas,true);
+ const unknown={...d,id:'PENDENTE'};
+ memory.set('scoutpro:v162:equipped:'+d.capture+':PENDENTE',manual);
+ memory.set(S.confirmationKey(d.capture,'PENDENTE'),JSON.stringify({...record,card_id:'PENDENTE'}));
+ const blocked=exported.exports.nativeDetails(unknown,'posse');
+ assert.equal(blocked.skills.equippedConfirmed,false);
+ assert.equal(blocked.skills.slotsRemaining,null);
+ assert.equal(blocked.booster.primary.evidencias.adicionais_conferidas,false);
 });

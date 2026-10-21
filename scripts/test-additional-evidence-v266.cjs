@@ -32,7 +32,7 @@ for(const c of cards){
    assert(p&&Object.keys(p).sort().join(',')==='adicionais,estilo,funcao,investimento,nativas,tatica');
    assert.equal(p.adicionais,0,'Sem comprovação de adicionais, não influenciar o ranking');
    assert(Object.values(p).every(Number.isFinite));
-   assert.equal(skill.score,p.funcao+p.tatica+p.estilo+p.nativas+p.investimento);
+   assert.equal(skill.score,p.funcao+p.tatica+p.estilo+p.nativas+p.investimento+p.adicionais);
    assert(Array.isArray(skill.synergies));
   }
   checks++;
@@ -86,7 +86,7 @@ assert(ui.includes('nativeFingerprint:fingerprint(d.native_skills||d.habilidades
 assert(ui.includes('if(requested&&precheck.requiresReconciliation)'));
 assert(ui.includes('Critérios: função '));
 const unified=read('web/scout-card-unified-v220.js');
-assert(unified.includes('R.checkedEquipment?.({...card,capture:cap,id},manual,manualProof)'),
+assert(unified.includes('R.verifiedRecommendationContextV288?.({...card,capture:cap,id},{'),
  'V266: painel unificado tem de conferir nativeFingerprint com as nativas da edição');
 assert(read('web/sw.js').includes('v266-additional-evidence'));
 assert(read('package.json').includes('test-additional-evidence-v266.cjs'));

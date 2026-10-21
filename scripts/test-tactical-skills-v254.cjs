@@ -115,7 +115,9 @@ assert(ui.includes('id="v254-confirm-equipped"'));
 assert(ui.includes("schema:'CRAQUE_ADDITIONAL_V254'"));
 assert(ui.includes('confirmed:true,fingerprint:fingerprint(proposedText)'));
 assert(ui.includes("host.dispatchEvent(new CustomEvent('craque:data-changed'"));
-assert(unified.includes('R.checkedEquipment?.('));
+assert(unified.includes('R.verifiedRecommendationContextV288?.('),
+ 'A ficha usa a prova unificada que valida lista, nativas e identidade');
+assert(unified.includes('equipmentRecord:manualProof,boosterRecord:slot'));
 assert(unified.includes('remaining=skills.slotsRemaining'));
 assert(unified.includes("'Slots não conferidos'"));
 assert(unified.includes('booster.primary.nome_pt||booster.primary.nome'));

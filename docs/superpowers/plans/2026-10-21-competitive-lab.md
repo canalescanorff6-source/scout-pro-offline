@@ -31,9 +31,9 @@
 
 **Interfaces:** manter `evaluate/checkedEquipment`; adicionar diagnóstico de elegibilidade e evidência de complementaridade por adicional conferida.
 
-- [ ] Escrever reproduções de incompatibilidade GO/linha, alias especial e contexto conferido; executar e observar falhas.
-- [ ] Corrigir validação e interpretação; adicionar explicações sem equipar nada.
-- [ ] Executar testes focados e regressões de adicionais; commit rastreável.
+- [x] Escrever reproduções de incompatibilidade GO/linha, alias especial e contexto conferido; executar e observar falhas.
+- [x] Corrigir validação e interpretação; adicionar explicações sem equipar nada.
+- [x] Executar testes focados e regressões de adicionais; commit rastreável.
 
 ### Task 2: ímpetos com o mesmo contexto
 
@@ -41,9 +41,9 @@
 
 **Interfaces:** contexto derivado somente de `checkedEquipment`; transportar lista e prova exatas até ranking sem ocupar slot presumido.
 
-- [ ] Testar prova adulterada e diferença entre adicional comprovada e informação parcial.
-- [ ] Implementar contribuição limitada, separada das nativas e dos atributos-base.
-- [ ] Verificar cinco estilos e zero aplicação automática; commit.
+- [x] Testar prova adulterada e diferença entre adicional comprovada e informação parcial.
+- [x] Implementar contribuição limitada, separada das nativas e dos atributos-base.
+- [x] Verificar cinco estilos e zero aplicação automática; commit.
 
 ### Task 3: alternativas de treinamento
 
@@ -51,10 +51,10 @@
 
 **Interfaces:** `trainingFrontier(weights, role, pp, baseline)` retorna candidatos viáveis, eixos, fronteira limitada e trocas em PP.
 
-- [ ] Testar ausência da API, custo exato, GO/linha, 0 PP, orçamento inválido, não mutação e Pareto.
-- [ ] Implementar busca determinística limitada reaproveitando `allocate`, sem alterar proposta principal.
-- [ ] Comparar as 85 cartas com PP documentados nos cinco estilos; demais ficam pendentes.
-- [ ] Testar e commit.
+- [x] Testar ausência da API, custo exato, GO/linha, 0 PP, orçamento inválido, não mutação e Pareto.
+- [x] Implementar busca determinística limitada reaproveitando `allocate`, sem alterar proposta principal.
+- [x] Comparar as 85 cartas com PP documentados nos cinco estilos; demais ficam pendentes.
+- [x] Testar e commit.
 
 ### Task 4: interface, auditoria e entrega
 

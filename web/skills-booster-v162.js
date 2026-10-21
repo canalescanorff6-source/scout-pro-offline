@@ -347,6 +347,8 @@ function evaluate(d,tactic,manualEquipped,options={}){
  const role=roleOf(d);if(!role)return {role:null,recommendations:[],nativeKnown:false,missing:['Posição da carta não cadastrada']};
  const native=splitSkills(d.native_skills||d.habilidades_nativas);
  const nativeKnown=Boolean(native.length);
+ const identityKnown=Boolean(String(d.id||'').trim()&&String(d.edition||d.versao||'').trim()&&
+  !/pendente|confirmar|invalid|desconhecid/i.test(String(d.id)+' '+String(d.edition||d.versao)));
  const equipped=splitSkills(manualEquipped);
  const nativeIds=new Set(native.map(name=>keyFor(name)||'unmapped:'+normal(name)));
  const nativeKeys=new Set(native.map(keyFor).filter(Boolean));
@@ -566,11 +568,11 @@ function evaluate(d,tactic,manualEquipped,options={}){
    criterios:Object.freeze({...factors.get(key)}),
    synergies:synergy.get(key)||[],
    decision:Object.freeze({
-    status:'ESTIMADO',priority:i+1,
+    status:nativeKnown&&identityKnown?'ESTIMADO':'PENDENTE',priority:i+1,
     category:(ROLE_FAMILIES[role]||[]).includes(SKILL_FAMILY[key])&&
      tacticalPriority.includes(key)?'essencial_na_hipotese':
      i<5?'complementar':'situacional',
-    confidence:!nativeKnown?'pendente':equippedConfirmed&&!unmappedNative.length?'limitada':'baixa',
+    confidence:!nativeKnown||!identityKnown?'pendente':equippedConfirmed&&!unmappedNative.length?'limitada':'baixa',
     reason:SKILLS[key].why,
     situation:TACTIC_REASON[tactic]+' Função '+role+'.',
     attributeRelation:investment.levels&&TRAINING_CATEGORY[key]!==undefined?
@@ -1683,6 +1685,39 @@ function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
 
 // V288 — único contrato de confirmação por edição para todos os motores e a UI.
 // Registros válidos são declarações do usuário no dispositivo, não prova de jogo.
+function trainingScenario(d,tactic,levels,engine,manualEquipped='',proof={}){
+ if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida para simulação');
+ const pending=reason=>Object.freeze({status:'PENDENTE',reason,
+  mayApply:false,maySpendTokens:false,boosters:Object.freeze([]),skills:null});
+ const context=verifiedRecommendationContextV288(d,{...proof,manualEquipped});
+ if(!context.identity.valid||!roleOf(d))return pending('Identidade ou função da edição pendente.');
+ const max=d.max_level,pp=d.pp;
+ if(!Number.isInteger(max)||max<1||max>120||!Number.isInteger(pp)||
+  pp!==2*(max-1)||d.pp_estimado===true||d.pp_estimated===true||
+  !/^informado_pelo_usuario_/.test(String(d.pp_origem||'')))
+  return pending('Sem orçamento documental da edição para recalcular este cenário.');
+ if(!engine?.rank||!Array.isArray(levels)||levels.length!==10||
+  !levels.every(n=>Number.isInteger(n)&&n>=0&&n<=20)||engine.progressCost(levels)!==pp)
+  return pending('Cenário sem vetor válido de custo exato.');
+ // Overlay transitório para reaproveitar o cálculo de INVESTIMENTO. Nunca é
+ // salvo, devolvido como cadastro ou promovido a treino aprovado. Os retornos
+ // são remarcados explicitamente como simulação antes de chegar à interface.
+ const overlay={...d,recommended_levels:levels.slice(),niveis:levels.slice(),
+  training_provisional:false,treino_proposto_nao_validado:false};
+ const skills=evaluate(overlay,tactic,manualEquipped,context.options);
+ const ranked=engine.rank(overlay,tactic,context.options);
+ return Object.freeze({status:'ESTIMADO',budgetStatus:'CALCULADO',
+  sourceTrainingStatus:engine.trainingAudit(d).status,
+  skills:Object.freeze({...skills,investmentEvidence:'simulacao_custo_pp_exato',
+   recommendationMode:'SIMULACAO_EXPERIMENTAL'}),
+  boosters:Object.freeze(ranked.slice(0,3).map(item=>Object.freeze({...item,
+   status_validacao:'SIMULACAO_EXPERIMENTAL',confianca:'experimental',
+   evidencias:Object.freeze({...item.evidencias,pp_status:'simulacao_custo_pp_exato',
+    treino:'simulacao_experimental_sem_gravacao',atributos_finais_comprovados:false})}))),
+  mayApply:false,maySpendTokens:false,
+  warning:'Prévia de complementaridade de investimento. Não altera atributos reais, treino salvo, adicionais ou ímpetos.'
+ });
+}
 function verifiedRecommendationContextV288(card,proof={}){
  const manual=typeof proof.manualEquipped==='string'?proof.manualEquipped:'';
  const cap=Number(card.capture??card.numero),id=String(card.id||''),
@@ -1893,7 +1928,7 @@ function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
   note:'Respeita a metodologia criteriosa de análise por versão; não atribui aprovação ou fichas a Rentão/Blackjhon.'
  });
 }
-const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,skillEligibility,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
+const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,skillEligibility,investmentAudit,trainingScenario,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
  confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283,competitiveDecisionBoardV284,competitiveQualityLabV285,strategicPortfolioV286,professionalEvidenceCouncilV287,verifiedRecommendationContextV288};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
@@ -2044,15 +2079,17 @@ function draw(){
  // Sem HTML do jogador e sem duplicar a ficha principal.
  const portfolioSection=section.querySelector('#v276-portfolio');
  portfolioSection.replaceChildren();
- const portfolioHeading=document.createElement('h3');
- portfolioHeading.textContent='Alternativa equilibrada · até 5 habilidades';
+ const portfolioCompare=document.createElement('details');
+ const portfolioHeading=document.createElement('summary');
+ portfolioHeading.textContent='Comparar outra combinação de habilidades';
  const portfolioDescription=document.createElement('p');
  portfolioDescription.textContent=
   'Uma combinação alternativa por função, tática e cobertura entre habilidades. '+
   (result.equippedConfirmed?'Vagas informadas: '+remaining+'. ':
    'Sem confirmação dos cinco slots: esta lista NÃO equivale a habilidades equipáveis. ')+
   'Não é uma build de Rentão ou Blackjhon sem fonte da edição exata.';
- portfolioSection.append(portfolioHeading,portfolioDescription);
+ portfolioCompare.append(portfolioHeading,portfolioDescription);
+ portfolioSection.append(portfolioCompare);
  const portfolioItems=document.createElement('ol');
  for(const item of result.balancedPortfolio.candidates){
   const li=document.createElement('li'),name=document.createElement('strong'),
@@ -2068,7 +2105,7 @@ function draw(){
   empty.textContent='Nenhuma sugestão adicional segura nesta combinação de dados/slots.';
   portfolioItems.append(empty);
  }
- portfolioSection.append(portfolioItems);
+ portfolioCompare.append(portfolioItems);
  const dossierContent=section.querySelector('#v273-dossier-content');
  dossierContent.replaceChildren();
  const addSection=(heading,values,cssClass='')=>{

@@ -19,11 +19,12 @@ function nativeDetails(card,tactic){
   const manual=localGet('scoutpro:v162:equipped:'+cap+':'+id)||'';
   const manualProof=parse(localGet(R.confirmationKey?.(cap,id)||
    'scoutpro:v254:additional-confirmed:'+cap+'@'+id));
-  const complete=R.checkedEquipment?.({...card,capture:cap,id},manual,manualProof)===true;
-  try{results=R.evaluate(card,tactic,manual,{equippedConfirmed:complete})}catch(_e){results=null}
   const slot=parse(localGet('scoutpro:v103:booster:'+cap));
-  const verified=R.boosterRecordEvidence?.({...card,capture:cap,id},slot);
-  try{booster=R.booster(card,tactic,B,verified?.status,verified?.equipped)}catch(_e){booster=null}
+  const context=R.verifiedRecommendationContextV288?.({...card,capture:cap,id},{
+   manualEquipped:manual,equipmentRecord:manualProof,boosterRecord:slot});
+  const options=context?.options||{equippedConfirmed:false};
+  try{results=R.evaluate(card,tactic,manual,options)}catch(_e){results=null}
+  try{booster=R.booster(card,tactic,B,options.verifiedSlot,options.verifiedBooster,options)}catch(_e){booster=null}
  }
  return {skills:results,booster,budget};
 }
@@ -48,6 +49,15 @@ function makeList(doc,list){
   const heading=mk(doc,'strong','',x.name);
   const detail=mk(doc,'span','',x.why||'Complemento a conferir no jogo');
   li.append(heading,detail);
+  if(x.decision){
+   const more=mk(doc,'details','ct289-skill-decision');
+   more.append(mk(doc,'summary','','Prioridade '+x.decision.priority+
+    ' · confiança '+x.decision.confidence+' · entender indicação'));
+   more.append(mk(doc,'p','',x.decision.situation+' '+x.decision.attributeRelation));
+   if(x.decision.alternative)more.append(mk(doc,'p','',
+    'Alternativa funcional: '+(host.SCOUT_RECOMMENDATIONS_V162?.SKILLS?.[x.decision.alternative]?.name||'pendente')+'.'));
+   li.append(more);
+  }
   if(Array.isArray(x.synergies)&&x.synergies.length){
    li.append(mk(doc,'small','','Complementaridade: '+x.synergies.join('; ')));
   }

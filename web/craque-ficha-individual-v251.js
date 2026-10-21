@@ -89,6 +89,9 @@ function sourceFor(card,raw,lab,index){
  };
 }
 const recognizedStyles=new Set(['posse','normal','rapido','fora','longo']);
+// Chave contém todos os sinais matemáticos, nunca CAP/nome/Overall. As
+// cópias de saída impedem um rascunho de contaminar outra ficha no cache.
+const allocationCache=new Map();
  // Revisão V248/V250: só a mesma edição, confirmação explícita de nível
  // e PP coerentes. Esse registro é declaração do usuário, não prova externa.
  function localLevelReview(card,store){
@@ -113,6 +116,8 @@ const recognizedStyles=new Set(['posse','normal','rapido','fora','longo']);
  */
 function allocate(weights,role,pp,baseline){
  if(!T||!Number.isInteger(pp)||pp<0||pp>300||!Array.isArray(weights)||weights.length!==10)return null;
+ const cacheKey=JSON.stringify([weights,role,pp,T.valid(baseline)?baseline:null]);
+ if(allocationCache.has(cacheKey))return allocationCache.get(cacheKey)?.slice()||null;
  const allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
  let dp=Array(pp+1).fill(null);dp[0]={utility:0,levels:Array(10).fill(0)};
  for(const i of allowed){
@@ -135,7 +140,96 @@ function allocate(weights,role,pp,baseline){
   }
   dp=next;
  }
- return dp[pp]&&T.total(dp[pp].levels)===pp?dp[pp].levels:null;
+ const result=dp[pp]&&T.total(dp[pp].levels)===pp?dp[pp].levels:null;
+ if(allocationCache.size>=256)allocationCache.delete(allocationCache.keys().next().value);
+ allocationCache.set(cacheKey,result?.slice()||null);
+ return result?.slice()||null;
+}
+/* V289: comparação MULTIOBJETIVO de investimento, não de status finais.
+ * A fronteira é somente dos candidatos gerados por até seis perfis. Não é
+ * busca exaustiva nem prova de que um treino seja melhor em partidas.
+ */
+function trainingFrontier(weights,role,pp,baseline){
+ const pending=reason=>Object.freeze({status:'PENDENTE',budgetStatus:'PENDENTE',
+  reason,candidates:Object.freeze([]),axes:Object.freeze([]),exhaustive:false,
+  mayApply:false,gameplayValidated:false});
+ if(!T||!Object.hasOwn(T.BASE,role)||!Number.isInteger(pp)||pp<0||pp>238||
+  !Array.isArray(weights)||weights.length!==10||
+  !weights.every(n=>Number.isFinite(n)&&n>=0))
+  return pending('Função, pesos ou orçamento de PP sem dados válidos.');
+ const allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ if(!allowed.some(i=>weights[i]>0))return pending('Sem prioridades documentais para comparar investimento.');
+ const definitions=role==='GO'?[
+  {key:'goleiro1',label:'Goleiro 1',indices:[7]},
+  {key:'goleiro2',label:'Goleiro 2',indices:[8]},
+  {key:'goleiro3',label:'Goleiro 3',indices:[9]}
+ ]:[
+  {key:'ataque',label:'Finalização e desmarque',indices:[0,3]},
+  {key:'apoio',label:'Passe e domínio',indices:[1,2]},
+  {key:'mobilidade',label:'Destreza e pernas',indices:[3,4]},
+  {key:'duelos',label:'Jogo aéreo e defesa',indices:[5,6]}
+ ];
+ const axes=definitions.filter(a=>a.indices.some(i=>weights[i]>0));
+ const baselineStatus=!T.valid(baseline)?'nao_documentado':T.total(baseline)!==pp?
+  'orcamento_divergente':baseline.some((n,i)=>n>0&&!allowed.includes(i))?
+  'categorias_fora_do_modelo':'compativel';
+ const registered=baselineStatus==='compativel'?baseline:null;
+ const primary=allocate(weights,role,pp,registered);
+ if(!primary)return pending('Não foi encontrado vetor viável com custo exato.');
+ const reference=registered||primary;
+ const candidates=[],seen=new Map();
+ const add=(levels,label,isRegistered=false)=>{
+  if(!T.valid(levels)||T.total(levels)!==pp)return null;
+  const key=levels.join(',');
+  if(seen.has(key)){
+   const existing=seen.get(key);existing.origins.push(label);
+   if(isRegistered)existing.registered=true;return existing.id;
+  }
+  const objectives=Object.fromEntries(axes.map(a=>{
+   const denominator=a.indices.reduce((sum,i)=>sum+weights[i],0);
+   // Utilidade decrescente e monótona de NÍVEIS, sem converter em atributos.
+   const value=a.indices.reduce((sum,i)=>sum+weights[i]*Math.log1p(levels[i]),0)/denominator;
+   return [a.key,Number(value.toFixed(8))];
+  }));
+  const changes=levels.map((after,i)=>({index:i,category:T.CATEGORIES[i],
+   before:reference[i],after,deltaLevels:after-reference[i],
+   deltaPP:T.ppCost(after)-T.ppCost(reference[i]),
+   nextCost:after<20?T.ppCost(after+1)-T.ppCost(after):null
+  })).filter(x=>x.deltaLevels!==0);
+  const candidate={id:'candidato-'+candidates.length,label,origins:[label],
+   registered:isRegistered,levels:levels.slice(),spent:pp,objectives,changes,
+   addedPP:changes.reduce((sum,x)=>sum+Math.max(0,x.deltaPP),0),
+   removedPP:changes.reduce((sum,x)=>sum+Math.max(0,-x.deltaPP),0),
+   mayApply:false,status:'ESTIMADO'};
+  candidates.push(candidate);seen.set(key,candidate);return candidate.id;
+ };
+ if(registered)add(registered,'Treino registrado · sem nova aprovação',true);
+ const primaryId=add(primary,'Proposta contextual');
+ for(const axis of axes){
+  const trial=weights.map((w,i)=>allowed.includes(i)?w*(axis.indices.includes(i)?1.7:.8):0);
+  add(allocate(trial,role,pp,registered),'Ênfase experimental: '+axis.label);
+ }
+ add(allocate(weights.map((w,i)=>allowed.includes(i)?Math.sqrt(w)*5:0),role,pp,registered),
+  'Equilíbrio experimental entre categorias');
+ for(const candidate of candidates){
+  candidate.dominatedBy=candidates.filter(other=>other!==candidate&&
+   axes.every(a=>other.objectives[a.key]>=candidate.objectives[a.key]-1e-8)&&
+   axes.some(a=>other.objectives[a.key]>candidate.objectives[a.key]+1e-8)).map(x=>x.id);
+  candidate.onFrontier=candidate.dominatedBy.length===0;
+ }
+ return Object.freeze({status:'ESTIMADO',budgetStatus:'CALCULADO',pp,role,
+  axes:Object.freeze(axes.map(a=>Object.freeze({...a,indices:Object.freeze(a.indices.slice())}))),
+  candidates:Object.freeze(candidates.map(c=>Object.freeze({...c,
+   levels:Object.freeze(c.levels),objectives:Object.freeze(c.objectives),
+   origins:Object.freeze(c.origins),changes:Object.freeze(c.changes.map(Object.freeze)),
+   dominatedBy:Object.freeze(c.dominatedBy)}))),
+  primaryId,reference:Object.freeze(reference.slice()),
+  referenceSource:registered?'treino_registrado':'proposta_contextual',baselineStatus,
+  frontierIds:Object.freeze(candidates.filter(c=>c.onFrontier).map(c=>c.id)),
+  exhaustive:false,generatedProfiles:axes.length+2,mayApply:false,gameplayValidated:false,
+  method:'Eixos relativos de investimento com utilidade logarítmica; categorias sobrepostas não são atributos finais.',
+  warning:'Fronteira apenas entre os candidatos calculados. Não comprova superioridade competitiva, atributos finais ou build de criador.'
+ });
 }
 /* V253 — comparar uma proposta com outras edições de função/orçamento
  * iguais. Nunca inventar diferenças por nome, Card ID ou Overall.
@@ -499,7 +593,7 @@ function confirmedRole(card,wanted,positionTraining,store){
   rejected:proposed};
 }
 const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,baseEvidence,proofChecklist,methodologyGate,confirmedRole,signature,compareProposals,
-  exact,sourceFor,related,allocate,buildReview,catalogAudit});
+  exact,sourceFor,related,allocate,trainingFrontier,buildReview,catalogAudit});
 if(!host?.document)return api;
 const doc=host.document;
 const mk=(tag,cls,value)=>{
@@ -507,6 +601,91 @@ const mk=(tag,cls,value)=>{
  if(value!==undefined)e.textContent=String(value);
  return e;
 };
+function trainingComparison(check,source){
+ const details=mk('details','ct289-training-comparison');
+ details.id='ct289-training-comparison';details.dataset.tactic=check.style;
+ details.append(mk('summary','','Comparar distribuições e custo das escolhas'));
+ let rendered=false;
+ details.addEventListener('toggle',()=>{
+  if(!details.open||rendered)return;
+  rendered=true;
+  if(!S?.verifiedRecommendationContextV288?.(source||{},{}).identity.valid){
+   details.append(mk('p','ct251-warning',
+    'Comparação desta edição pendente: confirme o Card ID e a versão exatos antes de gerar alternativas.'));return;
+  }
+  const result=trainingFrontier(check.context?.weights,check.role,check.pp,check.original);
+  if(result.status==='PENDENTE'){
+   details.append(mk('p','ct251-warning',result.reason));return;
+  }
+  const content=mk('div','ct289-comparison-content');
+  content.append(mk('p','ct289-comparison-note',
+   'CALCULADO · custo de PP. ESTIMADO · adequação à função. '+result.warning));
+  const label=mk('label','ct289-comparison-label','Distribuição em comparação');
+  const select=mk('select','ct289-candidate-select');select.id='ct289-candidate-select';
+  for(const candidate of result.candidates){
+   const op=mk('option','',candidate.origins.join(' / '));op.value=candidate.id;
+   select.append(op);
+  }
+  label.append(select);content.append(label);
+  const summary=mk('p','ct289-comparison-summary');summary.setAttribute('aria-live','polite');
+  const wrap=mk('div','ct289-table-wrap'),table=mk('table','ct289-cost-table');
+  table.append(mk('caption','',result.referenceSource==='treino_registrado'?
+   'Custo comparado ao treino registrado':'Custo comparado à proposta contextual'));
+  const head=mk('thead',''),hr=mk('tr','');
+  for(const title of ['Categoria','Referência','Cenário','Δ PP']){
+   const cell=mk('th','',title);cell.scope='col';hr.append(cell);
+  }
+  head.append(hr);table.append(head);
+  const body=mk('tbody','');table.append(body);wrap.append(table);
+  const axes=mk('ul','ct289-axes');
+  const scenario=mk('div','ct289-scenario');scenario.setAttribute('aria-live','polite');
+  const render=()=>{
+   const chosen=result.candidates.find(c=>c.id===select.value);
+   if(!chosen)return;
+   summary.textContent=chosen.spent+' / '+result.pp+' PP · '+chosen.removedPP+
+    ' PP redirecionados entre categorias. '+
+    (chosen.onFrontier?'Alternativa sem dominância entre os candidatos comparados.':
+     'Outra alternativa cobre melhor os eixos deste modelo; isso não mede desempenho em jogo.');
+   body.replaceChildren();axes.replaceChildren();scenario.replaceChildren();
+   chosen.levels.forEach((value,i)=>{
+    if(check.role==='GO'?i<7:i>=7)return;
+    const delta=T.ppCost(value)-T.ppCost(result.reference[i]);
+    const row=mk('tr','');row.dataset.deltaPp=String(delta);
+    const name=mk('th','',T.CATEGORIES[i]);name.scope='row';
+    row.append(name,mk('td','',result.reference[i]+' nv. / '+T.ppCost(result.reference[i])+' PP'),
+     mk('td','',value+' nv. / '+T.ppCost(value)+' PP'),
+     mk('td','',delta>0?'+'+delta:String(delta)));
+    body.append(row);
+   });
+   for(const axis of result.axes)axes.append(mk('li','',axis.label+': '+
+    chosen.objectives[axis.key].toFixed(2)+' · índice de investimento'));
+   let manual='',equipmentRecord=null,boosterRecord=null;
+   try{
+    manual=host.localStorage?.getItem('scoutpro:v162:equipped:'+check.capture+':'+check.card_id)||'';
+    equipmentRecord=JSON.parse(host.localStorage?.getItem(S.confirmationKey(check.capture,check.card_id))||'null');
+    boosterRecord=JSON.parse(host.localStorage?.getItem('scoutpro:v103:booster:'+check.capture)||'null');
+   }catch(_){}
+   const experimental=S?.trainingScenario?.({...source,role_used:check.positionUsed,
+    shown_position:check.positionUsed},check.style,chosen.levels,B,manual,{equipmentRecord,boosterRecord});
+   if(experimental?.status==='ESTIMADO'){
+    scenario.append(mk('strong','','Complementos neste cenário experimental'));
+    scenario.append(mk('p','', 'Habilidades: '+
+     (experimental.skills.recommendations.map(x=>x.name).join(' · ')||'nenhuma candidata adicional')));
+    scenario.append(mk('p','','Ímpetos para comparar: '+
+     (experimental.boosters.map(x=>x.nome_pt||x.nome).join(' · ')||'pendentes')));
+    scenario.append(mk('small','',experimental.warning+
+     ' A lista de ímpetos não comprova disponibilidade de slot.'));
+   }else scenario.append(mk('p','',experimental?.reason||
+    'Motor de complementos ainda indisponível; comparação de PP não confirma equipamentos.'));
+  };
+  select.value=result.primaryId;select.addEventListener('change',render);
+  content.append(summary,wrap,axes,scenario);
+  content.append(mk('p','ct289-comparison-note',
+   'Comparar não grava o treino. Próximos investimentos custam mais PP conforme o nível da categoria; o total permanece exato.'));
+  details.append(content);details.dataset.ready='true';render();
+ });
+ return details;
+}
 let card=null,raw=null,lab=null,all=null,active='posse',block=null,positionSelected=null,evidenceByCap=new Map();
 let lastRolePublished=null;
 function display(){
@@ -1107,6 +1286,7 @@ function display(){
    grid.append(item);
   }
   comp.append(grid);
+  comp.append(trainingComparison(check,sensitiveSource));
   // Nomes das categorias e sinais REAIS que alteram seus pesos nesta edição.
   const explanations=mk('details','ct253-reasons');
   explanations.append(mk('summary','','Por que o sistema distribuiu esses pontos?'));

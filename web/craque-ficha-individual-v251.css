@@ -1,6 +1,26 @@
 /* CRAQUE TÁTICO V251 — engenharia individual sem duplicar a ficha principal.
  * Azul-noite + champanhe, texto legível em Windows/Android, sem verde neon.
  */
+.ct289-training-comparison{min-width:0;max-width:100%;padding:12px;border:1px solid #8f7958;border-radius:12px;background:#102238;margin:14px 0;color:#e8edf5}
+.ct289-training-comparison>summary,.ct289-skill-decision>summary{min-height:44px;cursor:pointer;color:#f0d49c;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.ct289-comparison-content{display:grid;gap:12px;min-width:0;margin-top:10px}
+.ct289-comparison-note{font-size:11px;line-height:1.6;color:#cbd6e4;margin:0;overflow-wrap:anywhere}
+.ct289-comparison-label{display:grid;gap:7px;font-size:12px;color:#ead3a4;min-width:0}
+.ct289-candidate-select{min-height:46px;width:100%;max-width:100%;min-width:0;box-sizing:border-box;padding:10px;background:#122c43;color:#f6efdf;border:1px solid #9e835d;border-radius:8px;font:inherit}
+.ct289-candidate-select:focus-visible,.ct289-training-comparison>summary:focus-visible,.ct289-skill-decision>summary:focus-visible{outline:3px solid #e3c78f;outline-offset:3px}
+.ct289-comparison-summary{margin:0;font-size:12px;line-height:1.6;color:#f0d49c;overflow-wrap:anywhere}
+.ct289-table-wrap{min-width:0;max-width:100%;overflow-x:auto}
+.ct289-cost-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:11px;color:#e4edf5}
+.ct289-cost-table caption{text-align:left;color:#c3cedc;font-size:11px;padding:8px 0;line-height:1.4}
+.ct289-cost-table th,.ct289-cost-table td{text-align:left;white-space:normal;overflow-wrap:anywhere;border-bottom:1px solid #395069;padding:9px 5px;line-height:1.5}
+.ct289-cost-table th:first-child{width:30%}.ct289-cost-table th:last-child{width:13%}
+.ct289-cost-table tbody th{font-weight:600}.ct289-cost-table thead th{color:#e2c38d}
+.ct289-axes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:7px;list-style:none;padding:0;margin:0;font-size:11px;color:#d6e0ec}
+.ct289-axes li{padding:9px;border:1px solid #3b536a;border-radius:8px;line-height:1.5;overflow-wrap:anywhere}
+.ct289-scenario{border-left:3px solid #b79a66;padding:10px;background:#162c40;font-size:12px;line-height:1.6;min-width:0;overflow-wrap:anywhere}
+.ct289-scenario strong{color:#efcf95}.ct289-scenario p{margin:6px 0}.ct289-scenario small{color:#c4d0df}
+.ct289-skill-decision{margin-top:8px}.ct289-skill-decision p{font-size:11px;line-height:1.6;overflow-wrap:anywhere}
+@media(max-width:440px){.ct289-training-comparison{padding:9px}.ct289-cost-table{font-size:10px}.ct289-cost-table th,.ct289-cost-table td{padding:7px 3px}}
 body[data-page="detail"] #ct251-individual-ficha{
  box-sizing:border-box;display:grid;gap:12px;min-width:0;
  width:100%;max-width:100%;margin:13px 0 16px;

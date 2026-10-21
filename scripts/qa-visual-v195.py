@@ -9,6 +9,7 @@ import shutil
 import sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from qa_competitive_v289 import run_competitive_qa
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "artifacts" / "visual-qa"
@@ -1796,6 +1797,11 @@ def run():
                     result['skill_slots_v254']={'not_assumed':True,'five_full':True,
                        'edition_persisted':True,'editing_invalidated':True,
                        'tactic_labels_ok':True}
+                if name in ('mobile_320', 'mobile_390', 'windows_1151', 'windows_1920'):
+                    try:
+                        result['competitive_v289'] = run_competitive_qa(page, URL, OUT, name)
+                    except Exception as error:
+                        problems.append(f'{name}: fluxo competitivo V289: {error}')
                 results[name] = result
                 context.close()
         finally:
