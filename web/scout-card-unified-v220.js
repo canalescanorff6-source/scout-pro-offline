@@ -305,6 +305,9 @@ function mount(doc){
  const route=doc.querySelector('.side-nav a[href="#engenharia"]');
  if(route){route.textContent='Engenharia e evidências (opcional)';route.href='#scout-v220-technical'}
  choose(style,false);
+ // V302: a ficha foi montada; permitir seleção de técnico sem tocar nos dados da carta.
+ host.dispatchEvent(new host.CustomEvent('scoutpro:card-shell-ready-v302',
+  {detail:{cap,card_id:id}}));
  return true;
 }
 const api=Object.freeze({nativeDetails,evidence,mount});
