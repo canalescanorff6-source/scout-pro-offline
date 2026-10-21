@@ -525,6 +525,7 @@ function methodologyGate(card,proof,style,store,review={}){
   defence_style:card.estilo_defesa,native_skills:card.habilidades_nativas,
   boost1:card.impeto_fixo,boost2:card.impeto_extra,
   pp:hasValidBuild(card)&&card.pp_estimado!==true?Number(card.pp):null,
+  max_level:card.max_level,pp_origem:card.pp_origem,
   recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
   training_provisional:card.treino_proposto_nao_validado===true};
  let manual='',confirmation=null,slot=null;
@@ -575,6 +576,8 @@ function methodologyGate(card,proof,style,store,review={}){
     'Card ID ou edição pendente: não calcular escolha de ímpeto confirmada.',
    note:boost?.note||'Motor não disponível.',
    ppStatus:boost?.primary?.evidencias?.pp_status||'sem_ranking',
+   documentaryConfidence:boost?.primary?.estado_confianca||'PENDENTE_SEM_RANKING',
+   confidenceReason:boost?.primary?.confianca||'pendente',
    budgetOriginConfirmed:has('budget'),
    scoreMargin:boost?.spread??null,
    comparison:boost?.alternatives?.map(x=>({
@@ -843,7 +846,7 @@ function display(){
    ' Prioridade consultiva; não há aplicação automática.');
  }
  add('Ímpeto',method.booster.name?
-  method.booster.name+' — '+method.booster.note+' '+method.booster.reason+' '+method.booster.budgetNote+
+  method.booster.name+' — confiança documental: '+method.booster.documentaryConfidence+'. '+method.booster.note+' '+method.booster.reason+' '+method.booster.budgetNote+
    (method.booster.attributes.length?
     ' Quatro atributos afetados: '+method.booster.attributes.join(', ')+'.':''):
   'Nenhuma opção confiável calculável. '+method.booster.note);
