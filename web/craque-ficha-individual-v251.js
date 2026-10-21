@@ -783,7 +783,34 @@ function display(){
    label.append(select);block.append(label);
   }
  }
+ const renderProof=proof=>{
+  const criteria=mk('details','ct251-evidence-details ct251-proof');
+  criteria.append(mk('summary','','Fontes desta edição: '+proof.documented+
+   ' documentadas · '+proof.pending+' pendentes ('+proof.partial+
+   ' parciais) · nenhuma homologação automática'));
+  const criteriaList=mk('ul','ct251-proof-list');
+  for(const item of proof.checks){
+   const li=mk('li','',item.name+' — '+
+    (item.documented?'DOCUMENTADO':item.partial?'PARCIAL':'PENDENTE')+'. '+item.note);
+   li.dataset.proof=item.documented?'documented':item.partial?'partial':'pending';
+   criteriaList.append(li);
+  }
+  criteria.append(criteriaList);block.append(criteria);
+ };
  if(check.status==='unsupported'){
+  // V299: a ficha volta antes dos comparadores se houver PP divergentes;
+  // exibir a prova da edição e o aviso AQUI, sem renderizar V283–V287.
+  const locallyVerified=localLevelReview(card,host.localStorage);
+  if(locallyVerified&&locallyVerified.pp!==Number(card.pp)){
+   const budgetEvidence=proofChecklist(card,evidenceByCap.get(Number(card.numero)),lab,host.localStorage);
+   renderProof(budgetEvidence);
+   const note=mk('p','ct251-warning ct299-pp-gate',
+    'PP DIVERGENTES (nível '+locallyVerified.level+': '+
+    locallyVerified.pp+' PP conferidos; catálogo: '+card.pp+
+    ' PP). Comparadores de treinamento, habilidades baseadas no investimento e ímpetos V283–V287 suspensos até a reconciliação desta edição. Habilidades já registradas não foram apagadas.');
+   note.dataset.review='pp_divergentes';
+   block.append(note);
+  }
   block.append(mk('p','ct251-warning',check.reason));
   return;
  }
@@ -801,18 +828,7 @@ function display(){
     check.evidenceLevel==='conferencia_local_usuario'?'PP/nível conferidos neste dispositivo':'PP sem nível comprovado'));
  block.append(chips);
  const proof=proofChecklist(card,evidenceByCap.get(Number(card.numero)),lab,host.localStorage);
- const criteria=mk('details','ct251-evidence-details ct251-proof');
- criteria.append(mk('summary','','Fontes desta edição: '+proof.documented+
-  ' documentadas · '+proof.pending+' pendentes ('+proof.partial+
-  ' parciais) · nenhuma homologação automática'));
- const criteriaList=mk('ul','ct251-proof-list');
- for(const item of proof.checks){
-  const li=mk('li','',item.name+' — '+
-   (item.documented?'DOCUMENTADO':item.partial?'PARCIAL':'PENDENTE')+'. '+item.note);
-  li.dataset.proof=item.documented?'documented':item.partial?'partial':'pending';
-  criteriaList.append(li);
- }
- criteria.append(criteriaList);block.append(criteria);
+ renderProof(proof);
  // V261: parecer compacto dentro da ficha principal; mantém o painel de
  // habilidades existente sem duplicar slots ou oferecer botão de aplicação.
  const method=methodologyGate(card,proof,active,host.localStorage,check);
