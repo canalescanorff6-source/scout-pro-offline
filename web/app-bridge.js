@@ -114,6 +114,8 @@ if(inCard){
     const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';
     document.head.appendChild(ui220);
    };
+   const managerCss=document.createElement('link');managerCss.rel='stylesheet';
+   managerCss.href=v189Root+'craque-managers-v302.css';document.head.appendChild(managerCss);
    const managers=document.createElement('script');
    managers.src=v189Root+'craque-managers-v302.js';
    managers.onload=startUI;managers.onerror=startUI;
