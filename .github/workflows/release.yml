@@ -267,6 +267,8 @@ jobs:
           node --check scripts/set-version.cjs
       - name: Conferir arquivos da compilação
         run: node scripts/verify-release-workflow.cjs
+      - name: Testes negativos do manifesto Windows
+        run: node scripts/verify-windows-update-manifest.cjs --self-test
       - name: Validar formato do certificado permanente (sem acesso à chave)
         run: node scripts/official-android-sign-v99.cjs check
 
@@ -296,6 +298,8 @@ jobs:
         run: npm run desktop:win
       - name: Garantir metadados SHA512 mesmo sem publicar antes do CI GREEN
         run: node scripts/ensure-windows-update-manifest.cjs
+      - name: Conferir SHA512, tamanho, URL e blockmap do instalador
+        run: node scripts/verify-windows-update-manifest.cjs --dir dist --version 1.1.${{ github.run_number }}
       - name: Incluir identificação da interface no artefato Windows
         shell: pwsh
         run: Copy-Item web/scout-build-info.json dist/scout-build-info.json
@@ -510,6 +514,7 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: scout-pro-windows
@@ -546,6 +551,7 @@ jobs:
         run: |
           set -euo pipefail
           test -s assets/latest.yml
+          node scripts/verify-windows-update-manifest.cjs --dir assets --version "1.1.${{ github.run_number }}"
           test "$(find assets -maxdepth 1 -name 'ScoutPRO-Setup-*.exe' -type f | wc -l)" -eq 1
           grep -q "version: 1.1.${{ github.run_number }}" assets/latest.yml
           test -s assets/ScoutPRO-Android.apk
