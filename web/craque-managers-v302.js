@@ -87,8 +87,9 @@ function mount(doc){
  if(!doc||ui)return Boolean(ui);
  const hero=doc.getElementById('scout-v220-hero');
  if(!hero)return false;
- const wrap=make(doc,'section',undefined,'ct-manager-v302');
+ const wrap=make(doc,'details',undefined,'ct-manager-v302');
  wrap.id='ct-manager-v302';
+ const heading=make(doc,'summary','Escolher técnico e gerar ficha por estilo');
  const title=make(doc,'h3','Técnico da minha equipe');
  const introduction=make(doc,'p','Escolha a versão do técnico. A ficha acompanha o estilo selecionado; bônus, jogadas e proficiências exigem conferência da edição.');
  const selectLabel=make(doc,'label','Versão do técnico');
@@ -111,7 +112,7 @@ function mount(doc){
  const actions=make(doc,'div',undefined,'ct-manager-actions');
  const clear=make(doc,'button','Sem técnico selecionado');clear.type='button';
  actions.append(clear);
- wrap.append(title,introduction,selectLabel,styleLabel,actions,explanation);
+ wrap.append(heading,title,introduction,selectLabel,styleLabel,actions,explanation);
  const tabs=doc.getElementById('scout-v220-tabs');
  if(tabs)tabs.insertAdjacentElement('beforebegin',wrap);
  else hero.append(wrap);
@@ -198,7 +199,7 @@ function mount(doc){
   if(selected){selectedTactic=preferred(selected,stored.tactic);select.value=selected.catalog_id}
  }catch(_){}
  render();
- if(selected)notify();
+ if(selected){wrap.open=true;notify();}
  host.addEventListener('scoutpro:tactic-selected-v220',ev=>{
   if(!selected||!ev.detail?.tactic||!STYLES.some(x=>x.id===ev.detail.tactic))return;
   selectedTactic=ev.detail.tactic;
