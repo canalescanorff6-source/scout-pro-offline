@@ -29,9 +29,10 @@ function seed(data,api,storage){
    nativeSkills:'',skills:'',booster:'',fixedBooster:'',boosterSlot:'pendente',
    trainingLevels:'',notes:NOTE,image:PHOTO});
  }
- if(next!==source)source=api.write(storage,next);
+ const changed=next!==source;
+ if(changed)source=api.write(storage,next);
  storage.setItem(MARK,'ok');
- return {data:source,changed:next!==data,ownerId:owner.id,cardId:already?.id||CARD_ID,reason:already?'preservado':'cadastrado'};
+ return {data:source,changed,ownerId:owner.id,cardId:already?.id||CARD_ID,reason:already?'preservado':'cadastrado'};
 }
 return Object.freeze({NAME,CARD_ID,MARK,PHOTO,NOTE,normalize,seed});
 });
