@@ -85,4 +85,12 @@ assert.equal(JSON.parse(map.get(A.key(martin))).confirmed_in_game,true);
 assert.equal(JSON.stringify(cards),snapshot);
 assert.equal(fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'),catalog);
 assert(fs.readFileSync(path.join(root,'package.json'),'utf8').includes('test-progress-edition-v296.cjs'));
+fs.mkdirSync(path.join(root,'build'),{recursive:true});
+fs.writeFileSync(path.join(root,'build/v296-progress-proof-246.json'),
+ JSON.stringify({schema:'CRAQUE_V296_PROGRESS_EDITION_PROOF',
+  cards:246,receiptValid:valid,receiptRejected:blocked,
+  invalidScenarios:['sem_edition','edition_null','edition_vazia','outra_edition'],
+  martinelli:{cap:191,maxLevel:26,pp:50,tactics:5},
+  catalogModified:false,legacyRecordPolicy:'preservar_e_exigir_reconfirmacao',
+  gameplayValidated:false},null,2)+'\n');
 console.log('V296 PASS: 246 cartas, 984 recibos falsos/legados bloqueados, 5 estilos de Martinelli preservados, nenhum PP alterado.');
