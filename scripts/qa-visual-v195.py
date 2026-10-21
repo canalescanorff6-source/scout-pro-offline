@@ -1571,6 +1571,19 @@ def run():
                                     problems.append(f"{name}: V286 causou overflow horizontal")
                                 page.screenshot(path=str(OUT/f"{name}_v286_portfolio.png"),
                                     full_page=False,animations="disabled")
+                            # V288: prova de slots não deve inventar vagas na primeira visita.
+                            proof288=lab284.locator('.ct288-proof-status')
+                            if proof288.count()!=1:
+                                problems.append(f"{name}: resumo de provas V288 ausente/duplicado")
+                            else:
+                                if proof288.get_attribute('data-skills')!='pending':
+                                    problems.append(f"{name}: V288 declarou slots sem confirmação")
+                                if 'vagas desconhecidas' not in proof288.inner_text():
+                                    problems.append(f"{name}: V288 informou vagas como livres sem prova")
+                                if proof288.evaluate('(e)=>e.scrollWidth>e.clientWidth+6'):
+                                    problems.append(f"{name}: resumo V288 com overflow")
+                                page.screenshot(path=str(OUT/f"{name}_v288_provas.png"),
+                                    full_page=False,animations="disabled")
                             # V287: conferir o conselho e suas evidências por edição.
                             audit287=lab284.locator('.ct287-evidence-council')
                             if audit287.count()!=1:
