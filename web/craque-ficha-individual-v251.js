@@ -674,7 +674,7 @@ function display(){
  // Caso a ficha HTML antiga diverja da fonte central, avaliar somente o
  // catálogo canônico, sem importação de PP/atributos daquela ficha.
  const sensitiveSource=exactSource||{
-  capture:Number(card.numero),id:String(card.id),edition:String(card.versao||''),
+  capture:Number(card.numero),id:String(card.id),name:card.name,edition:String(card.versao||''),
   original_position:card.posicao,shown_position:card.posicao,
   role_used:card.posicao,attack_style:card.estilo_ataque,
   defence_style:card.estilo_defesa,native_skills:card.habilidades_nativas,
