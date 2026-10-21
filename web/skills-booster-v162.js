@@ -1471,7 +1471,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
   summary:Object.freeze({
    sameFivePairs:duplicates,comparablePairs:pairs.length,
    exactlySameFiveAllStyles:duplicates===10,
-   distinctiveSkillSets:5-new Set(rotation.map(x=>x.skills.join('|'))).size+1,
+   distinctSkillSets:new Set(rotation.map(x=>x.skills.join('|'))).size,
    uniqueFirstBoosters:new Set(rotation.map(x=>x.booster).filter(Boolean)).size,
    nativeMapped:nativeProfile.known.length,
    nativeUnmapped:nativeProfile.unknown.length,
