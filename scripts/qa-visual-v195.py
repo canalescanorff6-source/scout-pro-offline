@@ -565,14 +565,15 @@ def run():
                 if page.locator('#scout-v221-review').evaluate('(e)=>e.scrollWidth-e.clientWidth')>8:
                     problems.append(f"{name}: V221 gerou rolagem horizontal no Android/Windows")
 
-                # V252: Massaro tem PP cadastrado, mas nível máximo da edição
-                # ainda não comprovado. Nunca preencher 62 PP automaticamente.
+                # V301: Massaro tem PP cadastrados e treino registrado, mas
+                # o nível máximo ainda não está comprovado. Mostrar a REFERÊNCIA
+                # original (62/62), sem tratá-la como build recalculada ou homologada.
                 # O rascunho manual permanece isolado e persistente por estilo.
                 # A mesma carta deve guardar o rascunho de contra-ataque independentemente da Posse.
                 page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
                 page.wait_for_function("""() =>
-                    document.querySelector('#scout-v218-status')?.textContent.includes('HIPÓTESE') &&
-                    document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='0 / 62' &&
+                    document.querySelector('#scout-v218-status')?.textContent.includes('REFERÊNCIA DO CADASTRO') &&
+                    document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='62 / 62' &&
                     document.querySelector('#scout-v220-tabs [data-tactic="rapido"]')?.getAttribute('aria-pressed')==='true'
                 """, timeout=12000)
                 rapido_levels=page.evaluate("""() =>
@@ -580,10 +581,13 @@ def run():
                       .map(x=>Number(x.textContent.trim()))
                 """)
                 page.locator('#scout-v218-edit').click()
-                page.locator('#scout-v208-training tbody tr').first.locator('button[aria-label="Aumentar Chute"]').click()
+                # Partir do vetor registrado 62/62: liberar PP diminuindo Chute
+                # e realocar em Passe, em vez de aumentar um orçamento já cheio.
+                page.locator('#scout-v208-training tbody tr').first.locator('button[aria-label="Reduzir Chute"]').click()
+                page.locator('#scout-v208-training tbody tr').nth(1).locator('button[aria-label="Aumentar Passe"]').click()
                 page.wait_for_function("""() => {
-                  const e=document.querySelector('#scout-v208-training tbody tr .scout-v218-level');
-                  return e && Number(e.textContent) > 0;
+                  const cells=[...document.querySelectorAll('#scout-v208-training tbody tr .scout-v218-level')];
+                  return Number(cells[0]?.textContent)===9 && Number(cells[1]?.textContent)===6;
                 }""",timeout=10000)
                 adjusted=page.evaluate("""() =>
                     [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v218-level')]
@@ -610,7 +614,8 @@ def run():
                     page.wait_for_function("""tactic => {
                       const btn=document.querySelector('#scout-v220-tabs [data-tactic="'+tactic+'"]');
                       return btn?.getAttribute('aria-pressed')==='true' &&
-                        document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='0 / 62';
+                        document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='62 / 62' &&
+                        document.querySelector('#scout-v218-status')?.textContent.includes('REFERÊNCIA DO CADASTRO');
                     }""",arg=tactic,timeout=10000)
                     booster=page.locator('#scout-v220-booster-name').inner_text().strip()
                     if not booster or booster in ('—','Calculando…'):

@@ -71,10 +71,11 @@ function mount(doc){
    if(legacy&&valid(legacy.train)&&total(legacy.train)<=budget)saved={levels:legacy.train.slice(),source:String(legacy.source||'treino pessoal').slice(0,90)};
   }catch(_e){}
  }
- let current=saved?saved.levels:(original?original.slice():Array(10).fill(0));
+ let current=saved?saved.levels:(original?original.slice():null);
  let custom=!!saved,sourceLabel=String(saved?.source||'');
  let editing=false;
  let activeTactic='posse',styleLabel='Posse de Bola',suggested=null;
+ let autoPreview=!saved&&!original,referenceOnly=false;
  const keyForTactic=()=>activeTactic==='posse'?storageKey:storageKey+':tactic:'+activeTactic;
  const head=panel.querySelector('#scout-v208-heading');
  if(head){
@@ -115,6 +116,7 @@ function mount(doc){
  const readNote=doc.getElementById('scout-v208-note');
  function writeLocal(){
   if(localPPMismatch())return false;
+  if(!valid(current))return false;
   try{
    host.localStorage.setItem(keyForTactic(),JSON.stringify({train:current.slice(),source:'V220 · '+sourceLabel,updated:new Date().toISOString(),id,card:filename,tactic:activeTactic}));
    return true;
@@ -128,7 +130,7 @@ function mount(doc){
   if(localPPMismatch())return;
   const next=adjust(current,i,delta,budget);
   if(!next)return;
-  current=next;custom=true;
+  current=next;custom=true;autoPreview=false;referenceOnly=false;
   sourceLabel='Rascunho pessoal · '+styleLabel;
   const persisted=writeLocal();
   notify('save');refresh();
@@ -138,13 +140,16 @@ function mount(doc){
   if(localPPMismatch())return;
   try{host.localStorage.removeItem(keyForTactic())}catch(_e){}
   if(activeTactic==='posse'){
-   current=original?original.slice():Array(10).fill(0);
-   custom=false;editing=false;sourceLabel='';
+   current=original?original.slice():null;
+   custom=false;editing=false;autoPreview=false;referenceOnly=false;sourceLabel='';
    notify('restore');refresh();
    note.textContent=officialValid?'Treino registrado restaurado. Nenhum nível da carta original foi modificado.':'Não há distribuição cadastrada e validada em PP; a prévia permanece zerada até escolher um rascunho.';
   }else{
-   current=suggested?suggested.slice():Array(10).fill(0);
-   custom=true;editing=false;sourceLabel='Hipótese tática · '+styleLabel;
+   current=suggested?suggested.slice():original?original.slice():null;
+   referenceOnly=!suggested&&!!original;autoPreview=true;
+   custom=!!suggested;editing=false;
+   sourceLabel=referenceOnly?'Treino cadastrado · não recalculado para esta tática':
+    suggested?'Hipótese tática · '+styleLabel:'Aguardando nível e PP comprovados';
    refresh();notify('restore');
    note.textContent='Hipótese inicial de '+styleLabel+' restaurada; não substitui a build cadastrada da carta.';
   }
@@ -152,21 +157,28 @@ function mount(doc){
  function refresh(){
   const clash=localPPMismatch();
   if(clash)editing=false;
-  const spent=total(current);
-  const budgetRemaining=budget-spent;
-  tag.textContent=(custom?(activeTactic==='posse'?'SIMULAÇÃO PESSOAL':'HIPÓTESE / RASCUNHO TÁTICO'):officialValid?'REGISTRO DA CARTA':'PRÉVIA SEM HOMOLOGAÇÃO')+' · '+spent+' / '+budget+' PP'+(custom&&sourceLabel?' · '+sourceLabel:'');
-  tag.dataset.mode=clash?'blocked':custom?'draft':officialValid?'registered':'pending';
+  const spent=valid(current)?total(current):null;
+  const budgetRemaining=spent===null?null:budget-spent;
+  tag.textContent=(referenceOnly?'REFERÊNCIA DO CADASTRO · NÃO RECALCULADA':
+   spent===null?'DISTRIBUIÇÃO PENDENTE':
+   custom?(activeTactic==='posse'?'SIMULAÇÃO PESSOAL':'HIPÓTESE / RASCUNHO TÁTICO'):
+   officialValid?'REGISTRO DA CARTA':'PRÉVIA SEM HOMOLOGAÇÃO')+
+   ' · '+(spent===null?'—':spent)+' / '+budget+' PP'+(sourceLabel?' · '+sourceLabel:'');
+  tag.dataset.mode=clash?'blocked':referenceOnly?'pending':custom?'draft':officialValid?'registered':'pending';
   if(clash)tag.textContent='PP DIVERGENTES: '+clash.pp+' PP conferidos (nível '+clash.level+
    ') contra '+budget+' PP do catálogo. Não editar antes de corrigir.';
-  status.textContent=spent+' / '+budget;
+  status.textContent=(spent===null?'—':spent)+' / '+budget;
   btnEdit.textContent=editing?'Concluir edição':'Editar pontos';
   btnReset.disabled=activeTactic==='posse'?!custom:false;
   btnEdit.disabled=Boolean(clash);
+  if(!valid(current))btnEdit.disabled=true;
   if(clash)btnReset.disabled=true;
   btnReset.textContent=activeTactic==='posse'?'Restaurar treino registrado':'Restaurar hipótese inicial';
   const headerText=head?.querySelector('span:last-child');if(headerText)headerText.textContent=activeTactic==='posse'?(officialValid?'Treino registrado · Posse':'Treino em revisão · Posse'):'Prévia experimental · '+styleLabel;
   compare.hidden=activeTactic!=='posse';
   if(readNote&&clash)readNote.textContent='REVISÃO OBRIGATÓRIA: PP divergentes nesta edição. Não use nem edite esta distribuição até corrigi-la.';
+  else if(readNote&&spent===null)readNote.textContent='Distribuição indisponível nesta tática. Níveis pendentes NÃO são zero; confira a edição e o nível máximo.';
+  else if(readNote&&referenceOnly)readNote.textContent='Mostrando apenas a distribuição já cadastrada, sem recalcular. Nível máximo ainda não comprovado para criar uma hipótese segura neste estilo.';
   else if(readNote)readNote.textContent=custom?
    (budgetRemaining===0?'Simulação pessoal com PP fechados. Não substitui o treino registrado no Scout PRO.':
     'Simulação pessoal incompleta: '+budgetRemaining+' PP ainda não distribuídos. Não considerar homologada.'):
@@ -177,7 +189,7 @@ function mount(doc){
    const cell=rows[i].querySelector('.scout-v208-level'),pp=rows[i].querySelector('.scout-v208-cost');
    if(!cell||!pp)continue;
    cell.replaceChildren();
-   if(editing){
+   if(editing&&valid(current)){
     const ctl=make(doc,'span','scout-v218-stepper');
     const minus=make(doc,'button','scout-v218-step','−');minus.type='button';minus.setAttribute('aria-label','Reduzir '+CATEGORY[i]);
     const value=make(doc,'span','scout-v218-level',current[i]);
@@ -187,8 +199,8 @@ function mount(doc){
     minus.addEventListener('click',()=>setDelta(i,-1));
     plus.addEventListener('click',()=>setDelta(i,1));
     ctl.append(minus,value,plus);cell.append(ctl);
-   }else cell.textContent=String(current[i]);
-   pp.textContent=String(ppCost(current[i]));
+   }else cell.textContent=valid(current)?String(current[i]):'—';
+   pp.textContent=valid(current)?String(ppCost(current[i])):'—';
   }
  }
  btnEdit.addEventListener('click',()=>{if(localPPMismatch())return;editing=!editing;refresh()});
@@ -205,14 +217,33 @@ function mount(doc){
    savedForStyle=readSaved(raw,id,filename,budget);
   }catch(_e){}
   if(activeTactic==='posse'){
-   current=savedForStyle?savedForStyle.levels.slice():original?original.slice():Array(10).fill(0);
+   current=savedForStyle?savedForStyle.levels.slice():original?original.slice():null;
    custom=Boolean(savedForStyle);sourceLabel=savedForStyle?.source||'';
+   autoPreview=!savedForStyle&&!original;referenceOnly=false;
   }else{
-   current=savedForStyle?savedForStyle.levels.slice():suggested?suggested.slice():Array(10).fill(0);
-   custom=true;sourceLabel=savedForStyle?.source||'Hipótese tática · '+styleLabel;
+   current=savedForStyle?savedForStyle.levels.slice():suggested?suggested.slice():original?original.slice():null;
+   autoPreview=!savedForStyle;referenceOnly=!savedForStyle&&!suggested&&!!original;
+   custom=Boolean(savedForStyle||suggested);
+   sourceLabel=savedForStyle?.source||
+    (referenceOnly?'Treino cadastrado · sem recálculo para '+styleLabel:
+    suggested?'Hipótese tática · '+styleLabel:'Aguardando comprovação de nível');
   }
   editing=false;refresh();
   notify('switch');
+ });
+ // V301: uma proposta V251 só preenche a PRÉVIA quando a edição e o
+ // nível estão conferidos. Não gravar localmente nem substituir rascunhos.
+ host.addEventListener('scoutpro:v301:preview-ready',event=>{
+  const info=event.detail||{};
+  if(!autoPreview||activeTactic==='posse'&&officialValid||localPPMismatch()||
+   Number(info.cap)!==capture||String(info.card_id)!==id||
+   String(info.tactic)!==activeTactic||!valid(info.levels)||
+   total(info.levels)!==budget)return;
+  current=info.levels.slice();suggested=info.levels.slice();
+  custom=true;referenceOnly=false;
+  sourceLabel='Proposta matemática V251 · '+styleLabel+' · não homologada';
+  refresh();
+  note.textContent='Prévia calculada com nível e PP conferidos, sem aplicar alterações à carta. Confirme habilidades, ímpetos e atributos finais no jogo.';
  });
  // V251: somente com clique e confirmação do usuário a proposta individual
  // pode substituir o RASCUNHO LOCAL desta tática. Nunca altera o catálogo.
@@ -222,7 +253,7 @@ function mount(doc){
     String(info.tactic)!==activeTactic||
     !valid(info.levels)||total(info.levels)!==budget)return;
   current=info.levels.slice();
-  custom=true;editing=false;
+  custom=true;editing=false;autoPreview=false;referenceOnly=false;
   sourceLabel='Rascunho individual V251 · '+styleLabel;
   const persisted=writeLocal();
   refresh();notify('save');
@@ -238,7 +269,8 @@ function mount(doc){
   const data=event.detail||{};
   if(localPPMismatch()||Number(data.cap)!==capture||String(data.card_id)!==id||!valid(data.levels))return;
   if(activeTactic!=='posse'||data.levels.every((n,i)=>n===current[i]))return;
-  current=data.levels.slice();custom=true;sourceLabel='Laboratório · '+String(data.scenario||'personalizado');
+  current=data.levels.slice();custom=true;autoPreview=false;referenceOnly=false;
+  sourceLabel='Laboratório · '+String(data.scenario||'personalizado');
   refresh();
  });
  function fold(id,title){
