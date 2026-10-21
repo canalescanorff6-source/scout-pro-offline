@@ -4,6 +4,9 @@ const root=path.resolve(__dirname,'..');const read=x=>fs.readFileSync(path.join(
 const friends=require('../web/craque-friends-v227.js');
 const bruno=require('../web/craque-bruno-v304.js');
 const engine=require('../web/craque-friends-training-v228.js');
+const engines={tactical:require('../web/scout-multitactic-engine-v220.js'),
+ skills:require('../web/skills-booster-v162.js'),
+ boosters:require('../web/booster-engine-v103.js')};
 const original=read('web/SCOUT_V69_AUDITORIA.json');
 assert.equal(JSON.parse(original).cards.length,246);
 assert.equal(bruno.NAME,'Bruno Santos CD');
@@ -32,7 +35,7 @@ assert.equal(z.cardId,'');assert.equal(z.level,null);assert.equal(z.pp,null);
 assert.equal(z.boosterSlot,'pendente');assert.equal(z.nativeSkills,'');
 assert(z.notes.includes('106 SA'));assert(z.notes.includes('108 MAT'));
 for(const mode of engine.MODES){
- const x=engine.evaluate(z,mode);
+ const x=engine.evaluate(z,mode,engines);
  assert.equal(x.plan.status,'pendente','PP inventado para '+mode);
  assert.equal(x.plan.levels,null);
  assert.equal(x.boosterEligible,false);
