@@ -1630,9 +1630,11 @@ function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
  // A confirmação de slots exige a LISTA real, não uma flag desacompanhada.
  const manual=typeof opts.manualEquipped==='string'?opts.manualEquipped:'';
  const verifiedEquipment=opts.equippedConfirmed===true&&
-  (opts.equipmentRecord===undefined||
-   checkedEquipment(d,manual,opts.equipmentRecord));
- const options={...opts,equippedConfirmed:verifiedEquipment};
+  checkedEquipment(d,manual,opts.equipmentRecord);
+ const boosterProof=boosterRecordEvidence(d,opts.boosterRecord||null);
+ const options={...opts,equippedConfirmed:verifiedEquipment,
+  verifiedSlot:boosterProof.valid?boosterProof.status:null,
+  verifiedBooster:boosterProof.valid?boosterProof.equipped:null};
  const main=strategicPortfolioV286(d,tactic,engine,manual,options);
  const opinion=competitiveQualityLabV285(d,tactic,engine,manual,options);
  const cap=Number(d.capture??d.numero),id=String(d.id||''),
