@@ -122,7 +122,7 @@ function mount(doc){
  trainingBlock.append(sectionHeading);
  trainingBlock.append(training);wrap.append(trainingBlock);
  const skillsSection=mk(doc,'section','scout-v220-recs');skillsSection.id='scout-v220-recs';
- skillsSection.innerHTML='<div class="scout-v220-section-head"><div>04 · HABILIDADES E ÍMPETO</div><p>Recomendações por edição cadastrada, função e tática. Não equipam nada na conta.</p></div>'+
+ skillsSection.innerHTML='<div class="scout-v220-section-head"><div id="scout-v303-recs-title">04 · HABILIDADES E ÍMPETO</div><p id="scout-v303-recs-context">Recomendações por edição cadastrada, função e tática. Não equipam nada na conta.</p></div>'+
  '<div class="scout-v220-recs-grid"><article class="scout-v220-skill-panel"><div class="scout-v220-card-head"><h3>5 habilidades adicionais</h3><span id="scout-v220-skill-count">—</span></div><div id="scout-v220-skill-list"></div><p class="scout-v220-small" id="scout-v220-skills-caution"></p><button type="button" class="scout-v220-link" id="scout-v220-edit-skills">Informar habilidades já equipadas ↗</button></article>'+
  '<article class="scout-v220-booster-panel"><div class="scout-v220-card-head"><h3>Ímpeto por estilo</h3><span id="scout-v220-booster-badge">PENDENTE</span></div><div class="scout-v220-boost-hero"><small>Recomendação consultiva</small><strong id="scout-v220-booster-name">—</strong></div><p id="scout-v220-booster-why"></p><p id="scout-v220-booster-other" class="scout-v220-small"></p><p id="scout-v220-booster-slot" class="scout-v220-warning"></p><button type="button" class="scout-v220-link" id="scout-v220-edit-booster">Conferir slot e opções ↗</button></article></div>';
  wrap.append(skillsSection);
@@ -208,6 +208,17 @@ function mount(doc){
  }
  function updateRecommendations(){
   const cfg=engine.styleFor(style);
+  const manager=host.CRAQUE_MANAGERS_V302?.selectedManager?.()||null;
+  const prof=manager?host.CRAQUE_MANAGERS_V302?.proficiency?.(manager,style):null;
+  const title=$(wrap,'scout-v303-recs-title'),context=$(wrap,'scout-v303-recs-context');
+  if(title)title.textContent='04 · HABILIDADES E ÍMPETO · '+cfg.short;
+  if(context)context.textContent=(manager?
+   'Técnico '+manager.nome+' ('+(manager.versao_lancamento||'edição pendente')+
+    ') · proficiência '+(prof===null?'pendente':prof)+'. ':
+   'Nenhum técnico selecionado. ')+
+   'Prioridades por função, habilidades nativas e estilo da carta; '+
+   'bônus de técnico NÃO são PP. Critério competitivo consultivo; '+
+   'sem endosso de Rentão/Blackjhon ou instalação automática.';
   const focus=engine.focus(card,style),proof=evidence(card,{base_stats_known:card.base_stats_known,niveis:card.recommended_levels,habilidades_nativas:card.native_skills,name:card.name},style);
   // V233: prioridades explicadas por posição real, habilidades e estilo, não apenas
   // por uma lista de pesos genéricos. Fallback V220 se a extensão não carregar.
@@ -333,6 +344,13 @@ function mount(doc){
  // Reapresentar o contexto, sem alegar mudança de PP por bônus do técnico.
  host.addEventListener('scoutpro:manager-selected-v302',event=>{
   const detail=event.detail||{};
+  if(detail.tactic==='overload'){
+   const notice=$(wrap,'scout-v303-style-summary');
+   if(notice)notice.textContent='SOBREPOSIÇÃO · motor de PP ainda pendente. '+
+    'A ficha que continua visível pertence à última tática suportada; '+
+    'não é uma ficha homologada de Overload.';
+   return;
+  }
   if(!styles.includes(detail.tactic))return;
   if(style!==detail.tactic)choose(detail.tactic,true);
   else{switchTraining(style);updateRecommendations();}
