@@ -76,6 +76,15 @@ for(const marker of ['',null,'PENDENTE - confirmar','DESCONHECIDO','Não informa
  assert.equal(S.evaluate(trial,'posse','',{equippedConfirmed:true}).slotsRemaining,null);
 }
 assert.equal(S.checkedEquipment(sample,'',receipt(sample)),true);
+// Mesmo com lista nativa conhecida, uma posição não mapeada não comprova
+// a elegibilidade das adicionais nem libera automaticamente cinco vagas.
+const unknownRole={...sample,shown_position:'POSICAO_NAO_CADASTRADA',
+ role_used:'POSICAO_NAO_CADASTRADA',posicao:'POSICAO_NAO_CADASTRADA'};
+assert.equal(S.checkedEquipment(unknownRole,'',receipt(unknownRole)),false);
+assert.equal(S.verifiedRecommendationContextV288(unknownRole,{
+ manualEquipped:'',equipmentRecord:receipt(unknownRole)}).skills.confirmed,false);
+assert.equal(S.skillEligibility(unknownRole,'onepass'),'posicao_pendente');
+
 assert.equal(S.checkedEquipment({...sample,id:'outra edição'},'',receipt(sample)),false);
 const martin=cards.find(c=>c.numero===191);
 assert.equal(martin.max_level,26);
