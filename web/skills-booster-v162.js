@@ -1640,8 +1640,14 @@ function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
  const cap=Number(d.capture??d.numero),id=String(d.id||''),
   edition=String(d.edition||d.versao||'');
  const canonical=Boolean(main.identity.valid);
+ // V287: PP, nome (quando fornecido) e posição ORIGINAL também são
+ // chaves de conciliação; a posição alternativa confirmada não altera a origem.
+ const originalPosition=String(d.original_position||d.posicao||d.shown_position||'');
  const matchedIndex=Boolean(index&&Number(index.numero)===cap&&
-  String(index.card_id||'')===id&&normal(index.edicao||'')===normal(edition));
+  String(index.card_id||'')===id&&normal(index.edicao||'')===normal(edition)&&
+  Number(index.pp)===Number(d.pp)&&
+  (!d.name||normal(index.nome||'')===normal(d.name))&&
+  (!originalPosition||normal(index.posicao||'')===normal(originalPosition)));
  const record=matchedIndex?index:null;
  const native=splitSkills(d.native_skills||d.habilidades_nativas||'');
  const base=engine?.baseStatsAudit?.({
