@@ -25,6 +25,10 @@ const required=[
  "keys=('schema','version','git_revision','bundle_fingerprint','source_count')"
 ];
 for(const item of required)assert(release.includes(item),'Falta na release conjunta: '+item);
+for(const s of ['draft: true','make_latest: false','--draft=false --latest',
+ 'Proibir colisão com versões oficiais existentes',
+ 'Conferir no GitHub os cinco artefatos antes de ativar os atualizadores',
+ 'gh release view'])assert(release.includes(s),'Falha no preparo/validação da release: '+s);
 const cert=signer.match(/const expectedCert='([0-9a-f]{64})'/)?.[1];
 assert(cert,'Certificado oficial V99 precisa estar documentado');
 assert(android.includes("EXPECTED_CERT='"+cert+"'"));
