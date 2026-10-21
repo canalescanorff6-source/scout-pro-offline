@@ -17,7 +17,7 @@ assert.deepEqual(B.tactics,goal);
 assert.deepEqual(goal.map(x=>B.TACTIC_LABEL[x]),[
  'Posse de Bola','Contra-Ataque Normal','Contra-Ataque Rápido','Por Fora','Passe Longo'
 ]);
-const fake={capture:991,id:'TESTE_ID_EDICAO_991',edition:'EPIC-TESTE-991',shown_position:'MO',
+const fake={capture:991,id:'990000991',edition:'EPIC-TESTE-991',shown_position:'MO',
  native_skills:'Passe de primeira',attack_style:'Armador criativo'};
 assert.equal(S.fingerprint('Passe de primeira; One Touch Pass'),'onepass');
 assert.equal(S.fingerprint('One Touch Pass; Passe de primeira'),'onepass');
@@ -29,6 +29,8 @@ const proof={
  confirmed:true,fingerprint:S.fingerprint(full)
 };
 assert(S.checkedEquipment(fake,full,proof));
+assert(!S.checkedEquipment({...fake,id:'TESTE_ID_EDICAO_991'},full,proof),
+ 'Identificador textual de teste não equivale ao Card ID numérico da edição');
 assert(!S.checkedEquipment({...fake,id:'OUTRO_CARD_ID'},full,proof),
  'Não transferir confirmação entre versões homônimas');
 assert(!S.checkedEquipment({...fake,capture:992},full,proof));
