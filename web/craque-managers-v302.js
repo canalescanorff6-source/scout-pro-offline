@@ -56,8 +56,8 @@ async function load(){
 function find(id){return all?.find(x=>x.catalog_id===id)||null}
 function preferred(manager,requested){
  const viable=STYLES.filter(x=>x.supported);
- if(viable.some(x=>x.id===requested&&Number.isInteger(manager.prof_cada_estilo[x.field])))
-  return requested;
+ if(STYLES.some(x=>x.id===requested&&
+  Number.isInteger(manager.prof_cada_estilo[x.field])))return requested;
  return viable.slice().sort((a,b)=>manager.prof_cada_estilo[b.field]-
   manager.prof_cada_estilo[a.field])[0]?.id||'posse';
 }
@@ -204,6 +204,8 @@ function mount(doc){
   if(!selected||!ev.detail?.tactic||!STYLES.some(x=>x.id===ev.detail.tactic))return;
   selectedTactic=ev.detail.tactic;
   style.value=selectedTactic;
+  try{host.localStorage.setItem(KEY,JSON.stringify({
+   catalog_id:selected.catalog_id,tactic:selectedTactic}))}catch(_){}
   render();
  });
  return true;
