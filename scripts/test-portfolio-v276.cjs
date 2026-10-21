@@ -83,7 +83,7 @@ assert.equal(scenarios,1230);
 assert.equal(JSON.stringify(cards),initial);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),original);
 // Balanceamento não troca a ordem oficial das 5 prioridades; é uma alternativa.
-const base={shown_position:'CA',attack_style:'Artilheiro',native_skills:''};
+const base={shown_position:'CA',attack_style:'Artilheiro',native_skills:'Heading'}; // Inventário sintético presente para prova dos cinco slots (V289).
 const r=S.evaluate(base,'posse');
 assert.equal(r.recommendations.length,5);
 assert(r.balancedPortfolio.candidates.length===5);
