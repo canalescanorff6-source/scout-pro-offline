@@ -23,7 +23,12 @@ for(const c of cards){
   assert(r.recommendations.length<=5);
   assert.equal(r.slotsRemaining,null);
   assert.equal(r.equippedConfirmed,false);
-  assert.equal(r.requiresReconciliation,false);
+  // V289: inventário nativo ausente não pode ser tratado como cinco vagas
+  // elegíveis. Para cartas com nativas registradas, manter comportamento V266.
+  const nativeMissing=!String(c.habilidades_nativas||'').trim();
+  assert.equal(r.requiresReconciliation,nativeMissing,
+   'Conciliação por inventário nativo ausente: CAP '+c.numero);
+  if(nativeMissing)assert(r.missing.some(x=>/nativas/i.test(x)));
   if(r.unmappedNativeSkills.length)mappedNativePartial++;
   const nativeIds=new Set(String(c.habilidades_nativas||'').split(';').map(S.keyFor).filter(Boolean));
   for(const skill of r.recommendations.concat(r.alternatives)){
