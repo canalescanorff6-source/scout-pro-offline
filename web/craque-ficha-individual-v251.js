@@ -538,7 +538,8 @@ function methodologyGate(card,proof,style,store,review={}){
  }catch(_){slot=null}
  const confirmed=Boolean(S?.checkedEquipment?.(data,manual,confirmation)&&has('additional'));
  let skills=null,boost=null;
- try{skills=S?.evaluate?.(data,style,manual,{equippedConfirmed:confirmed})||null}catch(_){}
+ try{skills=S?.evaluate?.(data,style,manual,{equippedConfirmed:confirmed,
+  equipmentRecord:confirmed?confirmation:null})||null}catch(_){}
  try{boost=S?.booster?.(data,style,B,slot?.status,slot?.equipped)||null}catch(_){}
  const trained=hasValidBuild(card),budget=has('budget');
  const proven=trained&&budget&&has('base')&&has('video')&&has('gameplay');
