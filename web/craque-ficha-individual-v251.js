@@ -464,11 +464,16 @@ function proofChecklist(card,index,lab,store){
  const identity={capture:Number(card.numero),id:String(card.id),edition:String(card.versao||''),
   shown_position:card.posicao,native_skills:card.habilidades_nativas};
  const checked=Boolean(S?.checkedEquipment?.(identity,installedSkills,equipmentRecord));
- const extra=checked?S.evaluate(identity,'posse',installedSkills,{equippedConfirmed:true}):null;
+ // V300: a checagem externa V254 não dispensa o recibo na avaliação.
+ // O motor V294 exige equipmentRecord para evitar confirmações por flag.
+ const extra=checked?S.evaluate(identity,'posse',installedSkills,{
+  equippedConfirmed:true,equipmentRecord
+ }):null;
  const knownNames=installedSkills.split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean)
   .every(x=>Boolean(S?.keyFor?.(x)));
- const additionalDocumented=checked&&Boolean(extra)&&knownNames&&
-  !extra.manualOverLimit&&extra.nativeManualConflicts.length===0;
+ const additionalDocumented=checked&&extra?.equippedConfirmed===true&&knownNames&&
+  extra.requiresReconciliation!==true&&!extra.manualOverLimit&&
+  extra.nativeManualConflicts.length===0;
  const boosterEvidence=S?.boosterRecordEvidence?.(identity,boostSlot);
  const boosterReported=boosterEvidence?.valid===true;
  const checks=[
