@@ -446,6 +446,8 @@ function proofChecklist(card,index,lab,store){
   norm(index.edicao)===norm(card.versao));
  const row=matched?index:{};
  const native=String(card?.habilidades_nativas||'').split(';').filter(x=>x.trim()).length;
+ const localProgress=localLevelReview(card,store);
+ const progressConflict=Boolean(localProgress&&localProgress.pp!==Number(card.pp));
  const base=baseEvidence(card,row,lab);
  let installedSkills='',boostSlot=null,equipmentRecord=null;
  try{
@@ -474,8 +476,12 @@ function proofChecklist(card,index,lab,store){
    documented:matched&&!['sem_card_id','card_id_compartilhado'].includes(row.id_status),
    note:'Identidade cadastral não substitui print da versão.'},
   {id:'budget',name:'Nível máximo e PP comprovados pelo usuário',
-   documented:confirmedLevel(card)||Boolean(localLevelReview(card,store)),
-   note:'PP matematicamente fechados não homologam builds.'},
+   documented:!progressConflict&&(confirmedLevel(card)||Boolean(localProgress)),
+   note:progressConflict?
+    'PP DIVERGENTES: conferência local indica '+localProgress.pp+' PP (nível '+
+    localProgress.level+'), mas catálogo registra '+card.pp+
+    ' PP. Conferência documental SUSPENSA até reconciliação da mesma edição.':
+    'PP matematicamente fechados não homologam builds.'},
   {id:'native',name:'Habilidades nativas documentadas',
    documented:matched&&native>0&&native===row.nativas_documentadas,
    note:'Cadastro não comprova habilidades equipadas.'},
