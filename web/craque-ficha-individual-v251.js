@@ -920,6 +920,101 @@ function display(){
      'Análise consultiva baseada nos dados desta edição. Não altera builds, PP, slots ou equipamentos '+
      'e não atribui aprovação a criadores sem fonte da edição exata.'));
     panel.append(opt);
+    // V287: conselho documental integra índice + cadastro + V286 sem inventar prints.
+    if(typeof S?.professionalEvidenceCouncilV287==='function'){
+     let equipmentRecord=null,manual='',boostSlot=null;
+     try{
+      manual=String(host.localStorage?.getItem('scoutpro:v162:equipped:'+
+       Number(card.numero)+':'+String(card.id))||'');
+      equipmentRecord=JSON.parse(host.localStorage?.getItem(
+       S.confirmationKey(Number(card.numero),String(card.id)))||'null');
+      boostSlot=JSON.parse(host.localStorage?.getItem('scoutpro:v103:booster:'+
+       Number(card.numero))||'null');
+     }catch(_){}
+     const editionIdentity={capture:Number(card.numero),id:String(card.id),
+      edition:String(card.versao)};
+     const additionalEvidence=S.checkedEquipment(editionIdentity,manual,equipmentRecord);
+     const boosterEvidence=S.boosterRecordEvidence(editionIdentity,boostSlot);
+     const audited=S.professionalEvidenceCouncilV287(selectedData,active,B,
+      evidenceByCap.get(Number(card.numero)),{
+       manualEquipped:manual,equippedConfirmed:additionalEvidence,
+       equipmentRecord,
+       verifiedSlot:boosterEvidence.valid?boosterEvidence.status:null,
+       verifiedBooster:boosterEvidence.valid?boosterEvidence.equipped:null
+      });
+     const audit287=mk('details','ct251-evidence-details ct287-evidence-council');
+     audit287.dataset.confidence=audited.confidence;
+     audit287.append(mk('summary','','V287 · Conselho de evidências · cinco habilidades e ímpetos'));
+     audit287.append(mk('p','ct287-status','Situação: '+audited.confidence.replaceAll('_',' ')+
+      ' · '+audited.pendingCount+'/'+audited.checks.length+
+      ' verificações ainda exigem fontes. Sem homologação automática.'));
+     const dashboard=mk('div','ct287-metrics');
+     for(const [stat,label] of [
+      [audited.skillCouncil.length,'Habilidades candidatas'],
+      [audited.boosters.length,'Ímpetos para comparar'],
+      [audited.changeLog.length,'Mudanças no pacote V286'],
+      [audited.pendingCount,'Evidências pendentes']]){
+      const cell=mk('div','ct287-metric');
+      cell.append(mk('strong','',String(stat)),mk('small','',label));
+      dashboard.append(cell);
+     }
+     audit287.append(dashboard);
+     audit287.append(mk('h5','','Prioridades documentais por carta'));
+     const urgent=mk('ol','ct287-priority');
+     for(const gap of audited.pending){
+      const item=mk('li','');
+      item.dataset.severity=gap.phase;
+      item.append(mk('strong','',gap.title),mk('p','',gap.action));
+      urgent.append(item);
+     }
+     if(!audited.pendingCount)urgent.append(mk('li','',
+      'Fontes catalogadas alinhadas; ainda conferir vídeo e partidas da edição.'));
+     audit287.append(urgent);
+     audit287.append(mk('h5','','Decisão das habilidades e sua estabilidade'));
+     const skills=mk('ol','ct287-skill-council');
+     for(const skill of audited.skillCouncil){
+      const item=mk('li','');
+      item.append(mk('strong','',skill.order+' · '+skill.name+
+       ' · '+skill.family));
+      item.append(mk('p','',skill.reason+
+       ' Presente em '+skill.usedByStyles.length+'/5 estilos. '+
+       (skill.agreementWithIndividual?
+       'Também está entre as prioridades do ranking individual.':
+       'O pacote completo a prioriza por cobertura ou complementaridade.')));
+      if(skill.reasonsForReview.length)
+       item.append(mk('small','','Conferir: '+skill.reasonsForReview.join('; ')+'.'));
+      skills.append(item);
+     }
+     if(!audited.skillCouncil.length)
+      skills.append(mk('li','','Nenhuma skill nova autorizada por dados suficientes.'));
+     audit287.append(skills);
+     audit287.append(mk('h5','','Ímpetos · eixos por função, fixo e sensibilidade'));
+     const boostList=mk('ol','ct287-booster-council');
+     for(const item of audited.boosters){
+      const row=mk('li','');
+      row.append(mk('strong','',item.rank+' · '+item.name));
+      row.append(mk('p','','Quatro atributos: '+item.fourAttributes.map(
+       k=>B.BASE_STAT_LABELS?.[k]||k).join(', ')+
+       '. Peso relativo da função: '+item.roleWeightSum+
+       (item.fixedKnown?' · '+item.fixedOverlap+'/4 eixos coincidem com o fixo.':
+        ' · ímpeto fixo não identificado com quatro eixos.')));
+      boostList.append(row);
+     }
+     if(!audited.boosters.length)boostList.append(mk('li','','Nenhum ímpeto classificável.'));
+     audit287.append(boostList);
+     const sensitive=audited.boosterSensitivity.filter(x=>x.available&&x.firstChoiceChanges);
+     audit287.append(mk('p','ct287-interpretation',sensitive.length?
+      'ATENÇÃO: o primeiro ímpeto muda quando são retirados os sinais de '+
+       sensitive.map(x=>x.factor).join(', ')+'. Não comprar com base numa única nota.':
+      'Nenhuma variação de ímpeto comprovada pelos sinais que puderam ser testados; '+
+      'estabilidade heurística não equivale a vantagem real.'));
+     audit287.append(mk('p','ct251-caution',
+      'Card ID '+audited.identity.cardId+' · edição '+audited.identity.edition+
+      '. Sem OVR, sem aplicação de habilidades/ímpetos, sem autoria atribuída a criadores '+
+      'e sem assumir que print candidato é prova de gameplay.'));
+     panel.append(audit287);
+    }
+
    }
 
   }
