@@ -106,6 +106,9 @@ for(const change of [
  assert.equal(S.identityEvidenceV293(change),false);
  assert.equal(S.checkedEquipment(change,'',equipment(change)),false);
  assert.equal(S.boosterRecordEvidence(change,boostRecord(change)).valid,false);
+ assert.equal(B.rank({...martin,id:change.id??martin.id,
+  versao:change.edition??martin.versao},'posse')[0].estado_confianca,
+  'PENDENTE_IDENTIDADE');
 }
 const id = adapt(cards.find(c=>c.numero===1));
 assert.equal(S.identityEvidenceV293(id),true);
