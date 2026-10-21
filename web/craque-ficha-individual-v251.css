@@ -294,3 +294,58 @@ body[data-page="detail"] .ct264-pendencies>summary{
 @media(max-width:520px){
  body[data-page="detail"] .ct264-status{padding:10px;margin:10px 0;}
 }
+
+
+/* V285: Segunda opinião compacta, sem ocultar cartas e sem cor fora da identidade. */
+#ct251-individual-ficha .ct285-quality-lab{
+  margin:14px 0 0;border:1px solid rgba(228,189,106,.48);
+  border-radius:14px;overflow:hidden;
+  background:linear-gradient(145deg,rgba(19,45,59,.92),rgba(8,26,36,.98));
+  color:#f2eee2;max-width:100%;
+}
+#ct251-individual-ficha .ct285-quality-lab > summary{
+  cursor:pointer;font-weight:800;color:#f1cc83;min-height:46px;
+  padding:12px 14px;overflow-wrap:anywhere;
+}
+#ct251-individual-ficha .ct285-quality-lab > :not(summary){
+  margin:10px 14px 14px;max-width:calc(100% - 28px);overflow-wrap:anywhere;
+}
+#ct251-individual-ficha .ct285-quality-lab h4{font-size:14px;line-height:1.45;color:#f2d59b}
+#ct251-individual-ficha .ct285-stat-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+}
+#ct251-individual-ficha .ct285-stat{
+  padding:12px 10px;border:1px solid #405a64;border-radius:10px;
+  background:rgba(10,29,41,.9);display:flex;flex-direction:column;gap:4px;
+}
+#ct251-individual-ficha .ct285-stat strong{font-size:22px;color:#f1d18b}
+#ct251-individual-ficha .ct285-stat span{font-size:11px;line-height:1.5;color:#cedce0}
+#ct251-individual-ficha .ct285-tactics{display:grid;gap:8px}
+#ct251-individual-ficha .ct285-tactic{
+  padding:10px;border:1px solid #3e5c68;border-radius:11px;
+  background:rgba(10,31,43,.78);min-width:0;
+}
+#ct251-individual-ficha .ct285-tactic[data-tactic="posse"]{border-inline-start:4px solid #d1a654}
+#ct251-individual-ficha .ct285-tactic strong{color:#f4d499}
+#ct251-individual-ficha .ct285-tactic p{margin:5px 0}
+#ct251-individual-ficha .ct285-tactic small{color:#afc9d1;line-height:1.5}
+#ct251-individual-ficha .ct285-skill-reasons,
+#ct251-individual-ficha .ct285-boosters,
+#ct251-individual-ficha .ct285-tasks,
+#ct251-individual-ficha .ct285-experiments{
+  padding-inline-start:20px;display:grid;gap:9px;line-height:1.55;
+}
+#ct251-individual-ficha .ct285-skill{
+  padding:11px;border:1px solid #344f5b;border-radius:10px;background:rgba(10,29,41,.85);
+}
+#ct251-individual-ficha .ct285-skill strong{color:#f2d292}
+#ct251-individual-ficha .ct285-skill p{margin:5px 0}
+#ct251-individual-ficha .ct285-skill small{color:#c6d6da;line-height:1.5}
+@media(min-width:900px){
+ #ct251-individual-ficha .ct285-stat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ #ct251-individual-ficha .ct285-tactics{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:375px){
+ #ct251-individual-ficha .ct285-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #ct251-individual-ficha .ct285-quality-lab > :not(summary){margin-inline:10px;max-width:calc(100% - 20px)}
+}
