@@ -89,6 +89,12 @@ for(const card of cards){
 assert.equal(scenarios,1230);
 assert.equal(crossPairs,12300);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),original);
+const messiPending=cards.find(c=>c.numero===50);
+assert(messiPending&&/PENDENTE/i.test(messiPending.id));
+const pendingLab=S.competitiveQualityLabV285(dFor(messiPending),'posse',B);
+assert.equal(pendingLab.guards.identityNotFaked,true);
+assert(pendingLab.evidenceTasks.some(x=>x.key==='identidade'),
+ 'CAP050 deve continuar pendente, jamais assumir Card ID confirmado');
 const martin=cards.find(c=>c.numero===191);
 assert(martin&&martin.max_level===26&&martin.pp===50);
 const martinLab=S.competitiveQualityLabV285(dFor(martin),'posse',B);
