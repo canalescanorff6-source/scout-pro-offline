@@ -9,7 +9,7 @@ const cards=JSON.parse(corpus).cards,index=JSON.parse(source).cards;
 const S=require('../web/skills-booster-v162.js'),B=require('../web/booster-engine-v103.js');
 assert.equal(cards.length,246);assert.equal(index.length,246);
 assert.equal(new Set(cards.map(c=>c.numero)).size,246);
-const adapt=c=>({capture:c.numero,id:c.id,edition:c.versao,
+const adapt=c=>({capture:c.numero,id:c.id,name:c.name,edition:c.versao,
  posicao:c.posicao,original_position:c.posicao,shown_position:c.posicao,role_used:c.posicao,
  attack_style:c.estilo_ataque,defence_style:c.estilo_defesa,
  native_skills:c.habilidades_nativas,pp:c.pp,pp_estimado:c.pp_estimado===true,
