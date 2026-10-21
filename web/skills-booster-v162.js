@@ -1627,8 +1627,14 @@ function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
 // V287 — prontuário de fontes + consenso de conjunto e ímpeto; somente hipótese.
 function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Estilo tático inválido V287');
- const main=strategicPortfolioV286(d,tactic,engine,'',opts);
- const opinion=competitiveQualityLabV285(d,tactic,engine,'',opts);
+ // A confirmação de slots exige a LISTA real, não uma flag desacompanhada.
+ const manual=typeof opts.manualEquipped==='string'?opts.manualEquipped:'';
+ const verifiedEquipment=opts.equippedConfirmed===true&&
+  (opts.equipmentRecord===undefined||
+   checkedEquipment(d,manual,opts.equipmentRecord));
+ const options={...opts,equippedConfirmed:verifiedEquipment};
+ const main=strategicPortfolioV286(d,tactic,engine,manual,options);
+ const opinion=competitiveQualityLabV285(d,tactic,engine,manual,options);
  const cap=Number(d.capture??d.numero),id=String(d.id||''),
   edition=String(d.edition||d.versao||'');
  const canonical=Boolean(main.identity.valid);
@@ -1644,7 +1650,7 @@ function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
  const nativeAligned=Boolean(record&&native.length&&indexNative===native.length);
  const completeBase=base.status==='base_completa_confirmada';
  const level=investmentAudit(d);
- const localSkills=opts.equippedConfirmed===true;
+ const localSkills=verifiedEquipment;
  const catalogSlot=main.boosters.catalogProof===true;
  const accountSlot=main.boosters.accountEmpty===true;
  const fixedName=engine?.boosterName?.(d.boost1||d.impeto_fixo)||null;
