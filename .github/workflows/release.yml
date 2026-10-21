@@ -150,6 +150,14 @@ jobs:
           path: build/v285-quality-246x5.json
           if-no-files-found: warn
           retention-days: 30
+      - name: V286 — auditoria do conjunto de 5 habilidades e ímpetos por edição
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-v286-portfolio-estrategico-246x5
+          path: build/v286-strategic-portfolios-246x5.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs

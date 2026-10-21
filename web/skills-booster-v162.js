@@ -554,6 +554,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
   contextualNativeSkills:contextNatives.known.slice(),
   contextualNativeGroups:{...contextNatives.groups},
   contextualEvidence:'nome_cadastrado_sem_efeito_de_gameplay_validado',
+  rankedCandidates:Object.freeze(ranked.map(x=>Object.freeze({...x}))),
   recommendations:ranked.slice(0,limit),alternatives:ranked.slice(limit,limit+3),
   balancedPortfolio:Object.freeze({...balancedPortfolio,
    slotCountConfirmed:equippedConfirmed,mayApply:false}),
@@ -1489,8 +1490,141 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
   note:'Blackjhon e Rentão são padrões de rigor; este relatório não atribui uma build a eles sem verificação de vídeo e carta exatos.'
  });
 }
+
+// V286 — examina o pacote COMPLETO de habilidades. Notas são heurísticas,
+// nunca desempenho medido, aprovação de criador ou permissão de equipar.
+function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
+ if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida V286');
+ const base=evaluate(d,tactic,manualEquipped,{
+  equippedConfirmed:opts.equippedConfirmed===true});
+ const role=base.role,cap=Number(d.capture??d.numero),
+  id=String(d.id||''),edition=String(d.edition||d.versao||'');
+ const identityOK=Number.isInteger(cap)&&cap>0&&id.trim()&&edition.trim()&&
+  !/pendente|confirmar|invalid|desconhecid/i.test(id+' '+edition);
+ const requested=base.equippedConfirmed?Math.max(0,Math.min(5,base.slotsRemaining)):5;
+ const pool=base.rankedCandidates||[],rank=new Map(pool.map((x,i)=>[x.key,i]));
+ // Nativas e adicionais já informadas podem deixar menos que 5 SKILLS elegíveis.
+ // Nunca inventar ou recomendar a nativa outra vez apenas para preencher vagas.
+ const limit=Math.min(requested,pool.length);
+ const family=k=>SKILL_FAMILY[k]||'outros';
+ const needsRole=ROLE_FAMILIES[role]||[],needsTactic=TACTIC_FAMILIES[tactic]||[];
+ const native=splitSkills(d.native_skills||d.habilidades_nativas||''),
+  nativeKeys=new Set(native.map(keyFor).filter(Boolean));
+ const nativeFamilies={};
+ for(const k of nativeKeys)nativeFamilies[family(k)]=(nativeFamilies[family(k)]||0)+1;
+ const baseline=pool.slice(0,limit).map(x=>x.key);
+ const score=keys=>{
+  const families={};let raw=0;
+  for(const key of keys){
+   const x=pool[rank.get(key)];if(!x)return null;
+   raw+=x.score;families[family(key)]=(families[family(key)]||0)+1;
+  }
+  let coverageRole=0,coverageTactic=0,repeat=0,nativeOverlap=0;
+  for(const [f,n] of Object.entries(families)){
+   if(needsRole.includes(f))coverageRole+=20;
+   if(needsTactic.includes(f))coverageTactic+=13;
+   if(n>1)repeat+=Math.min(65,18*(n-1)*(n-1));
+   if(nativeFamilies[f])nativeOverlap+=5*n;
+  }
+  const s=new Set(keys),synergy=[];
+  if(s.has('onepass')&&s.has('through'))
+   synergy.push({key:'tabela',score:tactic==='posse'?12:7,
+    reason:'Tabelas e passes verticais conectam apoio e infiltração.'});
+  if(s.has('sole')&&(s.has('double')||s.has('heel'))&&
+    ['CA','SA','MAT','MLG','ALA'].includes(role))
+   synergy.push({key:'giro',score:tactic==='posse'?9:5,
+    reason:'Domínio e giro facilitam ações centrais sob pressão.'});
+  if(s.has('intercept')&&s.has('blocker')&&
+    ['VOL','ZG','LD','LE'].includes(role))
+   synergy.push({key:'cobertura',score:9,
+    reason:'Cobertura de linhas e bloqueios são ações complementares.'});
+  if(s.has('onepass')&&s.has('firstshot')&&['CA','SA'].includes(role))
+   synergy.push({key:'finalizacao',score:6,
+    reason:'Passe e chute de primeira cobrem fases distintas.'});
+  const bonus=synergy.reduce((a,x)=>a+x.score,0);
+  return Object.freeze({total:Number((raw+coverageRole+coverageTactic+
+   bonus-repeat-nativeOverlap).toFixed(2)),raw,coverageRole,coverageTactic,
+   bonus,repeat,nativeOverlap,families:Object.freeze(families),
+   synergies:Object.freeze(synergy.map(x=>Object.freeze(x)))});
+ };
+ const combos=[],enumerate=(start,keys)=>{
+  if(keys.length===limit){const calc=score(keys);
+   if(calc)combos.push({keys:keys.slice(),calc});return;}
+  for(let i=start;i<=pool.length-(limit-keys.length);i++)
+   enumerate(i+1,[...keys,pool[i].key]);
+ };
+ if(limit===0)combos.push({keys:[],calc:score([])});
+ else if(pool.length>=limit)enumerate(0,[]);
+ const sumRank=keys=>keys.reduce((n,k)=>n+(rank.get(k)||0),0);
+ combos.sort((a,b)=>b.calc.total-a.calc.total||
+  sumRank(a.keys)-sumRank(b.keys)||a.keys.join('|').localeCompare(b.keys.join('|')));
+ const initial=score(baseline),best=combos[0]||{keys:baseline,calc:initial};
+ const improvement=Number((best.calc.total-initial.total).toFixed(2));
+ const adopted=improvement>=3&&best.keys.join('|')!==baseline.join('|');
+ const selected=adopted?best:{keys:baseline,calc:initial};
+ const chosen=selected.keys.map((key,i)=>{
+  const x=pool[rank.get(key)];
+  return Object.freeze({key,name:SKILLS[key].name,family:family(key),
+   position:i+1,rankingBase:(rank.get(key)||0)+1,scoreBase:x.score,
+   reason:SKILLS[key].why,factors:Object.freeze({...x.criterios}),
+   sameNativeFamily:Boolean(nativeFamilies[family(key)]),
+   equipAuthorized:false});
+ });
+ const boost=booster(d,tactic,engine,opts.verifiedSlot,opts.verifiedBooster);
+ const fixed=boost.complementarity.factoryAxes||[];
+ const options=[boost.primary,...boost.alternatives].filter(Boolean).map((x,i)=>{
+  const axes=engine?.BOOSTERS?.[x.nome]||[];
+  const shared=fixed.length===4?axes.filter(k=>fixed.includes(k)).length:null;
+  return Object.freeze({key:x.nome,name:x.nome_pt||x.nome,position:i+1,
+   score:x.score,axes:Object.freeze(axes.slice()),sharedFixed:shared,
+   complementaryScore:Number((x.score-(shared===null?0:1.25*shared)).toFixed(2)),
+   maySpendTokens:false,mayApply:false});
+ });
+ const primary=options[0]||null;
+ const tied=options.filter(x=>primary&&primary.score-x.score<=5);
+ const alternative=tied.slice().sort((a,b)=>b.complementaryScore-a.complementaryScore||
+  a.position-b.position)[0]||primary;
+ const pending=[];
+ if(!identityOK)pending.push({key:'identidade',level:'bloqueio',
+  what:'Card ID ou edição pendentes; não comparar com outro pack.'});
+ if(!native.length)pending.push({key:'nativas',level:'alto',
+  what:'Habilidades nativas da edição não documentadas.'});
+ const unknown=contextNativeProfile(native).unknown;
+ if(unknown.length)pending.push({key:'nativas_nao_interpretadas',level:'alto',
+  what:unknown.length+' nativas não interpretadas com segurança.'});
+ if(!investmentAudit(d).levels)pending.push({key:'pp',level:'alto',
+  what:'Conferir custo e vetor de PP nesta carta exata.'});
+ if(!base.equippedConfirmed)pending.push({key:'adicionais',level:'alto',
+  what:'Conferir os cinco slots de habilidades adicionais na conta.'});
+ if(!boost.slotSupported)pending.push({key:'slot_catalogo',level:'bloqueio',
+  what:'Slot selecionável não comprovado pelo catálogo.'});
+ if(boost.verifiedSlot!=='vazio')pending.push({key:'slot_conta',level:'alto',
+  what:'Slot de ímpeto vazio não confirmado nesta conta.'});
+ if(!d.base_stats_proof?.confirmed_in_game)pending.push({key:'base',level:'alto',
+  what:'Atributos-base completos e fonte da edição não confirmados.'});
+ pending.push({key:'gameplay',level:'revisao',
+  what:'Comparar vídeo e partidas da mesma edição antes de homologar.'});
+ return Object.freeze({
+  schema:'CRAQUE_V286_OTIMIZADOR_PACOTE',tactic,
+  identity:Object.freeze({capture:cap,cardId:id,edition,role,valid:Boolean(identityOK)}),
+  selected:Object.freeze(chosen),baseline:Object.freeze(baseline),
+  mathematicalOptimum:Object.freeze(best.keys.slice()),adopted,
+  improvement,evaluatedCombos:combos.length,
+  maxCandidates:limit,requestedCandidates:requested,
+  insufficientCandidates:limit<requested,
+  slotsConfirmed:base.equippedConfirmed,
+  utility:selected.calc,baselineUtility:initial,
+  skillSelectionNote:adopted?'Complementaridade alterou a lista calculada; sem prova de superioridade.':
+   'Lista anterior preservada: não diversificar sem ganho heurístico justificado.',
+  boosters:Object.freeze({primary,complementaryAlternative:alternative&&primary&&alternative.key!==primary.key?alternative:null,
+   candidates:Object.freeze(options),catalogProof:boost.slotSupported,
+   accountEmpty:boost.verifiedSlot==='vazio',maySpendTokens:false}),
+  priorityQueue:Object.freeze(pending.map(x=>Object.freeze(x))),
+  mayEditBuild:false,mayEquip:false,creatorVerified:false,gameplayVerified:false
+ });
+}
 const api={SKILLS,ENTRIES,POSITION,POOLS,ROLE_LABEL,ROLE_TACTIC_SKILLS,TACTIC_REASON,SKILL_FAMILY,ROLE_FAMILIES,TACTIC_FAMILIES,composePortfolio,PLAYBOOK_ROLE,PLAYBOOK_TACTIC,playbookOf,TRAINING_CATEGORY,CONTEXT_NATIVE_GROUPS,contextForNative,contextNativeProfile,investmentAudit,evidenceDossier,archetypeOf,keyFor,roleOf,evaluate,booster,USER_SLOT_NOTES,
- confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283,competitiveDecisionBoardV284,competitiveQualityLabV285};
+ confirmationKey,fingerprint,checkedEquipment,boosterRecordEvidence,evidenceRoadmap,decisionMatrixFromScenarios,individualEvidenceProfile,compareIndividualEvidence,tacticalSkillDelta,evidenceSensitivityV283,competitiveDecisionBoardV284,competitiveQualityLabV285,strategicPortfolioV286};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_RECOMMENDATIONS_V162=api;
 if(typeof document==='undefined'||document.body?.dataset.page!=='detail')return;

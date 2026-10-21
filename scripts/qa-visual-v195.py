@@ -1553,6 +1553,24 @@ def run():
                                 problems.append(f"{name}: V285 sem pendências")
                             if lab285.evaluate('(e)=>e.scrollWidth>e.clientWidth+6'):
                                 problems.append(f"{name}: painel V285 com overflow horizontal")
+                            # V286: comparar listas dentro da ficha, recolhida por padrão.
+                            opt286=lab284.locator('.ct286-strategic')
+                            if opt286.count()!=1:
+                                problems.append(f"{name}: V286 sem otimizador no laboratório")
+                            else:
+                                if opt286.evaluate('(e)=>e.open'):
+                                    problems.append(f"{name}: painel V286 aberto por padrão")
+                                opt286.locator(':scope > summary').click()
+                                if opt286.locator('.ct286-side').count()!=2:
+                                    problems.append(f"{name}: comparação antes/depois não montou")
+                                if opt286.locator('.ct286-new-list > li').count()<1:
+                                    problems.append(f"{name}: nenhuma habilidade consultiva na lista")
+                                if opt286.locator('.ct286-pending > li').count()<1:
+                                    problems.append(f"{name}: pendências documentais ausentes")
+                                if opt286.evaluate('(e)=>e.scrollWidth>e.clientWidth+6'):
+                                    problems.append(f"{name}: V286 causou overflow horizontal")
+                                page.screenshot(path=str(OUT/f"{name}_v286_portfolio.png"),
+                                    full_page=False,animations="disabled")
                             page.screenshot(path=str(OUT/f"{name}_v285_segunda_opiniao.png"),
                                 full_page=False,animations="disabled")
                         page.screenshot(path=str(OUT/f"{name}_v284_laboratorio.png"),
