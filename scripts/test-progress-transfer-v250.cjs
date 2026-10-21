@@ -23,7 +23,7 @@ const exportFile=items=>({
  records:items
 });
 const record=(card,level)=>({
- schema:P.SCHEMA,numero:card.numero,card_id:String(card.id),name:card.name,
+ schema:P.SCHEMA,numero:card.numero,card_id:String(card.id),name:card.name,edition:card.versao,
  level,pp:P.budget(level),confirmed_in_game:true,
  source:'conferência manual no eFootball',
  confirmed_at:'2026-10-19T02:01:11.000Z'
@@ -78,6 +78,8 @@ const tampered=[
  {...importTwo,card_id:'edicao-diferente'},
  {...importTwo,numero:191},
  {...importTwo,name:'Outra pessoa'},
+ {...importTwo,edition:'Outra edição, mesmo Card ID'},
+ {...importTwo,edition:undefined},
  {...importTwo,confirmed_in_game:false},
  {...importTwo,level:27,pp:50},
  {...importTwo,confirmed_at:'invalida'},
