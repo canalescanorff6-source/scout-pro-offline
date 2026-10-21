@@ -78,7 +78,7 @@ for(const card of cards){
  record.push(report);
 }
 assert.equal(cases,1230);assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
-const synthetic={shown_position:'CA',attack_style:'Artilheiro',native_skills:'Heading'}; // Fixture V291: inventário conhecido
+const synthetic={capture:977,id:'977000977',edition:'TESTE-V277',shown_position:'CA',attack_style:'Artilheiro',native_skills:'Heading'}; // Fixture V291: inventário conhecido
 const initial=S.evaluate(synthetic,'posse');
 const ranked=initial.recommendations.concat(initial.alternatives);
 const native=S.composePortfolio(ranked,'CA','posse',5,{nativeKeys:['onepass']});
@@ -90,14 +90,17 @@ assert(equipped.candidates.some(x=>x.evidence.equippedPenalty>0));
 assert.throws(()=>S.composePortfolio([],'CA','posse',6),/Limite/);
 const originalNative=S.evaluate({...synthetic,native_skills:'Passe de primeira'},'posse');
 assert(!originalNative.recommendations.some(x=>x.key==='onepass'));
+const receipt=(manual)=>({schema:'CRAQUE_ADDITIONAL_V254',confirmed:true,
+ capture:synthetic.capture,card_id:synthetic.id,edition:synthetic.edition,
+ fingerprint:S.fingerprint(manual),nativeFingerprint:S.fingerprint(synthetic.native_skills)});
 const four=S.evaluate(synthetic,'posse',
  'Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola',
- {equippedConfirmed:true});
+ {equippedConfirmed:true,equipmentRecord:receipt('Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola')});
 assert.equal(four.slotsRemaining,1);
 assert.equal(four.balancedPortfolio.candidates.length,1);
 const five=S.evaluate(synthetic,'posse',
  'Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola; Espírito guerreiro',
- {equippedConfirmed:true});
+ {equippedConfirmed:true,equipmentRecord:receipt('Passe de primeira; Passe em profundidade; Toque duplo; Controle com a sola; Espírito guerreiro')});
 assert.equal(five.balancedPortfolio.candidates.length,0);
 const martin=cards.find(x=>x.numero===191);assert.equal(martin.pp,50);assert.equal(martin.max_level,26);
 const similarities=[...repeats].filter(([,caps])=>caps.length>1)
