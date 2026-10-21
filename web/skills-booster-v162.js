@@ -1501,8 +1501,11 @@ function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
   id=String(d.id||''),edition=String(d.edition||d.versao||'');
  const identityOK=Number.isInteger(cap)&&cap>0&&id.trim()&&edition.trim()&&
   !/pendente|confirmar|invalid|desconhecid/i.test(id+' '+edition);
- const limit=base.equippedConfirmed?Math.max(0,Math.min(5,base.slotsRemaining)):5;
+ const requested=base.equippedConfirmed?Math.max(0,Math.min(5,base.slotsRemaining)):5;
  const pool=base.rankedCandidates||[],rank=new Map(pool.map((x,i)=>[x.key,i]));
+ // Nativas e adicionais já informadas podem deixar menos que 5 SKILLS elegíveis.
+ // Nunca inventar ou recomendar a nativa outra vez apenas para preencher vagas.
+ const limit=Math.min(requested,pool.length);
  const family=k=>SKILL_FAMILY[k]||'outros';
  const needsRole=ROLE_FAMILIES[role]||[],needsTactic=TACTIC_FAMILIES[tactic]||[];
  const native=splitSkills(d.native_skills||d.habilidades_nativas||''),
@@ -1607,7 +1610,9 @@ function strategicPortfolioV286(d,tactic,engine,manualEquipped='',opts={}){
   selected:Object.freeze(chosen),baseline:Object.freeze(baseline),
   mathematicalOptimum:Object.freeze(best.keys.slice()),adopted,
   improvement,evaluatedCombos:combos.length,
-  maxCandidates:limit,slotsConfirmed:base.equippedConfirmed,
+  maxCandidates:limit,requestedCandidates:requested,
+  insufficientCandidates:limit<requested,
+  slotsConfirmed:base.equippedConfirmed,
   utility:selected.calc,baselineUtility:initial,
   skillSelectionNote:adopted?'Complementaridade alterou a lista calculada; sem prova de superioridade.':
    'Lista anterior preservada: não diversificar sem ganho heurístico justificado.',
