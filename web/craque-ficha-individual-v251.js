@@ -576,6 +576,8 @@ function methodologyGate(card,proof,style,store,review={}){
  return Object.freeze({
   capture:Number(card.numero),card_id:String(card.id),style,role,
   training,skills:{status:skillStatus,slots:confirmed?skills?.slotsRemaining:null,
+   trainingConflict:ppConflict,
+   investmentEvidence:ppConflict?'pp_divergentes_nao_utilizar':'avaliar_investimento_individual',
    candidates:skillList,nativeKnown:skills?.nativeKnown===true,
    nativeEvidence:has('native')?'catalogo_documental':'habilidades_nativas_pendentes'},
   progressConflict:ppConflict?Object.freeze({
@@ -850,6 +852,9 @@ function display(){
   'Lista completa conferida neste dispositivo; '+method.skills.slots+
   ' vagas informadas. Sugestões táticas continuam consultivas.':
   'Lista completa não confirmada nesta edição. Nenhuma vaga é presumida.');
+ if(method.skills.trainingConflict)
+  add('Habilidades e PP',
+   'PP DIVERGENTES: o inventário de habilidades previamente conferidas permanece registrado, mas recomendações são apenas funcionais e não podem usar a build antiga como prova de investimento.');
  if(method.skills.nativeEvidence!=='catalogo_documental')
   add('Prova das habilidades nativas',
    'Lista nativa incompleta ou sem correspondência documental: todas as prioridades são provisórias.');
@@ -893,6 +898,17 @@ function display(){
   recommended_levels:hasValidBuild(card)?card.niveis.slice():null,
   training_provisional:card.treino_proposto_nao_validado===true
  };
+ // V299: V283–V287 usam seus próprios rankings. Quando a V298 detectou PP
+ // divergentes, não renderizar laboratórios que ainda exibiriam treino e
+ // ímpetos como se o orçamento antigo pudesse ser utilizado.
+ if(method.progressConflict){
+  const reviewPending=mk('p','ct251-warning ct299-pp-gate',
+   'PP DIVERGENTES (nível '+method.progressConflict.localLevel+': '+
+   method.progressConflict.localPP+' PP conferidos; catálogo: '+
+   method.progressConflict.catalogPP+' PP). Comparadores de treinamento, habilidades baseadas no investimento e ímpetos V283–V287 suspensos até a reconciliação desta edição. Habilidades já registradas não foram apagadas.');
+  reviewPending.dataset.review='pp_divergentes';
+  block.append(reviewPending);
+ }else{
  if(typeof S?.evidenceSensitivityV283==='function'){
   const sensitivity=S.evidenceSensitivityV283({
    ...sensitiveSource,original_position:card.posicao,
@@ -1266,6 +1282,7 @@ function display(){
   }
   block.append(panel);
  }
+ } // V299 — encerra os laboratórios condicionados à reconciliação de PP.
  if(check.related.length){
   // V258: ampliar a conferência sem criar uma segunda ficha, nem copiar
   // treino entre edições com mesmo orçamento ou função.
