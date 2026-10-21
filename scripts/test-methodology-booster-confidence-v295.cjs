@@ -32,7 +32,8 @@ assert.equal(method.booster.documentaryConfidence,'BAIXA_SEM_BUILD_CONFERIDA');
 assert.equal(method.booster.budgetOriginConfirmed,true);
 assert.equal(JSON.stringify(cards),before);
 const ui=fs.readFileSync(path.join(root,'web/craque-ficha-individual-v251.js'),'utf8');
-assert(ui.includes("documentaryConfidence:boost?.primary?.estado_confianca"));
+assert(ui.includes("documentaryConfidence:ppConflict?'PENDENTE_PP_DIVERGENTES':boost?.primary?.estado_confianca"),
+ 'Conflito documentado deve bloquear confiança; caso normal mantém o motor V292');
 assert(ui.includes("max_level:card.max_level,pp_origem:card.pp_origem"));
 assert(ui.includes("' — confiança documental: '+method.booster.documentaryConfidence"));
 console.log('V295 PASS: '+scenarios+' pareceres, Martinelli 26/50 com origem propagada e sem autorização de ímpetos. '+JSON.stringify(states));
