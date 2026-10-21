@@ -15,7 +15,7 @@ assert(martin&&martin.id==='105850811319718'&&martin.pp===50&&martin.max_level==
 assert.equal(martin.treino_proposto_nao_validado,true);
 assert.equal(V.hasValidBuild(martin),true);
 const html=read('web/'+martin.arquivo);
-const match=html.match(/<script id="scout-v68-data"[^>]*>([\\s\\S]*?)<\\/script>/);
+const match=html.match(/<script id="scout-v68-data"[^>]*>([\s\S]*?)<\/script>/);
 assert(match,'Ficha HTML original do Martinelli precisa manter dados embutidos');
 const raw=JSON.parse(match[1]);
 const reviews=[];
@@ -58,5 +58,5 @@ fs.writeFileSync(path.join(root,'build/v290-training-baseline-audit.json'),JSON.
  knownMaxLevels:withKnownLevels,experimentalCaptures:experimental,
  martinelli:{capture:191,cardId:martin.id,pp:martin.pp,level:martin.max_level},
  reviews,warning:'Vetor registrado não provisório não equivale à homologação em gameplay.'
-},null,2)+'\\n');
+},null,2)+'\n');
 console.log('V290 PASS: 246 cartas preservadas, Martinelli 26/50, cinco estilos sem ancoragem experimental.');
