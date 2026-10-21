@@ -51,13 +51,14 @@ assert.equal(API.proficiency(chivu,'fora'),90);
 assert.equal(API.proficiency(chivu,'longo'),90);
 assert.equal(API.model(chivu,'longo').status,'prof_89_mais');
 const bridge=read('web/app-bridge.js'),card=read('web/scout-card-unified-v220.js');
-assert(bridge.includes("managers.onload=startUI;managers.onerror=startUI;"));
+assert(bridge.includes("managers.onload=prepareStylePlanner;managers.onerror=prepareStylePlanner;"),
+ 'V303 precisa carregar simulador por estilo antes da UI principal');
 assert(bridge.includes("craque-managers-v302.js")&&bridge.includes("craque-managers-v302.css"));
 assert(card.includes('scoutpro:card-shell-ready-v302'));
 const js=read('web/craque-managers-v302.js');
 assert(js.includes("scoutpro:tactic-ui-selected-v220"));
 assert(js.includes("scoutpro:manager-selected-v302"));
-assert(js.includes("host.localStorage.setItem(KEY"));
+assert(js.includes("host.localStorage.setItem(localKey"),'Seleção salva para cada edição CAP+Card ID');
 assert(!js.includes('createElement(\'img\')'),
  'Retratos sem permissão não podem aparecer automaticamente');
 const sw=read('web/sw.js'),stamp=read('scripts/stamp-bundle-v189.cjs');

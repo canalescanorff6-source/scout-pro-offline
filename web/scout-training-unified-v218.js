@@ -180,7 +180,9 @@ function mount(doc){
   else if(readNote&&spent===null)readNote.textContent='Distribuição indisponível nesta tática. Níveis pendentes NÃO são zero; confira a edição e o nível máximo.';
   else if(readNote&&referenceOnly)readNote.textContent='Mostrando apenas a distribuição já cadastrada, sem recalcular. Nível máximo ainda não comprovado para criar uma hipótese segura neste estilo.';
   else if(readNote)readNote.textContent=custom?
-   (budgetRemaining===0?'Simulação pessoal com PP fechados. Não substitui o treino registrado no Scout PRO.':
+   (budgetRemaining===0?(sourceLabel.startsWith('Hipótese tática')||sourceLabel.includes('Simulação de Posse')?
+     'PROPOSTA MATEMÁTICA '+styleLabel+': PP fechados, sem homologação ou atributos finais. Pode editar e comparar sem alterar a carta.':
+     'Simulação pessoal com PP fechados. Não substitui o treino registrado no Scout PRO.'):
     'Simulação pessoal incompleta: '+budgetRemaining+' PP ainda não distribuídos. Não considerar homologada.'):
    (officialValid?'Treino cadastrado com custo PP correto, mas desempenho não homologado em partidas. Use Editar pontos para testar mudanças.':'Treino final sem confirmação nesta edição. Preencha apenas como simulação e valide os atributos no jogo.');
   table.classList.toggle('scout-v218-editing',editing);
@@ -217,12 +219,15 @@ function mount(doc){
    savedForStyle=readSaved(raw,id,filename,budget);
   }catch(_e){}
   if(activeTactic==='posse'){
-   current=savedForStyle?savedForStyle.levels.slice():original?original.slice():null;
-   custom=Boolean(savedForStyle);sourceLabel=savedForStyle?.source||'';
-   autoPreview=!savedForStyle&&!original;referenceOnly=false;
+   current=savedForStyle?savedForStyle.levels.slice():
+    original?original.slice():suggested?suggested.slice():null;
+   custom=Boolean(savedForStyle||!original&&suggested);
+   sourceLabel=savedForStyle?.source||
+    (!original&&suggested?'Simulação de Posse por PP · não homologada':'');
+   autoPreview=!savedForStyle&&!original&&!suggested;referenceOnly=false;
   }else{
    current=savedForStyle?savedForStyle.levels.slice():suggested?suggested.slice():original?original.slice():null;
-   autoPreview=!savedForStyle;referenceOnly=!savedForStyle&&!suggested&&!!original;
+   autoPreview=!savedForStyle&&!suggested;referenceOnly=!savedForStyle&&!suggested&&!!original;
    custom=Boolean(savedForStyle||suggested);
    sourceLabel=savedForStyle?.source||
     (referenceOnly?'Treino cadastrado · sem recálculo para '+styleLabel:

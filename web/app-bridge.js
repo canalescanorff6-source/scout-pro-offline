@@ -114,11 +114,18 @@ if(inCard){
     const ui220=document.createElement('script');ui220.src=v189Root+'scout-card-unified-v220.js';
     document.head.appendChild(ui220);
    };
+   // V303: antes da ficha, motor calculado para cada estilo; não usar o vetor
+   // original de Posse como se fosse recomendação para CA Rápido/Normal/Por Fora.
+   const prepareStylePlanner=()=>{
+    const planner=document.createElement('script');
+    planner.src=v189Root+'craque-style-planner-v303.js';
+    planner.onload=startUI;planner.onerror=startUI;document.head.appendChild(planner);
+   };
    const managerCss=document.createElement('link');managerCss.rel='stylesheet';
    managerCss.href=v189Root+'craque-managers-v302.css';document.head.appendChild(managerCss);
    const managers=document.createElement('script');
    managers.src=v189Root+'craque-managers-v302.js';
-   managers.onload=startUI;managers.onerror=startUI;
+   managers.onload=prepareStylePlanner;managers.onerror=prepareStylePlanner;
    document.head.appendChild(managers);
    // V251 precisa da interpretação V233 e da familiaridade EXATA V246.
    // Jamais deduzir posição treinada de Overall calculado.

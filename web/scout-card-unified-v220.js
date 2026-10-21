@@ -109,7 +109,9 @@ function mount(doc){
  }
  const assist=mk(doc,'div','scout-v220-focus');
  assist.innerHTML='<div class="scout-v220-focus-heading"><span>01 · FUNÇÃO E PRIORIDADE</span><span class="scout-v220-confidence" id="scout-v220-evidence"></span></div><h3 id="scout-v220-focus-title"></h3><p id="scout-v220-focus-note"></p><div class="scout-v220-focus-tags" id="scout-v220-priorities"></div>';
- hero.append(eyebrow,head,chips,intro,tabs,assist);
+ const styleStatus=mk(doc,'p','scout-v303-style-summary','Escolha um estilo para calcular uma proposta de PP não homologada.');
+ styleStatus.id='scout-v303-style-summary';styleStatus.setAttribute('aria-live','polite');
+ hero.append(eyebrow,head,chips,intro,tabs,styleStatus,assist);
  wrap.append(hero);
  panel.insertAdjacentElement('afterbegin',wrap);
  const trainingBlock=mk(doc,'section','scout-v220-training');
@@ -120,7 +122,7 @@ function mount(doc){
  trainingBlock.append(sectionHeading);
  trainingBlock.append(training);wrap.append(trainingBlock);
  const skillsSection=mk(doc,'section','scout-v220-recs');skillsSection.id='scout-v220-recs';
- skillsSection.innerHTML='<div class="scout-v220-section-head"><div>04 · HABILIDADES E ÍMPETO</div><p>Recomendações por edição cadastrada, função e tática. Não equipam nada na conta.</p></div>'+
+ skillsSection.innerHTML='<div class="scout-v220-section-head"><div id="scout-v303-recs-title">04 · HABILIDADES E ÍMPETO</div><p id="scout-v303-recs-context">Recomendações por edição cadastrada, função e tática. Não equipam nada na conta.</p></div>'+
  '<div class="scout-v220-recs-grid"><article class="scout-v220-skill-panel"><div class="scout-v220-card-head"><h3>5 habilidades adicionais</h3><span id="scout-v220-skill-count">—</span></div><div id="scout-v220-skill-list"></div><p class="scout-v220-small" id="scout-v220-skills-caution"></p><button type="button" class="scout-v220-link" id="scout-v220-edit-skills">Informar habilidades já equipadas ↗</button></article>'+
  '<article class="scout-v220-booster-panel"><div class="scout-v220-card-head"><h3>Ímpeto por estilo</h3><span id="scout-v220-booster-badge">PENDENTE</span></div><div class="scout-v220-boost-hero"><small>Recomendação consultiva</small><strong id="scout-v220-booster-name">—</strong></div><p id="scout-v220-booster-why"></p><p id="scout-v220-booster-other" class="scout-v220-small"></p><p id="scout-v220-booster-slot" class="scout-v220-warning"></p><button type="button" class="scout-v220-link" id="scout-v220-edit-booster">Conferir slot e opções ↗</button></article></div>';
  wrap.append(skillsSection);
@@ -170,17 +172,53 @@ function mount(doc){
   const sourceVerified=Boolean(possession)&&levelDocumented&&
    card.training_provisional!==true&&engine.confirmSource(card);
   const fallback=sourceVerified?engine.hypothetical({...card,niveis:possession},tactic,possession):null;
-  const proposed=Array.isArray(fallback?.levels)&&engine.valid(fallback.levels)&&
+  // V303: o perfil de CADA estilo é alocado individualmente com orçamento
+  // exato. A falta de nível documentado reduz a confiança, não gera zeros
+  // nem renomeia a distribuição de Posse como se fosse de outro estilo.
+  const planner=host.CRAQUE_STYLE_PLANNER_V303;
+  const registered=(engine.valid(possession)?possession:null);
+  const plan=planner?.proposal({...card,shown_position:activeRole,role_used:activeRole},
+   tactic,registered)||null;
+  const proposed=plan?.levels?Array.from(plan.levels):
+   Array.isArray(fallback?.levels)&&engine.valid(fallback.levels)&&
    engine.total(fallback.levels)===budget?fallback.levels:null;
+  const summary=$(wrap,'scout-v303-style-summary');
+  if(summary){
+   const changes=plan?.changes||[];
+   const trade=changes.length?changes.slice().sort((a,b)=>b.delta-a.delta)
+    .filter(x=>x.delta>0).slice(0,3).map(x=>x.category+' +'+x.delta).join(' · '):'distribuição conservada';
+   summary.textContent=plan?
+    (plan.source==='referencia_cadastrada'?'POSSE · referência registrada. ':
+      s.short.toUpperCase()+' · simulação matemática específica. ')+
+    (plan.source==='referencia_cadastrada'?'Sem alterar a build registrada.':
+      'Ênfase: '+plan.focus+'. Investimentos versus registro: '+trade+'. '+
+      (plan.budgetEvidence==='nivel_pp_informados'?'Nível/PP informados.':'Nível/PP a conferir.'))+
+     ' Não é treino de criador nem validação em partidas.':
+    'Não há PP ou posição suficientes para calcular uma hipótese. Conferir edição.';
+  }
   host.dispatchEvent(new host.CustomEvent('scoutpro:tactic-selected-v220',{
    detail:{cap,card_id:id,tactic,label:s.label,proposedLevels:proposed,
     evidenceStatus:sourceVerified?'pp_e_nivel_documentados_hipotese':'nivel_ou_build_sem_comprovacao',
-    verifiedInGameplay:false}
+    verifiedInGameplay:false,
+    proposalOrigin:plan?.source||'pendente',
+    proposalEvidence:plan?.budgetEvidence||'pendente',
+    managerEdition:host.CRAQUE_MANAGERS_V302?.selectedManager?.()?.catalog_id||null}
   }));
   doc.dispatchEvent(new host.CustomEvent('scoutpro:tactic-selected-v220',{detail:{tactic}}));
  }
  function updateRecommendations(){
   const cfg=engine.styleFor(style);
+  const manager=host.CRAQUE_MANAGERS_V302?.selectedManager?.()||null;
+  const prof=manager?host.CRAQUE_MANAGERS_V302?.proficiency?.(manager,style):null;
+  const title=$(wrap,'scout-v303-recs-title'),context=$(wrap,'scout-v303-recs-context');
+  if(title)title.textContent='04 · HABILIDADES E ÍMPETO · '+cfg.short;
+  if(context)context.textContent=(manager?
+   'Técnico '+manager.nome+' ('+(manager.versao_lancamento||'edição pendente')+
+    ') · proficiência '+(prof===null?'pendente':prof)+'. ':
+   'Nenhum técnico selecionado. ')+
+   'Prioridades por função, habilidades nativas e estilo da carta; '+
+   'bônus de técnico NÃO são PP. Critério competitivo consultivo; '+
+   'sem endosso de Rentão/Blackjhon ou instalação automática.';
   const focus=engine.focus(card,style),proof=evidence(card,{base_stats_known:card.base_stats_known,niveis:card.recommended_levels,habilidades_nativas:card.native_skills,name:card.name},style);
   // V233: prioridades explicadas por posição real, habilidades e estilo, não apenas
   // por uma lista de pesos genéricos. Fallback V220 se a extensão não carregar.
@@ -301,6 +339,21 @@ function mount(doc){
  });
  doc.addEventListener('scoutpro:tactic-ui-selected-v220',event=>{
   if(styles.includes(event.detail?.tactic)&&style!==event.detail.tactic)choose(event.detail.tactic,true);
+ });
+ // Mesmo estilo em dois técnicos pode ter proficiências/bônus distintos.
+ // Reapresentar o contexto, sem alegar mudança de PP por bônus do técnico.
+ host.addEventListener('scoutpro:manager-selected-v302',event=>{
+  const detail=event.detail||{};
+  if(detail.tactic==='overload'){
+   const notice=$(wrap,'scout-v303-style-summary');
+   if(notice)notice.textContent='SOBREPOSIÇÃO · motor de PP ainda pendente. '+
+    'A ficha que continua visível pertence à última tática suportada; '+
+    'não é uma ficha homologada de Overload.';
+   return;
+  }
+  if(!styles.includes(detail.tactic))return;
+  if(style!==detail.tactic)choose(detail.tactic,true);
+  else{switchTraining(style);updateRecommendations();}
  });
  const route=doc.querySelector('.side-nav a[href="#engenharia"]');
  if(route){route.textContent='Engenharia e evidências (opcional)';route.href='#scout-v220-technical'}

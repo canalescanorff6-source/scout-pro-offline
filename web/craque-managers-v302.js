@@ -89,7 +89,14 @@ function mount(doc){
  if(!hero)return false;
  const wrap=make(doc,'details',undefined,'ct-manager-v302');
  wrap.id='ct-manager-v302';
- const heading=make(doc,'summary','Escolher técnico e gerar ficha por estilo');
+ // V303: sempre visível na ficha; não esconder a ação principal.
+ wrap.open=true;
+ const raw=doc.getElementById('scout-v68-data');
+ let identity={};try{identity=JSON.parse(raw?.textContent||'{}')}catch(_){}
+ const capture=Number(identity.capture),cardId=String(identity.id||'');
+ const localKey=Number.isInteger(capture)&&capture>0&&cardId?
+  KEY+':'+capture+'@'+cardId:KEY;
+ const heading=make(doc,'summary','ESCOLHER TÉCNICO · GERAR FICHA POR ESTILO');
  const title=make(doc,'h3','Técnico da minha equipe');
  const introduction=make(doc,'p','Escolha a versão do técnico. A ficha acompanha o estilo selecionado; bônus, jogadas e proficiências exigem conferência da edição.');
  const selectLabel=make(doc,'label','Versão do técnico');
@@ -166,7 +173,8 @@ function mount(doc){
    proficiency:proficiency(selected,selectedTactic),
    boosters:selected.boosters_EN.slice(),linkups:selected.link_ups_EN.slice(),
    tacticalSupport:model(selected,selectedTactic).status,
-   confirmation:'catalogo_publico_sem_conferencia_na_conta'};
+   confirmation:'catalogo_publico_sem_conferencia_na_conta',
+   capture,card_id:cardId};
   host.dispatchEvent(new host.CustomEvent('scoutpro:manager-selected-v302',{detail}));
   if(model(selected,selectedTactic).canCalculate){
    doc.dispatchEvent(new host.CustomEvent('scoutpro:tactic-ui-selected-v220',
@@ -177,16 +185,16 @@ function mount(doc){
   selected=find(select.value);
   selectedTactic=selected?preferred(selected,null):'posse';
   try{
-   if(selected)host.localStorage.setItem(KEY,JSON.stringify({
+   if(selected)host.localStorage.setItem(localKey,JSON.stringify({
     catalog_id:selected.catalog_id,tactic:selectedTactic}));
-   else host.localStorage.removeItem(KEY);
+   else host.localStorage.removeItem(localKey);
   }catch(_){}
   render();notify();
  });
  style.addEventListener('change',()=>{
   if(!selected)return;
   selectedTactic=style.value;
-  try{host.localStorage.setItem(KEY,JSON.stringify({
+  try{host.localStorage.setItem(localKey,JSON.stringify({
    catalog_id:selected.catalog_id,tactic:selectedTactic}))}catch(_){}
   render();notify();
  });
@@ -194,31 +202,45 @@ function mount(doc){
   select.value='';select.dispatchEvent(new host.Event('change'));
  });
  try{
-  const stored=JSON.parse(host.localStorage?.getItem(KEY)||'null');
+  const stored=JSON.parse(host.localStorage?.getItem(localKey)||
+   host.localStorage?.getItem(KEY)||'null');
   selected=find(stored?.catalog_id);
   if(selected){selectedTactic=preferred(selected,stored.tactic);select.value=selected.catalog_id}
  }catch(_){}
  render();
- if(selected){wrap.open=true;notify();}
+ if(selected)notify();
  host.addEventListener('scoutpro:tactic-selected-v220',ev=>{
   if(!selected||!ev.detail?.tactic||!STYLES.some(x=>x.id===ev.detail.tactic))return;
   selectedTactic=ev.detail.tactic;
   style.value=selectedTactic;
-  try{host.localStorage.setItem(KEY,JSON.stringify({
+  try{host.localStorage.setItem(localKey,JSON.stringify({
    catalog_id:selected.catalog_id,tactic:selectedTactic}))}catch(_){}
   render();
  });
  return true;
 }
 if(host?.document){
- host.addEventListener('scoutpro:card-shell-ready-v302',()=>{
-  load().then(()=>mount(host.document)).catch(e=>{
-   if(ui)return;
+ let observing=false;
+ function start(){
+  load().then(()=>{
+   if(mount(host.document)||observing||typeof host.MutationObserver!=='function')return;
+   observing=true;
+   const observer=new host.MutationObserver(()=>{
+    if(mount(host.document))observer.disconnect();
+   });
+   observer.observe(host.document.documentElement,{childList:true,subtree:true});
+  }).catch(e=>{
    const tab=host.document.getElementById('scout-v220-tabs');
-   if(tab){const err=make(host.document,'p','Catálogo de técnicos indisponível: '+e.message);
-    err.id='ct-manager-load-error';tab.insertAdjacentElement('beforebegin',err)}
+   if(tab&&!host.document.getElementById('ct-manager-load-error')){
+    const err=make(host.document,'p','Técnicos indisponíveis: '+e.message);
+    err.id='ct-manager-load-error';tab.insertAdjacentElement('afterend',err);
+   }
   });
- });
+ }
+ host.addEventListener('scoutpro:card-shell-ready-v302',start);
+ if(host.document.readyState==='loading')
+  host.document.addEventListener('DOMContentLoaded',start,{once:true});
+ else start();
 }
 return Object.freeze({STYLES,KEY,DATA_GZIP_BASE64,validate,load,find,model,preferred,proficiency,mount,selectedManager});
 });
