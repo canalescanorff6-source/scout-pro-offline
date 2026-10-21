@@ -218,6 +218,14 @@ jobs:
           path: build/v294-five-slot-proof-246x5.json
           if-no-files-found: warn
           retention-days: 30
+      - name: V296 — auditoria de recibos de nível e PP por edição
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-v296-progress-edition-proof-246
+          path: build/v296-progress-proof-246.json
+          if-no-files-found: warn
+          retention-days: 30
       - name: Sintaxe JavaScript
         run: |
           node --check desktop/main.cjs
