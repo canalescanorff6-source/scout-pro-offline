@@ -320,6 +320,25 @@ function rank(card,tactic,equipment={}){
  const training=trainingAudit(card);
  const verifiedBase=baseStatsAudit(card);
  const levels=training.levels;
+ // V292: nota heurística não pode virar alegação de prova da mesma edição.
+ // CAP/Card ID, origem de PP e inventário nativo têm estados separados.
+ const cap=Number(card.capture??card.numero);
+ const id=String(card.id||card.card_id||'').trim();
+ const edition=String(card.edition||card.versao||'').trim();
+ const identityDocumented=Number.isInteger(cap)&&cap>0&&id&&edition&&
+  !/pendente|confirmar|invalid|desconhecid/i.test(id+' '+edition);
+ const nativeText=String(card.habilidades_nativas||card.native_skills||'').trim();
+ const nativeCataloged=Boolean(nativeText)&&
+  !/^(pendente|a confirmar|confirmar|desconhecid|nao informad|sem registro)/i.test(normStyle(nativeText));
+ const level=card.max_level;
+ const progressOriginVerified=Number.isInteger(level)&&level>=1&&level<=120&&
+  Number(card.pp)===2*(level-1)&&
+  /^informado_pelo_usuario_/.test(String(card.pp_origem||''))&&
+  card.pp_estimado!==true&&card.pp_estimated!==true;
+ const confidenceStatus=!identityDocumented?'PENDENTE_IDENTIDADE':
+  !nativeCataloged?'PENDENTE_NATIVAS':
+  !progressOriginVerified?'BAIXA_SEM_PROVA_NIVEL_PP':
+  !levels?'BAIXA_SEM_BUILD_CONFERIDA':'COMPARACAO_LIMITADA';
  const trainingIndices=ROLE_TRAINING[role];
  const mean=levels?trainingIndices.reduce((sum,i)=>sum+levels[i],0)/trainingIndices.length:null;
  // As categorias apenas sinalizam para onde foram direcionados os níveis:
@@ -436,16 +455,24 @@ function rank(card,tactic,equipment={}){
    levels?'níveis de treino servem apenas como sinal de investimento, sem atributos finais medidos':'níveis individuais indisponíveis; recomendação provisória'
   ];
   if(nativeFindings.length)info.push('habilidades nativas indicam '+nativeFindings.slice(0,2).join(' e '));
+  if(!identityDocumented)info.push('Card ID ou edição sem identificação segura: ímpeto pendente');
+  else if(!nativeCataloged)info.push('habilidades nativas ausentes/provisórias: confiança pendente');
+  else if(!progressOriginVerified)info.push('nível máximo e origem dos PP a confirmar');
   if(additionalScore>0)info.push('adicionais conferidas oferecem contexto complementar; sem bônus de atributo presumido');
   return {
    nome:name,nome_pt:displayName(name),traducao_documentada:translationKnown(name),
    funcao_considerada:role,score,atributos:stats.map(k=>label[k]),
    motivo:info.join('; ')+'.',
-   confianca:levels?'comparativa_limitada':'baixa',
+   confianca:confidenceStatus.startsWith('PENDENTE')?'pendente':
+    confidenceStatus==='COMPARACAO_LIMITADA'?'comparativa_limitada':'baixa',
+   estado_confianca:confidenceStatus,
    perfil_documental:style||'sem estilo registrado',
    recomendacao_condicional:true,
    status_validacao:'HIPOTESE_COMPETITIVA_SEM_HOMOLOGACAO',
    evidencias:{treino:trainingEvidence,pp_status:training.status,
+    identidade_documental:Boolean(identityDocumented),nativas_no_catalogo:nativeCataloged,
+    nivel_pp_origem_conferida:progressOriginVerified,
+    nivel_pp_matematico:training.status==='custo_pp_conferido',
     base_status:verifiedBase.status,
     base_count:verifiedBase.count,base_atributos_mapeados:verifiedBase.recognized,
     base_fonte:verifiedBase.source,
