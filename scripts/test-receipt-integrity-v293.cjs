@@ -119,6 +119,11 @@ assert.equal(JSON.stringify(cards),before);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 assert(read('package.json').includes('test-receipt-integrity-v293.cjs'));
 assert(read('web/sw.js').includes('v293-receipt-integrity'));
+const mainFicha=read('web/craque-ficha-individual-v251.js');
+assert(mainFicha.includes('verifiedContext.booster.reason'));
+assert(mainFicha.includes('verifiedContext.booster.catalogConflict'));
+assert(mainFicha.includes('verifiedContext.booster.equippedNamePending'));
+
 fs.mkdirSync(path.join(root,'build'),{recursive:true});
 fs.writeFileSync(path.join(root,'build/v293-receipt-integrity-246x5.json'),
  JSON.stringify({schema:'CRAQUE_V293_ACCOUNT_RECEIPT_INTEGRITY',
