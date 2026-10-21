@@ -78,7 +78,7 @@ for(const card of cards){
  record.push(report);
 }
 assert.equal(cases,1230);assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
-const synthetic={shown_position:'CA',attack_style:'Artilheiro',native_skills:''};
+const synthetic={shown_position:'CA',attack_style:'Artilheiro',native_skills:'Heading'}; // Fixture V291: inventário conhecido
 const initial=S.evaluate(synthetic,'posse');
 const ranked=initial.recommendations.concat(initial.alternatives);
 const native=S.composePortfolio(ranked,'CA','posse',5,{nativeKeys:['onepass']});
