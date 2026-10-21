@@ -58,6 +58,16 @@ for(const c of cards){
 }
 assert.equal(valid,246);
 assert.equal(blocked,984);
+// V250: não importar recibo exportado por versão antiga ou outra edição.
+// Conferências originais do dispositivo não podem ser apagadas na tentativa.
+const fixture=cards.find(c=>c.numero===191),verified=receipt(fixture,26);
+const oldReceipt={...verified};delete oldReceipt.edition;
+for(const forbidden of [oldReceipt,{...verified,edition:'Carta de edição diferente'}]){
+ const incoming={schema:X.SCHEMA,total:1,records:[forbidden]};
+ const oldState=JSON.stringify([...map]);
+ assert.throws(()=>X.inspect(incoming,cards,store),/bloqueada|edição/i);
+ assert.equal(JSON.stringify([...map]),oldState);
+}
 const martin=cards.find(c=>c.numero===191);
 assert(martin&&martin.max_level===26&&martin.pp===50);
 const valid191=receipt(martin,26);
