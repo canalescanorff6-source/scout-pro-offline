@@ -25,6 +25,10 @@ with sync_playwright() as p:
    assert selector.input_value()=='MAT'
    selector.select_option('SA')
    assert 'Cenário SA' in root.inner_text()
+   assert 'Mapa de posições' in root.inner_text()
+   root.locator('.ct311-positions-map summary').click()
+   assert 'SA —' in root.locator('.ct311-positions-map').inner_text()
+   assert 'não confirmad' in root.locator('.ct311-positions-map').inner_text().lower()
    assert '68 PP exatos distribuídos' in root.inner_text()
    assert 'MAT → SA' in page.locator('#friend-analysis-badges').inner_text()
    assert 'Ataque:' in root.inner_text() and 'Defesa:' in root.inner_text()
@@ -63,6 +67,20 @@ with sync_playwright() as p:
    main.locator('.ct311-select').select_option('SA')
    assert 'Cenário SA' in main.inner_text()
    assert 'PP exatos distribuídos' in main.inner_text()
+   assert 'Mapa de posições' in main.inner_text()
+   main.locator('.ct311-positions-map summary').click()
+   assert 'Posição original' in main.inner_text()
+   evidence=page.evaluate("""async () => {
+      const catalog=await (await fetch('../SCOUT_V69_AUDITORIA.json')).json();
+      const card=catalog.cards.find(x=>x.numero===1);
+      return window.SCOUT_POSITION_TRAINING_V246.confirm(card,'SA',true,localStorage,'familiar').status;
+   }""")
+   assert evidence=='familiar',evidence
+   page.wait_for_function("""() => {
+    const x=document.querySelector('.ct311-positions-map');
+    return x&&x.textContent.includes('Familiaridade existente');
+   }""",timeout=9000)
+   assert 'Familiaridade existente' in main.inner_text()
    assert 'Ataque:' in main.inner_text() and 'Defesa:' in main.inner_text()
    assert page.evaluate("JSON.parse(document.getElementById('scout-v68-data').textContent).shown_position")=='AC'
    assert not errors,errors

@@ -45,6 +45,16 @@ assert.notDeepEqual(matPosse.outcome.plan.levels,saPosse.outcome.plan.levels,
  'MAT e SA precisam de cálculo de prioridades posicional, não só novo rótulo');
 assert.notEqual(matPosse.focus.role,saPosse.focus.role);
 assert.equal(matPosse.compatibility.status,'original');
+const map=core.positionMap(official,{...deps,positions:{
+ status:(_card,p)=>p==='SA'?{status:'treinada',eligible:true,label:'Confirmada no jogo'}:
+ {status:'não confirmada',eligible:false,label:'Sem evidência'}
+}});
+assert.equal(map.find(p=>p.position==='MAT').status,'original');
+assert.equal(map.find(p=>p.position==='SA').status,'treinada');
+assert.equal(map.find(p=>p.position==='PTE').eligible,false);
+assert.equal(core.compute(official,'SA','posse','CT-MGR-013',{...deps,positions:{
+ status:()=>({status:'familiar',eligible:true,label:'Familiaridade documentada'})
+}}).compatibility.status,'familiar');
 assert.notEqual(matPosse.responsibilities.offense,saPosse.responsibilities.offense);
 assert.notEqual(matPosse.responsibilities.defense,saPosse.responsibilities.defense);
 assert.match(saPosse.responsibilities.confidence,/hipótese funcional/i);
@@ -112,6 +122,12 @@ previouslyApproved.entries[originalKey][0].approved=true;
 local.setItem(core.KEY,JSON.stringify(previouslyApproved));
 const backup=core.exportOwnerScenarios(local,'outros-1',[{id:'1'}]);
 assert.equal(backup.entries.length,2);
+assert(backup.entries.every(item=>item.revisions.every(rev=>typeof rev.contentSignature==='string')));
+assert.equal(core.contentSignature(external),core.contentSignature(
+ core.fromExternal({id:'diferente',ownerId:'outro',name:mat.name,position:'MAT',
+ edition:mat.versao,cardId:mat.id,level:35,pp:68,style:mat.estilo_ataque,
+ nativeSkills:mat.habilidades_nativas,skills:'',fixedBooster:'',
+ booster:'',boosterSlot:'pendente',trainingLevels:mat.niveis.join(',')},{id:'outro'})));
 const importedStore=store();
 const importedCard={id:'nova-carta',ownerId:'novo-dono',name:mat.name,
  position:'MAT',edition:mat.versao,cardId:mat.id,level:35,pp:68,style:mat.estilo_ataque,
@@ -125,6 +141,26 @@ assert.equal(core.saved(importedStore,
  'Aprovação registrada deve sobreviver à exportação/importação sem ser criada pelo motor');
 assert.equal(core.saved(importedStore,
  core.compute(importedModel,'MAT','posse','CT-MGR-013',deps)).revision.evidenceImported,true);
+assert.equal(core.saved(importedStore,
+ core.compute(importedModel,'MAT','posse','CT-MGR-013',deps)).stale,false,
+ 'Somente cartas documentalmente idênticas podem recuperar snapshot vigente');
+const modified={...importedCard,skills:'Equipamento informado posteriormente'};
+const staleStore=store();
+assert.equal(core.importOwnerScenarios(staleStore,backup,{id:'novo-dono'},[modified]),2);
+const modifiedScenario=core.compute(core.fromExternal(modified,{id:'novo-dono'}),'MAT','posse','CT-MGR-013',deps);
+assert.equal(core.saved(staleStore,modifiedScenario).stale,true,
+ 'Ao mudar habilidades equipadas, backup não pode ser homologado silenciosamente');
+assert.equal(core.saved(staleStore,modifiedScenario).revision.approved,true,
+ 'Aprovação histórica continua documentada, mas desatualizada');
+const legacy=JSON.parse(JSON.stringify(backup));
+for(const item of legacy.entries)for(const revision of item.revisions)delete revision.contentSignature;
+const legacyStore=store();
+core.importOwnerScenarios(legacyStore,legacy,{id:'novo-dono'},[importedCard]);
+assert.equal(core.saved(legacyStore,
+ core.compute(importedModel,'MAT','posse','CT-MGR-013',deps)).stale,true,
+ 'V311/V312 sem prova de conteúdo não pode ser revalidada automaticamente');
+assert.throws(()=>core.importOwnerScenarios(store(),backup,{id:'novo-dono'},
+ [{...importedCard,edition:'Outra edição'}]),/Identidade da edição/);
 assert(core.saved(importedStore,core.compute(importedModel,'SA','posse','CT-MGR-013',deps)));
 assert.equal(core.exportOwnerScenarios(importedStore,'outros-1',[]).entries.length,0);
 assert.equal(core.importOwnerScenarios(importedStore,null,{id:'outros-1'},[]),0);
@@ -153,4 +189,4 @@ for(const file of ['craque-positional-v311.js','craque-positional-ui-v311.js','c
 assert(read('web/outros-elencos-v227.html').includes('craque-positional-ui-v311.js'));
 assert(read('web/app-bridge.js').includes("load('craque-positional-v311.js'"));
 assert(read('web/craque-friends-training-ui-v228.js').includes('usedPosition'));
-console.log('V312 PASS: MAT→SA→MAT/restauração exata, PP, cinco estilos, técnicas isoladas, habilidades/ímpetos reavaliados, PTE→CA, 2 acervos, 246 cartas preservadas.');
+console.log('V313 PASS: MAT→SA→MAT/restauração exata, PP, cinco estilos, técnicas isoladas, habilidades/ímpetos reavaliados, PTE→CA, 2 acervos, 246 cartas preservadas.');

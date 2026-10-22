@@ -57,6 +57,13 @@ function baseSignature(m){return hash(json([
  m.collection,m.owner,m.cardKey,m.cardId,m.edition,m.position,m.level,m.pp,
  m.style,m.nativeSkills,m.skills,m.fixedBooster,m.booster,m.boosterSlot,m.trainingLevels
  ]))}
+// Fingerprint da edição e do estado de equipamento: INDEPENDENTE do ID local
+// e do proprietário, para validar a migração sem certificar conteúdo diferente.
+function contentSignature(m){
+ validate(m);
+ return hash(json([m.name,m.cardId,m.edition,m.position,m.level,m.pp,m.style,
+  m.nativeSkills,m.skills,m.fixedBooster,m.booster,m.boosterSlot,m.trainingLevels]));
+}
 function identity(m,pos,style,manager){
  validate(m);const use=normalize(pos);
  if(!POS.includes(use))throw Error('Posição de uso inválida');
@@ -76,6 +83,10 @@ function familiarity(m,position,deps){
  }
  return {status:'não confirmada',eligible:false,
   text:'Familiaridade, treino posicional e ativação do estilo individual não confirmados para esta edição'};
+}
+function positionMap(m,provided){
+ validate(m);const deps=provided||depsDefault();
+ return POS.map(position=>({position,...familiarity(m,position,deps)}));
 }
 function managerEvidence(id,style,deps){
  const source=deps.managers;
@@ -143,7 +154,8 @@ function compute(model,position='MAT',style='posse',manager='',provided){
  if(id.manager==='sem-tecnico')warnings.push('Técnico não selecionado: proficiência/bônus não validados.');
  else warnings.push('Técnico '+id.manager+': a edição é isolada no cenário, sem bônus numéricos fictícios.');
  return {
-  ...id,originalPosition:m.position,base:baseSignature(m),owner:m.owner,cardKey:m.cardKey,
+  ...id,originalPosition:m.position,base:baseSignature(m),
+  contentSignature:contentSignature(m),owner:m.owner,cardKey:m.cardKey,
   compatibility:positionEvidence,managerProfile,responsibilities:responsibilities(id.position),styleActivation:'não comprovada para esta edição/posição',
   outcome,focus,warnings:[...new Set(warnings)],
   status:outcome.plan.status==='hipotese'?'PROPOSTA NÃO HOMOLOGADA':'PENDENTE'
@@ -163,7 +175,8 @@ function snapshot(scenario){
  const o=scenario.outcome,p=o.plan;
  const booster=o.booster||{};
  return {
-  base:scenario.base,originalPosition:scenario.originalPosition,selectedPosition:scenario.position,
+  base:scenario.base,contentSignature:scenario.contentSignature,
+  originalPosition:scenario.originalPosition,selectedPosition:scenario.position,
   style:scenario.style,manager:scenario.manager,status:scenario.status,
   pp:p.pp??null,levels:Array.isArray(p.levels)?p.levels.slice():null,
   recommendations:(o.suggestedSkills||[]).slice(0,5).map(x=>({
@@ -253,7 +266,8 @@ function importOwnerScenarios(store,backup,newOwner,cards){
   if(parts[3]!== (model.cardId||'sem-card-id')||
      parts[4]!== (model.edition||'edicao-pendente'))
     throw Error('Identidade da edição do cenário não corresponde à carta importada');
-  const key=identity(model,pos,style,mgr).id,base=baseSignature(model);
+  const key=identity(model,pos,style,mgr).id,base=baseSignature(model),
+   content=contentSignature(model);
   const safe=[];
   for(const record of item.revisions){
    if(!record||record.selectedPosition!==pos||record.style!==style||
@@ -261,9 +275,15 @@ function importOwnerScenarios(store,backup,newOwner,cards){
       (!Array.isArray(record.levels)||record.levels.length!==10||
        !record.levels.every(x=>Number.isInteger(x)&&x>=0&&x<=20)))
      throw Error('Revisão de cenário inconsistente');
-   // O ID interno mudou na importação, mas os atributos da carta permanecem.
-   safe.push({...record,base,approved:record.approved===true,
-    evidenceImported:true});
+   // Revalidar a edição e o estado de equipamento: NÃO homologar registros
+   // V311/V312 sem assinatura de conteúdo ou cartas alteradas na importação.
+   // Aprovações históricas permanecem como registros, mas ficam DESATUALIZADAS.
+   const matches=Boolean(record.contentSignature&&record.contentSignature===content);
+   safe.push({...record,
+    base:matches?base:record.base||'identidade_documental_pendente',
+    contentSignature:record.contentSignature||null,
+    approved:record.approved===true,evidenceImported:true,
+    provenanceStatus:matches?'dados_conciliados':'revisao_legada_ou_edicao_divergente'});
   }
   if(!entries[key])entries[key]=safe;
   else entries[key]=entries[key].concat(safe).slice(-40);
@@ -275,5 +295,5 @@ function importOwnerScenarios(store,backup,newOwner,cards){
  return count;
 }
 return Object.freeze({KEY,PREF,POS,normalize,hash,fromPersonal,fromExternal,baseSignature,
- identity,compute,managerEvidence,responsibilities,snapshot,familiarity,saved,save,choose,preferred,compare,exportOwnerScenarios,importOwnerScenarios});
+ identity,contentSignature,compute,positionMap,managerEvidence,responsibilities,snapshot,familiarity,saved,save,choose,preferred,compare,exportOwnerScenarios,importOwnerScenarios});
 });

@@ -87,6 +87,16 @@ function create(target,model,opts={}){
    panel.append(el('p','ct311-alert','A versão do técnico '+scenario.manager+
     ' não foi encontrada no catálogo local. Nenhum bônus presumido.'));
   }
+  const map=el('details','ct311-positions-map');
+  map.append(el('summary','','Mapa de posições · familiaridade documentada'));
+  const mapItems=el('ul','ct311-position-list');
+  for(const entry of engine.positionMap(model)){
+   const row=el('li','',entry.position+' — '+entry.text);
+   row.dataset.confidence=entry.eligible?'documentado':'pendente';
+   mapItems.append(row);
+  }
+  map.append(mapItems,el('p','ct311-note','O mapa não usa Overall como prova. Posições alternativas não confirmadas são simulações, não treinamento aplicado.'));
+  panel.append(map);
   if(saved){
    const s=saved.revision;
    panel.append(el('p',saved.stale?'ct311-alert':'ct311-confirm',
@@ -94,7 +104,9 @@ function create(target,model,opts={}){
     (saved.stale?' · DESATUALIZADA: dados da carta mudaram, preservar a anterior.':
     ' · preservada independentemente das outras posições.')+
     (s.approved===true?' · APROVAÇÃO REGISTRADA (não verificada automaticamente).':'')+
-    (s.evidenceImported?' · Histórico importado deste proprietário.':'')));
+    (s.evidenceImported?' · Histórico importado deste proprietário.':'')+
+    (s.provenanceStatus==='revisao_legada_ou_edicao_divergente'?
+     ' · IDENTIDADE DOCUMENTAL PENDENTE: proposta histórica preservada, sem revalidação.':'')));
   }
   const outcome=scenario.outcome;
   const recorded=saved&&!saved.stale?saved.revision:null;
@@ -220,6 +232,11 @@ function mainBoot(){
    if(Number(info.capture)===Number(raw.capture)&&
       String(info.card_id)===String(raw.id))
     panel.update({manager:info.catalog_id||getManager(),style:getStyle()});
+  });
+  // V313: mudança documental de familiaridade na própria carta reavalia
+  // instantaneamente o mapa e os avisos sem sobrescrever PP/builds.
+  host.addEventListener('craque:data-changed',e=>{
+   if(e.detail?.key===host.SCOUT_POSITION_TRAINING_V246?.KEY)panel.update();
   });
  }).catch(err=>{host.console?.warn?.('V311: ficha contextual indisponível',err)})
  .finally(()=>{mainBootPending=false});

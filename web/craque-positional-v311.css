@@ -39,3 +39,12 @@
 @media(max-width:570px){.ct311-positional{margin:13px 0;padding:13px;border-radius:14px}
  .ct311-controls{grid-template-columns:1fr}.ct311-actions{display:grid}
  .ct311-button{width:100%}.ct311-table th,.ct311-table td{padding:6px 4px}}
+
+/* V313: legibilidade do mapa posicional documentado em ambas as plataformas. */
+.ct311-positions-map{border:1px solid #596e79;border-radius:11px;padding:11px 12px;margin:10px 0}
+.ct311-positions-map summary{font-weight:700;cursor:pointer;color:#f3d6a2}
+.ct311-position-list{list-style:none;padding:0;margin:10px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:7px}
+.ct311-position-list li{border-radius:8px;border-left:3px solid #d9b46c;background:#342f2a;padding:8px;font-size:12px;line-height:1.4}
+.ct311-position-list li[data-confidence="documentado"]{background:#223b35;border-color:#88d6ac}
+@media(max-width:570px){.ct311-position-list{grid-template-columns:1fr 1fr}}
+@media(max-width:345px){.ct311-position-list{grid-template-columns:1fr}}
