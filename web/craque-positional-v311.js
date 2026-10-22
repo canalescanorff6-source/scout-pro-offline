@@ -158,6 +158,56 @@ function compare(a,b,deps){
   boosterB:b.outcome.booster?.primary?.nome||null,
   focusA:a.focus?.priority?.map(x=>x.name)||[],focusB:b.focus?.priority?.map(x=>x.name)||[]};
 }
+// Exportação de um proprietário sem misturar snapshots de outras coleções.
+function exportOwnerScenarios(store,ownerId,cards){
+ const ids=new Set((cards||[]).map(c=>text(c.id)));
+ const entries=[];
+ for(const [key,revisions] of Object.entries(stored(store))){
+  let parts;try{parts=key.split('|').map(decodeURIComponent)}catch(_){continue}
+  if(parts.length!==8||parts[0]!=='outros-elencos'||parts[1]!==ownerId||!ids.has(parts[2]))continue;
+  if(!Array.isArray(revisions))continue;
+  entries.push({key,revisions:JSON.parse(JSON.stringify(revisions))});
+ }
+ return {schema:'CRAQUE_POSITION_OWNER_EXPORT_V311',sourceOwner:ownerId,
+  cardIds:(cards||[]).map(c=>text(c.id)),entries};
+}
+// Reassocia as fichas da exportação aos novos IDs criados pela importação isolada.
+function importOwnerScenarios(store,backup,newOwner,cards){
+ if(!backup)return 0; // exportações antigas não contêm cenários
+ if(backup.schema!=='CRAQUE_POSITION_OWNER_EXPORT_V311'||
+    !Array.isArray(backup.cardIds)||!Array.isArray(backup.entries)||
+    backup.entries.length>2500||backup.cardIds.length!==(cards||[]).length)
+  throw Error('Arquivo de cenários da coleção inválido');
+ const map=new Map(backup.cardIds.map((id,i)=>[text(id),cards[i]]));
+ const entries={...stored(store)};let count=0;
+ for(const item of backup.entries){
+  if(!item||typeof item.key!=='string'||!Array.isArray(item.revisions)||
+     item.revisions.length>40)throw Error('Revisões posicionais inválidas');
+  const parts=item.key.split('|').map(decodeURIComponent);
+  if(parts.length!==8||parts[0]!=='outros-elencos'||parts[1]!==backup.sourceOwner)
+   throw Error('Cenário posicional pertence a outra coleção');
+  const card=map.get(parts[2]);if(!card)throw Error('Carta ausente na coleção importada');
+  const model=fromExternal(card,newOwner),pos=normalize(parts[5]),style=parts[6],mgr=parts[7];
+  const key=identity(model,pos,style,mgr).id,base=baseSignature(model);
+  const safe=[];
+  for(const record of item.revisions){
+   if(!record||record.selectedPosition!==pos||record.style!==style||
+      record.manager!==mgr||record.approved===true||record.levels!==null&&
+      (!Array.isArray(record.levels)||record.levels.length!==10||
+       !record.levels.every(x=>Number.isInteger(x)&&x>=0&&x<=20)))
+     throw Error('Revisão de cenário inconsistente');
+   // O ID interno mudou na importação, mas os atributos da carta permanecem.
+   safe.push({...record,base,approved:false});
+  }
+  if(!entries[key])entries[key]=safe;
+  else entries[key]=entries[key].concat(safe).slice(-40);
+  count+=safe.length;
+ }
+ const content=JSON.stringify({schema:'CRAQUE_POSITION_V311',entries});
+ if(content.length>1500000)throw Error('Arquivo de cenários ultrapassa o limite local');
+ if(count)store.setItem(KEY,content);
+ return count;
+}
 return Object.freeze({KEY,PREF,POS,normalize,hash,fromPersonal,fromExternal,baseSignature,
- identity,compute,familiarity,saved,save,choose,preferred,compare});
+ identity,compute,familiarity,saved,save,choose,preferred,compare,exportOwnerScenarios,importOwnerScenarios});
 });
