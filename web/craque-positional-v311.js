@@ -182,6 +182,31 @@ function storageHealth(store){
  try{stored(store);return {ok:true,reason:null}}
  catch(e){return {ok:false,reason:String(e.message||e)}}
 }
+// V320: um cenário não se torna "vigente" por coincidir sua assinatura.
+// Validar também custo progressivo EXATO e categorias da função escolhida.
+// A checagem é somente leitura: histórico aprovado/legado não é apagado.
+function revisionCurrent(scenario,revision){
+ const plan=scenario?.outcome?.plan;
+ if(!plan||!revision||revision.base!==scenario.base||
+    revision.originalPosition!==scenario.originalPosition||
+    revision.selectedPosition!==scenario.position||
+    revision.style!==scenario.style||revision.manager!==scenario.manager||
+    (revision.contentSignature&&revision.contentSignature!==scenario.contentSignature))
+  return false;
+ if(revision.levels===null){
+  return plan.levels===null&&
+   (revision.pp===null||revision.pp===plan.pp);
+ }
+ const t=depsDefault().tactical,levels=revision.levels;
+ if(!Array.isArray(levels)||!t?.valid?.(levels)||
+    !Number.isInteger(revision.pp)||revision.pp!==plan.pp||
+    t.total(levels)!==revision.pp||plan.status!=='hipotese')
+  return false;
+ // Mesmo fechando PP, treino de goleiro não pode contaminar jogador de linha
+ // (nem vice-versa). A posição de USO controla essas categorias.
+ const allowed=plan.role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ return levels.every((value,index)=>value===0||allowed.includes(index));
+}
 function revisions(store,scenario){
  if(!scenario?.id)throw Error('Cenário sem identificação');
  const rows=stored(store)[scenario.id];
@@ -189,7 +214,7 @@ function revisions(store,scenario){
  if(!Array.isArray(rows))throw Error('Revisões deste cenário estão ilegíveis: gravação bloqueada.');
  return rows.map((revision,index)=>({
   revision,number:Number.isInteger(revision?.revision)?revision.revision:index+1,
-  stale:revision?.base!==scenario.base
+  stale:!revisionCurrent(scenario,revision)
  }));
 }
 function saved(store,scenario){
@@ -247,18 +272,7 @@ function preferred(store,m){
 // Adaptador ÚNICO de leitura para fichas salvas: a revisão histórica usa
 // prioridades como strings; o motor calculado usa objetos {name}.
 function withSaved(scenario,revision){
- if(!scenario?.outcome||!revision||revision.base!==scenario.base||
-    revision.originalPosition!==scenario.originalPosition||
-    revision.selectedPosition!==scenario.position||
-    revision.style!==scenario.style||revision.manager!==scenario.manager||
-    // Uma revisão importada ou legada com dados diferentes não deve
-    // ser aplicada como ficha atual apenas por coincidir o PP.
-    (revision.contentSignature&&revision.contentSignature!==scenario.contentSignature)||
-    (revision.levels!==null&&revision.levels!==undefined&&
-     (!Array.isArray(revision.levels)||revision.levels.length!==10||
-      !revision.levels.every(n=>Number.isInteger(n)&&n>=0&&n<=20)))||
-    (Number.isInteger(revision.pp)&&revision.pp!==scenario.outcome.plan.pp))
-  return scenario;
+ if(!revisionCurrent(scenario,revision))return scenario;
  const normalizePriority=x=>typeof x==='string'?{name:x}:x&&typeof x.name==='string'?{name:x.name}:null;
  const recorded=revision.focus&&typeof revision.focus==='object'?{
   ...revision.focus,
@@ -364,5 +378,5 @@ function importOwnerScenarios(store,backup,newOwner,cards){
  return count;
 }
 return Object.freeze({KEY,PREF,POS,normalize,hash,fromPersonal,fromExternal,baseSignature,
- identity,contentSignature,compute,positionMap,managerEvidence,responsibilities,snapshot,familiarity,storageHealth,revisions,saved,save,choose,preferred,withSaved,compare,exportOwnerScenarios,importOwnerScenarios});
+ identity,contentSignature,compute,positionMap,managerEvidence,responsibilities,snapshot,familiarity,storageHealth,revisionCurrent,revisions,saved,save,choose,preferred,withSaved,compare,exportOwnerScenarios,importOwnerScenarios});
 });
