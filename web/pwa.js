@@ -8,6 +8,11 @@ function putManagerLink(){
  link.href='tecnicos-v307.html';link.textContent='Técnicos · comparar 22 versões →';
  link.className='btn primary';link.setAttribute('data-manager-hub-link','v307');
  list.append(link);
+ const own=document.createElement('a');
+ own.href='outros-elencos-v227.html?colecao=minhas-cartas-adicionadas';
+ own.textContent='+ Adicionar minhas novas cartas · PP automático →';
+ own.className='btn primary';own.setAttribute('data-my-cards-link','v309');
+ list.append(own);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',putManagerLink,{once:true});
 else putManagerLink();
