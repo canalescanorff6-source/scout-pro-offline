@@ -12,7 +12,9 @@ const mk=(tag,cl='',txt)=>{
  if(txt!==undefined)node.textContent=String(txt);
  return node;
 };
-let activeCard=null,activeOwner=null,saveCallback=null,style='posse';
+let activeCard=null,activeOwner=null,saveCallback=null,editCallback=null,style='posse';
+let panel='treino',cache=null;
+const labels={treino:'Treinamento',skills:'5 habilidades',boost:'Ímpetos'};
 const feedback=$('friend-analysis-feedback');
 function infoRow(name,value,className=''){
  const row=mk('div','friend-analysis-meta-item '+className);
@@ -41,7 +43,7 @@ function summaryCard(result){
  return el;
 }
 function training(result){
- const panel=mk('section','friend-analysis-panel');
+ const panel=mk('section','friend-analysis-panel');panel.dataset.panel='treino';
  panel.append(mk('h3','','Ficha de treino · '+result.label));
  const p=result.plan;
  if(p.status!=='hipotese'||!p.levels){
@@ -79,7 +81,7 @@ function training(result){
  return panel;
 }
 function skills(result){
- const panel=mk('section','friend-analysis-panel');
+ const panel=mk('section','friend-analysis-panel');panel.dataset.panel='skills';
  panel.append(mk('h3','','Habilidades adicionais · até 5 espaços'));
  if(!result.skills){
   panel.append(mk('p','friend-analysis-warning','Informe a posição da carta para recomendar habilidades.'));return panel;
@@ -106,7 +108,7 @@ function skills(result){
  return panel;
 }
 function booster(result){
- const panel=mk('section','friend-analysis-panel');
+ const panel=mk('section','friend-analysis-panel');panel.dataset.panel='boost';
  panel.append(mk('h3','','Ímpeto ideal e disponibilidade'));
  const b=result.booster;
  if(!b){
@@ -133,21 +135,60 @@ function booster(result){
  panel.append(mk('p','friend-analysis-fineprint',b.note||'Ranking teórico sem status finais ou partida comprovada.'));
  return panel;
 }
+function buildCache(){
+ cache=Object.fromEntries(engine.MODES.map(mode=>[mode,engine.evaluate(activeCard,mode)]));
+}
+function selectPanel(value){
+ if(!labels[value])return;
+ panel=value;
+ const nav=$('friend-analysis-sections');
+ nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.panel===panel)));
+ $('friend-analysis-content').querySelectorAll('[data-panel]').forEach(node=>{
+  node.hidden=node.dataset.panel!==panel;
+ });
+}
+function identity(){
+ $('friend-analysis-title').textContent='Ficha do app · '+activeCard.name;
+ $('friend-analysis-owner').textContent='Coleção '+activeOwner.name;
+ $('friend-analysis-player').textContent=activeCard.name;
+ $('friend-analysis-edition').textContent=activeCard.edition||'Edição ainda não confirmada';
+ const badges=$('friend-analysis-badges');badges.replaceChildren(
+  mk('span','',activeCard.position||'Posição pendente'),
+  mk('span','',activeCard.style||'Estilo pendente'),
+  mk('span','',Number.isInteger(activeCard.pp)?activeCard.pp+' PP':'PP pendentes'));
+ const img=$('friend-analysis-cover'),empty=$('friend-analysis-cover-empty');
+ img.hidden=!activeCard.image;empty.hidden=!!activeCard.image;
+ if(activeCard.image){img.src=activeCard.image;img.alt='Imagem cadastrada de '+activeCard.name;}
+ else img.removeAttribute('src');
+}
 function display(){
  if(!activeCard)return;
- const result=engine.evaluate(activeCard,style);
- $('friend-analysis-title').textContent='Ficha · '+activeCard.name;
- $('friend-analysis-owner').textContent='Acervo exclusivo: '+activeOwner.name+' · '+(activeCard.edition||'Edição a confirmar');
- $('friend-analysis-modes').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.style===style)));
+ if(!cache)buildCache();
+ const result=cache[style];
+ identity();
+ $('friend-analysis-modes').querySelectorAll('button').forEach(b=>{
+  const active=b.dataset.style===style;b.setAttribute('aria-pressed',String(active));
+  const plan=cache[b.dataset.style]?.plan;
+  const pending=plan?.status!=='hipotese';
+  b.replaceChildren(mk('strong','',engine.LABEL[b.dataset.style]),
+   mk('small','',pending?'Treino pendente':(plan.pp+' PP · hipótese')));
+  b.title=pending?'Preencha o PP e a posição para calcular esta ficha.':
+   'Ficha calculada pelo app; conferir atributos antes de aplicar no jogo.';
+ });
  const container=$('friend-analysis-content');
  container.replaceChildren(summaryCard(result),training(result),skills(result),booster(result));
+ selectPanel(panel);
  const valid=engine.validateSaved(activeCard,activeCard.analysis);
- $('friend-analysis-state').textContent=valid?'Cinco fichas calculadas e salvas neste acervo.':
-  'Ficha a recalcular: cadastro novo ou campos alterados. As recomendações aqui são visualizadas sem modificar seus jogadores.';
+ const allCalculated=engine.MODES.every(id=>cache[id].plan.status==='hipotese');
+ $('friend-analysis-state').textContent=!allCalculated?
+  'As cinco fichas estão disponíveis para consulta, mas o treino permanece PENDENTE onde faltam PP ou dados. Complete o cadastro para liberar o cálculo.':
+  valid?'Cinco treinos por estilo gerados e registrados neste acervo. Habilidades e ímpetos são recomendações calculadas ao abrir.':
+  'Cinco propostas calculadas pelo app. Use “Gerar e salvar 5 fichas” para registrar os treinos neste acervo.';
 }
-function openCard(card,owner,onSave){
+function openCard(card,owner,onSave,onEdit){
  if(!card||!owner||card.ownerId!==owner.id){status('Erro: carta e pessoa não correspondem.');return}
- activeCard=card;activeOwner=owner;saveCallback=onSave;style='posse';
+ activeCard=card;activeOwner=owner;saveCallback=onSave;editCallback=onEdit||null;
+ style='posse';panel='treino';cache=null;
  $('friend-analysis-feedback').textContent='';
  try{display();if(!modal.open)modal.showModal()}
  catch(e){status('Não foi possível calcular: '+(e.message||e));if(!modal.open)modal.showModal()}
@@ -158,6 +199,13 @@ for(const mode of engine.MODES){
  btn.setAttribute('aria-pressed','false');btn.onclick=()=>{style=mode;try{display()}catch(e){status('Erro ao trocar tática: '+e.message)}};
  tabs.append(btn);
 }
+$('friend-analysis-sections').querySelectorAll('button').forEach(b=>{
+ b.onclick=()=>selectPanel(b.dataset.panel);
+});
+$('friend-analysis-edit').onclick=()=>{
+ if(typeof editCallback!=='function')return;
+ modal.close();editCallback();
+};
 $('friend-analysis-close').onclick=()=>modal.close();
 $('friend-analysis-save').onclick=()=>{
  if(!activeCard||typeof saveCallback!=='function')return;
@@ -166,7 +214,10 @@ $('friend-analysis-save').onclick=()=>{
   const next=engine.generate(activeCard);
   const updated=saveCallback(activeCard,{...activeCard,analysis:next});
   if(updated)activeCard=updated;
-  status('Fichas para cinco estilos salvas somente no acervo de '+activeOwner.name+'. Seus 246 jogadores não foram alterados.');
+  cache=null;
+  const count=Object.values(next.profiles).filter(x=>x.status==='hipotese').length;
+  status(count===5?'Cinco treinamentos experimentais registrados no acervo de '+activeOwner.name+'. Nenhuma carta sua foi alterada.':
+   count+' treinos simulados e '+(5-count)+' pendentes por ausência de dados. Nenhum PP foi inventado.');
   display();
  }catch(e){status('Fichas não salvas: '+String(e.message||e))}
  finally{button.disabled=false}

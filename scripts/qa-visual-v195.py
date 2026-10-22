@@ -1287,6 +1287,23 @@ def run():
                     problems.append(f"{name}: V304 coleção Bruno não apareceu em Outros Elencos")
                 page.locator("#bruno-open-collection").click()
                 page.locator("#friend-cards .friends-card").first.wait_for(timeout=15000)
+                # V305: acesso visível e exclusivo por carta às cinco fichas do app.
+                if "Ver ficha do app" not in page.locator("#friend-cards .friends-card").first.inner_text():
+                    problems.append(f"{name}: V305 não exibe botão para consultar a ficha")
+                page.locator("#friend-cards .friends-analysis-action").first.click()
+                if (page.locator("#friend-analysis-modes button").count()!=5 or
+                    "PP pendentes" not in page.locator("#friend-analysis-badges").inner_text()):
+                    problems.append(f"{name}: V305 perdeu cinco fichas / PP pendentes do Zico")
+                if not page.locator("#friend-analysis-content").inner_text().count("Treino ainda não calculável"):
+                    problems.append(f"{name}: V305 Zico recebeu PP fictícios")
+                page.locator('#friend-analysis-sections [data-panel="skills"]').click()
+                if not page.locator('#friend-analysis-content [data-panel="skills"]').is_visible():
+                    problems.append(f"{name}: V305 habilidades adicionais não acessíveis")
+                page.locator('#friend-analysis-sections [data-panel="boost"]').click()
+                if not page.locator('#friend-analysis-content [data-panel="boost"]').is_visible():
+                    problems.append(f"{name}: V305 ímpetos não acessíveis")
+                page.locator('#friend-analysis-sections [data-panel="treino"]').click()
+                page.locator('#friend-analysis-close').click()
                 cover_valid=page.locator("#bruno-featured-card-art").evaluate(
                     "(e)=>e.complete && e.naturalWidth>0")
                 if not cover_valid:
@@ -1336,6 +1353,9 @@ def run():
                 page.locator('#friend-card-booster-slot').select_option('vazio')
                 page.locator('#friend-dialog-save').click()
                 page.locator('#friend-cards .friends-analysis-action').click()
+                if (page.locator("#friend-analysis-modes button").count()!=5 or
+                    not page.locator("#friend-analysis-cover-empty").is_visible()):
+                    problems.append(f"{name}: V305 ficha premium de Ana não iniciou corretamente")
                 if page.locator('.friend-analysis-table tbody tr').count()!=10:
                     problems.append(f"{name}: V228 não mostrou 10 grupos de treino")
                 for tactic in ['posse','normal','rapido','fora','longo']:
@@ -1352,6 +1372,12 @@ def run():
                         len(sheet.get('styles',{}))!=5 or
                         sheet['styles']['posse']['training']['pp']!=62):
                         problems.append(f"{name}: V228 exportação de fichas táticas incompleta")
+                page.locator('#friend-analysis-sections [data-panel="skills"]').click()
+                if not page.locator('#friend-analysis-content [data-panel="skills"]').is_visible():
+                    problems.append(f"{name}: V305 habilidades calculadas não aparecem")
+                page.locator('#friend-analysis-sections [data-panel="boost"]').click()
+                if not page.locator('#friend-analysis-content [data-panel="boost"]').is_visible():
+                    problems.append(f"{name}: V305 ímpetos calculados não aparecem")
                 page.locator('#friend-analysis-close').click()
                 saved=page.evaluate("""() => {
                   const items=JSON.parse(localStorage.getItem('scoutpro:v227:friends-collections')).cards;

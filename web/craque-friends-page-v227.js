@@ -82,6 +82,8 @@ function renderPeople(){
 }
 function makeCard(card){
  const node=el('article','friends-card');
+ const ready=Number.isInteger(card.pp)&&card.pp>=0&&Boolean(card.position);
+ node.dataset.ready=ready?'true':'false';
  if(card.image){
   const img=el('img');img.src=card.image;img.alt='Miniatura enviada da carta de '+card.name;img.loading='lazy';
   node.append(img);
@@ -93,9 +95,15 @@ function makeCard(card){
  if(card.style)info.append(el('small','friends-playstyle','Estilo: '+card.style));
  if(card.cardId)info.append(el('small','','Card ID: '+card.cardId));
  if(card.level!==null||card.pp!==null)info.append(el('small','',[(card.level!==null?'Nível '+card.level:null),(card.pp!==null?card.pp+' PP':null)].filter(Boolean).join(' · ')));
+ const state=el('div','friends-card-fichas');
+ state.append(el('span','friends-card-fichas-title','FICHAS DO APLICATIVO'),
+  el('strong',ready?'5 estilos · análise disponível':'5 estilos · dados pendentes'),
+  el('small','',ready?'Treino calculável com '+card.pp+' PP · habilidades e ímpetos por estilo':
+   'Cadastre PP e edição para gerar treino; habilidades e ímpetos são consultivos.'));
+ info.append(state);
  const actions=el('div','friends-actions');
  actions.append(
-  button('Ficha completa','friends-analysis-action',()=>{
+  button('Ver ficha do app','friends-analysis-action',()=>{
    const analyzer=window.CRAQUE_FRIEND_TRAINING_UI_V228;
    const owner=getOwner();
    if(!analyzer||!owner||card.ownerId!==owner.id){status('Motor de fichas indisponível para esta carta.');return;}
@@ -104,9 +112,9 @@ function makeCard(card){
     const next=api.saveCard(data,proposed);
     save(next,'Cinco fichas individuais atualizadas para '+original.name+' · '+owner.name);
     return data.cards.find(x=>x.ownerId===owner.id&&x.id===original.id);
-   });
+   },()=>openCard(card));
   }),
-  button('Editar','',()=>openCard(card)),
+  button('Editar dados','',()=>openCard(card)),
   button('Excluir','friends-remove',()=>eraseCard(card))
  );
  info.append(actions);
@@ -125,6 +133,8 @@ function renderCards(){
  const owner=getOwner(),current=personCards(owner.id);
  $('friend-current-name').textContent=owner.name;
  $('friend-current-meta').textContent=current.length+' carta'+(current.length===1?'':'s')+' cadastrada'+(current.length===1?'':'s')+' · coleção independente';
+ const done=current.filter(c=>Number.isInteger(c.pp)&&c.pp>=0&&c.position).length;
+ $('friend-fichas-count').textContent=done+'/'+current.length+' com PP e posição · 5 estilos por carta';
  const search=$('friend-search').value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
  const position=$('friend-position').value;
  const shown=current.filter(card=>{

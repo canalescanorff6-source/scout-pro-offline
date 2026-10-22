@@ -164,3 +164,115 @@ body[data-page=friends] input[type=file]{max-width:100%;font-size:12px;min-heigh
 .friends-featured-info strong{color:#f6e4b1}
 .friends-featured-info button{min-height:46px;padding:11px 14px;cursor:pointer}
 @media(max-width:540px){.friends-featured-owner{align-items:flex-start;gap:12px;padding:13px}.friends-featured-art{width:78px;min-width:78px;padding:5px}.friends-featured-art img{width:66px}.friends-featured-info h2{font-size:20px}.friends-featured-info p{font-size:12px}.friends-featured-info button{font-size:12px;max-width:100%}}
+
+/* V305 · Outros Elencos Premium — hierarquia, identidade Craque Tático e ficha do app. */
+body[data-page=friends]{
+ --fr-bg:#0a101b;--fr-panel:#111e2e;--fr-ink:#f6f5ee;
+ --fr-muted:#aebdc9;--fr-gold:#eecb7c;--fr-green:#5eb9a8;
+ --fr-line:rgba(180,198,217,.16);--fr-input:#0a1727;
+ background:radial-gradient(ellipse at 70% -160px,rgba(172,132,57,.12),transparent 50%),
+  linear-gradient(180deg,#090f1a 0%,#0c1725 52%,#0a121e 100%);
+}
+body[data-page=friends] .friends-layout{gap:13px;max-width:1250px}
+body[data-page=friends] .friends-head{background:rgba(9,17,30,.96);border-color:#374052}
+body[data-page=friends] .friends-hero{
+ padding:clamp(16px,2.8vw,27px);border-color:rgba(207,175,104,.38);
+ background:linear-gradient(126deg,#18273a,#0d1c2b 66%,#132d34);
+ border-radius:20px;box-shadow:0 10px 34px #02081470;
+}
+body[data-page=friends] .friends-hero h1{font-size:clamp(27px,4vw,40px);margin-bottom:5px}
+body[data-page=friends] .friends-hero p{margin:0 0 10px;max-width:650px;line-height:1.55}
+.friends-journey{display:flex;flex-wrap:wrap;gap:7px;margin:15px 0 9px}
+.friends-journey span{border:1px solid #4b5665;background:#0c1b2d;color:#e3e6e9;padding:7px 10px;border-radius:10px;font-size:11px;font-weight:700}
+.friends-journey b{color:#f5d48d;padding-right:6px}
+body[data-page=friends] .friends-safe{background:#111f2a;border-color:#354b51;color:#d0dbdb}
+body[data-page=friends] .friends-panel{border-color:var(--fr-line);background:linear-gradient(150deg,#142236,#0d1a2a 80%);box-shadow:0 8px 27px #0004}
+body[data-page=friends] .friends-panel h2{color:#f2ecdf}
+body[data-page=friends] .friends-panel p{color:#bbcbd6}
+body[data-page=friends] .friends-primary{background:linear-gradient(125deg,#e8c17c,#f9e0ab)!important;color:#1c2736!important;border-color:#f2d599!important;box-shadow:inset 0 1px 0 #fff7}
+body[data-page=friends] input:not([type=hidden]):not([type=file]),body[data-page=friends] select,body[data-page=friends] textarea{background:#0a1829;border-color:#455467}
+body[data-page=friends] .friends-person{background:#111f30;border-color:#354356}
+body[data-page=friends] .friends-person[aria-pressed=true]{border-color:#f0c980;background:linear-gradient(110deg,#36352e,#142938);box-shadow:inset 3px 0 0 #f0c980}
+body[data-page=friends] .friends-person .friends-avatar{background:#252b2d;color:#f6dba2;border-color:#5b584f}
+body[data-page=friends] .friends-featured-owner{background:linear-gradient(112deg,#1d2b40,#0e202f 70%);border-color:#b39a65}
+body[data-page=friends] .friends-featured-art{background:#0b1725}
+body[data-page=friends] .friends-featured-info button{font-weight:850}
+.friends-fichas-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;margin:8px 0 15px;background:#0a1728;border:1px solid #4a505d;border-radius:15px}
+.friends-fichas-bar h3{font-size:19px!important;color:#f7e6c5!important;margin:1px 0 4px}
+.friends-fichas-bar p{margin:0;font-size:12px}
+.friends-fichas-bar strong{color:#e7d2a9}
+.friends-fichas-count{font-size:11px;font-weight:800;color:#ffe0a4;padding:9px;border:1px solid #655a46;border-radius:11px;flex:none;max-width:145px;text-align:center}
+body[data-page=friends] .friends-card-grid{grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:13px}
+body[data-page=friends] .friends-card{padding:14px;gap:12px;align-items:flex-start;min-height:220px;border:1px solid #435066;background:linear-gradient(150deg,#1c2c41,#101d2f);border-radius:17px;box-shadow:0 8px 20px #0004}
+body[data-page=friends] .friends-card img{width:82px;height:108px;border:1px solid #b59a62;border-radius:10px;object-fit:contain;background:#0a1422;box-shadow:0 2px 14px #0005}
+body[data-page=friends] .friends-card .friends-placeholder{width:82px;height:108px;background:#111e30;border-color:#536176}
+body[data-page=friends] .friends-card-info>strong{font-size:19px;color:#fff4da;line-height:1.22}
+body[data-page=friends] .friends-card-info .friends-edition{color:#e1bf80;line-height:1.5}
+body[data-page=friends] .friends-card-info .friends-playstyle{color:#e2eaf3}
+.friends-card-fichas{margin:8px 0;display:grid;gap:3px;border-top:1px solid #495368;padding-top:10px}
+.friends-card-fichas-title{font-size:9px;letter-spacing:.1em;font-weight:900;color:#d7b56d}
+.friends-card-fichas strong{font-size:12px;color:#ecf2ff}
+.friends-card-fichas small{font-size:11px!important;color:#b6c6d3!important;line-height:1.45}
+body[data-page=friends] .friends-card-info .friends-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:6px}
+body[data-page=friends] .friends-card-info .friends-actions button{min-height:40px;border-color:#56647a;background:#21344a;color:#f0f4fc;font-weight:780;border-radius:10px}
+body[data-page=friends] .friends-card-info .friends-actions .friends-analysis-action{grid-column:1/-1;min-height:46px;background:linear-gradient(130deg,#bd9255,#ebcb89)!important;border-color:#f1cf85!important;color:#1d2531!important;font-weight:900}
+body[data-page=friends] .friends-card-info .friends-actions .friends-remove{background:#30242e;color:#f6c9cf;border-color:#825b68}
+body[data-page=friends] .friends-card-info details{border-top:1px solid #3d4759;padding:8px 0 0}
+body[data-page=friends] .friends-card-info details summary{font-size:11px;color:#cbd9e4}
+body[data-page=friends] .friends-dialog{background:#0e1b2d;border:1px solid #87734f}
+body[data-page=friends] .friend-analysis-dialog{width:min(96vw,880px);max-height:min(94dvh,960px);padding:clamp(13px,2.5vw,23px)}
+body[data-page=friends] .friend-analysis-dialog .friends-dialog-head{background:#0e1b2d;border-color:#38495e;top:-13px;padding-top:8px;padding-bottom:12px}
+.friend-analysis-identity{display:flex;align-items:center;gap:14px;background:linear-gradient(105deg,#1f3146,#101e30);padding:14px;border:1px solid #586275;border-radius:15px;margin-top:12px}
+.friend-analysis-cover{width:84px;height:112px;min-width:84px;border:1px solid #b99459;border-radius:12px;display:grid;place-items:center;background:#071421;overflow:hidden}
+.friend-analysis-cover img{width:100%;height:100%;object-fit:contain}
+.friend-analysis-cover>span{font-size:26px;font-weight:900;color:#d3af70}
+.friend-analysis-identity-info{min-width:0;display:grid;gap:5px}
+.friend-analysis-identity-info>strong{font-size:24px;color:#fff0ca;line-height:1.1;overflow-wrap:anywhere}
+.friend-analysis-identity-info p{font-size:12px;color:#c7d2dc;margin:0;overflow-wrap:anywhere}
+.friend-analysis-identity-badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.friend-analysis-identity-badges span{padding:5px 8px;background:#0d2030;border:1px solid #526073;border-radius:8px;font-size:11px;color:#e6eaf1}
+.friend-analysis-five{border:1px solid #48576c;background:#0b1b2c;border-radius:14px;padding:12px;margin-top:13px}
+.friend-analysis-five-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.friend-analysis-five-head strong{color:#ffdea5;font-size:14px}
+.friend-analysis-five-head small{font-size:11px;color:#b7c6d6}
+body[data-page=friends] .friend-analysis-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:9px 0 0}
+body[data-page=friends] .friend-analysis-tabs button{min-height:71px;display:grid;gap:6px;align-content:center;padding:7px 5px;border:1px solid #4a5970;border-radius:10px;background:#15283c;color:#e2ebf5;text-align:center;line-height:1.25}
+body[data-page=friends] .friend-analysis-tabs button strong{font-size:11px;overflow-wrap:anywhere}
+body[data-page=friends] .friend-analysis-tabs button small{font-size:10px;color:#b7c5d7;overflow-wrap:anywhere}
+body[data-page=friends] .friend-analysis-tabs button[aria-pressed=true]{background:linear-gradient(120deg,#aa854d,#e3bc76);color:#101c29;border-color:#fee0a2}
+body[data-page=friends] .friend-analysis-tabs button[aria-pressed=true] small{color:#172635}
+body[data-page=friends] .friend-analysis-state{background:#1e2b3a;color:#e8d8b7;border-color:#e3bf7f;margin:10px 0}
+.friend-analysis-sections{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0}
+body[data-page=friends] .friend-analysis-sections button{border:1px solid #4b5f71;color:#dae3ef;background:#14283a;min-height:44px;border-radius:10px;font-size:12px;font-weight:850}
+body[data-page=friends] .friend-analysis-sections button[aria-pressed=true]{background:#e6cd98;color:#172231;border-color:#f3daa6}
+body[data-page=friends] .friend-analysis-content{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+body[data-page=friends] .friend-analysis-summary{grid-column:1/-1;grid-row:auto;background:#152a38;border-color:#425c68}
+body[data-page=friends] .friend-analysis-meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+body[data-page=friends] .friend-analysis-panel:nth-child(n){grid-column:1/-1;grid-row:auto}
+body[data-page=friends] .friend-analysis-panel{background:#101f31;border-color:#42536a}
+body[data-page=friends] .friend-analysis-panel h3{color:#f3d39a}
+body[data-page=friends] .friend-analysis-table .friend-analysis-active{background:#263b4c}
+body[data-page=friends] .friend-analysis-pp{background:#24374a;color:#ffe7a7}
+body[data-page=friends] .friend-analysis-skills li{background:#182c3f;border-color:#495b70}
+body[data-page=friends] .friend-analysis-best{background:#1f3446;border-color:#bba16a}
+body[data-page=friends] .friend-analysis-cta{position:sticky;bottom:-16px;z-index:3;background:#0e1b2d;padding:12px 0 8px;flex-wrap:wrap}
+body[data-page=friends] .friend-analysis-cta button{min-height:46px;flex:1 1 170px}
+@media(max-width:680px){
+ body[data-page=friends] .friend-analysis-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-page=friends] .friend-analysis-tabs button{min-height:57px;padding:9px 7px}
+ body[data-page=friends] .friend-analysis-meta{grid-template-columns:minmax(0,1fr)}
+ .friends-fichas-bar{align-items:flex-start;flex-wrap:wrap}
+ .friends-fichas-count{max-width:none;width:100%}
+ body[data-page=friends] .friend-analysis-dialog{max-height:92dvh}
+ .friend-analysis-identity-info>strong{font-size:20px}
+ .friend-analysis-identity{padding:11px}
+ .friend-analysis-cover{min-width:69px;width:69px;height:95px}
+ body[data-page=friends] .friend-analysis-cta{bottom:-14px}
+ body[data-page=friends] .friend-analysis-cta button{font-size:11px}
+}
+@media(max-width:390px){
+ body[data-page=friends] .friends-card-grid{grid-template-columns:minmax(0,1fr)}
+ body[data-page=friends] .friend-analysis-identity-badges span{font-size:10px}
+ body[data-page=friends] .friend-analysis-sections button{font-size:11px}
+ .friends-journey{display:grid;grid-template-columns:1fr}
+}
