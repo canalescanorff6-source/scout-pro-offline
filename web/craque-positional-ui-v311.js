@@ -55,7 +55,7 @@ function create(target,model,opts={}){
     select.value=position;positionChange();
    }});
    if(opts.formationSlot&&formationApi.slotPosition(formationSelect.value,opts.formationSlot))
-    slotControl.setSlot(opts.formationSlot);
+    slotControl.select.value=opts.formationSlot;
   };
   formationSelect.addEventListener('change',()=>{opts.formationSlot=null;slotMount()});
   formationRow.append(formationLabel,slotArea);
