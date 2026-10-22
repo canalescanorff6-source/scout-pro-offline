@@ -47,11 +47,13 @@ jobs:
             if curl -fsS http://127.0.0.1:8765/index.html >/dev/null; then break; fi
             sleep 1
           done
-          python scripts/qa-visual-v195.py
-          python scripts/qa-managers-v307.py
-          python scripts/qa-pp-v309.py
-          python scripts/qa-position-v311.py
-          python scripts/qa-formation-v314.py
+          # V315: testar primeiro o caso novo; falhar claramente em bloqueios de navegação.
+          # Mantém todos os QA anteriores, sem afrouxar assertivas.
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-formation-v314.py
+          timeout --signal=TERM --kill-after=10s 300s python -u scripts/qa-visual-v195.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-managers-v307.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-pp-v309.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-position-v311.py
       - name: Anexar screenshots e relatório para inspeção
         if: always()
         uses: actions/upload-artifact@v4

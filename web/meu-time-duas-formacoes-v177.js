@@ -61,7 +61,12 @@ function assign(slot,cap){const c=byCap.get(Number(cap));if(!c||!Object.hasOwn(c
  if(Object.entries(currentSelections()).some(([s,n])=>s!==slot&&
   identity.key(byCap.get(Number(n)))===identity.key(c))){
  setStatus(c.name+' já está em campo em outra edição. O eFootball permite apenas uma versão da mesma pessoa na equipe.');return false}
- currentSelections()[slot]=Number(cap);save();render();return true;
+ currentSelections()[slot]=Number(cap);save();render();
+ // Notificar SOMENTE troca efetivamente aceita, após a renderização.
+ // O contexto recebe a posição da vaga, mas nunca grava treino na carta.
+ window.dispatchEvent(new CustomEvent('craque:lineup-assigned-v315',
+  {detail:{formation:activeId,mode:activeMode,slot,cap:Number(cap)}}));
+ return true;
 }
 function makePlayer(slot){const c=byCap.get(Number(currentSelections()[slot]));const original=active().starters.find(s=>s.slot===slot);
  if(!c||!original)return '';
