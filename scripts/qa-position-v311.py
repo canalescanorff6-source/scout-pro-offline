@@ -85,6 +85,25 @@ with sync_playwright() as p:
    assert 'Habilidade SA antiga preservada' in root.inner_text()
    root.locator('.ct318-revision-select').select_option('1')
    assert 'Habilidade SA antiga preservada' not in root.inner_text()
+   # V320: o vetor de dez categorias pode ser estruturalmente válido, mas
+   # custo 0 != orçamento 68 PP. A ficha deve permanecer somente histórica.
+   page.evaluate("""() => {
+     const key='scoutpro:v311:position-scenarios';
+     const payload=JSON.parse(localStorage.getItem(key));
+     const rows=Object.values(payload.entries).find(items=>
+       Array.isArray(items)&&items.length===2&&
+       items[1].selectedPosition==='SA'&&items[1].style==='posse');
+     if(!rows)throw Error('Histórico SA não localizado');
+     rows[1].levels=Array(10).fill(0);
+     rows[1].recommendations=[{name:'Skill indevida V320',why:'vetor errado'}];
+     localStorage.setItem(key,JSON.stringify(payload));
+   }""")
+   selector.select_option('MAT')
+   selector.select_option('SA')
+   assert 'DESATUALIZADA' in root.inner_text()
+   assert 'Skill indevida V320' not in root.inner_text(),root.inner_text()
+   assert 'desatualizada' in root.locator('.ct318-revision-select option').nth(1).inner_text()
+   assert '68 PP exatos distribuídos' in root.inner_text()
    page.locator('#friend-analysis-modes [data-style=rapido]').click()
    # Histórico ilegível deve bloquear gravação, sem apagá-lo.
    page.evaluate("""() => {

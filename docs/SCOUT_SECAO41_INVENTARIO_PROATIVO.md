@@ -16,3 +16,18 @@ Baseline anterior: `124d11ec83181398e05d7e88eb63a2c3f4a4c4d7`. Atualização ver
 ## Continuidade V319
 
 Código alterado: `web/craque-friends-training-v228.js`, `web/craque-friends-training-ui-v228.js`, cache offline e testes em `scripts/test-friends-training-v228.cjs` e `scripts/test-position-scenarios-v311.cjs`. Distinção de slots não equivale a comprovação de habilidades equipadas. Testes físicos em aparelhos continuam pendentes. Próximo ciclo: auditar recomendação específica de habilidades/ímpetos e custos de PP por função, sem inventar dados por edição.
+
+## V320 — Detecção proativa: custo progressivo e contaminação goleiro/linha
+
+- **Prioridade:** CRÍTICA (integridade matemática e recuperação de histórico).
+- **Módulo:** `web/craque-positional-v311.js` compartilhado nos dois acervos.
+- **Evidência:** `revisions()` marcava como vigente qualquer snapshot cuja assinatura de base coincidisse, mesmo que seu vetor de 10 níveis custasse menos/mais PP que o orçamento. `withSaved()` validava faixas de níveis, mas não custo progressivo nem categorias compatíveis com GO/jogador de linha.
+- **Causa:** confiança excessiva em assinatura local/PP declarado, sem revalidar a alocação do histórico antes da apresentação.
+- **Impacto funcional/competitivo:** poderia apresentar como atual treino matematicamente impossível, ou treinamento de GK em jogador de linha, contaminando comparação MAT/SA, skills e ímpetos associados ao cenário.
+- **Alteração:** `revisionCurrent()` verifica chave e identidade documental, custo pela mesma fórmula tática V220, orçamento, categoria da função e histórico pendente. `saved()` e `withSaved()` compartilham o mesmo verificador. Histórico original continua íntegro, embora o snapshot incorreto seja sinalizado como desatualizado.
+- **Risco/limite:** não prova desempenho em partidas; nenhuma alteração do orçamento, aprovação, atributos-base ou imagem.
+- **Critérios de aceitação:** revisão íntegra segue vigente; revisão de custo errado passa a stale; mover PP para categorias GO/linha com o mesmo custo bloqueia; MAT→SA→MAT continua preservado; 246 cartas intactas; Android/Windows usam o mesmo arquivo.
+- **Testes:** `scripts/test-position-scenarios-v311.cjs` e `npm run check` em CI; QA visual; builds Android/Windows; nenhum teste físico afirmado.
+- **Estado:** implementação V320 na branch, aguardando verificação CI/QA/merge/publicação.
+
+**Próximo risco a auditar:** robustez das recomendações de cinco habilidades quando a lista nativa e a lista equipada estão incompletas ou usam grafias equivalentes; validar candidatos por função sem alegar slots equipados.

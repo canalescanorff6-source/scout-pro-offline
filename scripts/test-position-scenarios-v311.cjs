@@ -120,6 +120,51 @@ assert.equal(core.withSaved(matPosse,{...historic,levels:[1,2]}),matPosse,
  'Uma revisão com dez categorias incompletas não pode ser aplicada');
 assert.equal(core.withSaved(matPosse,{...historic,levels:Array(10).fill(-1)}),matPosse,
  'Níveis inválidos não podem ser restaurados como build vigente');
+// V320 — vetor de 10 níveis pode ser inválido MESMO com PP declarados
+// e assinatura de edição compatíveis: comparar custo real do jogo.
+const zeroLevels={...historic,levels:Array(10).fill(0)};
+assert.equal(zeroLevels.pp,68);
+assert.equal(t.total(zeroLevels.levels),0);
+assert.equal(core.revisionCurrent(matPosse,zeroLevels),false);
+assert.equal(core.withSaved(matPosse,zeroLevels),matPosse,
+ 'Não restaurar ficha cujo custo real do vetor difere dos PP declarados');
+// Mesmo orçamento: mover pontos de uma categoria de linha a GK é inválido.
+const swapped=historic.levels.slice();
+const firstPositive=swapped.findIndex((n,i)=>i<7&&n>0);
+assert(firstPositive>=0);
+swapped[7]=swapped[firstPositive];swapped[firstPositive]=0;
+assert.equal(t.total(swapped),historic.pp,
+ 'Custo matemático preservado neste teste de categorias proibidas');
+assert.equal(core.revisionCurrent(matPosse,{...historic,levels:swapped}),false);
+assert.equal(core.withSaved(matPosse,{...historic,levels:swapped}),matPosse,
+ 'Jogador de linha não pode receber PP em categorias exclusivas de goleiro');
+// Leitura do armazenamento exige validação em UMA origem de verdade,
+// inclusive para impedir selo de "revisão vigente" na interface.
+const corrupted=store();
+const corruptedRecord={...historic,levels:Array(10).fill(0)};
+corrupted.setItem(core.KEY,JSON.stringify({schema:'CRAQUE_POSITION_V311',
+ entries:{[matPosse.id]:[corruptedRecord]}}));
+const rawCorrupted=corrupted.getItem(core.KEY);
+assert.equal(core.saved(corrupted,matPosse).stale,true);
+assert.equal(corrupted.getItem(core.KEY),rawCorrupted,
+ 'Ler revisão inconsistente deve preservar integralmente seu histórico');
+const goalkeeperModel=core.fromExternal({
+ id:'gk-320',ownerId:'gk-owner',name:'GO de teste',edition:'Edição de teste',
+ cardId:'GO-EXEMPLO',position:'GO',level:35,pp:68,style:'Goleiro ofensivo',
+ nativeSkills:'GK Low Punt',skills:'',fixedBooster:'',booster:'',
+ boosterSlot:'pendente',trainingLevels:''
+},{id:'gk-owner'});
+const goalkeeperScenario=core.compute(goalkeeperModel,'GO','posse','CT-MGR-013',deps);
+const goalkeeperRevision=core.snapshot(goalkeeperScenario);
+assert.equal(core.revisionCurrent(goalkeeperScenario,goalkeeperRevision),true);
+const swapGK=goalkeeperRevision.levels.slice();
+const gkPositive=swapGK.findIndex((n,i)=>i>=7&&n>0);
+assert(gkPositive>=7);
+swapGK[0]=swapGK[gkPositive];swapGK[gkPositive]=0;
+assert.equal(t.total(swapGK),goalkeeperRevision.pp);
+assert.equal(core.revisionCurrent(goalkeeperScenario,
+ {...goalkeeperRevision,levels:swapGK}),false,
+ 'Goleiro não pode receber PP de jogador de linha');
 assert.equal(core.withSaved(saPosse,historic),saPosse,
  'Histórico MAT não pode ser aplicado à posição SA');
 assert.equal(core.withSaved(matPosse,{...historic,base:'desatualizado'}),matPosse,
