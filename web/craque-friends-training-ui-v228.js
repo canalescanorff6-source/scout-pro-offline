@@ -137,7 +137,7 @@ function booster(result){
  }
  panel.append(infoRow('Ímpeto fixo',activeCard.fixedBooster||'Não informado'));
  panel.append(infoRow('Situação do slot',({
-  vazio:'Vazio, confirmado pelo usuário',
+  vazio:'Relatado vazio pelo proprietário (elegibilidade da edição pendente)',
   ocupado:'Ocupado',
   ausente:'Inexistente nesta edição',
   pendente:'Pendente de conferência'
@@ -151,8 +151,10 @@ function booster(result){
   if(b.alternatives?.length)panel.append(mk('p','friend-analysis-fineprint','Alternativas: '+b.alternatives.map(x=>x.nome).join(' · ')));
  }else panel.append(mk('p','friend-analysis-warning','Sem recomendação calculável com os dados atuais.'));
  panel.append(mk('p',result.boosterEligible?'friend-analysis-confirmed':'friend-analysis-warning',
-  result.boosterEligible?'Slot vazio informado: sugestão elegível para conferência no eFootball; não foi aplicada.':
-   'Não aplicar ímpeto: slot inexistente, ocupado ou ainda sem confirmação. O ranking é apenas consultivo.'));
+  result.boosterEligible?'Slot selecionável da edição documentado e relatado vazio: conferir no eFootball antes de qualquer aplicação.':
+   activeCard.boosterSlot==='vazio'?
+    'Slot relatado vazio, mas a edição não possui prova independente de elegibilidade. Ranking consultivo; NÃO gastar tokens.':
+    'Não aplicar ímpeto: slot inexistente, ocupado ou ainda sem confirmação. O ranking é apenas consultivo.'));
  panel.append(mk('p','friend-analysis-fineprint',b.note||'Ranking teórico sem status finais ou partida comprovada.'));
  return panel;
 }

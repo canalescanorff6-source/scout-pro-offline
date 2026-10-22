@@ -47,9 +47,35 @@ for(const tactic of training.MODES){
  assert(!result.suggestedSkills.some(x=>['Passe de primeira','Toque duplo','Passe em profundidade'].includes(x.name)),
   'Não sugerir nativas ou extras já equipadas');
  assert(result.booster?.primary?.nome,'Deve apresentar ímpeto por tática');
- assert.equal(result.boosterEligible,true,'Slot vazio conferido permite indicação condicional');
+ // V321: "vazio" é relato da conta, não prova do tipo de slot nesta edição.
+ assert.equal(result.boosterEligible,false,'Relato de slot vazio não fabrica vaga no catálogo');
+ assert.equal(result.boosterSlotEvidence.ownerReported,'vazio');
+ assert.equal(result.boosterSlotEvidence.editionDocumented,false);
+ assert.equal(result.booster?.slotSupported,false,'Não sintetizar SLOT SELECIONÁVEL com dado manual');
+ assert(result.warnings.some(x=>x.includes('Slot relatado vazio')));
  assert.notEqual(result.booster?.primary?.nome,'Technique','Booster fixo não pode aparecer como novo');
 }
+assert.equal(training.profileOf(a).boost2,'PENDENTE',
+ 'Sem prova catalogada, o adaptador não pode inventar slot selecionável');
+const reportedConflict=source(ana.id,{boosterSlot:'vazio',booster:'Shooting'});
+assert.equal(training.profileOf(reportedConflict).boost2,'Shooting',
+ 'Preservar nome equipado mesmo quando contradiz estado manual de vaga');
+const conflicting=training.evaluate(reportedConflict,'posse',engines);
+assert.equal(conflicting.boosterEligible,false);
+assert(conflicting.warnings.some(x=>x.includes('CONFLITO: slot marcado como vazio')),
+ 'Evidenciar conflito sem apagar equipamento informado');
+assert.equal(conflicting.booster?.knownExtra,'Shooting',
+ 'Ranking deve reconhecer o nome registrado em vez de considerar slot livre');
+// O motor compartilhado continua reconhecendo prova POSITIVA oriunda de
+// catálogo da edição, quando explicitamente informada como fonte independente.
+const catalogSupported=engines.skills.booster({
+ posicao:'SA',shown_position:'SA',boost1:'Technique',
+ boost2:'SLOT SELECIONÁVEL',pp:62,niveis:null,
+ estilo_ataque:'Armador criativo',habilidades_nativas:'Passe de primeira'
+},'posse',engines.boosters,'vazio','');
+assert.equal(catalogSupported.slotSupported,true);
+assert.equal(catalogSupported.able,true,
+ 'Marcador de catálogo documentado e slot vazio são evidências independentes');
 assert.notDeepEqual(training.evaluate(a,'posse',engines).plan.levels,
  training.evaluate(a,'rapido',engines).plan.levels,
  'Os treinos devem variar por tática quando os sinais forem diferentes.');

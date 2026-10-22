@@ -16,10 +16,19 @@ with sync_playwright() as p:
    page.locator('#friend-card-name').fill('Cenário MAT SA')
    page.locator('#friend-card-position').select_option('MAT')
    page.locator('#friend-card-level').fill('35')
+   page.locator('#friend-card-booster-slot').select_option('vazio')
    page.locator('#friend-dialog-save').click()
    page.locator('.friends-card .friends-analysis-action').first.click()
    root=page.locator('.ct311-positional')
    root.wait_for(timeout=25000)
+   # V321: relato de slot vazio na conta NÃO valida disponibilidade do
+   # segundo slot na edição; ranking segue consultivo em ambas as telas.
+   page.locator('#friend-analysis-sections [data-panel="boost"]').click()
+   boost_view=page.locator('#friend-analysis-content [data-panel="boost"]')
+   assert 'Slot relatado vazio, mas a edição não possui prova independente' in boost_view.inner_text()
+   assert 'NÃO gastar tokens' in boost_view.inner_text()
+   assert 'Ranking' in boost_view.inner_text() or 'ranking' in boost_view.inner_text()
+   page.locator('#friend-analysis-sections [data-panel="treino"]').click()
    assert '68 PP exatos distribuídos' in root.inner_text()
    selector=root.locator('.ct311-controls .ct311-select')
    assert selector.input_value()=='MAT'
