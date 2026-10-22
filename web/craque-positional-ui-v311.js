@@ -177,7 +177,7 @@ function mainBoot(){
   const getManager=()=>managerApi?.selectedManager?.()?.catalog_id||'';
   const slot=el('div','ct311-main-slot');
   const before=anchor.querySelector('#scout-v220-training');
-  if(before)anchor.insertBefore(slot,before);else anchor.prepend(slot);
+  if(before?.parentNode)before.parentNode.insertBefore(slot,before);else anchor.prepend(slot);
   const panel=create(slot,model,{style:getStyle(),manager:getManager()});
   if(!panel)return;
   // Não modificar o painel de treino ORIGINAL aprovado. Esta área mostra propostas adicionais.
