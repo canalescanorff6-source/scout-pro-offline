@@ -334,7 +334,19 @@ if(inCard){
  v162Boost.src='../booster-engine-v103.js';
  v162Boost.onload=()=>{
   const v162=document.createElement('script');v162.src='../skills-booster-v162.js';
-  v162.onload=()=>{document.dispatchEvent(new CustomEvent('scoutpro:recommendations-ready'));setTimeout(()=>{if(!document.getElementById('scout-v162'))showSkillsUnavailable()},0)};
+  v162.onload=()=>{
+   // V311: mesma família de motores do acervo externo nas 246 fichas originais.
+   const load=(name,next)=>{
+    const js=document.createElement('script');js.src='../'+name;
+    js.onload=()=>next?.();js.onerror=()=>console.warn('V311: falha ao carregar '+name);
+    document.body.appendChild(js);
+   };
+   load('craque-pp-universal-v309.js',()=>load('craque-friends-training-v228.js',()=>
+    load('craque-positional-v311.js',()=>load('craque-positional-ui-v311.js'))));
+   const css=document.createElement('link');css.rel='stylesheet';css.href='../craque-positional-v311.css';document.head.appendChild(css);
+   document.dispatchEvent(new CustomEvent('scoutpro:recommendations-ready'));
+   setTimeout(()=>{if(!document.getElementById('scout-v162'))showSkillsUnavailable()},0)
+  };
   v162.onerror=showSkillsUnavailable;
   document.body.appendChild(v162);
  };
