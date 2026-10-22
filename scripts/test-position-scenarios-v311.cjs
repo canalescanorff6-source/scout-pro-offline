@@ -104,6 +104,14 @@ assert.deepEqual(contextual.skillsA,['Passe MAT salvo']);
 assert.equal(contextual.boosterA,'Ímpeto MAT salvo');
 assert.deepEqual(contextual.focusB,saPosse.focus.priority.map(x=>x.name));
 assert.equal(JSON.stringify(matPosse),originalSnapshot,'A ficha calculada continua imutável');
+assert.equal(core.withSaved(matPosse,{...historic,contentSignature:'conteudo-de-outra-edicao'}),matPosse,
+ 'Uma revisão com assinatura documental divergente não pode alterar a ficha atual');
+assert.equal(core.withSaved(matPosse,{...historic,pp:999}),matPosse,
+ 'Uma revisão com PP incompatíveis não pode ser aplicada à proposta atual');
+assert.equal(core.withSaved(matPosse,{...historic,levels:[1,2]}),matPosse,
+ 'Uma revisão com dez categorias incompletas não pode ser aplicada');
+assert.equal(core.withSaved(matPosse,{...historic,levels:Array(10).fill(-1)}),matPosse,
+ 'Níveis inválidos não podem ser restaurados como build vigente');
 assert.equal(core.withSaved(saPosse,historic),saPosse,
  'Histórico MAT não pode ser aplicado à posição SA');
 assert.equal(core.withSaved(matPosse,{...historic,base:'desatualizado'}),matPosse,

@@ -250,7 +250,14 @@ function withSaved(scenario,revision){
  if(!scenario?.outcome||!revision||revision.base!==scenario.base||
     revision.originalPosition!==scenario.originalPosition||
     revision.selectedPosition!==scenario.position||
-    revision.style!==scenario.style||revision.manager!==scenario.manager)
+    revision.style!==scenario.style||revision.manager!==scenario.manager||
+    // Uma revisão importada ou legada com dados diferentes não deve
+    // ser aplicada como ficha atual apenas por coincidir o PP.
+    (revision.contentSignature&&revision.contentSignature!==scenario.contentSignature)||
+    (revision.levels!==null&&revision.levels!==undefined&&
+     (!Array.isArray(revision.levels)||revision.levels.length!==10||
+      !revision.levels.every(n=>Number.isInteger(n)&&n>=0&&n<=20)))||
+    (Number.isInteger(revision.pp)&&revision.pp!==scenario.outcome.plan.pp))
   return scenario;
  const normalizePriority=x=>typeof x==='string'?{name:x}:x&&typeof x.name==='string'?{name:x.name}:null;
  const recorded=revision.focus&&typeof revision.focus==='object'?{
