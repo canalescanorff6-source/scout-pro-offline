@@ -18,7 +18,12 @@ catch(e){data=api.empty();locked=true;status(e.message+' Não faça novos cadast
 // sem recriar uma carta que a pessoa tenha excluído posteriormente.
 const bruno=window.CRAQUE_BRUNO_V304;
 if(!locked&&bruno){
- try{data=bruno.seed(data,api,localStorage).data}
+ try{
+  const seeded=bruno.seed(data,api,localStorage,budgets);
+  data=seeded.data;
+  if(['nivel_pp_confirmados','cadastrado_com_pp_confirmados'].includes(seeded.reason))
+   status('Zico · Bruno Santos CD: nível máximo 35 e 68 PP confirmados; cinco fichas calculáveis.');
+ }
  catch(e){status('Não foi possível registrar a coleção Bruno Santos CD: '+e.message+
   '. Seus acervos existentes foram mantidos.')}
 }
@@ -264,8 +269,8 @@ function openCard(card=null){
  $('friend-dialog-title').textContent=card?'Editar carta':'Nova carta';
  $('friend-dialog-owner').textContent='Acervo exclusivo: '+owner.name;
  for(const [key,id] of Object.entries(fields))$(id).value=card?.[key]??'';
- // O print complementar mostra NÍVEL 35, mas não prova sozinho a mesma edição
- // da carta inicialmente cadastrada. Apenas SUGERIR no formulário, sem salvar.
+ // V310: nível 35 e 68 PP confirmados para o Zico V304; não propor mudanças
+ // adicionais para versões diferentes ou cadastros manuais.
  const isInitialZico=card?.id===bruno?.CARD_ID&&card?.level===null&&card?.pp===null;
  if(isInitialZico)levelInput.value='35';
  previewBudget();
