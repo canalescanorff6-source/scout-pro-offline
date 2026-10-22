@@ -40,10 +40,14 @@ const profileOf=card=>({
  pp:resolveBudget(card).pp,niveis:null
 });
 function sourceSignature(card){
- const serialized=JSON.stringify([
-  card.name,card.cardId,card.edition,card.position,card.style,card.level,card.pp,
+ const signatureParts=[
+  card.name,card.cardId,card.edition,card.position,card.style,card.pp,
   card.nativeSkills,card.skills,card.booster,card.fixedBooster,card.boosterSlot,card.trainingLevels
- ]);
+ ];
+ // Preservar assinaturas V228 de builds manuais existentes; apenas o PP derivado
+ // precisa incluir o nível máximo para invalidar a hipótese se ele mudar.
+ if(card.pp===null||card.pp===undefined)signatureParts.push(card.level);
+ const serialized=JSON.stringify(signatureParts);
  // Marca de atualização, NÃO assinatura de segurança (backup usa SHA-256).
  let h=2166136261>>>0,j=0x9e3779b9>>>0;
  for(let i=0;i<serialized.length;i++){
