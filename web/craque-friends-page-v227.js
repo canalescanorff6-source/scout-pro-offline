@@ -100,7 +100,7 @@ function makeCard(card){
   (card.level!==null?'Nível máx. '+card.level:null),
   (progress.pp!==null?progress.pp+' PP'+(progress.source==='nivel_maximo'?' calculados':' manuais'):null)
  ].filter(Boolean).join(' · ')));
- if(progress.source==='conflito')info.append(el('small','friends-pp-conflict',progress.reason));
+ if(progress.source==='manual_divergente')info.append(el('small','friends-pp-conflict',progress.reason));
  const state=el('div','friends-card-fichas');
  state.append(el('span','friends-card-fichas-title','FICHAS DO APLICATIVO'),
   el('strong',ready?'5 estilos · análise disponível':'5 estilos · dados pendentes'),
@@ -231,7 +231,7 @@ function previewBudget(){
  const level=levelInput.value.trim()===''?null:Number(levelInput.value);
  const manual=ppInput.value.trim()===''?null:Number(ppInput.value);
  const result=budgets.resolveBudget({level,pp:manual});
- budgetPreview.textContent=result.source==='conflito'?result.reason:
+ budgetPreview.textContent=result.source==='manual_divergente'?result.reason:
   result.pp!==null?'Orçamento '+result.pp+' PP · '+(result.source==='nivel_maximo'?
    'calculados: 2 × ('+level+' − 1). PP manual pode ficar em branco.':
    'informado manualmente'+(level!==null?' (confere com o nível máximo).':'.')):
@@ -307,14 +307,14 @@ form.onsubmit=event=>{
   const progress=budgets.resolveBudget(saved);
   let analysisNote=progress.source==='nivel_maximo'?
    ' Nível máximo '+saved.level+' → '+progress.pp+' PP calculados automaticamente.':
-   progress.source==='conflito'?' ATENÇÃO: PP manual diverge do nível; treino bloqueado para revisão.':'';
+   progress.source==='conflito'?' ATENÇÃO: PP manual diverge do nível; simulação usa o valor manual com ressalva.':'';
 
   try{
    const training=window.CRAQUE_FRIEND_TRAINING_V228;
    if(!training)throw Error('Motores táticos não carregaram.');
    const prepared=training.generate(saved);
    next=api.saveCard(next,{...saved,analysis:prepared});
-   analysisNote=' Cinco fichas por tática calculadas e armazenadas (pendências identificadas quando faltam dados).';
+   analysisNote+=' Cinco fichas por tática calculadas e armazenadas (pendências identificadas quando faltam dados).';
   }catch(e){
    analysisNote=' A carta foi salva; geração da ficha pendente: '+String(e.message||e);
   }
