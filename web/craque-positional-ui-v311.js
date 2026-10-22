@@ -191,37 +191,10 @@ function create(target,model,opts={}){
     const baseSaved=engine.saved(storage(),base);
     // Comparar com a revisão MAT efetivamente salva, não com um recálculo
     // que pode divergir da build aprovada. Nunca aplicar revisão desatualizada.
-    const effectiveBase=baseSaved&&!baseSaved.stale?{
-     ...base,outcome:{
-      ...base.outcome,
-      plan:{...base.outcome.plan,
-       levels:Array.isArray(baseSaved.revision.levels)?
-        baseSaved.revision.levels.slice():base.outcome.plan.levels},
-      suggestedSkills:Array.isArray(baseSaved.revision.recommendations)?
-       baseSaved.revision.recommendations:base.outcome.suggestedSkills,
-      booster:baseSaved.revision.boosterRanking?{
-       primary:baseSaved.revision.boosterRanking.primary?
-        {nome:baseSaved.revision.boosterRanking.primary.name}:null,
-       alternatives:baseSaved.revision.boosterRanking.alternatives||[]
-      }:base.outcome.booster
-     },
-     focus:baseSaved.revision.focus||base.focus
-    }:base;
-    const effectiveCurrent=recorded?{
-     ...scenario,outcome:{
-      ...scenario.outcome,
-      plan:{...scenario.outcome.plan,
-       levels:Array.isArray(recorded.levels)?recorded.levels.slice():scenario.outcome.plan.levels},
-      suggestedSkills:Array.isArray(recorded.recommendations)?
-       recorded.recommendations:scenario.outcome.suggestedSkills,
-      booster:recorded.boosterRanking?{
-       primary:recorded.boosterRanking.primary?
-        {nome:recorded.boosterRanking.primary.name}:null,
-       alternatives:recorded.boosterRanking.alternatives||[]
-      }:scenario.outcome.booster
-     },
-     focus:recorded.focus||scenario.focus
-    }:scenario;
+    const effectiveBase=baseSaved&&!baseSaved.stale?
+     engine.withSaved(base,baseSaved.revision):base;
+    const effectiveCurrent=recorded?
+     engine.withSaved(scenario,recorded):scenario;
     const cmp=engine.compare(effectiveBase,effectiveCurrent);
 
     const grid=el('div','ct311-compare-grid');
