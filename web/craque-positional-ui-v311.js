@@ -187,8 +187,45 @@ function create(target,model,opts={}){
   const comparison=el('details','ct311-compare');comparison.append(el('summary','','Comparar '+model.position+' × '+scenario.position+' ('+scenario.style+')'));
   if(scenario.position!==model.position){
    try{
-    const base=engine.compute(model,model.position,style,manager),cmp=engine.compare(base,scenario);
+    const base=engine.compute(model,model.position,style,manager);
+    const baseSaved=engine.saved(storage(),base);
+    // Comparar com a revisão MAT efetivamente salva, não com um recálculo
+    // que pode divergir da build aprovada. Nunca aplicar revisão desatualizada.
+    const effectiveBase=baseSaved&&!baseSaved.stale?{
+     ...base,outcome:{
+      ...base.outcome,
+      plan:{...base.outcome.plan,
+       levels:Array.isArray(baseSaved.revision.levels)?
+        baseSaved.revision.levels.slice():base.outcome.plan.levels},
+      suggestedSkills:Array.isArray(baseSaved.revision.recommendations)?
+       baseSaved.revision.recommendations:base.outcome.suggestedSkills,
+      booster:baseSaved.revision.boosterRanking?{
+       primary:baseSaved.revision.boosterRanking.primary?
+        {nome:baseSaved.revision.boosterRanking.primary.name}:null,
+       alternatives:baseSaved.revision.boosterRanking.alternatives||[]
+      }:base.outcome.booster
+     },
+     focus:baseSaved.revision.focus||base.focus
+    }:base;
+    const effectiveCurrent=recorded?{
+     ...scenario,outcome:{
+      ...scenario.outcome,
+      plan:{...scenario.outcome.plan,
+       levels:Array.isArray(recorded.levels)?recorded.levels.slice():scenario.outcome.plan.levels},
+      suggestedSkills:Array.isArray(recorded.recommendations)?
+       recorded.recommendations:scenario.outcome.suggestedSkills,
+      booster:recorded.boosterRanking?{
+       primary:recorded.boosterRanking.primary?
+        {nome:recorded.boosterRanking.primary.name}:null,
+       alternatives:recorded.boosterRanking.alternatives||[]
+      }:scenario.outcome.booster
+     },
+     focus:recorded.focus||scenario.focus
+    }:scenario;
+    const cmp=engine.compare(effectiveBase,effectiveCurrent);
+
     const grid=el('div','ct311-compare-grid');
+    grid.append(el('p','ct311-note',baseSaved&&!baseSaved.stale?'Comparação com a revisão original MAT salva.':'Comparação com a proposta original recalculada (sem revisão vigente).'));
     grid.append(el('p','','Função original '+base.position+': '+(cmp.focusA.join(' · ')||'pendente')));
     grid.append(el('p','','Função escolhida '+scenario.position+': '+(cmp.focusB.join(' · ')||'pendente')));
     if(cmp.differences.length){
