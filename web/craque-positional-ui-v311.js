@@ -173,7 +173,10 @@ function mainBoot(){
    return active?.dataset.tactic||'posse';
   };
   const getManager=()=>managerApi?.selectedManager?.()?.catalog_id||'';
-  const panel=create(anchor,model,{style:getStyle(),manager:getManager()});
+  const slot=el('div','ct311-main-slot');
+  const before=anchor.querySelector('#scout-v220-training');
+  if(before)anchor.insertBefore(slot,before);else anchor.prepend(slot);
+  const panel=create(slot,model,{style:getStyle(),manager:getManager()});
   if(!panel)return;
   // Não modificar o painel de treino ORIGINAL aprovado. Esta área mostra propostas adicionais.
   host.document.addEventListener('scoutpro:tactic-selected-v220',e=>{
