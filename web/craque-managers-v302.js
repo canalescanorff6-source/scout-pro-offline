@@ -115,6 +115,10 @@ function mount(doc){
  const capture=Number(identity.capture),cardId=String(identity.id||'');
  const localKey=Number.isInteger(capture)&&capture>0&&cardId?
   KEY+':'+capture+'@'+cardId:KEY;
+ // V307: cópia restaurável no backup oficial (que preserva somente chaves scoutpro:).
+ const backedKey=Number.isInteger(capture)&&capture>0&&cardId?
+  'scoutpro:v307:manager-selection:'+capture+'@'+cardId:
+  'scoutpro:v307:default-manager';
  const heading=make(doc,'summary','ESCOLHER TÉCNICO · GERAR FICHA POR ESTILO');
  const title=make(doc,'h3','Técnico da minha equipe');
  const introduction=make(doc,'p','Escolha a versão do técnico. A ficha acompanha o estilo selecionado; bônus, jogadas e proficiências exigem conferência da edição.');
@@ -234,24 +238,27 @@ function mount(doc){
   selected=find(select.value);
   selectedTactic=selected?preferred(selected,null):'posse';
   try{
-   if(selected)host.localStorage.setItem(localKey,JSON.stringify({
-    catalog_id:selected.catalog_id,tactic:selectedTactic}));
-   else host.localStorage.removeItem(localKey);
+   if(selected){
+    const data=JSON.stringify({catalog_id:selected.catalog_id,tactic:selectedTactic});
+    host.localStorage.setItem(localKey,data);host.localStorage.setItem(backedKey,data);
+   }else{host.localStorage.removeItem(localKey);host.localStorage.removeItem(backedKey)}
   }catch(_){}
   render();notify();
  });
  style.addEventListener('change',()=>{
   if(!selected)return;
   selectedTactic=style.value;
-  try{host.localStorage.setItem(localKey,JSON.stringify({
-   catalog_id:selected.catalog_id,tactic:selectedTactic}))}catch(_){}
+  try{const data=JSON.stringify({catalog_id:selected.catalog_id,tactic:selectedTactic});
+   host.localStorage.setItem(localKey,data);host.localStorage.setItem(backedKey,data)}catch(_){}
   render();notify();
  });
  clear.addEventListener('click',()=>{
   select.value='';select.dispatchEvent(new host.Event('change'));
  });
  try{
-  const stored=JSON.parse(host.localStorage?.getItem(localKey)||
+  const stored=JSON.parse(host.localStorage?.getItem(backedKey)||
+   host.localStorage?.getItem(localKey)||
+   host.localStorage?.getItem('scoutpro:v307:default-manager')||
    host.localStorage?.getItem(KEY)||'null');
   selected=find(stored?.catalog_id);
   if(selected){selectedTactic=preferred(selected,stored.tactic);select.value=selected.catalog_id}
@@ -262,8 +269,8 @@ function mount(doc){
   if(!selected||!ev.detail?.tactic||!STYLES.some(x=>x.id===ev.detail.tactic))return;
   selectedTactic=ev.detail.tactic;
   style.value=selectedTactic;
-  try{host.localStorage.setItem(localKey,JSON.stringify({
-   catalog_id:selected.catalog_id,tactic:selectedTactic}))}catch(_){}
+  try{const data=JSON.stringify({catalog_id:selected.catalog_id,tactic:selectedTactic});
+   host.localStorage.setItem(localKey,data);host.localStorage.setItem(backedKey,data)}catch(_){}
   render();
  });
  return true;
