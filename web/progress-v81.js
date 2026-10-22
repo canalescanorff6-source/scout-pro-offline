@@ -1,7 +1,7 @@
 (function(root){
 'use strict';
 const key=cap=>'scoutpro:v81:pp:'+cap;
-const budget=level=>Number.isInteger(level)&&level>=1&&level<=120?2*(level-1):null;
+const budget=level=>root?.CRAQUE_PP_UNIVERSAL_V309?.budget(level)??(Number.isInteger(level)&&level>=1&&level<=120?2*(level-1):null);
 const cost=vec=>vec.reduce((sum,n)=>{for(let i=0;i<n;i++)sum+=1+Math.floor(i/4);return sum},0);
 const valid=vec=>Array.isArray(vec)&&vec.length===10&&vec.every(n=>Number.isInteger(n)&&n>=0&&n<=20);
 const record=(raw,card)=>{
