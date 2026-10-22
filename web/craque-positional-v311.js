@@ -161,15 +161,36 @@ function compute(model,position='MAT',style='posse',manager='',provided){
   status:outcome.plan.status==='hipotese'?'PROPOSTA NÃO HOMOLOGADA':'PENDENTE'
  };
 }
-function stored(store){try{
- const raw=store?.getItem(KEY);const parsed=raw?JSON.parse(raw):null;
- return parsed?.schema==='CRAQUE_POSITION_V311'&&parsed.entries&&
-  typeof parsed.entries==='object'&&!Array.isArray(parsed.entries)?parsed.entries:{};
-}catch(_){return {}}}
+// Leitura com falha segura: dados corrompidos ou de esquema inesperado
+// NUNCA devem ser tratados como histórico vazio antes de uma gravação.
+function stored(store){
+ const raw=store?.getItem(KEY);
+ if(raw===null||raw===undefined||raw==='')return {};
+ let parsed;
+ try{parsed=JSON.parse(raw)}
+ catch(_){throw Error('Histórico posicional ilegível. Os dados existentes foram preservados; faça uma cópia antes de corrigir o armazenamento.')}
+ if(parsed?.schema!=='CRAQUE_POSITION_V311'||!parsed.entries||
+    typeof parsed.entries!=='object'||Array.isArray(parsed.entries))
+  throw Error('Formato do histórico posicional não reconhecido. A gravação foi bloqueada para evitar perda de dados.');
+ return parsed.entries;
+}
+function storageHealth(store){
+ try{stored(store);return {ok:true,reason:null}}
+ catch(e){return {ok:false,reason:String(e.message||e)}}
+}
+function revisions(store,scenario){
+ if(!scenario?.id)throw Error('Cenário sem identificação');
+ const rows=stored(store)[scenario.id];
+ if(rows===undefined)return [];
+ if(!Array.isArray(rows))throw Error('Revisões deste cenário estão ilegíveis: gravação bloqueada.');
+ return rows.map((revision,index)=>({
+  revision,number:Number.isInteger(revision?.revision)?revision.revision:index+1,
+  stale:revision?.base!==scenario.base
+ }));
+}
 function saved(store,scenario){
- const rows=stored(store)[scenario.id];if(!Array.isArray(rows)||!rows.length)return null;
- const last=rows.at(-1);
- return {revision:last,stale:last.base!==scenario.base};
+ const entries=revisions(store,scenario);
+ return entries.length?entries.at(-1):null;
 }
 function snapshot(scenario){
  const o=scenario.outcome,p=o.plan;
@@ -332,5 +353,5 @@ function importOwnerScenarios(store,backup,newOwner,cards){
  return count;
 }
 return Object.freeze({KEY,PREF,POS,normalize,hash,fromPersonal,fromExternal,baseSignature,
- identity,contentSignature,compute,positionMap,managerEvidence,responsibilities,snapshot,familiarity,saved,save,choose,preferred,withSaved,compare,exportOwnerScenarios,importOwnerScenarios});
+ identity,contentSignature,compute,positionMap,managerEvidence,responsibilities,snapshot,familiarity,storageHealth,revisions,saved,save,choose,preferred,withSaved,compare,exportOwnerScenarios,importOwnerScenarios});
 });
