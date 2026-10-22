@@ -30,6 +30,7 @@ function create(target,model,opts={}){
   try{
    if(!active)throw Error('Nenhuma proposta calculada');
    const r=engine.save(storage(),active);
+   viewedRevisions.delete(active.id);
    status.textContent='Proposta salva · revisão '+r.revision+' · '+active.position+' / '+active.style+' / '+active.manager+'. Equipamentos reais preservados.';
    draw();
   }catch(e){status.textContent='Falha ao salvar cenário: '+(e.message||e)}
@@ -64,6 +65,15 @@ function create(target,model,opts={}){
  }
  target.append(node);
  let active=null,style=opts.style||'posse',manager=opts.manager||'',alive=true;
+ // Uma revisão selecionada é somente leitura e isolada por chave de cenário.
+ // Trocar MAT/SA ou estilo não altera qualquer snapshot armazenado.
+ const viewedRevisions=new Map();
+ function selectedEntry(scenario){
+  const all=engine.revisions(storage(),scenario);
+  const index=viewedRevisions.get(scenario.id);
+  return {all,entry:Number.isInteger(index)&&index>=0&&index<all.length?
+   all[index]:all.at(-1)||null};
+ }
  const requested=engine.normalize(opts.initialPosition||'');
  const initial=engine.POS.includes(requested)?requested:engine.preferred(storage(),model);
  select.value=initial; if(select.value!==initial)select.value=model.position;
@@ -87,12 +97,40 @@ function create(target,model,opts={}){
  function draw(){
   if(!alive)return;
   details.replaceChildren();
+  const health=engine.storageHealth(storage());
+  if(!health.ok){
+   active=null;save.disabled=true;
+   status.textContent='GRAVAÇÃO BLOQUEADA · '+health.reason;
+   details.append(el('p','ct311-alert',
+    'Histórico local preservado. Não exclua os dados do aplicativo: exporte uma cópia e revise o arquivo antes de corrigir.'));
+   return;
+  }
   let scenario;
   try{scenario=engine.compute(model,select.value,style,manager)}
   catch(e){status.textContent='Motor indisponível: '+String(e.message||e);active=null;return}
   active=scenario;
-  const saved=engine.saved(storage(),scenario);
+  const {all:history,entry:saved}=selectedEntry(scenario);
   const panel=el('div','ct311-scenario');
+  if(history.length){
+   const historyLabel=el('label','ct311-select-label','Consultar revisão salva (somente leitura):');
+   const historySelect=el('select','ct311-select ct318-revision-select');
+   historySelect.setAttribute('aria-label','Consultar histórico de revisões independentes desta posição e tática');
+   history.forEach((entry,index)=>{
+    const rev=entry.revision;
+    const label='Revisão '+entry.number+
+     (rev?.approved===true?' · aprovação registrada':' · proposta')+
+     (entry.stale?' · desatualizada':' · vigente');
+    const opt=el('option','',label);opt.value=String(index);historySelect.append(opt);
+   });
+   const picked=viewedRevisions.get(scenario.id);
+   historySelect.value=String(Number.isInteger(picked)&&picked>=0&&picked<history.length?
+    picked:history.length-1);
+   historySelect.addEventListener('change',()=>{
+    viewedRevisions.set(scenario.id,Number(historySelect.value));draw();
+   });
+   historyLabel.append(historySelect);
+   panel.append(historyLabel);
+  }
   if(opts.formation&&opts.formationSlot&&engine.normalize(select.value)!==model.position)
    panel.append(el('p','ct311-note','Contexto da vaga '+opts.formationSlot+
     ' na formação '+opts.formation+'. A posição no catálogo não foi modificada.'));
@@ -188,7 +226,7 @@ function create(target,model,opts={}){
   if(scenario.position!==model.position){
    try{
     const base=engine.compute(model,model.position,style,manager);
-    const baseSaved=engine.saved(storage(),base);
+    const baseSaved=selectedEntry(base).entry;
     // Comparar com a revisão MAT efetivamente salva, não com um recálculo
     // que pode divergir da build aprovada. Nunca aplicar revisão desatualizada.
     const effectiveBase=baseSaved&&!baseSaved.stale?
