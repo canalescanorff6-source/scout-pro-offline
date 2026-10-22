@@ -56,7 +56,7 @@ with sync_playwright() as pw:
         const panel=document.querySelector('#ct-v314-slot-panel');
         return panel?.textContent?.includes('Cenário MAT · rapido') &&
          panel?.textContent?.includes('#'+cap);
-      }""",candidate,timeout=12000)
+      }""",arg=candidate,timeout=12000)
       assert "#"+candidate in page.locator("#pitch button[data-slot='mat'] .p-cap").inner_text()
       assert not errors,errors
       page.goto(BASE+"/outros-elencos-v227.html?colecao=bruno-santos-cd",wait_until="domcontentloaded",timeout=40000)
