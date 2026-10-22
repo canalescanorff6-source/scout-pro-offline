@@ -98,7 +98,7 @@ function portraitFor(id){
  try{
   const data=host?.localStorage?.getItem(PHOTO_PREFIX+String(id));
   return typeof data==='string'&&data.length<=100000&&
-   /^data:image\\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(data)?data:null;
+   /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(data)?data:null;
  }catch(_){return null}
 }
 function selectedManager(){return selected}
