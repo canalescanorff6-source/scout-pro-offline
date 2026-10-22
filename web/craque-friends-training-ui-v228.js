@@ -228,6 +228,20 @@ function renderManager(){
  const statusModel=managers.model(selected,managerTactic);
  statusBox.append(mk('p','','Versão: '+selected.nome+' · '+(selected.versao_lancamento||'data pendente')+
   ' · '+selected.catalog_id+' (ID interno, não Konami).'));
+ const portrait=managers.portraitFor?.(selected.catalog_id);
+ if(portrait){
+  const photo=mk('img','friend-manager-portrait');photo.src=portrait;
+  photo.alt='Imagem fornecida pelo usuário para '+selected.nome;statusBox.append(photo);
+ }
+ const allScores=mk('div','friend-manager-scores');
+ for(const entry of managers.STYLES){
+  const value=managers.proficiency(selected,entry.id);
+  const item=mk('div',value!==null&&value>=89?'friend-manager-score-elite':
+   value!==null&&value>=85?'friend-manager-score-strong':'',
+   entry.label+': '+(value===null?'pendente':value)+(!entry.supported?' · PP pendente':''));
+  allScores.append(item);
+ }
+ statusBox.append(allScores);
  statusBox.append(mk('p',statusModel.score!==null&&statusModel.score<85?'friend-manager-warning':'',
   'Proficiência: '+(statusModel.score??'não confirmada')+' · '+(
    !statusModel.canCalculate?'Sem motor específico de PP para este estilo.':
