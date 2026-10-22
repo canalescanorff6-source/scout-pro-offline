@@ -25,22 +25,26 @@ const fake=()=>{
   removeItem:k=>saved.delete(k)};
 };
 const storage=fake();
-const first=bruno.seed(friends.empty(),friends,storage);
+const first=bruno.seed(friends.empty(),friends,storage,engine,engines);
 assert.equal(first.changed,true);assert.equal(first.data.owners.length,1);
 assert.equal(first.data.owners[0].name,'Bruno Santos CD');
 assert.equal(first.data.cards.length,1);
 const z=first.data.cards[0];
 assert.equal(z.name,'Zico');assert.equal(z.position,'SA');assert.equal(z.style,'Armador criativo');
-assert.equal(z.cardId,'');assert.equal(z.level,null);assert.equal(z.pp,null);
+assert.equal(z.cardId,'');assert.equal(z.level,35);assert.equal(z.pp,68);
 assert.equal(z.boosterSlot,'pendente');assert.equal(z.nativeSkills,'');
 assert(z.notes.includes('106 SA'));assert(z.notes.includes('108 MAT'));
 for(const mode of engine.MODES){
  const x=engine.evaluate(z,mode,engines);
- assert.equal(x.plan.status,'pendente','PP inventado para '+mode);
- assert.equal(x.plan.levels,null);
+ assert.equal(x.plan.status,'hipotese','PP confirmados devem gerar simulação para '+mode);
+ assert.equal(x.plan.pp,68);
+ assert.equal(x.plan.remaining,0);
+ assert.equal(engines.tactical.total(x.plan.levels),68);
  assert.equal(x.boosterEligible,false);
 }
-const stable=bruno.seed(friends.read(storage),friends,storage);
+assert(engine.validateSaved(z,z.analysis,engines),'Cinco fichas do Zico persistidas e válidas');
+assert(z.notes.includes('Confirmação do proprietário'));
+const stable=bruno.seed(friends.read(storage),friends,storage,engine,engines);
 assert.equal(stable.changed,false);
 assert.equal(stable.data.owners.length,1);assert.equal(stable.data.cards.length,1);
 // Respeitar outra pessoa e suas cartas em uma instalação anterior.
@@ -58,6 +62,41 @@ const legacy=friends.saveCard(existing,{ownerId:owner.id,name:'Zico',position:'S
 const local2=fake(),merged=bruno.seed(legacy,friends,local2);
 assert.equal(merged.data.owners.length,1);assert.equal(merged.data.cards.length,1);
 assert.equal(merged.data.cards[0].pp,60,'Nunca alterar PP existente');
+// Migração real: instalação antiga com marca V304 'ok' e Zico 106 SA ainda com PP vazios.
+const oldStore=fake();
+let oldDoc=friends.addOwner(friends.empty(),'Bruno Santos CD');
+let oldOwner=oldDoc.owners[0];
+oldDoc=friends.saveCard(oldDoc,{id:bruno.CARD_ID,ownerId:oldOwner.id,name:'Zico',
+ edition:'Edição não identificada · print 106 SA',position:'SA',style:'Armador criativo',
+ cardId:'',level:null,pp:null,notes:'362 partidas; print 106 SA',image:bruno.PHOTO});
+friends.write(oldStore,oldDoc);
+oldStore.setItem(bruno.MARK,'ok');
+const upgraded=bruno.seed(friends.read(oldStore),friends,oldStore,engine,engines);
+assert.equal(upgraded.changed,true);
+assert.equal(upgraded.reason,'nivel_pp_confirmados');
+assert.equal(upgraded.data.cards.length,1,'Não duplicar Zico existente');
+assert.equal(upgraded.data.cards[0].id,bruno.CARD_ID);
+assert.equal(upgraded.data.cards[0].level,35);assert.equal(upgraded.data.cards[0].pp,68);
+assert.equal(upgraded.data.cards[0].image,bruno.PHOTO,'Não substituir a miniatura');
+assert(engine.validateSaved(upgraded.data.cards[0],upgraded.data.cards[0].analysis,engines));
+const repeat=bruno.seed(friends.read(oldStore),friends,oldStore,engine,engines);
+assert.equal(repeat.changed,false,'Migração idempotente');
+assert.equal(repeat.data.cards.length,1);
+// Preservar nível, PP e fichas diferentes quando já alterados pelo proprietário.
+const manualStore=fake();manualStore.setItem(bruno.MARK,'ok');
+const manual=friends.saveCard(oldDoc,{...oldDoc.cards[0],level:31,pp:60,notes:'Ajuste manual da edição, não migrar'});
+friends.write(manualStore,manual);
+const retained=bruno.seed(friends.read(manualStore),friends,manualStore,engine,engines);
+assert.equal(retained.changed,false);assert.equal(retained.data.cards[0].pp,60);
+assert.equal(retained.data.cards[0].level,31);
+// Uma carta Zico de outra edição na mesma coleção nunca pode ser alterada.
+const alternativeStore=fake();alternativeStore.setItem(bruno.MARK,'ok');
+const otherEdition=friends.saveCard(oldDoc,{id:'zico-mat-outro',ownerId:oldOwner.id,name:'Zico',
+ position:'MAT',edition:'108 MAT',level:null,pp:null});
+friends.write(alternativeStore,otherEdition);
+const excluded=bruno.seed(friends.read(alternativeStore),friends,alternativeStore,engine,engines);
+assert.equal(excluded.data.cards.find(x=>x.id==='zico-mat-outro').level,null);
+assert.equal(excluded.data.cards.length,2);
 // Uma exclusão explícita não pode provocar ressurgimento no próximo início.
 let deleted=friends.removeCard(first.data,first.data.owners[0].id,z.id);
 friends.write(storage,deleted);
@@ -73,4 +112,4 @@ assert(read('web/sw.js').includes("'./craque-bruno-v304.js'"));
 assert(read('scripts/stamp-bundle-v189.cjs').includes("'craque-bruno-v304.js'"));
 assert.deepEqual(JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')),
  JSON.parse(original),'246 cartas oficiais foram modificadas');
-console.log('V304 PASS: Zico 106 SA em Bruno Santos CD; foto SHA exato; cinco fichas PP pendentes; preservação de usuários/backup, sem duplicatas e sem ressuscitar exclusões; 246 cartas intactas.');
+console.log('V310 PASS: Zico 106 SA nível 35/68 PP, cinco fichas, migração V304 idempotente, foto SHA, dados manuais/outras edições/exclusões preservados; 246 originais intactas.');
