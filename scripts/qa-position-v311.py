@@ -37,7 +37,18 @@ with sync_playwright() as p:
    assert 'Cenário SA · rapido' in root.inner_text()
    page.goto(ROOT+'/fichas/001_Daniele_Massaro.html',wait_until='domcontentloaded')
    main=page.locator('.ct311-main-slot .ct311-positional')
-   main.wait_for(timeout=35000)
+   try:main.wait_for(timeout=35000)
+   except Exception:
+    print('V311_MAIN_DIAG',page.evaluate("""() => ({
+     page:document.body?.dataset?.page,hero:!!document.querySelector('#scout-v220-hero'),
+     detail:!!document.querySelector('#scout-v68-data'),
+     v311Engine:!!window.CRAQUE_POSITIONAL_V311,
+     v311UI:!!window.CRAQUE_POSITIONAL_UI_V311,
+     v228:!!window.CRAQUE_FRIEND_TRAINING_V228,
+     scripts:[...document.scripts].filter(x=>x.src.includes('v311')||x.src.includes('v228')).map(x=>x.src),
+     errorNodes:[...document.querySelectorAll('.ct311-positional')].length
+    })"""), 'JS_ERRORS',errors)
+    raise
    assert 'Posição original: CA' in main.inner_text()
    main.locator('.ct311-select').select_option('SA')
    assert 'Cenário SA' in main.inner_text()
