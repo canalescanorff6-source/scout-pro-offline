@@ -13,7 +13,7 @@ const mk=(tag,cl='',txt)=>{
  return node;
 };
 let activeCard=null,activeOwner=null,saveCallback=null,editCallback=null,style='posse';
-let panel='treino',cache=null;
+let panel='treino',cache=null,usedPosition='',positional=null;
 const managers=window.CRAQUE_MANAGERS_V302;
 let managerData=null,managerPanel=null,managerSelectedId='',managerTactic='',managerError='';
 const managerKey=()=>activeOwner&&activeCard?'scoutpro:v306:manager:'+encodeURIComponent(activeOwner.id)+':'+encodeURIComponent(activeCard.id):null;
@@ -150,7 +150,8 @@ function booster(result){
  return panel;
 }
 function buildCache(){
- cache=Object.fromEntries(engine.MODES.map(mode=>[mode,engine.evaluate(activeCard,mode)]));
+ const effective={...activeCard,position:usedPosition||activeCard.position};
+ cache=Object.fromEntries(engine.MODES.map(mode=>[mode,engine.evaluate(effective,mode)]));
 }
 function selectPanel(value){
  if(!labels[value])return;
@@ -269,7 +270,7 @@ function identity(){
  $('friend-analysis-player').textContent=activeCard.name;
  $('friend-analysis-edition').textContent=activeCard.edition||'Edição ainda não confirmada';
  const badges=$('friend-analysis-badges');badges.replaceChildren(
-  mk('span','',activeCard.position||'Posição pendente'),
+  mk('span','',(activeCard.position||'posição pendente')+' → '+(usedPosition||activeCard.position||'?')+' (uso)'),
   mk('span','',activeCard.style||'Estilo pendente'),
   mk('span','',(()=>{const budget=engine.resolveBudget(activeCard);
    return budget.pp===null?'PP pendentes':budget.pp+' PP'+(budget.source==='nivel_maximo'?' (nível)':'');})()));
@@ -284,6 +285,7 @@ function display(){
  const result=cache[style];
  identity();
  renderManager();
+ if(positional)positional.update({style,manager:managerSelectedId});
  $('friend-analysis-modes').querySelectorAll('button').forEach(b=>{
   const active=b.dataset.style===style;b.setAttribute('aria-pressed',String(active));
   const plan=cache[b.dataset.style]?.plan;
@@ -296,9 +298,11 @@ function display(){
  const container=$('friend-analysis-content');
  container.replaceChildren(summaryCard(result),training(result),skills(result),booster(result));
  selectPanel(panel);
- const valid=engine.validateSaved(activeCard,activeCard.analysis);
+ const valid=(usedPosition===activeCard.position)&&engine.validateSaved(activeCard,activeCard.analysis);
  const allCalculated=engine.MODES.every(id=>cache[id].plan.status==='hipotese');
- $('friend-analysis-state').textContent=!allCalculated?
+ $('friend-analysis-state').textContent=usedPosition!==activeCard.position?
+  'Posição de uso '+usedPosition+' · proposta independente. Utilize “Salvar proposta” no seletor posicional, sem substituir a build original.':
+  !allCalculated?
   'As fichas permanecem pendentes quando falta o nível máximo/PP ou existe divergência manual. Confira o cadastro.':
   valid?'Cinco treinos por estilo gerados e registrados neste acervo. Habilidades e ímpetos são recomendações calculadas ao abrir.':
   'Cinco propostas calculadas pelo app. Use “Gerar e salvar 5 fichas” para registrar os treinos neste acervo.';
@@ -307,6 +311,18 @@ function openCard(card,owner,onSave,onEdit){
  if(!card||!owner||card.ownerId!==owner.id){status('Erro: carta e pessoa não correspondem.');return}
  activeCard=card;activeOwner=owner;saveCallback=onSave;editCallback=onEdit||null;
  style='posse';panel='treino';cache=null;managerError='';restoreManager();
+ positional?.destroy();positional=null;usedPosition=activeCard.position;
+ const shared=window.CRAQUE_POSITIONAL_V311,ui=window.CRAQUE_POSITIONAL_UI_V311;
+ if(shared&&ui){
+  const modes=$('friend-analysis-modes'),slot=mk('div','friend-position-scenario-slot');
+  modes.parentNode.insertBefore(slot,modes);
+  const model=shared.fromExternal(activeCard,activeOwner);
+  positional=ui.create(slot,model,{style,manager:managerSelectedId,
+   onPositionChange:pos=>{
+    usedPosition=pos;cache=null;display();
+   }});
+  usedPosition=positional?.selectedPosition||activeCard.position;
+ }
  $('friend-analysis-feedback').textContent='';
  if(managers?.load){
   const openedCardId=card.id,openedOwnerId=owner.id;
@@ -339,6 +355,14 @@ $('friend-analysis-save').onclick=()=>{
  if(!activeCard||typeof saveCallback!=='function')return;
  const button=$('friend-analysis-save');button.disabled=true;
  try{
+  if(usedPosition!==activeCard.position||managerSelectedId){
+   const scenario=positional?.current;
+   if(!scenario)throw Error('Cenário posicional não disponível');
+   const rev=window.CRAQUE_POSITIONAL_V311.save(localStorage,scenario);
+   cache=null;status('Proposta '+usedPosition+' salva na revisão '+rev.revision+
+    ' somente para este proprietário, técnico e estilo. Build original preservada.');
+   display();return;
+  }
   const next=engine.generate(activeCard);
   const updated=saveCallback(activeCard,{...activeCard,analysis:next});
   if(updated)activeCard=updated;
@@ -357,8 +381,9 @@ $('friend-analysis-export').onclick=async()=>{
   const all={format:'craque-friend-training-v228',createdAt:new Date().toISOString(),
    ownerName:activeOwner.name,card:{name:activeCard.name,edition:activeCard.edition,cardId:activeCard.cardId,position:activeCard.position,level:activeCard.level,pp:engine.resolveBudget(activeCard).pp,pp_source:engine.resolveBudget(activeCard).source},
    caveat:'Treinos hipotéticos, habilidades e boosters são sugestões condicionais não validadas em gameplay. Não são aplicações no eFootball.',
+   position_used:usedPosition||activeCard.position,manager_edition:managerSelectedId||null,
    styles:Object.fromEntries(engine.MODES.map(tactic=>{
-    const x=engine.evaluate(activeCard,tactic);
+    const x=engine.evaluate({...activeCard,position:usedPosition||activeCard.position},tactic);
     return [tactic,{tactic:x.label,confidence:x.confidence,training:x.plan,extraSkills:x.suggestedSkills,
      booster:x.booster?.primary||null,boosterEligible:x.boosterEligible,warnings:x.warnings}];
    }))};
