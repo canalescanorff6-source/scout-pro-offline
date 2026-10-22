@@ -22,6 +22,12 @@ if(!locked&&bruno){
  catch(e){status('Não foi possível registrar a coleção Bruno Santos CD: '+e.message+
   '. Seus acervos existentes foram mantidos.')}
 }
+// V309: todas as novas cartas próprias usam o MESMO motor de PP/5 fichas.
+if(!locked){
+ try{const personal=api.ensurePersonalCollection(data);
+  if(personal.changed)data=api.write(localStorage,personal.data);
+ }catch(e){locked=true;status('Não foi possível criar a coleção particular: '+e.message)}
+}
 const getOwner=()=>data.owners.find(x=>x.id===selected);
 const brunoOwner=()=>data.owners.find(x=>bruno?.normalize(x.name)===bruno.normalize(bruno.NAME));
 const personCards=id=>data.cards.filter(x=>x.ownerId===id);
@@ -29,8 +35,10 @@ function restoreSelection(){
  try{const id=sessionStorage.getItem('craque:v227:selected-owner');if(data.owners.some(x=>x.id===id))selected=id;}
  catch(_e){}
  try{
-  if(new URLSearchParams(location.search).get('colecao')==='bruno-santos-cd'&&brunoOwner())
-   selected=brunoOwner().id;
+  const target=new URLSearchParams(location.search).get('colecao');
+  if(target==='bruno-santos-cd'&&brunoOwner())selected=brunoOwner().id;
+  if(target==='minhas-cartas-adicionadas'&&data.owners.some(x=>x.id===api.PERSONAL_OWNER_ID))
+   selected=api.PERSONAL_OWNER_ID;
  }catch(_e){}
  if(!selected&&brunoOwner())selected=brunoOwner().id;
  if(!selected&&data.owners.length)selected=data.owners[0].id;
