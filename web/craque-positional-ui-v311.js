@@ -37,9 +37,35 @@ function create(target,model,opts={}){
  const original=makeBtn('Voltar à posição original',()=>{select.value=model.position;positionChange()});
  actions.append(save,original);
  node.append(h,controls,status,details,actions);
+ const formationApi=host.CRAQUE_FORMATION_CONTEXT_V314;
+ if(formationApi?.ui){
+  const formationRow=el('div','ct314-formation-row');
+  const formationLabel=el('label','ct311-select-label','Simular vaga da formação: ');
+  const formationSelect=el('select','ct311-select');
+  formationSelect.setAttribute('aria-label','Formação para simular, sem alterar titulares');
+  for(const [id,label] of [['4312','4-3-1-2'],['4213','4-2-1-3 estreita']]){
+   const option=el('option','',label);option.value=id;formationSelect.append(option);
+  }
+  formationSelect.value=opts.formation||'4312';
+  formationLabel.append(formationSelect);
+  const slotArea=el('div','ct314-slot-area');let slotControl=null;
+  const slotMount=()=>{
+   slotControl?.destroy();slotArea.replaceChildren();
+   slotControl=formationApi.ui(slotArea,{formation:formationSelect.value,onSelect:position=>{
+    select.value=position;positionChange();
+   }});
+   if(opts.formationSlot&&formationApi.slotPosition(formationSelect.value,opts.formationSlot))
+    slotControl.select.value=opts.formationSlot;
+  };
+  formationSelect.addEventListener('change',()=>{opts.formationSlot=null;slotMount()});
+  formationRow.append(formationLabel,slotArea);
+  controls.after(formationRow);
+  slotMount();
+ }
  target.append(node);
  let active=null,style=opts.style||'posse',manager=opts.manager||'',alive=true;
- const initial=engine.preferred(storage(),model);
+ const requested=engine.normalize(opts.initialPosition||'');
+ const initial=engine.POS.includes(requested)?requested:engine.preferred(storage(),model);
  select.value=initial; if(select.value!==initial)select.value=model.position;
  function renderPlan(out,displaySaved){
   const t=el('section','ct311-panel');
@@ -67,6 +93,9 @@ function create(target,model,opts={}){
   active=scenario;
   const saved=engine.saved(storage(),scenario);
   const panel=el('div','ct311-scenario');
+  if(opts.formation&&opts.formationSlot&&engine.normalize(select.value)!==model.position)
+   panel.append(el('p','ct311-note','Contexto da vaga '+opts.formationSlot+
+    ' na formação '+opts.formation+'. A posição no catálogo não foi modificada.'));
   panel.append(el('h3','','Cenário '+scenario.position+' · '+scenario.style+' · '+scenario.manager));
   const c=scenario.compatibility;
   const compatible=el('p','ct311-compat',

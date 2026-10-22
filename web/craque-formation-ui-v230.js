@@ -6,7 +6,7 @@
 const tactical=window.CRAQUE_TACTICS_V230,bar=document.getElementById('ct-v230-tactic-profile');
 if(!tactical||!bar)return;
 const $=id=>document.getElementById(id);
-let cards=[],activeMode='posse',currentId='4312',ready=false;
+let cards=[],activeMode='posse',currentId='4312',ready=false,positionPanel=null;
 const KEY=id=>'scoutpro:v230:formation-mode:'+id;
 const escString=s=>String(s??'');
 const v=id=>{try{return localStorage.getItem(KEY(id))||'posse'}catch(_e){return 'posse'}};
@@ -28,7 +28,9 @@ function slots(){
 function render(){
  if(!ready)return;
  const chosen=slots(),used=chosen.map(x=>x.cap);
- const container=$('ct-v230-tactic-details');container.replaceChildren();
+ const container=$('ct-v230-tactic-details');
+ positionPanel?.destroy();positionPanel=null;container.replaceChildren();
+ $('ct-v314-slot-panel')?.remove();
  const name=tactical.MODES[activeMode];
  $('ct-v230-tactic-name').textContent=name.label+' · '+(currentId==='4312'?'4-3-1-2':'4-2-1-3 estreita');
  $('ct-v230-tactic-explain').textContent=name.hint+
@@ -59,7 +61,31 @@ function render(){
   change.type='button';change.onclick=()=>{
    document.querySelector('#pitch button[data-slot="'+slot+'"]')?.click();
   };
-  block.append(change);container.append(block);
+  block.append(change);
+  const positionAction=node('button','ct-v314-formation-action','Abrir ficha na vaga '+slot.toUpperCase());
+  positionAction.type='button';
+  positionAction.title='Analisar posição de USO, PP, habilidades e ímpetos sem editar a carta/escalação';
+  positionAction.addEventListener('click',()=>{
+   const core=window.CRAQUE_POSITIONAL_V311,ui=window.CRAQUE_POSITIONAL_UI_V311,
+    formationCore=window.CRAQUE_FORMATION_CONTEXT_V314;
+   const panelHost=$('ct-v314-slot-panel')||node('div','ct-v314-slot-panel');
+   panelHost.id='ct-v314-slot-panel';
+   container.after(panelHost);
+   positionPanel?.destroy();positionPanel=null;panelHost.replaceChildren();
+   try{
+    if(!core||!ui||!formationCore)throw Error('Motor comum indisponível nesta instalação');
+    const source=formationCore.context({collection:'minhas-cartas',card:player,
+     formation:currentId,slot,style:activeMode,manager:''},core);
+    const note=node('p','ct314-formation-note',
+      '#'+player.numero+' '+player.name+' · '+source.originalPosition+' → '+source.position+
+      ' · '+source.disclaimer);
+    panelHost.append(note);
+    positionPanel=ui.create(panelHost,source.model,{style:activeMode,
+     initialPosition:source.position,formation:currentId,formationSlot:slot});
+    panelHost.scrollIntoView({block:'nearest',behavior:'auto'});
+   }catch(e){panelHost.append(node('p','ct314-error','Não foi possível abrir a ficha desta vaga: '+e.message))}
+  });
+  block.append(positionAction);container.append(block);
  }
  $('ct-v230-tactic-count').textContent=chosen.length+
   ' titulares · '+strong+' com sinais fortes · '+pending+' para conferir';

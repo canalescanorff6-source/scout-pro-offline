@@ -21,7 +21,7 @@ with sync_playwright() as p:
    root=page.locator('.ct311-positional')
    root.wait_for(timeout=25000)
    assert '68 PP exatos distribuídos' in root.inner_text()
-   selector=root.locator('.ct311-select')
+   selector=root.locator('.ct311-controls .ct311-select')
    assert selector.input_value()=='MAT'
    selector.select_option('SA')
    assert 'Cenário SA' in root.inner_text()
@@ -64,7 +64,7 @@ with sync_playwright() as p:
     })"""), 'JS_ERRORS',errors)
     raise
    assert 'Posição original: CA' in main.inner_text()
-   main.locator('.ct311-select').select_option('SA')
+   main.locator('.ct311-controls .ct311-select').select_option('SA')
    assert 'Cenário SA' in main.inner_text()
    assert 'PP exatos distribuídos' in main.inner_text()
    assert 'Mapa de posições' in main.inner_text()
