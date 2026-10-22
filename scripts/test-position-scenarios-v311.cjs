@@ -88,6 +88,29 @@ assert.equal(core.save(profile,saPosse).revision,1,'SA não sobrescreve MAT');
 core.choose(profile,official,'MAT');
 assert.equal(core.preferred(profile,official),'MAT');
 assert.equal(JSON.stringify(core.saved(profile,matPosse).revision),snap,'Restauração MAT exata');
+// V317: revisão salva da MAT é a referência REAL do comparador SA,
+// inclusive prioridades com formato serializado (strings), não nova proposta.
+const preserved=core.saved(profile,matPosse).revision;
+const historic={...preserved,
+ focus:{...preserved.focus,priority:['Passe MAT homologado','Controle MAT homologado']},
+ recommendations:[{name:'Passe MAT salvo',why:'Evidência registrada'}],
+ boosterRanking:{primary:{name:'Ímpeto MAT salvo',reason:'Válido apenas na MAT'},alternatives:[]}
+};
+const originalSnapshot=JSON.stringify(matPosse);
+const restored=core.withSaved(matPosse,historic);
+const contextual=core.compare(restored,saPosse,deps);
+assert.deepEqual(contextual.focusA,['Passe MAT homologado','Controle MAT homologado']);
+assert.deepEqual(contextual.skillsA,['Passe MAT salvo']);
+assert.equal(contextual.boosterA,'Ímpeto MAT salvo');
+assert.deepEqual(contextual.focusB,saPosse.focus.priority.map(x=>x.name));
+assert.equal(JSON.stringify(matPosse),originalSnapshot,'A ficha calculada continua imutável');
+assert.equal(core.withSaved(saPosse,historic),saPosse,
+ 'Histórico MAT não pode ser aplicado à posição SA');
+assert.equal(core.withSaved(matPosse,{...historic,base:'desatualizado'}),matPosse,
+ 'Não aplicar histórico obsoleto à comparação');
+const again=core.withSaved(matPosse,historic);
+assert.deepEqual(core.compare(again,saPosse,deps),contextual,
+ 'A leitura do histórico deve ser determinística e offline');
 assert.deepEqual(core.saved(profile,matPosse).revision.recommendations,
  core.snapshot(matPosse).recommendations,'Restaurar habilidades da revisão MAT, não recálculo da SA');
 assert.deepEqual(core.saved(profile,saPosse).revision.boosterRanking,

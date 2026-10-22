@@ -45,8 +45,26 @@ with sync_playwright() as p:
    assert all(snapshot.values()),snapshot
    selector.select_option('MAT')
    root.locator('.ct311-button').first.click()
+   # Simular revisão MAT anteriormente validada com prioridades distintas.
+   # A comparação deve exibir o registro salvo, não recomputar a MAT por cima.
+   page.evaluate("""() => {
+    const key='scoutpro:v311:position-scenarios';
+    const payload=JSON.parse(localStorage.getItem(key));
+    const revision=Object.values(payload.entries).flat().find(x=>
+      x.selectedPosition==='MAT'&&x.style==='posse');
+    if(!revision)throw Error('Revisão MAT não salva');
+    revision.focus.priority=['Prioridade original MAT preservada'];
+    revision.recommendations=[{name:'Habilidade MAT registrada',why:'Evidência anterior'}];
+    revision.boosterRanking={primary:{name:'Ímpeto MAT registrado',reason:'Função MAT'},alternatives:[]};
+    localStorage.setItem(key,JSON.stringify(payload));
+   }""")
    selector.select_option('SA')
    assert 'revisão salva restaurada' in root.inner_text().lower()
+   root.locator('.ct311-compare summary').click()
+   comparison=root.locator('.ct311-compare').inner_text()
+   assert 'Prioridade original MAT preservada' in comparison,comparison
+   assert 'Habilidade MAT registrada' in comparison,comparison
+   assert 'Ímpeto MAT registrado' in comparison,comparison
    page.locator('#friend-analysis-modes [data-style=rapido]').click()
    assert 'Cenário SA · rapido' in root.inner_text()
    page.goto(ROOT+'/fichas/001_Daniele_Massaro.html',wait_until='domcontentloaded')

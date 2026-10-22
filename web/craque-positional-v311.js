@@ -219,6 +219,42 @@ function preferred(store,m){
  try{const pos=normalize(store?.getItem(prefKey(m)));return POS.includes(pos)?pos:m.position}
  catch(_){return m.position}
 }
+// Adaptador ÚNICO de leitura para fichas salvas: a revisão histórica usa
+// prioridades como strings; o motor calculado usa objetos {name}.
+function withSaved(scenario,revision){
+ if(!scenario?.outcome||!revision||revision.base!==scenario.base||
+    revision.originalPosition!==scenario.originalPosition||
+    revision.selectedPosition!==scenario.position||
+    revision.style!==scenario.style||revision.manager!==scenario.manager)
+  return scenario;
+ const normalizePriority=x=>typeof x==='string'?{name:x}:x&&typeof x.name==='string'?{name:x.name}:null;
+ const recorded=revision.focus&&typeof revision.focus==='object'?{
+  ...revision.focus,
+  priority:Array.isArray(revision.focus.priority)?
+   revision.focus.priority.map(normalizePriority).filter(Boolean):[]
+ }:scenario.focus;
+ const currentPlan=scenario.outcome.plan;
+ return {
+  ...scenario,
+  focus:recorded,
+  outcome:{
+   ...scenario.outcome,
+   plan:{
+    ...currentPlan,
+    levels:Array.isArray(revision.levels)?revision.levels.slice():currentPlan.levels,
+    pp:Number.isInteger(revision.pp)?revision.pp:currentPlan.pp
+   },
+   suggestedSkills:Array.isArray(revision.recommendations)?
+    revision.recommendations.map(x=>({...x})):scenario.outcome.suggestedSkills,
+   booster:revision.boosterRanking?{
+    primary:revision.boosterRanking.primary?
+     {nome:revision.boosterRanking.primary.name}:null,
+    alternatives:Array.isArray(revision.boosterRanking.alternatives)?
+     revision.boosterRanking.alternatives.map(x=>({nome:x.name})):[],
+   }:scenario.outcome.booster
+  }
+ };
+}
 function compare(a,b,deps){
  if(!a||!b||a.owner!==b.owner||a.cardKey!==b.cardKey)throw Error('Comparação exige a mesma carta/proprietário');
  const ta=deps?.tactical||depsDefault().tactical;
@@ -231,7 +267,8 @@ function compare(a,b,deps){
  return {differences,skillsA:names(a),skillsB:names(b),
   boosterA:a.outcome.booster?.primary?.nome||null,
   boosterB:b.outcome.booster?.primary?.nome||null,
-  focusA:a.focus?.priority?.map(x=>x.name)||[],focusB:b.focus?.priority?.map(x=>x.name)||[]};
+  focusA:a.focus?.priority?.map(x=>typeof x==='string'?x:x?.name).filter(Boolean)||[],
+  focusB:b.focus?.priority?.map(x=>typeof x==='string'?x:x?.name).filter(Boolean)||[]};
 }
 // Exportação de um proprietário sem misturar snapshots de outras coleções.
 function exportOwnerScenarios(store,ownerId,cards){
@@ -295,5 +332,5 @@ function importOwnerScenarios(store,backup,newOwner,cards){
  return count;
 }
 return Object.freeze({KEY,PREF,POS,normalize,hash,fromPersonal,fromExternal,baseSignature,
- identity,contentSignature,compute,positionMap,managerEvidence,responsibilities,snapshot,familiarity,saved,save,choose,preferred,compare,exportOwnerScenarios,importOwnerScenarios});
+ identity,contentSignature,compute,positionMap,managerEvidence,responsibilities,snapshot,familiarity,saved,save,choose,preferred,withSaved,compare,exportOwnerScenarios,importOwnerScenarios});
 });
