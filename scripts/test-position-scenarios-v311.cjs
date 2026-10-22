@@ -46,6 +46,25 @@ assert.notDeepEqual(matPosse.outcome.plan.levels,saPosse.outcome.plan.levels,
 assert.notEqual(matPosse.focus.role,saPosse.focus.role);
 assert.equal(matPosse.compatibility.status,'original');
 assert.equal(saPosse.styleActivation,'não comprovada para esta edição/posição');
+// V312: a edição real do técnico informa proficiência sem inventar bônus de PP.
+const managerMock={...deps,managers:{
+ find:id=>id==='CT-MGR-013'?{nome:'Teste A',versao_lancamento:'2026',
+  boosters_EN:['Passe rasteiro +1'],link_ups_EN:['Combinação contextual']}:null,
+ proficiency:()=>90
+}};
+const withCoach=core.compute(official,'SA','posse','CT-MGR-013',managerMock);
+assert.equal(withCoach.managerProfile.name,'Teste A');
+assert.equal(withCoach.managerProfile.proficiency,90);
+assert.equal(withCoach.managerProfile.bonuses[0],'Passe rasteiro +1');
+assert.equal(withCoach.outcome.plan.pp,68,'Bônus do técnico não criam PP');
+assert.equal(core.compute(official,'SA','posse','CT-MGR-404',managerMock).managerProfile.proficiency,null);
+const sourceCopy=core.snapshot(withCoach);
+assert.deepEqual(sourceCopy.recommendations.map(x=>x.name),
+ withCoach.outcome.suggestedSkills.slice(0,5).map(x=>x.name));
+assert.deepEqual(sourceCopy.boosterRanking.alternatives.map(x=>x.name),
+ (withCoach.outcome.booster?.alternatives||[]).slice(0,5).map(x=>x.nome));
+assert.deepEqual(sourceCopy.focus.priority,(withCoach.focus?.priority||[]).slice(0,4).map(x=>x.name));
+assert.equal(sourceCopy.managerProfile.proficiency,90);
 const profile=store();
 let a=core.save(profile,matPosse);
 assert.equal(a.revision,1);
@@ -56,6 +75,12 @@ assert.equal(core.save(profile,saPosse).revision,1,'SA não sobrescreve MAT');
 core.choose(profile,official,'MAT');
 assert.equal(core.preferred(profile,official),'MAT');
 assert.equal(JSON.stringify(core.saved(profile,matPosse).revision),snap,'Restauração MAT exata');
+assert.deepEqual(core.saved(profile,matPosse).revision.recommendations,
+ core.snapshot(matPosse).recommendations,'Restaurar habilidades da revisão MAT, não recálculo da SA');
+assert.deepEqual(core.saved(profile,saPosse).revision.boosterRanking,
+ core.snapshot(saPosse).boosterRanking,'Ímpetos SA não devem substituir o ranking MAT');
+assert.deepEqual(core.saved(profile,matPosse).revision.focus,
+ core.snapshot(matPosse).focus,'Prioridades de atributos MAT preservadas');
 assert.equal(core.saved(profile,saPosse).revision.selectedPosition,'SA');
 const originalManager=core.compute(official,'MAT','posse','CT-MGR-014',deps);
 assert.notEqual(originalManager.id,matPosse.id,'Edições diferentes de técnico não misturam fichas');
@@ -73,6 +98,11 @@ const local=store();
 const originalExternal=core.compute(external,'MAT','posse','CT-MGR-013',deps);
 const alternativeExternal=core.compute(external,'SA','posse','CT-MGR-013',deps);
 core.save(local,originalExternal);core.save(local,alternativeExternal);
+// Simular uma revisão anteriormente aprovada: backup deve PRESERVAR, mas não emitir novo aval.
+let previouslyApproved=JSON.parse(local.getItem(core.KEY));
+const originalKey=originalExternal.id;
+previouslyApproved.entries[originalKey][0].approved=true;
+local.setItem(core.KEY,JSON.stringify(previouslyApproved));
 const backup=core.exportOwnerScenarios(local,'outros-1',[{id:'1'}]);
 assert.equal(backup.entries.length,2);
 const importedStore=store();
@@ -83,6 +113,11 @@ const importedCard={id:'nova-carta',ownerId:'novo-dono',name:mat.name,
 assert.equal(core.importOwnerScenarios(importedStore,backup,{id:'novo-dono'},[importedCard]),2);
 const importedModel=core.fromExternal(importedCard,{id:'novo-dono'});
 assert(core.saved(importedStore,core.compute(importedModel,'MAT','posse','CT-MGR-013',deps)));
+assert.equal(core.saved(importedStore,
+ core.compute(importedModel,'MAT','posse','CT-MGR-013',deps)).revision.approved,true,
+ 'Aprovação registrada deve sobreviver à exportação/importação sem ser criada pelo motor');
+assert.equal(core.saved(importedStore,
+ core.compute(importedModel,'MAT','posse','CT-MGR-013',deps)).revision.evidenceImported,true);
 assert(core.saved(importedStore,core.compute(importedModel,'SA','posse','CT-MGR-013',deps)));
 assert.equal(core.exportOwnerScenarios(importedStore,'outros-1',[]).entries.length,0);
 assert.equal(core.importOwnerScenarios(importedStore,null,{id:'outros-1'},[]),0);
@@ -111,4 +146,4 @@ for(const file of ['craque-positional-v311.js','craque-positional-ui-v311.js','c
 assert(read('web/outros-elencos-v227.html').includes('craque-positional-ui-v311.js'));
 assert(read('web/app-bridge.js').includes("load('craque-positional-v311.js'"));
 assert(read('web/craque-friends-training-ui-v228.js').includes('usedPosition'));
-console.log('V311 PASS: MAT→SA→MAT/restauração exata, PP, cinco estilos, técnicas isoladas, habilidades/ímpetos reavaliados, PTE→CA, 2 acervos, 246 cartas preservadas.');
+console.log('V312 PASS: MAT→SA→MAT/restauração exata, PP, cinco estilos, técnicas isoladas, habilidades/ímpetos reavaliados, PTE→CA, 2 acervos, 246 cartas preservadas.');
