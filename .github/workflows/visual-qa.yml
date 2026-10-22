@@ -9,6 +9,7 @@ on:
       - 'scripts/qa-visual-v195.py'
       - 'scripts/qa-managers-v307.py'
       - 'scripts/qa-pp-v309.py'
+      - 'scripts/qa-position-v311.py'
       - '.github/workflows/visual-qa.yml'
   push:
     branches: [main]
@@ -48,6 +49,7 @@ jobs:
           python scripts/qa-visual-v195.py
           python scripts/qa-managers-v307.py
           python scripts/qa-pp-v309.py
+          python scripts/qa-position-v311.py
       - name: Anexar screenshots e relatório para inspeção
         if: always()
         uses: actions/upload-artifact@v4
