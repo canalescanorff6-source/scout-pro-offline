@@ -23,7 +23,11 @@ if(!locked&&bruno){
   '. Seus acervos existentes foram mantidos.')}
 }
 // V309: todas as novas cartas próprias usam o MESMO motor de PP/5 fichas.
-if(!locked){
+const personalRequested=(()=>{
+ try{return new URLSearchParams(location.search).get('colecao')==='minhas-cartas-adicionadas'}
+ catch(_){return false}
+})();
+if(!locked&&personalRequested){
  try{const personal=api.ensurePersonalCollection(data);
   if(personal.changed)data=api.write(localStorage,personal.data);
  }catch(e){locked=true;status('Não foi possível criar a coleção particular: '+e.message)}
