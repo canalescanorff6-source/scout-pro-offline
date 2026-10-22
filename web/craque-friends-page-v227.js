@@ -1,6 +1,7 @@
 /* Craque Tático V227 · UI de acervos independentes (sem usar catálogo original). */
 (()=>{'use strict';
 const api=window.CRAQUE_FRIENDS_V227;
+const budgets=window.CRAQUE_FRIEND_TRAINING_V228;
 const $=id=>document.getElementById(id);
 if(!api||!$('friend-people'))return;
 let data,locked=false,selected=null,cardImage='',imageModified=false;
@@ -82,7 +83,8 @@ function renderPeople(){
 }
 function makeCard(card){
  const node=el('article','friends-card');
- const ready=Number.isInteger(card.pp)&&card.pp>=0&&Boolean(card.position);
+ const progress=budgets.resolveBudget(card);
+ const ready=Number.isInteger(progress.pp)&&progress.pp>=0&&Boolean(card.position);
  node.dataset.ready=ready?'true':'false';
  if(card.image){
   const img=el('img');img.src=card.image;img.alt='Miniatura enviada da carta de '+card.name;img.loading='lazy';
@@ -94,12 +96,16 @@ function makeCard(card){
  info.append(el('small','',(card.position||'Posição pendente')+' · '+(card.rarity||'Raridade não informada')));
  if(card.style)info.append(el('small','friends-playstyle','Estilo: '+card.style));
  if(card.cardId)info.append(el('small','','Card ID: '+card.cardId));
- if(card.level!==null||card.pp!==null)info.append(el('small','',[(card.level!==null?'Nível '+card.level:null),(card.pp!==null?card.pp+' PP':null)].filter(Boolean).join(' · ')));
+ if(card.level!==null||card.pp!==null)info.append(el('small','',[
+  (card.level!==null?'Nível máx. '+card.level:null),
+  (progress.pp!==null?progress.pp+' PP'+(progress.source==='nivel_maximo'?' calculados':' manuais'):null)
+ ].filter(Boolean).join(' · ')));
+ if(progress.source==='conflito')info.append(el('small','friends-pp-conflict',progress.reason));
  const state=el('div','friends-card-fichas');
  state.append(el('span','friends-card-fichas-title','FICHAS DO APLICATIVO'),
   el('strong',ready?'5 estilos · análise disponível':'5 estilos · dados pendentes'),
-  el('small','',ready?'Treino calculável com '+card.pp+' PP · habilidades e ímpetos por estilo':
-   'Cadastre PP e edição para gerar treino; habilidades e ímpetos são consultivos.'));
+  el('small','',ready?'Treino calculável com '+progress.pp+' PP · habilidades e ímpetos por estilo':
+   'Informe o nível MÁXIMO ou resolva o conflito de PP para gerar treino; Card ID pode ficar pendente.'));
  info.append(state);
  const actions=el('div','friends-actions');
  actions.append(
@@ -133,7 +139,7 @@ function renderCards(){
  const owner=getOwner(),current=personCards(owner.id);
  $('friend-current-name').textContent=owner.name;
  $('friend-current-meta').textContent=current.length+' carta'+(current.length===1?'':'s')+' cadastrada'+(current.length===1?'':'s')+' · coleção independente';
- const done=current.filter(c=>Number.isInteger(c.pp)&&c.pp>=0&&c.position).length;
+ const done=current.filter(c=>Number.isInteger(budgets.resolveBudget(c).pp)&&c.position).length;
  $('friend-fichas-count').textContent=done+'/'+current.length+' com PP e posição · 5 estilos por carta';
  const search=$('friend-search').value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
  const position=$('friend-position').value;
@@ -218,6 +224,22 @@ const fields={name:'friend-card-name',cardId:'friend-card-gameid',edition:'frien
  fixedBooster:'friend-card-fixed-booster',boosterSlot:'friend-card-booster-slot',
  trainingLevels:'friend-card-training-levels',notes:'friend-card-notes'};
 const preview=$('friend-photo-preview'),removePhoto=$('friend-photo-remove'),photoInput=$('friend-photo');
+const levelInput=$('friend-card-level'),ppInput=$('friend-card-pp');
+const budgetPreview=$('friend-budget-preview');
+function previewBudget(){
+ if(!budgetPreview)return;
+ const level=levelInput.value.trim()===''?null:Number(levelInput.value);
+ const manual=ppInput.value.trim()===''?null:Number(ppInput.value);
+ const result=budgets.resolveBudget({level,pp:manual});
+ budgetPreview.textContent=result.source==='conflito'?result.reason:
+  result.pp!==null?'Orçamento '+result.pp+' PP · '+(result.source==='nivel_maximo'?
+   'calculados: 2 × ('+level+' − 1). PP manual pode ficar em branco.':
+   'informado manualmente'+(level!==null?' (confere com o nível máximo).':'.')):
+  'Informe o nível MÁXIMO da carta para obter os PP automaticamente.';
+ budgetPreview.dataset.state=result.source;
+}
+levelInput.addEventListener('input',previewBudget);
+ppInput.addEventListener('input',previewBudget);
 function setPreview(){
  preview.hidden=!cardImage;removePhoto.hidden=!cardImage;
  if(cardImage)preview.src=cardImage;else preview.removeAttribute('src');
@@ -230,6 +252,7 @@ function openCard(card=null){
  $('friend-dialog-title').textContent=card?'Editar carta':'Nova carta';
  $('friend-dialog-owner').textContent='Acervo exclusivo: '+owner.name;
  for(const [key,id] of Object.entries(fields))$(id).value=card?.[key]??'';
+ previewBudget();
  setPreview();
  if(!dialog.open)dialog.showModal();
  $('friend-card-name').focus();
@@ -274,7 +297,11 @@ form.onsubmit=event=>{
   const saved=next.cards.find(x=>x.ownerId===owner.id&&
    (existing?x.id===existing.id:!data.cards.some(previous=>previous.id===x.id)));
   if(!saved)throw Error('Não foi possível localizar a carta recém-cadastrada.');
-  let analysisNote='';
+  const progress=budgets.resolveBudget(saved);
+  let analysisNote=progress.source==='nivel_maximo'?
+   ' Nível máximo '+saved.level+' → '+progress.pp+' PP calculados automaticamente.':
+   progress.source==='conflito'?' ATENÇÃO: PP manual diverge do nível; treino bloqueado para revisão.':'';
+
   try{
    const training=window.CRAQUE_FRIEND_TRAINING_V228;
    if(!training)throw Error('Motores táticos não carregaram.');
