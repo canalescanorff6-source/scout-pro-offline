@@ -12,8 +12,9 @@ with sync_playwright() as pw:
       page=context.new_page();errors=[]
       page.on("pageerror",lambda error:errors.append(str(error)))
       page.goto(BASE+"/meu-time-duas-formacoes-v177.html",wait_until="domcontentloaded",timeout=40000)
-      page.locator("#ct-v230-tactic-details .ct-v230-fit-row").first.wait_for(timeout=30000)
+      # O painel de onze titulares inicia fechado: abrir antes de exigir visibilidade.
       page.locator(".ct-v230-tactic-advanced summary").click()
+      page.locator("#ct-v230-tactic-details .ct-v230-fit-row").first.wait_for(timeout=30000)
       mat=page.get_by_role("button",name="Abrir ficha na vaga MAT").first
       mat.click(timeout=15000)
       scenario=page.locator("#ct-v314-slot-panel .ct311-positional")
