@@ -81,7 +81,20 @@ for(const file of ['craque-formation-context-v314.js','craque-formation-context-
  assert(text('scripts/stamp-bundle-v189.cjs').includes("'"+file+"'"));
 }
 assert(ui.includes('formationCore.context'),'Escalação real não chama motor de cenário compartilhado');
+const lineup=text('web/meu-time-duas-formacoes-v177.js');
+assert(lineup.includes("craque:lineup-assigned-v315"),'Troca real da vaga não informa motor contextual');
+const accept=lineup.slice(lineup.indexOf('function assign('),lineup.indexOf('function makePlayer('));
+assert(accept.indexOf("if(!fits(c,slot))")<accept.indexOf("craque:lineup-assigned-v315"),
+ 'Evento não pode disparar antes de validar a familiaridade da escalação');
+assert(accept.indexOf("save();render()")<accept.indexOf("craque:lineup-assigned-v315"),
+ 'Evento deve ocorrer após salvar e renderizar a troca efetiva');
+assert(ui.includes("openPositionScenario(player,slot,{automatic=false}"),
+ 'Motor contextual não reutiliza componente da vaga já existente');
+assert(ui.includes("state.snapshot()[d.slot]")&&ui.includes("queueMicrotask"),
+ 'Trocas rápidas exigem descarte de eventos obsoletos e ficha do titular atual');
+assert(ui.includes("const selection=chosen.find(c=>c.slot===contextSlot)"),
+ 'Contexto aberto não acompanha alteração de tática/elenco');
 assert(text('web/craque-positional-ui-v311.js').includes('formationApi.ui'),
  'Laboratório não possui seletor de vaga de formação');
 assert(text('web/app-bridge.js').includes("load('craque-formation-context-v314.js'"));
-console.log('V314 PASS: 11 vagas×2 formações, MAT→SA, 5 estilos, PP exatos, habilidades/ímpetos por vaga, 2 acervos, versões de técnico e 246 cartas intactas.');
+console.log('V315 PASS: 11 vagas×2 formações, MAT→SA, 5 estilos, PP exatos, habilidades/ímpetos por vaga, 2 acervos, versões de técnico e 246 cartas intactas.');
