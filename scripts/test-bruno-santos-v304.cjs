@@ -106,7 +106,7 @@ assert.equal(afterRemove.changed,false);
 const page=read('web/outros-elencos-v227.html'),ui=read('web/craque-friends-page-v227.js');
 assert(page.includes('Bruno Santos CD'));
 assert(page.indexOf('craque-bruno-v304.js')<page.indexOf('craque-friends-page-v227.js'));
-assert(ui.includes('bruno.seed(data,api,localStorage)'));
+assert(ui.includes('bruno.seed(data,api,localStorage,budgets)'));
 assert(ui.includes("bruno-open-collection"));
 assert(read('web/sw.js').includes("'./craque-bruno-v304.js'"));
 assert(read('scripts/stamp-bundle-v189.cjs').includes("'craque-bruno-v304.js'"));
