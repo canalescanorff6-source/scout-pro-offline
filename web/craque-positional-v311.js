@@ -61,7 +61,7 @@ function baseSignature(m){return hash(json([
 // e do proprietário, para validar a migração sem certificar conteúdo diferente.
 function contentSignature(m){
  validate(m);
- return hash(json([m.cardId,m.edition,m.position,m.level,m.pp,m.style,
+ return hash(json([m.name,m.cardId,m.edition,m.position,m.level,m.pp,m.style,
   m.nativeSkills,m.skills,m.fixedBooster,m.booster,m.boosterSlot,m.trainingLevels]));
 }
 function identity(m,pos,style,manager){
