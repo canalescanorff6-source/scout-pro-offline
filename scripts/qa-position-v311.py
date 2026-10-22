@@ -65,7 +65,40 @@ with sync_playwright() as p:
    assert 'Prioridade original MAT preservada' in comparison,comparison
    assert 'Habilidade MAT registrada' in comparison,comparison
    assert 'Ímpeto MAT registrado' in comparison,comparison
+   # V318: duas revisões SA independentes, versão antiga consultável sem sobrescrita.
+   root.locator('.ct311-button').first.click()
+   revisionSelect=root.locator('.ct318-revision-select')
+   assert revisionSelect.locator('option').count()==2
+   page.evaluate("""() => {
+      const key='scoutpro:v311:position-scenarios',payload=JSON.parse(localStorage.getItem(key));
+      const revisions=Object.values(payload.entries).find(rows=>
+        Array.isArray(rows)&&rows.length===2&&rows[0].selectedPosition==='SA'&&rows[0].style==='posse');
+      if(!revisions)throw Error('Não encontrou duas revisões SA');
+      revisions[0].recommendations=[{name:'Habilidade SA antiga preservada',why:'Histórico do proprietário'}];
+      localStorage.setItem(key,JSON.stringify(payload));
+   }""")
+   revisionSelect.select_option('0')
+   assert 'Habilidade SA antiga preservada' in root.inner_text()
+   selector.select_option('MAT')
+   selector.select_option('SA')
+   assert root.locator('.ct318-revision-select').input_value()=='0'
+   assert 'Habilidade SA antiga preservada' in root.inner_text()
+   root.locator('.ct318-revision-select').select_option('1')
+   assert 'Habilidade SA antiga preservada' not in root.inner_text()
    page.locator('#friend-analysis-modes [data-style=rapido]').click()
+   # Histórico ilegível deve bloquear gravação, sem apagá-lo.
+   page.evaluate("""() => {
+      window._validScenarioBackup=localStorage.getItem('scoutpro:v311:position-scenarios');
+      localStorage.setItem('scoutpro:v311:position-scenarios','{historico-invalido');
+   }""")
+   selector.select_option('MAT')
+   assert 'GRAVAÇÃO BLOQUEADA' in root.locator('.ct311-status').inner_text()
+   assert root.locator('.ct311-button').first.is_disabled()
+   assert page.evaluate("localStorage.getItem('scoutpro:v311:position-scenarios')")== '{historico-invalido'
+   page.evaluate("""() => localStorage.setItem(
+      'scoutpro:v311:position-scenarios',window._validScenarioBackup)""")
+   selector.select_option('SA')
+   assert 'GRAVAÇÃO BLOQUEADA' not in root.locator('.ct311-status').inner_text()
    assert 'Cenário SA · rapido' in root.inner_text()
    page.goto(ROOT+'/fichas/001_Daniele_Massaro.html',wait_until='domcontentloaded')
    main=page.locator('.ct311-main-slot .ct311-positional')
