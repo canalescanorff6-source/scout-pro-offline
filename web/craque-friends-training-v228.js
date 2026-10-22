@@ -9,22 +9,11 @@
 })(typeof window!=='undefined'?window:null,function(){'use strict';
 const MODES=['posse','normal','rapido','fora','longo'];
 const LABEL={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'};
-// V308: mesma regra de progressão da auditoria V248: cada nível máximo após o 1º libera 2 PP.
-// Não arredondar nem inferir nível máximo de Overall, nível atual ou edição sem evidência.
-function levelBudget(level){return Number.isInteger(level)&&level>=1&&level<=120?2*(level-1):null}
-function resolveBudget(card){
- const level=levelBudget(card?.level);
- const manual=card?.pp;
- if(manual!==null&&manual!==undefined&&Number.isInteger(manual)&&manual>=0&&manual<=300){
-  if(level!==null&&level!==manual)return {pp:manual,expected:level,manual,source:'manual_divergente',reason:
-   'DIVERGÊNCIA: nível máximo '+card.level+' corresponde a '+level+
-   ' PP, mas a carta registra '+manual+' PP manualmente. A simulação continua usando o PP manual SEM homologá-lo; revise a edição.'};
-  return {pp:manual,expected:level,manual,source:'manual',reason:null};
- }
- if(level!==null)return {pp:level,expected:level,manual:null,source:'nivel_maximo',reason:null};
- return {pp:null,expected:null,manual:null,source:'pendente',reason:
-  'Informe o NÍVEL MÁXIMO da carta (não Overall) para calcular automaticamente os PP.'};
-}
+// V309: mesmo cálculo para Minhas Cartas e todos os outros elencos.
+const progression=typeof window!=='undefined'?window.CRAQUE_PP_UNIVERSAL_V309:
+  require('./craque-pp-universal-v309.js');
+if(!progression)throw Error('Motor universal de PP ausente. Verifique a instalação offline.');
+const levelBudget=progression.budget,resolveBudget=progression.resolve;
 const getDeps=(deps)=>deps||{
  tactical:typeof window!=='undefined'?window.SCOUT_TACTICS_V220:null,
  skills:typeof window!=='undefined'?window.SCOUT_RECOMMENDATIONS_V162:null,
