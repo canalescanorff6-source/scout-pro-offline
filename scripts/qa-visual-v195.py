@@ -1281,7 +1281,7 @@ def run():
                 page.goto(URL + "/outros-elencos-v227.html", wait_until="domcontentloaded", timeout=35000)
                 page.locator("#friend-person-name").wait_for(timeout=12000)
                 # V304: coleção Bruno Santos CD criada uma única vez, com
-                # Zico 106 SA e dados pendentes. Nunca tocar nas 246 próprias.
+                # Zico 106 SA agora com nível máximo 35 e 68 PP confirmados. Não tocar nas 246 próprias.
                 if page.locator("#bruno-featured").count()!=1 or (
                     page.locator("#friend-people .friends-person").count()!=1):
                     problems.append(f"{name}: V304 coleção Bruno não apareceu em Outros Elencos")
@@ -1292,10 +1292,10 @@ def run():
                     problems.append(f"{name}: V305 não exibe botão para consultar a ficha")
                 page.locator("#friend-cards .friends-analysis-action").first.click()
                 if (page.locator("#friend-analysis-modes button").count()!=5 or
-                    "PP pendentes" not in page.locator("#friend-analysis-badges").inner_text()):
-                    problems.append(f"{name}: V305 perdeu cinco fichas / PP pendentes do Zico")
-                if not page.locator("#friend-analysis-content").inner_text().count("Treino ainda não calculável"):
-                    problems.append(f"{name}: V305 Zico recebeu PP fictícios")
+                    "68 PP" not in page.locator("#friend-analysis-badges").inner_text()):
+                    problems.append(f"{name}: V310 perdeu cinco fichas / PP 68 confirmados do Zico")
+                if not page.locator("#friend-analysis-content").inner_text().count("68 / 68 PP distribuídos"):
+                    problems.append(f"{name}: V310 Zico 35 não gerou as cinco fichas com 68 PP")
                 page.locator('#friend-analysis-sections [data-panel="skills"]').click()
                 if not page.locator('#friend-analysis-content [data-panel="skills"]').is_visible():
                     problems.append(f"{name}: V305 habilidades adicionais não acessíveis")
@@ -1320,9 +1320,9 @@ def run():
                     image:c?.image?.startsWith('data:image/jpeg;base64,'),
                     teams:coll.owners.length,cards:coll.cards.length}
                 }""")
-                if recorded!={'id':'','pp':None,'level':None,'position':'SA',
+                if recorded!={'id':'','pp':68,'level':35,'position':'SA',
                     'image':True,'teams':1,'cards':1}:
-                    problems.append(f"{name}: V304 inventou dados ou falhou ao guardar Zico: {recorded}")
+                    problems.append(f"{name}: V310 falhou ao guardar nível/PP confirmados do Zico: {recorded}")
                 page.reload(wait_until="domcontentloaded")
                 if page.locator("#friend-people .friends-person").count()!=1:
                     problems.append(f"{name}: V304 duplicou Bruno ao recarregar")
