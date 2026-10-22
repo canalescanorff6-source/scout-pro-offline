@@ -96,7 +96,7 @@ function training(result){
 }
 function skills(result){
  const panel=mk('section','friend-analysis-panel');panel.dataset.panel='skills';
- panel.append(mk('h3','','Habilidades adicionais · até 5 espaços'));
+ panel.append(mk('h3','','Habilidades adicionais · candidatas por função'));
  if(!result.skills){
   panel.append(mk('p','friend-analysis-warning','Informe a posição da carta para recomendar habilidades.'));return panel;
  }
