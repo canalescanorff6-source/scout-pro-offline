@@ -152,9 +152,12 @@ const structurallyInvalid=store();
 structurallyInvalid.setItem(core.KEY,JSON.stringify({
  schema:'CRAQUE_POSITION_V311',entries:{[matPosse.id]:'não é lista'}
 }));
-assert.throws(()=>core.revisions(structurallyInvalid,matPosse),/Revisões/);
-assert.equal(core.storageHealth(structurallyInvalid).ok,true,
- 'Saúde global verifica JSON e formato principal; inconsistência local é reportada ao consultar a carta');
+assert.throws(()=>core.revisions(structurallyInvalid,matPosse),/revisões inválidas/i);
+assert.equal(core.storageHealth(structurallyInvalid).ok,false,
+ 'Histórico com revisão inválida deve bloquear toda gravação');
+const beforeInvalid=structurallyInvalid.getItem(core.KEY);
+assert.throws(()=>core.save(structurallyInvalid,matPosse),/revisões inválidas/i);
+assert.equal(structurallyInvalid.getItem(core.KEY),beforeInvalid);
 const originalManager=core.compute(official,'MAT','posse','CT-MGR-014',deps);
 assert.notEqual(originalManager.id,matPosse.id,'Edições diferentes de técnico não misturam fichas');
 assert.equal(core.saved(profile,originalManager),null,'Não usar build de outro técnico');
