@@ -29,7 +29,7 @@ for(const [ix,part,style,score] of expected){
  assert(api.CURATED_IDS.includes(id),'Versão destacada ausente: '+id);
  const c=catalogue.find(c=>c.catalog_id===id);
  assert(c,'Versão não existe nos 70 registros: '+id);
- assert(c.nome.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').includes(part.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'')),
+ assert(c.nome.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase().includes(part.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase()),
   'ID associado ao técnico errado: '+id+' '+c.nome);
  assert.equal(api.proficiency(c,style),score,'Proficiência precisa ser da mesma versão '+id);
  assert.equal(api.STYLES.length,6);
