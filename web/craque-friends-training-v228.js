@@ -16,9 +16,9 @@ function resolveBudget(card){
  const level=levelBudget(card?.level);
  const manual=card?.pp;
  if(manual!==null&&manual!==undefined&&Number.isInteger(manual)&&manual>=0&&manual<=300){
-  if(level!==null&&level!==manual)return {pp:null,expected:level,manual,source:'conflito',reason:
+  if(level!==null&&level!==manual)return {pp:manual,expected:level,manual,source:'manual_divergente',reason:
    'DIVERGÊNCIA: nível máximo '+card.level+' corresponde a '+level+
-   ' PP, mas a carta registra '+manual+' PP manualmente. Confira o nível/edição sem substituir o valor salvo.'};
+   ' PP, mas a carta registra '+manual+' PP manualmente. A simulação continua usando o PP manual SEM homologá-lo; revise a edição.'};
   return {pp:manual,expected:level,manual,source:'manual',reason:null};
  }
  if(level!==null)return {pp:level,expected:level,manual:null,source:'nivel_maximo',reason:null};
@@ -76,7 +76,7 @@ function allocate(card,tactic,deps){
  const progress=resolveBudget(card);
  const budget=progress.pp,source=profileOf(card),role=t.roleOf(source);
  if(!role)return {status:'pendente',reason:'Cadastre uma posição reconhecida (CA, SA, MAT, MLG, VOL, ZC, LD, LE, GO ou ponta).',levels:null};
- if(progress.source==='conflito')return {status:'pendente',reason:progress.reason,levels:null,role};
+ // PP manuais permanecem utilizáveis conforme V228, mas divergências ficam documentadas.
  if(!Number.isInteger(budget)||budget<0||budget>300)
   return {status:'pendente',reason:progress.reason||'Informe o nível máximo da carta para calcular os PP.',levels:null,role};
  const cfg=t.strategy(source,tactic);
@@ -128,7 +128,7 @@ function evaluate(card,tactic='posse',deps){
  const nativeDocumented=Boolean(String(card.nativeSkills||'').trim());
  const existing=String(card.skills||'').trim();
  const warnings=[];
- if(progress.source==='conflito')warnings.push(progress.reason);
+ if(progress.source==='manual_divergente')warnings.push(progress.reason);
  if(progress.source==='nivel_maximo')warnings.push(
   'PP calculados pelo nível máximo: 2 × ('+card.level+' − 1) = '+progress.pp+
   '. Verifique se o nível do print é o MÁXIMO desta edição; isso não comprova Card ID nem atributos finais.');
