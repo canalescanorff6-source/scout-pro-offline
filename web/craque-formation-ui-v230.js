@@ -6,7 +6,7 @@
 const tactical=window.CRAQUE_TACTICS_V230,bar=document.getElementById('ct-v230-tactic-profile');
 if(!tactical||!bar)return;
 const $=id=>document.getElementById(id);
-let cards=[],activeMode='posse',currentId='4312',ready=false,positionPanel=null;
+let cards=[],activeMode='posse',currentId='4312',ready=false,positionPanel=null,contextSlot=null;
 const KEY=id=>'scoutpro:v230:formation-mode:'+id;
 const escString=s=>String(s??'');
 const v=id=>{try{return localStorage.getItem(KEY(id))||'posse'}catch(_e){return 'posse'}};
@@ -24,6 +24,34 @@ function slots(){
   out.push({slot,cap:Number(match[1])});
  }
  return out;
+}
+function openPositionScenario(player,slot,{automatic=false}={}){
+ if(!player)return false;
+ // A posição da vaga controla os mesmos motores dos dois acervos. NÃO editar elenco.
+ const advanced=document.querySelector('.ct-v230-tactic-advanced');
+ if(advanced&&automatic)advanced.open=true;
+ const container=$('ct-v230-tactic-details');
+ if(!container)return false;
+ contextSlot=slot;
+    const core=window.CRAQUE_POSITIONAL_V311,ui=window.CRAQUE_POSITIONAL_UI_V311,
+    formationCore=window.CRAQUE_FORMATION_CONTEXT_V314;
+   const panelHost=$('ct-v314-slot-panel')||node('div','ct-v314-slot-panel');
+   panelHost.id='ct-v314-slot-panel';
+   container.after(panelHost);
+   positionPanel?.destroy();positionPanel=null;panelHost.replaceChildren();
+   try{
+    if(!core||!ui||!formationCore)throw Error('Motor comum indisponível nesta instalação');
+    const source=formationCore.context({collection:'minhas-cartas',card:player,
+     formation:currentId,slot,style:activeMode,manager:''},core);
+    const note=node('p','ct314-formation-note',
+      '#'+player.numero+' '+player.name+' · '+source.originalPosition+' → '+source.position+
+      ' · '+source.disclaimer);
+    panelHost.append(note);
+    positionPanel=ui.create(panelHost,source.model,{style:activeMode,
+     initialPosition:source.position,formation:currentId,formationSlot:slot});
+    panelHost.scrollIntoView({block:'nearest',behavior:'auto'});
+   }catch(e){panelHost.append(node('p','ct314-error','Não foi possível abrir a ficha desta vaga: '+e.message))}
+ return Boolean(positionPanel);
 }
 function render(){
  if(!ready)return;
@@ -65,32 +93,35 @@ function render(){
   const positionAction=node('button','ct-v314-formation-action','Abrir ficha na vaga '+slot.toUpperCase());
   positionAction.type='button';
   positionAction.title='Analisar posição de USO, PP, habilidades e ímpetos sem editar a carta/escalação';
-  positionAction.addEventListener('click',()=>{
-   const core=window.CRAQUE_POSITIONAL_V311,ui=window.CRAQUE_POSITIONAL_UI_V311,
-    formationCore=window.CRAQUE_FORMATION_CONTEXT_V314;
-   const panelHost=$('ct-v314-slot-panel')||node('div','ct-v314-slot-panel');
-   panelHost.id='ct-v314-slot-panel';
-   container.after(panelHost);
-   positionPanel?.destroy();positionPanel=null;panelHost.replaceChildren();
-   try{
-    if(!core||!ui||!formationCore)throw Error('Motor comum indisponível nesta instalação');
-    const source=formationCore.context({collection:'minhas-cartas',card:player,
-     formation:currentId,slot,style:activeMode,manager:''},core);
-    const note=node('p','ct314-formation-note',
-      '#'+player.numero+' '+player.name+' · '+source.originalPosition+' → '+source.position+
-      ' · '+source.disclaimer);
-    panelHost.append(note);
-    positionPanel=ui.create(panelHost,source.model,{style:activeMode,
-     initialPosition:source.position,formation:currentId,formationSlot:slot});
-    panelHost.scrollIntoView({block:'nearest',behavior:'auto'});
-   }catch(e){panelHost.append(node('p','ct314-error','Não foi possível abrir a ficha desta vaga: '+e.message))}
-  });
+  positionAction.addEventListener('click',()=>openPositionScenario(player,slot));
   block.append(positionAction);container.append(block);
  }
  $('ct-v230-tactic-count').textContent=chosen.length+
   ' titulares · '+strong+' com sinais fortes · '+pending+' para conferir';
  $('ct-v230-tactic-warning').textContent='Comparação documental, não rendimento garantido. As cartas da lista de restrições são excluídas das sugestões, não necessariamente do planejamento manual já salvo. Link-Up e instruções originais foram planejados para Posse e dependem do técnico escolhido no jogo.';
+ // Se o usuário trocar estilo ou formação com a ficha contextual aberta, o
+ // contexto deve acompanhar a vaga e a carta NOVAS, sem mostrar dados antigos.
+ if(contextSlot){
+  const selection=chosen.find(c=>c.slot===contextSlot);
+  const assigned=selection&&cards.find(c=>Number(c.numero)===selection.cap);
+  if(assigned)openPositionScenario(assigned,contextSlot);
+  else contextSlot=null;
+ }
 }
+// V315: uma troca REAL e validada de titular atualiza a ficha imediatamente.
+// Eventos de seleções obsoletas são ignorados caso o usuário altere o elenco rápido.
+window.addEventListener('craque:lineup-assigned-v315',e=>{
+ const d=e.detail||{};
+ if(!ready||d.formation!==currentId||d.mode!==activeMode||
+  !window.CRAQUE_FORMATION_CONTEXT_V314?.slotPosition(d.formation,d.slot))return;
+ queueMicrotask(()=>{
+  const state=window.CRAQUE_FORMATION_STATE_V231;
+  if(!state||state.formation()!==d.formation||state.mode()!==d.mode||
+    Number(state.snapshot()[d.slot])!==Number(d.cap))return;
+  const card=cards.find(x=>Number(x.numero)===Number(d.cap));
+  if(card)openPositionScenario(card,d.slot,{automatic:true});
+ });
+});
 function select(mode){
  if(!Object.hasOwn(tactical.MODES,mode))return;
  activeMode=mode;
