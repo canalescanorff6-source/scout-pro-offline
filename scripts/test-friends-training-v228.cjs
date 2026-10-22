@@ -38,6 +38,12 @@ for(const tactic of training.MODES){
  assert.equal(result.identityConfirmed,true);
  assert.equal(result.nativeDocumented,true);
  assert(result.suggestedSkills.length>0&&result.suggestedSkills.length<=4);
+ assert.equal(result.freeSkillSlots,null,
+  'Adicionais declaradas sem recibo da edição NÃO comprovam slot livre');
+ assert.equal(result.candidateCapacity,4,
+  'Capacidade consultiva não deve ser usada como número de vagas liberadas');
+ assert.equal(result.skills.slotsRemaining,null,
+  'O adaptador deve preservar a ausência de prova no motor V162');
  assert(!result.suggestedSkills.some(x=>['Passe de primeira','Toque duplo','Passe em profundidade'].includes(x.name)),
   'Não sugerir nativas ou extras já equipadas');
  assert(result.booster?.primary?.nome,'Deve apresentar ímpeto por tática');
@@ -59,6 +65,11 @@ assert.equal(doc.cards.length,2);
 const bc=doc.cards.find(x=>x.ownerId===bruno.id);
 assert.notEqual(ac.id,bc.id,'Duas pessoas têm cartas separadas');
 assert.equal(training.evaluate(bc,'posse',engines).boosterEligible,false);
+assert.equal(training.evaluate(bc,'posse',engines).freeSkillSlots,null,
+ 'Sem skills cadastradas também não significa 5 slots livres');
+assert.equal(training.evaluate(bc,'posse',engines).candidateCapacity,5,
+ 'Ainda podem existir cinco candidatas consultivas, não cinco vagas comprovadas');
+assert.equal(training.evaluate(bc,'posse',engines).skills.equippedConfirmed,false);
 assert(training.evaluate(bc,'posse',engines).warnings.some(x=>x.includes('Habilidades nativas')));
 assert(training.evaluate(bc,'posse',engines).warnings.some(x=>x.includes('slot')));
 const invalid=source(bruno.id,{cardId:'',edition:'',pp:null,position:'',boosterSlot:'ausente'});
@@ -67,6 +78,13 @@ assert.equal(pending.plan.status,'pendente');
 assert.equal(pending.plan.levels,null,'Nunca inventar treino sem orçamento/posição');
 assert.equal(pending.boosterEligible,false);
 assert.equal(pending.confidence,'pendente');
+const fiveReported=training.evaluate(source(bruno.id,{
+ skills:'Passe em profundidade; Cabeçada; Interceptação; Bloqueador; Chute de primeira'
+}),'posse',engines);
+assert.equal(fiveReported.candidateCapacity,0,
+ 'Cinco adicionais informadas bloqueiam candidatas instaláveis por cautela');
+assert.equal(fiveReported.freeSkillSlots,null,
+ 'Cinco adicionais informadas sem prova não conferem automaticamente todos os slots');
 const noSlot=training.evaluate(source(bruno.id,{boosterSlot:'ausente'}),'posse',engines);
 assert.equal(noSlot.boosterEligible,false);
 const occupied=training.evaluate(source(bruno.id,{boosterSlot:'ocupado',booster:'Shooting'}),'posse',engines);
@@ -103,5 +121,11 @@ for(const file of ['scout-multitactic-engine-v220.js','skills-booster-v162.js','
 assert(page.includes('id="friend-analysis-dialog"'));
 assert(read('web/craque-friends-page-v227.js').includes('training.generate(saved)'),'Salvamento de carta deve gerar treino automaticamente');
 assert(read('web/sw.js').includes('craque-friends-training-v228.js'),'Pacote offline precisa incluir o motor');
+const sharedPanel=read('web/craque-friends-training-ui-v228.js');
+assert(sharedPanel.includes('Vagas livres: ')&&sharedPanel.includes('não comprovadas nesta edição'),
+ 'UI de Outros Elencos diferencia candidatas de vagas comprovadas');
+assert(sharedPanel.includes('result.candidateCapacity'),
+ 'Contagem consultiva de candidatas não depende da prova de slots');
+
 assert(read('scripts/stamp-bundle-v189.cjs').includes('craque-friends-training-ui-v228.js'),'Android e Windows com mesmos arquivos');
 console.log('V228 PASS: cinco fichas/PP exatos, 5 habilidades sem duplicatas, ímpeto condicionado a slot, evidência pendente, exportação/restauração, acervos isolados.');

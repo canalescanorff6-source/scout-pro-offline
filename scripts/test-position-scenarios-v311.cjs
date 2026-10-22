@@ -34,6 +34,14 @@ for(const style of ['posse','rapido','normal','fora','longo']){
  assert.equal(t.total(own.outcome.plan.levels),68);
  assert.deepEqual(own.outcome.plan.levels,other.outcome.plan.levels,'Paridade na distribuição dos dois acervos');
  assert.deepEqual(own.outcome.suggestedSkills.map(x=>x.name),other.outcome.suggestedSkills.map(x=>x.name));
+ assert.equal(own.outcome.freeSkillSlots,null,
+  'Minhas Cartas não presume cinco slots equipáveis');
+ assert.equal(other.outcome.freeSkillSlots,null,
+  'Outros Elencos compartilha a mesma exigência documental de slots');
+ assert.equal(own.outcome.candidateCapacity,other.outcome.candidateCapacity,
+  'Capacidade de sugestões comparativas igual nos dois acervos');
+ assert.equal(own.outcome.suggestedSkills.length,other.outcome.suggestedSkills.length,
+  'Paridade de recomendações na posição SA e cinco estilos');
  assert.equal(own.outcome.booster?.primary?.nome,other.outcome.booster?.primary?.nome);
  assert.equal(own.compatibility.eligible,false,'Familiaridade sem prova não se inventa');
  assert.match(own.warnings.join(' '),/não confirmada|confirmada|documentad/i);

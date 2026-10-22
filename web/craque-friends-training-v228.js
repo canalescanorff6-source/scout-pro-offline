@@ -138,11 +138,16 @@ function evaluate(card,tactic='posse',deps){
   boost=s.booster({...raw,niveis:plan.levels},tactic,b,card.boosterSlot||'pendente',card.booster||'');
   if(skill.missing?.length)warnings.push(...skill.missing);
  }
- const distinct=skill?Math.max(0,5-skill.alreadyEquippedProvided):0;
+ // A lista de habilidades INFORMADAS não é recibo da quantidade de slots
+ // LIVRES. O V162 somente confirma vagas quando possui prova da edição exata.
+ // Preservar a quantidade consultiva de candidatas sem transformar essa
+ // estimativa em disponibilidade real (compartilhado nos dois acervos).
+ const candidateCapacity=skill?Math.max(0,5-skill.alreadyEquippedProvided):0;
+ const freeSkillSlots=skill&&Number.isInteger(skill.slotsRemaining)?skill.slotsRemaining:null;
  return {
   tactic,label:LABEL[tactic],plan,progress,skills:skill,booster:boost,
-  suggestedSkills:skill?.recommendations.slice(0,distinct)||[],
-  freeSkillSlots:distinct,identityConfirmed:identity,nativeDocumented,
+  suggestedSkills:skill?.recommendations.slice(0,candidateCapacity)||[],
+  candidateCapacity,freeSkillSlots,identityConfirmed:identity,nativeDocumented,
   boosterEligible:card.boosterSlot==='vazio'&&boost?.able===true,
   confidence:plan.status!=='hipotese'?'pendente':
     identity&&nativeDocumented?'simulacao_documentada_parcial':'hipotese_dados_incompletos',
