@@ -205,7 +205,10 @@ $('friend-delete').onclick=()=>{
 async function exportOwner(){
  const owner=getOwner();if(!owner)return;
  try{
-  const out=api.exportOwner(data,owner.id),clean=owner.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9_-]/gi,'_').slice(0,36);
+  const out=api.exportOwner(data,owner.id);
+  if(window.CRAQUE_POSITIONAL_V311)out.positionScenarioBackup=
+   window.CRAQUE_POSITIONAL_V311.exportOwnerScenarios(localStorage,owner.id,personCards(owner.id));
+  const clean=owner.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9_-]/gi,'_').slice(0,36);
   const result=await window.SCOUT_FILE_EXPORT.saveJson(out,'CraqueTatico-Acervo-'+(clean||'Pessoa')+'.json');
   status(result.status==='saved'?'Acervo de '+owner.name+' exportado com '+out.cards.length+' cartas.':
    result.status==='cancelled'?'Exportação cancelada. As cartas continuam salvas.':
@@ -224,7 +227,13 @@ importPicker.onchange=async()=>{
   if(!confirm('Importar este acervo como uma NOVA pessoa? Não serão substituídas suas cartas nem as coleções atuais.'))return;
   const next=api.importOwner(data,payload);
   const owner=next.owners[next.owners.length-1];
-  save(next,'Coleção de '+owner.name+' importada separadamente ('+payload.cards.length+' cartas).');
+  const importedCards=next.cards.filter(c=>c.ownerId===owner.id);
+  let scenarioCount=0;
+  if(payload.positionScenarioBackup&&window.CRAQUE_POSITIONAL_V311)
+   scenarioCount=window.CRAQUE_POSITIONAL_V311.importOwnerScenarios(
+    localStorage,payload.positionScenarioBackup,owner,importedCards);
+  save(next,'Coleção de '+owner.name+' importada separadamente ('+payload.cards.length+
+   ' cartas; '+scenarioCount+' revisões posicionais).');
   selectOwner(owner.id);
  }catch(e){status('Importação não realizada: '+e.message)}
  finally{importPicker.value=''}
