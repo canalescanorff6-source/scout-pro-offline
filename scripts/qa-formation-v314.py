@@ -29,6 +29,36 @@ with sync_playwright() as pw:
       scenario.locator(".ct314-formation-row .ct314-slot-select").select_option("cae")
       assert "Cenário CA · posse" in scenario.inner_text()
       assert page.locator("#pitch button[data-slot='mat'] .p-cap").inner_text()==before
+      # V315: troca real e autorizada de titular provoca ficha contextual AUTOMÁTICA
+      # para a NOVA carta, sem depender de "Abrir ficha na vaga".
+      page.locator("#pitch button[data-slot='mat']").click()
+      options=page.locator("#player-options button.option[data-cap]")
+      options.first.wait_for(timeout=12000)
+      prior=before.split("#",1)[1].split(" ",1)[0]
+      candidate=None
+      for i in range(options.count()):
+        opt=options.nth(i)
+        cap=opt.get_attribute("data-cap")
+        if cap!=prior and opt.is_enabled():
+          candidate=cap
+          opt.click()
+          break
+      assert candidate is not None,"Não há segundo jogador MAT elegível para teste de troca real"
+      auto=page.locator("#ct-v314-slot-panel .ct311-positional")
+      auto.wait_for(timeout=15000)
+      assert "Cenário MAT · posse" in auto.inner_text()
+      assert "#"+candidate in page.locator("#ct-v314-slot-panel").inner_text()
+      assert "#"+candidate in page.locator("#pitch button[data-slot='mat'] .p-cap").inner_text()
+      assert "Treinamento" in auto.inner_text() and "Ímpetos" in auto.inner_text()
+      # A proposta acompanha a tática selecionada, sem voltar ao jogador anterior.
+      page.locator("#ct-v230-tactic-tabs button[data-mode='rapido']").click()
+      page.wait_for_function("""cap => {
+        const panel=document.querySelector('#ct-v314-slot-panel');
+        return panel?.textContent?.includes('Cenário MAT · rapido') &&
+         panel?.textContent?.includes('#'+cap);
+      }""",candidate,timeout=12000)
+      assert "#"+candidate in page.locator("#pitch button[data-slot='mat'] .p-cap").inner_text()
+      assert not errors,errors
       page.goto(BASE+"/outros-elencos-v227.html?colecao=bruno-santos-cd",wait_until="domcontentloaded",timeout=40000)
       page.locator(".friends-card .friends-analysis-action").first.click(timeout=20000)
       panel=page.locator("#friend-analysis-dialog .ct311-positional")
@@ -53,4 +83,4 @@ with sync_playwright() as pw:
       context.close()
   finally:
     browser.close()
-print("V314 QA PASS: posição real da vaga no campo, PP/skills/ímpetos atualizados; dois acervos; Android/Windows; titulares preservados.")
+print("V315 QA PASS: posição real da vaga no campo, PP/skills/ímpetos atualizados; dois acervos; Android/Windows; titulares preservados.")
