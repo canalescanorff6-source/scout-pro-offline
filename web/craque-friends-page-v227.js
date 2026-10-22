@@ -252,7 +252,14 @@ function openCard(card=null){
  $('friend-dialog-title').textContent=card?'Editar carta':'Nova carta';
  $('friend-dialog-owner').textContent='Acervo exclusivo: '+owner.name;
  for(const [key,id] of Object.entries(fields))$(id).value=card?.[key]??'';
+ // O print complementar mostra NÍVEL 35, mas não prova sozinho a mesma edição
+ // da carta inicialmente cadastrada. Apenas SUGERIR no formulário, sem salvar.
+ const isInitialZico=card?.id===bruno?.CARD_ID&&card?.level===null&&card?.pp===null;
+ if(isInitialZico)levelInput.value='35';
  previewBudget();
+ if(isInitialZico&&budgetPreview){
+  budgetPreview.textContent+=' Sugestão do print de Zico: confirme que o nível 35 pertence à mesma edição antes de salvar. Nenhum dado foi modificado ainda.';
+ }
  setPreview();
  if(!dialog.open)dialog.showModal();
  $('friend-card-name').focus();
