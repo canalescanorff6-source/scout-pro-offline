@@ -172,6 +172,10 @@ function stored(store){
  if(parsed?.schema!=='CRAQUE_POSITION_V311'||!parsed.entries||
     typeof parsed.entries!=='object'||Array.isArray(parsed.entries))
   throw Error('Formato do histórico posicional não reconhecido. A gravação foi bloqueada para evitar perda de dados.');
+ for(const rows of Object.values(parsed.entries)){
+  if(!Array.isArray(rows)||rows.some(row=>!row||typeof row!=='object'||Array.isArray(row)))
+   throw Error('Histórico posicional contém revisões inválidas. Gravação bloqueada para preservar os dados.');
+ }
  return parsed.entries;
 }
 function storageHealth(store){
