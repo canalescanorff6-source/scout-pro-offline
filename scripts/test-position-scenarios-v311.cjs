@@ -68,6 +68,24 @@ const changed=core.compute({...official,pp:70},'MAT','posse','CT-MGR-013',deps);
 assert.equal(changed.id,matPosse.id);
 assert.equal(core.saved(profile,changed).stale,true,'Troca no orçamento não apaga revisão anterior');
 assert.equal(core.saved(profile,matPosse).stale,false);
+// Exportar/importar a coleção deve preservar os cenários da carta sem misturar proprietários.
+const local=store();
+const originalExternal=core.compute(external,'MAT','posse','CT-MGR-013',deps);
+const alternativeExternal=core.compute(external,'SA','posse','CT-MGR-013',deps);
+core.save(local,originalExternal);core.save(local,alternativeExternal);
+const backup=core.exportOwnerScenarios(local,'outros-1',[{id:'1'}]);
+assert.equal(backup.entries.length,2);
+const importedStore=store();
+const importedCard={id:'nova-carta',ownerId:'novo-dono',name:mat.name,
+ position:'MAT',edition:mat.versao,cardId:mat.id,level:35,pp:68,style:mat.estilo_ataque,
+ nativeSkills:mat.habilidades_nativas,skills:'',fixedBooster:'',
+ booster:'',boosterSlot:'pendente',trainingLevels:mat.niveis.join(',')};
+assert.equal(core.importOwnerScenarios(importedStore,backup,{id:'novo-dono'},[importedCard]),2);
+const importedModel=core.fromExternal(importedCard,{id:'novo-dono'});
+assert(core.saved(importedStore,core.compute(importedModel,'MAT','posse','CT-MGR-013',deps)));
+assert(core.saved(importedStore,core.compute(importedModel,'SA','posse','CT-MGR-013',deps)));
+assert.equal(core.exportOwnerScenarios(importedStore,'outros-1',[]).entries.length,0);
+assert.equal(core.importOwnerScenarios(importedStore,null,{id:'outros-1'},[]),0);
 const otherOwner=core.fromExternal({...external,id:'other-card',ownerId:'outra-pessoa',name:'Outro',position:'MAT'}, {id:'outra-pessoa'});
 assert.equal(core.saved(profile,core.compute(otherOwner,'MAT','posse','CT-MGR-013',deps)),null);
 const pending=core.compute({...official,level:null,pp:null},'SA','posse','',deps);
