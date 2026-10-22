@@ -16,3 +16,12 @@ body[data-page="friends"] .friend-manager-status{display:grid;gap:7px}
 body[data-page="friends"] .friend-manager-status p{margin:0;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
 body[data-page="friends"] .friend-manager-warning{color:#ffcc84;font-weight:750}
 @media(max-width:460px){body[data-page="friends"] .friend-manager-v306{padding:10px}}
+
+
+/* V307 — dados da mesma versão, sem retratos externos. */
+.friend-manager-portrait{width:86px;height:92px;border:2px solid #e3cc9d;border-radius:12px;object-fit:cover}
+.friend-manager-scores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.friend-manager-scores>div{padding:7px;border:1px solid #394857;border-radius:7px;color:#cfdce0;font-size:12px}
+.friend-manager-scores>.friend-manager-score-elite{color:#a5ff8a;background:#18382d}
+.friend-manager-scores>.friend-manager-score-strong{color:#ffe3a3;background:#383126}
+@media(max-width:480px){.friend-manager-scores{grid-template-columns:1fr}}
