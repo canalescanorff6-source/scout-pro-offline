@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#101b25"/>
+<meta name="description" content="Central de técnicos Craque Tático: 22 versões competitivas em destaque, 70 versões documentadas e seis estilos."/>
+<title>Central de Técnicos | Craque Tático</title>
+<link rel="stylesheet" href="craque-managers-v307.css"/>
+<script defer src="craque-managers-v302.js"></script>
+<script defer src="craque-manager-hub-v307.js"></script>
+<script defer src="pwa.js"></script>
+</head>
+<body data-page="manager-hub">
+<header class="hub-header">
+ <a class="hub-brand" href="index.html"><img src="assets/craque-tatico-icon.svg" alt="Craque Tático"/><span><strong>CRAQUE TÁTICO</strong><small>LABORATÓRIO DE FUTEBOL</small></span></a>
+ <nav aria-label="Navegação principal"><a href="index.html">Minhas cartas</a><a href="outros-elencos-v227.html">Outros elencos</a></nav>
+</header>
+<main class="hub-main">
+ <section class="hub-hero">
+  <div class="hub-eyebrow">eFOOTBALL 2027 · TÉCNICOS POR VERSÃO EXATA</div>
+  <h1>Central de <em>Técnicos</em></h1>
+  <p>Compare todas as seis proficiências, bônus e combinações. As <strong>22 versões competitivas</strong> ficam em destaque; as demais edições permanecem acessíveis.</p>
+  <div class="hub-metrics"><div><strong id="hub-count-featured">22</strong><span>Versões em destaque</span></div><div><strong id="hub-count-total">70</strong><span>Versões catalogadas</span></div><div><strong>6</strong><span>Estilos documentados</span></div></div>
+ </section>
+ <section class="hub-panel" aria-label="Pesquisar e filtrar técnicos">
+  <div class="hub-filters">
+   <label>Buscar técnico ou versão<input id="hub-search" type="search" placeholder="Ex.: Klopp, Deschamps, Chivu..." autocomplete="off"/></label>
+   <label>Catálogo<select id="hub-scope"><option value="featured">22 versões selecionadas</option><option value="all">Todas as 70 versões</option><option value="owned">Técnicos marcados como meus</option><option value="favorites">Favoritos</option></select></label>
+   <label>Estilo de jogo<select id="hub-style"><option value="">Todos os estilos</option></select></label>
+   <label>Proficiência mínima<select id="hub-min"><option value="0" selected>Sem mínimo</option><option value="85">85 ou mais</option><option value="89">89 ou mais</option><option value="90">Somente 90</option></select></label>
+   <label class="hub-check"><input id="hub-dual" type="checkbox"/> <span>Dois ou mais estilos 85+</span></label>
+  </div>
+  <div class="hub-count-line"><span id="hub-results" aria-live="polite">Carregando o catálogo offline…</span><span>Fonte V302 · proficiências por edição</span></div>
+ </section>
+ <section id="hub-compare" class="hub-compare" aria-label="Comparar técnicos" hidden></section>
+ <section id="hub-cards" class="hub-cards" aria-label="Cartões dos técnicos" aria-live="polite"></section>
+ <p id="hub-empty" class="hub-empty" hidden>Nenhuma versão encontrada. Ajuste os filtros ou consulte todas as versões.</p>
+ <p id="hub-feedback" class="hub-feedback" aria-live="polite" role="status"></p>
+ <section class="hub-notice">
+  <h2>Precisão e integridade</h2>
+  <p>Os IDs CT-MGR são identificadores internos, não IDs da Konami. Os bônus e Link-Ups vêm do catálogo documental e precisam de validação quando não houver evidência da carta do técnico. Proficiência não é PP de treinamento; o cálculo de Sobreposição ainda está pendente.</p>
+  <p>Retratos só são incorporados quando adicionados por você, localmente. Não utilizamos imagens externas sem autorização. As imagens adicionadas entram no backup local que inclui a chave <code>scoutpro:</code>; não há sincronização automática entre Android e Windows.</p>
+ </section>
+</main>
+</body>
+</html>

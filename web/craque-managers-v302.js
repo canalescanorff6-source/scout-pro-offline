@@ -93,6 +93,14 @@ function make(doc,tag,text,className){
  if(className)element.className=className;
  return element;
 }
+const PHOTO_PREFIX='scoutpro:v307:manager-portrait:';
+function portraitFor(id){
+ try{
+  const data=host?.localStorage?.getItem(PHOTO_PREFIX+String(id));
+  return typeof data==='string'&&data.length<=100000&&
+   /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(data)?data:null;
+ }catch(_){return null}
+}
 function selectedManager(){return selected}
 function mount(doc){
  if(!doc||ui)return Boolean(ui);
@@ -107,6 +115,10 @@ function mount(doc){
  const capture=Number(identity.capture),cardId=String(identity.id||'');
  const localKey=Number.isInteger(capture)&&capture>0&&cardId?
   KEY+':'+capture+'@'+cardId:KEY;
+ // V307: cópia restaurável no backup oficial (que preserva somente chaves scoutpro:).
+ const backedKey=Number.isInteger(capture)&&capture>0&&cardId?
+  'scoutpro:v307:manager-selection:'+capture+'@'+cardId:
+  'scoutpro:v307:default-manager';
  const heading=make(doc,'summary','ESCOLHER TÉCNICO · GERAR FICHA POR ESTILO');
  const title=make(doc,'h3','Técnico da minha equipe');
  const introduction=make(doc,'p','Escolha a versão do técnico. A ficha acompanha o estilo selecionado; bônus, jogadas e proficiências exigem conferência da edição.');
@@ -141,6 +153,8 @@ function mount(doc){
  const actions=make(doc,'div',undefined,'ct-manager-actions');
  const clear=make(doc,'button','Sem técnico selecionado');clear.type='button';
  actions.append(clear);
+ const browse=make(doc,'a','Central de Técnicos · pesquisar e comparar ↗');
+ browse.href='tecnicos-v307.html';browse.className='ct-manager-hub-link';actions.append(browse);
  wrap.append(heading,title,introduction,selectLabel,styleLabel,actions,explanation);
  const tabs=doc.getElementById('scout-v220-tabs');
  if(tabs)tabs.insertAdjacentElement('afterend',wrap);
@@ -163,6 +177,23 @@ function mount(doc){
   }
   style.value=selectedTactic;
   const status=model(selected,selectedTactic);
+  const photo=portraitFor(selected.catalog_id);
+  if(photo){
+   const cover=make(doc,'img');cover.src=photo;
+   cover.className='ct-manager-portrait';
+   cover.alt='Retrato fornecido pelo usuário para '+selected.nome;
+   explanation.append(cover);
+  }
+  const scores=make(doc,'div',undefined,'ct-manager-six-styles');
+  for(const entry of STYLES){
+   const n=proficiency(selected,entry.id);
+   const item=make(doc,'div',(n===null?'—':n)+' · '+entry.label+
+    (!entry.supported?' · ficha pendente':''),'ct-manager-score');
+   if(n!==null&&n>=89)item.className+=' ct-manager-score-elite';
+   else if(n!==null&&n>=85)item.className+=' ct-manager-score-strong';
+   scores.append(item);
+  }
+  explanation.append(scores);
   explanation.append(make(doc,'p',selected.nome+' · '+
    (selected.versao_lancamento||'data da versão pendente')+' · '+selected.catalog_id,
    'ct-manager-identity'));
@@ -207,24 +238,27 @@ function mount(doc){
   selected=find(select.value);
   selectedTactic=selected?preferred(selected,null):'posse';
   try{
-   if(selected)host.localStorage.setItem(localKey,JSON.stringify({
-    catalog_id:selected.catalog_id,tactic:selectedTactic}));
-   else host.localStorage.removeItem(localKey);
+   if(selected){
+    const data=JSON.stringify({catalog_id:selected.catalog_id,tactic:selectedTactic});
+    host.localStorage.setItem(localKey,data);host.localStorage.setItem(backedKey,data);
+   }else{host.localStorage.removeItem(localKey);host.localStorage.removeItem(backedKey)}
   }catch(_){}
   render();notify();
  });
  style.addEventListener('change',()=>{
   if(!selected)return;
   selectedTactic=style.value;
-  try{host.localStorage.setItem(localKey,JSON.stringify({
-   catalog_id:selected.catalog_id,tactic:selectedTactic}))}catch(_){}
+  try{const data=JSON.stringify({catalog_id:selected.catalog_id,tactic:selectedTactic});
+   host.localStorage.setItem(localKey,data);host.localStorage.setItem(backedKey,data)}catch(_){}
   render();notify();
  });
  clear.addEventListener('click',()=>{
   select.value='';select.dispatchEvent(new host.Event('change'));
  });
  try{
-  const stored=JSON.parse(host.localStorage?.getItem(localKey)||
+  const stored=JSON.parse(host.localStorage?.getItem(backedKey)||
+   host.localStorage?.getItem(localKey)||
+   host.localStorage?.getItem('scoutpro:v307:default-manager')||
    host.localStorage?.getItem(KEY)||'null');
   selected=find(stored?.catalog_id);
   if(selected){selectedTactic=preferred(selected,stored.tactic);select.value=selected.catalog_id}
@@ -235,8 +269,8 @@ function mount(doc){
   if(!selected||!ev.detail?.tactic||!STYLES.some(x=>x.id===ev.detail.tactic))return;
   selectedTactic=ev.detail.tactic;
   style.value=selectedTactic;
-  try{host.localStorage.setItem(localKey,JSON.stringify({
-   catalog_id:selected.catalog_id,tactic:selectedTactic}))}catch(_){}
+  try{const data=JSON.stringify({catalog_id:selected.catalog_id,tactic:selectedTactic});
+   host.localStorage.setItem(localKey,data);host.localStorage.setItem(backedKey,data)}catch(_){}
   render();
  });
  return true;
@@ -264,5 +298,5 @@ if(host?.document){
   host.document.addEventListener('DOMContentLoaded',start,{once:true});
  else start();
 }
-return Object.freeze({STYLES,KEY,CURATED_IDS,curatedManagers,competitiveStyles,DATA_GZIP_BASE64,validate,load,find,model,preferred,proficiency,mount,selectedManager});
+return Object.freeze({STYLES,KEY,CURATED_IDS,curatedManagers,competitiveStyles,portraitFor,DATA_GZIP_BASE64,validate,load,find,model,preferred,proficiency,mount,selectedManager});
 });
