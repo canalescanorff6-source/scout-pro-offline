@@ -46,6 +46,8 @@ function ui(target,options){
  element.className='ct314-slot-label';element.textContent='Analisar nesta vaga: ';
  const select=host.document.createElement('select');
  select.className='ct314-slot-select';select.setAttribute('aria-label','Posição efetiva na formação');
+ const placeholder=host.document.createElement('option');placeholder.value='';
+ placeholder.textContent='Escolha uma vaga para simular…';select.append(placeholder);
  for(const option of optionsFor){
   const o=host.document.createElement('option');
   o.value=option.slot;o.textContent=option.label+' · '+option.position;
