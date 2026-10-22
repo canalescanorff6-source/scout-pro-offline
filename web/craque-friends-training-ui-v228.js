@@ -41,7 +41,8 @@ function summaryCard(result){
  meta.append(infoRow('Edição / Card ID',activeCard.edition&&activeCard.cardId?
   activeCard.edition+' · '+activeCard.cardId:'PENDENTE · versão exata não confirmada'),
   infoRow('Função tática',plan.role||'Não informada'),
-  infoRow('Orçamento',Number.isInteger(activeCard.pp)?activeCard.pp+' PP':'PP pendentes'),
+  infoRow('Orçamento',result.progress.pp===null?'PP pendentes / em conflito':
+   result.progress.pp+' PP · '+(result.progress.source==='nivel_maximo'?'calculados do nível máximo':'informados manualmente')),
   infoRow('Precisão',result.confidence==='simulacao_documentada_parcial'?'Simulação parcial':'Hipótese pendente de validação'));
  el.append(meta);
  const focus=mk('p','friend-analysis-focus',plan.focus?.headline||'Informe posição e PP para uma distribuição simulada.');
@@ -61,7 +62,7 @@ function training(result){
  const p=result.plan;
  if(p.status!=='hipotese'||!p.levels){
   panel.append(mk('p','friend-analysis-warning','Treino ainda não calculável: '+(p.reason||'Dados insuficientes.')));
-  panel.append(mk('p','friend-analysis-fineprint','Cadastre posição e PP reais na opção Editar. O aplicativo não inventará níveis nem atributos.'));return panel;
+  panel.append(mk('p','friend-analysis-fineprint','Informe o nível máximo no cadastro para calcular PP = 2 × (nível máximo − 1). Edição e Card ID continuam sob conferência.'));return panel;
  }
  const header=mk('div','friend-analysis-pp');
  header.append(mk('strong','',p.pp+' / '+result.plan.pp+' PP distribuídos'),mk('span','','Restante: '+p.remaining+' PP · 10 categorias'));
@@ -270,7 +271,8 @@ function identity(){
  const badges=$('friend-analysis-badges');badges.replaceChildren(
   mk('span','',activeCard.position||'Posição pendente'),
   mk('span','',activeCard.style||'Estilo pendente'),
-  mk('span','',Number.isInteger(activeCard.pp)?activeCard.pp+' PP':'PP pendentes'));
+  mk('span','',(()=>{const budget=engine.resolveBudget(activeCard);
+   return budget.pp===null?'PP pendentes':budget.pp+' PP'+(budget.source==='nivel_maximo'?' (nível)':'');})()));
  const img=$('friend-analysis-cover'),empty=$('friend-analysis-cover-empty');
  img.hidden=!activeCard.image;empty.hidden=!!activeCard.image;
  if(activeCard.image){img.src=activeCard.image;img.alt='Imagem cadastrada de '+activeCard.name;}
@@ -288,7 +290,7 @@ function display(){
   const pending=plan?.status!=='hipotese';
   b.replaceChildren(mk('strong','',engine.LABEL[b.dataset.style]),
    mk('small','',pending?'Treino pendente':(plan.pp+' PP · hipótese')));
-  b.title=pending?'Preencha o PP e a posição para calcular esta ficha.':
+  b.title=pending?'Preencha o nível máximo e a posição para calcular os PP; confira divergências manuais.':
    'Ficha calculada pelo app; conferir atributos antes de aplicar no jogo.';
  });
  const container=$('friend-analysis-content');
@@ -297,7 +299,7 @@ function display(){
  const valid=engine.validateSaved(activeCard,activeCard.analysis);
  const allCalculated=engine.MODES.every(id=>cache[id].plan.status==='hipotese');
  $('friend-analysis-state').textContent=!allCalculated?
-  'As cinco fichas estão disponíveis para consulta, mas o treino permanece PENDENTE onde faltam PP ou dados. Complete o cadastro para liberar o cálculo.':
+  'As fichas permanecem pendentes quando falta o nível máximo/PP ou existe divergência manual. Confira o cadastro.':
   valid?'Cinco treinos por estilo gerados e registrados neste acervo. Habilidades e ímpetos são recomendações calculadas ao abrir.':
   'Cinco propostas calculadas pelo app. Use “Gerar e salvar 5 fichas” para registrar os treinos neste acervo.';
 }
@@ -343,7 +345,7 @@ $('friend-analysis-save').onclick=()=>{
   cache=null;
   const count=Object.values(next.profiles).filter(x=>x.status==='hipotese').length;
   status(count===5?'Cinco treinamentos experimentais registrados no acervo de '+activeOwner.name+'. Nenhuma carta sua foi alterada.':
-   count+' treinos simulados e '+(5-count)+' pendentes por ausência de dados. Nenhum PP foi inventado.');
+   count+' treinos simulados e '+(5-count)+' pendentes por falta de nível/posição ou conflito de PP. Nenhum PP foi inventado.');
   display();
  }catch(e){status('Fichas não salvas: '+String(e.message||e))}
  finally{button.disabled=false}
@@ -353,7 +355,7 @@ $('friend-analysis-export').onclick=async()=>{
  const btn=$('friend-analysis-export');btn.disabled=true;
  try{
   const all={format:'craque-friend-training-v228',createdAt:new Date().toISOString(),
-   ownerName:activeOwner.name,card:{name:activeCard.name,edition:activeCard.edition,cardId:activeCard.cardId,position:activeCard.position,pp:activeCard.pp},
+   ownerName:activeOwner.name,card:{name:activeCard.name,edition:activeCard.edition,cardId:activeCard.cardId,position:activeCard.position,level:activeCard.level,pp:engine.resolveBudget(activeCard).pp,pp_source:engine.resolveBudget(activeCard).source},
    caveat:'Treinos hipotéticos, habilidades e boosters são sugestões condicionais não validadas em gameplay. Não são aplicações no eFootball.',
    styles:Object.fromEntries(engine.MODES.map(tactic=>{
     const x=engine.evaluate(activeCard,tactic);
