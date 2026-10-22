@@ -1,0 +1,18 @@
+/* V306 — técnicos competitivos em Outros Elencos; visual premium responsivo. */
+body[data-page="friends"] .friend-manager-v306{
+ display:grid;gap:10px;margin:14px 0;padding:14px;
+ border:1px solid rgba(224,187,111,.55);border-radius:14px;
+ background:#172733;color:#f5f7fb;
+}
+body[data-page="friends"] .friend-manager-v306 h3{margin:0;color:#f1d99e;font-size:19px}
+body[data-page="friends"] .friend-manager-v306 label{display:grid;gap:6px;font-weight:650;font-size:13px}
+body[data-page="friends"] .friend-manager-v306 select{
+ box-sizing:border-box;width:100%;min-width:0;min-height:46px;
+ background:#122d3a;color:#fff;padding:8px;border:1px solid #82969d;
+ border-radius:9px;font-size:14px;
+}
+body[data-page="friends"] .friend-manager-v306 select:focus-visible{outline:3px solid #f0d89b;outline-offset:2px}
+body[data-page="friends"] .friend-manager-status{display:grid;gap:7px}
+body[data-page="friends"] .friend-manager-status p{margin:0;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+body[data-page="friends"] .friend-manager-warning{color:#ffcc84;font-weight:750}
+@media(max-width:460px){body[data-page="friends"] .friend-manager-v306{padding:10px}}

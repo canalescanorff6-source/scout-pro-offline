@@ -14,6 +14,19 @@ const mk=(tag,cl='',txt)=>{
 };
 let activeCard=null,activeOwner=null,saveCallback=null,editCallback=null,style='posse';
 let panel='treino',cache=null;
+const managers=window.CRAQUE_MANAGERS_V302;
+let managerData=null,managerPanel=null,managerSelectedId='',managerTactic='',managerError='';
+const managerKey=()=>activeOwner&&activeCard?'scoutpro:v306:manager:'+encodeURIComponent(activeOwner.id)+':'+encodeURIComponent(activeCard.id):null;
+function saveManager(){const key=managerKey();if(!key)return;try{
+ if(managerSelectedId)localStorage.setItem(key,JSON.stringify({catalog_id:managerSelectedId,tactic:managerTactic}));
+ else localStorage.removeItem(key);
+}catch(_e){status('Não foi possível salvar a seleção local do técnico; confira o espaço disponível.')}}
+function restoreManager(){managerSelectedId='';managerTactic='';const key=managerKey();if(!key)return;
+ try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved&&typeof saved.catalog_id==='string'){
+ managerSelectedId=saved.catalog_id;managerTactic=typeof saved.tactic==='string'?saved.tactic:'';
+ if(engine.MODES.includes(managerTactic))style=managerTactic;
+ }}catch(_e){managerError='Seleção anterior ilegível; nenhum dado da carta foi modificado.'}
+}
 const labels={treino:'Treinamento',skills:'5 habilidades',boost:'Ímpetos'};
 const feedback=$('friend-analysis-feedback');
 function infoRow(name,value,className=''){
@@ -147,6 +160,94 @@ function selectPanel(value){
   node.hidden=node.dataset.panel!==panel;
  });
 }
+// V306: seleção da MESMA fonte V302 também em Outros Elencos, isolada por proprietário e carta.
+function ensureManagerPanel(){
+ if(managerPanel)return;
+ const target=$('friend-analysis-modes');
+ const root=mk('section','friend-manager-v306');
+ const heading=mk('h3','','Técnico e estilo desta carta');
+ const subtitle=mk('p','','22 versões destacadas + catálogo completo. A escolha orienta a tática; bônus não são PP.');
+ const chooser=mk('label','','Versão do técnico');
+ const selection=mk('select');selection.id='friend-manager-version';selection.setAttribute('aria-label','Versão do técnico de Outros Elencos');chooser.append(selection);
+ const tacticLabel=mk('label','','Estilo coletivo do técnico');
+ const tactic=mk('select');tactic.id='friend-manager-tactic';tacticLabel.append(tactic);
+ const statusBox=mk('div','friend-manager-status');statusBox.id='friend-manager-status';statusBox.setAttribute('aria-live','polite');
+ root.append(heading,subtitle,chooser,tacticLabel,statusBox);
+ target.parentNode.insertBefore(root,target);
+ managerPanel={root,selection,tactic,statusBox};
+ selection.addEventListener('change',()=>{
+  managerSelectedId=selection.value;
+  const selected=managerData?.find(c=>c.catalog_id===managerSelectedId);
+  managerTactic=selected?managers.preferred(selected,null):'';
+  if(engine.MODES.includes(managerTactic))style=managerTactic;
+  saveManager();try{display()}catch(e){status('Erro ao escolher técnico: '+e.message)}
+ });
+ tactic.addEventListener('change',()=>{
+  if(!managerSelectedId)return;
+  managerTactic=tactic.value;
+  if(engine.MODES.includes(managerTactic))style=managerTactic;
+  saveManager();try{display()}catch(e){status('Erro ao escolher estilo: '+e.message)}
+ });
+}
+function renderManager(){
+ ensureManagerPanel();
+ const {selection,tactic,statusBox}=managerPanel;
+ selection.replaceChildren();tactic.replaceChildren();statusBox.replaceChildren();
+ const empty=mk('option','','Nenhum técnico selecionado');empty.value='';selection.append(empty);
+ if(!managers||!managerData){
+  empty.textContent=managerError||'Carregando versões dos técnicos…';
+  tactic.disabled=true;return;
+ }
+ const curated=managers.curatedManagers(),curatedIDs=new Set(managers.CURATED_IDS);
+ const remaining=managerData.filter(c=>!curatedIDs.has(c.catalog_id)).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+ for(const group of [{name:'22 VERSÕES COMPETITIVAS',items:curated},{name:'DEMAIS VERSÕES DO CATÁLOGO',items:remaining}]){
+  const g=mk('optgroup');g.label=group.name;
+  for(const c of group.items){
+   const scores=managers.competitiveStyles(c,89).map(s=>s.label+' '+s.score).join(' / ');
+   const opt=mk('option','',c.nome+' · '+(c.versao_lancamento||'data pendente')+
+    (scores?' · '+scores:' · verificar proficiência'));
+   opt.value=c.catalog_id;g.append(opt);
+  }
+  selection.append(g);
+ }
+ const selected=managerData.find(c=>c.catalog_id===managerSelectedId);
+ if(!selected){managerSelectedId='';tactic.disabled=true;
+  const o=mk('option','','Escolha uma versão primeiro');tactic.append(o);
+  statusBox.append(mk('p','','Sem técnico vinculado a esta carta. As cinco simulações continuam disponíveis.'));
+  return;
+ }
+ selection.value=selected.catalog_id;tactic.disabled=false;
+ for(const st of managers.STYLES){
+  const score=managers.proficiency(selected,st.id);
+  const opt=mk('option','',st.label+' · '+(score===null?'não documentada':score)+
+   (!st.supported?' · motor PP pendente':score<85?' · uso com ressalvas':''));
+  opt.value=st.id;tactic.append(opt);
+ }
+ if(!managers.STYLES.some(s=>s.id===managerTactic))managerTactic=managers.preferred(selected,null);
+ tactic.value=managerTactic;
+ const statusModel=managers.model(selected,managerTactic);
+ statusBox.append(mk('p','','Versão: '+selected.nome+' · '+(selected.versao_lancamento||'data pendente')+
+  ' · '+selected.catalog_id+' (ID interno, não Konami).'));
+ statusBox.append(mk('p',statusModel.score!==null&&statusModel.score<85?'friend-manager-warning':'',
+  'Proficiência: '+(statusModel.score??'não confirmada')+' · '+(
+   !statusModel.canCalculate?'Sem motor específico de PP para este estilo.':
+   statusModel.score>=89?'Alta proficiência competitiva.':
+   statusModel.score>=85?'Alternativa com ressalvas.':'Proficiência baixa: não equivale ao estilo principal.'
+  )));
+ statusBox.append(mk('p','','Bônus informados: '+(selected.boosters_EN?.join(' · ')||'não documentados')+
+  '. Não converter em PP nem em atributo final sem dados-base.'));
+ if(selected.ativacao_das_combinacoes?.length){
+  for(const link of selected.ativacao_das_combinacoes){
+   statusBox.append(mk('p','','Combinação '+link.name_EN+': '+(link.centrepiece_playstyle_EN||'?')+
+    ' ('+(link.centrepiece_position_EN||'?')+') + '+(link.keyman_playstyle_EN||'?')+
+    ' ('+(link.keyman_position_EN||'?')+'). Ativação não comprovada na escalação.'));
+  }
+ }
+ if(managerTactic==='overload')statusBox.append(mk('p','friend-manager-warning',
+  'Sobreposição: sem ficha PP própria homologada. O painel abaixo conserva a última simulação de um dos cinco estilos suportados.'));
+ statusBox.append(mk('p','',managerError||
+  'Perfil documental V302; retratos externos não incorporados. Treino, habilidades e ímpetos continuam hipóteses específicas da carta e da tática.'));
+}
 function identity(){
  $('friend-analysis-title').textContent='Ficha do app · '+activeCard.name;
  $('friend-analysis-owner').textContent='Coleção '+activeOwner.name;
@@ -166,6 +267,7 @@ function display(){
  if(!cache)buildCache();
  const result=cache[style];
  identity();
+ renderManager();
  $('friend-analysis-modes').querySelectorAll('button').forEach(b=>{
   const active=b.dataset.style===style;b.setAttribute('aria-pressed',String(active));
   const plan=cache[b.dataset.style]?.plan;
@@ -188,15 +290,25 @@ function display(){
 function openCard(card,owner,onSave,onEdit){
  if(!card||!owner||card.ownerId!==owner.id){status('Erro: carta e pessoa não correspondem.');return}
  activeCard=card;activeOwner=owner;saveCallback=onSave;editCallback=onEdit||null;
- style='posse';panel='treino';cache=null;
+ style='posse';panel='treino';cache=null;managerError='';restoreManager();
  $('friend-analysis-feedback').textContent='';
+ if(managers?.load){
+  const openedCardId=card.id,openedOwnerId=owner.id;
+  managers.load().then(data=>{
+   if(activeCard?.id!==openedCardId||activeOwner?.id!==openedOwnerId)return;
+   managerData=data.tecnicos;if(managerSelectedId&&!managerData.some(c=>c.catalog_id===managerSelectedId)){
+    managerError='Versão salva não localizada neste catálogo; seleção preservada para revisão.';
+   }
+   renderManager();
+  }).catch(err=>{managerError='Catálogo indisponível: '+String(err.message||err);renderManager();});
+ }else managerError='Catálogo de técnicos não carregou.';
  try{display();if(!modal.open)modal.showModal()}
  catch(e){status('Não foi possível calcular: '+(e.message||e));if(!modal.open)modal.showModal()}
 }
 const tabs=$('friend-analysis-modes');
 for(const mode of engine.MODES){
  const btn=mk('button','',engine.LABEL[mode]);btn.type='button';btn.dataset.style=mode;
- btn.setAttribute('aria-pressed','false');btn.onclick=()=>{style=mode;try{display()}catch(e){status('Erro ao trocar tática: '+e.message)}};
+ btn.setAttribute('aria-pressed','false');btn.onclick=()=>{style=mode;if(managerSelectedId){managerTactic=mode;saveManager()}try{display()}catch(e){status('Erro ao trocar tática: '+e.message)}};
  tabs.append(btn);
 }
 $('friend-analysis-sections').querySelectorAll('button').forEach(b=>{
