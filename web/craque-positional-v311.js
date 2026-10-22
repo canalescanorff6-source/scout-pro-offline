@@ -91,6 +91,28 @@ function managerEvidence(id,style,deps){
   proficiency:Number.isInteger(score)?score:null,bonuses,linkups,
   confidence:'catálogo sem prova de aquisição/ativação na conta'};
 }
+// Responsabilidades da FUNÇÃO escolhida, não movimentos oficialmente comprovados
+// para cada edição; nunca afirmar ativação de estilo ou proficiência por associação.
+const RESPONSIBILITIES=Object.freeze({
+ MAT:['Articular entrelinhas, receber orientado e apoiar a finalização','Fechar a faixa central e apoiar pressão após perda'],
+ SA:['Conectar meio e ataque, atacar espaços curtos e finalizar quando houver oportunidade','Pressionar a primeira saída e impedir passes fáceis ao volante adversário'],
+ CA:['Dar profundidade, criar opções de finalização e proteção da bola','Iniciar pressão sobre os zagueiros com cobertura coordenada'],
+ PTE:['Oferecer progressão pela esquerda e movimentos para dentro quando viáveis','Retornar pela faixa esquerda para reduzir superioridade adversária'],
+ PTD:['Oferecer progressão pela direita e movimentos para dentro quando viáveis','Retornar pela faixa direita para reduzir superioridade adversária'],
+ MLG:['Circular em apoio, oferecer linhas de passe e conduzir a progressão','Recompor o meio-campo e bloquear linhas de passe centrais'],
+ MLE:['Apoiar a saída e progredir pela esquerda com passes e coberturas','Recompor e proteger a faixa esquerda'],
+ MLD:['Apoiar a saída e progredir pela direita com passes e coberturas','Recompor e proteger a faixa direita'],
+ VOL:['Proteger a saída curta, circular a bola e controlar a zona central','Cobrir a entrada da área e interceptar passes nas transições'],
+ ZG:['Iniciar a saída sob controle e manter distância adequada entre setores','Proteger profundidade, antecipar quando viável e vencer duelos'],
+ LD:['Apoiar a construção pelo corredor direito de acordo com a instrução tática','Proteger o lado direito e controlar coberturas internas'],
+ LE:['Apoiar a construção pelo corredor esquerdo de acordo com a instrução tática','Proteger o lado esquerdo e controlar coberturas internas'],
+ GO:['Distribuir a bola com segurança conforme as características documentadas','Proteger gol e área e posicionar-se com cobertura dos defensores']
+});
+function responsibilities(position){
+ const [offense,defense]=RESPONSIBILITIES[normalize(position)]||[];
+ return {offense:offense||'Função ofensiva pendente',defense:defense||'Função defensiva pendente',
+  confidence:'hipótese funcional; não prova movimentação individual desta edição'};
+}
 function compute(model,position='MAT',style='posse',manager='',provided){
  const m=validate(model),id=identity(m,position,style,manager),deps=provided||depsDefault();
  if(!deps.training?.evaluate||!deps.tactical?.strategy)throw Error('Motores de treinamento indisponíveis');
@@ -122,7 +144,7 @@ function compute(model,position='MAT',style='posse',manager='',provided){
  else warnings.push('Técnico '+id.manager+': a edição é isolada no cenário, sem bônus numéricos fictícios.');
  return {
   ...id,originalPosition:m.position,base:baseSignature(m),owner:m.owner,cardKey:m.cardKey,
-  compatibility:positionEvidence,managerProfile,styleActivation:'não comprovada para esta edição/posição',
+  compatibility:positionEvidence,managerProfile,responsibilities:responsibilities(id.position),styleActivation:'não comprovada para esta edição/posição',
   outcome,focus,warnings:[...new Set(warnings)],
   status:outcome.plan.status==='hipotese'?'PROPOSTA NÃO HOMOLOGADA':'PENDENTE'
  };
@@ -154,6 +176,7 @@ function snapshot(scenario){
    alternatives:Array.isArray(booster.alternatives)?booster.alternatives.slice(0,5)
     .map(x=>({name:text(x.nome),reason:text(x.motivo)})):[]
   },
+  responsibilities:scenario.responsibilities,
   focus:{
    headline:text(scenario.focus?.headline),
    priority:(scenario.focus?.priority||[]).slice(0,4).map(x=>text(x.name))
@@ -252,5 +275,5 @@ function importOwnerScenarios(store,backup,newOwner,cards){
  return count;
 }
 return Object.freeze({KEY,PREF,POS,normalize,hash,fromPersonal,fromExternal,baseSignature,
- identity,compute,managerEvidence,snapshot,familiarity,saved,save,choose,preferred,compare,exportOwnerScenarios,importOwnerScenarios});
+ identity,compute,managerEvidence,responsibilities,snapshot,familiarity,saved,save,choose,preferred,compare,exportOwnerScenarios,importOwnerScenarios});
 });
