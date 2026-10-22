@@ -27,8 +27,18 @@ with sync_playwright() as p:
    assert 'Cenário SA' in root.inner_text()
    assert '68 PP exatos distribuídos' in root.inner_text()
    assert 'MAT → SA' in page.locator('#friend-analysis-badges').inner_text()
+   assert 'Ataque:' in root.inner_text() and 'Defesa:' in root.inner_text()
+   assert 'Slots livres não são presumidos' in root.inner_text()
+   assert 'Ranking consultivo' in root.inner_text()
    root.locator('.ct311-button').first.click()
    assert 'Revisão 1 salva' in root.inner_text()
+   snapshot=page.evaluate("""() => {
+    const e=JSON.parse(localStorage.getItem('scoutpro:v311:position-scenarios')).entries;
+    const v=Object.values(e).flat().find(r=>r.selectedPosition==='SA'&&r.style==='posse');
+    return {rank:!!v?.boosterRanking,focus:!!v?.focus?.priority,
+     roles:!!v?.responsibilities?.offense,skills:Array.isArray(v?.recommendations)}
+   }""")
+   assert all(snapshot.values()),snapshot
    selector.select_option('MAT')
    root.locator('.ct311-button').first.click()
    selector.select_option('SA')
@@ -53,6 +63,7 @@ with sync_playwright() as p:
    main.locator('.ct311-select').select_option('SA')
    assert 'Cenário SA' in main.inner_text()
    assert 'PP exatos distribuídos' in main.inner_text()
+   assert 'Ataque:' in main.inner_text() and 'Defesa:' in main.inner_text()
    assert page.evaluate("JSON.parse(document.getElementById('scout-v68-data').textContent).shown_position")=='AC'
    assert not errors,errors
    ctx.close()

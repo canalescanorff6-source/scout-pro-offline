@@ -72,12 +72,29 @@ function create(target,model,opts={}){
   const compatible=el('p','ct311-compat',
    'Familiaridade: '+c.text+' · Estilo individual: '+scenario.styleActivation);
   compatible.dataset.confidence=c.eligible?'documentado':'pendente';panel.append(compatible);
+  const recordedCoach=saved&&!saved.stale?saved.revision.managerProfile:null;
+  const coach=recordedCoach||scenario.managerProfile;
+  if(coach?.name){
+   const summary=el('section','ct311-panel');
+   summary.append(el('h3','','Técnico · '+coach.name+' · '+(coach.version||'versão pendente')));
+   summary.append(el('p','','Proficiência em '+scenario.style+': '+
+    (coach.proficiency===null?'não documentada':coach.proficiency)));
+   summary.append(el('p','ct311-note','Bônus catalogados: '+(coach.bonuses.join(' · ')||'não documentados')+
+    ' · Jogadas especiais: '+(coach.linkups.join(' · ')||'não documentadas')+
+    '. Não são PP e não foram aplicados aos atributos da carta.'));
+   panel.append(summary);
+  }else if(scenario.manager!=='sem-tecnico'){
+   panel.append(el('p','ct311-alert','A versão do técnico '+scenario.manager+
+    ' não foi encontrada no catálogo local. Nenhum bônus presumido.'));
+  }
   if(saved){
    const s=saved.revision;
    panel.append(el('p',saved.stale?'ct311-alert':'ct311-confirm',
     'Revisão '+s.revision+' salva ('+s.selectedPosition+' / '+s.style+' / '+s.manager+')'+
     (saved.stale?' · DESATUALIZADA: dados da carta mudaram, preservar a anterior.':
-    ' · preservada independentemente das outras posições.')));
+    ' · preservada independentemente das outras posições.')+
+    (s.approved===true?' · APROVAÇÃO REGISTRADA (não verificada automaticamente).':'')+
+    (s.evidenceImported?' · Histórico importado deste proprietário.':'')));
   }
   const outcome=scenario.outcome;
   const recorded=saved&&!saved.stale?saved.revision:null;
@@ -94,21 +111,33 @@ function create(target,model,opts={}){
    ' — '+(item.why||'prioridade contextual, sem comprovação de equipamento')));
   if(!recommendations.length)list.append(el('li','','Sem candidatos suficientes; conferir habilidades nativas e os slots reais.'));
   skills.append(el('p','ct311-note','Habilidades equipadas informadas: '+(model.skills||'não confirmadas')+
-   '. As sugestões não equipam habilidades e não criam vagas.'));
+   '. Slots livres não são presumidos; até cinco CANDIDATAS são apresentadas para comparação.'+
+   ' As sugestões não equipam habilidades nem criam vagas.'));
   skills.append(list);panel.append(skills);
   const booster=el('section','ct311-panel');booster.append(el('h3','','Ímpetos · posição '+scenario.position));
-  const candidate=recorded?.booster||outcome.booster?.primary?.nome||null;
+  const ranking=recorded?.boosterRanking||null;
+  const candidate=ranking?.primary?.name||recorded?.booster||outcome.booster?.primary?.nome||null;
   booster.append(el('p','',candidate?
    'Primeiro candidato: '+candidate+' (não equipado automaticamente)':'Candidato confiável pendente'));
-  const alts=outcome.booster?.alternatives||[];
-  if(alts.length)booster.append(el('p','ct311-note','Alternativas: '+alts.map(x=>x.nome).join(' · ')));
+  const alts=ranking?.alternatives||outcome.booster?.alternatives||[];
+  if(alts.length)booster.append(el('p','ct311-note','Alternativas: '+
+   alts.map(x=>x.name||x.nome).join(' · ')));
+  if(ranking?.primary?.reason)booster.append(el('p','ct311-note','Motivo registrado: '+ranking.primary.reason));
   booster.append(el('p','ct311-note','Ímpeto fixo: '+(model.fixedBooster||'não documentado')+
-    ' · Slot: '+model.boosterSlot+' · Ímpeto adicional equipado: '+(model.booster||'não informado')));
+    ' · Slot: '+model.boosterSlot+' · Ímpeto adicional equipado: '+(model.booster||'não informado')+
+    '. Ranking consultivo não comprova existência nem liberação de slot.'));
   panel.append(booster);
   const tactics=el('section','ct311-panel');tactics.append(el('h3','','Função ofensiva/defensiva e atributos prioritários'));
-  tactics.append(el('p','',scenario.focus?.headline||'Contexto tático pendente'));
-  if(scenario.focus?.priority?.length)tactics.append(el('p','ct311-note','Prioridades do cenário: '+
-   scenario.focus.priority.map(x=>x.name).join(' · ')));
+  const context=recorded?.focus||scenario.focus;
+  tactics.append(el('p','',context?.headline||'Contexto tático pendente'));
+  if(context?.priority?.length)tactics.append(el('p','ct311-note','Prioridades do cenário: '+
+   context.priority.map(x=>typeof x==='string'?x:x.name).join(' · ')));
+  const responsibilities=recorded?.responsibilities||scenario.responsibilities;
+  if(responsibilities){
+   tactics.append(el('p','','Ataque: '+responsibilities.offense));
+   tactics.append(el('p','','Defesa: '+responsibilities.defense));
+   tactics.append(el('p','ct311-note',responsibilities.confidence));
+  }
   tactics.append(el('p','ct311-note','As prioridades variam com a função. Atributos-base e equipamentos confirmados permanecem intactos.'));
   panel.append(tactics);
   const warnings=el('details','ct311-warnings');warnings.append(el('summary','','Evidências e limitações ('+scenario.warnings.length+')'));
@@ -186,6 +215,12 @@ function mainBoot(){
   host.document.addEventListener('change',e=>{
    if(['ct-manager-select','ct-manager-tactic'].includes(e.target?.id))
     panel.update({manager:getManager(),style:getStyle()})});
+  host.addEventListener('scoutpro:manager-selected-v302',e=>{
+   const info=e.detail||{};
+   if(Number(info.capture)===Number(raw.capture)&&
+      String(info.card_id)===String(raw.id))
+    panel.update({manager:info.catalog_id||getManager(),style:getStyle()});
+  });
  }).catch(err=>{host.console?.warn?.('V311: ficha contextual indisponível',err)})
  .finally(()=>{mainBootPending=false});
 }

@@ -102,7 +102,7 @@ function skills(result){
  }
  const s=result.skills;
  panel.append(mk('p','friend-analysis-fineprint',
-  'Já informadas: '+s.alreadyEquippedProvided+'/5 · Novas vagas: '+result.freeSkillSlots+
+  'Adicionais informadas: '+s.alreadyEquippedProvided+'/5 · Até '+result.freeSkillSlots+' candidatas teóricas (vagas não comprovadas): '+
   ' · Habilidades nativas registradas: '+s.knownNative));
  if(activeCard.skills)panel.append(mk('p','friend-analysis-existing','Já informadas neste acervo: '+activeCard.skills));
  const list=mk('ol','friend-analysis-skills');
@@ -113,8 +113,8 @@ function skills(result){
   list.append(li);
  }
  for(let i=result.suggestedSkills.length;i<result.freeSkillSlots;i++)
-  list.append(mk('li','','Espaço livre — habilidade não identificada nesta base; confira antes de usar tokens.'));
- if(!result.freeSkillSlots)list.append(mk('li','','Os cinco espaços já constam como informados. Não sugerir duplicatas.'));
+  list.append(mk('li','','Candidata adicional não identificada nesta base; disponibilidade de slot ainda precisa de confirmação.'));
+ if(!result.freeSkillSlots)list.append(mk('li','','Cinco adicionais já foram informadas; conferir a identidade e não sugerir duplicatas.'));
  panel.append(list);
  const alts=s.alternatives.slice(0,3).map(x=>x.name);
  if(alts.length)panel.append(mk('p','friend-analysis-fineprint','Alternativas: '+alts.join(' · ')));
