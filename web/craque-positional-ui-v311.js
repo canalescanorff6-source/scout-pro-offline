@@ -158,11 +158,13 @@ function create(target,model,opts={}){
   destroy(){alive=false;node.remove()}
  };
 }
+let mainBootPending=false;
 function mainBoot(){
- if(host.document.body?.dataset.page!=='detail')return;
+ if(host.document.body?.dataset.page!=='detail'||mainBootPending)return;
  const anchor=$('scout-v220-hero'),rawNode=$('scout-v68-data');
  if(!anchor||!rawNode||anchor.querySelector('.ct311-positional'))return;
  let raw;try{raw=JSON.parse(rawNode.textContent)}catch(_){return}
+ mainBootPending=true;
  host.fetch('../SCOUT_V69_AUDITORIA.json').then(r=>{if(!r.ok)throw Error('Sem catálogo');return r.json()})
  .then(data=>{
   const card=data.cards?.find(x=>Number(x.numero)===Number(raw.capture));
@@ -184,9 +186,19 @@ function mainBoot(){
   host.document.addEventListener('change',e=>{
    if(['ct-manager-select','ct-manager-tactic'].includes(e.target?.id))
     panel.update({manager:getManager(),style:getStyle()})});
- }).catch(_=>{});
+ }).catch(err=>{host.console?.warn?.('V311: ficha contextual indisponível',err)})
+ .finally(()=>{mainBootPending=false});
+}
+function startMain(){
+ mainBoot();
+ if(host.document.body?.dataset.page!=='detail'||!host.MutationObserver)return;
+ const observer=new host.MutationObserver(()=>{
+  if(host.document.querySelector('.ct311-main-slot .ct311-positional')){observer.disconnect();return}
+  if($('scout-v220-hero'))mainBoot();
+ });
+ observer.observe(host.document.body,{childList:true,subtree:true});
 }
 host.CRAQUE_POSITIONAL_UI_V311=Object.freeze({create,mainBoot});
-if(host.document.readyState==='loading')host.document.addEventListener('DOMContentLoaded',mainBoot,{once:true});
-else mainBoot();
+if(host.document.readyState==='loading')host.document.addEventListener('DOMContentLoaded',startMain,{once:true});
+else startMain();
 })(typeof window!=='undefined'?window:null);
