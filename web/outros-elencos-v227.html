@@ -15,6 +15,7 @@
 <script defer src="skills-booster-v162.js"></script>
 <script defer src="booster-engine-v103.js"></script>
 <script defer src="craque-friends-v227.js"></script>
+<script defer src="craque-pp-universal-v309.js"></script>
 <script defer src="craque-friends-training-v228.js"></script>
 <script defer src="craque-managers-v302.js"></script>
 <script defer src="craque-friends-training-ui-v228.js"></script>
@@ -75,7 +76,7 @@
     </div>
     <div class="friends-fichas-bar">
      <div><span class="friends-eyebrow">FICHAS GERADAS PELO CRAQUE TÁTICO</span>
-       <h3>Cartas e análises</h3><p>Abra <strong>Ver ficha do app</strong> em cada carta para comparar as cinco táticas, habilidades e ímpetos. Sem PP confirmado, a ficha explica o que falta.</p></div>
+       <h3>Cartas e análises</h3><p>Cadastre também suas novas cartas em <strong>Minhas Cartas Adicionadas</strong>: cada carta com nível máximo e posição conhecidos já gera as cinco fichas. Abra <strong>Ver ficha do app</strong> em cada carta para comparar as cinco táticas, habilidades e ímpetos. Com nível máximo confirmado, os PP são calculados automaticamente; Card ID continua como verificação separada.</p></div>
      <div id="friend-fichas-count" class="friends-fichas-count" aria-live="polite">0 fichas com PP</div>
     </div>
     <div id="friend-cards" class="friends-card-grid" aria-live="polite"></div>
@@ -113,8 +114,9 @@
    <label>Posição<select id="friend-card-position"><option value="">Não informada</option><option>CA</option><option>SA</option><option>MAT</option><option>MLG</option><option>VOL</option><option>ZC</option><option>LD</option><option>LE</option><option>GO</option><option>PD</option><option>PE</option><option>Outra</option></select></label>
    <label>Raridade<input id="friend-card-rarity" maxlength="50" placeholder="Épico, Show Time, etc."/></label>
    <label>Estilo de jogo do jogador<input id="friend-card-style" maxlength="110" placeholder="Ex.: Artilheiro"/></label>
-   <label>Nível informado<input id="friend-card-level" type="number" min="1" max="120" placeholder="Sem inventar"/></label>
-   <label>Pontos de progresso (PP)<input id="friend-card-pp" type="number" min="0" max="300" placeholder="Se conhecidos"/></label>
+   <label>Nível MÁXIMO da carta<input id="friend-card-level" type="number" min="1" max="120" placeholder="Ex.: 35 para Zico"/><small>Use o nível máximo, não o nível atual nem o Overall.</small></label>
+   <label>PP manuais (opcional)<input id="friend-card-pp" type="number" min="0" max="300" placeholder="Automático pelo nível"/><small>Deixe em branco para calcular. Divergências não serão sobrescritas.</small></label>
+   <p id="friend-budget-preview" class="friends-wide friend-budget-preview" aria-live="polite">Informe o nível máximo da carta para calcular automaticamente os PP.</p>
    <label class="friends-wide">Habilidades adicionais (se informadas)<textarea id="friend-card-skills" maxlength="600" rows="2" placeholder="Não presumir habilidades não conferidas"></textarea></label>
    <label class="friends-wide">Ímpetos / boosters (se confirmados)<textarea id="friend-card-booster" maxlength="200" rows="2"></textarea></label>
    <label class="friends-wide">Habilidades nativas da carta (se confirmadas; separar por ponto e vírgula)<textarea id="friend-card-native" maxlength="1200" rows="3" placeholder="Ex.: Passe de primeira; Passe em profundidade. Não confundir com adicionais."></textarea></label>

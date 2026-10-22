@@ -9,6 +9,11 @@
 })(typeof window!=='undefined'?window:null,function(){'use strict';
 const MODES=['posse','normal','rapido','fora','longo'];
 const LABEL={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'};
+// V309: mesmo cálculo para Minhas Cartas e todos os outros elencos.
+const progression=typeof window!=='undefined'?window.CRAQUE_PP_UNIVERSAL_V309:
+  require('./craque-pp-universal-v309.js');
+if(!progression)throw Error('Motor universal de PP ausente. Verifique a instalação offline.');
+const levelBudget=progression.budget,resolveBudget=progression.resolve;
 const getDeps=(deps)=>deps||{
  tactical:typeof window!=='undefined'?window.SCOUT_TACTICS_V220:null,
  skills:typeof window!=='undefined'?window.SCOUT_RECOMMENDATIONS_V162:null,
@@ -21,13 +26,17 @@ const profileOf=card=>({
  impeto_fixo:card.fixedBooster||'',boost1:card.fixedBooster||'',
  impeto_extra:card.boosterSlot==='vazio'?'SLOT SELECIONÁVEL':card.booster||'PENDENTE',
  boost2:card.boosterSlot==='vazio'?'SLOT SELECIONÁVEL':card.booster||'PENDENTE',
- pp:card.pp,niveis:null
+ pp:resolveBudget(card).pp,niveis:null
 });
 function sourceSignature(card){
- const serialized=JSON.stringify([
+ const signatureParts=[
   card.name,card.cardId,card.edition,card.position,card.style,card.pp,
   card.nativeSkills,card.skills,card.booster,card.fixedBooster,card.boosterSlot,card.trainingLevels
- ]);
+ ];
+ // Preservar assinaturas V228 de builds manuais existentes; apenas o PP derivado
+ // precisa incluir o nível máximo para invalidar a hipótese se ele mudar.
+ if(card.pp===null||card.pp===undefined)signatureParts.push(card.level);
+ const serialized=JSON.stringify(signatureParts);
  // Marca de atualização, NÃO assinatura de segurança (backup usa SHA-256).
  let h=2166136261>>>0,j=0x9e3779b9>>>0;
  for(let i=0;i<serialized.length;i++){
@@ -43,7 +52,7 @@ function parseBaseline(card,t){
  const parts=raw.split(/[,\s;]+/).filter(Boolean),values=parts.map(Number);
  if(parts.length!==10||!values.every(x=>Number.isInteger(x)&&x>=0&&x<=20)||!t.valid(values))
   return {levels:null,error:'Treino anterior inválido: informe os 10 níveis (0 a 20) na ordem das categorias.'};
- if(t.total(values)!==card.pp)
+ if(t.total(values)!==resolveBudget(card).pp)
   return {levels:null,error:'O treino anterior não fecha os PP informados; revise os dez grupos.'};
  const role=t.roleOf(profileOf(card)),allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
  if(values.some((x,i)=>x>0&&!allowed.includes(i)))
@@ -57,10 +66,12 @@ function allocate(card,tactic,deps){
  if(!t?.strategy||!t?.ppCost||!t?.valid||!t?.roleOf)
   throw Error('Motor tático V220 indisponível; nenhuma ficha pode ser calculada.');
  if(!MODES.includes(tactic))throw Error('Estilo tático inválido.');
- const budget=card.pp,source=profileOf(card),role=t.roleOf(source);
+ const progress=resolveBudget(card);
+ const budget=progress.pp,source=profileOf(card),role=t.roleOf(source);
  if(!role)return {status:'pendente',reason:'Cadastre uma posição reconhecida (CA, SA, MAT, MLG, VOL, ZC, LD, LE, GO ou ponta).',levels:null};
+ // PP manuais permanecem utilizáveis conforme V228, mas divergências ficam documentadas.
  if(!Number.isInteger(budget)||budget<0||budget>300)
-  return {status:'pendente',reason:'Cadastre os pontos de progresso (PP) exatos da edição.',levels:null,role};
+  return {status:'pendente',reason:progress.reason||'Informe o nível máximo da carta para calcular os PP.',levels:null,role};
  const cfg=t.strategy(source,tactic);
  const allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
  const upper=allowed.length*60;
@@ -103,12 +114,17 @@ function allocate(card,tactic,deps){
 function evaluate(card,tactic='posse',deps){
  const {tactical:t,skills:s,boosters:b}=getDeps(deps);
  if(!t||!s||!b)throw Error('Um dos motores oficiais do Craque Tático não carregou.');
+ const progress=resolveBudget(card);
  const plan=allocate(card,tactic,{tactical:t,skills:s,boosters:b});
  const raw=profileOf(card);
  const identity=Boolean(String(card.cardId||'').trim()&&String(card.edition||'').trim());
  const nativeDocumented=Boolean(String(card.nativeSkills||'').trim());
  const existing=String(card.skills||'').trim();
  const warnings=[];
+ if(progress.source==='manual_divergente')warnings.push(progress.reason);
+ if(progress.source==='nivel_maximo')warnings.push(
+  'PP calculados pelo nível máximo: 2 × ('+card.level+' − 1) = '+progress.pp+
+  '. Verifique se o nível do print é o MÁXIMO desta edição; isso não comprova Card ID nem atributos finais.');
  if(!identity)warnings.push('Identidade da versão pendente: preencha a edição e o Card ID exato para maior confiabilidade.');
  if(!nativeDocumented)warnings.push('Habilidades nativas não cadastradas: confira antes de aplicar as sugestões.');
  if(card.boosterSlot!=='vazio')warnings.push(card.boosterSlot==='ocupado'?'Segundo ímpeto ocupado: a sugestão é somente comparativa.':
@@ -124,7 +140,7 @@ function evaluate(card,tactic='posse',deps){
  }
  const distinct=skill?Math.max(0,5-skill.alreadyEquippedProvided):0;
  return {
-  tactic,label:LABEL[tactic],plan,skills:skill,booster:boost,
+  tactic,label:LABEL[tactic],plan,progress,skills:skill,booster:boost,
   suggestedSkills:skill?.recommendations.slice(0,distinct)||[],
   freeSkillSlots:distinct,identityConfirmed:identity,nativeDocumented,
   boosterEligible:card.boosterSlot==='vazio'&&boost?.able===true,
@@ -152,10 +168,10 @@ function validateSaved(card,record,deps){
  const {tactical:t}=getDeps(deps);
  for(const tactic of MODES){
   const item=record.profiles[tactic];if(!item||!['hipotese','pendente'].includes(item.status))return false;
-  if(item.status==='hipotese'&&(!t?.valid(item.levels)||t.total(item.levels)!==card.pp))return false;
+  if(item.status==='hipotese'&&(!t?.valid(item.levels)||t.total(item.levels)!==resolveBudget(card).pp))return false;
   if(item.status==='pendente'&&item.levels!==null)return false;
  }
  return true;
 }
-return Object.freeze({MODES,LABEL,profileOf,sourceSignature,parseBaseline,allocate,evaluate,generate,validateSaved});
+return Object.freeze({MODES,LABEL,levelBudget,resolveBudget,profileOf,sourceSignature,parseBaseline,allocate,evaluate,generate,validateSaved});
 });

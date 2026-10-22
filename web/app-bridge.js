@@ -654,7 +654,11 @@ if(window.scoutDesktop){
  btn.onclick=()=>onlineUpdate(false);
 }
 const ppCss=document.createElement('link');ppCss.rel='stylesheet';ppCss.href=(inCard?'../':'')+'progress-v81.css';document.head.appendChild(ppCss);
-const ppScript=document.createElement('script');ppScript.src=(inCard?'../':'')+'progress-v81.js';document.body.appendChild(ppScript);
+const ppCore=document.createElement('script');ppCore.src=(inCard?'../':'')+'craque-pp-universal-v309.js';
+const ppScript=document.createElement('script');ppScript.src=(inCard?'../':'')+'progress-v81.js';
+ppCore.onload=()=>document.body.appendChild(ppScript);
+ppCore.onerror=()=>document.body.appendChild(ppScript); // V81 continua funcional no modo legado.
+document.body.appendChild(ppCore);
 if(document.body?.dataset.page==='detail'){
  const css=document.createElement('link');css.rel='stylesheet';css.href='../scout-engine-v74.css';document.head.appendChild(css);
  const script=document.createElement('script');script.src='../scout-engine-v74.js';document.body.appendChild(script);

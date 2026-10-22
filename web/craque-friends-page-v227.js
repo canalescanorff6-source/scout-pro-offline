@@ -1,6 +1,7 @@
 /* Craque Tático V227 · UI de acervos independentes (sem usar catálogo original). */
 (()=>{'use strict';
 const api=window.CRAQUE_FRIENDS_V227;
+const budgets=window.CRAQUE_FRIEND_TRAINING_V228;
 const $=id=>document.getElementById(id);
 if(!api||!$('friend-people'))return;
 let data,locked=false,selected=null,cardImage='',imageModified=false;
@@ -21,6 +22,16 @@ if(!locked&&bruno){
  catch(e){status('Não foi possível registrar a coleção Bruno Santos CD: '+e.message+
   '. Seus acervos existentes foram mantidos.')}
 }
+// V309: todas as novas cartas próprias usam o MESMO motor de PP/5 fichas.
+const personalRequested=(()=>{
+ try{return new URLSearchParams(location.search).get('colecao')==='minhas-cartas-adicionadas'}
+ catch(_){return false}
+})();
+if(!locked&&personalRequested){
+ try{const personal=api.ensurePersonalCollection(data);
+  if(personal.changed)data=api.write(localStorage,personal.data);
+ }catch(e){locked=true;status('Não foi possível criar a coleção particular: '+e.message)}
+}
 const getOwner=()=>data.owners.find(x=>x.id===selected);
 const brunoOwner=()=>data.owners.find(x=>bruno?.normalize(x.name)===bruno.normalize(bruno.NAME));
 const personCards=id=>data.cards.filter(x=>x.ownerId===id);
@@ -28,8 +39,10 @@ function restoreSelection(){
  try{const id=sessionStorage.getItem('craque:v227:selected-owner');if(data.owners.some(x=>x.id===id))selected=id;}
  catch(_e){}
  try{
-  if(new URLSearchParams(location.search).get('colecao')==='bruno-santos-cd'&&brunoOwner())
-   selected=brunoOwner().id;
+  const target=new URLSearchParams(location.search).get('colecao');
+  if(target==='bruno-santos-cd'&&brunoOwner())selected=brunoOwner().id;
+  if(target==='minhas-cartas-adicionadas'&&data.owners.some(x=>x.id===api.PERSONAL_OWNER_ID))
+   selected=api.PERSONAL_OWNER_ID;
  }catch(_e){}
  if(!selected&&brunoOwner())selected=brunoOwner().id;
  if(!selected&&data.owners.length)selected=data.owners[0].id;
@@ -82,7 +95,8 @@ function renderPeople(){
 }
 function makeCard(card){
  const node=el('article','friends-card');
- const ready=Number.isInteger(card.pp)&&card.pp>=0&&Boolean(card.position);
+ const progress=budgets.resolveBudget(card);
+ const ready=Number.isInteger(progress.pp)&&progress.pp>=0&&Boolean(card.position);
  node.dataset.ready=ready?'true':'false';
  if(card.image){
   const img=el('img');img.src=card.image;img.alt='Miniatura enviada da carta de '+card.name;img.loading='lazy';
@@ -94,12 +108,16 @@ function makeCard(card){
  info.append(el('small','',(card.position||'Posição pendente')+' · '+(card.rarity||'Raridade não informada')));
  if(card.style)info.append(el('small','friends-playstyle','Estilo: '+card.style));
  if(card.cardId)info.append(el('small','','Card ID: '+card.cardId));
- if(card.level!==null||card.pp!==null)info.append(el('small','',[(card.level!==null?'Nível '+card.level:null),(card.pp!==null?card.pp+' PP':null)].filter(Boolean).join(' · ')));
+ if(card.level!==null||card.pp!==null)info.append(el('small','',[
+  (card.level!==null?'Nível máx. '+card.level:null),
+  (progress.pp!==null?progress.pp+' PP'+(progress.source==='nivel_maximo'?' calculados':' manuais'):null)
+ ].filter(Boolean).join(' · ')));
+ if(progress.source==='manual_divergente')info.append(el('small','friends-pp-conflict',progress.reason));
  const state=el('div','friends-card-fichas');
  state.append(el('span','friends-card-fichas-title','FICHAS DO APLICATIVO'),
   el('strong',ready?'5 estilos · análise disponível':'5 estilos · dados pendentes'),
-  el('small','',ready?'Treino calculável com '+card.pp+' PP · habilidades e ímpetos por estilo':
-   'Cadastre PP e edição para gerar treino; habilidades e ímpetos são consultivos.'));
+  el('small','',ready?'Treino calculável com '+progress.pp+' PP · habilidades e ímpetos por estilo':
+   'Informe o nível MÁXIMO ou resolva o conflito de PP para gerar treino; Card ID pode ficar pendente.'));
  info.append(state);
  const actions=el('div','friends-actions');
  actions.append(
@@ -133,7 +151,7 @@ function renderCards(){
  const owner=getOwner(),current=personCards(owner.id);
  $('friend-current-name').textContent=owner.name;
  $('friend-current-meta').textContent=current.length+' carta'+(current.length===1?'':'s')+' cadastrada'+(current.length===1?'':'s')+' · coleção independente';
- const done=current.filter(c=>Number.isInteger(c.pp)&&c.pp>=0&&c.position).length;
+ const done=current.filter(c=>Number.isInteger(budgets.resolveBudget(c).pp)&&c.position).length;
  $('friend-fichas-count').textContent=done+'/'+current.length+' com PP e posição · 5 estilos por carta';
  const search=$('friend-search').value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
  const position=$('friend-position').value;
@@ -218,6 +236,22 @@ const fields={name:'friend-card-name',cardId:'friend-card-gameid',edition:'frien
  fixedBooster:'friend-card-fixed-booster',boosterSlot:'friend-card-booster-slot',
  trainingLevels:'friend-card-training-levels',notes:'friend-card-notes'};
 const preview=$('friend-photo-preview'),removePhoto=$('friend-photo-remove'),photoInput=$('friend-photo');
+const levelInput=$('friend-card-level'),ppInput=$('friend-card-pp');
+const budgetPreview=$('friend-budget-preview');
+function previewBudget(){
+ if(!budgetPreview)return;
+ const level=levelInput.value.trim()===''?null:Number(levelInput.value);
+ const manual=ppInput.value.trim()===''?null:Number(ppInput.value);
+ const result=budgets.resolveBudget({level,pp:manual});
+ budgetPreview.textContent=result.source==='manual_divergente'?result.reason:
+  result.pp!==null?'Orçamento '+result.pp+' PP · '+(result.source==='nivel_maximo'?
+   'calculados: 2 × ('+level+' − 1). PP manual pode ficar em branco.':
+   'informado manualmente'+(level!==null?' (confere com o nível máximo).':'.')):
+  'Informe o nível MÁXIMO da carta para obter os PP automaticamente.';
+ budgetPreview.dataset.state=result.source;
+}
+levelInput.addEventListener('input',previewBudget);
+ppInput.addEventListener('input',previewBudget);
 function setPreview(){
  preview.hidden=!cardImage;removePhoto.hidden=!cardImage;
  if(cardImage)preview.src=cardImage;else preview.removeAttribute('src');
@@ -230,6 +264,14 @@ function openCard(card=null){
  $('friend-dialog-title').textContent=card?'Editar carta':'Nova carta';
  $('friend-dialog-owner').textContent='Acervo exclusivo: '+owner.name;
  for(const [key,id] of Object.entries(fields))$(id).value=card?.[key]??'';
+ // O print complementar mostra NÍVEL 35, mas não prova sozinho a mesma edição
+ // da carta inicialmente cadastrada. Apenas SUGERIR no formulário, sem salvar.
+ const isInitialZico=card?.id===bruno?.CARD_ID&&card?.level===null&&card?.pp===null;
+ if(isInitialZico)levelInput.value='35';
+ previewBudget();
+ if(isInitialZico&&budgetPreview){
+  budgetPreview.textContent+=' Sugestão do print de Zico: confirme que o nível 35 pertence à mesma edição antes de salvar. Nenhum dado foi modificado ainda.';
+ }
  setPreview();
  if(!dialog.open)dialog.showModal();
  $('friend-card-name').focus();
@@ -274,13 +316,17 @@ form.onsubmit=event=>{
   const saved=next.cards.find(x=>x.ownerId===owner.id&&
    (existing?x.id===existing.id:!data.cards.some(previous=>previous.id===x.id)));
   if(!saved)throw Error('Não foi possível localizar a carta recém-cadastrada.');
-  let analysisNote='';
+  const progress=budgets.resolveBudget(saved);
+  let analysisNote=progress.source==='nivel_maximo'?
+   ' Nível máximo '+saved.level+' → '+progress.pp+' PP calculados automaticamente.':
+   progress.source==='conflito'?' ATENÇÃO: PP manual diverge do nível; simulação usa o valor manual com ressalva.':'';
+
   try{
    const training=window.CRAQUE_FRIEND_TRAINING_V228;
    if(!training)throw Error('Motores táticos não carregaram.');
    const prepared=training.generate(saved);
    next=api.saveCard(next,{...saved,analysis:prepared});
-   analysisNote=' Cinco fichas por tática calculadas e armazenadas (pendências identificadas quando faltam dados).';
+   analysisNote+=' Cinco fichas por tática calculadas e armazenadas (pendências identificadas quando faltam dados).';
   }catch(e){
    analysisNote=' A carta foi salva; geração da ficha pendente: '+String(e.message||e);
   }
