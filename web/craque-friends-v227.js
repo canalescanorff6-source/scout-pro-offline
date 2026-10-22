@@ -100,6 +100,16 @@ function addOwner(data,name){
  if(!clean)throw Error('Informe o nome da pessoa.');
  return {...doc,owners:[...doc.owners,{id:uid(),name:clean,createdAt:new Date().toISOString()}]};
 }
+// V309: novo espaço para cartas próprias SEM alterar as 246 cartas originais.
+const PERSONAL_OWNER_ID='craque:minhas-cartas-adicionadas:v309';
+const PERSONAL_OWNER_NAME='Minhas Cartas Adicionadas';
+function ensurePersonalCollection(data){
+ const doc=validate(data);
+ if(doc.owners.some(x=>x.id===PERSONAL_OWNER_ID))return {data:doc,changed:false};
+ return {data:validate({...doc,owners:doc.owners.concat({
+  id:PERSONAL_OWNER_ID,name:PERSONAL_OWNER_NAME,createdAt:new Date().toISOString()
+ })}),changed:true};
+}
 function renameOwner(data,id,name){
  const doc=validate(data),clean=readStr(name,LIMITS.name);
  if(!clean)throw Error('Informe o novo nome da pessoa.');
@@ -141,5 +151,5 @@ function importOwner(data,file){
  const cards=file.cards.map(raw=>normalCard({...raw,id:uid(),ownerId:owner.id}));
  return validate({...doc,owners:[...doc.owners,owner],cards:[...doc.cards,...cards]});
 }
-return Object.freeze({KEY,SCHEMA,EXPORT,MAX_STORAGE,MAX_IMAGE,empty,validate,read,write,addOwner,renameOwner,removeOwner,saveCard,removeCard,exportOwner,importOwner,normalCard,bytes});
+return Object.freeze({KEY,SCHEMA,EXPORT,MAX_STORAGE,MAX_IMAGE,PERSONAL_OWNER_ID,PERSONAL_OWNER_NAME,ensurePersonalCollection,empty,validate,read,write,addOwner,renameOwner,removeOwner,saveCard,removeCard,exportOwner,importOwner,normalCard,bytes});
 });
