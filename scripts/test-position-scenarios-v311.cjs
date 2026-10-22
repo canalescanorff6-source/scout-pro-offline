@@ -45,6 +45,9 @@ assert.notDeepEqual(matPosse.outcome.plan.levels,saPosse.outcome.plan.levels,
  'MAT e SA precisam de cálculo de prioridades posicional, não só novo rótulo');
 assert.notEqual(matPosse.focus.role,saPosse.focus.role);
 assert.equal(matPosse.compatibility.status,'original');
+assert.notEqual(matPosse.responsibilities.offense,saPosse.responsibilities.offense);
+assert.notEqual(matPosse.responsibilities.defense,saPosse.responsibilities.defense);
+assert.match(saPosse.responsibilities.confidence,/hipótese funcional/i);
 assert.equal(saPosse.styleActivation,'não comprovada para esta edição/posição');
 // V312: a edição real do técnico informa proficiência sem inventar bônus de PP.
 const managerMock={...deps,managers:{
@@ -81,6 +84,10 @@ assert.deepEqual(core.saved(profile,saPosse).revision.boosterRanking,
  core.snapshot(saPosse).boosterRanking,'Ímpetos SA não devem substituir o ranking MAT');
 assert.deepEqual(core.saved(profile,matPosse).revision.focus,
  core.snapshot(matPosse).focus,'Prioridades de atributos MAT preservadas');
+assert.deepEqual(core.saved(profile,matPosse).revision.responsibilities,
+ core.snapshot(matPosse).responsibilities,'Responsabilidades MAT devem permanecer na revisão original');
+assert.notDeepEqual(core.saved(profile,matPosse).revision.responsibilities,
+ core.saved(profile,saPosse).revision.responsibilities,'As funções MAT e SA são independentes');
 assert.equal(core.saved(profile,saPosse).revision.selectedPosition,'SA');
 const originalManager=core.compute(official,'MAT','posse','CT-MGR-014',deps);
 assert.notEqual(originalManager.id,matPosse.id,'Edições diferentes de técnico não misturam fichas');
