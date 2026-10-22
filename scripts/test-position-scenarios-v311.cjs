@@ -122,6 +122,39 @@ assert.deepEqual(core.saved(profile,matPosse).revision.responsibilities,
 assert.notDeepEqual(core.saved(profile,matPosse).revision.responsibilities,
  core.saved(profile,saPosse).revision.responsibilities,'As funções MAT e SA são independentes');
 assert.equal(core.saved(profile,saPosse).revision.selectedPosition,'SA');
+// V318: as revisões anteriores permanecem consultáveis sem sobrescrever
+// a aprovada, mesmo depois de uma nova proposta para a mesma posição.
+const firstMat=JSON.stringify(core.revisions(profile,matPosse)[0].revision);
+const newerMat=core.save(profile,matPosse);
+assert.equal(newerMat.revision,2);
+const matHistory=core.revisions(profile,matPosse);
+assert.deepEqual(matHistory.map(x=>x.number),[1,2]);
+assert.equal(JSON.stringify(matHistory[0].revision),firstMat,
+ 'Salvar V2 não deve modificar os bytes da revisão MAT V1');
+assert.equal(core.revisions(profile,saPosse).length,1,
+ 'A criação da revisão MAT V2 não pode contaminar SA');
+const changedMat=core.compute({...official,pp:70},'MAT','posse','CT-MGR-013',deps);
+assert(core.revisions(profile,changedMat).every(x=>x.stale),
+ 'A alteração do orçamento torna todo o histórico anterior obsoleto, mas preservado');
+for(const raw of ['{conteudo-invalido',
+ JSON.stringify({schema:'SCHEMA_DESCONHECIDO',entries:{}}),
+ JSON.stringify({schema:'CRAQUE_POSITION_V311',entries:[]})]){
+ const damaged=store();
+ damaged.setItem(core.KEY,raw);
+ const health=core.storageHealth(damaged);
+ assert.equal(health.ok,false,'Histórico suspeito deve impedir gravações');
+ assert.throws(()=>core.save(damaged,matPosse),/histórico|Histórico|Formato/);
+ assert.throws(()=>core.exportOwnerScenarios(damaged,'outros-1',[]),/histórico|Histórico|Formato/);
+ assert.equal(damaged.getItem(core.KEY),raw,
+  'Corrupção nunca autoriza substituir silenciosamente os bytes anteriores');
+}
+const structurallyInvalid=store();
+structurallyInvalid.setItem(core.KEY,JSON.stringify({
+ schema:'CRAQUE_POSITION_V311',entries:{[matPosse.id]:'não é lista'}
+}));
+assert.throws(()=>core.revisions(structurallyInvalid,matPosse),/Revisões/);
+assert.equal(core.storageHealth(structurallyInvalid).ok,true,
+ 'Saúde global verifica JSON e formato principal; inconsistência local é reportada ao consultar a carta');
 const originalManager=core.compute(official,'MAT','posse','CT-MGR-014',deps);
 assert.notEqual(originalManager.id,matPosse.id,'Edições diferentes de técnico não misturam fichas');
 assert.equal(core.saved(profile,originalManager),null,'Não usar build de outro técnico');
