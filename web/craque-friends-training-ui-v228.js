@@ -101,8 +101,11 @@ function skills(result){
   panel.append(mk('p','friend-analysis-warning','Informe a posição da carta para recomendar habilidades.'));return panel;
  }
  const s=result.skills;
+ const slotsVerified=Number.isInteger(result.freeSkillSlots);
  panel.append(mk('p','friend-analysis-fineprint',
-  'Adicionais informadas: '+s.alreadyEquippedProvided+'/5 · Até '+result.freeSkillSlots+' candidatas teóricas (vagas não comprovadas): '+
+  'Adicionais informadas: '+s.alreadyEquippedProvided+'/5 · Até '+
+  result.candidateCapacity+' candidatas para comparar · Vagas livres: '+
+  (slotsVerified?result.freeSkillSlots+' (conferidas nesta edição)':'não comprovadas nesta edição')+
   ' · Habilidades nativas registradas: '+s.knownNative));
  if(activeCard.skills)panel.append(mk('p','friend-analysis-existing','Já informadas neste acervo: '+activeCard.skills));
  const list=mk('ol','friend-analysis-skills');
@@ -112,9 +115,13 @@ function skills(result){
   if(skill.synergies?.length)li.append(mk('small','',skill.synergies.join(' · ')));
   list.append(li);
  }
- for(let i=result.suggestedSkills.length;i<result.freeSkillSlots;i++)
+ for(let i=result.suggestedSkills.length;i<result.candidateCapacity;i++)
   list.append(mk('li','','Candidata adicional não identificada nesta base; disponibilidade de slot ainda precisa de confirmação.'));
- if(!result.freeSkillSlots)list.append(mk('li','','Cinco adicionais já foram informadas; conferir a identidade e não sugerir duplicatas.'));
+ if(result.candidateCapacity===0)
+  list.append(mk('li','','Nenhuma candidata adicional nesta análise: confira habilidades informadas, identidade e slots reais no jogo.'));
+ if(slotsVerified&&result.freeSkillSlots===0)
+  panel.append(mk('p','friend-analysis-warning',
+   'Nenhuma vaga livre comprovada nesta edição. As alternativas são apenas comparativas.'));
  panel.append(list);
  const alts=s.alternatives.slice(0,3).map(x=>x.name);
  if(alts.length)panel.append(mk('p','friend-analysis-fineprint','Alternativas: '+alts.join(' · ')));
