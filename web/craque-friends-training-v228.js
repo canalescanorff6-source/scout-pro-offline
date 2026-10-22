@@ -24,8 +24,12 @@ const profileOf=card=>({
  attack_style:card.style||'',estilo_ataque:card.style||'',
  native_skills:card.nativeSkills||'',habilidades_nativas:card.nativeSkills||'',
  impeto_fixo:card.fixedBooster||'',boost1:card.fixedBooster||'',
- impeto_extra:card.boosterSlot==='vazio'?'SLOT SELECIONÁVEL':card.booster||'PENDENTE',
- boost2:card.boosterSlot==='vazio'?'SLOT SELECIONÁVEL':card.booster||'PENDENTE',
+ // V321: status MANUAL de slot vazio não comprova que a edição tenha um
+ // segundo slot SELECIONÁVEL no catálogo. Não fabricar evidência circular.
+ // Nome equipado, quando informado, permanece intacto, inclusive se houver
+ // conflito entre "vazio" e o nome cadastrado.
+ impeto_extra:card.booster||'PENDENTE',
+ boost2:card.booster||'PENDENTE',
  pp:resolveBudget(card).pp,niveis:null
 });
 function sourceSignature(card){
@@ -127,9 +131,13 @@ function evaluate(card,tactic='posse',deps){
   '. Verifique se o nível do print é o MÁXIMO desta edição; isso não comprova Card ID nem atributos finais.');
  if(!identity)warnings.push('Identidade da versão pendente: preencha a edição e o Card ID exato para maior confiabilidade.');
  if(!nativeDocumented)warnings.push('Habilidades nativas não cadastradas: confira antes de aplicar as sugestões.');
- if(card.boosterSlot!=='vazio')warnings.push(card.boosterSlot==='ocupado'?'Segundo ímpeto ocupado: a sugestão é somente comparativa.':
+ if(card.boosterSlot==='vazio')warnings.push(
+  'Slot relatado vazio pelo proprietário; a edição exata ainda não possui comprovação independente de slot selecionável. Não gastar tokens.');
+ else warnings.push(card.boosterSlot==='ocupado'?'Segundo ímpeto ocupado: a sugestão é somente comparativa.':
  card.boosterSlot==='ausente'?'Carta informada sem slot selecionável: não equipa novo ímpeto.':
  'Disponibilidade do slot de ímpeto não confirmada: não utilize tokens ainda.');
+ if(card.boosterSlot==='vazio'&&String(card.booster||'').trim())
+  warnings.push('CONFLITO: slot marcado como vazio, mas há nome de ímpeto adicional informado. Revisar a edição e o equipamento sem excluir o nome salvo.');
  if(plan.baselineError)warnings.push(plan.baselineError);
  if(!card.style)warnings.push('Estilo individual de jogo não informado: recomendação baseada apenas na posição.');
  let skill=null,boost=null;
@@ -148,7 +156,15 @@ function evaluate(card,tactic='posse',deps){
   tactic,label:LABEL[tactic],plan,progress,skills:skill,booster:boost,
   suggestedSkills:skill?.recommendations.slice(0,candidateCapacity)||[],
   candidateCapacity,freeSkillSlots,identityConfirmed:identity,nativeDocumented,
-  boosterEligible:card.boosterSlot==='vazio'&&boost?.able===true,
+  // O boletim manual do proprietário e a prova da edição são dimensões
+  // independentes. No cadastro externo não existe ainda prova catalogada
+  // vinculada ao Card ID autorizando um novo slot.
+  boosterEligible:card.boosterSlot==='vazio'&&boost?.slotSupported===true&&boost?.able===true,
+  boosterSlotEvidence:{
+   ownerReported:card.boosterSlot||'pendente',
+   editionDocumented:boost?.slotSupported===true,
+   eligible:card.boosterSlot==='vazio'&&boost?.slotSupported===true&&boost?.able===true
+  },
   confidence:plan.status!=='hipotese'?'pendente':
     identity&&nativeDocumented?'simulacao_documentada_parcial':'hipotese_dados_incompletos',
   warnings:[...new Set(warnings)]
