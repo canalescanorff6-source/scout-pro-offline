@@ -10,6 +10,7 @@ on:
       - 'scripts/qa-managers-v307.py'
       - 'scripts/qa-pp-v309.py'
       - 'scripts/qa-position-v311.py'
+      - 'scripts/qa-manager-history-v325.py'
       - 'scripts/qa-formation-v314.py'
       - '.github/workflows/visual-qa.yml'
   push:
@@ -17,6 +18,7 @@ on:
     paths:
       - 'web/**'
       - 'scripts/qa-visual-v195.py'
+      - 'scripts/qa-manager-history-v325.py'
       - '.github/workflows/visual-qa.yml'
 
 permissions:
@@ -54,6 +56,7 @@ jobs:
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-managers-v307.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-pp-v309.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-position-v311.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-manager-history-v325.py
       - name: Anexar screenshots e relatório para inspeção
         if: always()
         uses: actions/upload-artifact@v4
