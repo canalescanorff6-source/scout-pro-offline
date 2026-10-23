@@ -25,6 +25,15 @@ with sync_playwright() as pw:
    page.locator('.friends-card .friends-analysis-action').first.click()
    root=page.locator('#friend-analysis-dialog .ct311-positional')
    root.wait_for(timeout=25000)
+   # V336: justificar candidatos no mesmo painel sem alterar a ficha.
+   reasons=root.locator('.ct336-equipment-evidence')
+   assert reasons.count()==1
+   assert not reasons.evaluate('(node)=>node.open'), 'Justificativas devem iniciar recolhidas'
+   reasons.locator('summary').click()
+   assert reasons.evaluate('(node)=>node.open')
+   assert 'não validação em gameplay' in reasons.inner_text()
+   assert 'Ímpeto adicional' in reasons.inner_text()
+   reasons.locator('summary').click()
    assert 'Por que esta ficha' in root.inner_text() or root.locator('.ct327-why').count()==1
    assert 'Proposta contextual para avaliar' in root.inner_text() or 'Ficha pendente' in root.inner_text()
    assert not root.locator('.ct327-style-panel').is_visible()
@@ -56,6 +65,13 @@ with sync_playwright() as pw:
    page.goto(BASE+'/fichas/001_Daniele_Massaro.html',wait_until='domcontentloaded',timeout=40000)
    personal=page.locator('.ct311-main-slot .ct311-positional')
    personal.wait_for(timeout=35000)
+   # Mesmo mecanismo explicativo em Minhas Cartas.
+   original_reasons=personal.locator('.ct336-equipment-evidence')
+   assert original_reasons.count()==1
+   assert not original_reasons.evaluate('(node)=>node.open')
+   original_reasons.locator('summary').click()
+   assert 'Ímpeto adicional' in original_reasons.inner_text()
+   original_reasons.locator('summary').click()
    assert personal.locator('.ct327-why').count()==1
    personal.locator('.ct326-secondary-action').click()
    assert personal.locator('.ct327-style-row').count()==5
