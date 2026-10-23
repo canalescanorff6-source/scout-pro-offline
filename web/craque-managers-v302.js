@@ -301,13 +301,27 @@ function mount(doc){
   select.value='';select.dispatchEvent(new host.Event('change'));
  });
  try{
-  const stored=JSON.parse(host.localStorage?.getItem(backedKey)||
-   host.localStorage?.getItem(localKey)||
-   host.localStorage?.getItem('scoutpro:v307:default-manager')||
-   host.localStorage?.getItem(KEY)||'null');
+  const store=host.localStorage;
+  const defaultRaw=store?.getItem('scoutpro:v307:default-manager');
+  const mainChoice=defaultRaw?JSON.parse(defaultRaw):null;
+  const cardRaw=store?.getItem(backedKey)||store?.getItem(localKey);
+  let stored=JSON.parse(cardRaw||defaultRaw||store?.getItem(KEY)||'null');
+  // Só converter preferência antiga R. Rodríguez se o novo padrão realmente for Kovač.
+  // Cópia histórica isolada preserva o perfil anterior e possibilita voltar manualmente.
+  const eligibleCard=Number.isInteger(capture)&&capture>0&&Boolean(cardId);
+  const base='scoutpro:v323:manager-migration:'+capture+'@'+cardId;
+  if(eligibleCard&&mainChoice?.catalog_id===KOVAC_20261022.catalog_id&&
+     stored?.catalog_id==='CT-MGR-004'&&!store.getItem(base+':done')){
+   const replacement={catalog_id:KOVAC_20261022.catalog_id,tactic:'posse'};
+   store.setItem(base+':previous',JSON.stringify(stored));
+   store.setItem(backedKey,JSON.stringify(replacement));
+   store.setItem(localKey,JSON.stringify(replacement));
+   store.setItem(base+':done','1');
+   stored=replacement;
+  }
   selected=find(stored?.catalog_id);
   if(selected){selectedTactic=preferred(selected,stored.tactic);select.value=selected.catalog_id}
- }catch(_){}
+ }catch(_){/* Ficha original permanece se a persistência estiver bloqueada. */}
  render();
  if(selected)notify();
  host.addEventListener('scoutpro:tactic-selected-v220',ev=>{
