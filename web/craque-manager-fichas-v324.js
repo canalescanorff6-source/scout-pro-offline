@@ -104,6 +104,31 @@ function reviewSkillCandidates(saved=[],suggested=[],native=[],equipped=[]){
  suggested.slice(0,30).forEach(n=>{if(rows.length<previous.length+5)append(n,false)});
  return rows;
 }
+// V340: auditoria documental da MESMA carta; não valida equipamento real.
+// O histórico imutável nunca é alterado ou apagado por esta função.
+function auditEquipmentSelection(skills=[],booster='',native=[],equipped=[],fixedBooster='',boosterSlot='pendente'){
+ const selected=cleanSkills(skills);
+ const nativeSet=new Set(skillList(native).map(skillToken));
+ const equippedSet=new Set(skillList(equipped).map(skillToken));
+ const conflicts=selected.flatMap(name=>{
+  const token=skillToken(name),sources=[];
+  if(nativeSet.has(token))sources.push('nativa_cadastrada');
+  if(equippedSet.has(token))sources.push('adicional_informada');
+  return sources.length?[Object.freeze({name,sources:Object.freeze(sources)})]:[];
+ });
+ const boosterSelected=normalize(booster),fixed=normalize(fixedBooster);
+ const fixedBoosterSame=Boolean(boosterSelected&&fixed&&
+  skillToken(boosterSelected)===skillToken(fixed));
+ return Object.freeze({
+  conflicts:Object.freeze(conflicts),hasSkillConflict:conflicts.length>0,
+  fixedBoosterSame,fixedBoosterDeclared:fixed||null,
+  slotEvidence:normalize(boosterSlot)||'pendente',
+  status:conflicts.length?'revisar_habilidades':
+   fixedBoosterSame?'revisar_impeto_fixo':'sem_colisao_documental',
+  warning:'Conferência apenas contra listas cadastradas nesta carta. Não comprova '+ 
+   'vagas livres, habilidades equipadas, ímpeto adicional ou desempenho em partida.'
+ });
+}
 function validateRecord(row,c){
  if(!row||typeof row!=='object'||row.schema!==SCHEMA||
   row.key!==key(c)||row.sourceSignature!==c.sourceSignature||
@@ -166,5 +191,5 @@ function deleteDraft(store,c){
 }
 return Object.freeze({PREFIX,SCHEMA,STYLES,POSITIONS,validateContext,
  fromScenario,withStyle,withManager,withPosition,key,ppCost,validTraining,
- cleanSkills,skillName,skillToken,reviewSkillCandidates,readAll,read,save,deleteDraft});
+ cleanSkills,skillName,skillToken,reviewSkillCandidates,auditEquipmentSelection,readAll,read,save,deleteDraft});
 });
