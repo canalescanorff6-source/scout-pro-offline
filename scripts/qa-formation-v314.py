@@ -25,7 +25,7 @@ with sync_playwright() as pw:
       assert "PP exatos distribuídos" in scenario.inner_text()
       assert "habilidades adicionais" in scenario.inner_text().lower()
       assert "Ímpetos" in scenario.inner_text()
-      assert "Posição original:" in scenario.inner_text()
+      assert "Posição original:" in scenario.locator('.ct311-origin').text_content()
       before=page.locator("#pitch button[data-slot='mat'] .p-cap").inner_text()
       # Trocar a vaga de simulação, sem tocar no titular real.
       scenario.locator('.ct331-role-open').click()
@@ -69,7 +69,7 @@ with sync_playwright() as pw:
       panel.wait_for(timeout=30000)
       panel.locator(".ct326-deep-dive > summary").click()
       assert "68 PP exatos distribuídos" in panel.inner_text()
-      assert "Posição original: SA" in panel.inner_text()
+      assert "Posição original: SA" in panel.locator('.ct311-origin').text_content()
       panel.locator('.ct331-role-open').click()
       panel.locator(".ct314-formation-row .ct311-select").select_option("4213")
       panel.locator(".ct314-slot-select").select_option("mat")
