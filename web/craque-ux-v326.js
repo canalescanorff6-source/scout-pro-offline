@@ -47,7 +47,7 @@
  }
  function heroDecision(raw,style,hasDraft,hasRegistered){
   const verified=raw?.training_gameplay_verified===true&&raw?.training_provisional!==true;
-  if(hasDraft)return {tag:'RAS CUNHO'.replace(' ',''),tone:'review',
+  if(hasDraft)return {tag:'RASCUNHO',tone:'review',
    title:'Rascunho deste técnico',text:'Você salvou uma alternativa para este contexto. Ela não substitui seu treino original nem comprova superioridade em partidas.'};
   if(style!=='posse')return {tag:'ALTERNATIVA',tone:'review',
    title:'Simulação para comparar',text:'Você está vendo outro estilo. Sem validação competitiva documentada, não recomendamos trocar automaticamente o treino registrado.'};
@@ -202,9 +202,12 @@
  }
  function boot(){
   home();detail();external();
-  if(doc.body.dataset.page==='detail'&&!doc.getElementById('ct326-choice')&&host.MutationObserver){
+  if(doc.body.dataset.page==='detail'&&host.MutationObserver){
+   // O motor V311 é montado depois da ficha V220: continuar observando
+   // até mover a comparação REAL, evitando deixar duas fichas abertas.
    const watch=new host.MutationObserver(()=>{
-    if(detail())watch.disconnect();
+    detail();
+    if(doc.getElementById('ct326-comparisons'))watch.disconnect();
    });
    watch.observe(doc.body,{childList:true,subtree:true});
   }
