@@ -330,6 +330,13 @@ function openCard(card,owner,onSave,onEdit){
   positional=ui.create(slot,model,{style,manager:managerSelectedId,
    onPositionChange:pos=>{
     usedPosition=pos;cache=null;display();
+   },
+   onStyleSelect:chosen=>{
+    // Prévia explícita de outro estilo, não salva/aplica treino.
+    if(!engine.MODES.includes(chosen))return;
+    style=chosen;
+    if(managerSelectedId){managerTactic=chosen;saveManager()}
+    display();
    }});
   usedPosition=positional?.selectedPosition||activeCard.position;
  }
