@@ -229,23 +229,34 @@ function create(target,model,opts={}){
     if(savedProfile&&ok)editor.append(el('p','ct311-note','PP desta ficha: '+
      savedProfile.train.map((x,i)=>outcome.plan.categories?.[i]+': '+x).join(' · ')));
     const proposed=recorded?.recommendations||outcome.suggestedSkills||[];
-    const nativeNames=String(model.nativeSkills||'').split(/[;,]/).map(x=>
-     x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase()).filter(Boolean);
-    const filtered=[...new Set(proposed.map(displaySkill))].filter(name=>{
-     const normalized=name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();
-     return normalized&&!nativeNames.includes(normalized);
-    }).slice(0,5);
-    const skillLabel=el('p','ct311-note','Candidatas a habilidades adicionais (selecione até 5; vagas livres não comprovadas):');
+    // V325: os nomes salvos têm prioridade visual mesmo que a recomendação
+    // mude. Nunca eliminá-los silenciosamente ao gerar nova revisão.
+    const skillRows=profiles.reviewSkillCandidates(savedProfile?.skills||[],proposed,
+     model.nativeSkills||'',model.skills||'');
+    const skillLabel=el('p','ct311-note','Até 5 habilidades adicionais candidatas. '+
+     'Itens salvos anteriormente permanecem visíveis e selecionados; desmarque para excluir da nova revisão. '+
+     'Slots livres e equipamento real precisam ser confirmados no eFootball.');
     editor.append(skillLabel);
     const candidates=el('div','ct324-skill-options');
     const choices=[];
-    for(const name of filtered){
+    for(const entry of skillRows){
      const label=el('label','ct324-skill-option');
-     const input=el('input');input.type='checkbox';input.value=name;
-     input.checked=Boolean(savedProfile?.skills?.includes(name));
-     label.append(input,el('span','',name));candidates.append(label);choices.push(input);
+     const input=el('input');input.type='checkbox';input.value=entry.name;
+     input.checked=entry.saved;
+     label.append(input,el('span','',entry.name));
+     if(entry.saved)label.append(el('small','ct325-saved-skill','Preservada do histórico'));
+     if(entry.conflict)label.append(el('small','ct325-skill-warning',
+      'REVISAR: '+entry.conflict+' no cadastro; não remover automaticamente'));
+     candidates.append(label);choices.push(input);
     }
-    if(!filtered.length)candidates.append(el('p','ct311-note','Sem habilidade candidata validável nesta edição.'));
+    if(!skillRows.length)candidates.append(el('p','ct311-note','Sem candidata documental disponível; preservar campos pendentes.'));
+    // Impede seis seleções simultâneas sem ocultar os nomes guardados.
+    const enforceFive=()=>{
+     const count=choices.filter(x=>x.checked).length;
+     for(const input of choices)input.disabled=!input.checked&&count>=5;
+    };
+    for(const input of choices)input.addEventListener('change',enforceFive);
+    enforceFive();
     editor.append(candidates);
     const options=el('label','ct311-select-label','Ímpeto adicional candidato: ');
     const selectBooster=el('select','ct311-select ct324-booster');
