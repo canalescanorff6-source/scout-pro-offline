@@ -83,6 +83,7 @@ assert(ui.includes('const used=host.SCOUT_TACTICS_V220.total(p.levels)'),
 assert(ui.includes('PP distribuídos · saldo'),'Deve exibir PP utilizados/saldo');
 assert(ui.includes("decision.usedPP+' / '+decision.pp+' PP"),'Resumo mostra usado/orçamento');
 assert(ui.includes("decision.remainingPP+' PP livres"),'Resumo mostra saldo explícito');
-assert(ui.includes('if(guide&&!readError)'), 'Histórico ilegível não pode homologar uma build');
+assert(ui.includes('if(guide&&(!readError||!profileContext))'),
+ 'Histórico ilegível bloqueia decisão; ausência normal de técnico mantém a ficha consultável');
 assert.equal(JSON.stringify(cards),snapshot,'Não alterar 246 cartas, Card IDs, PP e builds');
 console.log('V336 PP COMPETITIVO PASS: rascunhos incompletos, saldo, aprovação restrita, 246 originais intactas.');
