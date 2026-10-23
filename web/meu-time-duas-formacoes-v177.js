@@ -92,7 +92,46 @@ function checkLink(rule){
  const yes=(role,style)=>f.starters.some(s=>s.role===role&&normalized(byCap.get(Number(slots[s.slot]))?.estilo_ataque)===normalized(style));
  return {a:yes(rule.role_a,rule.style_a),b:yes(rule.role_b,rule.style_b)};
 }
+/* V323 · avaliação não destrutiva dos dois Link-Up da edição Niko Kovač 22/10. */
+function renderKovacLink(){
+ let saved=null;
+ try{saved=JSON.parse(localStorage.getItem('scoutpro:v307:default-manager')||'null')}catch(_){}
+ if(saved?.catalog_id!=='CT-MGR-071')return false;
+ const slots=currentSelections();
+ const card=slot=>byCap.get(Number(slots[slot]));
+ const verified=(slot,expected)=>{
+  const x=card(slot);
+  return Boolean(x&&fits(x,slot)&&normalized(x.estilo_ataque)===normalized(expected));
+ };
+ const box=['cae','cad'].some(slot=>verified(slot,'Homem de área'));
+ const wide=['le','ld'].some(slot=>verified(slot,'Lateral ofensivo'));
+ const shadow=Object.hasOwn(slots,'sa')&&verified('sa','Atacante pivô');
+ const rows=[
+  {name:'Aggressive Centring B',a:wide,b:box,
+   context:'Peça central: LE ou LD · Lateral ofensivo; homem-chave: CA · Homem de área. Você não é obrigado a usar esta jogada se prefere não cruzar.'},
+  {name:'Shadow Link B · PRIORIDADE PARA POSSE CENTRAL',a:shadow,b:box,
+   context:'Peça central: SA · Atacante pivô; homem-chave: CA · Homem de área. A função SA exige familiaridade documentada na edição exata.'}
+ ];
+ const content=rows.map(x=>{
+  const ok=x.a&&x.b;
+  return '<article class="link-row"><span class="link-indicator '+(ok?'filled':'missing')+'">'+
+   (ok?'Condições documentais presentes':'Faltam requisitos documentais')+'</span><strong>'+esc(x.name)+'</strong>'+
+   '<small>'+esc(x.context)+' Peça central: '+(x.a?'compatível':'não comprovada')+
+   ' · Homem-chave: '+(x.b?'compatível':'não comprovado')+'.</small></article>';
+ }).join('');
+ $('linkup').innerHTML='<h2>Niko Kovač (22/10/2026) · Dois Link-Ups</h2>'+
+  '<p class="hint">Posse 90 · Controle de bola +1 · Dedicação defensiva +1. '+
+  'Para sua preferência de passes curtos e triangulação pelo centro, priorize o Shadow Link B.</p>'+
+  content+
+  '<p class="caution">Estrutura recomendada: 4-2-1-3 estreita com 2 VOL, MAT, SA e dois CA. '+
+  'Candidatos do acervo (não escalados automaticamente): #47 Neymar, Atacante pivô, apenas se SA confirmado; '+
+  '#45 Drogba, Homem de área no CA; #40 Dwight Yorke, Artilheiro no outro CA. '+
+  'Checar titularidade, habilidades nativas, ímpetos, PP e posição antes de aplicar. '+
+  'Encontrar requisitos não confirma que o Link-Up esteja ativo no jogo.</p>';
+ return true;
+}
 function renderLink(){
+ if(renderKovacLink())return;
  const rules=doc.link_requirements.map(rule=>{
  const v=checkLink(rule),ok=v.a&&v.b;
  return '<article class="link-row"><span class="link-indicator '+(ok?'filled':'missing')+'">'+(ok?'Requisitos encontrados':'Requisitos incompletos')+'</span><strong>'+esc(rule.label)+'</strong>'+
