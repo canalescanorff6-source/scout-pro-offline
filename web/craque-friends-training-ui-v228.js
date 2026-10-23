@@ -259,7 +259,7 @@ function renderManager(){
    statusModel.score>=89?'Alta proficiência competitiva.':
    statusModel.score>=85?'Alternativa com ressalvas.':'Proficiência baixa: não equivale ao estilo principal.'
   )));
- statusBox.append(mk('p','','Bônus informados: '+(selected.boosters_EN?.join(' · ')||'não documentados')+
+ statusBox.append(mk('p','','Bônus informados: '+((selected.boosters_PTBR||selected.boosters_EN)?.join(' · ')||'não documentados')+
   '. Não converter em PP nem em atributo final sem dados-base.'));
  if(selected.ativacao_das_combinacoes?.length){
   for(const link of selected.ativacao_das_combinacoes){
