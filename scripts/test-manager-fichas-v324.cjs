@@ -110,7 +110,10 @@ assert(editor.includes('scoutpro:training-preview-v324'));
 assert(editor.includes('card.role_used||card.shown_position'),
  'As fichas reais usam role_used/shown_position; não confundir treino cadastrado com referência pendente');
 const html=text('web/fichas/001_Daniele_Massaro.html');
-const htmlRaw=JSON.parse(html.match(/<script id="scout-v68-data"[^>]*>([\\s\\S]*?)<\\/script>/)[1]);
+const marker='<script id="scout-v68-data" type="application/json">';
+const at=html.indexOf(marker),end=html.indexOf('</script>',at);
+assert(at>=0&&end>at,'Ficha original HTML sem estrutura prevista');
+const htmlRaw=JSON.parse(html.slice(at+marker.length,end));
 assert.equal(htmlRaw.role_used,'CA');
 assert.equal(htmlRaw.shown_position,'AC');
 assert.equal(htmlRaw.recommended_levels.length,10);
