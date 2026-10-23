@@ -100,7 +100,8 @@
    if(parent.tagName==='DETAILS')parent.open=true;
    parent=parent.parentElement;
   }
-  const dest=target.closest?.('.ct330-fold')||target.closest?.('.ct330-target')||target;
+  const dest=target.matches?.('.scout-rotation-team')?target:
+   target.closest?.('.ct330-fold')||target.closest?.('.ct330-target')||target;
   afterPaint(()=>dest.scrollIntoView?.({block:'start',behavior:'smooth'}));
   return true;
  }
