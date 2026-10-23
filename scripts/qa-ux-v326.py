@@ -25,7 +25,20 @@ with sync_playwright() as pw:
    page.screenshot(path=str(OUT/f'v326_{label}_inicio.png'),full_page=False,animations='disabled')
    page.goto(BASE+'/fichas/001_Daniele_Massaro.html',wait_until='domcontentloaded')
    choice=page.locator('#ct326-choice')
-   choice.wait_for(timeout=30000)
+   try:choice.wait_for(timeout=17000)
+   except Exception as exc:
+    info=page.evaluate("""() => ({
+      page:document.body?.dataset?.page,
+      ready:document.readyState,
+      hero:!!document.querySelector('#scout-v220-hero'),
+      card:!!document.querySelector('#scout-v188-principal'),
+      raw:!!document.querySelector('#scout-v68-data'),
+      ux:!!window.CRAQUE_UX_V326,
+      script:[...document.scripts].filter(s=>s.src.includes('v326')).map(s=>s.src),
+      home:!!document.querySelector('#ct326-home-head'),
+      choice:!!document.querySelector('#ct326-choice')
+    })""")
+    raise AssertionError(f"V326 orientador ausente: {info}; page errors: {errors}") from exc
    assert 'Como usar esta carta?' in choice.inner_text()
    assert 'treino registrado' in choice.inner_text().lower() or 'comprovad' in choice.inner_text().lower()
    fold=page.locator('#ct326-comparisons')
