@@ -28,14 +28,15 @@ def run():
                 errors = []
                 page.on("pageerror", lambda e: errors.append(str(e)))
                 page.goto(URL + "/tecnicos-v307.html", wait_until="domcontentloaded", timeout=35000)
-                page.wait_for_function("document.querySelectorAll('.hub-card').length===22", timeout=30000)
+                page.wait_for_function("document.querySelectorAll('.hub-card').length===23", timeout=30000)
+                assert page.locator(".hub-card").first.locator(".hub-sub").inner_text().find("CT-MGR-071") >= 0, "Kovač precisa estar no topo como novo técnico"
                 first = page.locator(".hub-card").first
                 assert first.locator(".hub-score").count() == 6, "Cada técnico precisa de seis estilos"
-                assert page.locator("#hub-count-total").inner_text() == "70"
+                assert page.locator("#hub-count-total").inner_text() == "71"
                 page.locator("#hub-cards").screenshot(path=str(OUT / (label + "_cards.png")),
                     timeout=30000, animations="disabled")
                 page.select_option("#hub-scope", "all")
-                page.wait_for_function("document.querySelectorAll('.hub-card').length===70", timeout=30000)
+                page.wait_for_function("document.querySelectorAll('.hub-card').length===71", timeout=30000)
                 page.select_option("#hub-scope", "featured")
                 page.locator("#hub-search").fill("Klopp")
                 page.wait_for_function("document.querySelectorAll('.hub-card').length===2", timeout=30000)
@@ -50,13 +51,13 @@ def run():
                 overflow=page.evaluate("document.documentElement.scrollWidth - innerWidth")
                 assert overflow <= 3, f"Vazamento horizontal na central {label}: {overflow}px"
                 assert not errors, "Erros no navegador: " + " | ".join(errors)
-                results[label]={"featured":22,"catalog":70,"search_klopp":2,"profiles_per_coach":6,
+                results[label]={"featured":23,"catalog":71,"search_klopp":2,"profiles_per_coach":6,
                     "overflow":overflow,"errors":errors}
                 ctx.close()
         finally:
             browser.close()
     (OUT / "manager-v307-report.json").write_text(json.dumps(results,indent=2,ensure_ascii=False),encoding="utf-8")
-    print("V307 VISUAL PASS: 22/70 técnicos; duas versões Klopp; 6 estilos por técnico; comparação, favorito, padrão e mobile/Windows.")
+    print("V324 VISUAL PASS: 23/71 técnicos; duas versões Klopp; 6 estilos por técnico; comparação, favorito, padrão e mobile/Windows.")
 
 if __name__=="__main__":
     run()
