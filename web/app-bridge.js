@@ -354,7 +354,7 @@ if(inCard){
    };
    load('craque-pp-universal-v309.js',()=>load('craque-friends-training-v228.js',()=>
     load('craque-positional-v311.js',()=>load('craque-formation-context-v314.js',()=>
-    load('craque-ficha-decision-v327.js',()=>load('craque-positional-ui-v311.js'))))));
+    load('craque-ficha-decision-v327.js',()=>load('craque-frontier-context-v339.js',()=>load('craque-positional-ui-v311.js')))))));
    const css=document.createElement('link');css.rel='stylesheet';css.href='../craque-positional-v311.css';document.head.appendChild(css);
    const formationCss=document.createElement('link');formationCss.rel='stylesheet';
    formationCss.href='../craque-formation-context-v314.css';document.head.appendChild(formationCss);
