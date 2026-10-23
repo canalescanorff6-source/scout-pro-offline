@@ -61,6 +61,7 @@ with sync_playwright() as pw:
       assert not errors,errors
       page.goto(BASE+"/outros-elencos-v227.html?colecao=bruno-santos-cd",wait_until="domcontentloaded",timeout=40000)
       page.locator(".friends-card .friends-analysis-action").first.click(timeout=20000)
+      page.locator('#ct326-external-comparisons > summary').click()
       panel=page.locator("#friend-analysis-dialog .ct311-positional")
       panel.wait_for(timeout=30000)
       assert "68 PP exatos distribuídos" in panel.inner_text()

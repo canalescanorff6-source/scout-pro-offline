@@ -130,8 +130,8 @@ def run():
                     if not geometry["ok"]:
                         problems.append(f"{name}: conteúdo ocupa espaço das artes ou imagem cortada: {geometry}")
 
-                if shortcuts != 4:
-                    problems.append(f"{name}: home precisa de 4 atalhos, recebeu {shortcuts}")
+                if shortcuts != 3:
+                    problems.append(f"{name}: início simplificado precisa de 3 escolhas principais, recebeu {shortcuts}")
                 if home["horizontalOverflow"] > 8:
                     problems.append(f"{name}: catálogo com overflow horizontal de {home['horizontalOverflow']} px")
                 # V202: primeira dobra deve chegar ao elenco. Não é teste pixel-perfect.
@@ -140,15 +140,15 @@ def run():
                 if hero_caption.is_visible():
                     problems.append(f"{name}: descrição redundante ocupando espaço antes da busca")
                 shortcuts=page.locator(".scout-v189-quick .scout-v189-tile")
-                if shortcuts.count()!=4 or not all(x.is_visible() for x in shortcuts.all()):
-                    problems.append(f"{name}: quatro atalhos principais inacessíveis")
+                if shortcuts.count()!=3 or not all(x.is_visible() for x in shortcuts.all()):
+                    problems.append(f"{name}: três escolhas principais inacessíveis")
                 if mobile:
-                    if start>(545 if width<=340 else 525):
-                        problems.append(f"{name}: catálogo ainda começa tarde demais na V202: y={start}")
+                    if start>(805 if width<=340 else 760):
+                        problems.append(f"{name}: navegação premium ocupa espaço excessivo antes do catálogo: y={start}")
                     headline=page.locator(".hero h1").inner_text()
                     if "CARTA.SEU" in headline.replace("\\n",""):
                         problems.append(f"{name}: título sem espaço entre linhas")
-                elif width>=1200 and start>610:
+                elif width>=1200 and start>790:
                     problems.append(f"{name}: primeira dobra desktop sem biblioteca: y={start}")
                 home["v202_catalog_y"]=start
                 home["v202_intro_hidden"]=not hero_caption.is_visible()

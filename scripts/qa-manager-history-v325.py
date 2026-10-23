@@ -24,6 +24,7 @@ with sync_playwright() as pw:
             page.locator('#friend-card-level').fill('35')
             page.locator('#friend-dialog-save').click()
             page.locator('.friends-card .friends-analysis-action').first.click()
+            page.locator('#ct326-external-comparisons > summary').click()
             root=page.locator('.ct311-positional')
             root.wait_for(timeout=25000)
             page.wait_for_function("""() => !!document.querySelector(
