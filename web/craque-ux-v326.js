@@ -115,7 +115,10 @@
    const source=doc.getElementById('scout-v68-data');
    try{raw=JSON.parse(source?.textContent||'null')}catch(_){raw=null}
    const advisory=choiceCard(raw||{});
-   shell.prepend(advisory);
+   // A troca de tática deve continuar acessível cedo, sem rolagem extensa.
+   // Posicionar a orientação após o cabeçalho V220, ANTES do treino e skills.
+   const headline=shell.querySelector('.scout-v220-hero');
+   if(headline)headline.after(advisory);else shell.prepend(advisory);
   }
   doc.body.classList.add('ct326-premium','ct326-detail');
   const slot=shell.querySelector('.ct311-main-slot');
