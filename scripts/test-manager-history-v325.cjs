@@ -46,6 +46,14 @@ assert.deepEqual(profiles.read(store,context).skills,saved);
 assert.equal(profiles.read(store,newCoach),null);
 assert.equal(profiles.read(store,inSA),null);
 assert.equal(profiles.read(store,external),null);
+// Teste de integridade obrigatório MAT -> SA -> MAT na MESMA carta.
+const mat=profiles.withPosition(context,'MAT');
+const changedSA=profiles.withPosition(mat,'SA');
+profiles.save(store,mat,{train:plan,skills:['Passe de primeira'],source:'Teste MAT'});
+profiles.save(store,changedSA,{train:plan,skills:['Controle com a sola'],source:'Teste SA'});
+assert.equal(profiles.key(profiles.withPosition(changedSA,'MAT')),profiles.key(mat));
+assert.deepEqual(profiles.read(store,mat).skills,['Passe de primeira']);
+assert.deepEqual(profiles.read(store,changedSA).skills,['Controle com a sola']);
 const different=profiles.save(store,external,{train:plan,skills:['Toque duplo'],source:'Teste Outro Acervo'});
 assert.equal(different.revision,1);
 assert.equal(profiles.read(store,context).skills.length,2);
