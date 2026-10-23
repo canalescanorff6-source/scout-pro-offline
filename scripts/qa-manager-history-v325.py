@@ -30,6 +30,7 @@ with sync_playwright() as pw:
             page.wait_for_function("""() => !!document.querySelector(
               '#friend-manager-version option[value="CT-MGR-071"]')""",timeout=30000)
             page.locator('#friend-manager-version').select_option('CT-MGR-071')
+            root.locator('.ct331-role-open').click()
             pos=root.locator('.ct311-controls .ct311-select')
             assert pos.input_value()=='MAT'
             box=root.locator('.ct324-profile')
