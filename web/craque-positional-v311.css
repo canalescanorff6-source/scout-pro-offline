@@ -198,3 +198,11 @@
 .ct340-evidence-conflict{margin:9px 0;padding:11px 12px;border:1px solid #c39b59;
  background:#34291e;color:#fff0d4;border-radius:9px;font-size:12px;line-height:1.6}
 @media(max-width:560px){.ct340-evidence-conflict{font-size:12px;padding:10px}}
+
+/* V342 — diagnóstico dinâmico sem nova camada visual na tela inicial. */
+.ct342-live-audit{padding:10px 12px;margin:10px 0;border-radius:10px;
+ border:1px solid #72876e;background:#1d3437;color:#e0f2dd;
+ line-height:1.55;font-size:12px;overflow-wrap:anywhere}
+.ct342-live-audit[data-status="revisar_habilidades"],
+.ct342-live-audit[data-status="pp_pendente"]{background:#382b22;border-color:#c79961;color:#ffe8c4}
+.ct324-profile .ct311-button:disabled{opacity:.53;cursor:not-allowed}
