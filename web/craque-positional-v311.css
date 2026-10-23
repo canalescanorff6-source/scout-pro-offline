@@ -183,3 +183,13 @@
  border-radius:8px;padding:10px 11px;line-height:1.6;margin:4px 0 0}
 @media(max-width:560px){.ct336-equipment-body{padding:11px 12px 13px}
  .ct336-equipment-evidence>summary{padding:11px 12px}}
+
+/* V339 — análise financeira de PP sob demanda, compacta e legível nos dois acervos. */
+.ct339-frontier{margin:14px 0;border:1px solid #6f795f;border-radius:13px;background:#1a2834}
+.ct339-frontier>summary{padding:12px 14px;cursor:pointer;color:#f0e4c3;font-weight:700}
+.ct339-frontier-content{padding:0 14px 14px;min-width:0;overflow-x:auto}
+.ct339-frontier-content .ct311-note{line-height:1.55}
+.ct339-frontier-content .ct339-cost-table{min-width:340px;width:100%}
+.ct339-frontier-content .ct311-budget{margin:10px 0}
+@media(max-width:560px){.ct339-frontier-content{padding:0 10px 12px}
+ .ct339-frontier>summary{padding:10px 12px;font-size:13px}}
