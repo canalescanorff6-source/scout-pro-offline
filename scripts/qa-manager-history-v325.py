@@ -33,7 +33,17 @@ with sync_playwright() as pw:
             assert pos.input_value()=='MAT'
             box=root.locator('.ct324-profile')
             box.wait_for(timeout=25000)
-            assert 'CT-MGR-071' in box.inner_text()
+            try:
+                page.wait_for_function("""() => document.querySelector('.ct324-profile')?.textContent?.includes('CT-MGR-071')""",timeout=10000)
+            except Exception as error:
+                diagnostic={
+                    'selected':page.locator('#friend-manager-version').input_value(),
+                    'managerStatus':page.locator('#friend-manager-status').inner_text(),
+                    'profile':box.inner_text(),
+                    'pageErrors':errors,
+                    'rawCardId':page.evaluate("""() => window.CRAQUE_FRIENDS_PAGE_V227?.activeCard?.cardId||null""")
+                }
+                raise AssertionError(f"V325 contexto de técnico não atualizado: {diagnostic}") from error
             box.get_by_role('button',name='Salvar ficha independente deste técnico').click()
             page.wait_for_function("""() => Object.keys(localStorage).some(k=>
                 k.startsWith('scoutpro:v324:manager-profile:')&&k.includes('CT-MGR-071')&&k.includes('MAT'))""")
