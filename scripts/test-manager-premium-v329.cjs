@@ -23,7 +23,10 @@ const featured=picker.filter(actual,options,{scope:'featured',style:'posse',stor
 assert.equal(featured.length,23,'Somente 23 destaques no primeiro contato');
 assert(featured.some(x=>x.id==='CT-MGR-071'));
 assert.equal(picker.filter(actual,options,{scope:'all',style:'posse',storage:mock}).length,71);
-assert.equal(picker.filter(actual,options,{query:'kovac',style:'posse',storage:mock}).length,1);
+const kovacVersions=picker.filter(actual,options,{query:'kovac',style:'posse',storage:mock});
+assert(kovacVersions.some(x=>x.id==='CT-MGR-071'),'Kovač 90 Posse não pode desaparecer');
+assert.equal(new Set(kovacVersions.map(x=>x.id)).size,kovacVersions.length,
+ 'Não colapsar edições homônimas de Kovač');
 assert.equal(picker.filter(actual,options,{query:'klopp',style:'posse',storage:mock}).length,2);
 assert.equal(picker.filter(actual,options,{query:'CT-MGR-013',style:'posse',storage:mock}).length,1);
 assert.equal(picker.filter(actual,options,{scope:'favorites',style:'posse',storage:mock}).length,0);
