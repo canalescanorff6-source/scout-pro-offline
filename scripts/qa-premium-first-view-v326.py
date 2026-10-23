@@ -53,6 +53,7 @@ with sync_playwright() as pw:
    assert root.locator('.ct326-deep-dive').evaluate('(e)=>e.open')
    assert root.locator('.ct311-actions').is_visible()
    assert '68 PP exatos distribuídos' in root.inner_text()
+   root.locator('.ct331-role-open').click()
    root.locator('.ct311-controls .ct311-select').select_option('SA')
    assert root.locator('.ct326-deep-dive').evaluate('(e)=>e.open'), 'Troca de posição não pode fechar ficha aberta'
    assert 'Cenário SA' in root.inner_text()
