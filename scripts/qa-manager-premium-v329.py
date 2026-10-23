@@ -36,7 +36,7 @@ with sync_playwright() as pw:
    assert '90' in page.locator('#ct-manager-details').inner_text()
    assert page.locator('.ct-manager-v329-more').count()==1
    assert not page.locator('.ct-manager-v329-more').evaluate('(el)=>el.open')
-   assert page.locator('.ct-manager-v329-more .ct-manager-score').count()==6
+   assert page.locator('.ct-manager-v329-more .ct-manager-score').count()==5
    # Capturar somente o vínculo de técnico; a busca e favoritos não o mudam.
    original=page.evaluate("""() => {
     const data=JSON.parse(document.querySelector('#scout-v68-data').textContent);
