@@ -41,7 +41,7 @@ const chivu=catalogue.find(c=>c.catalog_id==='CT-MGR-002');
 assert.equal(api.proficiency(chivu,'longo'),90);
 const app=read('web/craque-managers-v302.js'),others=read('web/craque-friends-training-ui-v228.js');
 assert(app.includes('SELEÇÃO COMPETITIVA · 22 versões'));
-assert(others.includes('22 VERSÕES COMPETITIVAS'));
+assert(others.includes('selectorEngine.filter(managerData,managers,')&&others.includes("scope.addEventListener('change',renderManager)"), 'V328 preserva seleção competitiva por filtro em vez de optgroups fixos');
 assert(others.includes('scoutpro:v306:manager:'));
 assert(others.includes('activeOwner.id')&&others.includes('activeCard.id'),'Isolar acervos e cartas');
 assert(others.includes('engine.MODES.includes(managerTactic)'), 'Sobreposição não deve gerar PP por outro motor');
