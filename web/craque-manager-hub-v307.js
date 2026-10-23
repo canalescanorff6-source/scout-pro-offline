@@ -61,6 +61,7 @@ const el=(tag,cls,content)=>{
  return node;
 };
 let full=[],compared=new Set(),feedback='',lastFilters={};
+const expandedScores=new Set();
 function feedbackMessage(s){feedback=s;const p=$('hub-feedback');if(p)p.textContent=feedback}
 function persistDefault(c){
  const viable=A.STYLES.filter(s=>s.supported).sort((a,b)=>
