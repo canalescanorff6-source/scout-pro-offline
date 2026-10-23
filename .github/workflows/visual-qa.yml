@@ -13,6 +13,7 @@ on:
       - 'scripts/qa-manager-history-v325.py'
       - 'scripts/qa-premium-first-view-v326.py'
       - 'scripts/qa-ficha-decision-v327.py'
+      - 'scripts/qa-frontier-context-v339.py'
       - 'scripts/qa-manager-selector-v328.py'
       - 'scripts/qa-manager-premium-v329.py'
       - 'scripts/qa-lineup-focus-v330.py'
@@ -60,6 +61,7 @@ jobs:
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-manager-premium-v329.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-manager-selector-v328.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-ficha-decision-v327.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-frontier-context-v339.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-premium-first-view-v326.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-manager-history-v325.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-formation-v314.py
