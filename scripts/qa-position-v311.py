@@ -35,6 +35,7 @@ with sync_playwright() as p:
    assert 'Ranking' in boost_view.inner_text() or 'ranking' in boost_view.inner_text()
    page.locator('#friend-analysis-sections [data-panel="treino"]').click()
    assert '68 PP exatos distribuídos' in root.inner_text()
+   root.locator('.ct331-role-open').click()
    selector=root.locator('.ct311-controls .ct311-select')
    assert selector.input_value()=='MAT'
    selector.select_option('SA')
@@ -150,6 +151,7 @@ with sync_playwright() as p:
    assert not main.locator('.ct326-deep-dive').evaluate('(e) => e.open')
    main.locator('.ct326-deep-dive > summary').click()
    assert 'Posição original: CA' in main.inner_text()
+   main.locator('.ct331-role-open').click()
    main.locator('.ct311-controls .ct311-select').select_option('SA')
    assert 'Cenário SA' in main.inner_text()
    assert 'PP exatos distribuídos' in main.inner_text()
