@@ -389,6 +389,74 @@ function create(target,model,opts={}){
    }catch(e){comparison.append(el('p','','Comparação indisponível: '+e.message))}
   }else comparison.append(el('p','','A posição atual já é a original. Selecione outra para comparar.'));
   panel.append(comparison);
+  // V339: comparar a mesma ficha V324 através do motor V251, sob demanda.
+  const ppFrontier=el('details','ct339-frontier');
+  ppFrontier.append(el('summary','','Comparar investimentos de PP desta ficha'));
+  const frontierContent=el('div','ct339-frontier-content');
+  ppFrontier.append(frontierContent);
+  ppFrontier.addEventListener('toggle',()=>{
+   if(!ppFrontier.open||ppFrontier.dataset.ready==='true')return;
+   ppFrontier.dataset.ready='true';
+   let analysis;
+   try{analysis=host.CRAQUE_FRONTIER_CONTEXT_V339?.compare(storage(),model,scenario)}
+   catch(e){analysis={status:'PENDENTE',reason:String(e.message||e)}}
+   if(analysis?.status!=='CONSULTIVO'){
+    frontierContent.append(el('p','ct311-alert',
+     analysis?.reason||'Comparador ainda indisponível; ficha salva preservada.'));
+    return;
+   }
+   const frontier=analysis.comparison;
+   frontierContent.append(el('p','ct311-note',analysis.saved?
+    'Referência: rascunho independente salvo · revisão '+analysis.revision+
+    ' · '+analysis.referenceSpent+' / '+analysis.budget+' PP.':
+    'Referência: proposta matemática temporária, sem rascunho salvo nesta identidade.'));
+   frontierContent.append(el('p','ct311-note',analysis.warning+' '+frontier.warning));
+   const label=el('label','ct311-select-label','Distribuição consultiva: ');
+   const choice=el('select','ct311-select ct339-candidate');
+   choice.setAttribute('aria-label','Comparar investimentos sem alterar treino');
+   for(const c of frontier.candidates){
+    const option=el('option','',c.origins.join(' / ')+
+     (c.registered?' · SALVO':c.onFrontier?' · fronteira amostral':' · troca hipotética')+
+     ' · '+c.spent+' PP');
+    option.value=c.id;choice.append(option);
+   }
+   label.append(choice);frontierContent.append(label);
+   const summary=el('p','ct311-budget');summary.setAttribute('aria-live','polite');
+   const table=el('table','ct311-table ct339-cost-table');
+   const head=el('tr');
+   for(const name of ['Grupo','Referência','Alternativa','Variação PP'])
+    head.append(el('th','',name));
+   table.append(head);
+   const rows=el('tbody');table.append(rows);
+   const axes=el('p','ct311-note');
+   const render=()=>{
+    const selected=frontier.candidates.find(c=>c.id===choice.value);
+    if(!selected)return;
+    summary.textContent=selected.spent+' / '+analysis.budget+' PP utilizados · '+
+     selected.remainingPP+' PP livres · '+selected.redistributedPP+
+     ' PP redistribuídos · '+selected.freePPInvested+' PP investidos do saldo.'+
+     (selected.registered?' Rascunho salvo preservado.':
+      ' Apenas simulação; nenhuma distribuição será gravada.');
+    rows.replaceChildren();
+    selected.levels.forEach((level,i)=>{
+     if(analysis.role==='GO'?i<7:i>6)return;
+     const previous=frontier.reference[i];
+     const delta=host.SCOUT_TACTICS_V220.ppCost(level)-
+      host.SCOUT_TACTICS_V220.ppCost(previous);
+     const row=el('tr');
+     row.append(el('td','',host.SCOUT_TACTICS_V220.CATEGORIES[i]),
+      el('td','',previous+' nv.'),el('td','',level+' nv.'),
+      el('td','',(delta>0?'+':'')+delta+' PP'));
+     rows.append(row);
+    });
+    axes.textContent=frontier.axes.map(a=>a.label+': '+
+     selected.objectives[a.key].toFixed(2)).join(' · ')+
+     ' · índices relativos, não atributos finais.';
+   };
+   choice.value=analysis.initial;choice.addEventListener('change',render);
+   frontierContent.append(summary,table,axes);render();
+  });
+  panel.append(ppFrontier);
   // V326: primeiro uma decisão legível; toda a engenharia fica acessível
   // sob demanda, inclusive revisões e comparador. Nenhum dado é descartado.
   const profilesSummary=profiles;
