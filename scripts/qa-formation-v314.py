@@ -19,6 +19,8 @@ with sync_playwright() as pw:
       mat.click(timeout=15000)
       scenario=page.locator("#ct-v314-slot-panel .ct311-positional")
       scenario.wait_for(timeout=30000)
+      assert "FICHA EM FOCO" in scenario.inner_text()
+      scenario.locator(".ct326-deep-dive > summary").click()
       assert "Cenário MAT · posse" in scenario.inner_text(),scenario.inner_text()[:1000]
       assert "PP exatos distribuídos" in scenario.inner_text()
       assert "habilidades adicionais" in scenario.inner_text().lower()
@@ -46,6 +48,7 @@ with sync_playwright() as pw:
       assert candidate is not None,"Não há segundo jogador MAT elegível para teste de troca real"
       auto=page.locator("#ct-v314-slot-panel .ct311-positional")
       auto.wait_for(timeout=15000)
+      auto.locator(".ct326-deep-dive > summary").click()
       assert "Cenário MAT · posse" in auto.inner_text()
       assert "#"+candidate in page.locator("#ct-v314-slot-panel").inner_text()
       assert "#"+candidate in page.locator("#pitch button[data-slot='mat'] .p-cap").inner_text()
@@ -63,6 +66,7 @@ with sync_playwright() as pw:
       page.locator(".friends-card .friends-analysis-action").first.click(timeout=20000)
       panel=page.locator("#friend-analysis-dialog .ct311-positional")
       panel.wait_for(timeout=30000)
+      panel.locator(".ct326-deep-dive > summary").click()
       assert "68 PP exatos distribuídos" in panel.inner_text()
       assert "Posição original: SA" in panel.inner_text()
       panel.locator(".ct314-formation-row .ct311-select").select_option("4213")
