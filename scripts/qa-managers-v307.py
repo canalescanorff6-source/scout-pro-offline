@@ -42,8 +42,16 @@ def run():
                 page.wait_for_function("document.querySelectorAll('.hub-card').length===2", timeout=30000)
                 assert page.locator(".hub-score").count()==12, "Duas edições, seis estilos cada"
                 page.locator("#hub-search").fill("")
+                # V323: Kovač já vem marcado como técnico do proprietário.
+                # Validar toggles nos dois sentidos sem desmarcar por engano no teste.
+                owned_button=page.locator(".hub-card .hub-actions .hub-btn").first
+                before=owned_button.get_attribute("aria-pressed")
+                owned_button.click()
+                after=page.locator(".hub-card .hub-actions .hub-btn").first.get_attribute("aria-pressed")
+                assert after != before, "Marcação de técnico não alternou"
                 page.locator(".hub-card .hub-actions .hub-btn").first.click()
-                assert page.locator(".hub-card [aria-pressed='true']").count() >= 1
+                restored=page.locator(".hub-card .hub-actions .hub-btn").first.get_attribute("aria-pressed")
+                assert restored == before, "Marcação original não foi restaurada"
                 page.locator(".hub-card .hub-actions .hub-btn").nth(2).click()
                 assert not page.locator("#hub-compare").is_hidden(), "Comparação não abriu"
                 page.locator(".hub-card .hub-actions .hub-btn.primary").first.click()
