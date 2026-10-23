@@ -14,7 +14,7 @@ with sync_playwright() as pw:
    ctx=browser.new_context(viewport={'width':w,'height':h},
      is_mobile=mobile,has_touch=mobile,reduced_motion='reduce')
    page=ctx.new_page();errors=[]
-   page.on('pageerror',lambda e:errors.append(str(e)))
+   page.on('pageerror',lambda e:errors.append(page.url+' :: '+str(e)))
    page.goto(BASE+'/index.html',wait_until='domcontentloaded')
    page.locator('#ct326-home-head').wait_for(timeout=25000)
    links=page.locator('.scout-v189-quick a.ct326-home-action')
