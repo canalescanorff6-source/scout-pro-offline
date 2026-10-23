@@ -84,5 +84,22 @@ assert(css.includes('.ct325-skill-warning'));
 const bridge=read('web/app-bridge.js'),other=read('web/outros-elencos-v227.html');
 assert(bridge.includes("v189Root+'craque-manager-fichas-v324.js'"));
 assert(other.includes('src="craque-manager-fichas-v324.js"'));
+// V325: PP externos legítimos derivados do nível máximo, sem PP manual.
+const scenario={position:'MAT',style:'posse',manager:'CT-MGR-071',
+ contentSignature:'evidence-35',outcome:{plan:{status:'hipotese',pp:68}}};
+const extModel={collection:'outros-elencos',owner:'pessoa-1',cardKey:'uuid-1',
+ cardId:'ID-V325',edition:'Edição teste',level:35,pp:null};
+const calculated=profiles.fromScenario(scenario,extModel);
+assert.equal(calculated.budget,68);
+assert(profiles.validTraining([10,5,5,8,8,6,0,0,0,0],calculated.budget));
+const savedCalculated=profiles.save(store,calculated,{train:plan,skills:['Passe de primeira']});
+assert.equal(savedCalculated.budget,68);
+assert.equal(profiles.read(store,calculated).skills[0],'Passe de primeira');
+assert.throws(()=>profiles.fromScenario({...scenario,outcome:{plan:{status:'hipotese',pp:66}}},extModel),
+ /PP|técnico|Ficha/i,'PP discrepantes não podem virar ficha independente');
+assert.throws(()=>profiles.fromScenario({...scenario,outcome:{plan:{status:'pendente',pp:68}}},extModel),
+ /PP|técnico|Ficha/i,'PP pendente não pode ser aprovado por inferência');
+assert.throws(()=>profiles.fromScenario({...scenario,outcome:{plan:{status:'hipotese',pp:62}}},{...extModel,pp:68}),
+ /Divergência/i,'PP manual e calculado divergentes bloqueiam gravação');
 assert.equal(JSON.stringify(allCards),original);
 console.log('V325 PASS: 246 originais intactas, duas coleções e técnicos isolados, 50 revisões protegidas, skills salvas preservadas e candidatas não redundantes.');
