@@ -230,9 +230,9 @@ function create(target,model,opts={}){
      savedProfile.train.map((x,i)=>outcome.plan.categories?.[i]+': '+x).join(' · ')));
     const proposed=recorded?.recommendations||outcome.suggestedSkills||[];
     const nativeNames=String(model.nativeSkills||'').split(/[;,]/).map(x=>
-     x.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim().toLowerCase()).filter(Boolean);
+     x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase()).filter(Boolean);
     const filtered=[...new Set(proposed.map(displaySkill))].filter(name=>{
-     const normalized=name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim().toLowerCase();
+     const normalized=name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();
      return normalized&&!nativeNames.includes(normalized);
     }).slice(0,5);
     const skillLabel=el('p','ct311-note','Candidatas a habilidades adicionais (selecione até 5; vagas livres não comprovadas):');
@@ -339,8 +339,11 @@ function create(target,model,opts={}){
   }
  }
  host.addEventListener('scoutpro:v324:profile-saved',event=>{
-  if(alive&&event.detail?.key===active&&false)return;
-  if(alive&&active&&event.detail?.key?.includes(encodeURIComponent(active.manager)))draw();
+  if(!alive||!active||!host.CRAQUE_MANAGER_FICHAS_V324)return;
+  try{
+   const api=host.CRAQUE_MANAGER_FICHAS_V324;
+   if(event.detail?.key===api.key(api.fromScenario(active,model)))draw();
+  }catch(_){}
  });
  function positionChange(){
   try{engine.choose(storage(),model,select.value)}
