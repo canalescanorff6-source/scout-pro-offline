@@ -437,6 +437,38 @@ function create(target,model,opts={}){
   else if(equipment?.hasDraft)hero.append(el('p','ct326-priority',
    'Nenhum ímpeto adicional selecionado neste rascunho.'));
   if(equipment?.hasDraft)hero.append(el('p','ct326-clarification',equipment.note));
+  // V336: a pessoa consulta o motivo por habilidade e ímpeto sem abrir toda
+  // a engenharia. Se o motor não tem motivo para a seleção, declarar pendência.
+  if(equipment && guide?.explainEquipment){
+   const rankingForWhy=recorded?.boosterRanking||outcome.booster||null;
+   const why=guide.explainEquipment(equipment,recommendations,rankingForWhy);
+   const explanation=el('details','ct336-equipment-evidence');
+   explanation.append(el('summary','','Por que estas habilidades e ímpeto?'));
+   const body=el('div','ct336-equipment-body');
+   body.append(el('p','ct336-source-note',equipment.hasDraft?
+    'Seleções recuperadas do rascunho independente desta posição, técnico e estilo.':
+    'Candidatas calculadas para esta posição, técnico e estilo. Nenhuma foi selecionada no jogo.'));
+   const names=el('ul','ct336-equipment-list');
+   for(const item of why.skills){
+    const li=el('li','ct336-equipment-item');
+    li.append(el('strong','',item.name));
+    li.append(el('p','',item.reason));
+    if(item.synergies.length)li.append(el('p','ct336-synergy',
+     'Sinergias apontadas pela proposta: '+item.synergies.join(' · ')));
+    li.append(el('small','ct336-source-note',item.source));
+    names.append(li);
+   }
+   if(why.skills.length)body.append(el('h4','','Habilidades adicionais'),names);
+   else body.append(el('p','ct336-pending',equipment.hasDraft?
+    'Nenhuma habilidade foi selecionada no rascunho: não foram inventadas justificativas.':
+    'Sem habilidades candidatas nesta posição: confira nativas e provas dos slots.'));
+   body.append(el('h4','','Ímpeto adicional'));
+   body.append(el('p','ct336-booster-reason',
+    (why.booster.name?why.booster.name+' — ':'')+why.booster.reason));
+   body.append(el('p','ct336-source-note',why.booster.source));
+   body.append(el('p','ct336-warning',why.warning));
+   explanation.append(body);hero.append(explanation);
+  }
   if(profileError)hero.append(el('p','ct311-alert','Perfil indisponível: '+profileError+
    '. O histórico original permanece preservado.'));
   if(decision){
