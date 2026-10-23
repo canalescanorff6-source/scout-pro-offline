@@ -9,7 +9,9 @@ const paths=[
  'scout-profile-v188.js','scout-profile-v188.css','scout-ui-v189.js','scout-ui-v189.css','scout-polish-v190.css','scout-visual-v192.css','scout-finish-v197.css','scout-finish-v197.js','scout-finish-v198.css','scout-finish-v198.js','scout-finish-v200.css','scout-training-icons-v201.css','scout-training-icons-v201.js','scout-training-icons-v206.css','scout-training-icons-v206.js','scout-individual-v207.css','scout-individual-v207.js','scout-training-reference-v208.css','scout-training-reference-v208.js','scout-training-unified-v218.js','scout-multitactic-engine-v220.js','craque-managers-v302.js','craque-managers-v302.css','craque-managers-v306.css','craque-managers-v307.css','craque-manager-hub-v307.js','tecnicos-v307.html','craque-style-planner-v303.js','scout-card-unified-v220.js','scout-card-curation-v229.js','scout-card-curation-v229.css','scout-card-unified-v220.css','scout-evidence-review-v221.js','scout-evidence-review-v221.css','SCOUT_V221_EVIDENCE_INDEX.json','scout-training-unified-v218.css','scout-theme-v210.css','scout-build-audit-v211.js','scout-dossier-v212.css','scout-dossier-v212.js','scout-evidence-v215.js','scout-evidence-v215.css','SCOUT_V211_REPETICOES_REVIEW.json','scout-finish-v202.css','scout-finish-v203.css','scout-finish-v203.js','scout-finish-v204.css','scout-finish-v205.css','scout-finish-v205.js',
  'skills-booster-v162.js','skill-names-v196.js','booster-engine-v103.js','SCOUT_V69_AUDITORIA.json','SCOUT_V213_AUDITORIA_INDIVIDUAL.json',
  'SCOUT_V101_MODELO_CORPORAL.json','SCOUT_V184_EFHUB_241_COMPLETE.json',
- 'SCOUT_V188_EFHUB_BOOSTERS_241.json','SCOUT_V189_CORPO_EXTRAS.json'
+ 'SCOUT_V188_EFHUB_BOOSTERS_241.json','SCOUT_V189_CORPO_EXTRAS.json',
+ // Atualizadores, navegação Premium e PWA precisam participar da mesma prova.
+ 'premium.js','pwa.js','scout-config.js','position-order.js','lab.js','manifest.webmanifest'
 ];
 const contentHash=crypto.createHash('sha256');
 for(const name of paths){
