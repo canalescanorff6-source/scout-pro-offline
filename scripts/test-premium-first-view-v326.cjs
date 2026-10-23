@@ -49,7 +49,7 @@ assert(positional.includes("const comparison=el('details','ct311-compare')")&&
  positional.includes("guide.compare(decision||modes.find"),
  'V327 deve manter comparação MAT-SA na área técnica e mostrar as cinco táticas no resumo');
 assert(positional.includes('save.disabled=false'));
-assert(positional.includes('selectedEntry(scenario)') && positional.includes('profiles.save(storage(),context'),
+assert(positional.includes('selectedEntry(scenario)') && positional.includes('profiles.save(storage(),profileContext'),
  'Não remover revisões e botão de salvar da interface anterior');
 for(const fragment of ['.ct326-metrics','.ct326-primary-action','.ct326-deep-dive',
  '.ct311-positional:not(.ct326-expanded)>.ct311-actions']){
