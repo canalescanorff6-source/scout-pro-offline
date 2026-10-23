@@ -71,3 +71,59 @@ body[data-page="detail"] #scout-v303-style-summary{padding:7px 0 0;margin:5px 0 
 .ct-manager-score-strong{color:#ffe7a6;background:#423c27}
 .ct-manager-hub-link{display:inline-flex;align-items:center;padding:9px 13px;border:1px solid #c9a66c;border-radius:10px;color:#fbe5b5;font-weight:750;text-decoration:none;font-size:12px}
 @media(max-width:420px){.ct-manager-six-styles{grid-template-columns:1fr}}
+
+/* V329 · escolha principal simples nas 246 fichas; informações extras sob demanda. */
+body[data-page="detail"] .ct-manager-v329-tools{
+ display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);
+ gap:10px;align-items:end;padding:13px;border-radius:14px;
+ border:1px solid rgba(221,187,115,.38);
+ background:linear-gradient(140deg,#102d3b,#102133);
+}
+body[data-page="detail"] .ct-manager-v329-tools input,
+body[data-page="detail"] .ct-manager-v329-tools select{
+ width:100%;min-width:0;min-height:44px;box-sizing:border-box;
+ background:#071d2d;border:1px solid #567b84;color:#f7f8fb;
+ padding:9px 11px;border-radius:9px;font:inherit;font-size:13px;
+}
+body[data-page="detail"] .ct-manager-v329-tools input:focus-visible,
+body[data-page="detail"] .ct-manager-v329-tools select:focus-visible,
+body[data-page="detail"] .ct-manager-v329-favorite:focus-visible,
+body[data-page="detail"] .ct-manager-v329-more>summary:focus-visible{
+ outline:3px solid #f4d393;outline-offset:3px;
+}
+body[data-page="detail"] .ct-manager-v329-count{
+ grid-column:1;margin:0;color:#bed2dc;font-size:12px;line-height:1.45;
+}
+body[data-page="detail"] .ct-manager-v329-favorite{
+ grid-column:2;min-height:44px;border:1px solid #dec181;
+ color:#fff1c8;background:#223d4a;border-radius:9px;
+ cursor:pointer;font:inherit;font-size:12px;font-weight:850;padding:10px;
+}
+body[data-page="detail"] .ct-manager-v329-favorite[aria-pressed=true]{
+ background:#51442b;color:#fff5d2;
+}
+body[data-page="detail"] .ct-manager-v329-favorite:disabled{opacity:.53;cursor:not-allowed}
+body[data-page="detail"] .ct-manager-v329-more{
+ border-top:1px solid #496173;padding-top:7px;
+ border-radius:9px;min-width:0;
+}
+body[data-page="detail"] .ct-manager-v329-more>summary{
+ cursor:pointer;min-height:44px;display:flex;gap:8px;align-items:center;
+ color:#f0d6a2;font-size:12px;font-weight:800;line-height:1.4;
+}
+body[data-page="detail"] .ct-manager-v329-more>summary:after{
+ content:"+";margin-left:auto;font-size:19px;font-weight:400;
+}
+body[data-page="detail"] .ct-manager-v329-more[open]>summary:after{content:"−"}
+body[data-page="detail"] .ct-manager-v329-more:not([open])>:not(summary){
+ display:none!important;
+}
+body[data-page="detail"] .ct-manager-v329-more[open] .ct-manager-six-styles{
+ padding-top:9px;
+}
+@media(max-width:600px){
+ body[data-page="detail"] .ct-manager-v329-tools{grid-template-columns:minmax(0,1fr)}
+ body[data-page="detail"] .ct-manager-v329-count,
+ body[data-page="detail"] .ct-manager-v329-favorite{grid-column:1}
+ body[data-page="detail"] .ct-manager-v329-tools{padding:10px}
+}
