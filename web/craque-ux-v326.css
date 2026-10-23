@@ -133,3 +133,49 @@ body.ct326-premium .ct324-skill-option{border-radius:11px}
 @media(prefers-reduced-motion:reduce){
  body.ct326-premium *{scroll-behavior:auto!important;transition-duration:0s!important;animation-duration:0s!important}
 }
+
+/* V326.1 · Uma primeira dobra funcional: carta já alcançável sem
+ * desperdiçar metade da tela em enfeites. Mantém busca e ações acessíveis. */
+body.ct326-catalog .hero{min-height:0!important;margin:7px 0 5px!important}
+body.ct326-catalog .hero .hero-text{padding:12px 15px 10px!important}
+body.ct326-catalog .hero h1{
+ font-size:clamp(25px,3.4vw,35px)!important;line-height:1.05!important;
+ margin:0 0 5px!important;
+}
+body.ct326-catalog .hero .hero-visual{
+ height:315px!important;min-height:315px!important;max-height:315px!important;
+}
+body.ct326-catalog .scout-v189-home{margin:0!important}
+body.ct326-catalog #ct326-home-head{margin:0 0 6px}
+body.ct326-catalog #ct326-home-head h2{font-size:17px;margin:3px 0 1px}
+body.ct326-catalog #ct326-home-head p{display:none}
+body.ct326-catalog .scout-v189-intro{display:none!important}
+body.ct326-catalog .scout-v192-search-block{margin:4px 0 5px!important}
+body.ct326-catalog .scout-v192-search-shell{min-height:43px!important}
+body.ct326-catalog .scout-v192-search-shell .search-input{min-height:43px!important;height:43px!important}
+body.ct326-catalog .scout-v189-quick{margin:5px 0!important;gap:7px!important}
+body.ct326-catalog a.ct326-home-action{min-height:72px;padding:10px 12px}
+body.ct326-catalog .ct326-home-copy strong{font-size:13px!important}
+body.ct326-catalog .ct326-home-copy small{font-size:11px!important;line-height:1.3}
+body.ct326-catalog .scout-v189-extra{padding:6px 11px}
+body.ct326-catalog .scout-v189-about{min-height:36px!important;margin:5px 0 0!important}
+body.ct326-catalog #catalogo{padding-top:5px!important;padding-bottom:7px!important}
+body.ct326-catalog #catalogo .section-top{margin-bottom:3px!important}
+body.ct326-catalog #catalogo .section-desc{display:none}
+body.ct326-catalog #catalogo .list-meta{margin:5px 0 7px!important}
+body.ct326-catalog #catalogo .scout-v238-filter-motion-row{margin:4px 0!important}
+@media(max-width:760px){
+ body.ct326-catalog .hero .hero-text{padding:10px 12px 8px!important}
+ body.ct326-catalog .hero h1{font-size:25px!important;margin:0 0 5px!important}
+ body.ct326-catalog .scout-v189-quick{
+  grid-template-columns:repeat(2,minmax(0,1fr));gap:6px!important;
+ }
+ body.ct326-catalog .ct326-home-action:first-child{grid-column:1/-1}
+ body.ct326-catalog a.ct326-home-action{min-height:65px;padding:8px 10px;gap:6px}
+ body.ct326-catalog .ct326-home-number{width:29px;height:29px}
+ body.ct326-catalog .ct326-home-copy small{font-size:10px!important}
+ body.ct326-catalog .ct326-home-arrow{font-size:15px}
+ body.ct326-catalog .hero .hero-visual{display:none!important}
+ body.ct326-catalog #ct326-home-head h2{font-size:16px}
+ body.ct326-detail .ct326-choice{margin-top:10px}
+}
