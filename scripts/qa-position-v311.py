@@ -19,6 +19,7 @@ with sync_playwright() as p:
    page.locator('#friend-card-booster-slot').select_option('vazio')
    page.locator('#friend-dialog-save').click()
    page.locator('.friends-card .friends-analysis-action').first.click()
+   page.locator('#ct326-external-comparisons > summary').click()
    root=page.locator('.ct311-positional')
    root.wait_for(timeout=25000)
    # V321: relato de slot vazio na conta NÃO valida disponibilidade do
@@ -129,6 +130,7 @@ with sync_playwright() as p:
    assert 'GRAVAÇÃO BLOQUEADA' not in root.locator('.ct311-status').inner_text()
    assert 'Cenário SA · rapido' in root.inner_text()
    page.goto(ROOT+'/fichas/001_Daniele_Massaro.html',wait_until='domcontentloaded')
+   page.locator('#ct326-comparisons > summary').click()
    main=page.locator('.ct311-main-slot .ct311-positional')
    try:main.wait_for(timeout=35000)
    except Exception:
