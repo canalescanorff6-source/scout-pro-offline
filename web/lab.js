@@ -212,6 +212,14 @@ const historyKey='scoutpro:v67:test:'+d.id+':'+d.card;
 let history=[];try{history=JSON.parse(localStorage.getItem(historyKey)||'[]')}catch(e){}
 function showHistory(){$('lab-history').innerHTML=history.slice(-5).reverse().map(x=>'<div class="lab-history-item"><b>'+safe(x.result)+'</b> · '+safe(x.when)+' · '+safe(x.plan)+' · '+x.goals+' '+safe(d.measureName.toLowerCase())+'<br>'+safe(x.note)+'</div>').join('')||'<p>Nenhuma partida registrada neste navegador.</p>'}
 $('lab-save').addEventListener('click',()=>{const obs=$('lab-note').value.trim().slice(0,400),goals=Math.min(20,Math.max(0,Number($('lab-goals').value)||0));history.push({when:new Date().toLocaleDateString('pt-BR'),result:$('lab-result').value,goals,plan:active,note:obs});history=history.slice(-30);try{localStorage.setItem(historyKey,JSON.stringify(history))}catch(e){}$('lab-note').value='';showHistory()});
+// V324: atualização VISUAL da prévia do laboratório, sem persistir em V67.
+window.addEventListener('scoutpro:training-preview-v324',e=>{
+ const info=e.detail||{};
+ if(Number(info.cap)!==cardCap||String(info.card_id)!==String(d.id)||
+    !previewValid(info.levels)||d.pp===null||total(info.levels)>d.pp)return;
+ current=info.levels.slice();active='prévia por técnico '+String(info.manager||'').slice(0,20);
+ render(); // Apenas visual; salvar() continua exclusivo do laboratório legado.
+});
 window.addEventListener('scoutpro:training-edit-v218',e=>{
  const info=e.detail||{};
  if(Number(info.cap)!==cardCap||String(info.card_id)!==String(d.id))return;
