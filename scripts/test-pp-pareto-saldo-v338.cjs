@@ -76,7 +76,8 @@ const outside=draft.slice();outside[7]=1;
 const badRole=V.trainingFrontier(weights,'CA',budget,outside,
  {baselineSource:'rascunho_independente'});
 assert.equal(badRole.baselineStatus,'categorias_fora_do_modelo');
-const unrelated=V.trainingFrontier(weights,'GO',budget,draft,
+const goalieWeights=[0,0,0,0,0,0,0,18,19,17];
+const unrelated=V.trainingFrontier(goalieWeights,'GO',budget,draft,
  {baselineSource:'rascunho_independente'});
 assert.equal(unrelated.baselineStatus,'categorias_fora_do_modelo');
 const ui=fs.readFileSync(require.resolve('../web/craque-ficha-individual-v251.js'),'utf8');
