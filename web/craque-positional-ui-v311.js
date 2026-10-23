@@ -322,6 +322,13 @@ function create(target,model,opts={}){
     for(const name of choicesBooster){const o=el('option','',name);o.value=name;selectBooster.append(o)}
     selectBooster.value=savedProfile?.booster||'';
     options.append(selectBooster);editor.append(options);
+    // V343: avisar no próprio seletor quando o cadastro afirma ausência de slot.
+    // Rascunhos antigos não são descartados ou alterados automaticamente.
+    if(String(model.boosterSlot||'').toLocaleLowerCase('pt-BR').trim()==='ausente')
+     editor.append(el('p','ct343-slot-evidence',
+      'SLOT ADICIONAL AUSENTE no cadastro desta edição. Não é possível salvar '+
+      'um novo ímpeto candidato até revisar o cadastro ou remover a seleção. '+
+      'Nenhuma ficha histórica será apagada.'));
     const action=makeBtn('Salvar ficha independente deste técnico',()=>{
      try{
       if(!ok)throw Error('PP da edição não conferidos. Ficha permanece pendente.');
@@ -361,6 +368,7 @@ function create(target,model,opts={}){
      });
      action.disabled=!ok||!result.canSave;
      readinessNote.dataset.status=result.status;
+     readinessNote.dataset.slotStatus=result.slotReview.status;
      readinessNote.textContent=result.canSave?
       'RASCUNHO PRONTO · '+result.skillCount+' candidatas · '+
        result.spent+' / '+result.budget+' PP usados · '+
