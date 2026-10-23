@@ -31,6 +31,14 @@ if(tools&&!document.getElementById('style-filter')){
  // o cadastro V69, carregado separadamente. Não lançar erro antes de ter a
  // fonte nem inventar estilo a partir de posição/Overall.
  const counts=new Map();
+ // O build V76 já distribui data-style e data-style-defense validados.
+ // Preservar esses atributos sempre. Fallback apenas para HTML não carimbado.
+ for(const el of items){
+  const primary=el.dataset.style;
+  if(!primary)continue;
+  const unique=new Set([primary,el.dataset.styleDefense].filter(Boolean));
+  for(const style of unique)counts.set(style,(counts.get(style)||0)+1);
+ }
  const container=document.createElement('div');container.className='scout-style-picker';
  const caption=document.createElement('label');caption.htmlFor='style-filter';caption.textContent='Estilo de jogo';
  const select=document.createElement('select');select.id='style-filter';select.className='select scout-style-select';
@@ -51,8 +59,12 @@ if(tools&&!document.getElementById('style-filter')){
    const card=byCap.get(el.dataset.cap);
    // Confirmar a identidade (número + nome); conflito não dá direito a inferir.
    if(!card||token(card.name)!==token(el.dataset.name)){el.dataset.styleStatus='pendente';continue}
-   const atk=String(card.estilo_ataque||'').trim();
-   const def=String(card.estilo_defesa||'').trim();
+   // Nunca sobrepor estilos já confirmados e carimbados pelo build V76.
+   if(el.dataset.style){el.dataset.styleStatus='catalogado';continue}
+   // Quando faltar o atributo no HTML bruto, mostrar somente o estilo
+   // explicitamente disponível no cadastro (sem criar dupla função).
+   const atk=String(card.playing_style||card.estilo_ataque||'').trim();
+   const def=card.dual_playing_style===true?String(card.defence_style||card.estilo_defesa||'').trim():'';
    if(!atk){el.dataset.styleStatus='pendente';continue}
    el.dataset.style=atk;
    if(def)el.dataset.styleDefense=def;
