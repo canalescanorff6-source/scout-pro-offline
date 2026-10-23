@@ -8,6 +8,7 @@ on:
       - 'web/**'
       - 'scripts/qa-visual-v195.py'
       - 'scripts/qa-managers-v307.py'
+      - 'scripts/qa-premium-managers-v328.py'
       - 'scripts/qa-pp-v309.py'
       - 'scripts/qa-position-v311.py'
       - 'scripts/qa-manager-history-v325.py'
@@ -21,6 +22,7 @@ on:
       - 'web/**'
       - 'scripts/qa-visual-v195.py'
       - 'scripts/qa-manager-history-v325.py'
+      - 'scripts/qa-premium-managers-v328.py'
       - '.github/workflows/visual-qa.yml'
 
 permissions:
@@ -53,6 +55,7 @@ jobs:
           done
           # V315: testar primeiro o caso novo; falhar claramente em bloqueios de navegação.
           # Mantém todos os QA anteriores, sem afrouxar assertivas.
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-premium-managers-v328.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-ficha-decision-v327.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-premium-first-view-v326.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-manager-history-v325.py
