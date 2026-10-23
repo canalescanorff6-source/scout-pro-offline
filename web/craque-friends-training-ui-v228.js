@@ -177,7 +177,7 @@ function ensureManagerPanel(){
  const target=$('friend-analysis-modes');
  const root=mk('section','friend-manager-v306');
  const heading=mk('h3','','Técnico e estilo desta carta');
- const subtitle=mk('p','','22 versões históricas em destaque + novo Kovač 90 Posse. Catálogo completo offline. A escolha orienta a tática; bônus não são PP.');
+ const subtitle=mk('p','','Escolha um destaque ou pesquise a edição exata. Favoritos ficam acessíveis rapidamente; proficiências e bônus documentados não são PP.');
  const selectorEngine=window.CRAQUE_MANAGER_SELECTOR_V328;
  const quick=mk('div','friend-manager-v328-tools');
  const searchLabel=mk('label','','Buscar técnico, edição ou ID');
@@ -187,7 +187,9 @@ function ensureManagerPanel(){
  searchLabel.append(search);
  const scopeLabel=mk('label','','Exibir técnicos');
  const scope=mk('select');scope.id='friend-manager-scope';
- for(const [id,label] of [['all','Todos'],['favorites','★ Favoritos'],['owned','Meus técnicos'],['featured','Destaques']]){
+ // Primeiro os destaques documentados; o catálogo de 71 edições continua
+ // disponível em "Todas as versões", reduzindo a carga de decisão inicial.
+ for(const [id,label] of [['featured','Destaques'],['favorites','★ Favoritos'],['owned','Meus técnicos'],['all','Todas as versões']]){
   const option=mk('option','',label);option.value=id;scope.append(option);
  }
  scopeLabel.append(scope);
