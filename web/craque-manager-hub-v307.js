@@ -61,6 +61,7 @@ const el=(tag,cls,content)=>{
  return node;
 };
 let full=[],compared=new Set(),feedback='',lastFilters={};
+const expandedScores=new Set();
 function feedbackMessage(s){feedback=s;const p=$('hub-feedback');if(p)p.textContent=feedback}
 function persistDefault(c){
  const viable=A.STYLES.filter(s=>s.supported).sort((a,b)=>
@@ -141,6 +142,7 @@ function uploadPortrait(c){
 }
 function makeCard(c,owned,favs){
  const node=el('article','hub-card');node.dataset.curated=String(A.CURATED_IDS.includes(c.catalog_id)||c.catalog_id===KOVAC_ID);
+ node.dataset.managerId=c.catalog_id;
  const top=el('div','hub-top'),picture=el('div','hub-photo');
  const imgData=portraitFor(c.catalog_id);
  if(imgData){const img=el('img');img.src=imgData;img.alt='Imagem fornecida pelo usuário para '+c.nome;picture.append(img)}
@@ -154,9 +156,29 @@ function makeCard(c,owned,favs){
  if(strong.length>=2)pills.append(el('span','hub-chip',strong.length+' ESTILOS 89+'));
  if(owned.has(c.catalog_id))pills.append(el('span','hub-chip','MEU TÉCNICO'));
  desc.append(pills);top.append(picture,desc);node.append(top);
+ // V329: exibir primeiro somente a proficiência do estilo em foco.
+ // Sem filtro de estilo, usar Posse como referência de VISUALIZAÇÃO, sem
+ // alterar filtros, níveis PP ou versão catalogada do técnico.
+ const requested=$('hub-style')?.value||'posse';
+ const focus=A.STYLES.find(s=>s.id===requested)||A.STYLES.find(s=>s.id==='posse')||A.STYLES[0];
+ const primary=el('section','hub-v329-primary-score');
+ primary.setAttribute('aria-label','Proficiência em foco');
+ primary.append(el('p','hub-v329-kicker','ESTILO EM FOCO · '+focus.label));
+ primary.append(scoreRow(c,focus));
+ primary.append(el('small','hub-v329-disclaimer','Proficiência documentada. Não somar como PP.'));
+ node.append(primary);
+ const more=el('details','hub-v329-other-scores');
+ more.append(el('summary','','Ver outras 5 proficiências'));
  const scores=el('div','hub-score-grid');
- for(const style of A.STYLES)scores.append(scoreRow(c,style));
- node.append(scores);
+ for(const s of A.STYLES.filter(s=>s.id!==focus.id))scores.append(scoreRow(c,s));
+ more.append(scores);
+ more.open=expandedScores.has(c.catalog_id);
+ more.addEventListener('toggle',()=>{
+  if(!more.isConnected)return;
+  if(more.open)expandedScores.add(c.catalog_id);
+  else expandedScores.delete(c.catalog_id);
+ });
+ node.append(more);
  const actions=el('div','hub-actions');
  const own=button(owned.has(c.catalog_id)?'✓ Meu técnico':'Marcar como meu',()=>{
   try{toggleStored(OWNED,c.catalog_id);render()}catch(_){feedbackMessage('Sem espaço para salvar a seleção.')}
@@ -174,12 +196,15 @@ function makeCard(c,owned,favs){
  });
  compare.setAttribute('aria-pressed',String(compared.has(c.catalog_id)));
  actions.append(own,fav,compare,button('Usar como padrão',()=>persistDefault(c),'primary'));
- actions.append(button(imgData?'Trocar retrato':'Adicionar retrato',()=>uploadPortrait(c)));
- if(imgData)actions.append(button('Remover retrato',()=>{
+ node.append(actions);
+ const detail=el('details','hub-details');detail.append(el('summary','','Bônus · combinações · origem · retrato'));
+ // Controles de imagem são secundários: não ocupam a área de decisão.
+ const photos=el('div','hub-v329-photo-actions');
+ photos.append(button(imgData?'Trocar retrato':'Adicionar retrato',()=>uploadPortrait(c)));
+ if(imgData)photos.append(button('Remover retrato',()=>{
   try{host.localStorage.removeItem(portraitKey(c.catalog_id));render();feedbackMessage('Retrato removido somente desta edição.')}catch(_){}
  }));
- node.append(actions);
- const detail=el('details','hub-details');detail.append(el('summary','','Bônus · combinações · origem'));
+ detail.append(photos);
  if(c.afinidade_PTBR)detail.append(el('p','','Afinidade para comandar: '+c.afinidade_PTBR));
   detail.append(el('h3','','Bônus de técnico divulgados'));
  detail.append(el('p','',(c.boosters_PTBR||c.boosters_EN)?.length?(c.boosters_PTBR||c.boosters_EN).join(' · '):'Não documentados nesta edição.'));
@@ -207,7 +232,17 @@ function render(){
  const owned=fromStore(OWNED),favorites=fromStore(FAVORITES);
  lastFilters={scope,query,style,min,dual};
  const results=pick(full,{scope,query,style,min,dual,owned,favorites});
- const container=$('hub-cards');container.replaceChildren();
+ const container=$('hub-cards');
+ // Ao filtrar a Central, o browser pode ainda não ter disparado 'toggle'.
+ // Ler o estado REAL antes de reconstruir os cartões garante que a expansão
+ // de cada edição sobreviva à alteração do estilo e dos favoritos.
+ for(const card of container.querySelectorAll('.hub-card[data-manager-id]')){
+  const previous=card.querySelector('.hub-v329-other-scores');
+  if(!previous)continue;
+  if(previous.open)expandedScores.add(card.dataset.managerId);
+  else expandedScores.delete(card.dataset.managerId);
+ }
+ container.replaceChildren();
  for(const c of results)container.append(makeCard(c,owned,favorites));
  $('hub-results').textContent=results.length+' versões exibidas · '+full.length+' no catálogo';
  $('hub-empty').hidden=results.length!==0;
