@@ -18,13 +18,16 @@ with sync_playwright() as pw:
             page.goto(URL+'/outros-elencos-v227.html?colecao=minhas-cartas-adicionadas',wait_until='domcontentloaded')
             page.locator('#friend-new-card').click()
             page.locator('#friend-card-name').fill('Auditoria V325 Histórico')
+            page.locator('#friend-card-edition').fill('Edição de ensaio V325')
+            page.locator('#friend-card-gameid').fill('V325-ID-TESTE')
             page.locator('#friend-card-position').select_option('MAT')
             page.locator('#friend-card-level').fill('35')
             page.locator('#friend-dialog-save').click()
             page.locator('.friends-card .friends-analysis-action').first.click()
             root=page.locator('.ct311-positional')
             root.wait_for(timeout=25000)
-            page.locator('#friend-manager-version option[value="CT-MGR-071"]').wait_for(timeout=30000)
+            page.wait_for_function("""() => !!document.querySelector(
+              '#friend-manager-version option[value="CT-MGR-071"]')""",timeout=30000)
             page.locator('#friend-manager-version').select_option('CT-MGR-071')
             pos=root.locator('.ct311-controls .ct311-select')
             assert pos.input_value()=='MAT'
