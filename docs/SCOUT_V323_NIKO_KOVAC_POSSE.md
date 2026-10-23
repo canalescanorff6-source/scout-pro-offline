@@ -46,7 +46,7 @@ Conservar Guti, dois volantes (Guardiola/Rijkaard), Lampard e dois CAs (Yorke e 
 
 ## Aplicação e limites
 - O novo registro é carregado offline nos dois acervos pelos componentes compartilhados, sem alterar fichas brutas das 246 cartas.
-- O padrão local anterior **R. Rodríguez** é migrado uma vez para Kovač na Central de Técnicos; outras escolhas explícitas não são alteradas. Seleções por carta permanecem prioritárias para preservar fichas independentes.
+- O padrão local anterior **R. Rodríguez** é migrado uma vez para Kovač ao carregar a Central/seletores; outras escolhas explícitas de técnico ficam intactas. Nas fichas de Minhas Cartas que ainda apontem especificamente a R. Rodríguez (CT-MGR-004), a seleção de técnico é migrada **uma única vez** para Kovač somente quando ele já é o padrão global; cada escolha anterior é guardada em \`scoutpro:v323:manager-migration:<CAP>@<Card ID>:previous\` e pode ser restabelecida selecionando R. Rodríguez na interface. Treinos, skills, ímpetos e PP não são sobrescritos.
 - O painel das duas formações consulta o técnico padrão local e avalia as duas combinações de Kovač, usando estilo/posição de uso e familiaridade; resultados documentais **não substituem confirmação no jogo**.
 - O histórico V177 com nome e escalações de R. Rodríguez foi mantido para auditoria e reversão.
 - Não há autorização para gravar substituições, mudar pontos de progresso ou publicar release sem aprovação de CI, QA visual e builds assinadas.
