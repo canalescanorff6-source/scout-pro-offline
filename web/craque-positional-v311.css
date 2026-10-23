@@ -109,3 +109,27 @@
  .ct326-title{font-size:20px}
 }
 @media(prefers-reduced-motion:reduce){.ct326-primary-action,.ct326-secondary-action{transition:none}}
+
+/* V327 — cinco estilos comparáveis e justificativa acessível sem rankings falsos. */
+.ct327-why{margin:14px 0 0;border:1px solid rgba(220,186,119,.3);background:#101f2e;border-radius:12px;padding:0}
+.ct327-why>summary{padding:13px 15px;cursor:pointer;color:#f0d8a8;font-size:13px;font-weight:800;min-height:44px;display:flex;align-items:center}
+.ct327-why>summary:after{content:'+';font-size:20px;margin-left:auto}
+.ct327-why[open]>summary:after{content:'−'}
+.ct327-why-list{margin:0;padding:0 20px 15px 32px;display:grid;gap:7px;color:#d4e0e9;font-size:12px;line-height:1.55}
+.ct327-saved-info{font-size:12px;color:#cdebd9;background:#14392e;border-radius:10px;padding:10px 12px;line-height:1.45}
+.ct327-style-panel{margin-top:17px;border-top:1px solid #41556a;padding-top:16px}
+.ct327-style-panel[hidden]{display:none!important}
+.ct327-style-panel h4{font-size:16px;color:#f3dfb7;margin:0 0 7px}
+.ct327-style-note{margin:0 0 12px;font-size:12px;color:#c1d0d8;line-height:1.6}
+.ct327-style-list{display:grid;gap:9px}
+.ct327-style-row{border-radius:13px;background:#0b1e2d;border:1px solid #355068;padding:12px 14px;min-width:0}
+.ct327-style-row[data-current="true"]{background:linear-gradient(110deg,#172c3c,#1d3441);border-color:#dfbc76}
+.ct327-style-name{font-weight:850;color:#f6e7c7;font-size:14px;letter-spacing:-.012em}
+.ct327-style-status{color:#e6f0f4;font-size:12px;line-height:1.5;margin:6px 0}
+.ct327-style-desc{color:#b4c8d2;font-size:12px;line-height:1.5;margin:5px 0}
+.ct327-style-delta{color:#cddca9;font-size:12px;line-height:1.5;margin:8px 0;overflow-wrap:anywhere}
+.ct327-style-activate{font:inherit;font-weight:850;font-size:12px;color:#101d29;background:#e9cb90;border:1px solid #f3d7a4;border-radius:10px;cursor:pointer;min-height:44px;padding:10px 14px;margin-top:8px}
+.ct327-style-activate:hover{background:#ffe2ac}
+.ct327-style-activate:focus-visible,.ct327-why>summary:focus-visible{outline:3px solid #fff1ba;outline-offset:3px}
+@media(min-width:750px){.ct327-style-list{grid-template-columns:repeat(2,minmax(0,1fr))}.ct327-style-row{min-height:165px;display:flex;flex-direction:column}.ct327-style-activate{margin-top:auto;align-self:flex-start}}
+@media(max-width:570px){.ct327-style-panel{margin-left:-2px;margin-right:-2px}.ct327-style-list{grid-template-columns:1fr}.ct327-style-row{padding:11px 12px}}
