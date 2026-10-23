@@ -58,6 +58,14 @@
   const button=el(doc,'button','ct330-quick-action',caption);
   button.type='button';button.dataset.focusTarget=key;return button;
  }
+ function compactHero(doc,hero){
+  const paragraph=hero.querySelector(':scope > p');
+  if(!paragraph||paragraph.closest('.ct330-hero-context'))return;
+  const context=el(doc,'details','ct330-hero-context');
+  context.append(el(doc,'summary','','Entenda o contexto e os limites deste planejamento'));
+  paragraph.before(context);context.append(paragraph);
+  context.open=false;
+ }
  function focusShell(doc,hero,eyebrow,buttons){
   const shell=el(doc,'section','ct330-focus');
   shell.setAttribute('aria-label','Acesso rápido à escalação e decisões');
@@ -132,6 +140,7 @@
    bench.before(benchDeep);benchDeep.append(bench);
   }
   benchDeep.open=false;
+  compactHero(doc,hero);
   const quick=focusShell(doc,hero,experimental?
    'LABORATÓRIO DE FORMAÇÃO · PRÉVIA':'MINHA ESCALAÇÃO · DECISÃO RÁPIDA',
    experimental?[
@@ -224,6 +233,7 @@
    more.append(el(doc,'summary','','Mais atalhos do laboratório'));
    shortcuts.before(more);more.append(shortcuts);
   }
+  compactHero(doc,hero);
   const quick=focusShell(doc,hero,'LABORATÓRIO · DECISÕES DE TESTE',[
    ['Formações','formation'],['Abrir elenco','first'],['23 restrições','restrictions'],
    ['Gravar vídeo','video']
