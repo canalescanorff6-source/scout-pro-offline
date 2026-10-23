@@ -332,10 +332,17 @@ function mount(doc){
   current=individual?individual.slice():suggested&&activeTactic!=='posse'?
    suggested.slice():original?original.slice():null;
   custom=Boolean(stored);
-  editing=false;referenceOnly=!stored&&!!original;
+  // Se a posição é a original e o estilo é Posse, exibir o TREINO
+  // REGISTRADO da carta, não reclassificá-lo como ficha do técnico.
+  // Em posição/tática diferente, o registro continua só referência.
+  const sameOriginal=context.position===String(card.position||card.posicao||'').toUpperCase()||
+   (context.position==='CA'&&String(card.position||card.posicao||'').toUpperCase()==='AC');
+  const baselineRegistered=!stored&&activeTactic==='posse'&&sameOriginal&&officialValid;
+  editing=false;referenceOnly=!stored&&!!original&&!baselineRegistered;
   autoPreview=!stored&&!original;
-  sourceLabel=stored?.source||(referenceOnly?
-   'Referência de cadastro, sem adaptação comprovada ao técnico':
+  sourceLabel=stored?.source||(baselineRegistered?
+   'Treino original da carta · sem ajustes homologados para este técnico':
+   referenceOnly?'Referência do cadastro, não adaptada à função e ao técnico':
    'Ficha desta edição ainda pendente');
   refresh();
   if(profileError)note.textContent='Registro contextual preservado, mas indisponível: '+profileError;
