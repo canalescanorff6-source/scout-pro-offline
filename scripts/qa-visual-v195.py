@@ -1008,6 +1008,9 @@ def run():
                 page.wait_for_function("""() => document.querySelectorAll('#squads details[data-team]').length===10""",timeout=25000)
                 if 'PRÉVIA INCOMPLETA' not in page.locator('#black-feedback').inner_text():
                     problems.append(f"{name}: V222 não marcou a escalação sem as 23 cartas verificadas como prévia")
+                # V330: restrições seguem acessíveis, agora em painel recolhido.
+                page.locator('.ct330-black-options > summary').click()
+                assert page.locator('#black-search').is_visible(), "Restrições V330 inacessíveis"
                 page.locator('#black-search').fill('Massaro')
                 page.wait_for_function("""() =>
                     document.querySelector('#black-candidates button[data-black-cap="1"][data-action="add"]')
@@ -1084,7 +1087,7 @@ def run():
                 if formation_metrics['horizontal']>8:
                     problems.append(f"{name}: V219 laboratório tem overflow horizontal {formation_metrics['horizontal']} px")
                 first=page.locator('#squads details[data-team]').first
-                first.locator('summary').click()
+                first.locator(':scope > summary').click()
                 page.locator('#squads details[data-team]').first.locator('input[name="goals"]').fill('2')
                 page.locator('#squads details[data-team]').first.locator('input[name="conceded"]').fill('0')
                 page.locator('#squads details[data-team]').first.locator('textarea[name="notes"]').fill('Teste de passe curto e coberturas')
