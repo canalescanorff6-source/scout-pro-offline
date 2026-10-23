@@ -389,11 +389,13 @@ function create(target,model,opts={}){
    !profileError&&(!profilesSummary||profilesSummary.validTraining(planned,outcome.plan.pp));
   const familiarityConfirmed=scenario.compatibility.eligible===true;
   const selectedManager=Boolean(coach?.name&&scenario.manager!=='sem-tecnico');
-  const verified=Boolean(saved?.revision?.approved===true&&!saved.stale);
   const guide=host.CRAQUE_FICHA_DECISION_V327;
   let decision=null;
   if(guide)try{decision=guide.resolve(scenario,model,host.SCOUT_TACTICS_V220,saved,savedProfile)}
   catch(e){profileError=profileError||String(e?.message||e)}
+  // V335: aprovação antiga não homologa PP alterados no rascunho independente.
+  const verified=decision?.approved===true;
+  const equipment=guide?.equipmentSummary?.(savedProfile,recommendations,candidate);
   const hero=el('section','ct326-focus');
   hero.setAttribute('aria-label','Ficha em foco para a posição e o técnico');
   hero.append(el('div','ct326-kicker','FICHA EM FOCO · '+scenario.position+' · '+scenario.style.toUpperCase()));
@@ -410,22 +412,31 @@ function create(target,model,opts={}){
    item.append(name,el('strong','ct326-metric-value',value),el('small','ct326-metric-help',foot));
    return item;
   };
-  const candidateNames=(savedProfile?.skills?.length?savedProfile.skills:
-    recommendations.map(displaySkill).filter(Boolean)).slice(0,5);
-  const proposedBooster=savedProfile?.booster||candidate;
+  const candidateNames=equipment?.skills||
+    (savedProfile?[]:recommendations.map(displaySkill).filter(Boolean).slice(0,5));
+  const proposedBooster=equipment?equipment.booster:(savedProfile?null:candidate);
   cards.append(
    metric('◈','Treinamento',ppReady?outcome.plan.pp+' PP':'Pendente',
     savedProfile?'Rascunho independente salvo':ppReady?'Distribuição calculada, não homologada':'Confira nível máximo e evidências'),
-   metric('✦','Habilidades',candidateNames.length?candidateNames.length+' candidatas':'A conferir',
-    'Não representa habilidades equipadas'),
-   metric('◇','Ímpeto',proposedBooster?'Sugestão disponível':'Pendente',
+   metric('✦','Habilidades',equipment?.skillsLabel||
+     (candidateNames.length?candidateNames.length+' candidatas':'A conferir'),
+    equipment?.hasDraft?'Selecionadas neste contexto; não equipadas automaticamente':'Candidatas não equipadas'),
+   metric('◇','Ímpeto',equipment?.boosterLabel||
+     (proposedBooster?'Sugestão disponível':'Pendente'),
     'Slot e ativação exigem comprovação')
   );
   hero.append(cards);
   if(candidateNames.length)hero.append(el('p','ct326-priority',
-   'Habilidades em análise: '+candidateNames.join(' · ')));
+   (equipment?.hasDraft?'Habilidades selecionadas no rascunho: ':'Habilidades em análise: ')+
+    candidateNames.join(' · ')));
+  else if(equipment?.hasDraft)hero.append(el('p','ct326-priority',
+   'Nenhuma habilidade adicional selecionada neste rascunho.'));
   if(proposedBooster)hero.append(el('p','ct326-priority',
-   'Ímpeto candidato: '+proposedBooster+' · não equipado automaticamente'));
+   (equipment?.hasDraft?'Ímpeto selecionado no rascunho: ':'Ímpeto candidato: ')+
+    proposedBooster+' · não equipado automaticamente'));
+  else if(equipment?.hasDraft)hero.append(el('p','ct326-priority',
+   'Nenhum ímpeto adicional selecionado neste rascunho.'));
+  if(equipment?.hasDraft)hero.append(el('p','ct326-clarification',equipment.note));
   if(profileError)hero.append(el('p','ct311-alert','Perfil indisponível: '+profileError+
    '. O histórico original permanece preservado.'));
   if(decision){
@@ -442,7 +453,7 @@ function create(target,model,opts={}){
   else if(!selectedManager)hero.append(el('p','ct326-caution',
    'Escolha o técnico e sua edição para obter uma ficha realmente contextual.'));
   else hero.append(el('p','ct326-clarification',verified?
-   'Aprovação registrada no histórico; ainda não comprova equipamento no jogo.':
+   'Aprovação registrada para os PP exibidos; ainda não comprova equipamento no jogo.':
    'É uma proposta consultiva. Nenhum treinamento, habilidade ou ímpeto é aplicado automaticamente.'));
   const deep=el('details','ct326-deep-dive');
   deep.open=advancedOpen;
