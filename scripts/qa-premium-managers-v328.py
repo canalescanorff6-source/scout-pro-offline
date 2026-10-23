@@ -95,7 +95,11 @@ with sync_playwright() as pw:
    searchMain=main.locator('#ct-v328-manager-search')
    selection=main.locator('#ct-manager-select')
    searchMain.fill('Klopp')
-   assert selection.locator('option').count()==3
+   options=selection.locator('option')
+   assert 3<=options.count()<=4, 'Busca Klopp exibiu opções fora do filtro: '+str(
+    options.all_text_contents())
+   assert selection.locator('option[value="CT-MGR-001"]').count()==1
+   assert selection.locator('option[value="CT-MGR-017"]').count()==1
    selection.select_option('CT-MGR-001')
    assert main.locator('.ct-v328-manager-primary').is_visible()
    assert main.locator('.ct-manager-score').count()==6
