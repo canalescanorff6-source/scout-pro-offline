@@ -131,7 +131,13 @@ if(inCard){
    const managers=document.createElement('script');
    managers.src=v189Root+'craque-managers-v302.js';
    managers.onload=prepareStylePlanner;managers.onerror=prepareStylePlanner;
-   document.head.appendChild(managers);
+   // V329: reutilizar o seletor V328 nas cartas pessoais. Mesmo com cache
+   // antigo, o fallback V302 continua disponível e a ficha não é alterada.
+   const selector329=document.createElement('script');
+   selector329.src=v189Root+'craque-manager-selector-v328.js';
+   selector329.onload=()=>document.head.appendChild(managers);
+   selector329.onerror=()=>document.head.appendChild(managers);
+   document.head.appendChild(selector329);
    // V251 precisa da interpretação V233 e da familiaridade EXATA V246.
    // Jamais deduzir posição treinada de Overall calculado.
    const loadV251=()=>{
