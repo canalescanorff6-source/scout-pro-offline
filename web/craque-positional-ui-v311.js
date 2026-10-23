@@ -428,16 +428,77 @@ function create(target,model,opts={}){
    deep.open=true;advancedOpen=true;node.classList.add('ct326-expanded');
    deep.scrollIntoView?.({block:'nearest',behavior:'smooth'});
   });
-  const alternative=el('button','ct326-secondary-action','Comparar alternativas');
+  // V327: comparação informativa e interativa das cinco táticas. A seleção
+  // muda a PRÉVIA da ficha, nunca equipamento/PP aprovado.
+  const alternatives=el('section','ct327-style-panel');
+  alternatives.setAttribute('aria-label','Comparar cinco estilos coletivos nesta posição');
+  const altTitle=el('h4','','Cinco estilos · a mesma carta e posição');
+  const altNote=el('p','ct327-style-note','O estilo em uso não é prova de superioridade.');
+  const altList=el('div','ct327-style-list');
+  alternatives.append(altTitle,altNote,altList);
+  const renderAlternatives=()=>{
+   altList.replaceChildren();
+   if(!guide){
+    altList.append(el('p','ct311-alert','Comparador indisponível. A ficha original continua acessível.'));
+    return;
+   }
+   try{
+    const modes=guide.MODES.map(id=>{
+     const hypothetical=id===scenario.style?scenario:engine.compute(model,scenario.position,id,manager);
+     const historical=selectedEntry(hypothetical).entry;
+     let profile=null;
+     if(profilesSummary){
+      try{profile=profilesSummary.read(storage(),profilesSummary.fromScenario(hypothetical,model))}
+      catch(_){/* Ficha contextual incompleta: preservar, sem presumir homologação. */ }
+     }
+     return guide.resolve(hypothetical,model,host.SCOUT_TACTICS_V220,historical,profile);
+    });
+    const compared=guide.compare(decision||modes.find(item=>item.style===scenario.style),
+     modes,outcome.plan.categories||host.SCOUT_TACTICS_V220?.CATEGORIES||[]);
+    altNote.textContent=compared.statement;
+    for(const item of compared.rows){
+     const row=el('article','ct327-style-row');
+     row.dataset.style=item.style;
+     if(item.selected)row.dataset.current='true';
+     row.append(el('div','ct327-style-name',item.label+
+      (item.selected?' · SELECIONADO':'')));
+     row.append(el('p','ct327-style-status',item.title+
+      (item.pp===null?' · PP pendentes':' · '+item.pp+' PP')));
+     row.append(el('p','ct327-style-desc',item.description));
+     if(item.major.length)row.append(el('p','ct327-style-delta',
+      'Mudanças de níveis versus '+guide.LABEL[scenario.style]+': '+
+      item.major.map(d=>d.name+' '+(d.delta>0?'+':'')+d.delta).join(' · ')));
+     if(!item.selected){
+      const activate=el('button','ct327-style-activate','Visualizar este estilo');
+      activate.type='button';activate.dataset.style=item.style;
+      activate.addEventListener('click',()=>{
+       if(typeof opts.onStyleSelect==='function')opts.onStyleSelect(item.style);
+       else{style=item.style;draw()}
+      });
+      row.append(activate);
+     }
+     altList.append(row);
+    }
+   }catch(e){altList.append(el('p','ct311-alert',
+    'Não foi possível comparar estas propostas: '+String(e.message||e)+
+    '. Nenhum treino foi alterado.'))}
+  };
+  const alternative=el('button','ct326-secondary-action','Comparar 5 estilos de jogo');
   alternative.type='button';
+  alternative.setAttribute('aria-expanded',String(alternativesOpen));
   alternative.addEventListener('click',()=>{
-   deep.open=true;advancedOpen=true;node.classList.add('ct326-expanded');
-   comparison.open=true;
-   comparison.scrollIntoView?.({block:'nearest',behavior:'smooth'});
+   alternativesOpen=!alternativesOpen;
+   alternatives.hidden=!alternativesOpen;
+   alternative.setAttribute('aria-expanded',String(alternativesOpen));
+   if(alternativesOpen){renderAlternatives();
+    alternatives.scrollIntoView?.({block:'nearest',behavior:'smooth'});}
   });
   const controlRow=el('div','ct326-action-row');
   controlRow.append(view,alternative);
   hero.append(controlRow);
+  alternatives.hidden=!alternativesOpen;
+  if(alternativesOpen)renderAlternatives();
+  hero.append(alternatives);
   details.append(hero,deep);
   node.classList.toggle('ct326-expanded',advancedOpen);
   save.disabled=false;
