@@ -59,3 +59,10 @@
 .ct324-profile .ct311-button{min-height:44px;background:linear-gradient(130deg,#91f2ce,#68d4d4);border-color:#96fce0}
 .ct324-profile .ct311-button:disabled{background:rgba(95,118,111,.3);color:#c2cacb}
 @media(max-width:520px){.ct324-skill-options{grid-template-columns:1fr}.ct324-profile .ct311-select-label{display:block}}
+
+/* V325 — estados explícitos sem esconder sugestões preservadas. */
+.ct324-skill-option{flex-wrap:wrap}
+.ct325-saved-skill,.ct325-skill-warning{font-size:11px;line-height:1.35;flex-basis:100%;padding-left:28px}
+.ct325-saved-skill{color:#b6f8de}
+.ct325-skill-warning{color:#ffd29b;font-weight:750}
+.ct324-skill-option:has(input:disabled){opacity:.62}
