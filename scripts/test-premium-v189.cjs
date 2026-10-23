@@ -22,7 +22,9 @@ const css=fs.readFileSync(path.join(web,'scout-ui-v189.css'),'utf8');
 const bridge=fs.readFileSync(path.join(web,'app-bridge.js'),'utf8');
 const index=fs.readFileSync(path.join(web,'index.html'),'utf8');
 const sw=fs.readFileSync(path.join(web,'sw.js'),'utf8');
-for(const label of ['Meu elenco','Minhas formações','Ímpetos e habilidades','Biotipo','Mais ferramentas','Como funciona a análise'])assert(ui.includes(label),'Atalho ausente: '+label);
+for(const label of ['Minhas Cartas','Outros Elencos','Escalação','Laboratório','Ferramentas avançadas','Como funciona a análise','Central de Técnicos'])assert(ui.includes(label),'Atalho ausente: '+label);
+for(const href of ['revisao-impetos-v103.html','player-model-v101.html'])assert(ui.includes(href),
+ 'Ferramenta antiga não pode desaparecer com a nova entrada: '+href);
 assert(ui.includes("querySelector('.hero .hero-text')"),'Homepage deve ter área de entrada');
 assert(ui.includes("body.append(top,backup)"),'Ações legadas no menu Mais sem remoção');
 assert(ui.includes("scout-v189-build"),'Versão visível no menu Mais');
