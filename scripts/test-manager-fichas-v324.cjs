@@ -107,6 +107,14 @@ assert(ui.includes('Salvar ficha independente deste técnico'));
 assert(ui.includes('scoutpro:v324:context-selected'));
 assert(editor.includes('const context=contextForTactic()'));
 assert(editor.includes('scoutpro:training-preview-v324'));
+assert(editor.includes('card.role_used||card.shown_position'),
+ 'As fichas reais usam role_used/shown_position; não confundir treino cadastrado com referência pendente');
+const html=text('web/fichas/001_Daniele_Massaro.html');
+const htmlRaw=JSON.parse(html.match(/<script id="scout-v68-data"[^>]*>([\\s\\S]*?)<\\/script>/)[1]);
+assert.equal(htmlRaw.role_used,'CA');
+assert.equal(htmlRaw.shown_position,'AC');
+assert.equal(htmlRaw.recommended_levels.length,10);
+
 assert(text('web/lab.js').includes('scoutpro:training-preview-v324'));
 assert(editor.includes('profiles.save(host.localStorage,context'));
 assert(editor.includes('if(!contextForTactic())try{host.localStorage.removeItem(keyForTactic())}'));
