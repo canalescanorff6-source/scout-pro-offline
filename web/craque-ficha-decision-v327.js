@@ -230,7 +230,8 @@
   return Object.freeze({
    selectedStyle:selected.style,
    rows:Object.freeze(rows),
-   statement:'Os custos de PP seguem a curva progressiva de treinamento e NÃO indicam '+
+   statement:'Não existe evidência suficiente para eleger uma melhor ficha universal. '+
+    'Os custos de PP seguem a curva progressiva de treinamento e NÃO indicam '+
     'ganhos em atributos finais nem superioridade em gameplay. Compare as diferenças '+
     'da mesma edição, posição e técnico, sem trocar builds aprovadas automaticamente.'
   });
