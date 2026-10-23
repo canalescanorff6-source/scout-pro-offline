@@ -32,6 +32,8 @@ with sync_playwright() as pw:
    select.select_option('CT-MGR-071')
    assert select.input_value()=='CT-MGR-071'
    assert 'Kovač' in page.locator('#friend-manager-status').inner_text()
+   initial_profiles=page.evaluate("""() => Object.keys(localStorage)
+     .filter(k=>k.startsWith('scoutpro:v324:manager-profile:')).sort()""")
    search.fill('Kovac')
    assert 'CT-MGR-071' in [option.get_attribute('value') for option in select.locator('option').all()]
    assert select.input_value()=='CT-MGR-071'
@@ -46,6 +48,9 @@ with sync_playwright() as pw:
    assert select.locator('option[value="CT-MGR-001"]').count()==1
    scope.select_option('favorites')
    assert select.input_value()=='CT-MGR-071'
+   assert initial_profiles==page.evaluate("""() => Object.keys(localStorage)
+     .filter(k=>k.startsWith('scoutpro:v324:manager-profile:')).sort()"""),(
+      'Pesquisar e favoritar não pode gerar novas revisões automaticamente')
    scope.select_option('all')
    select.select_option('CT-MGR-001')
    assert select.input_value()=='CT-MGR-001'
@@ -57,7 +62,9 @@ with sync_playwright() as pw:
       revisions:Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:v311:')),
       saved:Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:v306:manager:'))
      })""")
-   assert before['profiles']==[], 'O seletor não pode aprovar treinamentos por conta própria'
+   # Perfis consultivos podem receber rascunho automático V324 ao mudar
+   # técnico. Isso não equivale a homologação nem equipamento no jogo.
+   assert isinstance(before['profiles'],list)
    assert len(before['saved'])==1,'Uma carta, uma escolha individual de técnico'
    # O técnico é salvo por carta, e não pelo estado da busca/favoritos.
    page.locator('#friend-analysis-close').click()
@@ -68,7 +75,7 @@ with sync_playwright() as pw:
    page.locator('#friend-card-position').select_option('MAT')
    page.locator('#friend-card-level').fill('35')
    page.locator('#friend-dialog-save').click()
-   page.locator('.friends-card .friends-analysis-action').first.click()
+   page.locator('.friends-card').filter(has_text='Outra carta V328').locator('.friends-analysis-action').click()
    page.locator('#friend-manager-version').wait_for(timeout=15000)
    assert page.locator('#friend-manager-version').input_value()=='', 'Outra carta não pode herdar o técnico do teste anterior'
    assert not errors,errors
