@@ -28,6 +28,7 @@ with sync_playwright() as pw:
       assert "Posição original:" in scenario.inner_text()
       before=page.locator("#pitch button[data-slot='mat'] .p-cap").inner_text()
       # Trocar a vaga de simulação, sem tocar no titular real.
+      scenario.locator('.ct331-role-open').click()
       scenario.locator(".ct314-formation-row .ct314-slot-select").select_option("cae")
       assert "Cenário CA · posse" in scenario.inner_text()
       assert page.locator("#pitch button[data-slot='mat'] .p-cap").inner_text()==before
@@ -69,6 +70,7 @@ with sync_playwright() as pw:
       panel.locator(".ct326-deep-dive > summary").click()
       assert "68 PP exatos distribuídos" in panel.inner_text()
       assert "Posição original: SA" in panel.inner_text()
+      panel.locator('.ct331-role-open').click()
       panel.locator(".ct314-formation-row .ct311-select").select_option("4213")
       panel.locator(".ct314-slot-select").select_option("mat")
       assert "Cenário MAT · posse" in panel.inner_text()
