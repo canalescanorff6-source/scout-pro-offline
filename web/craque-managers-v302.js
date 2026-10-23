@@ -196,7 +196,7 @@ function mount(doc){
   const added=new Set();
   const groups=[
    {label:'TÉCNICO PRINCIPAL · POSSE 90',values:[KOVAC_20261022]},
-   {label:'DESTAQUES · 22 versões',values:featured},
+   {label:'SELEÇÃO COMPETITIVA · 22 versões',values:featured},
    {label:'DEMAIS VERSÕES DOCUMENTADAS',values:coaches.filter(c=>!curatedSet.has(c.catalog_id)&&c.catalog_id!==KOVAC_20261022.catalog_id)}
   ];
   const current=coaches.find(c=>c.catalog_id===active);
