@@ -41,7 +41,9 @@ assert(positional.includes("saved?.revision?.approved===true&&!saved.stale"));
 assert(positional.includes('familiaridade da posição pendente'));
 assert(positional.includes('não equipado automaticamente'));
 assert(positional.includes("const alternative=el('button','ct326-secondary-action'"));
-assert(positional.includes('comparison.open=true'));
+assert(positional.includes("const comparison=el('details','ct311-compare')")&&
+ positional.includes("guide.compare(decision||modes.find"),
+ 'V327 deve manter comparação MAT-SA na área técnica e mostrar as cinco táticas no resumo');
 assert(positional.includes('save.disabled=false'));
 assert(positional.includes('selectedEntry(scenario)') && positional.includes('profiles.save(storage(),context'),
  'Não remover revisões e botão de salvar da interface anterior');
