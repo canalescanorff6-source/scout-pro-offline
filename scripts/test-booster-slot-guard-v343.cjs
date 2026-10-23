@@ -51,7 +51,7 @@ assert.equal(emptyReported.canSave,true);
 assert(emptyReported.advisories.some(x=>x.includes('existência na edição')));
 const pending=api.reviewDraftReadiness({...base,boosterSlot:'pendente'});
 assert.equal(pending.canSave,true);
-assert(pending.advisories.some(x=>x.includes('Não existe prova')));
+assert(pending.advisories.some(x=>x.includes('slot livre')));
 const invalidPP=api.reviewDraftReadiness({...base,budget:61});
 assert.equal(invalidPP.canSave,false);
 assert.equal(invalidPP.status,'pp_pendente');
