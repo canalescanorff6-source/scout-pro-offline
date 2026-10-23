@@ -57,6 +57,11 @@ function chooseRequestedPrimary(){
    store.setItem('scoutpro:v307:default-manager',
     JSON.stringify({catalog_id:KOVAC_20261022.catalog_id,tactic:'posse'}));
   }
+  // O print comprova que o técnico está na conta; preserva outros técnicos marcados.
+  const ownedKey='scoutpro:v307:manager-owned',ownedRaw=store.getItem(ownedKey);
+  let owned=[];try{owned=ownedRaw?JSON.parse(ownedRaw):[]}catch(_){}
+  if(Array.isArray(owned)&&!owned.includes(KOVAC_20261022.catalog_id))
+   store.setItem(ownedKey,JSON.stringify([...owned,KOVAC_20261022.catalog_id]));
   store.setItem(KOVAC_DEFAULT_MARKER,'1');
  }catch(_){/* Armazenamento bloqueado: permitir seleção manual. */}
 }
