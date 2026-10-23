@@ -171,6 +171,11 @@ function mount(doc){
  const heading=make(doc,'summary','ESCOLHER TÉCNICO · GERAR FICHA POR ESTILO');
  const title=make(doc,'h3','Técnico da minha equipe');
  const introduction=make(doc,'p','Escolha a versão do técnico. A ficha acompanha o estilo selecionado; bônus, jogadas e proficiências exigem conferência da edição.');
+ const searchLabel=make(doc,'label','Encontrar técnico ou edição');
+ const search=make(doc,'input');search.type='search';search.id='ct-v328-manager-search';
+ search.placeholder='Ex.: Klopp, Kovač, Deschamps';search.autocomplete='off';
+ search.setAttribute('aria-label','Pesquisar técnicos em Minhas Cartas');
+ searchLabel.append(search);
  const selectLabel=make(doc,'label','Versão do técnico');
  const select=make(doc,'select');
  select.id='ct-manager-select';select.setAttribute('aria-label','Selecionar técnico por versão');
@@ -179,21 +184,44 @@ function mount(doc){
  const coaches=(all||[]).slice().sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR')||
   String(b.versao_lancamento||'').localeCompare(String(a.versao_lancamento||'')));
  const featured=curatedManagers(),curatedSet=new Set(CURATED_IDS);
- const groups=[
-  {label:'NOVO TÉCNICO PRINCIPAL · POSSE 90',values:[KOVAC_20261022]},
-  {label:'SELEÇÃO COMPETITIVA · 22 versões',values:featured},
-  {label:'OUTRAS VERSÕES · catálogo completo',values:coaches.filter(c=>!curatedSet.has(c.catalog_id)&&c.catalog_id!==KOVAC_20261022.catalog_id)}
- ];
- for(const group of groups){
-  const optgroup=make(doc,'optgroup');optgroup.label=group.label;
-  for(const c of group.values){
-   const strong=competitiveStyles(c,89).map(x=>x.label+' '+x.score).join(' / ');
-   const option=make(doc,'option',c.nome+' · '+(c.versao_lancamento||'data pendente')+
-    ' · '+(strong||'sem prof. 89+')+' · '+c.catalog_id);
-   option.value=c.catalog_id;optgroup.append(option);
+ const norm=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ const populate=()=>{
+  // O filtro altera somente as opções visíveis, NUNCA a seleção nem o
+  // histórico. A edição anteriormente escolhida permanece sempre acessível.
+  const active=selected?.catalog_id||select.value||'';
+  select.replaceChildren();
+  const blank=make(doc,'option','Escolher técnico — nenhum selecionado');blank.value='';select.append(blank);
+  const needle=norm(search.value.trim());
+  const matching=c=>!needle||norm([c.nome,c.versao_lancamento,c.catalog_id].join(' ')).includes(needle);
+  const added=new Set();
+  const groups=[
+   {label:'TÉCNICO PRINCIPAL · POSSE 90',values:[KOVAC_20261022]},
+   {label:'DESTAQUES · 22 versões',values:featured},
+   {label:'DEMAIS VERSÕES DOCUMENTADAS',values:coaches.filter(c=>!curatedSet.has(c.catalog_id)&&c.catalog_id!==KOVAC_20261022.catalog_id)}
+  ];
+  const current=coaches.find(c=>c.catalog_id===active);
+  if(current&&!matching(current))groups.unshift({label:'EDIÇÃO ATUAL · PRESERVADA',values:[current]});
+  let count=0;
+  for(const group of groups){
+   const entries=group.values.filter(c=>matching(c)||c.catalog_id===active)
+    .filter(c=>!added.has(c.catalog_id));
+   if(!entries.length)continue;
+   const optgroup=make(doc,'optgroup');optgroup.label=group.label;
+   for(const c of entries){
+    added.add(c.catalog_id);
+    const strong=competitiveStyles(c,89).map(x=>x.label+' '+x.score).join(' / ');
+    const option=make(doc,'option',c.nome+' · '+(c.versao_lancamento||'data pendente')+
+     ' · '+(strong||'proficiência a conferir')+' · '+c.catalog_id);
+    option.value=c.catalog_id;optgroup.append(option);count++;
+   }
+   select.append(optgroup);
   }
-  select.append(optgroup);
- }
+  if(active&&added.has(active))select.value=active;
+  else select.value='';
+  search.setAttribute('aria-description',count+' edições documentadas no resultado da busca');
+ };
+ populate();
+ search.addEventListener('input',populate);
  selectLabel.append(select);
  const styleLabel=make(doc,'label','Estilo do técnico');
  const style=make(doc,'select');style.id='ct-manager-style';
@@ -205,7 +233,7 @@ function mount(doc){
  actions.append(clear);
  const browse=make(doc,'a','Central de Técnicos · pesquisar e comparar ↗');
  browse.href='tecnicos-v307.html';browse.className='ct-manager-hub-link';actions.append(browse);
- wrap.append(heading,title,introduction,selectLabel,styleLabel,actions,explanation);
+ wrap.append(heading,title,introduction,searchLabel,selectLabel,styleLabel,actions,explanation);
  const tabs=doc.getElementById('scout-v220-tabs');
  if(tabs)tabs.insertAdjacentElement('afterend',wrap);
  else hero.append(wrap);
@@ -243,10 +271,14 @@ function mount(doc){
    else if(n!==null&&n>=85)item.className+=' ct-manager-score-strong';
    scores.append(item);
   }
-  explanation.append(scores);
+  const scoreSummary=make(doc,'details',undefined,'ct-v328-manager-scores');
+  scoreSummary.append(make(doc,'summary','Ver as 6 proficiências desta edição'),scores);
+  explanation.append(scoreSummary);
   explanation.append(make(doc,'p',selected.nome+' · '+
    (selected.versao_lancamento||'data da versão pendente')+' · '+selected.catalog_id,
    'ct-manager-identity'));
+  explanation.append(make(doc,'p',selected.nome+' · '+STYLES.find(s=>s.id===selectedTactic)?.label+
+   ' · '+(status.score===null?'Pendente':status.score)+' de proficiência. Não equivale a PP.','ct-v328-manager-primary'));
   explanation.append(make(doc,'p','Proficiência '+STYLES.find(s=>s.id===selectedTactic)?.label+
    ': '+(status.score===null?'não documentada':status.score)+
    (status.score!==null&&status.score<85?' · abaixo de 85':'')+'. '+status.note));
