@@ -335,8 +335,12 @@ function mount(doc){
   // Se a posição é a original e o estilo é Posse, exibir o TREINO
   // REGISTRADO da carta, não reclassificá-lo como ficha do técnico.
   // Em posição/tática diferente, o registro continua só referência.
-  const sameOriginal=context.position===String(card.position||card.posicao||'').toUpperCase()||
-   (context.position==='CA'&&String(card.position||card.posicao||'').toUpperCase()==='AC');
+  // As 246 fichas HTML usam role_used e shown_position; não presumir
+  // campos position/posicao ausentes no JSON scout-v68-data.
+  const declaredPosition=String(card.role_used||card.shown_position||
+    card.position||card.posicao||'').trim().toUpperCase();
+  const sameOriginal=context.position===declaredPosition||
+   (context.position==='CA'&&declaredPosition==='AC');
   const baselineRegistered=!stored&&activeTactic==='posse'&&sameOriginal&&officialValid;
   editing=false;referenceOnly=!stored&&!!original&&!baselineRegistered;
   autoPreview=!stored&&!original;
