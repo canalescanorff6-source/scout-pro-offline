@@ -177,7 +177,7 @@ function mount(doc){
  const groups=[
   {label:'NOVO TÉCNICO PRINCIPAL · POSSE 90',values:[KOVAC_20261022]},
   {label:'SELEÇÃO COMPETITIVA · 22 versões',values:featured},
-  {label:'OUTRAS VERSÕES · catálogo completo',values:coaches.filter(c=>!curatedSet.has(c.catalog_id))}
+  {label:'OUTRAS VERSÕES · catálogo completo',values:coaches.filter(c=>!curatedSet.has(c.catalog_id)&&c.catalog_id!==KOVAC_20261022.catalog_id)}
  ];
  for(const group of groups){
   const optgroup=make(doc,'optgroup');optgroup.label=group.label;
