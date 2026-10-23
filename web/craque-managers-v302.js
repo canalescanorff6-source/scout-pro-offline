@@ -246,7 +246,7 @@ function mount(doc){
    ': '+(status.score===null?'não documentada':status.score)+
    (status.score!==null&&status.score<85?' · abaixo de 85':'')+'. '+status.note));
   explanation.append(make(doc,'p','Bônus divulgados: '+
-   (selected.boosters_EN.length?selected.boosters_EN.join(' · '):'nenhum documentado')+
+   ((selected.boosters_PTBR||selected.boosters_EN).length?(selected.boosters_PTBR||selected.boosters_EN).join(' · '):'nenhum documentado')+
    '. Não somar aos PP nem calcular atributos finais sem base confirmada.'));
   const links=make(doc,'div');
   links.append(make(doc,'strong','Jogadas de combinação e condições divulgadas'));
