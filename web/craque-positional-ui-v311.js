@@ -66,6 +66,7 @@ function create(target,model,opts={}){
  target.append(node);
  let active=null,style=opts.style||'posse',manager=opts.manager||'',alive=true;
  let advancedOpen=false; // Preferência temporária do painel; não altera dados, builds ou armazenamento.
+ let alternativesOpen=false; // Cinco estilos consultivos; nenhuma gravação.
  // Uma revisão selecionada é somente leitura e isolada por chave de cenário.
  // Trocar MAT/SA ou estilo não altera qualquer snapshot armazenado.
  const viewedRevisions=new Map();
@@ -358,11 +359,15 @@ function create(target,model,opts={}){
   const familiarityConfirmed=scenario.compatibility.eligible===true;
   const selectedManager=Boolean(coach?.name&&scenario.manager!=='sem-tecnico');
   const verified=Boolean(saved?.revision?.approved===true&&!saved.stale);
+  const guide=host.CRAQUE_FICHA_DECISION_V327;
+  let decision=null;
+  if(guide)try{decision=guide.resolve(scenario,model,host.SCOUT_TACTICS_V220,saved,savedProfile)}
+  catch(e){profileError=profileError||String(e?.message||e)}
   const hero=el('section','ct326-focus');
   hero.setAttribute('aria-label','Ficha em foco para a posição e o técnico');
   hero.append(el('div','ct326-kicker','FICHA EM FOCO · '+scenario.position+' · '+scenario.style.toUpperCase()));
-  hero.append(el('h3','ct326-title',verified?'Existe uma aprovação registrada':
-   ppReady?'Proposta para avaliar':'Dados insuficientes para recomendar'));
+  hero.append(el('h3','ct326-title',decision?.title||(verified?'Existe uma aprovação registrada':
+   ppReady?'Proposta para avaliar':'Dados insuficientes para recomendar')));
   const contextLine=el('p','ct326-subtitle',
    coaching+' · '+(selectedManager?'técnico catalogado':'escolha um técnico para personalizar')+
    ' · '+(familiarityConfirmed?'posição documentada':'familiaridade da posição pendente'));
@@ -392,6 +397,15 @@ function create(target,model,opts={}){
    'Ímpeto candidato: '+proposedBooster+' · não equipado automaticamente'));
   if(profileError)hero.append(el('p','ct311-alert','Perfil indisponível: '+profileError+
    '. O histórico original permanece preservado.'));
+  if(decision){
+   const reasons=el('details','ct327-why');
+   reasons.append(el('summary','','Por que esta ficha está em foco?'));
+   const list=el('ul','ct327-why-list');
+   for(const text of decision.what)list.append(el('li','',text));
+   reasons.append(list);hero.append(reasons);
+   if(decision.isSaved)hero.append(el('p','ct327-saved-info',
+    'Existe uma revisão deste contexto. Ela não é automaticamente o treino equipado.'));
+  }
   if(!familiarityConfirmed)hero.append(el('p','ct326-caution',
    'A posição escolhida não possui familiaridade confirmada. Esta ficha é uma simulação.'));
   else if(!selectedManager)hero.append(el('p','ct326-caution',
@@ -480,7 +494,12 @@ function mainBoot(){
   const slot=el('div','ct311-main-slot');
   const before=anchor.querySelector('#scout-v220-training');
   if(before?.parentNode)before.parentNode.insertBefore(slot,before);else anchor.prepend(slot);
-  const panel=create(slot,model,{style:getStyle(),manager:getManager()});
+  const panel=create(slot,model,{style:getStyle(),manager:getManager(),
+   onStyleSelect:tactic=>{
+    const button=anchor.querySelector('.scout-v220-tab[data-tactic="'+tactic+'"]');
+    if(button)button.click();
+    else panel?.update({style:tactic});
+   }});
   if(!panel)return;
   // Não modificar o painel de treino ORIGINAL aprovado. Esta área mostra propostas adicionais.
   host.document.addEventListener('scoutpro:tactic-selected-v220',e=>{
