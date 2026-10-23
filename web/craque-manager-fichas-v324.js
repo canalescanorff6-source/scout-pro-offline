@@ -91,14 +91,20 @@ function save(store,c,{train,skills=[],booster='',source='Edição manual de cen
  if(boost.length>100)throw Error('Ímpeto candidato inválido');
  if(typeof source!=='string'||source.length>120)throw Error('Fonte da proposta inválida');
  const versions=readAll(store,c); // erro em dado corrompido proíbe sobrescrita
+ // Cada clique de +/- no editor é um auto-rascunho (coalescido).
+ // Revisões salvas explicitamente pela ficha V311 continuam imutáveis.
+ const auto=source.startsWith('V324 · Rascunho PP de ');
+ const previous=versions.at(-1),coalesce=auto&&
+  previous?.source?.startsWith('V324 · Rascunho PP de ');
  const row={
   schema:SCHEMA,key:key(c),sourceSignature:c.sourceSignature,budget:c.budget,
   train:train.slice(),skills:names,booster:boost,status:'proposta_consultiva',
-  source,revision:versions.length+1,
+  source,revision:coalesce?previous.revision:versions.length+1,
   // Nunca usar campos "equipped"/"approved": recomendar não é equipar.
   savedAt:new Date().toISOString()
  };
- const serialized=JSON.stringify({schema:SCHEMA,revisions:[...versions,row]});
+ const next=coalesce?[...versions.slice(0,-1),row]:[...versions,row];
+ const serialized=JSON.stringify({schema:SCHEMA,revisions:next});
  if(serialized.length>85000)throw Error('Limite do histórico atingido; exporte backup');
  if(!store?.setItem)throw Error('Armazenamento indisponível');
  store.setItem(key(c),serialized);
