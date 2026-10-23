@@ -11,8 +11,9 @@ OUT=ROOT/'artifacts'/'visual-qa'
 OUT.mkdir(parents=True,exist_ok=True)
 BASE=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 
-def forward(a,b):
- return a.evaluate('(x,y) => Boolean(x.compareDocumentPosition(y)&Node.DOCUMENT_POSITION_FOLLOWING)',b)
+def forward(a,selector):
+ return a.evaluate("""(node, selector) => Boolean(node.compareDocumentPosition(
+  document.querySelector(selector)) & Node.DOCUMENT_POSITION_FOLLOWING)""",selector)
 
 with sync_playwright() as pw:
  exe=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
@@ -34,8 +35,8 @@ with sync_playwright() as pw:
     timeout=35000)
    page.wait_for_function("""() => document.querySelectorAll('#bench .bench-card').length >= 10""",
     timeout=35000)
-   assert forward(page.locator('#formation-pick'),page.locator('#ct330-field-panel'))
-   assert forward(page.locator('#ct330-field-panel'),page.locator('#ct-v230-tactic-profile'))
+   assert forward(page.locator('#formation-pick'),'#ct330-field-panel')
+   assert forward(page.locator('#ct330-field-panel'),'#ct-v230-tactic-profile')
    assert page.locator('.ct330-stats').inner_text().count('/11')==1
    assert page.locator('.ct330-stats').inner_text().count('/12')==1
    assert not page.locator('.ct330-bench-list').evaluate('(e)=>e.open')
@@ -75,7 +76,7 @@ with sync_playwright() as pw:
    page.locator('.ct330-focus').wait_for(timeout=30000)
    page.wait_for_function("""() => document.querySelectorAll('#squads details.scout-rotation-team').length >= 1""",
     timeout=40000)
-   assert forward(page.locator('#ct330-series-panel'),page.locator('#ct330-restrictions-panel'))
+   assert forward(page.locator('#ct330-series-panel'),'#ct330-restrictions-panel')
    assert page.locator('#black-feedback').is_visible()
    assert not page.locator('.ct330-black-options').evaluate('(e)=>e.open')
    assert not page.locator('#black-search').is_visible()
