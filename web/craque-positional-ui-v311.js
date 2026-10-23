@@ -401,7 +401,7 @@ function create(target,model,opts={}){
   const selectedManager=Boolean(coach?.name&&scenario.manager!=='sem-tecnico');
   const guide=host.CRAQUE_FICHA_DECISION_V327;
   let decision=null;
-  if(guide&&!readError)try{decision=guide.resolve(scenario,model,host.SCOUT_TACTICS_V220,saved,savedProfile)}
+  if(guide&&(!readError||!profileContext))try{decision=guide.resolve(scenario,model,host.SCOUT_TACTICS_V220,saved,savedProfile)}
   catch(e){profileError=profileError||String(e?.message||e)}
   // V335: aprovação antiga não homologa PP alterados no rascunho independente.
   const verified=decision?.approved===true;
