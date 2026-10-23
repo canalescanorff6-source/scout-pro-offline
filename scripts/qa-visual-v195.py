@@ -490,13 +490,33 @@ def run():
                 first=page.locator('#scout-v208-training tbody tr').first
                 if not first.locator('button[aria-label="Aumentar Chute"]').is_disabled():
                     problems.append(f"{name}: V218 permite ultrapassar PP quando 62 já foram distribuídos")
+                page.evaluate("""() => {
+                    window.__v324events=[];
+                    for(const type of ['scoutpro:training-preview-v324','scoutpro:training-edit-v218','scoutpro:v324:context-selected']) {
+                        window.addEventListener(type,e=>window.__v324events.push({type,
+                          cap:e.detail?.cap,card_id:e.detail?.card_id,levels:e.detail?.levels?.slice(0,2),
+                          ctx:e.detail?.context?.manager}));
+                    }
+                }""")
                 first.locator('button[aria-label="Reduzir Chute"]').click()
-                page.wait_for_function("""() => {
-                    const t=document.querySelector('#scout-v208-training');
-                    return t.querySelector('.scout-v208-total').textContent.trim()==='59 / 62' &&
-                           t.querySelector('.scout-v218-level')?.textContent==='9' &&
-                           document.querySelector('#lab-controls .lab-group input')?.value==='9';
-                }""",timeout=10000)
+                try:
+                    page.wait_for_function("""() => {
+                        const t=document.querySelector('#scout-v208-training');
+                        return t.querySelector('.scout-v208-total').textContent.trim()==='59 / 62' &&
+                               t.querySelector('.scout-v218-level')?.textContent==='9' &&
+                               document.querySelector('#lab-controls .lab-group input')?.value==='9';
+                    }""",timeout=10000)
+                except Exception as exc:
+                    info=page.evaluate("""() => ({
+                        total:document.querySelector('.scout-v208-total')?.textContent,
+                        first:document.querySelector('#scout-v208-training .scout-v218-level')?.textContent,
+                        lab:document.querySelector('#lab-controls .lab-group input')?.value,
+                        status:document.querySelector('#scout-v218-status')?.textContent,
+                        note:document.querySelector('#scout-v218-feedback')?.textContent,
+                        events:window.__v324events||[],
+                        keys:Object.keys(localStorage).filter(k=>k.includes('v324')).slice(0,5)
+                    })""")
+                    raise AssertionError(f"V324 regressão de sincronismo do laboratório: {info}") from exc
                 changes=page.evaluate("""() => ({
                     overflow:document.querySelector('#scout-v208-training').scrollWidth-
                              document.querySelector('#scout-v208-training').clientWidth,
