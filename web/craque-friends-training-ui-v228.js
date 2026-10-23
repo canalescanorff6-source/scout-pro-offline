@@ -177,15 +177,41 @@ function ensureManagerPanel(){
  const target=$('friend-analysis-modes');
  const root=mk('section','friend-manager-v306');
  const heading=mk('h3','','Técnico e estilo desta carta');
- const subtitle=mk('p','','22 versões históricas em destaque + novo Kovač 90 Posse. Catálogo completo offline. A escolha orienta a tática; bônus não são PP.');
+ const subtitle=mk('p','','Escolha um destaque ou pesquise a edição exata. Favoritos ficam acessíveis rapidamente; proficiências e bônus documentados não são PP.');
+ const selectorEngine=window.CRAQUE_MANAGER_SELECTOR_V328;
+ const quick=mk('div','friend-manager-v328-tools');
+ const searchLabel=mk('label','','Buscar técnico, edição ou ID');
+ const search=mk('input');search.type='search';search.id='friend-manager-search';
+ search.placeholder='Ex.: Kovač, Klopp, 2026…';
+ search.autocomplete='off';search.setAttribute('aria-label','Buscar versão de técnico');
+ searchLabel.append(search);
+ const scopeLabel=mk('label','','Exibir técnicos');
+ const scope=mk('select');scope.id='friend-manager-scope';
+ // Primeiro os destaques documentados; o catálogo de 71 edições continua
+ // disponível em "Todas as versões", reduzindo a carga de decisão inicial.
+ for(const [id,label] of [['featured','Destaques'],['favorites','★ Favoritos'],['owned','Meus técnicos'],['all','Todas as versões']]){
+  const option=mk('option','',label);option.value=id;scope.append(option);
+ }
+ scopeLabel.append(scope);
+ const fav=mk('button','friend-manager-v328-fav','☆ Favoritar versão');
+ fav.type='button';fav.setAttribute('aria-label','Favoritar ou desfavoritar esta edição');
+ const count=mk('p','friend-manager-v328-count');count.setAttribute('aria-live','polite');
+ quick.append(searchLabel,scopeLabel,count,fav);
  const chooser=mk('label','','Versão do técnico');
  const selection=mk('select');selection.id='friend-manager-version';selection.setAttribute('aria-label','Versão do técnico de Outros Elencos');chooser.append(selection);
  const tacticLabel=mk('label','','Estilo coletivo do técnico');
  const tactic=mk('select');tactic.id='friend-manager-tactic';tacticLabel.append(tactic);
  const statusBox=mk('div','friend-manager-status');statusBox.id='friend-manager-status';statusBox.setAttribute('aria-live','polite');
- root.append(heading,subtitle,chooser,tacticLabel,statusBox);
+ root.append(heading,subtitle,quick,chooser,tacticLabel,statusBox);
  target.parentNode.insertBefore(root,target);
- managerPanel={root,selection,tactic,statusBox};
+ managerPanel={root,selection,tactic,statusBox,search,scope,fav,count,selectorEngine};
+ search.addEventListener('input',renderManager);
+ scope.addEventListener('change',renderManager);
+ fav.addEventListener('click',()=>{
+  if(!managerSelectedId||!selectorEngine)return;
+  try{selectorEngine.toggleFavorite(localStorage,managerSelectedId);renderManager()}
+  catch(_){status('Não foi possível salvar favorito. Verifique o armazenamento.')}
+ });
  selection.addEventListener('change',()=>{
   managerSelectedId=selection.value;
   const selected=managerData?.find(c=>c.catalog_id===managerSelectedId);
@@ -209,17 +235,23 @@ function renderManager(){
   empty.textContent=managerError||'Carregando versões dos técnicos…';
   tactic.disabled=true;return;
  }
- const curated=managers.curatedManagers(),curatedIDs=new Set(managers.CURATED_IDS);
- const remaining=managerData.filter(c=>!curatedIDs.has(c.catalog_id)).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
- for(const group of [{name:'22 VERSÕES COMPETITIVAS',items:curated},{name:'DEMAIS VERSÕES DO CATÁLOGO',items:remaining}]){
-  const g=mk('optgroup');g.label=group.name;
-  for(const c of group.items){
-   const scores=managers.competitiveStyles(c,89).map(s=>s.label+' '+s.score).join(' / ');
-   const opt=mk('option','',c.nome+' · '+(c.versao_lancamento||'data pendente')+
-    (scores?' · '+scores:' · verificar proficiência'));
-   opt.value=c.catalog_id;g.append(opt);
-  }
-  selection.append(g);
+ const v328=managerPanel.selectorEngine;
+ const rows=v328?v328.filter(managerData,managers,{
+  query:managerPanel.search.value,scope:managerPanel.scope.value,
+  style:managerTactic||style||'posse',selected:managerSelectedId,storage:localStorage
+ }):managerData.map(c=>({id:c.catalog_id,label:c.nome+' · '+(c.versao_lancamento||'data pendente'),selected:c.catalog_id===managerSelectedId}));
+ const g=mk('optgroup');g.label='VERSÕES ENCONTRADAS';
+ for(const row of rows){
+  const opt=mk('option','',row.label);opt.value=row.id;g.append(opt);
+ }
+ selection.append(g);
+ if(v328){
+  managerPanel.count.textContent=rows.length+' de '+managerData.length+
+   ' versões · seleção atual preservada mesmo com filtros';
+  const favorite=v328.readIds(localStorage,v328.FAVORITES).has(managerSelectedId);
+  managerPanel.fav.textContent=favorite?'★ Remover favorito':'☆ Favoritar versão';
+  managerPanel.fav.disabled=!managerSelectedId;
+  managerPanel.fav.setAttribute('aria-pressed',String(favorite));
  }
  const selected=managerData.find(c=>c.catalog_id===managerSelectedId);
  if(!selected){managerSelectedId='';tactic.disabled=true;
