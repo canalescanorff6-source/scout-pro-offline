@@ -40,6 +40,11 @@ with sync_playwright() as pw:
    root.locator('.ct326-secondary-action').click()
    five=root.locator('.ct327-style-row')
    assert five.count()==5, 'Cinco propostas de estilo devem existir'
+   # V337: o comparador compartilha o custo marginal real nos dois acervos.
+   assert 'PP utilizados' in five.first.inner_text(), (
+       'Exibir gasto e orçamento do treino, não somente níveis')
+   assert 'custo' in root.locator('.ct327-style-note').inner_text().lower(), (
+       'Diferença de PP não equivale a ganho competitivo comprovado')
    assert five.filter(has_text='SELECIONADO').count()==1
    assert 'superioridade' in root.locator('.ct327-style-note').inner_text().lower() or 'eleger' in root.locator('.ct327-style-note').inner_text().lower()
    before=page.evaluate("""() => ({
@@ -75,6 +80,7 @@ with sync_playwright() as pw:
    assert personal.locator('.ct327-why').count()==1
    personal.locator('.ct326-secondary-action').click()
    assert personal.locator('.ct327-style-row').count()==5
+   assert 'PP utilizados' in personal.locator('.ct327-style-row').first.inner_text()
    personal.locator('.ct327-style-row[data-style="normal"] .ct327-style-activate').click()
    page.wait_for_function("""() => document.querySelector('#scout-v220-hero .scout-v220-tab[data-tactic="normal"]')?.getAttribute('aria-pressed')==='true'""",timeout=25000)
    assert 'NORMAL' in personal.locator('.ct326-kicker').inner_text()
