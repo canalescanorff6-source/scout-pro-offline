@@ -30,18 +30,29 @@ function makeWindow(){
   win.loadURL('scout://app/index.html');
 }
 let updaterConfigured=false;
+// V333: atualização baixada só é instalada após consentimento explícito.
+let downloadedUpdateVersion=null;
 function configureUpdater(){
   if(updaterConfigured || !app.isPackaged || process.platform!=='win32')return;
-  updaterConfigured=true;autoUpdater.autoDownload=true;autoUpdater.autoInstallOnAppQuit=true;
+  updaterConfigured=true;autoUpdater.autoDownload=true;autoUpdater.autoInstallOnAppQuit=false;
   autoUpdater.on('checking-for-update',()=>send('checking','Buscando atualização no GitHub…'));
-  autoUpdater.on('update-not-available',()=>send('current','Você já tem a versão mais recente.'));
-  autoUpdater.on('update-available',info=>send('available','Baixando versão '+info.version+'…'));
+  autoUpdater.on('update-not-available',()=>send(downloadedUpdateVersion?'ready':'current',
+    downloadedUpdateVersion?'Versão '+downloadedUpdateVersion+' baixada. Você pode instalar quando desejar.':'Você já tem a versão mais recente.'));
+  autoUpdater.on('update-available',info=>{
+    if(downloadedUpdateVersion!==info.version)downloadedUpdateVersion=null;
+    send('available','Baixando versão '+info.version+'…');
+  });
   autoUpdater.on('download-progress',p=>send('progress','Download '+Math.round(p.percent)+'%'));
   autoUpdater.on('error',err=>send('error','Atualização indisponível: '+err.message));
   autoUpdater.on('update-downloaded',async info=>{
+    downloadedUpdateVersion=info.version;
     send('ready','Versão '+info.version+' pronta para instalar.');
-    const res=await dialog.showMessageBox(win,{type:'question',buttons:['Instalar agora','Depois'],defaultId:0,cancelId:1,title:'Nova versão do Craque Tático',message:'A versão '+info.version+' foi baixada.',detail:'O aplicativo será reiniciado para concluir a atualização.'});
-    if(res.response===0)autoUpdater.quitAndInstall(false,true);
+    try{
+      if(!win || win.isDestroyed())return;
+      const res=await dialog.showMessageBox(win,{type:'question',buttons:['Instalar agora','Depois'],defaultId:0,cancelId:1,title:'Nova versão do Craque Tático',message:'A versão '+info.version+' foi baixada.',detail:'Instalar agora reinicia o programa. Escolher Depois NÃO instalará automaticamente ao sair.'});
+      if(res.response===0)autoUpdater.quitAndInstall(false,true);
+      else send('deferred','Versão '+info.version+' aguardando: use Instalar atualização quando desejar.');
+    }catch(e){send('error','Não foi possível abrir a confirmação: '+e.message);}
   });
   setTimeout(()=>autoUpdater.checkForUpdates().catch(e=>send('error',e.message)),5000);
   setInterval(()=>autoUpdater.checkForUpdates().catch(e=>send('error',e.message)),4*60*60*1000);
@@ -63,7 +74,17 @@ ipcMain.handle('scout:version',()=>app.getVersion());
 ipcMain.handle('scout:check-updates',async()=>{
   if(!app.isPackaged)return {ok:false,message:'No modo de desenvolvimento, o atualizador só funciona no instalador publicado.'};
   if(process.platform!=='win32')return {ok:false,message:'Atualização pelo GitHub disponível no instalador Windows.'};
+  if(downloadedUpdateVersion)return {ok:true,ready:true,message:'Versão '+downloadedUpdateVersion+' já baixada e pronta para instalar.'};
   try{await autoUpdater.checkForUpdates();return {ok:true}}catch(e){return {ok:false,message:e.message}}
+});
+ipcMain.handle('scout:install-downloaded',async event=>{
+  if(!win || win.isDestroyed() || event.sender!==win.webContents)throw Error('Origem de atualização não autorizada');
+  if(!app.isPackaged || process.platform!=='win32')return {ok:false,message:'Instalação disponível apenas no Windows publicado.'};
+  if(!downloadedUpdateVersion)return {ok:false,message:'Nenhuma atualização concluída para instalar. Use Atualizar Windows.'};
+  const res=await dialog.showMessageBox(win,{type:'question',buttons:['Instalar e reiniciar','Cancelar'],defaultId:0,cancelId:1,title:'Instalar atualização',message:'Instalar a versão '+downloadedUpdateVersion+' agora?',detail:'Salve suas alterações e faça backup em Meus Dados antes de reiniciar.'});
+  if(res.response!==0)return {ok:false,message:'Instalação adiada. O aplicativo não será atualizado automaticamente ao sair.'};
+  autoUpdater.quitAndInstall(false,true);
+  return {ok:true};
 });
 
 // V225: exportação pelo diálogo nativo; apenas usuário escolhe o destino.
