@@ -37,6 +37,10 @@ assert.equal(guide.resolve(scenario(),card,tactical,saved,null).kind,'revisao_sa
 assert.equal(guide.resolve(scenario(),card,tactical,saved,draft).kind,'rascunho_salvo');
 const approved={revision:{approved:true,levels:levels.slice()},stale:false};
 assert.equal(guide.resolve(scenario(),card,tactical,approved,draft).kind,'aprovacao_registrada');
+const alteredDraft={train:[5,10,5,8,8,6,0,0,0,0],skills:[]};
+assert.equal(guide.resolve(scenario(),card,tactical,approved,alteredDraft).kind,'rascunho_salvo',
+ 'Rascunho novo não pode herdar aprovação da revisão antiga com PP diferentes');
+assert.equal(guide.resolve(scenario(),card,tactical,approved,alteredDraft).approved,false);
 assert.equal(guide.resolve(scenario(),card,tactical,{...approved,stale:true},draft).kind,'rascunho_salvo');
 const broken=guide.resolve(scenario('posse',{outcome:{plan:{status:'pendente',pp:null,levels:null}}}),card,tactical);
 assert.equal(broken.kind,'pendente');
@@ -64,7 +68,10 @@ assert.match(cmp.statement,/não existe evidência/i);
 assert(!/ranking.*melhor/i.test(cmp.statement));
 assert.throws(()=>guide.compare(current,choices.slice(0,4),tactical.CATEGORIES),/cinco/);
 assert.throws(()=>guide.compare(current,[...choices.slice(0,4),choices[0]],tactical.CATEGORIES),/repetidas/);
-assert.throws(()=>guide.compare(current,choices.map((x,i)=>i===0?{...x,position:'SA'}:x),tactical.CATEGORIES),/mesma posição/);
+assert.throws(()=>guide.compare(current,choices.map((x,i)=>i===0?{...x,position:'SA'}:x),tactical.CATEGORIES),/mesma carta/);
+assert.throws(()=>guide.compare(current,choices.map((x,i)=>i===0?{...x,owner:'outro-proprietario'}:x),tactical.CATEGORIES),/mesma carta/);
+assert.throws(()=>guide.compare(current,choices.map((x,i)=>i===0?{...x,cardId:'9876543'}:x),tactical.CATEGORIES),/mesma carta/);
+assert.throws(()=>guide.compare(current,choices.map((x,i)=>i===0?{...x,edition:'Outra versão'}:x),tactical.CATEGORIES),/mesma carta/);
 assert(Object.isFrozen(current)&&Object.isFrozen(cmp)&&Object.isFrozen(cmp.rows));
 const ui=read('web/craque-positional-ui-v311.js');
 const external=read('web/craque-friends-training-ui-v228.js');
