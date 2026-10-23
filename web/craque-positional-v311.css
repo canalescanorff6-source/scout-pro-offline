@@ -193,3 +193,8 @@
 .ct339-frontier-content .ct311-budget{margin:10px 0}
 @media(max-width:560px){.ct339-frontier-content{padding:0 10px 12px}
  .ct339-frontier>summary{padding:10px 12px;font-size:13px}}
+
+/* V340 — colisões documentais visíveis, sem classificar equipamento como confirmado. */
+.ct340-evidence-conflict{margin:9px 0;padding:11px 12px;border:1px solid #c39b59;
+ background:#34291e;color:#fff0d4;border-radius:9px;font-size:12px;line-height:1.6}
+@media(max-width:560px){.ct340-evidence-conflict{font-size:12px;padding:10px}}
