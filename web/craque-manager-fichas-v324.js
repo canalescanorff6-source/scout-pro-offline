@@ -40,7 +40,7 @@ function withPosition(c,position){
 }
 function key(c){
  validateContext(c);
- return PREFIX+safeParts([c.collection,c.owner,c.cardKey,c.cardId,c.edition,c.manager,c.position,c.style]);
+ return PREFIX+safeParts([c.collection,c.owner,c.cardKey,c.cardId,c.edition,c.manager,c.position,c.style,c.sourceSignature]);
 }
 function ppCost(n){
  if(!Number.isInteger(n)||n<0||n>20)throw Error('Progressão inválida');
