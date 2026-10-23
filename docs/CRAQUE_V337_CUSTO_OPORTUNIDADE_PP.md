@@ -50,3 +50,10 @@ Avaliar as propostas do motor de fronteira multiobjetivo V289 pela mesma funçã
 orçamento, posição e edição; documentar pesos demonstráveis e incertezas de
 atributos-base, impedir falsa superioridade e identificar perfis dominados apenas
 dentro do conjunto amostrado. Nunca substituir build homologada automaticamente.
+
+## Configuração de CI do PR de revisão
+Os workflows de QA/CI do repositório observam apenas pull requests cuja base
+é `main`. Por isso o PR #250 tem base `main`, **sem promover os commits
+cumulativos V332–V336 à produção**. A revisão precisa reconciliar os PRs
+anteriores antes de qualquer merge, preservando uma sequência de histórico
+limpa. O gate humano de produção continua obrigatório.
