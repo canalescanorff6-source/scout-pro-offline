@@ -542,7 +542,7 @@ function create(target,model,opts={}){
      return guide.resolve(hypothetical,model,host.SCOUT_TACTICS_V220,historical,profile);
     });
     const compared=guide.compare(decision||modes.find(item=>item.style===scenario.style),
-     modes,outcome.plan.categories||host.SCOUT_TACTICS_V220?.CATEGORIES||[]);
+     modes,outcome.plan.categories||host.SCOUT_TACTICS_V220?.CATEGORIES||[],host.SCOUT_TACTICS_V220);
     altNote.textContent=compared.statement;
     for(const item of compared.rows){
      const row=el('article','ct327-style-row');
@@ -551,11 +551,19 @@ function create(target,model,opts={}){
      row.append(el('div','ct327-style-name',item.label+
       (item.selected?' · SELECIONADO':'')));
      row.append(el('p','ct327-style-status',item.title+
-      (item.pp===null?' · PP pendentes':' · '+item.pp+' PP')));
+      (item.pp===null?' · PP pendentes':item.costBasis==='custo_progressivo_exato'?
+       ' · '+item.usedPP+' / '+item.pp+' PP utilizados':' · '+item.pp+' PP')));
      row.append(el('p','ct327-style-desc',item.description));
      if(item.major.length)row.append(el('p','ct327-style-delta',
-      'Mudanças de níveis versus '+guide.LABEL[scenario.style]+': '+
-      item.major.map(d=>d.name+' '+(d.delta>0?'+':'')+d.delta).join(' · ')));
+      'Diferença de investimento versus '+guide.LABEL[scenario.style]+': '+
+      item.major.map(d=>d.name+' '+(d.delta>0?'+':'')+d.delta+' nv.'+
+       (Number.isInteger(d.deltaPP)?' · '+(d.deltaPP>0?'+':'')+d.deltaPP+' PP':'')).join(' · ')));
+     if(item.costBasis==='custo_progressivo_exato'&&item.major.length)
+      row.append(el('p','ct327-style-desc',
+       item.redistributedPP+' PP redistribuídos'+
+       (item.netDeltaPP?' · gasto varia '+(item.netDeltaPP>0?'+':'')+
+        item.netDeltaPP+' PP':' · gasto total mantido')+
+       ' · '+item.remainingPP+' PP livres nesta comparação.'));
      if(!item.selected){
       const activate=el('button','ct327-style-activate','Visualizar este estilo');
       activate.type='button';activate.dataset.style=item.style;
