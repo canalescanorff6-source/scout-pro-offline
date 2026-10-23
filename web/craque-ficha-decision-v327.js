@@ -22,6 +22,13 @@
   return validPlan(plan,tactical)&&Array.isArray(levels)&&
    tactical.valid(levels)&&tactical.total(levels)===plan.pp;
  }
+ // Rascunhos V324 podem economizar PP. Custo menor que o orçamento NÃO
+ // significa erro nem autoriza substituir a distribuição salva pela proposta.
+ function validDraft(levels,plan,tactical){
+  if(!validPlan(plan,tactical)||!Array.isArray(levels)||!tactical.valid(levels))return false;
+  const used=tactical.total(levels);
+  return Number.isInteger(used)&&used>=0&&used<=plan.pp;
+ }
  function resolve(scenario,model,tactical,revision=null,profile=null){
   if(!scenario?.outcome?.plan||!model||!MODES.includes(scenario.style))
    throw Error('Cenário de estilo inexistente');
@@ -31,7 +38,7 @@
   const hasManager=Boolean(scenario.manager&&scenario.manager!=='sem-tecnico'&&
    scenario.managerProfile?.name);
   const history=revision&&!revision.stale&&revision.revision||null;
-  const savedProfile=Boolean(profile&&validateLevels(profile.train,plan,tactical));
+  const savedProfile=Boolean(profile&&validDraft(profile.train,plan,tactical));
   const savedScenario=Boolean(history&&validateLevels(history.levels,plan,tactical));
   // Uma revisão V311 aprovada NÃO homologa outro vetor de PP que foi
   // salvo depois na ficha independente V324. Só expor aprovação quando
@@ -43,6 +50,8 @@
   const levels=savedProfile?profile.train.slice():
    savedScenario?history.levels.slice():
    calculated?plan.levels.slice():null;
+  const usedPP=levels?tactical.total(levels):null;
+  const remainingPP=usedPP===null?null:plan.pp-usedPP;
   const source=savedProfile?'rascunho_independente':
    savedScenario?'revisao_posicional':calculated?'simulacao':'pendente';
   const kind=!calculated?'pendente':
@@ -66,12 +75,15 @@
   else what.push('Distribuição sem PP matematicamente válidos: nenhum treino deve ser recomendado.');
   if(approved)what.push('Aprovação é um registro anterior do usuário, não prova automática de equipamento no jogo.');
   if(savedProfile)what.push('Rascunho do técnico preservado, sem substituir a build original.');
+  if(savedProfile&&remainingPP>0)what.push(usedPP+' de '+plan.pp+
+   ' PP utilizados; '+remainingPP+' PP continuam livres neste rascunho.');
   return Object.freeze({
    kind,title,source,style:scenario.style,styleLabel:LABEL[scenario.style],
    collection:model.collection,owner:model.owner,cardKey:model.cardKey,
    cardId:model.cardId,edition:model.edition,
    position:scenario.position,manager:scenario.manager,
-   pp:calculated?plan.pp:null,levels:levels?Object.freeze(levels):null,
+   pp:calculated?plan.pp:null,usedPP,remainingPP,
+   levels:levels?Object.freeze(levels):null,
    calculated,compatible,hasManager,approved,
    isSaved:savedProfile||savedScenario,what:Object.freeze(what),
    confidence:!calculated?'pendente':!compatible||!hasManager?
@@ -200,5 +212,5 @@
     'Compare as diferenças e mantenha a que corresponde ao técnico, posição e tática usados.'
   });
  }
- return Object.freeze({MODES,LABEL,validPlan,validateLevels,resolve,equipmentSummary,explainEquipment,diff,compare});
+ return Object.freeze({MODES,LABEL,validPlan,validateLevels,validDraft,resolve,equipmentSummary,explainEquipment,diff,compare});
 });
