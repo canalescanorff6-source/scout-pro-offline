@@ -125,7 +125,7 @@ function evaluate(card,tactic='posse',deps){
  // Um placeholder alfabético, "pendente" ou "a confirmar" não é Card ID
  // e não pode elevar a confiança competitiva de qualquer acervo.
  const cardId=String(card.cardId||'').trim(),edition=String(card.edition||'').trim();
- const identity=Boolean(/^\\d{5,20}$/.test(cardId)&&edition&&
+ const identity=Boolean(/^\d{5,20}$/.test(cardId)&&edition&&
   !/pendente|confirmar|desconhecid|não informad|nao informad|não cadastr|nao cadastr|indefinid|placeholder/i.test(edition));
  const existing=String(card.skills||'').trim();
  let skill=null,boost=null;
@@ -143,7 +143,7 @@ function evaluate(card,tactic='posse',deps){
   '. Verifique se o nível do print é o MÁXIMO desta edição; isso não comprova Card ID nem atributos finais.');
  if(!identity)warnings.push('Identidade da versão pendente: informe um Card ID numérico plausível e a edição exata; texto genérico não comprova identidade.');
  else warnings.push('Card ID informado com formato plausível; conferir a correspondência com a edição exata antes de validar competitivamente.');
- if(!nativeDocumented)warnings.push('Inventário nativo ausente, provisório ou não documentado: confira as habilidades da edição antes de aplicar sugestões.');
+ if(!nativeDocumented)warnings.push('Habilidades nativas ausentes, provisórias ou não documentadas: confira as habilidades da edição antes de aplicar sugestões.');
  if(card.boosterSlot==='vazio')warnings.push(
   'Slot relatado vazio pelo proprietário; a edição exata ainda não possui comprovação independente de slot selecionável. Não gastar tokens.');
  else warnings.push(card.boosterSlot==='ocupado'?'Segundo ímpeto ocupado: a sugestão é somente comparativa.':
