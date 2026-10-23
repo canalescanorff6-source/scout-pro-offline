@@ -85,7 +85,9 @@ function render(){
   const originals=[...old.querySelectorAll('a')];
   const skip=new Set(['#catalogo','outros-elencos-v227.html','meu-time-duas-formacoes-v177.html','meu-time-testes-v219.html']);
   for(const a of originals){
-   if(skip.has(a.getAttribute('href')))continue;
+   // V334: a Central de Técnicos já tem sua entrada Premium dedicada; não repetir
+   // um link de compatibilidade criado no pwa.js antes do DOMContentLoaded.
+   if(skip.has(a.getAttribute('href'))||a.getAttribute('href')==='tecnicos-v307.html')continue;
    const copy=el('a','',a.textContent.replace(/\s*↗\s*/g,'').trim());
    copy.href=a.getAttribute('href');links.appendChild(copy)
   }
