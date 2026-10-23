@@ -291,6 +291,7 @@ function mount(doc){
   more.addEventListener('toggle',()=>{if(more.isConnected)managerExtraOpen=more.open});
   const scores=make(doc,'div',undefined,'ct-manager-six-styles');
   for(const entry of STYLES){
+   if(entry.id===selectedTactic)continue; // proficiência atual já está no resumo
    const n=proficiency(selected,entry.id);
    const item=make(doc,'div',(n===null?'—':n)+' · '+entry.label+
     (!entry.supported?' · ficha pendente':''),'ct-manager-score');
