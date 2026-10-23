@@ -17,7 +17,11 @@ const groups=hub.managerGroups(items);
 const klopps=hub.pick(items,{scope:'all',query:'klopp'});
 const key=klopps[0].nome.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 assert.equal(groups.get(key),2,'Duas versões reais do mesmo nome de Klopp não devem colapsar');
-assert.equal(groups.get('niko kovac'),1,'Busca deve ignorar acento');
+assert.equal(hub.managerGroups([{nome:'Niko Kovač'},{nome:'Niko Kovac'}]).get('niko kovac'),2,
+ 'Busca e agrupamento devem ignorar acentos reais');
+const kovac=items.find(c=>c.catalog_id==='CT-MGR-071');
+const kovacName=kovac.nome.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+assert.equal(groups.get(kovacName),1,'Edição principal Kovač não pode duplicar');
 assert.equal(klopps.length,2);
 assert.notEqual(klopps[0].catalog_id,klopps[1].catalog_id);
 assert.equal(A.STYLES.length,6);
