@@ -131,7 +131,7 @@ function create(target,model,opts={}){
     el('td','',host.SCOUT_TACTICS_V220.ppCost(n)));table.append(r);
   });
   t.append(table);
-  if(displaySaved)t.append(el('p','ct311-note','Revisão salva encontrada e restaurada; valores documentais da carta não foram substituídos.'));
+  if(displaySaved)t.append(el('p','ct311-note','Distribuição do histórico deste contexto restaurada para consulta; a carta original não foi alterada.'));
   return t;
  }
  function draw(){
@@ -401,7 +401,7 @@ function create(target,model,opts={}){
   const selectedManager=Boolean(coach?.name&&scenario.manager!=='sem-tecnico');
   const guide=host.CRAQUE_FICHA_DECISION_V327;
   let decision=null;
-  if(guide)try{decision=guide.resolve(scenario,model,host.SCOUT_TACTICS_V220,saved,savedProfile)}
+  if(guide&&!readError)try{decision=guide.resolve(scenario,model,host.SCOUT_TACTICS_V220,saved,savedProfile)}
   catch(e){profileError=profileError||String(e?.message||e)}
   // V335: aprovação antiga não homologa PP alterados no rascunho independente.
   const verified=decision?.approved===true;
