@@ -332,6 +332,13 @@ function create(target,model,opts={}){
       if(audit.hasSkillConflict)throw Error('Revisar antes de salvar: '+
        audit.conflicts.map(x=>x.name+' ('+x.sources.join(' e ')+')').join(' · ')+
        '. Desmarque a candidata coincidente; o histórico foi preservado.');
+      const readiness=profiles.reviewDraftReadiness({
+       train:currentPlan,budget:profileContext.budget,skills,
+       booster:selectBooster.value,native:model.nativeSkills||'',
+       equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
+       boosterSlot:model.boosterSlot||'pendente'
+      });
+      if(!readiness.canSave)throw Error(readiness.issues.join(' '));
       profiles.save(storage(),profileContext,{train:currentPlan,skills,
        booster:selectBooster.value,source:'Revisão manual da ficha contextual V324'});
       status.textContent='Ficha consultiva salva em '+scenario.manager+'/'+scenario.position+'/'+scenario.style+
@@ -339,8 +346,31 @@ function create(target,model,opts={}){
       draw();
      }catch(e){status.textContent='Ficha NÃO salva: '+String(e.message||e)}
     });
-    action.disabled=!ok;
-    editor.append(action,el('p','ct311-note',
+    // V342: feedback ao vivo é SOMENTE LEITURA; nenhuma alteração no
+    // armazenamento até o clique explícito em Salvar e validação novamente.
+    const readinessNote=el('p','ct342-live-audit');
+    readinessNote.setAttribute('role','status');
+    readinessNote.setAttribute('aria-live','polite');
+    const updateReadiness=()=>{
+     const result=profiles.reviewDraftReadiness({
+      train:currentPlan,budget:profileContext.budget,
+      skills:choices.filter(x=>x.checked).map(x=>x.value),
+      booster:selectBooster.value,native:model.nativeSkills||'',
+      equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
+      boosterSlot:model.boosterSlot||'pendente'
+     });
+     action.disabled=!ok||!result.canSave;
+     readinessNote.dataset.status=result.status;
+     readinessNote.textContent=result.canSave?
+      'RASCUNHO PRONTO · '+result.skillCount+' candidatas · '+
+       result.spent+' / '+result.budget+' PP usados · '+
+       result.remainingPP+' PP livres. '+result.advisories.join(' '):
+      'NÃO SALVAR · '+result.issues.join(' ')+' '+result.advisories.join(' ');
+    };
+    for(const input of choices)input.addEventListener('change',updateReadiness);
+    selectBooster.addEventListener('change',updateReadiness);
+    updateReadiness();
+    editor.append(readinessNote,action,el('p','ct311-note',
      'A ficha usa a hipótese de PP exibida neste cenário ou o último rascunho independente salvo. '+
      'Para editar níveis em Minhas Cartas, use o editor principal; não sobrescreverá outras edições. '+
      'Ímpetos fixos, cinco slots e habilidades equipadas continuam preservados.'));
