@@ -179,20 +179,67 @@ function mount(doc){
  const coaches=(all||[]).slice().sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR')||
   String(b.versao_lancamento||'').localeCompare(String(a.versao_lancamento||'')));
  const featured=curatedManagers(),curatedSet=new Set(CURATED_IDS);
- const groups=[
-  {label:'NOVO TÉCNICO PRINCIPAL · POSSE 90',values:[KOVAC_20261022]},
-  {label:'SELEÇÃO COMPETITIVA · 22 versões',values:featured},
-  {label:'OUTRAS VERSÕES · catálogo completo',values:coaches.filter(c=>!curatedSet.has(c.catalog_id)&&c.catalog_id!==KOVAC_20261022.catalog_id)}
- ];
- for(const group of groups){
-  const optgroup=make(doc,'optgroup');optgroup.label=group.label;
-  for(const c of group.values){
-   const strong=competitiveStyles(c,89).map(x=>x.label+' '+x.score).join(' / ');
-   const option=make(doc,'option',c.nome+' · '+(c.versao_lancamento||'data pendente')+
-    ' · '+(strong||'sem prof. 89+')+' · '+c.catalog_id);
-   option.value=c.catalog_id;optgroup.append(option);
+ const selector=host.CRAQUE_MANAGER_SELECTOR_V328;
+ const tools=make(doc,'div',undefined,'ct-manager-v329-tools');
+ const searchLabel=make(doc,'label','Buscar técnico, edição ou ID');
+ const search=make(doc,'input');search.id='ct-manager-search';search.type='search';
+ search.autocomplete='off';search.placeholder='Ex.: Kovač, Klopp, 2026';
+ search.setAttribute('aria-label','Buscar técnico desta carta');searchLabel.append(search);
+ const filterLabel=make(doc,'label','Mostrar técnicos');
+ const filter=make(doc,'select');filter.id='ct-manager-scope';
+ for(const [id,label] of [['featured','Destaques'],['favorites','★ Favoritos'],
+  ['owned','Meus técnicos'],['all','Todas as 71 versões']]){
+  const opt=make(doc,'option',label);opt.value=id;filter.append(opt);
+ }
+ filterLabel.append(filter);
+ const count=make(doc,'p',undefined,'ct-manager-v329-count');
+ count.id='ct-manager-count';count.setAttribute('aria-live','polite');
+ const favorite=make(doc,'button','☆ Favoritar esta edição','ct-manager-v329-favorite');
+ favorite.type='button';favorite.id='ct-manager-favorite';
+ favorite.setAttribute('aria-label','Favoritar ou desfavoritar a edição selecionada');
+ tools.append(searchLabel,filterLabel,count,favorite);
+ // A busca altera apenas as opções disponíveis. Não salva PP, habilidades,
+ // técnico ou ímpeto e conserva o ID selecionado mesmo fora do filtro.
+ function renderPicker(){
+  const chosen=selected?.catalog_id||'';
+  select.replaceChildren();
+  const blank=make(doc,'option','Escolher técnico — nenhum selecionado');
+  blank.value='';select.append(blank);
+  if(selector){
+   const rows=selector.filter(coaches,{STYLES,CURATED_IDS,proficiency},{
+    query:search.value,scope:filter.value,style:selectedTactic,
+    selected:chosen,storage:host.localStorage
+   });
+   const group=make(doc,'optgroup');group.label='VERSÕES ENCONTRADAS';
+   for(const row of rows){
+    const opt=make(doc,'option',row.label);opt.value=row.id;group.append(opt);
+   }
+   select.append(group);
+   count.textContent=rows.length+' de '+coaches.length+
+    ' versões · seleção atual preservada nos filtros';
+   const isFav=selector.readIds(host.localStorage,selector.FAVORITES).has(chosen);
+   favorite.textContent=isFav?'★ Remover favorito':'☆ Favoritar esta edição';
+   favorite.setAttribute('aria-pressed',String(isFav));favorite.disabled=!chosen;
+  }else{
+   // Navegador com cache antigo: fallback V302 preserva todas as edições.
+   const groups=[
+    {label:'NOVO TÉCNICO PRINCIPAL · POSSE 90',values:[KOVAC_20261022]},
+    {label:'SELEÇÃO COMPETITIVA · 22 versões',values:featured},
+    {label:'OUTRAS VERSÕES · catálogo completo',values:coaches.filter(c=>
+     !curatedSet.has(c.catalog_id)&&c.catalog_id!==KOVAC_20261022.catalog_id)}
+   ];
+   for(const group of groups){
+    const optgroup=make(doc,'optgroup');optgroup.label=group.label;
+    for(const c of group.values){
+     const opt=make(doc,'option',c.nome+' · '+(c.versao_lancamento||'data pendente')+
+      ' · '+c.catalog_id);opt.value=c.catalog_id;optgroup.append(opt);
+    }
+    select.append(optgroup);
+   }
+   count.textContent='Catálogo tradicional disponível; pesquisa Premium indisponível';
+   favorite.disabled=true;
   }
-  select.append(optgroup);
+  select.value=chosen;
  }
  selectLabel.append(select);
  const styleLabel=make(doc,'label','Estilo do técnico');
@@ -205,13 +252,17 @@ function mount(doc){
  actions.append(clear);
  const browse=make(doc,'a','Central de Técnicos · pesquisar e comparar ↗');
  browse.href='tecnicos-v307.html';browse.className='ct-manager-hub-link';actions.append(browse);
- wrap.append(heading,title,introduction,selectLabel,styleLabel,actions,explanation);
+ wrap.append(heading,title,introduction,tools,selectLabel,styleLabel,actions,explanation);
  const tabs=doc.getElementById('scout-v220-tabs');
  if(tabs)tabs.insertAdjacentElement('afterend',wrap);
  else hero.append(wrap);
- ui={wrap,select,style,explanation};
+ ui={wrap,select,style,explanation,search,filter,favorite};
+ let managerExtraOpen=false;
  function render(){
+  const previousExtra=explanation.querySelector('.ct-manager-v329-more');
+  if(previousExtra)managerExtraOpen=previousExtra.open;
   explanation.replaceChildren();style.replaceChildren();
+  renderPicker();
   if(!selected){
    explanation.append(make(doc,'p','Selecione seu técnico para consultar todas as proficiências e escolher um estilo. Nenhum bônus é aplicado sem prova.'));
    style.disabled=true;style.append(make(doc,'option','Selecione o técnico'));
@@ -234,6 +285,10 @@ function mount(doc){
    cover.alt='Retrato fornecido pelo usuário para '+selected.nome;
    explanation.append(cover);
   }
+  const more=make(doc,'details',undefined,'ct-manager-v329-more');
+  more.open=managerExtraOpen;
+  more.append(make(doc,'summary','Ver outras 5 proficiências, bônus e combinações'));
+  more.addEventListener('toggle',()=>{if(more.isConnected)managerExtraOpen=more.open});
   const scores=make(doc,'div',undefined,'ct-manager-six-styles');
   for(const entry of STYLES){
    const n=proficiency(selected,entry.id);
@@ -243,15 +298,16 @@ function mount(doc){
    else if(n!==null&&n>=85)item.className+=' ct-manager-score-strong';
    scores.append(item);
   }
-  explanation.append(scores);
+  more.append(scores);
   explanation.append(make(doc,'p',selected.nome+' · '+
    (selected.versao_lancamento||'data da versão pendente')+' · '+selected.catalog_id,
    'ct-manager-identity'));
   explanation.append(make(doc,'p','Proficiência '+STYLES.find(s=>s.id===selectedTactic)?.label+
    ': '+(status.score===null?'não documentada':status.score)+
    (status.score!==null&&status.score<85?' · abaixo de 85':'')+'. '+status.note));
-  if(selected.afinidade_PTBR)explanation.append(make(doc,'p','Afinidade para comandar: '+selected.afinidade_PTBR+'.'));
-  explanation.append(make(doc,'p','Bônus divulgados: '+
+  explanation.append(make(doc,'p','As demais proficiências e os bônus são consultivos: não somar aos PP.'));
+  if(selected.afinidade_PTBR)more.append(make(doc,'p','Afinidade para comandar: '+selected.afinidade_PTBR+'.'));
+  more.append(make(doc,'p','Bônus divulgados: '+
    ((selected.boosters_PTBR||selected.boosters_EN).length?(selected.boosters_PTBR||selected.boosters_EN).join(' · '):'nenhum documentado')+
    '. Não somar aos PP nem calcular atributos finais sem base confirmada.'));
   const links=make(doc,'div');
@@ -264,10 +320,11 @@ function mount(doc){
     ') · parceiro '+(x.keyman_playstyle_EN||'?')+' ('+
     (x.keyman_position_EN||'?')+').'));
   }
-  explanation.append(links);
-  explanation.append(make(doc,'p','Origem: catálogo enviado, com fontes públicas terceiras. '+
+  more.append(links);
+  more.append(make(doc,'p','Origem: catálogo enviado, com fontes públicas terceiras. '+
    (selected.linkups_status||'sem comprovação de Link-Up')+
    '. Disponibilidade na sua conta não conferida. Retratos externos não incluídos.'));
+  explanation.append(more);
  }
  let selectedTactic='posse';
  function notify(){
@@ -285,6 +342,13 @@ function mount(doc){
     {detail:{tactic:selectedTactic}}));
   }
  }
+ search.addEventListener('input',renderPicker);
+ filter.addEventListener('change',renderPicker);
+ favorite.addEventListener('click',()=>{
+  if(!selected||!selector)return;
+  try{selector.toggleFavorite(host.localStorage,selected.catalog_id);renderPicker()}
+  catch(_){count.textContent='Não foi possível salvar favorito nesta instalação.'}
+ });
  select.addEventListener('change',()=>{
   selected=find(select.value);
   selectedTactic=selected?preferred(selected,null):'posse';
