@@ -26,6 +26,7 @@ with sync_playwright() as pw:
             page.locator('.friends-card .friends-analysis-action').first.click()
             root=page.locator('.ct311-positional')
             root.wait_for(timeout=25000)
+            root.locator(".ct326-deep-dive > summary").click()
             page.wait_for_function("""() => !!document.querySelector(
               '#friend-manager-version option[value="CT-MGR-071"]')""",timeout=30000)
             page.locator('#friend-manager-version').select_option('CT-MGR-071')

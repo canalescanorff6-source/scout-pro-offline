@@ -11,6 +11,7 @@ on:
       - 'scripts/qa-pp-v309.py'
       - 'scripts/qa-position-v311.py'
       - 'scripts/qa-manager-history-v325.py'
+      - 'scripts/qa-premium-first-view-v326.py'
       - 'scripts/qa-formation-v314.py'
       - '.github/workflows/visual-qa.yml'
   push:
@@ -51,6 +52,7 @@ jobs:
           done
           # V315: testar primeiro o caso novo; falhar claramente em bloqueios de navegação.
           # Mantém todos os QA anteriores, sem afrouxar assertivas.
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-premium-first-view-v326.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-manager-history-v325.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-formation-v314.py
           timeout --signal=TERM --kill-after=10s 300s python -u scripts/qa-visual-v195.py

@@ -21,6 +21,11 @@ with sync_playwright() as p:
    page.locator('.friends-card .friends-analysis-action').first.click()
    root=page.locator('.ct311-positional')
    root.wait_for(timeout=25000)
+   # V326: a ficha principal é compacta; abrir detalhes preserva integralmente
+   # o mesmo motor, revisões e recomendações testados pelas versões antigas.
+   assert not root.locator('.ct326-deep-dive').evaluate('(e) => e.open')
+   assert 'FICHA EM FOCO' in root.inner_text()
+   root.locator('.ct326-deep-dive > summary').click()
    # V321: relato de slot vazio na conta NÃO valida disponibilidade do
    # segundo slot na edição; ranking segue consultivo em ambas as telas.
    page.locator('#friend-analysis-sections [data-panel="boost"]').click()
@@ -142,6 +147,8 @@ with sync_playwright() as p:
      errorNodes:[...document.querySelectorAll('.ct311-positional')].length
     })"""), 'JS_ERRORS',errors)
     raise
+   assert not main.locator('.ct326-deep-dive').evaluate('(e) => e.open')
+   main.locator('.ct326-deep-dive > summary').click()
    assert 'Posição original: CA' in main.inner_text()
    main.locator('.ct311-controls .ct311-select').select_option('SA')
    assert 'Cenário SA' in main.inner_text()

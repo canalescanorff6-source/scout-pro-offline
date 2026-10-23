@@ -16,7 +16,7 @@ function create(target,model,opts={}){
  if(!target||!model)return null;
  const node=el('section','ct311-positional');
  node.setAttribute('aria-label','Inteligência posicional dinâmica · posição de uso');
- const h=el('h2','ct311-heading','EM QUAL POSIÇÃO ESTA CARTA VAI JOGAR?');
+ const h=el('h2','ct311-heading','Sua ficha, do seu jeito');
  const controls=el('div','ct311-controls');
  const origin=el('div','ct311-origin','Posição original: '+model.position+' · imutável na simulação');
  const label=el('label','ct311-select-label','Usar como: ');
@@ -65,6 +65,7 @@ function create(target,model,opts={}){
  }
  target.append(node);
  let active=null,style=opts.style||'posse',manager=opts.manager||'',alive=true;
+ let advancedOpen=false; // Preferência temporária do painel; não altera dados, builds ou armazenamento.
  // Uma revisão selecionada é somente leitura e isolada por chave de cenário.
  // Trocar MAT/SA ou estilo não altera qualquer snapshot armazenado.
  const viewedRevisions=new Map();
@@ -96,6 +97,10 @@ function create(target,model,opts={}){
  }
  function draw(){
   if(!alive)return;
+  // V326: o toggle do <details> pode ocorrer após o clique e antes da
+  // próxima pintura. Ler o DOM real preserva a abertura ao mudar técnico.
+  const before=details.querySelector('.ct326-deep-dive');
+  if(before)advancedOpen=before.open;
   details.replaceChildren();
   const health=engine.storageHealth(storage());
   if(!health.ok){
@@ -338,7 +343,89 @@ function create(target,model,opts={}){
    }catch(e){comparison.append(el('p','','Comparação indisponível: '+e.message))}
   }else comparison.append(el('p','','A posição atual já é a original. Selecione outra para comparar.'));
   panel.append(comparison);
-  details.append(panel);
+  // V326: primeiro uma decisão legível; toda a engenharia fica acessível
+  // sob demanda, inclusive revisões e comparador. Nenhum dado é descartado.
+  const profilesSummary=host.CRAQUE_MANAGER_FICHAS_V324;
+  let savedProfile=null,profileError='';
+  if(profilesSummary){
+   try{savedProfile=profilesSummary.read(storage(),profilesSummary.fromScenario(scenario,model))}
+   catch(e){profileError=String(e?.message||e)}
+  }
+  const coaching=coach?.name||'Técnico não selecionado';
+  const planned=savedProfile?.train||recorded?.levels||outcome.plan.levels;
+  const ppReady=outcome.plan.status==='hipotese'&&Array.isArray(planned)&&
+   !profileError&&(!profilesSummary||profilesSummary.validTraining(planned,outcome.plan.pp));
+  const familiarityConfirmed=scenario.compatibility.eligible===true;
+  const selectedManager=Boolean(coach?.name&&scenario.manager!=='sem-tecnico');
+  const verified=Boolean(saved?.revision?.approved===true&&!saved.stale);
+  const hero=el('section','ct326-focus');
+  hero.setAttribute('aria-label','Ficha em foco para a posição e o técnico');
+  hero.append(el('div','ct326-kicker','FICHA EM FOCO · '+scenario.position+' · '+scenario.style.toUpperCase()));
+  hero.append(el('h3','ct326-title',verified?'Existe uma aprovação registrada':
+   ppReady?'Proposta para avaliar':'Dados insuficientes para recomendar'));
+  const contextLine=el('p','ct326-subtitle',
+   coaching+' · '+(selectedManager?'técnico catalogado':'escolha um técnico para personalizar')+
+   ' · '+(familiarityConfirmed?'posição documentada':'familiaridade da posição pendente'));
+  hero.append(contextLine);
+  const cards=el('div','ct326-metrics');
+  const metric=(icon,title,value,foot)=>{
+   const item=el('div','ct326-metric');
+   const name=el('span','ct326-metric-title',icon+'  '+title);
+   item.append(name,el('strong','ct326-metric-value',value),el('small','ct326-metric-help',foot));
+   return item;
+  };
+  const candidateNames=(savedProfile?.skills?.length?savedProfile.skills:
+    recommendations.map(displaySkill).filter(Boolean)).slice(0,5);
+  const proposedBooster=savedProfile?.booster||candidate;
+  cards.append(
+   metric('◈','Treinamento',ppReady?outcome.plan.pp+' PP':'Pendente',
+    savedProfile?'Rascunho independente salvo':ppReady?'Distribuição calculada, não homologada':'Confira nível máximo e evidências'),
+   metric('✦','Habilidades',candidateNames.length?candidateNames.length+' candidatas':'A conferir',
+    'Não representa habilidades equipadas'),
+   metric('◇','Ímpeto',proposedBooster?'Sugestão disponível':'Pendente',
+    'Slot e ativação exigem comprovação')
+  );
+  hero.append(cards);
+  if(candidateNames.length)hero.append(el('p','ct326-priority',
+   'Habilidades em análise: '+candidateNames.join(' · ')));
+  if(proposedBooster)hero.append(el('p','ct326-priority',
+   'Ímpeto candidato: '+proposedBooster+' · não equipado automaticamente'));
+  if(profileError)hero.append(el('p','ct311-alert','Perfil indisponível: '+profileError+
+   '. O histórico original permanece preservado.'));
+  if(!familiarityConfirmed)hero.append(el('p','ct326-caution',
+   'A posição escolhida não possui familiaridade confirmada. Esta ficha é uma simulação.'));
+  else if(!selectedManager)hero.append(el('p','ct326-caution',
+   'Escolha o técnico e sua edição para obter uma ficha realmente contextual.'));
+  else hero.append(el('p','ct326-clarification',verified?
+   'Aprovação registrada no histórico; ainda não comprova equipamento no jogo.':
+   'É uma proposta consultiva. Nenhum treinamento, habilidade ou ímpeto é aplicado automaticamente.'));
+  const deep=el('details','ct326-deep-dive');
+  deep.open=advancedOpen;
+  deep.append(el('summary','','Ver análise completa · PP, habilidades, ímpetos e histórico'),panel);
+  deep.addEventListener('toggle',()=>{
+   // Eventos de toggle são assíncronos; somente a instância mais recente conta.
+   if(!deep.isConnected)return;
+   advancedOpen=deep.open;
+   node.classList.toggle('ct326-expanded',advancedOpen);
+  });
+  const view=el('button','ct326-primary-action','Ver ficha completa →');
+  view.type='button';
+  view.addEventListener('click',()=>{
+   deep.open=true;advancedOpen=true;node.classList.add('ct326-expanded');
+   deep.scrollIntoView?.({block:'nearest',behavior:'smooth'});
+  });
+  const alternative=el('button','ct326-secondary-action','Comparar alternativas');
+  alternative.type='button';
+  alternative.addEventListener('click',()=>{
+   deep.open=true;advancedOpen=true;node.classList.add('ct326-expanded');
+   comparison.open=true;
+   comparison.scrollIntoView?.({block:'nearest',behavior:'smooth'});
+  });
+  const controlRow=el('div','ct326-action-row');
+  controlRow.append(view,alternative);
+  hero.append(controlRow);
+  details.append(hero,deep);
+  node.classList.toggle('ct326-expanded',advancedOpen);
   save.disabled=false;
   status.textContent=scenario.status+' · '+scenario.position+' / '+scenario.style+
    ' · dados-base preservados'+(saved&&!saved.stale?' · revisão salva restaurada':'');

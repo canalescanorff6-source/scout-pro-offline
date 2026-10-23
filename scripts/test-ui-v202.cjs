@@ -21,7 +21,9 @@ assert(sw.includes("'./scout-finish-v202.css'")&&sw.includes('v202-first-viewpor
 assert(stamp.includes("'scout-finish-v202.css'"));
 const html=read('web/index.html');
 for(const href of ['#catalogo','revisao-impetos-v103.html','meu-time-duas-formacoes-v177.html'])
- assert(bridge.includes('scout-ui-v189.js')&&read('web/scout-ui-v189.js').includes(href),'Atalho deve continuar');
+ assert(bridge.includes('scout-ui-v189.js')&&
+   (read('web/scout-ui-v189.js').includes(href)||html.includes('href="'+href+'"')),
+  'Atalho ou ferramenta avançada deve continuar: '+href);
 assert.equal((html.match(/class="player-card"/g)||[]).length,246);
 assert.equal(fs.readdirSync(path.join(root,'web/fichas')).filter(x=>x.endsWith('.html')).length,246);
 const old=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
