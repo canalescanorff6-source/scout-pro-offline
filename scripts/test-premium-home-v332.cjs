@@ -7,9 +7,9 @@ const root=path.join(__dirname,'..');
 const html=fs.readFileSync(path.join(root,'web/index.html'),'utf8');
 const js=fs.readFileSync(path.join(root,'web/premium.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'web/premium.css'),'utf8');
-const section=html.match(/<div class="hero-actions">([\\s\\S]*?)<\\/div>/);
+const section=html.match(/<div class="hero-actions">([\s\S]*?)<\/div>/);
 assert(section,'Área de atalhos não encontrada');
-const links=[...section[1].matchAll(/<a\\b[^>]*href="([^"]+)"/g)].map(m=>m[1]);
+const links=[...section[1].matchAll(/<a\b[^>]*href="([^"]+)"/g)].map(m=>m[1]);
 assert(links.length>4,'A página deve manter os atalhos avançados');
 for(const destination of ['#catalogo','meu-time-duas-formacoes-v177.html','outros-elencos-v227.html','meu-time-testes-v219.html']){
  assert(links.includes(destination),'Atalho principal ausente: '+destination);
