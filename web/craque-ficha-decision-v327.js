@@ -157,17 +157,25 @@
     'precisam de confirmação independente.'
   });
  }
- function diff(base,alternative,categoryNames=[]){
+ // V337: custo marginal de PP, sem inferir aumento de atributos reais.
+ function diff(base,alternative,categoryNames=[],tactical=null){
   if(!base?.levels||!alternative?.levels||base.pp!==alternative.pp)return [];
+  const canCost=typeof tactical?.ppCost==='function'&&
+   typeof tactical?.valid==='function'&&
+   tactical.valid(base.levels)&&tactical.valid(alternative.levels);
   return base.levels.flatMap((level,i)=>{
-   const difference=alternative.levels[i]-level;
-   return difference?[Object.freeze({
+   const after=alternative.levels[i],delta=after-level;
+   if(!delta)return [];
+   const beforePP=canCost?tactical.ppCost(level):null;
+   const afterPP=canCost?tactical.ppCost(after):null;
+   return [Object.freeze({
     name:str(categoryNames[i])||'Grupo '+(i+1),
-    from:level,to:alternative.levels[i],delta:difference
-   })]:[];
+    from:level,to:after,delta,
+    beforePP,afterPP,deltaPP:canCost?afterPP-beforePP:null
+   })];
   });
  }
- function compare(selected,candidates,categories){
+ function compare(selected,candidates,categories,tactical=null){
   if(!selected||!MODES.includes(selected.style)||!Array.isArray(candidates))
    throw Error('Comparação sem ficha selecionada');
   const byStyle=new Map();
@@ -186,12 +194,26 @@
   // A posição do estilo atual é explícita; não produzir "campeão" genérico.
   const rows=MODES.map(id=>{
    const item=byStyle.get(id),selectedStyle=id===selected.style;
-   const changes=diff(selected,item,categories);
-   const major=changes.slice().sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta)||
+   const changes=diff(selected,item,categories,tactical);
+   const costReady=Boolean(typeof tactical?.total==='function'&&
+    typeof tactical?.valid==='function'&&
+    tactical.valid(selected.levels)&&tactical.valid(item.levels)&&
+    selected.pp===item.pp&&Number.isInteger(item.pp));
+   const usedPP=costReady?tactical.total(item.levels):null;
+   const referenceUsedPP=costReady?tactical.total(selected.levels):null;
+   const addedPP=costReady?changes.reduce((n,c)=>n+Math.max(0,c.deltaPP),0):null;
+   const removedPP=costReady?changes.reduce((n,c)=>n+Math.max(0,-c.deltaPP),0):null;
+   const major=changes.slice().sort((a,b)=>
+    Math.abs(b.deltaPP??b.delta)-Math.abs(a.deltaPP??a.delta)||
     a.name.localeCompare(b.name,'pt-BR')).slice(0,3);
    return Object.freeze({
     style:id,label:LABEL[id],selected:selectedStyle,
     title:item.title,kind:item.kind,source:item.source,pp:item.pp,
+    usedPP,remainingPP:costReady?item.pp-usedPP:null,
+    referenceUsedPP,addedPP,removedPP,
+    redistributedPP:costReady?Math.min(addedPP,removedPP):null,
+    netDeltaPP:costReady?usedPP-referenceUsedPP:null,
+    costBasis:costReady?'custo_progressivo_exato':'indisponivel',
     sameTraining:Boolean(selected.levels&&item.levels&&changes.length===0&&
      selected.pp===item.pp),
     changes:Object.freeze(changes),major:Object.freeze(major),
@@ -208,8 +230,9 @@
   return Object.freeze({
    selectedStyle:selected.style,
    rows:Object.freeze(rows),
-   statement:'Não existe evidência suficiente para eleger uma melhor ficha universal. '+
-    'Compare as diferenças e mantenha a que corresponde ao técnico, posição e tática usados.'
+   statement:'Os custos de PP seguem a curva progressiva de treinamento e NÃO indicam '+
+    'ganhos em atributos finais nem superioridade em gameplay. Compare as diferenças '+
+    'da mesma edição, posição e técnico, sem trocar builds aprovadas automaticamente.'
   });
  }
  return Object.freeze({MODES,LABEL,validPlan,validateLevels,validDraft,resolve,equipmentSummary,explainEquipment,diff,compare});
