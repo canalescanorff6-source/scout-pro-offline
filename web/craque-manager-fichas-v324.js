@@ -129,6 +129,42 @@ function auditEquipmentSelection(skills=[],booster='',native=[],equipped=[],fixe
    'vagas livres, habilidades equipadas, ímpeto adicional ou desempenho em partida.'
  });
 }
+// V342: pré-verificação PURA para o estado atual do editor.
+ // Nenhuma aprovação/equipamento é inferida da presença de uma candidata.
+function reviewDraftReadiness({train,budget,skills=[],booster='',native=[],
+ equipped=[],fixedBooster='',boosterSlot='pendente'}={}){
+ const spent=Array.isArray(train)&&train.length===10&&
+  train.every(x=>Number.isInteger(x)&&x>=0&&x<=20)?
+   train.reduce((n,x)=>n+ppCost(x),0):null;
+ const budgetOk=Number.isInteger(budget)&&budget>=0&&budget<=250;
+ const ppReady=budgetOk&&validTraining(train,budget);
+ const issues=[];
+ if(!ppReady)issues.push('PP da ficha inválidos ou incompatíveis com o orçamento comprovado.');
+ let audit=null,skillCount=0;
+ try{
+  const selected=cleanSkills(skills);
+  skillCount=selected.length;
+  if(new Set(selected.map(skillToken)).size!==selected.length)
+   issues.push('Há habilidades com nomes equivalentes após normalizar acentos e espaços.');
+  audit=auditEquipmentSelection(selected,booster,native,equipped,fixedBooster,boosterSlot);
+  if(audit.hasSkillConflict)issues.push('Habilidade já consta nas listas cadastradas: '+
+   audit.conflicts.map(x=>x.name).join(' · ')+'. Desmarque para registrar nova revisão.');
+ }catch(e){issues.push('Seleção de habilidades inválida: '+String(e.message||e));}
+ const advisories=[];
+ if(audit?.fixedBoosterSame)advisories.push(
+  'O ímpeto candidato coincide com o fixo informado. Verifique os slots no jogo.');
+ if(normalize(booster)&&(!audit?.slotEvidence||
+   /^(pendente|não informado|nao informado|indefinido)$/i.test(audit.slotEvidence)))
+  advisories.push('Não há comprovação de slot livre: ímpeto continua somente candidato.');
+ advisories.push('Nenhuma habilidade, ímpeto ou treino é equipado por este salvamento.');
+ return Object.freeze({
+  canSave:issues.length===0,
+  status:!ppReady?'pp_pendente':issues.length?'revisar_habilidades':'pronto_para_rascunho',
+  budget:budgetOk?budget:null,spent,remainingPP:spent!==null&&budgetOk?budget-spent:null,
+  skillCount,issues:Object.freeze(issues),advisories:Object.freeze(advisories),
+  audit,source:'listas_informadas_na_mesma_carta_sem_confirmacao_de_gameplay'
+ });
+}
 function validateRecord(row,c){
  if(!row||typeof row!=='object'||row.schema!==SCHEMA||
   row.key!==key(c)||row.sourceSignature!==c.sourceSignature||
@@ -191,5 +227,5 @@ function deleteDraft(store,c){
 }
 return Object.freeze({PREFIX,SCHEMA,STYLES,POSITIONS,validateContext,
  fromScenario,withStyle,withManager,withPosition,key,ppCost,validTraining,
- cleanSkills,skillName,skillToken,reviewSkillCandidates,auditEquipmentSelection,readAll,read,save,deleteDraft});
+ cleanSkills,skillName,skillToken,reviewSkillCandidates,auditEquipmentSelection,reviewDraftReadiness,readAll,read,save,deleteDraft});
 });
