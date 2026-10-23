@@ -3,6 +3,7 @@ const {contextBridge,ipcRenderer}=require('electron');
 contextBridge.exposeInMainWorld('scoutDesktop',Object.freeze({
   version:()=>ipcRenderer.invoke('scout:version'),
   checkUpdates:()=>ipcRenderer.invoke('scout:check-updates'),
+  updateStatus:()=>ipcRenderer.invoke('scout:update-status'),
   installDownloadedUpdate:()=>ipcRenderer.invoke('scout:install-downloaded'),
   saveJson:(fileName,content)=>ipcRenderer.invoke('scout:save-json',{fileName,content}),
   openJson:()=>ipcRenderer.invoke('craque:open-json'),
