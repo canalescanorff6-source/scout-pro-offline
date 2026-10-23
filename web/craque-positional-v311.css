@@ -66,3 +66,46 @@
 .ct325-saved-skill{color:#b6f8de}
 .ct325-skill-warning{color:#ffd29b;font-weight:750}
 .ct324-skill-option:has(input:disabled){opacity:.62}
+
+/* V326 — Craque Tático Premium: decisão primeiro, engenharia a um toque. */
+.ct311-positional{background:linear-gradient(145deg,#122537,#0b1928 78%);border:1px solid rgba(194,174,131,.38);box-shadow:0 14px 34px #030a1490}
+.ct311-heading{font-size:clamp(21px,2.5vw,29px);letter-spacing:-.035em;line-height:1.15;color:#f6f1e6;font-weight:850}
+.ct311-origin{background:#0b1c2a;border:1px solid #39546a;color:#bfd0da}
+.ct311-status{font-size:12px;color:#b9ccd7}
+.ct326-focus{background:radial-gradient(ellipse at 98% 3%,rgba(195,163,94,.12),transparent 52%),linear-gradient(145deg,#142f41,#0d1e2e 85%);border:1px solid rgba(210,182,124,.42);border-radius:20px;padding:clamp(16px,3.2vw,25px);box-shadow:0 8px 22px #01060c60;margin:16px 0 10px;min-width:0}
+.ct326-kicker{font-size:10px;letter-spacing:.13em;line-height:1.4;color:#e9c983;font-weight:800}
+.ct326-title{font-size:clamp(19px,3.1vw,26px);letter-spacing:-.035em;line-height:1.2;margin:9px 0 4px;color:#fff9ee}
+.ct326-subtitle{font-size:13px;color:#bfccd7;line-height:1.55;margin:0 0 16px}
+.ct326-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;min-width:0}
+.ct326-metric{background:#071827b8;border:1px solid rgba(148,177,187,.25);padding:13px;min-width:0;display:flex;flex-direction:column;gap:8px;border-radius:13px}
+.ct326-metric-title{font-size:12px;color:#d9c58e;font-weight:750}
+.ct326-metric-value{font-size:clamp(15px,2vw,19px);color:#fcf7ed;line-height:1.18;overflow-wrap:anywhere;letter-spacing:-.025em}
+.ct326-metric-help{font-size:11px;line-height:1.45;color:#adc3cc;overflow-wrap:anywhere}
+.ct326-priority{font-size:12px;line-height:1.55;color:#d8e5e8;margin:11px 0 0;overflow-wrap:anywhere}
+.ct326-clarification,.ct326-caution{font-size:12px;line-height:1.55;padding:10px 12px;margin:14px 0 0;border-radius:10px;border-left:3px solid #baa26c;background:#182b3b;color:#d7e4e8}
+.ct326-caution{border-color:#e4b474;background:#392c25;color:#ffdfaa}
+.ct326-action-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}
+.ct326-primary-action,.ct326-secondary-action{min-height:46px;padding:12px 17px;border-radius:12px;cursor:pointer;font:inherit;font-weight:800;font-size:13px;line-height:1.2;transition:background-color .15s,border-color .15s;white-space:normal}
+.ct326-primary-action{border:1px solid #ead09d;color:#101f2c;background:#e7cb91}
+.ct326-primary-action:hover{background:#ffe2a5}
+.ct326-secondary-action{border:1px solid #547084;background:#10283a;color:#f4e7c6}
+.ct326-secondary-action:hover{background:#1a4058}
+.ct326-primary-action:focus-visible,.ct326-secondary-action:focus-visible,.ct326-deep-dive>summary:focus-visible{outline:3px solid #fff2bc;outline-offset:3px}
+.ct326-deep-dive{border:1px solid #4a6171;border-radius:13px;padding:0;margin:14px 0;background:#0f2231}
+.ct326-deep-dive>summary{cursor:pointer;min-height:48px;padding:14px 16px;display:flex;align-items:center;color:#e8dbbc;font-size:13px;font-weight:750;list-style:none;line-height:1.3}
+.ct326-deep-dive>summary::-webkit-details-marker{display:none}
+.ct326-deep-dive>summary::after{content:'+';margin-left:auto;color:#dfc17e;font-size:21px;font-weight:400}
+.ct326-deep-dive[open]>summary::after{content:'−'}
+.ct326-deep-dive[open]>.ct311-scenario{padding:2px 12px 14px}
+.ct311-positional:not(.ct326-expanded)>.ct311-actions{display:none}
+.ct326-deep-dive[open] .ct324-profile{border-color:#8b967c}
+@media(max-width:690px){
+ .ct326-metrics{grid-template-columns:1fr;gap:8px}
+ .ct326-metric{display:grid;grid-template-columns:112px minmax(0,1fr);gap:4px 10px;align-items:center;padding:10px 12px}
+ .ct326-metric-title{grid-row:span 2;line-height:1.3}
+ .ct326-metric-help{grid-column:2}
+ .ct326-action-row{display:grid;grid-template-columns:1fr}
+ .ct326-focus{border-radius:16px;padding:15px}
+ .ct326-title{font-size:20px}
+}
+@media(prefers-reduced-motion:reduce){.ct326-primary-action,.ct326-secondary-action{transition:none}}
