@@ -6,7 +6,7 @@ const css=fs.readFileSync(path.join(base,'web/app-bridge.css'),'utf8');
 const flow=fs.readFileSync(path.join(base,'.github/workflows/release.yml'),'utf8');
 const config=JSON.parse(fs.readFileSync(path.join(base,'capacitor.config.json'),'utf8'));
 assert.equal(config.appId,'br.com.scoutpro.offline','Identificador Android permanente');
-for(const s of ["btn.textContent='Atualizar APK'","btn.textContent='Atualizar Windows'","function openAndroidUpdater()","androidPanel.showModal()","scout-android-installed","scout-android-newest","scout-android-check","scout-android-download","scout-android-backup","scout-android-close","setAndroidDownload(null)","showAndroidStatus(msg)","Baixar APK oficial","'https://api.github.com/repos/'+repo+'/releases?per_page=100'"])
+for(const s of ["btn.textContent='Atualizar APK'","btn.textContent=ready?'Instalar atualização':'Atualizar Windows'","function openAndroidUpdater()","androidPanel.showModal()","scout-android-installed","scout-android-newest","scout-android-check","scout-android-download","scout-android-backup","scout-android-close","setAndroidDownload(null)","showAndroidStatus(msg)","Baixar APK oficial","'https://api.github.com/repos/'+repo+'/releases?per_page=100'"])
  assert(js.includes(s),'Controle de atualização ausente: '+s);
 assert(js.includes("if(!androidDownload)return;"),'Download sem URL validada');
 assert(js.includes("if(!confirm('Antes de instalar"),'Confirmar download e backup');
