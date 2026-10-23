@@ -16,6 +16,7 @@
 6. **Visual compartilhado:** paleta verde-profundo com superfícies mais sóbrias, tipografia responsiva, foco visível, cartões com hierarquia, navegação sem excesso de bordas e três botões de decisão com áreas de toque grandes. Redução de movimento respeitada.
 7. **Bundle único:** novos assets são adicionados ao `app-bridge.js`, `sw.js` e ao fingerprint de build para Windows/Android/PWA; cache offline invalidado.
 8. **Modo avançado preservado:** acesso explícito às comparações e às análises técnicas já existentes; nenhuma build, equipe, habilidade equipada ou ímpeto fixo modificado.
+9. **Filtro de estilos do catálogo corrigido:** `position-order.js` era executado ANTES de carregar qualquer atributo `data-style` nas cartas e abortava com `Scout PRO: carta sem estilo para filtro #1`. Agora cria o seletor antes de `premium.js`, carrega os 246 registros V69, vincula por número + nome original, publica somente estilos cadastrados e mantém pesquisa/filtragem disponíveis quando a fonte estiver indisponível. Sem fabricar estilos nem depender de Overall.
 
 ## Critério honesto para “qual ficha é a melhor?”
 - **Build registrada:** é a referência segura até haver evidência comparativa, não confirmação automática de meta.
