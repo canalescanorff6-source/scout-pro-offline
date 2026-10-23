@@ -97,6 +97,10 @@ function create(target,model,opts={}){
  }
  function draw(){
   if(!alive)return;
+  // V326: o toggle do <details> pode ocorrer após o clique e antes da
+  // próxima pintura. Ler o DOM real preserva a abertura ao mudar técnico.
+  const before=details.querySelector('.ct326-deep-dive');
+  if(before)advancedOpen=before.open;
   details.replaceChildren();
   const health=engine.storageHealth(storage());
   if(!health.ok){
