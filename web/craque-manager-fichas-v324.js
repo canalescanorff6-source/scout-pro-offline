@@ -194,6 +194,10 @@ function save(store,c,{train,skills=[],booster='',source='Edição manual de cen
  validateContext(c);
  if(!validTraining(train,c.budget))throw Error('Distribuição excede PP ou contém níveis inválidos');
  const names=cleanSkills(skills),boost=normalize(booster);
+ // V342: bloquear novas revisões com nomes equivalentes (acentos/espaços),
+ // sem invalidar o formato ou apagar revisões legadas previamente salvas.
+ if(new Set(names.map(skillToken)).size!==names.length)
+  throw Error('Habilidades com nomes equivalentes; revise a seleção antes de salvar.');
  if(boost.length>100)throw Error('Ímpeto candidato inválido');
  if(typeof source!=='string'||source.length>120)throw Error('Fonte da proposta inválida');
  const versions=readAll(store,c); // erro em dado corrompido proíbe sobrescrita
