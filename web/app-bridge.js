@@ -766,7 +766,14 @@ if(document.body.dataset.page==='catalog'||document.body.dataset.page==='detail'
  ct249Script.defer=true;document.head.appendChild(ct249Script);
 }
 
-window.addEventListener('craque:backup-error',event=>{
+// V326: navegação simplificada e uma orientação principal acima das simulações.
+ // Carregado uma única vez por app-bridge, inclusive em Outros Elencos.
+ const ct326Css=document.createElement('link');ct326Css.rel='stylesheet';
+ ct326Css.href=v189Root+'craque-ux-v326.css';document.head.appendChild(ct326Css);
+ const ct326Script=document.createElement('script');ct326Script.src=v189Root+'craque-ux-v326.js';
+ ct326Script.defer=true;document.head.appendChild(ct326Script);
+ 
+ window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
 });
