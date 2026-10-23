@@ -8,6 +8,7 @@ const A=host?.CRAQUE_MANAGERS_V302||(typeof module==='object'?require('./craque-
 const FAVORITES='scoutpro:v307:manager-favorites',OWNED='scoutpro:v307:manager-owned';
 const DEFAULT='scoutpro:v307:default-manager';
 const PORTRAIT='scoutpro:v307:manager-portrait:';
+const KOVAC_ID='CT-MGR-071';
 const CATEGORIES=Object.freeze({elite90:'90 · excelência',elite89:'89 · elite',strong:'85–88 · alternativa',low:'abaixo de 85 · atenção'});
 function grade(n){return n===90?'elite90':n>=89?'elite89':n>=60&&n<85?'low':n>=85?'strong':'low'}
 function initials(name){return String(name||'?').trim().split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()}
@@ -28,7 +29,7 @@ function pick(items,{scope='featured',query='',style='',min=0,dual=false,owned=n
  const curated=new Set(A?.CURATED_IDS||[]);
  const needle=String(query).trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
  return items.filter(c=>{
-  if(scope==='featured'&&!curated.has(c.catalog_id))return false;
+  if(scope==='featured'&&!curated.has(c.catalog_id)&&c.catalog_id!==KOVAC_ID)return false;
   if(scope==='owned'&&!owned.has(c.catalog_id))return false;
   if(scope==='favorites'&&!favorites.has(c.catalog_id))return false;
   const text=[c.nome,c.versao_lancamento,c.catalog_id].join(' ').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
@@ -39,6 +40,12 @@ function pick(items,{scope='featured',query='',style='',min=0,dual=false,owned=n
   else if(!values.some(n=>n>=Number(min)))return false;
   return true;
  }).sort((a,b)=>{
+  // O novo técnico principal deve ficar visível antes da seleção histórica.
+  // Não altera a composição dos 22 históricos; somente ordenação visual.
+  if(scope==='featured'){
+   const primaryA=Number(a.catalog_id===KOVAC_ID),primaryB=Number(b.catalog_id===KOVAC_ID);
+   if(primaryA!==primaryB)return primaryB-primaryA;
+  }
   const x=Number(curated.has(a.catalog_id)),y=Number(curated.has(b.catalog_id));
   if(x!==y)return y-x;
   const max=c=>Math.max(...A.STYLES.map(s=>A.proficiency(c,s.id)??0));
@@ -133,7 +140,7 @@ function uploadPortrait(c){
  host.document.body.append(input);input.click();
 }
 function makeCard(c,owned,favs){
- const node=el('article','hub-card');node.dataset.curated=String(A.CURATED_IDS.includes(c.catalog_id));
+ const node=el('article','hub-card');node.dataset.curated=String(A.CURATED_IDS.includes(c.catalog_id)||c.catalog_id===KOVAC_ID);
  const top=el('div','hub-top'),picture=el('div','hub-photo');
  const imgData=portraitFor(c.catalog_id);
  if(imgData){const img=el('img');img.src=imgData;img.alt='Imagem fornecida pelo usuário para '+c.nome;picture.append(img)}
@@ -141,6 +148,7 @@ function makeCard(c,owned,favs){
  const desc=el('div');desc.append(el('h2','',c.nome),
   el('span','hub-sub',(c.versao_lancamento||'data pendente')+' · '+c.catalog_id));
  const pills=el('div','hub-chips');
+ if(c.catalog_id===KOVAC_ID)pills.append(el('span','hub-chip','TÉCNICO PRINCIPAL · POSSE 90'));
  if(A.CURATED_IDS.includes(c.catalog_id))pills.append(el('span','hub-chip','SELEÇÃO COMPETITIVA'));
  const strong=A.competitiveStyles(c,89);
  if(strong.length>=2)pills.append(el('span','hub-chip',strong.length+' ESTILOS 89+'));
@@ -172,8 +180,9 @@ function makeCard(c,owned,favs){
  }));
  node.append(actions);
  const detail=el('details','hub-details');detail.append(el('summary','','Bônus · combinações · origem'));
- detail.append(el('h3','','Bônus de técnico divulgados'));
- detail.append(el('p','',c.boosters_EN?.length?c.boosters_EN.join(' · '):'Não documentados nesta edição.'));
+ if(c.afinidade_PTBR)detail.append(el('p','','Afinidade para comandar: '+c.afinidade_PTBR));
+  detail.append(el('h3','','Bônus de técnico divulgados'));
+ detail.append(el('p','',(c.boosters_PTBR||c.boosters_EN)?.length?(c.boosters_PTBR||c.boosters_EN).join(' · '):'Não documentados nesta edição.'));
  detail.append(el('h3','','Link-Up Play e ativação'));
  if(!c.ativacao_das_combinacoes?.length)
   detail.append(el('p','','Combinações não documentadas para esta edição.'));
@@ -213,7 +222,7 @@ async function start(){
  try{
   const data=await A.load();full=data.tecnicos;
   $('hub-count-total').textContent=String(full.length);
-  $('hub-count-featured').textContent=String(A.curatedManagers().length);
+  $('hub-count-featured').textContent=String(pick(full,{scope:'featured'}).length);
   render();
  }catch(e){feedbackMessage('Erro de carregamento do catálogo offline: '+String(e.message||e))}
 }

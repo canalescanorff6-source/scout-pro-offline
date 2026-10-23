@@ -48,3 +48,14 @@
 .ct311-position-list li[data-confidence="documentado"]{background:#223b35;border-color:#88d6ac}
 @media(max-width:570px){.ct311-position-list{grid-template-columns:1fr 1fr}}
 @media(max-width:345px){.ct311-position-list{grid-template-columns:1fr}}
+
+/* V324 — ficha consultiva independente, confortável em Android e Windows. */
+.ct324-profile{border:1px solid rgba(110,219,180,.68);background:linear-gradient(145deg,rgba(19,68,57,.92),rgba(20,36,50,.92))}
+.ct324-profile h3{color:#affad5}
+.ct324-skill-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;margin:12px 0}
+.ct324-skill-option{min-height:44px;display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;border:1px solid rgba(123,185,163,.5);background:rgba(8,37,39,.56);font-size:13px;line-height:1.35;cursor:pointer}
+.ct324-skill-option input{width:18px;height:18px;accent-color:#5cdeb6;flex-shrink:0}
+.ct324-booster{width:100%;max-width:410px;margin:6px 0 14px}
+.ct324-profile .ct311-button{min-height:44px;background:linear-gradient(130deg,#91f2ce,#68d4d4);border-color:#96fce0}
+.ct324-profile .ct311-button:disabled{background:rgba(95,118,111,.3);color:#c2cacb}
+@media(max-width:520px){.ct324-skill-options{grid-template-columns:1fr}.ct324-profile .ct311-select-label{display:block}}

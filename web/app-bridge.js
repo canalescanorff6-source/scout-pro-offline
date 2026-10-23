@@ -102,7 +102,12 @@ if(inCard){
 // V218: a referência de treino no topo deixa de ser uma tabela somente de leitura.
 if(inCard){
  const css218=document.createElement('link');css218.rel='stylesheet';css218.href=v189Root+'scout-training-unified-v218.css';document.head.appendChild(css218);
- const js218=document.createElement('script');js218.src=v189Root+'scout-training-unified-v218.js';js218.defer=true;document.head.appendChild(js218);
+ const js324=document.createElement('script');js324.src=v189Root+'craque-manager-fichas-v324.js';
+ const loadEditor=()=>{
+  const js218=document.createElement('script');js218.src=v189Root+'scout-training-unified-v218.js';js218.defer=true;document.head.appendChild(js218);
+ };
+ js324.onload=loadEditor;js324.onerror=loadEditor;
+ document.head.appendChild(js324);
 }
 // V220: uma ficha principal, cinco estilos, com o motor antes da interface.
 if(inCard){

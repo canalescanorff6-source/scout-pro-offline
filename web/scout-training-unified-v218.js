@@ -77,6 +77,19 @@ function mount(doc){
  let activeTactic='posse',styleLabel='Posse de Bola',suggested=null;
  let autoPreview=!saved&&!original,referenceOnly=false;
  const keyForTactic=()=>activeTactic==='posse'?storageKey:storageKey+':tactic:'+activeTactic;
+ // V324: o editor principal passa a persistir na mesma identidade do
+ // painel posicional, incluindo versão EXATA do técnico e posição de uso.
+ const profiles=host.CRAQUE_MANAGER_FICHAS_V324;
+ let activeProfileContext=null,profileError='';
+ const contextForTactic=()=>activeProfileContext&&profiles?
+  profiles.withStyle(activeProfileContext,activeTactic):null;
+ const readProfile=()=>{
+  const context=contextForTactic();
+  if(!context)return null;
+  const record=profiles.read(host.localStorage,context);
+  return record?{levels:record.train.slice(),source:record.source,skills:record.skills,
+   booster:record.booster}:null;
+ };
  const head=panel.querySelector('#scout-v208-heading');
  if(head){
   const prefix=head.querySelector('.scout-v208-scenario');
@@ -118,13 +131,36 @@ function mount(doc){
   if(localPPMismatch())return false;
   if(!valid(current))return false;
   try{
+   const context=contextForTactic();
+   if(context){
+    const previous=profiles.read(host.localStorage,context);
+    profiles.save(host.localStorage,context,{
+     train:current.slice(),skills:previous?.skills||[],booster:previous?.booster||'',
+     source:'V324 · Rascunho PP de '+activeTactic
+    });
+    profileError='';
+    host.dispatchEvent(new host.CustomEvent('scoutpro:v324:profile-saved',
+     {detail:{key:profiles.key(context)}}));
+    return true;
+   }
+   // Sem técnico cadastrado o editor continua legado, sem migrar
+   // automaticamente treino histórico para uma edição não comprovada.
    host.localStorage.setItem(keyForTactic(),JSON.stringify({train:current.slice(),source:'V220 · '+sourceLabel,updated:new Date().toISOString(),id,card:filename,tactic:activeTactic}));
    return true;
-  }catch(_e){return false}
+  }catch(e){profileError=String(e.message||e);return false}
  }
  function notify(mode){
-  if(activeTactic==='posse')host.dispatchEvent(new host.CustomEvent('scoutpro:training-edit-v218',{detail:{cap:capture,card_id:id,levels:current.slice(),mode}}));
-  host.dispatchEvent(new host.CustomEvent('scoutpro:training-updated-v220',{detail:{cap:capture,card_id:id,tactic:activeTactic,levels:current.slice(),mode}}));
+  // Não repassar cenários por técnico ao laboratório legado sem contexto:
+  // isso poderia sobrescrever o rascunho de outro treinador.
+  const context=contextForTactic();
+  if(!context&&activeTactic==='posse')host.dispatchEvent(new host.CustomEvent('scoutpro:training-edit-v218',{detail:{cap:capture,card_id:id,levels:current.slice(),mode}}));
+  if(context&&activeTactic==='posse'&&valid(current))
+   host.dispatchEvent(new host.CustomEvent('scoutpro:training-preview-v324',
+    {detail:{cap:capture,card_id:id,levels:current.slice(),manager:context.manager,position:context.position,mode}}));
+  host.dispatchEvent(new host.CustomEvent('scoutpro:training-updated-v220',{detail:{
+   cap:capture,card_id:id,tactic:activeTactic,levels:current.slice(),mode,
+   manager:context?.manager||null,position:context?.position||null,
+   contextual:Boolean(context)}}));
  }
  function setDelta(i,delta){
   if(localPPMismatch())return;
@@ -138,7 +174,9 @@ function mount(doc){
  }
  function restore(){
   if(localPPMismatch())return;
-  try{host.localStorage.removeItem(keyForTactic())}catch(_e){}
+  // Reset por técnico não apaga histórico independente; o usuário visualiza
+  // a referência, mantendo as revisões V324 consultáveis.
+  if(!contextForTactic())try{host.localStorage.removeItem(keyForTactic())}catch(_e){}
   if(activeTactic==='posse'){
    current=original?original.slice():null;
    custom=false;editing=false;autoPreview=false;referenceOnly=false;sourceLabel='';
@@ -163,7 +201,9 @@ function mount(doc){
    spent===null?'DISTRIBUIÇÃO PENDENTE':
    custom?(activeTactic==='posse'?'SIMULAÇÃO PESSOAL':'HIPÓTESE / RASCUNHO TÁTICO'):
    officialValid?'REGISTRO DA CARTA':'PRÉVIA SEM HOMOLOGAÇÃO')+
-   ' · '+(spent===null?'—':spent)+' / '+budget+' PP'+(sourceLabel?' · '+sourceLabel:'');
+   ' · '+(spent===null?'—':spent)+' / '+budget+' PP'+
+   (contextForTactic()?' · '+activeProfileContext.manager+' · '+activeProfileContext.position:'')+
+   (sourceLabel?' · '+sourceLabel:'');
   tag.dataset.mode=clash?'blocked':referenceOnly?'pending':custom?'draft':officialValid?'registered':'pending';
   if(clash)tag.textContent='PP DIVERGENTES: '+clash.pp+' PP conferidos (nível '+clash.level+
    ') contra '+budget+' PP do catálogo. Não editar antes de corrigir.';
@@ -173,7 +213,8 @@ function mount(doc){
   btnEdit.disabled=Boolean(clash);
   if(!valid(current))btnEdit.disabled=true;
   if(clash)btnReset.disabled=true;
-  btnReset.textContent=activeTactic==='posse'?'Restaurar treino registrado':'Restaurar hipótese inicial';
+  btnReset.textContent=contextForTactic()?'Ver referência (preserva revisões)':
+   activeTactic==='posse'?'Restaurar treino registrado':'Restaurar hipótese inicial';
   const headerText=head?.querySelector('span:last-child');if(headerText)headerText.textContent=activeTactic==='posse'?(officialValid?'Treino registrado · Posse':'Treino em revisão · Posse'):'Prévia experimental · '+styleLabel;
   compare.hidden=activeTactic!=='posse';
   if(readNote&&clash)readNote.textContent='REVISÃO OBRIGATÓRIA: PP divergentes nesta edição. Não use nem edite esta distribuição até corrigi-la.';
@@ -214,7 +255,13 @@ function mount(doc){
   const proposal=info.proposedLevels;
   suggested=valid(proposal)&&total(proposal)===budget?proposal.slice():null;
   let savedForStyle=null;
-  try{
+  if(activeProfileContext&&profiles){
+   try{
+    activeProfileContext=profiles.withStyle(activeProfileContext,activeTactic);
+    savedForStyle=readProfile();
+    profileError='';
+   }catch(e){profileError=String(e.message||e)}
+  }else try{
    const raw=JSON.parse(host.localStorage?.getItem(keyForTactic())||'null');
    savedForStyle=readSaved(raw,id,filename,budget);
   }catch(_e){}
@@ -267,11 +314,55 @@ function mount(doc){
    ' PP). Não homologada e não aplicada no jogo.':
    'Prévia carregada, mas armazenamento indisponível. Nenhum treino da carta foi alterado.';
  });
+ // V324: a tela posicional transmite a identidade EXATA (acervo, edição,
+ // técnico, posição, tática) ao editor e recupera apenas aquela revisão.
+ function applyContext(context){
+  if(!profiles||!context||context.collection!=='minhas-246'||
+     context.cardId!==id||context.cardKey!==capture+'@'+id)return;
+  // O painel V311 redesenha-se após cada rascunho; mesma chave não é
+  // troca de técnico/posição e NUNCA deve interromper a edição de PP.
+  if(activeProfileContext&&profiles.key(activeProfileContext)===profiles.key(context))return;
+  activeProfileContext=context;
+  activeTactic=context.style;
+  styleLabel=({posse:'Posse de Bola',rapido:'Contra-Ataque Rápido',
+   normal:'Contra-Ataque',fora:'Por Fora',longo:'Bola Longa'})[activeTactic]||activeTactic;
+  let stored=null;
+  try{stored=readProfile();profileError=''}catch(e){profileError=String(e.message||e)}
+  const individual=stored?.levels;
+  current=individual?individual.slice():suggested&&activeTactic!=='posse'?
+   suggested.slice():original?original.slice():null;
+  custom=Boolean(stored);
+  // Se a posição é a original e o estilo é Posse, exibir o TREINO
+  // REGISTRADO da carta, não reclassificá-lo como ficha do técnico.
+  // Em posição/tática diferente, o registro continua só referência.
+  // As 246 fichas HTML usam role_used e shown_position; não presumir
+  // campos position/posicao ausentes no JSON scout-v68-data.
+  const declaredPosition=String(card.role_used||card.shown_position||
+    card.position||card.posicao||'').trim().toUpperCase();
+  const sameOriginal=context.position===declaredPosition||
+   (context.position==='CA'&&declaredPosition==='AC');
+  const baselineRegistered=!stored&&activeTactic==='posse'&&sameOriginal&&officialValid;
+  editing=false;referenceOnly=!stored&&!!original&&!baselineRegistered;
+  autoPreview=!stored&&!original;
+  sourceLabel=stored?.source||(baselineRegistered?
+   'Treino original da carta · sem ajustes homologados para este técnico':
+   referenceOnly?'Referência do cadastro, não adaptada à função e ao técnico':
+   'Ficha desta edição ainda pendente');
+  refresh();
+  if(profileError)note.textContent='Registro contextual preservado, mas indisponível: '+profileError;
+ }
+ host.addEventListener('scoutpro:v324:context-selected',e=>applyContext(e.detail?.context));
+ host.addEventListener('scoutpro:manager-selected-v302',e=>{
+  if(!activeProfileContext||Number(e.detail?.capture)!==capture||
+     String(e.detail?.card_id)!==id)return;
+  try{applyContext(profiles.withManager(activeProfileContext,e.detail.catalog_id))}catch(_){}
+ });
  btnReset.addEventListener('click',restore);
  // Laboratório continua disponível apenas como ferramenta avançada;
  // suas alterações e as do painel principal usam a mesma conta local por Card ID.
  host.addEventListener('scoutpro:lab-changed-v218',event=>{
   const data=event.detail||{};
+  if(contextForTactic())return; // laboratórios antigos não atravessam técnico
   if(localPPMismatch()||Number(data.cap)!==capture||String(data.card_id)!==id||!valid(data.levels))return;
   if(activeTactic!=='posse'||data.levels.every((n,i)=>n===current[i]))return;
   current=data.levels.slice();custom=true;autoPreview=false;referenceOnly=false;

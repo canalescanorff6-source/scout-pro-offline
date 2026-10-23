@@ -177,7 +177,7 @@ function ensureManagerPanel(){
  const target=$('friend-analysis-modes');
  const root=mk('section','friend-manager-v306');
  const heading=mk('h3','','Técnico e estilo desta carta');
- const subtitle=mk('p','','22 versões destacadas + catálogo completo. A escolha orienta a tática; bônus não são PP.');
+ const subtitle=mk('p','','22 versões históricas em destaque + novo Kovač 90 Posse. Catálogo completo offline. A escolha orienta a tática; bônus não são PP.');
  const chooser=mk('label','','Versão do técnico');
  const selection=mk('select');selection.id='friend-manager-version';selection.setAttribute('aria-label','Versão do técnico de Outros Elencos');chooser.append(selection);
  const tacticLabel=mk('label','','Estilo coletivo do técnico');
@@ -259,13 +259,14 @@ function renderManager(){
    statusModel.score>=89?'Alta proficiência competitiva.':
    statusModel.score>=85?'Alternativa com ressalvas.':'Proficiência baixa: não equivale ao estilo principal.'
   )));
- statusBox.append(mk('p','','Bônus informados: '+(selected.boosters_EN?.join(' · ')||'não documentados')+
+ if(selected.afinidade_PTBR)statusBox.append(mk('p','','Afinidade para comandar: '+selected.afinidade_PTBR));
+ statusBox.append(mk('p','','Bônus informados: '+((selected.boosters_PTBR||selected.boosters_EN)?.join(' · ')||'não documentados')+
   '. Não converter em PP nem em atributo final sem dados-base.'));
  if(selected.ativacao_das_combinacoes?.length){
   for(const link of selected.ativacao_das_combinacoes){
-   statusBox.append(mk('p','','Combinação '+link.name_EN+': '+(link.centrepiece_playstyle_EN||'?')+
-    ' ('+(link.centrepiece_position_EN||'?')+') + '+(link.keyman_playstyle_EN||'?')+
-    ' ('+(link.keyman_position_EN||'?')+'). Ativação não comprovada na escalação.'));
+   statusBox.append(mk('p','','Combinação '+link.name_EN+': '+(selected.catalog_id==='CT-MGR-071'?(link.name_EN==='Shadow Link B'?'Atacante pivô':'Lateral ofensivo'):(link.centrepiece_playstyle_EN||'?'))+
+    ' ('+(selected.catalog_id==='CT-MGR-071'?(link.name_EN==='Shadow Link B'?'SA':'LE/LD'):(link.centrepiece_position_EN||'?'))+') + '+(selected.catalog_id==='CT-MGR-071'?'Homem de área':(link.keyman_playstyle_EN||'?'))+
+    ' ('+(selected.catalog_id==='CT-MGR-071'?'CA':(link.keyman_position_EN||'?'))+'). Ativação não comprovada na escalação.'));
   }
  }
  if(managerTactic==='overload')statusBox.append(mk('p','friend-manager-warning',
