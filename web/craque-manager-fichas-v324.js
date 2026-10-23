@@ -150,8 +150,8 @@ function reviewBoosterSlot(booster='',boosterSlot='pendente'){
    'ainda precisam de confirmação no jogo.';
  }else if(selected){
   status='slot_nao_comprovado';
-  reason='Não existe prova de slot adicional disponível para esta edição. '+
-   'Ímpeto permanece candidato, não equipado.';
+  reason='Não há comprovação de slot livre para esta edição: '+
+   'ímpeto continua somente candidato, não equipado.';
  }
  return Object.freeze({status,slot,selected,blocking,reason,
   gameplayValidated:false,mayEquip:false});
