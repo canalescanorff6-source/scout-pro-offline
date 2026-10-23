@@ -54,6 +54,28 @@ const bad=[...partial];bad[0]=-1;
 assert(!core.validDraft(bad,scene().outcome.plan,tactical));
 assert(!core.validDraft(Array(9).fill(0),scene().outcome.plan,tactical));
 assert(!core.validDraft(partial,{...scene().outcome.plan,status:'pendente'},tactical));
+// Exercício de armazenamento real: MAT → SA → MAT e isolamento dos acervos.
+const db=new Map();
+const storage={getItem:key=>db.get(key)??null,setItem:(key,value)=>db.set(key,String(value))};
+const ctx={collection:'outros-elencos',owner:'teste',cardKey:'ficha-1',
+ cardId:'105297',edition:'versao-testada',position:'MAT',style:'posse',
+ manager:'CT-MGR-071',budget,sourceSignature:'assinatura-da-edicao'};
+const ctxSA=profiles.withPosition(ctx,'SA');
+const ctxPersonal={...ctx,collection:'minhas-246',owner:'principal'};
+const second=levels.slice();
+profiles.save(storage,ctx,{train:partial,skills:['Passe de primeira'],booster:''});
+profiles.save(storage,ctxSA,{train:second,skills:[],booster:''});
+profiles.save(storage,ctxPersonal,{train:Array(10).fill(0),skills:[],booster:''});
+const restoredMAT=profiles.read(storage,ctx);
+const restoredSA=profiles.read(storage,ctxSA);
+assert.deepEqual(restoredMAT.train,partial,'MAT preserva 10 grupos e saldo');
+assert.deepEqual(restoredSA.train,second,'SA não recebe o vetor MAT');
+assert.deepEqual(profiles.read(storage,ctx).train,partial,'Voltar a MAT restaura a mesma build');
+assert.notDeepEqual(profiles.read(storage,ctxPersonal).train,partial,'Outro acervo nunca herda a ficha');
+assert.equal(core.resolve(scene(),context,tactical,full,restoredMAT).remainingPP,budget-used);
+assert.equal(core.resolve(scene(),context,tactical,full,restoredSA).approved,true);
+assert.equal(core.resolve(scene(),context,tactical,full,profiles.read(storage,ctxPersonal)).usedPP,0);
+assert.equal(restoredMAT.skills[0],'Passe de primeira');
 const ui=read('web/craque-positional-ui-v311.js');
 assert(ui.includes('savedProfile.train.slice()'),'Tabela de treino deve vir do rascunho salvo');
 assert(ui.includes('const used=host.SCOUT_TACTICS_V220.total(p.levels)'),
