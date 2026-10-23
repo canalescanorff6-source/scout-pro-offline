@@ -668,6 +668,10 @@ if(window.scoutDesktop){
   btn.setAttribute('aria-label',ready?'Instalar atualização Windows já baixada':'Verificar atualização Windows');
  };
  windowsButtonReady(false);
+ // Restaurar estado ao navegar/recarregar a tela sem iniciar outro download.
+ Promise.resolve().then(()=>window.scoutDesktop.updateStatus()).then(status=>{
+  if(status?.ready){windowsButtonReady(true);notify(status.message);}
+ }).catch(()=>{/* Uma falha de consulta não bloqueia a atualização manual. */});
  window.scoutDesktop.onUpdate(e=>{
   notify(e.message);
   if(e.type==='ready'||e.type==='deferred')windowsButtonReady(true);
