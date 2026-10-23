@@ -172,17 +172,24 @@ function trainingFrontier(weights,role,pp,baseline,options={}){
   {key:'duelos',label:'Jogo aéreo e defesa',indices:[5,6]}
  ];
  const axes=definitions.filter(a=>a.indices.some(i=>weights[i]>0));
+ // V338: apenas rascunho V324 explicitamente marcado pode conservar PP livres.
+ const baselineUsed=T.valid(baseline)?T.total(baseline):null;
  const baselineStatus=options.baselineProvisional===true?'treino_experimental_sem_validacao':
-  !T.valid(baseline)?'nao_documentado':T.total(baseline)!==pp?
+  baselineUsed===null?'nao_documentado':baselineUsed>pp?
   'orcamento_divergente':baseline.some((n,i)=>n>0&&!allowed.includes(i))?
-  'categorias_fora_do_modelo':'compativel';
- const registered=baselineStatus==='compativel'?baseline:null;
+  'categorias_fora_do_modelo':baselineUsed<pp?
+  (options.baselineSource==='rascunho_independente'?'rascunho_com_saldo':
+   'orcamento_divergente'):'compativel';
+ const registered=['compativel','rascunho_com_saldo'].includes(baselineStatus)?
+  baseline:null;
  const primary=allocate(weights,role,pp,registered);
  if(!primary)return pending('Não foi encontrado vetor viável com custo exato.');
  const reference=registered||primary;
  const candidates=[],seen=new Map();
  const add=(levels,label,isRegistered=false)=>{
-  if(!T.valid(levels)||T.total(levels)!==pp)return null;
+  if(!T.valid(levels))return null;
+  const used=T.total(levels);
+  if(used>pp||(!isRegistered&&used!==pp))return null;
   const key=levels.join(',');
   if(seen.has(key)){
    const existing=seen.get(key);existing.origins.push(label);
@@ -199,14 +206,18 @@ function trainingFrontier(weights,role,pp,baseline,options={}){
    deltaPP:T.ppCost(after)-T.ppCost(reference[i]),
    nextCost:after<20?T.ppCost(after+1)-T.ppCost(after):null
   })).filter(x=>x.deltaLevels!==0);
+  const addedPP=changes.reduce((sum,x)=>sum+Math.max(0,x.deltaPP),0);
+  const removedPP=changes.reduce((sum,x)=>sum+Math.max(0,-x.deltaPP),0);
   const candidate={id:'candidato-'+candidates.length,label,origins:[label],
-   registered:isRegistered,levels:levels.slice(),spent:pp,objectives,changes,
-   addedPP:changes.reduce((sum,x)=>sum+Math.max(0,x.deltaPP),0),
-   removedPP:changes.reduce((sum,x)=>sum+Math.max(0,-x.deltaPP),0),
+   registered:isRegistered,levels:levels.slice(),spent:used,remainingPP:pp-used,
+   objectives,changes,addedPP,removedPP,
+   netDeltaPP:used-T.total(reference),redistributedPP:Math.min(addedPP,removedPP),
+   freePPInvested:Math.max(0,used-T.total(reference)),
    mayApply:false,status:'ESTIMADO'};
   candidates.push(candidate);seen.set(key,candidate);return candidate.id;
  };
- if(registered)add(registered,'Treino registrado · sem nova aprovação',true);
+ if(registered)add(registered,baselineStatus==='rascunho_com_saldo'?
+  'Rascunho independente · PP livres preservados':'Treino registrado · sem nova aprovação',true);
  const primaryId=add(primary,'Proposta contextual');
  for(const axis of axes){
   const trial=weights.map((w,i)=>allowed.includes(i)?w*(axis.indices.includes(i)?1.7:.8):0);
@@ -215,9 +226,13 @@ function trainingFrontier(weights,role,pp,baseline,options={}){
  add(allocate(weights.map((w,i)=>allowed.includes(i)?Math.sqrt(w)*5:0),role,pp,registered),
   'Equilíbrio experimental entre categorias');
  for(const candidate of candidates){
+  // Menor custo é dimensão explícita da fronteira: MAIS PP não domina
+  // automaticamente uma escolha com saldo, mesmo aumentando índices.
   candidate.dominatedBy=candidates.filter(other=>other!==candidate&&
+   other.spent<=candidate.spent&&
    axes.every(a=>other.objectives[a.key]>=candidate.objectives[a.key]-1e-8)&&
-   axes.some(a=>other.objectives[a.key]>candidate.objectives[a.key]+1e-8)).map(x=>x.id);
+   (other.spent<candidate.spent||
+    axes.some(a=>other.objectives[a.key]>candidate.objectives[a.key]+1e-8))).map(x=>x.id);
   candidate.onFrontier=candidate.dominatedBy.length===0;
  }
  return Object.freeze({status:'ESTIMADO',budgetStatus:'CALCULADO',pp,role,
@@ -227,11 +242,13 @@ function trainingFrontier(weights,role,pp,baseline,options={}){
    origins:Object.freeze(c.origins),changes:Object.freeze(c.changes.map(Object.freeze)),
    dominatedBy:Object.freeze(c.dominatedBy)}))),
   primaryId,reference:Object.freeze(reference.slice()),
-  referenceSource:registered?'treino_registrado':'proposta_contextual',baselineStatus,
+  referenceSpent:T.total(reference),referenceRemainingPP:pp-T.total(reference),
+  referenceSource:baselineStatus==='rascunho_com_saldo'?'rascunho_independente':
+   registered?'treino_registrado':'proposta_contextual',baselineStatus,
   frontierIds:Object.freeze(candidates.filter(c=>c.onFrontier).map(c=>c.id)),
   exhaustive:false,generatedProfiles:axes.length+2,mayApply:false,gameplayValidated:false,
-  method:'Eixos relativos de investimento com utilidade logarítmica; categorias sobrepostas não são atributos finais.',
-  warning:'Fronteira apenas entre os candidatos calculados. Não comprova superioridade competitiva, atributos finais ou build de criador.'
+  method:'Fronteira relativa com utilidade logarítmica e custo de PP como dimensão; não calcula atributos finais.',
+  warning:'Fronteira amostral. Gastar PP adicionais não domina automaticamente uma escolha com saldo. Não comprova superioridade competitiva, atributos finais ou build de criador.'
  });
 }
 /* V253 — comparar uma proposta com outras edições de função/orçamento
@@ -673,7 +690,8 @@ function trainingComparison(check,source){
   const summary=mk('p','ct289-comparison-summary');summary.setAttribute('aria-live','polite');
   const wrap=mk('div','ct289-table-wrap'),table=mk('table','ct289-cost-table');
   table.append(mk('caption','',result.referenceSource==='treino_registrado'?
-   'Custo comparado ao treino registrado':'Custo comparado à proposta contextual'));
+   'Custo comparado ao treino registrado':result.referenceSource==='rascunho_independente'?
+   'Custo comparado ao rascunho com PP livres':'Custo comparado à proposta contextual'));
   const head=mk('thead',''),hr=mk('tr','');
   for(const title of ['Categoria','Referência','Cenário','Δ PP']){
    const cell=mk('th','',title);cell.scope='col';hr.append(cell);
@@ -685,10 +703,11 @@ function trainingComparison(check,source){
   const render=()=>{
    const chosen=result.candidates.find(c=>c.id===select.value);
    if(!chosen)return;
-   summary.textContent=chosen.spent+' / '+result.pp+' PP · '+chosen.removedPP+
-    ' PP redirecionados entre categorias. '+
-    (chosen.onFrontier?'Alternativa sem dominância entre os candidatos comparados.':
-     'Outra alternativa cobre melhor os eixos deste modelo; isso não mede desempenho em jogo.');
+   summary.textContent=chosen.spent+' / '+result.pp+' PP utilizados · '+
+    chosen.remainingPP+' PP livres · '+chosen.redistributedPP+
+    ' PP redistribuídos · '+chosen.freePPInvested+' PP adicionais investidos do saldo. '+
+    (chosen.onFrontier?'Sem dominância em custo e eixos nesta amostra.':
+     'Outra alternativa usa até os mesmos PP e cobre melhor os eixos deste modelo; não mede desempenho em jogo.');
    body.replaceChildren();axes.replaceChildren();scenario.replaceChildren();
    chosen.levels.forEach((value,i)=>{
     if(check.role==='GO'?i<7:i>=7)return;
@@ -724,7 +743,7 @@ function trainingComparison(check,source){
   select.value=result.primaryId;select.addEventListener('change',render);
   content.append(summary,wrap,axes,scenario);
   content.append(mk('p','ct289-comparison-note',
-   'Comparar não grava o treino. Próximos investimentos custam mais PP conforme o nível da categoria; o total permanece exato.'));
+   'Comparar não grava o treino. As alternativas calculadas gastam PP exatos; rascunhos podem reservar PP. O custo marginal sobe conforme o nível.'));
   details.append(content);details.dataset.ready='true';render();
  });
  return details;
