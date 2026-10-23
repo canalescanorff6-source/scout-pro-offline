@@ -41,6 +41,8 @@ assert(source.includes('selectorEngine.toggleFavorite(localStorage,managerSelect
 assert(source.includes("search.addEventListener('input',renderManager)"));
 assert(source.includes("scope.addEventListener('change',renderManager)"));
 assert(source.includes('selected:managerSelectedId'));
+assert(source.includes("[['featured','Destaques']"),
+ 'O seletor deve apresentar os destaques primeiro para reduzir a lista inicial');
 assert(html.includes('craque-manager-selector-v328.js'));
 assert(sw.includes('craque-manager-selector-v328.js'));
 assert(stamp.includes('craque-manager-selector-v328.js'));
