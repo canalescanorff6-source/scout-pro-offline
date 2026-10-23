@@ -206,6 +206,79 @@ function create(target,model,opts={}){
     ' · Slot: '+model.boosterSlot+' · Ímpeto adicional equipado: '+(model.booster||'não informado')+
     '. Ranking consultivo não comprova existência nem liberação de slot.'));
   panel.append(booster);
+  // V324: salvar uma ficha consultiva INDEPENDENTE por técnico, edição, posição
+  // e estilo. Nenhuma habilidade/ímpeto é marcado como equipado.
+  const profiles=host.CRAQUE_MANAGER_FICHAS_V324;
+  if(profiles){
+   const editor=el('section','ct311-panel ct324-profile');
+   editor.append(el('h3','','Minha ficha neste técnico · '+scenario.position+' / '+scenario.style));
+   let context=null,savedProfile=null,readError='';
+   try{
+    context=profiles.fromScenario(scenario,model);
+    savedProfile=profiles.read(storage(),context);
+   }catch(e){readError=String(e.message||e)}
+   if(readError)editor.append(el('p','ct311-alert','Ficha independente indisponível: '+readError+
+    '. Nada foi sobrescrito; selecione uma edição comprovada e confira PP.'));
+   else{
+    const currentPlan=savedProfile?.train||recorded?.levels||outcome.plan.levels;
+    const ok=profiles.validTraining(currentPlan,context.budget);
+    editor.append(el('p','ct311-note','Contexto isolado: '+scenario.manager+' · '+scenario.position+
+     ' · '+scenario.style+' · '+context.budget+' PP. Não copia fichas de outros técnicos.'));
+    if(savedProfile)editor.append(el('p','ct311-confirm','Rascunho independente salvo · revisão '+
+     savedProfile.revision+' · somente recomendação, não equipamento no eFootball.'));
+    if(savedProfile&&ok)editor.append(el('p','ct311-note','PP desta ficha: '+
+     savedProfile.train.map((x,i)=>outcome.plan.categories?.[i]+': '+x).join(' · ')));
+    const proposed=recorded?.recommendations||outcome.suggestedSkills||[];
+    const nativeNames=String(model.nativeSkills||'').split(/[;,]/).map(x=>
+     x.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim().toLowerCase()).filter(Boolean);
+    const filtered=[...new Set(proposed.map(displaySkill))].filter(name=>{
+     const normalized=name.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim().toLowerCase();
+     return normalized&&!nativeNames.includes(normalized);
+    }).slice(0,5);
+    const skillLabel=el('p','ct311-note','Candidatas a habilidades adicionais (selecione até 5; vagas livres não comprovadas):');
+    editor.append(skillLabel);
+    const candidates=el('div','ct324-skill-options');
+    const choices=[];
+    for(const name of filtered){
+     const label=el('label','ct324-skill-option');
+     const input=el('input');input.type='checkbox';input.value=name;
+     input.checked=Boolean(savedProfile?.skills?.includes(name));
+     label.append(input,el('span','',name));candidates.append(label);choices.push(input);
+    }
+    if(!filtered.length)candidates.append(el('p','ct311-note','Sem habilidade candidata validável nesta edição.'));
+    editor.append(candidates);
+    const options=el('label','ct311-select-label','Ímpeto adicional candidato: ');
+    const selectBooster=el('select','ct311-select ct324-booster');
+    const choicesBooster=[...new Set([
+     savedProfile?.booster||'',
+     recorded?.boosterRanking?.primary?.name||'',
+     outcome.booster?.primary?.nome||'',
+     ...(outcome.booster?.alternatives||[]).map(x=>x.nome)
+    ].filter(Boolean))].slice(0,6);
+    const empty=el('option','','Sem sugestão selecionada');empty.value='';
+    selectBooster.append(empty);
+    for(const name of choicesBooster){const o=el('option','',name);o.value=name;selectBooster.append(o)}
+    selectBooster.value=savedProfile?.booster||'';
+    options.append(selectBooster);editor.append(options);
+    const action=makeBtn('Salvar ficha independente deste técnico',()=>{
+     try{
+      if(!ok)throw Error('PP da edição não conferidos. Ficha permanece pendente.');
+      const skills=choices.filter(x=>x.checked).map(x=>x.value);
+      profiles.save(storage(),context,{train:currentPlan,skills,
+       booster:selectBooster.value,source:'Revisão manual da ficha contextual V324'});
+      status.textContent='Ficha consultiva salva em '+scenario.manager+'/'+scenario.position+'/'+scenario.style+
+       '. Nenhum ímpeto ou habilidade foi equipado automaticamente.';
+      draw();
+     }catch(e){status.textContent='Ficha NÃO salva: '+String(e.message||e)}
+    });
+    action.disabled=!ok;
+    editor.append(action,el('p','ct311-note',
+     'A ficha usa a hipótese de PP exibida neste cenário ou o último rascunho independente salvo. '+
+     'Para editar níveis em Minhas Cartas, use o editor principal; não sobrescreverá outras edições. '+
+     'Ímpetos fixos, cinco slots e habilidades equipadas continuam preservados.'));
+   }
+   panel.append(editor);
+  }
   const tactics=el('section','ct311-panel');tactics.append(el('h3','','Função ofensiva/defensiva e atributos prioritários'));
   const context=recorded?.focus||scenario.focus;
   tactics.append(el('p','',context?.headline||'Contexto tático pendente'));
@@ -258,7 +331,17 @@ function create(target,model,opts={}){
   save.disabled=false;
   status.textContent=scenario.status+' · '+scenario.position+' / '+scenario.style+
    ' · dados-base preservados'+(saved&&!saved.stale?' · revisão salva restaurada':'');
+  // Compartilhar a MESMA identidade V311 com o editor principal de PP.
+  if(model.collection==='minhas-246'&&profiles){
+   try{const context=profiles.fromScenario(scenario,model);
+    host.dispatchEvent(new host.CustomEvent('scoutpro:v324:context-selected',{detail:{context}}))
+   }catch(_){/* Técnico não selecionado: modo legado permanece consultável. */}
+  }
  }
+ host.addEventListener('scoutpro:v324:profile-saved',event=>{
+  if(alive&&event.detail?.key===active&&false)return;
+  if(alive&&active&&event.detail?.key?.includes(encodeURIComponent(active.manager)))draw();
+ });
  function positionChange(){
   try{engine.choose(storage(),model,select.value)}
   catch(e){status.textContent=e.message;return}
