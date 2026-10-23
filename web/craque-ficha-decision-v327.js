@@ -31,9 +31,14 @@
   const hasManager=Boolean(scenario.manager&&scenario.manager!=='sem-tecnico'&&
    scenario.managerProfile?.name);
   const history=revision&&!revision.stale&&revision.revision||null;
-  const approved=Boolean(history?.approved===true&&validateLevels(history.levels,plan,tactical));
   const savedProfile=Boolean(profile&&validateLevels(profile.train,plan,tactical));
   const savedScenario=Boolean(history&&validateLevels(history.levels,plan,tactical));
+  // Uma revisão V311 aprovada NÃO homologa outro vetor de PP que foi
+  // salvo depois na ficha independente V324. Só expor aprovação quando
+  // o vetor efetivamente exibido for idêntico ao aprovado.
+  const sameApproved= !savedProfile||(
+   savedScenario&&profile.train.every((level,i)=>level===history.levels[i]));
+  const approved=Boolean(history?.approved===true&&savedScenario&&sameApproved);
   // A ficha independente é o rascunho mais específico; é também consultiva.
   const levels=savedProfile?profile.train.slice():
    savedScenario?history.levels.slice():
@@ -63,6 +68,8 @@
   if(savedProfile)what.push('Rascunho do técnico preservado, sem substituir a build original.');
   return Object.freeze({
    kind,title,source,style:scenario.style,styleLabel:LABEL[scenario.style],
+   collection:model.collection,owner:model.owner,cardKey:model.cardKey,
+   cardId:model.cardId,edition:model.edition,
    position:scenario.position,manager:scenario.manager,
    pp:calculated?plan.pp:null,levels:levels?Object.freeze(levels):null,
    calculated,compatible,hasManager,approved,
@@ -89,8 +96,11 @@
   for(const c of candidates){
    if(!c||!MODES.includes(c.style)||byStyle.has(c.style))
     throw Error('Alternativas repetidas ou inválidas');
-   if(c.position!==selected.position||c.manager!==selected.manager)
-    throw Error('Comparação exige a mesma posição e técnico');
+   if(c.position!==selected.position||c.manager!==selected.manager||
+     c.collection!==selected.collection||c.owner!==selected.owner||
+     c.cardKey!==selected.cardKey||c.cardId!==selected.cardId||
+     c.edition!==selected.edition)
+    throw Error('Comparação exige a mesma carta, proprietário, edição, posição e técnico');
    byStyle.set(c.style,c);
   }
   if(byStyle.size!==5||MODES.some(id=>!byStyle.has(id)))
