@@ -129,6 +129,33 @@ function auditEquipmentSelection(skills=[],booster='',native=[],equipped=[],fixe
    'vagas livres, habilidades equipadas, ímpeto adicional ou desempenho em partida.'
  });
 }
+// V343: o slot declarado é uma evidência de cadastro, NÃO licença de ativação.
+ // A ausência explícita de slot impede gravar um NOVO candidato incoerente.
+ // Os rascunhos históricos permanecem legíveis e não são reescritos.
+function reviewBoosterSlot(booster='',boosterSlot='pendente'){
+ const value=normalize(booster),slot=normalize(boosterSlot).toLocaleLowerCase('pt-BR')||'pendente';
+ const selected=Boolean(value);
+ let status='sem_candidato',blocking=false,reason='';
+ if(selected&&slot==='ausente'){
+  status='slot_ausente';blocking=true;
+  reason='A carta está cadastrada como SEM slot adicional. Remova o ímpeto candidato '+
+   'ou confira e corrija o cadastro da edição antes de salvar outra revisão.';
+ }else if(selected&&slot==='ocupado'){
+  status='slot_ocupado';
+  reason='O slot adicional está cadastrado como ocupado. A nova candidata é apenas '+
+   'uma hipótese; confirme o que está equipado antes de tentar substituir.';
+ }else if(selected&&slot==='vazio'){
+  status='slot_vazio_declarado';
+  reason='Slot relatado como vazio, mas a existência na edição e o equipamento '+
+   'ainda precisam de confirmação no jogo.';
+ }else if(selected){
+  status='slot_nao_comprovado';
+  reason='Não existe prova de slot adicional disponível para esta edição. '+
+   'Ímpeto permanece candidato, não equipado.';
+ }
+ return Object.freeze({status,slot,selected,blocking,reason,
+  gameplayValidated:false,mayEquip:false});
+}
 // V342: pré-verificação PURA para o estado atual do editor.
  // Nenhuma aprovação/equipamento é inferida da presença de uma candidata.
 function reviewDraftReadiness({train,budget,skills=[],booster='',native=[],
@@ -150,19 +177,20 @@ function reviewDraftReadiness({train,budget,skills=[],booster='',native=[],
   if(audit.hasSkillConflict)issues.push('Habilidade já consta nas listas cadastradas: '+
    audit.conflicts.map(x=>x.name).join(' · ')+'. Desmarque para registrar nova revisão.');
  }catch(e){issues.push('Seleção de habilidades inválida: '+String(e.message||e));}
+ const slotReview=reviewBoosterSlot(booster,boosterSlot);
+ if(slotReview.blocking)issues.push(slotReview.reason);
  const advisories=[];
+ if(slotReview.reason&&!slotReview.blocking)advisories.push(slotReview.reason);
  if(audit?.fixedBoosterSame)advisories.push(
   'O ímpeto candidato coincide com o fixo informado. Verifique os slots no jogo.');
- if(normalize(booster)&&(!audit?.slotEvidence||
-   /^(pendente|não informado|nao informado|indefinido)$/i.test(audit.slotEvidence)))
-  advisories.push('Não há comprovação de slot livre: ímpeto continua somente candidato.');
  advisories.push('Nenhuma habilidade, ímpeto ou treino é equipado por este salvamento.');
  return Object.freeze({
   canSave:issues.length===0,
-  status:!ppReady?'pp_pendente':issues.length?'revisar_habilidades':'pronto_para_rascunho',
+  status:!ppReady?'pp_pendente':slotReview.blocking?'revisar_impeto_slot':
+   issues.length?'revisar_habilidades':'pronto_para_rascunho',
   budget:budgetOk?budget:null,spent,remainingPP:spent!==null&&budgetOk?budget-spent:null,
   skillCount,issues:Object.freeze(issues),advisories:Object.freeze(advisories),
-  audit,source:'listas_informadas_na_mesma_carta_sem_confirmacao_de_gameplay'
+  audit,slotReview,source:'listas_informadas_na_mesma_carta_sem_confirmacao_de_gameplay'
  });
 }
 function validateRecord(row,c){
@@ -231,5 +259,5 @@ function deleteDraft(store,c){
 }
 return Object.freeze({PREFIX,SCHEMA,STYLES,POSITIONS,validateContext,
  fromScenario,withStyle,withManager,withPosition,key,ppCost,validTraining,
- cleanSkills,skillName,skillToken,reviewSkillCandidates,auditEquipmentSelection,reviewDraftReadiness,readAll,read,save,deleteDraft});
+ cleanSkills,skillName,skillToken,reviewSkillCandidates,auditEquipmentSelection,reviewBoosterSlot,reviewDraftReadiness,readAll,read,save,deleteDraft});
 });
