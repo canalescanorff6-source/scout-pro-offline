@@ -21,7 +21,12 @@ assert.equal(hub.managerGroups([{nome:'Niko Kovač'},{nome:'Niko Kovac'}]).get('
  'Busca e agrupamento devem ignorar acentos reais');
 const kovac=items.find(c=>c.catalog_id==='CT-MGR-071');
 const kovacName=kovac.nome.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-assert.equal(groups.get(kovacName),1,'Edição principal Kovač não pode duplicar');
+const kovacEditions=items.filter(c=>c.nome.normalize('NFD')
+ .replace(/[\u0300-\u036f]/g,'').toLowerCase()===kovacName);
+assert.equal(kovacEditions.length,2,'Há duas edições catalogadas de Kovač e ambas precisam continuar');
+assert.equal(new Set(kovacEditions.map(c=>c.catalog_id)).size,2,
+ 'A edição principal CT-MGR-071 deve manter identidade separada da outra');
+assert.equal(groups.get(kovacName),2,'Agrupar por nome é navegação, não mesclar edições');
 assert.equal(klopps.length,2);
 assert.notEqual(klopps[0].catalog_id,klopps[1].catalog_id);
 assert.equal(A.STYLES.length,6);
