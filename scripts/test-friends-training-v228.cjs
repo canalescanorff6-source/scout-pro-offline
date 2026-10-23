@@ -16,7 +16,7 @@ let doc=model.empty();
 doc=model.addOwner(doc,'Ana'),doc=model.addOwner(doc,'Bruno');
 const [ana,bruno]=doc.owners;
 const source=(ownerId,overrides={})=>({
- ownerId,name:'Messi',edition:'Show Time edição confirmada',cardId:'ID-MESSI-CONFIRMADO',
+ ownerId,name:'Messi',edition:'Show Time edição confirmada',cardId:'12345678901234',
  position:'SA',style:'Armador criativo',pp:62,level:32,
  nativeSkills:'Passe de primeira; Toque duplo',
  skills:'Passe em profundidade',booster:'',fixedBooster:'Technique',
@@ -76,6 +76,30 @@ const catalogSupported=engines.skills.booster({
 assert.equal(catalogSupported.slotSupported,true);
 assert.equal(catalogSupported.able,true,
  'Marcador de catálogo documentado e slot vazio são evidências independentes');
+// V322: texto preenchido ou inventário provisório jamais eleva a confiança.
+const plausible=training.evaluate(a,'posse',engines);
+assert.equal(plausible.identityFormatValid,true,'ID numérico de teste deve ter formato plausível');
+assert.equal(plausible.identityEvidenceConfirmed,false,
+ 'Formato do ID NÃO comprova edição exata sem fonte independente');
+assert(plausible.warnings.some(x=>x.includes('correspondência com a edição exata')));
+for(const badId of ['PENDENTE','ID-MESSI-CONFIRMADO','1234','','000']) {
+ const invalidIdentity=training.evaluate(source(ana.id,{cardId:badId}),'posse',engines);
+ assert.equal(invalidIdentity.identityConfirmed,false,
+  'Texto, marcador provisório ou ID curto não deve ser tratado como ID válido: '+badId);
+ assert.equal(invalidIdentity.confidence,'hipotese_dados_incompletos');
+ assert(invalidIdentity.warnings.some(x=>x.includes('Identidade da versão pendente')));
+}
+for(const nativeSkills of ['PENDENTE','A CONFIRMAR','DESCONHECIDO','']) {
+ const unresolved=training.evaluate(source(ana.id,{nativeSkills}),'posse',engines);
+ assert.equal(unresolved.nativeDocumented,false,
+  'Nativas provisórias não podem passar como documento: '+nativeSkills);
+ assert(unresolved.warnings.some(x=>x.includes('Habilidades nativas')));
+ assert.equal(unresolved.confidence,'hipotese_dados_incompletos');
+ assert.equal(unresolved.skills?.nativeKnown,false);
+}
+const editionPending=training.evaluate(source(ana.id,{edition:'Edição a confirmar'}),'posse',engines);
+assert.equal(editionPending.identityConfirmed,false,'Edição pendente deve bloquear status de identidade');
+assert.equal(editionPending.identityEvidenceConfirmed,false);
 assert.notDeepEqual(training.evaluate(a,'posse',engines).plan.levels,
  training.evaluate(a,'rapido',engines).plan.levels,
  'Os treinos devem variar por tática quando os sinais forem diferentes.');
