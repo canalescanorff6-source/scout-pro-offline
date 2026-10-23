@@ -296,7 +296,8 @@ function renderManager(){
  const compact=Array.from(statusBox.children);
  const extra=mk('details','friend-v328-manager-more');
  extra.append(mk('summary','','Bônus, afinidade e condições de Link-Up'));
- for(const child of compact.slice(4))extra.append(child);
+ const activeIndex=compact.findIndex(node=>node.classList?.contains('friend-v328-manager-primary'));
+ for(const child of compact.slice(activeIndex+2))extra.append(child);
  if(extra.children.length>1)statusBox.append(extra);
 }
 function identity(){
