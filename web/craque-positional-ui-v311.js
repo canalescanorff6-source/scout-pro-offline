@@ -39,10 +39,11 @@ function create(target,model,opts={}){
  actions.append(save,original);
  node.append(h,controls,status,details,actions);
  const formationApi=host.CRAQUE_FORMATION_CONTEXT_V314;
+ let formationRow=null,formationSelect=null;
  if(formationApi?.ui){
-  const formationRow=el('div','ct314-formation-row');
+  formationRow=el('div','ct314-formation-row');
   const formationLabel=el('label','ct311-select-label','Simular vaga da formação: ');
-  const formationSelect=el('select','ct311-select');
+  formationSelect=el('select','ct311-select');
   formationSelect.setAttribute('aria-label','Formação para simular, sem alterar titulares');
   for(const [id,label] of [['4312','4-3-1-2'],['4213','4-2-1-3 estreita']]){
    const option=el('option','',label);option.value=id;formationSelect.append(option);
@@ -63,6 +64,36 @@ function create(target,model,opts={}){
   controls.after(formationRow);
   slotMount();
  }
+ // V331: posição e formação sob demanda, com o contexto sempre visível.
+ // O simples ato de abrir este painel não grava PP, skills nem ímpetos.
+ const roleChooser=el('details','ct331-role-chooser');
+ const roleHeadline=el('summary','ct331-role-title','Consultar posição e formação');
+ const roleDescription=el('p','ct331-role-description',
+  'Simule a posição nesta formação; sua carta e a escalação original não mudam.');
+ node.insertBefore(roleChooser,controls);
+ roleChooser.append(roleHeadline,roleDescription,controls);
+ if(formationRow)roleChooser.append(formationRow);
+ const roleOverview=el('div','ct331-role-overview');
+ const roleCurrent=el('strong','ct331-role-current');
+ const roleOriginal=el('span','ct331-role-original','Original: '+model.position+' · preservada');
+ const roleButton=el('button','ct331-role-open','Trocar posição ou formação');
+ roleButton.type='button';roleButton.setAttribute('aria-expanded','false');
+ roleButton.addEventListener('click',()=>{
+  roleChooser.open=!roleChooser.open;
+  roleButton.setAttribute('aria-expanded',String(roleChooser.open));
+  if(roleChooser.open)roleChooser.scrollIntoView?.({block:'nearest'});
+ });
+ roleChooser.addEventListener('toggle',()=>{
+  roleButton.setAttribute('aria-expanded',String(roleChooser.open));
+ });
+ roleOverview.append(roleCurrent,roleOriginal,roleButton);
+ roleChooser.before(roleOverview);
+ const updateRoleOverview=()=>{
+  const id=formationSelect?.value||'4312';
+  roleCurrent.textContent='Em análise: '+select.value+' · '+
+   (id==='4213'?'4-2-1-3':'4-3-1-2');
+ };
+ formationSelect?.addEventListener('change',updateRoleOverview);
  target.append(node);
  let active=null,style=opts.style||'posse',manager=opts.manager||'',alive=true;
  let advancedOpen=false; // Preferência temporária do painel; não altera dados, builds ou armazenamento.
@@ -504,6 +535,7 @@ function create(target,model,opts={}){
   save.disabled=false;
   status.textContent=scenario.status+' · '+scenario.position+' / '+scenario.style+
    ' · dados-base preservados'+(saved&&!saved.stale?' · revisão salva restaurada':'');
+  updateRoleOverview();
   // Compartilhar a MESMA identidade V311 com o editor principal de PP.
   if(model.collection==='minhas-246'&&profiles){
    try{const context=profiles.fromScenario(scenario,model);
