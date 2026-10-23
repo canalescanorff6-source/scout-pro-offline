@@ -139,10 +139,11 @@ for(const guard of [
  "if(foundPrevious)app.setPath('userData',foundPrevious)",
  "if(updaterConfigured || !app.isPackaged || process.platform!=='win32')return",
  'autoUpdater.autoDownload=true',
- 'autoUpdater.autoInstallOnAppQuit=true',
+ 'autoUpdater.autoInstallOnAppQuit=false',
  "autoUpdater.on('update-downloaded'",
  "buttons:['Instalar agora','Depois']",
  'if(res.response===0)autoUpdater.quitAndInstall(false,true)',
+ "ipcMain.handle('scout:install-downloaded'",
  "ipcMain.handle('scout:check-updates'",
 ])assert(desktop.includes(guard),'Regressão de atualização/dados Windows: '+guard);
 ordered(desktop,"app.setPath('userData',foundPrevious)","app.whenReady().then",

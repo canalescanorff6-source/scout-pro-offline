@@ -27,6 +27,15 @@ with sync_playwright() as pw:
    assert page.locator('.scout-v189-extra-links a[href="revisao-impetos-v103.html"]').count()>0
    assert page.locator('.scout-v189-extra-links a[href="player-model-v101.html"]').count()>0
    assert page.locator('.scout-v326-managers-entry').count()==1
+   # V334: validar a navegação REAL, não apenas a hero-actions legada oculta.
+   assert page.locator('.hero-actions > a[href]').count()==4, 'Atalhos legados devem ser organizados'
+   assert page.locator('.hero-more-tools > summary').count()==1
+   assert page.locator('.scout-v189-extra-links a[href="tecnicos-v307.html"]').count()==1, (
+      'Central de Técnicos não pode aparecer duplicada')
+   assert page.locator('.scout-v189-extra-links a[href="outros-elencos-v227.html?colecao=minhas-cartas-adicionadas"]').count()==1, (
+      'Link de novas cartas deve estar no menu Premium visível')
+   assert page.locator('.scout-v189-extra-links a[href="revisao-tatica-v98.html"]').count()==1, (
+      'Ferramentas antigas não podem desaparecer')
    # Erro legado conhecido do filtro na home: documentado separadamente.
    # Não misturar erro anterior do catálogo com regressão no novo acervo.
    known='Scout PRO: carta sem estilo para filtro #1'
