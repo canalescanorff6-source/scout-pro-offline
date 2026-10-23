@@ -63,8 +63,8 @@ function render(){
   const old=hero.querySelector('.hero-actions');
   if(!old)return;
   const panel=el('div','scout-v189-home');
-  const indicator=el('div','scout-v189-eyebrow','246 CARTAS · POSSE CENTRAL · ANÁLISE INDIVIDUAL');
-  const caption=el('p','scout-v189-intro','Seu elenco, seu estilo de jogo. Encontre cartas, confira a ficha ideal e monte o time.');
+  const indicator=el('div','scout-v189-eyebrow','CRAQUE TÁTICO · CENTRAL DE FUTEBOL');
+  const caption=el('p','scout-v189-intro','Escolha uma área abaixo. Seus dados, fichas e comparações continuam disponíveis sem poluir a entrada.');
   const actions=el('nav','scout-v189-quick');
   actions.setAttribute('aria-label','Acesso rápido Scout PRO');
   const createLink=(href,title,description,icon)=>{
@@ -74,16 +74,16 @@ function render(){
    body.append(el('strong','',title),el('small','',description));a.append(mark,body);return a
   };
   actions.append(
-   createLink('#catalogo','Meu elenco','246 cartas e filtros','◈'),
-   createLink('meu-time-duas-formacoes-v177.html','Minhas formações','Posse de Bola · 2 planos','▦'),
-   createLink('revisao-impetos-v103.html','Ímpetos e habilidades','Melhor escolha por função','✧'),
-   createLink('player-model-v101.html','Biotipo','Medidas e fontes verificadas','◎')
+   createLink('#catalogo','Minhas Cartas','Escolher entre 246 cartas','◈'),
+   createLink('outros-elencos-v227.html','Outros Elencos','Coleções separadas e protegidas','▣'),
+   createLink('meu-time-duas-formacoes-v177.html','Escalação','Montar meu time de Posse','▦'),
+   createLink('meu-time-testes-v219.html','Laboratório','Testar táticas e alternativas','◇')
   );
   const details=el('details','scout-v189-extra');
-  const summary=el('summary','','Mais ferramentas · Outros Elencos');
+  const summary=el('summary','','Ferramentas avançadas e pesquisas');
   const links=el('div','scout-v189-extra-links');
   const originals=[...old.querySelectorAll('a')];
-  const skip=new Set(['#catalogo','meu-time-duas-formacoes-v177.html','revisao-impetos-v103.html','player-model-v101.html','outros-elencos-v227.html']);
+  const skip=new Set(['#catalogo','outros-elencos-v227.html','meu-time-duas-formacoes-v177.html','meu-time-testes-v219.html']);
   for(const a of originals){
    if(skip.has(a.getAttribute('href')))continue;
    const copy=el('a','',a.textContent.replace(/\s*↗\s*/g,'').trim());
@@ -96,6 +96,8 @@ function render(){
  friendsIcon.setAttribute('aria-hidden','true');
  friendsEntry.append(friendsIcon,el('span','', 'Outros Elencos — Cadastre cartas de amigos sem misturar com suas 246 cartas'),el('span','scout-v227-friends-arrow','→'));
  links.appendChild(friendsEntry);
+ const managersEntry=el('a','scout-v326-managers-entry','Central de Técnicos · escolher edição e estilo →');
+ managersEntry.href='tecnicos-v307.html';links.insertBefore(managersEntry,links.firstChild);
  const about=el('button','scout-v189-about','Como funciona a análise');
   about.type='button';about.setAttribute('aria-expanded','false');
   about.addEventListener('click',()=>{
