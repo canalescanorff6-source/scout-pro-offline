@@ -326,6 +326,12 @@ function create(target,model,opts={}){
      try{
       if(!ok)throw Error('PP da edição não conferidos. Ficha permanece pendente.');
       const skills=choices.filter(x=>x.checked).map(x=>x.value);
+      const audit=profiles.auditEquipmentSelection(skills,selectBooster.value,
+       model.nativeSkills||'',model.skills||'',model.fixedBooster||'',model.boosterSlot||'pendente');
+      // Revisões antigas nunca são alteradas por uma colisão nova.
+      if(audit.hasSkillConflict)throw Error('Revisar antes de salvar: '+
+       audit.conflicts.map(x=>x.name+' ('+x.sources.join(' e ')+')').join(' · ')+
+       '. Desmarque a candidata coincidente; o histórico foi preservado.');
       profiles.save(storage(),profileContext,{train:currentPlan,skills,
        booster:selectBooster.value,source:'Revisão manual da ficha contextual V324'});
       status.textContent='Ficha consultiva salva em '+scenario.manager+'/'+scenario.position+'/'+scenario.style+
@@ -477,6 +483,9 @@ function create(target,model,opts={}){
   // V335: aprovação antiga não homologa PP alterados no rascunho independente.
   const verified=decision?.approved===true;
   const equipment=guide?.equipmentSummary?.(savedProfile,recommendations,candidate);
+  const equipmentAudit=profiles?.auditEquipmentSelection?.(equipment?.skills||[],
+   equipment?.booster||'',model.nativeSkills||'',model.skills||'',
+   model.fixedBooster||'',model.boosterSlot||'pendente');
   const hero=el('section','ct326-focus');
   hero.setAttribute('aria-label','Ficha em foco para a posição e o técnico');
   hero.append(el('div','ct326-kicker','FICHA EM FOCO · '+scenario.position+' · '+scenario.style.toUpperCase()));
@@ -511,6 +520,14 @@ function create(target,model,opts={}){
     'Slot e ativação exigem comprovação')
   );
   hero.append(cards);
+  if(equipmentAudit?.hasSkillConflict)hero.append(el('p','ct340-evidence-conflict',
+   'REVISAR HABILIDADES: '+equipmentAudit.conflicts.map(c=>
+    c.name+' ('+c.sources.map(x=>x==='nativa_cadastrada'?
+     'consta nas nativas cadastradas':'consta nas adicionais informadas').join(', ')+')').join(' · ')+
+   '. A seleção anterior continua preservada.'));
+  if(equipmentAudit?.fixedBoosterSame)hero.append(el('p','ct340-evidence-conflict',
+   'REVISAR ÍMPETO: o nome do candidato coincide com o ímpeto fixo cadastrado. '+
+   'Confira slots e compatibilidade no jogo; nenhuma ativação foi inferida.'));
   if(candidateNames.length)hero.append(el('p','ct326-priority',
    (equipment?.hasDraft?'Habilidades selecionadas no rascunho: ':'Habilidades em análise: ')+
     candidateNames.join(' · ')));
