@@ -18,6 +18,49 @@ const STYLES=Object.freeze([
 ]);
 // Compactação apenas para preservar integralmente o ZIP sem dependência de rede/file://.
 const DATA_GZIP_BASE64='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';
+// V323: edição comprovada pelo print fornecido pelo proprietário em 22/10/2026.
+// Mantida FORA do arquivo V302 assinado por hash: as 70 edições históricas permanecem intactas.
+// ID CT-MGR-071 é INTERNO, não o identificador oficial da Konami.
+const KOVAC_20261022=Object.freeze({
+ catalog_id:'CT-MGR-071',nome:'Niko Kovač',versao_lancamento:'2026-10-22',
+ prof_cada_estilo:{posse:90,contra_normal:59,contra_rapido:67,bola_longa:53,pelas_laterais:89,overload:57},
+ boosters_EN:['Ball Control +1','Defensive Engagement +1'],
+ boosters_PTBR:['Controle de bola +1','Dedicação defensiva +1'],
+ afinidade_PTBR:'Jogadores veteranos',
+ link_ups_EN:['Aggressive Centring B','Shadow Link B'],
+ ativacao_das_combinacoes:[
+  {name_EN:'Aggressive Centring B',centrepiece_playstyle_EN:'Attacking Full-back',
+   centrepiece_position_EN:'LB/RB',keyman_playstyle_EN:'Fox in the Box',keyman_position_EN:'CF'},
+  {name_EN:'Shadow Link B',centrepiece_playstyle_EN:'Deep-lying Forward',
+   centrepiece_position_EN:'SS',keyman_playstyle_EN:'Fox in the Box',keyman_position_EN:'CF'}
+ ],
+ linkups_status:'confirmados visualmente na carta; ativação na escalação não verificada',
+ source_profile:'https://efhub.com/pt-BR/managers/17610439655559',
+ source_evidence:'Print original do proprietário, 2026-10-22; eFHUB, mesma edição',
+ portrait_license_status:'não autorizado para redistribuição; foto do print não incorporada ao aplicativo'
+});
+function withKovacEdition(data){
+ validate(data); // valida estritamente as 70 edições originais
+ if(data.tecnicos.some(c=>c.catalog_id===KOVAC_20261022.catalog_id))
+  throw Error('Edição V323 já existente na base histórica: verificar colisão de ID');
+ return {...data,tecnicos:[...data.tecnicos,KOVAC_20261022]};
+}
+const KOVAC_DEFAULT_MARKER='scoutpro:v323:kovac-primary-migrated';
+function chooseRequestedPrimary(){
+ // Migração única do padrão anterior R. Rodríguez; não reescreve fichas ou seleções por carta.
+ try{
+  const store=host?.localStorage;
+  if(!store||store.getItem(KOVAC_DEFAULT_MARKER))return;
+  const previous=store.getItem('scoutpro:v307:default-manager');
+  let parsed=null;try{parsed=previous?JSON.parse(previous):null}catch(_){}
+  if(!parsed||parsed.catalog_id==='CT-MGR-004'){
+   store.setItem('scoutpro:v307:default-manager',
+    JSON.stringify({catalog_id:KOVAC_20261022.catalog_id,tactic:'posse'}));
+  }
+  store.setItem(KOVAC_DEFAULT_MARKER,'1');
+ }catch(_){/* Armazenamento bloqueado: permitir seleção manual. */}
+}
+
 let loading=null,selected=null,ui=null,all=null;
 // V306: seleção editorial solicitada pelo proprietário, não ranking estatístico de uso.
 const CURATED_IDS=Object.freeze(["CT-MGR-013","CT-MGR-008","CT-MGR-017","CT-MGR-001","CT-MGR-014","CT-MGR-020","CT-MGR-027","CT-MGR-023","CT-MGR-025","CT-MGR-006","CT-MGR-012","CT-MGR-019","CT-MGR-011","CT-MGR-005","CT-MGR-028","CT-MGR-009","CT-MGR-015","CT-MGR-010","CT-MGR-002","CT-MGR-007","CT-MGR-004","CT-MGR-003"]);
@@ -57,8 +100,9 @@ async function load(){
    throw Error('Navegador sem suporte à leitura do catálogo offline');
   const bytes=Uint8Array.from(host.atob(DATA_GZIP_BASE64),c=>c.charCodeAt(0));
   const stream=new Blob([bytes]).stream().pipeThrough(new host.DecompressionStream('gzip'));
-  const data=validate(JSON.parse(await new Response(stream).text()));
+  const data=withKovacEdition(JSON.parse(await new Response(stream).text()));
   all=data.tecnicos;
+  chooseRequestedPrimary();
   return data;
  })();
  loading.catch(()=>{loading=null});
@@ -131,6 +175,7 @@ function mount(doc){
   String(b.versao_lancamento||'').localeCompare(String(a.versao_lancamento||'')));
  const featured=curatedManagers(),curatedSet=new Set(CURATED_IDS);
  const groups=[
+  {label:'NOVO TÉCNICO PRINCIPAL · POSSE 90',values:[KOVAC_20261022]},
   {label:'SELEÇÃO COMPETITIVA · 22 versões',values:featured},
   {label:'OUTRAS VERSÕES · catálogo completo',values:coaches.filter(c=>!curatedSet.has(c.catalog_id))}
  ];
@@ -298,5 +343,5 @@ if(host?.document){
   host.document.addEventListener('DOMContentLoaded',start,{once:true});
  else start();
 }
-return Object.freeze({STYLES,KEY,CURATED_IDS,curatedManagers,competitiveStyles,portraitFor,DATA_GZIP_BASE64,validate,load,find,model,preferred,proficiency,mount,selectedManager});
+return Object.freeze({STYLES,KEY,CURATED_IDS,KOVAC_20261022,withKovacEdition,curatedManagers,competitiveStyles,portraitFor,DATA_GZIP_BASE64,validate,load,find,model,preferred,proficiency,mount,selectedManager});
 });
