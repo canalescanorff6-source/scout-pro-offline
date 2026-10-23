@@ -3,21 +3,30 @@
 function putManagerLink(){
  if(document.body?.dataset?.page!=='catalog')return;
  const list=document.querySelector('.hero-actions');
- if(!list||list.querySelector('[data-manager-hub-link]'))return;
- // V334: atalhos adicionados após o DOMContentLoaded também respeitam o menu
- // avançado recolhível V332; na ausência dele, preservar a navegação legada.
- const destination=list.querySelector('.hero-more-tools .hero-more-links')||list;
- const link=document.createElement('a');
- link.href='tecnicos-v307.html';link.textContent='Técnicos · comparar 22 versões →';
- link.className='btn primary';link.setAttribute('data-manager-hub-link','v307');
- destination.append(link);
- const own=document.createElement('a');
- own.href='outros-elencos-v227.html?colecao=minhas-cartas-adicionadas';
- own.textContent='+ Adicionar minhas novas cartas · PP automático →';
- own.className='btn primary';own.setAttribute('data-my-cards-link','v309');
- destination.append(own);
+ if(!list)return;
+ // A navegação real V189/V326 fica visível; a hero-actions legada é escondida
+ // pelo CSS V192. Inserir atalhos na navegação visível sempre que disponível.
+ const live=document.querySelector('.scout-v189-extra-links');
+ const target=live||list.querySelector('.hero-more-tools .hero-more-links')||list;
+ if(!document.querySelector('.scout-v326-managers-entry') &&
+    !list.querySelector('[data-manager-hub-link]') &&
+    !target.querySelector('[data-manager-hub-link]')){
+  const link=document.createElement('a');
+  link.href='tecnicos-v307.html';link.textContent='Central de Técnicos · escolher edição →';
+  link.className=live?'':'btn primary';link.setAttribute('data-manager-hub-link','v307');
+  target.append(link);
+ }
+ if(!document.querySelector('[data-my-cards-link]') &&
+    !document.querySelector('.scout-v189-extra-links a[href*="colecao=minhas-cartas-adicionadas"]')){
+  const own=document.createElement('a');
+  own.href='outros-elencos-v227.html?colecao=minhas-cartas-adicionadas';
+  own.textContent='+ Adicionar minhas novas cartas · PP automático →';
+  own.className=live?'':'btn primary';own.setAttribute('data-my-cards-link','v309');
+  target.append(own);
+ }
  const label=list.querySelector('.hero-more-tools > summary');
- if(label){label.textContent='Mais ferramentas e análises ('+destination.querySelectorAll('a[href]').length+')';}
+ const fallback=list.querySelector('.hero-more-tools .hero-more-links');
+ if(label&&fallback)label.textContent='Mais ferramentas e análises ('+fallback.querySelectorAll('a[href]').length+')';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',putManagerLink,{once:true});
 else putManagerLink();
