@@ -45,6 +45,22 @@ Código alterado: `web/craque-friends-training-v228.js`, `web/craque-friends-tra
 - **Riscos:** a alteração torna mais conservadora a indicação de elegibilidade em Outros Elencos; pode exigir futura confirmação documental para permitir sugestões acionáveis. Nenhum equipamento real é apagado nem modificado.
 - **Critérios de aceitação:** `vazio` relatado sem comprovação de edição não fabrica `SLOT SELECIONÁVEL`; o mesmo ímpeto fixo não reaparece como recomendação; nome cadastrado não desaparece; rankings dos cinco estilos continuam consultivos; provas positivas independentes no motor V162 continuam reconhecidas; Minhas Cartas e Outros Elencos mantêm o mesmo motor de posição/PP/skills/boosters; 246 cartas intactas.
 - **Testes exigidos:** `scripts/test-friends-training-v228.cjs`, `scripts/test-position-scenarios-v311.cjs`, `scripts/qa-position-v311.py` em duas dimensões Android/Windows, `npm run check`, CI e builds, auditoria dos 246 IDs/cartas, integridade Android e Windows.
-- **Estado:** V321 implementada na branch `fix/v321-booster-slot-evidence-separation`, aguardando PR/CI/QA/publicação; não afirmar validação física ou melhoria competitiva em jogo.
+- **Estado:** V321 integrada à `main` (`ef5389b370f0`) e publicada em `v1.1.850`; CI e QA automatizados aprovados. Teste físico segue pendente.
 
 **Próxima oportunidade de prioridade alta:** considerar uma prova de suporte a slot vinculada à edição/ID da carta externa, separada do estado de ocupação do usuário, sem inferir esses dados de Overall ou de nome do jogador. Auditar também deduplicação de habilidades nativas/especiais e variação por função tática.
+
+
+## V322 — Detecção proativa: falsa completude do Card ID e inventário nativo
+
+- **Prioridade:** ALTA, precisão de confiança das recomendações competitivas.
+- **Módulo:** `web/craque-friends-training-v228.js`, motor compartilhado com fichas contextuais V311 nos dois acervos.
+- **Evidência:** `identity=Boolean(cardId&&edition)` classificava qualquer texto não vazio (inclusive `PENDENTE`) como identidade presente. `nativeDocumented=Boolean(nativeSkills)` classificava `PENDENTE` e `A CONFIRMAR` como nativas documentadas, mesmo com o motor V162 marcando `nativeKnown:false`.
+- **Causa:** divergência entre o controle simplificado de preenchimento no adaptador V228 e a validação de vocabulário/ausência já existente em V162.
+- **Impacto:** aumentava indevidamente o indicador de confiança da ficha e poderia induzir uso de propostas sem conferir a edição e as habilidades de fábrica.
+- **Solução proposta e implementada na branch:** Card ID é validado **somente no formato plausível**, com cinco a vinte dígitos, e edição sem marcadores de pendência; campo `identityEvidenceConfirmed:false` explicita que o formato não constitui prova independente. Inventário nativo passa a usar `skill.nativeKnown` do V162 e exibe aviso quando não documentado.
+- **Proteção:** nenhuma alteração em Card IDs, PP, habilidades equipadas, boosts, imagens e 246 cartas originais; não se atribui prova documental a um identificador numérico fictício de teste.
+- **Critérios:** marcador textual e edição provisória mantêm confiança pendente; nativas provisórias não viram documento; com dados plausíveis a hipótese continua **parcial**, sem alegar homologação; estilos, slot/booster e identidade da carta inalterados.
+- **Testes:** `scripts/test-friends-training-v228.cjs` com IDs falsos, nomes provisórios e dados completos; `scripts/test-position-scenarios-v311.cjs` para paridade; `npm run check`, QA visual e builds Android/Windows em Actions.
+- **Estado:** implementada na branch `fix/v322-identity-native-evidence-gates`, aguardando PR e aprovação dos controles antes do merge.
+
+**Próximo ciclo:** fortalecer conferência documental de habilidades nativas com mesma edição/Card ID e analisar redundância de habilidades entre funções, sem converter o catálogo em prova de equipamento real.
