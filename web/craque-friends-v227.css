@@ -276,3 +276,14 @@ body[data-page=friends] .friend-analysis-cta button{min-height:46px;flex:1 1 170
  body[data-page=friends] .friend-analysis-sections button{font-size:11px}
  .friends-journey{display:grid;grid-template-columns:1fr}
 }
+
+/* V328 · seleção premium de técnico, legível no Android e Windows */
+.friend-manager-v328-tools{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:10px;align-items:end;margin:12px 0;padding:13px;border:1px solid #465c6b;border-radius:14px;background:linear-gradient(140deg,#102331,#182f3c)}
+.friend-manager-v328-tools label{display:flex;flex-direction:column;gap:7px;color:#f2dfb6;font-size:12px;font-weight:800;min-width:0}
+.friend-manager-v328-tools input,.friend-manager-v328-tools select{min-height:44px;border:1px solid #60798a;background:#091c2a;color:#f5f7fa;border-radius:9px;padding:9px 11px;font:inherit;font-size:14px;width:100%;min-width:0}
+.friend-manager-v328-tools input:focus-visible,.friend-manager-v328-tools select:focus-visible,.friend-manager-v328-fav:focus-visible{outline:3px solid #f4d393;outline-offset:2px}
+.friend-manager-v328-count{grid-column:1;align-self:center;font-size:12px;color:#c7d9e2;margin:0;line-height:1.5}
+.friend-manager-v328-fav{grid-column:2;min-height:44px;padding:9px 11px;border:1px solid #e2bf7c;border-radius:9px;background:#263440;color:#ffe5aa;font-weight:800;cursor:pointer;font-size:12px}
+.friend-manager-v328-fav[aria-pressed="true"]{background:#55452a;color:#fff3c5}
+.friend-manager-v328-fav:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:520px){.friend-manager-v328-tools{grid-template-columns:minmax(0,1fr)}.friend-manager-v328-count,.friend-manager-v328-fav{grid-column:1}.friend-manager-v328-fav{justify-self:stretch}}
