@@ -121,16 +121,29 @@ function evaluate(card,tactic='posse',deps){
  const progress=resolveBudget(card);
  const plan=allocate(card,tactic,{tactical:t,skills:s,boosters:b});
  const raw=profileOf(card);
- const identity=Boolean(String(card.cardId||'').trim()&&String(card.edition||'').trim());
- const nativeDocumented=Boolean(String(card.nativeSkills||'').trim());
+ // V322: campos preenchidos NÃO equivalem a dados da edição conferidos.
+ // Um placeholder alfabético, "pendente" ou "a confirmar" não é Card ID
+ // e não pode elevar a confiança competitiva de qualquer acervo.
+ const cardId=String(card.cardId||'').trim(),edition=String(card.edition||'').trim();
+ const identity=Boolean(/^\\d{5,20}$/.test(cardId)&&edition&&
+  !/pendente|confirmar|desconhecid|não informad|nao informad|não cadastr|nao cadastr|indefinid|placeholder/i.test(edition));
  const existing=String(card.skills||'').trim();
+ let skill=null,boost=null;
+ if(plan.role){
+  skill=s.evaluate(raw,tactic,existing);
+  boost=s.booster({...raw,niveis:plan.levels},tactic,b,card.boosterSlot||'pendente',card.booster||'');
+ }
+ // Usar a MESMA validação de nativas do motor V162; texto genérico
+ // como "PENDENTE" não constitui inventário de habilidades documentado.
+ const nativeDocumented=Boolean(skill?.nativeKnown);
  const warnings=[];
  if(progress.source==='manual_divergente')warnings.push(progress.reason);
  if(progress.source==='nivel_maximo')warnings.push(
   'PP calculados pelo nível máximo: 2 × ('+card.level+' − 1) = '+progress.pp+
   '. Verifique se o nível do print é o MÁXIMO desta edição; isso não comprova Card ID nem atributos finais.');
- if(!identity)warnings.push('Identidade da versão pendente: preencha a edição e o Card ID exato para maior confiabilidade.');
- if(!nativeDocumented)warnings.push('Habilidades nativas não cadastradas: confira antes de aplicar as sugestões.');
+ if(!identity)warnings.push('Identidade da versão pendente: informe um Card ID numérico plausível e a edição exata; texto genérico não comprova identidade.');
+ else warnings.push('Card ID informado com formato plausível; conferir a correspondência com a edição exata antes de validar competitivamente.');
+ if(!nativeDocumented)warnings.push('Inventário nativo ausente, provisório ou não documentado: confira as habilidades da edição antes de aplicar sugestões.');
  if(card.boosterSlot==='vazio')warnings.push(
   'Slot relatado vazio pelo proprietário; a edição exata ainda não possui comprovação independente de slot selecionável. Não gastar tokens.');
  else warnings.push(card.boosterSlot==='ocupado'?'Segundo ímpeto ocupado: a sugestão é somente comparativa.':
@@ -140,12 +153,7 @@ function evaluate(card,tactic='posse',deps){
   warnings.push('CONFLITO: slot marcado como vazio, mas há nome de ímpeto adicional informado. Revisar a edição e o equipamento sem excluir o nome salvo.');
  if(plan.baselineError)warnings.push(plan.baselineError);
  if(!card.style)warnings.push('Estilo individual de jogo não informado: recomendação baseada apenas na posição.');
- let skill=null,boost=null;
- if(plan.role){
-  skill=s.evaluate(raw,tactic,existing);
-  boost=s.booster({...raw,niveis:plan.levels},tactic,b,card.boosterSlot||'pendente',card.booster||'');
-  if(skill.missing?.length)warnings.push(...skill.missing);
- }
+ if(skill?.missing?.length)warnings.push(...skill.missing);
  // A lista de habilidades INFORMADAS não é recibo da quantidade de slots
  // LIVRES. O V162 somente confirma vagas quando possui prova da edição exata.
  // Preservar a quantidade consultiva de candidatas sem transformar essa
@@ -155,7 +163,9 @@ function evaluate(card,tactic='posse',deps){
  return {
   tactic,label:LABEL[tactic],plan,progress,skills:skill,booster:boost,
   suggestedSkills:skill?.recommendations.slice(0,candidateCapacity)||[],
-  candidateCapacity,freeSkillSlots,identityConfirmed:identity,nativeDocumented,
+  candidateCapacity,freeSkillSlots,
+  identityConfirmed:identity,identityFormatValid:identity,
+  identityEvidenceConfirmed:false,nativeDocumented,
   // O boletim manual do proprietário e a prova da edição são dimensões
   // independentes. No cadastro externo não existe ainda prova catalogada
   // vinculada ao Card ID autorizando um novo slot.
