@@ -9,6 +9,12 @@ const FAVORITES='scoutpro:v307:manager-favorites',OWNED='scoutpro:v307:manager-o
 const DEFAULT='scoutpro:v307:default-manager';
 const PORTRAIT='scoutpro:v307:manager-portrait:';
 const KOVAC_ID='CT-MGR-071';
+const normalized=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();
+const managerGroups=items=>{
+ const groups=new Map();
+ for(const c of items){const key=normalized(c.nome);groups.set(key,(groups.get(key)||0)+1)}
+ return groups;
+};
 const CATEGORIES=Object.freeze({elite90:'90 · excelência',elite89:'89 · elite',strong:'85–88 · alternativa',low:'abaixo de 85 · atenção'});
 function grade(n){return n===90?'elite90':n>=89?'elite89':n>=60&&n<85?'low':n>=85?'strong':'low'}
 function initials(name){return String(name||'?').trim().split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()}
@@ -60,7 +66,7 @@ const el=(tag,cls,content)=>{
  if(content!==undefined)node.textContent=String(content);
  return node;
 };
-let full=[],compared=new Set(),feedback='',lastFilters={};
+let full=[],compared=new Set(),feedback='',lastFilters={},versionsByName=new Map();
 function feedbackMessage(s){feedback=s;const p=$('hub-feedback');if(p)p.textContent=feedback}
 function persistDefault(c){
  const viable=A.STYLES.filter(s=>s.supported).sort((a,b)=>
@@ -154,9 +160,33 @@ function makeCard(c,owned,favs){
  if(strong.length>=2)pills.append(el('span','hub-chip',strong.length+' ESTILOS 89+'));
  if(owned.has(c.catalog_id))pills.append(el('span','hub-chip','MEU TÉCNICO'));
  desc.append(pills);top.append(picture,desc);node.append(top);
+ // V328: um único dado relevante primeiro, seis proficiências completas sob demanda.
+ // O estilo em foco é o filtro escolhido ou Posse por padrão; não é ranking.
+ const focusStyle=A.STYLES.find(x=>x.id===($('hub-style')?.value||'posse'))||A.STYLES[0];
+ const focusScore=A.proficiency(c,focusStyle.id);
+ const preview=el('div','hub-v328-preview');
+ preview.append(el('span','hub-v328-preview-title','EM FOCO · '+focusStyle.label),
+  el('strong','hub-v328-preview-score',focusScore===null?'Pendente':focusScore),
+  el('small','','Proficiência desta edição · não equivale a PP'));
+ node.append(preview);
  const scores=el('div','hub-score-grid');
  for(const style of A.STYLES)scores.append(scoreRow(c,style));
- node.append(scores);
+ const scoreDetails=el('details','hub-v328-scores');
+ scoreDetails.append(el('summary','','Ver as 6 proficiências'),scores);
+ node.append(scoreDetails);
+ const editions=versionsByName.get(normalized(c.nome))||0;
+ if(editions>1){
+  const editionsButton=button('Ver '+editions+' versões de '+c.nome,()=>{
+   const search=$('hub-search'),scope=$('hub-scope');
+   if(search)search.value=c.nome;if(scope)scope.value='all';
+   const style=$('hub-style'),min=$('hub-min'),dual=$('hub-dual');
+   if(style)style.value='';if(min)min.value='0';if(dual)dual.checked=false;
+   render();search?.focus?.();
+   feedbackMessage('Edições de '+c.nome+' · escolha pela versão exata, não apenas pelo nome.');
+  },'hub-v328-versions');
+  editionsButton.setAttribute('aria-label','Listar '+editions+' edições documentadas de '+c.nome);
+  node.append(editionsButton);
+ }
  const actions=el('div','hub-actions');
  const own=button(owned.has(c.catalog_id)?'✓ Meu técnico':'Marcar como meu',()=>{
   try{toggleStored(OWNED,c.catalog_id);render()}catch(_){feedbackMessage('Sem espaço para salvar a seleção.')}
@@ -174,11 +204,13 @@ function makeCard(c,owned,favs){
  });
  compare.setAttribute('aria-pressed',String(compared.has(c.catalog_id)));
  actions.append(own,fav,compare,button('Usar como padrão',()=>persistDefault(c),'primary'));
- actions.append(button(imgData?'Trocar retrato':'Adicionar retrato',()=>uploadPortrait(c)));
- if(imgData)actions.append(button('Remover retrato',()=>{
+ const portraitOptions=el('details','hub-v328-portrait-tools');
+ portraitOptions.append(el('summary','','Foto personalizada · opcional'));
+ portraitOptions.append(button(imgData?'Trocar retrato':'Adicionar retrato',()=>uploadPortrait(c)));
+ if(imgData)portraitOptions.append(button('Remover retrato',()=>{
   try{host.localStorage.removeItem(portraitKey(c.catalog_id));render();feedbackMessage('Retrato removido somente desta edição.')}catch(_){}
  }));
- node.append(actions);
+ node.append(actions,portraitOptions);
  const detail=el('details','hub-details');detail.append(el('summary','','Bônus · combinações · origem'));
  if(c.afinidade_PTBR)detail.append(el('p','','Afinidade para comandar: '+c.afinidade_PTBR));
   detail.append(el('h3','','Bônus de técnico divulgados'));
@@ -207,6 +239,9 @@ function render(){
  const owned=fromStore(OWNED),favorites=fromStore(FAVORITES);
  lastFilters={scope,query,style,min,dual};
  const results=pick(full,{scope,query,style,min,dual,owned,favorites});
+ const preset=$('hub-v328-presets');
+ if(preset)for(const b of preset.querySelectorAll('button[data-scope]'))
+  b.setAttribute('aria-pressed',String(b.dataset.scope===scope));
  const container=$('hub-cards');container.replaceChildren();
  for(const c of results)container.append(makeCard(c,owned,favorites));
  $('hub-results').textContent=results.length+' versões exibidas · '+full.length+' no catálogo';
@@ -219,8 +254,15 @@ async function start(){
  for(const id of ['hub-search','hub-scope','hub-style','hub-min','hub-dual']){
   $(id).addEventListener(id==='hub-search'?'input':'change',render);
  }
+ const preset=$('hub-v328-presets');
+ if(preset)for(const b of preset.querySelectorAll('button[data-scope]')){
+  b.type='button';b.addEventListener('click',()=>{
+   $('hub-scope').value=b.dataset.scope;render();
+  });
+ }
  try{
   const data=await A.load();full=data.tecnicos;
+  versionsByName=managerGroups(full);
   $('hub-count-total').textContent=String(full.length);
   $('hub-count-featured').textContent=String(pick(full,{scope:'featured'}).length);
   render();
@@ -230,5 +272,5 @@ if(host?.document){
  if(host.document.readyState==='loading')host.document.addEventListener('DOMContentLoaded',start,{once:true});
  else start();
 }
-return Object.freeze({grade,initials,safePortrait,portraitKey,portraitFor,fromStore,toggleStored,pick,CATEGORIES,DEFAULT,OWNED,FAVORITES,PORTRAIT});
+return Object.freeze({grade,initials,safePortrait,portraitKey,portraitFor,fromStore,toggleStored,pick,managerGroups,CATEGORIES,DEFAULT,OWNED,FAVORITES,PORTRAIT});
 });
