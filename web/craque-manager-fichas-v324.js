@@ -59,6 +59,38 @@ function cleanSkills(values){
   throw Error('Habilidade vazia, duplicada ou inválida');
  return list;
 }
+// V325: propostas antigas continuam visíveis mesmo quando o motor evolui.
+// Normalizar acentos apenas para deduplicação e alertas — sem traduzir/inventar skills.
+function skillName(value){
+ return normalize(typeof value==='string'?value:(value?.name||value?.nome||''));
+}
+function skillToken(value){
+ return skillName(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').replace(/\s+/g,' ').trim();
+}
+function skillList(value){
+ if(Array.isArray(value))return value.map(skillName).filter(Boolean);
+ if(typeof value==='string')return value.split(/[;,]/).map(normalize).filter(Boolean);
+ return [];
+}
+function reviewSkillCandidates(saved=[],suggested=[],native=[],equipped=[]){
+ const previous=cleanSkills(saved);
+ const nativeSet=new Set(skillList(native).map(skillToken));
+ const equippedSet=new Set(skillList(equipped).map(skillToken));
+ const selected=new Set(),rows=[];
+ function append(name,wasSaved){
+  const clean=skillName(name),token=skillToken(clean);
+  if(!clean||selected.has(token))return;
+  // Não exibir novas candidatas que já sejam habilidades nativas/equipadas.
+  if(!wasSaved&&(nativeSet.has(token)||equippedSet.has(token)))return;
+  selected.add(token);
+  rows.push(Object.freeze({name:clean,saved:wasSaved,
+   conflict:nativeSet.has(token)?'nativa':equippedSet.has(token)?'já equipada':null}));
+ }
+ previous.forEach(n=>append(n,true));
+ if(!Array.isArray(suggested))throw Error('Recomendações de habilidade inválidas');
+ suggested.slice(0,30).forEach(n=>{if(rows.length<previous.length+5)append(n,false)});
+ return rows;
+}
 function validateRecord(row,c){
  if(!row||typeof row!=='object'||row.schema!==SCHEMA||
   row.key!==key(c)||row.sourceSignature!==c.sourceSignature||
@@ -104,6 +136,9 @@ function save(store,c,{train,skills=[],booster='',source='Edição manual de cen
   savedAt:new Date().toISOString()
  };
  const next=coalesce?[...versions.slice(0,-1),row]:[...versions,row];
+ // A versão anterior aceitava gravar a 51ª revisão, mas readAll proibia
+ // ler mais de 50. Rejeitar ANTES da gravação, preservando as 50 anteriores.
+ if(next.length>50)throw Error('Limite de 50 revisões atingido: histórico preservado; exporte backup antes de novo salvamento');
  const serialized=JSON.stringify({schema:SCHEMA,revisions:next});
  if(serialized.length>85000)throw Error('Limite do histórico atingido; exporte backup');
  if(!store?.setItem)throw Error('Armazenamento indisponível');
@@ -118,5 +153,5 @@ function deleteDraft(store,c){
 }
 return Object.freeze({PREFIX,SCHEMA,STYLES,POSITIONS,validateContext,
  fromScenario,withStyle,withManager,withPosition,key,ppCost,validTraining,
- cleanSkills,readAll,read,save,deleteDraft});
+ cleanSkills,skillName,skillToken,reviewSkillCandidates,readAll,read,save,deleteDraft});
 });
