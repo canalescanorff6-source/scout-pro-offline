@@ -223,10 +223,10 @@ function create(target,model,opts={}){
   const recorded=saved&&!saved.stale?saved.revision:null;
   // V336 PP: ler a ficha independente antes de mostrar níveis e saldo.
   const profiles=host.CRAQUE_MANAGER_FICHAS_V324;
-  let context=null,savedProfile=null,readError='';
+  let profileContext=null,savedProfile=null,readError='';
   if(profiles)try{
-   context=profiles.fromScenario(scenario,model);
-   savedProfile=profiles.read(storage(),context);
+   profileContext=profiles.fromScenario(scenario,model);
+   savedProfile=profiles.read(storage(),profileContext);
   }catch(e){readError=String(e.message||e)}
   let output=outcome;
   if(recorded&&Array.isArray(recorded.levels)&&outcome.plan.status==='hipotese'){
@@ -272,9 +272,9 @@ function create(target,model,opts={}){
     '. Nada foi sobrescrito; selecione uma edição comprovada e confira PP.'));
    else{
     const currentPlan=savedProfile?.train||recorded?.levels||outcome.plan.levels;
-    const ok=profiles.validTraining(currentPlan,context.budget);
+    const ok=profiles.validTraining(currentPlan,profileContext.budget);
     editor.append(el('p','ct311-note','Contexto isolado: '+scenario.manager+' · '+scenario.position+
-     ' · '+scenario.style+' · '+context.budget+' PP. Não copia fichas de outros técnicos.'));
+     ' · '+scenario.style+' · '+profileContext.budget+' PP. Não copia fichas de outros técnicos.'));
     if(savedProfile)editor.append(el('p','ct311-confirm','Rascunho independente salvo · revisão '+
      savedProfile.revision+' · somente recomendação, não equipamento no eFootball.'));
     if(savedProfile&&ok)editor.append(el('p','ct311-note','PP desta ficha: '+
@@ -326,7 +326,7 @@ function create(target,model,opts={}){
      try{
       if(!ok)throw Error('PP da edição não conferidos. Ficha permanece pendente.');
       const skills=choices.filter(x=>x.checked).map(x=>x.value);
-      profiles.save(storage(),context,{train:currentPlan,skills,
+      profiles.save(storage(),profileContext,{train:currentPlan,skills,
        booster:selectBooster.value,source:'Revisão manual da ficha contextual V324'});
       status.textContent='Ficha consultiva salva em '+scenario.manager+'/'+scenario.position+'/'+scenario.style+
        '. Nenhum ímpeto ou habilidade foi equipado automaticamente.';
