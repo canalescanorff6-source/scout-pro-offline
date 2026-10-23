@@ -154,6 +154,9 @@ function mount(doc){
   // isso poderia sobrescrever o rascunho de outro treinador.
   const context=contextForTactic();
   if(!context&&activeTactic==='posse')host.dispatchEvent(new host.CustomEvent('scoutpro:training-edit-v218',{detail:{cap:capture,card_id:id,levels:current.slice(),mode}}));
+  if(context&&activeTactic==='posse'&&valid(current))
+   host.dispatchEvent(new host.CustomEvent('scoutpro:training-preview-v324',
+    {detail:{cap:capture,card_id:id,levels:current.slice(),manager:context.manager,position:context.position,mode}}));
   host.dispatchEvent(new host.CustomEvent('scoutpro:training-updated-v220',{detail:{
    cap:capture,card_id:id,tactic:activeTactic,levels:current.slice(),mode,
    manager:context?.manager||null,position:context?.position||null,
