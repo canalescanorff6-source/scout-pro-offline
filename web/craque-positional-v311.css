@@ -183,3 +183,8 @@
  border-radius:8px;padding:10px 11px;line-height:1.6;margin:4px 0 0}
 @media(max-width:560px){.ct336-equipment-body{padding:11px 12px 13px}
  .ct336-equipment-evidence>summary{padding:11px 12px}}
+
+/* V340 — colisões documentais visíveis, sem classificar equipamento como confirmado. */
+.ct340-evidence-conflict{margin:9px 0;padding:11px 12px;border:1px solid #c39b59;
+ background:#34291e;color:#fff0d4;border-radius:9px;font-size:12px;line-height:1.6}
+@media(max-width:560px){.ct340-evidence-conflict{font-size:12px;padding:10px}}
