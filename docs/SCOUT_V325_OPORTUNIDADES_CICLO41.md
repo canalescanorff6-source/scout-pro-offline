@@ -33,6 +33,15 @@
 - **Limite de prova:** a fonte é somente o cadastro disponível; `model.skills` vazio não autoriza presumir vagas livres. Não comparar equivalências semânticas ou versões distintas sem mapeamento oficial Konami.
 - **Estado:** implementado para revisão, sem mudança nos equipamentos reais.
 
+### V325-006 · CRÍTICA · PP calculados no motor não chegavam às fichas externas
+- **Módulos:** `craque-friends-training-v228.js`, `craque-positional-v311.js`, `craque-manager-fichas-v324.js`.
+- **Reprodução via Chromium:** uma carta de ensaio, nível máximo 35, ID/edição definidos e técnico CT-MGR-071 gera 68 PP no motor V228; entretanto `model.pp` em V311 segue nulo quando o proprietário não digitou PP manual. O perfil V324 recusava a gravação por `budget` nulo.
+- **Causa:** dois campos divergentes de mesma origem (`model.pp` e `scenario.outcome.plan.pp`), sem propagação do cálculo aprovado do motor.
+- **Impacto:** paridade incompleta em Outros Elencos — fichas por técnico não disponíveis apesar do cenário válido.
+- **Correção:** adotar o orçamento do cenário somente se `plan.status==='hipotese'`, nível máximo entre 1 e 120 e `plan.pp === 2*(nível máximo-1)`. Bloquear divergências entre PP informados e PP do cenário; sem escrita na carta original nem invenção de PP.
+- **Aceitação:** nível 35→68 PP, salvar/restaurar, rejeitar 35→66, cenário pendente e PP manuais divergentes. Teste puro e cenário real na UI (Android/Windows).
+- **Estado:** implementado em branch V325 após falha reproduzida pelo teste visual específico.
+
 ### V325-004 · ALTA · Lacunas na validação de equipamento em Minhas Cartas
 - **Módulo:** armazenamento e captura dos cinco slots equipados.
 - **Evidência:** `fromPersonal` retorna `skills:''`; ausência de documentação não confirma cinco vagas livres.
