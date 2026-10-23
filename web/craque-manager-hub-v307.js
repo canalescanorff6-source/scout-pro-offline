@@ -175,7 +175,7 @@ function makeCard(c,owned,favs){
  node.append(actions);
  const detail=el('details','hub-details');detail.append(el('summary','','Bônus · combinações · origem'));
  detail.append(el('h3','','Bônus de técnico divulgados'));
- detail.append(el('p','',c.boosters_EN?.length?c.boosters_EN.join(' · '):'Não documentados nesta edição.'));
+ detail.append(el('p','',(c.boosters_PTBR||c.boosters_EN)?.length?(c.boosters_PTBR||c.boosters_EN).join(' · '):'Não documentados nesta edição.'));
  detail.append(el('h3','','Link-Up Play e ativação'));
  if(!c.ativacao_das_combinacoes?.length)
   detail.append(el('p','','Combinações não documentadas para esta edição.'));
