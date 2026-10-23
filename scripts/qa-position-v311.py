@@ -150,7 +150,7 @@ with sync_playwright() as p:
     raise
    assert not main.locator('.ct326-deep-dive').evaluate('(e) => e.open')
    main.locator('.ct326-deep-dive > summary').click()
-   assert 'Posição original: CA' in main.inner_text()
+   assert 'Posição original: CA' in main.locator('.ct311-origin').text_content()
    main.locator('.ct331-role-open').click()
    main.locator('.ct311-controls .ct311-select').select_option('SA')
    assert 'Cenário SA' in main.inner_text()
