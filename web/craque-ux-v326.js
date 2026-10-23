@@ -203,10 +203,15 @@
  function boot(){
   home();detail();external();
   if(doc.body.dataset.page==='detail'&&host.MutationObserver){
-   // O motor V311 é montado depois da ficha V220: continuar observando
-   // até mover a comparação REAL, evitando deixar duas fichas abertas.
+   // V326: não observar sem limite as próprias mutações do resumo.
+   // Reexecutar apenas quando chega o shell OU a área V311 assíncrona.
    const watch=new host.MutationObserver(()=>{
-    detail();
+    const shell=doc.getElementById('scout-v220-hero');
+    if(!shell)return;
+    const isMissingChoice=!doc.getElementById('ct326-choice');
+    const isMissingCompare=!doc.getElementById('ct326-comparisons');
+    const arrivedSlot=Boolean(shell.querySelector('.ct311-main-slot'));
+    if(isMissingChoice||(isMissingCompare&&arrivedSlot))detail();
     if(doc.getElementById('ct326-comparisons'))watch.disconnect();
    });
    watch.observe(doc.body,{childList:true,subtree:true});
