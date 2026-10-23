@@ -250,6 +250,7 @@ function mount(doc){
   explanation.append(make(doc,'p','Proficiência '+STYLES.find(s=>s.id===selectedTactic)?.label+
    ': '+(status.score===null?'não documentada':status.score)+
    (status.score!==null&&status.score<85?' · abaixo de 85':'')+'. '+status.note));
+  if(selected.afinidade_PTBR)explanation.append(make(doc,'p','Afinidade para comandar: '+selected.afinidade_PTBR+'.'));
   explanation.append(make(doc,'p','Bônus divulgados: '+
    ((selected.boosters_PTBR||selected.boosters_EN).length?(selected.boosters_PTBR||selected.boosters_EN).join(' · '):'nenhum documentado')+
    '. Não somar aos PP nem calcular atributos finais sem base confirmada.'));
