@@ -396,7 +396,9 @@ function create(target,model,opts={}){
   ppFrontier.append(frontierContent);
   ppFrontier.addEventListener('toggle',()=>{
    if(!ppFrontier.open||ppFrontier.dataset.ready==='true')return;
-   ppFrontier.dataset.ready='true';
+   // V251 pode carregar depois da UI. Se faltar motor, permitir nova tentativa
+   // ao reabrir em vez de marcar uma comparação incompleta como pronta.
+   frontierContent.replaceChildren();
    let analysis;
    try{analysis=host.CRAQUE_FRONTIER_CONTEXT_V339?.compare(storage(),model,scenario)}
    catch(e){analysis={status:'PENDENTE',reason:String(e.message||e)}}
@@ -405,6 +407,7 @@ function create(target,model,opts={}){
      analysis?.reason||'Comparador ainda indisponível; ficha salva preservada.'));
     return;
    }
+   ppFrontier.dataset.ready='true';
    const frontier=analysis.comparison;
    frontierContent.append(el('p','ct311-note',analysis.saved?
     'Referência: rascunho independente salvo · revisão '+analysis.revision+
