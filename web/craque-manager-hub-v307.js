@@ -40,6 +40,12 @@ function pick(items,{scope='featured',query='',style='',min=0,dual=false,owned=n
   else if(!values.some(n=>n>=Number(min)))return false;
   return true;
  }).sort((a,b)=>{
+  // O novo técnico principal deve ficar visível antes da seleção histórica.
+  // Não altera a composição dos 22 históricos; somente ordenação visual.
+  if(scope==='featured'){
+   const primaryA=Number(a.catalog_id===KOVAC_ID),primaryB=Number(b.catalog_id===KOVAC_ID);
+   if(primaryA!==primaryB)return primaryB-primaryA;
+  }
   const x=Number(curated.has(a.catalog_id)),y=Number(curated.has(b.catalog_id));
   if(x!==y)return y-x;
   const max=c=>Math.max(...A.STYLES.map(s=>A.proficiency(c,s.id)??0));
