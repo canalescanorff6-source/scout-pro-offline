@@ -57,6 +57,9 @@ with sync_playwright() as pw:
    assert root.locator('.ct326-deep-dive').evaluate('(e)=>e.open'), 'Troca de posição não pode fechar ficha aberta'
    assert 'Cenário SA' in root.inner_text()
    root.locator('.ct326-secondary-action').click()
+   assert root.locator('.ct327-style-panel').is_visible()
+   assert root.locator('.ct327-style-row').count()==5
+   root.locator('.ct311-compare > summary').click()
    assert root.locator('.ct311-compare').evaluate('(e)=>e.open')
    assert 'Comparar MAT × SA' in root.inner_text()
    assert not errors,errors
