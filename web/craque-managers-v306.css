@@ -25,3 +25,15 @@ body[data-page="friends"] .friend-manager-warning{color:#ffcc84;font-weight:750}
 .friend-manager-scores>.friend-manager-score-elite{color:#a5ff8a;background:#18382d}
 .friend-manager-scores>.friend-manager-score-strong{color:#ffe3a3;background:#383126}
 @media(max-width:480px){.friend-manager-scores{grid-template-columns:1fr}}
+
+/* V328 · seletor externo pesquisável com dados técnicos sob demanda */
+.friend-manager-v306 input[type=search]{min-height:44px;width:100%;border:1px solid #8699a5;background:#092330;color:#fff;border-radius:11px;padding:10px 12px;font-size:14px}
+.friend-manager-v306 input[type=search]:focus-visible{outline:3px solid #f0d89b;outline-offset:2px}
+.friend-v328-manager-primary{background:linear-gradient(110deg,#213949,#133047);border:1px solid #92764a;border-radius:12px;padding:12px;color:#f5ddb0!important;font-weight:800;line-height:1.4}
+.friend-v328-manager-scores,.friend-v328-manager-more{border:1px solid #426070;border-radius:10px;padding:0;margin:9px 0;background:#102c3b}
+.friend-v328-manager-scores>summary,.friend-v328-manager-more>summary{cursor:pointer;padding:11px 13px;font-weight:750;color:#f5deac;min-height:44px;display:flex;align-items:center}
+.friend-v328-manager-scores>summary::after,.friend-v328-manager-more>summary::after{content:'+';margin-left:auto;font-size:18px}
+.friend-v328-manager-scores[open]>summary::after,.friend-v328-manager-more[open]>summary::after{content:'−'}
+.friend-v328-manager-scores .friend-manager-scores{padding:12px}
+.friend-v328-manager-more>p{padding:0 12px 10px!important;margin:5px 0;color:#c9dae3;line-height:1.5}
+@media(max-width:560px){.friend-manager-v306{gap:9px;padding:12px}.friend-v328-manager-scores .friend-manager-scores{grid-template-columns:1fr 1fr}}

@@ -319,3 +319,14 @@ body[data-page="catalog"] .hero .hero-text .eyebrow{color:#e6c985!important}
 }
 @media(max-width:345px){body[data-page="catalog"] .scout-v189-quick{grid-template-columns:1fr}
  body[data-page="catalog"] .scout-v189-quick .scout-v189-tile{min-height:70px;flex-direction:row;align-items:center}}
+
+/* V328 · Minhas Cartas: busca de técnicos e proficiência mais legível. */
+.ct-manager-v302 #ct-v328-manager-search{display:block;width:100%;min-height:46px;margin:7px 0 12px;background:#102837;border:1px solid #74919f;border-radius:10px;color:#f5f9fa;padding:10px 13px;font:inherit}
+.ct-manager-v302 #ct-v328-manager-search:focus-visible{outline:3px solid #eed295;outline-offset:3px}
+.ct-manager-v302 .ct-v328-manager-primary{border:1px solid #9d814f;background:linear-gradient(120deg,#203c4c,#142b40);border-radius:12px;color:#ffedc6;padding:12px 14px;font-weight:800;font-size:13px;line-height:1.5}
+.ct-manager-v302 .ct-v328-manager-scores{border:1px solid #526b79;background:#112938;border-radius:12px;margin:12px 0;padding:0}
+.ct-manager-v302 .ct-v328-manager-scores>summary{display:flex;cursor:pointer;align-items:center;min-height:44px;font-weight:780;font-size:13px;color:#eed3a0;padding:12px 14px}
+.ct-manager-v302 .ct-v328-manager-scores>summary:after{content:'+';margin-left:auto;font-size:19px}
+.ct-manager-v302 .ct-v328-manager-scores[open]>summary:after{content:'−'}
+.ct-manager-v302 .ct-v328-manager-scores>.ct-manager-six-styles{padding:12px 14px;margin:0}
+@media(max-width:540px){.ct-manager-v302 #ct-v328-manager-search{min-height:48px}.ct-manager-v302 .ct-v328-manager-scores>.ct-manager-six-styles{display:grid;grid-template-columns:1fr 1fr;gap:8px}}
