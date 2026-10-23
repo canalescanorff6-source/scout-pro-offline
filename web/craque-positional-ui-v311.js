@@ -115,7 +115,14 @@ function create(target,model,opts={}){
   t.append(el('h3','','Treinamento · '+out.label));
   const p=out.plan;
   if(p.status!=='hipotese'||!p.levels){t.append(el('p','ct311-alert','PENDENTE · '+(p.reason||'PP e posição não documentados')));return t}
-  t.append(el('p','ct311-budget',(p.pp||0)+' PP exatos distribuídos · saldo '+p.remaining+' · proposta não homologada'));
+  // V336 PP: mostrar consumo real e saldo, inclusive em rascunho subalocado.
+  const used=host.SCOUT_TACTICS_V220.total(p.levels);
+  const available=Number.isInteger(p.pp)?p.pp:null;
+  const rest=Number.isInteger(used)&&available!==null?available-used:null;
+  t.append(el('p','ct311-budget',rest===null?
+   'Consumo de PP pendente de validação':
+   rest>0?(used+' de '+available+' PP distribuídos · saldo '+rest+' · proposta não homologada'):
+    (available+' PP exatos distribuídos · saldo 0 · proposta não homologada')));
   const table=el('table','ct311-table'),tr=el('tr');
   for(const head of ['Grupo','Níveis','Custo PP']){const th=el('th','',head);tr.append(th)}
   table.append(tr);
@@ -214,12 +221,25 @@ function create(target,model,opts={}){
   }
   const outcome=scenario.outcome;
   const recorded=saved&&!saved.stale?saved.revision:null;
+  // V336 PP: ler a ficha independente antes de mostrar níveis e saldo.
+  const profiles=host.CRAQUE_MANAGER_FICHAS_V324;
+  let context=null,savedProfile=null,readError='';
+  if(profiles)try{
+   context=profiles.fromScenario(scenario,model);
+   savedProfile=profiles.read(storage(),context);
+  }catch(e){readError=String(e.message||e)}
   let output=outcome;
   if(recorded&&Array.isArray(recorded.levels)&&outcome.plan.status==='hipotese'){
    output={...outcome,plan:{...outcome.plan,levels:recorded.levels.slice(),pp:recorded.pp,
     remaining:0}};
   }
-  panel.append(renderPlan(output,Boolean(recorded)));
+  if(savedProfile&&profiles?.validTraining(savedProfile.train,outcome.plan.pp)&&
+     outcome.plan.status==='hipotese'){
+   const used=host.SCOUT_TACTICS_V220.total(savedProfile.train);
+   output={...outcome,plan:{...outcome.plan,levels:savedProfile.train.slice(),
+    remaining:outcome.plan.pp-used}};
+  }
+  panel.append(renderPlan(output,Boolean(recorded||savedProfile)));
   const skills=el('section','ct311-panel');skills.append(el('h3','','Até 5 habilidades adicionais · somente recomendações'));
   const list=el('ol','ct311-list');
   const recommendations=recorded?.recommendations||outcome.suggestedSkills||[];
@@ -245,15 +265,9 @@ function create(target,model,opts={}){
   panel.append(booster);
   // V324: salvar uma ficha consultiva INDEPENDENTE por técnico, edição, posição
   // e estilo. Nenhuma habilidade/ímpeto é marcado como equipado.
-  const profiles=host.CRAQUE_MANAGER_FICHAS_V324;
   if(profiles){
    const editor=el('section','ct311-panel ct324-profile');
    editor.append(el('h3','','Minha ficha neste técnico · '+scenario.position+' / '+scenario.style));
-   let context=null,savedProfile=null,readError='';
-   try{
-    context=profiles.fromScenario(scenario,model);
-    savedProfile=profiles.read(storage(),context);
-   }catch(e){readError=String(e.message||e)}
    if(readError)editor.append(el('p','ct311-alert','Ficha independente indisponível: '+readError+
     '. Nada foi sobrescrito; selecione uma edição comprovada e confira PP.'));
    else{
@@ -377,12 +391,8 @@ function create(target,model,opts={}){
   panel.append(comparison);
   // V326: primeiro uma decisão legível; toda a engenharia fica acessível
   // sob demanda, inclusive revisões e comparador. Nenhum dado é descartado.
-  const profilesSummary=host.CRAQUE_MANAGER_FICHAS_V324;
-  let savedProfile=null,profileError='';
-  if(profilesSummary){
-   try{savedProfile=profilesSummary.read(storage(),profilesSummary.fromScenario(scenario,model))}
-   catch(e){profileError=String(e?.message||e)}
-  }
+  const profilesSummary=profiles;
+  let profileError=readError;
   const coaching=coach?.name||'Técnico não selecionado';
   const planned=savedProfile?.train||recorded?.levels||outcome.plan.levels;
   const ppReady=outcome.plan.status==='hipotese'&&Array.isArray(planned)&&
@@ -416,8 +426,12 @@ function create(target,model,opts={}){
     (savedProfile?[]:recommendations.map(displaySkill).filter(Boolean).slice(0,5));
   const proposedBooster=equipment?equipment.booster:(savedProfile?null:candidate);
   cards.append(
-   metric('◈','Treinamento',ppReady?outcome.plan.pp+' PP':'Pendente',
-    savedProfile?'Rascunho independente salvo':ppReady?'Distribuição calculada, não homologada':'Confira nível máximo e evidências'),
+   metric('◈','Treinamento',ppReady&&Number.isInteger(decision?.usedPP)?
+     (decision.usedPP===decision.pp?decision.pp+' PP':decision.usedPP+' / '+decision.pp+' PP'):
+     ppReady?outcome.plan.pp+' PP':'Pendente',
+    savedProfile?(decision?.remainingPP>0?
+     decision.remainingPP+' PP livres · rascunho independente salvo':'Rascunho independente salvo'):
+     ppReady?'Distribuição calculada, não homologada':'Confira nível máximo e evidências'),
    metric('✦','Habilidades',equipment?.skillsLabel||
      (candidateNames.length?candidateNames.length+' candidatas':'A conferir'),
     equipment?.hasDraft?'Selecionadas neste contexto; não equipadas automaticamente':'Candidatas não equipadas'),
