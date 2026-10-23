@@ -319,6 +319,9 @@ function mount(doc){
  function applyContext(context){
   if(!profiles||!context||context.collection!=='minhas-246'||
      context.cardId!==id||context.cardKey!==capture+'@'+id)return;
+  // O painel V311 redesenha-se após cada rascunho; mesma chave não é
+  // troca de técnico/posição e NUNCA deve interromper a edição de PP.
+  if(activeProfileContext&&profiles.key(activeProfileContext)===profiles.key(context))return;
   activeProfileContext=context;
   activeTactic=context.style;
   styleLabel=({posse:'Posse de Bola',rapido:'Contra-Ataque Rápido',
