@@ -115,7 +115,14 @@ function create(target,model,opts={}){
   t.append(el('h3','','Treinamento · '+out.label));
   const p=out.plan;
   if(p.status!=='hipotese'||!p.levels){t.append(el('p','ct311-alert','PENDENTE · '+(p.reason||'PP e posição não documentados')));return t}
-  t.append(el('p','ct311-budget',(p.pp||0)+' PP exatos distribuídos · saldo '+p.remaining+' · proposta não homologada'));
+  // V336 PP: mostrar consumo real e saldo, inclusive em rascunho subalocado.
+  const used=host.SCOUT_TACTICS_V220.total(p.levels);
+  const available=Number.isInteger(p.pp)?p.pp:null;
+  const rest=Number.isInteger(used)&&available!==null?available-used:null;
+  t.append(el('p','ct311-budget',rest===null?
+   'Consumo de PP pendente de validação':
+   rest>0?(used+' de '+available+' PP distribuídos · saldo '+rest+' · proposta não homologada'):
+    (available+' PP exatos distribuídos · saldo 0 · proposta não homologada')));
   const table=el('table','ct311-table'),tr=el('tr');
   for(const head of ['Grupo','Níveis','Custo PP']){const th=el('th','',head);tr.append(th)}
   table.append(tr);
@@ -124,7 +131,7 @@ function create(target,model,opts={}){
     el('td','',host.SCOUT_TACTICS_V220.ppCost(n)));table.append(r);
   });
   t.append(table);
-  if(displaySaved)t.append(el('p','ct311-note','Revisão salva encontrada e restaurada; valores documentais da carta não foram substituídos.'));
+  if(displaySaved)t.append(el('p','ct311-note','Distribuição do histórico deste contexto restaurada para consulta; a carta original não foi alterada.'));
   return t;
  }
  function draw(){
@@ -214,12 +221,25 @@ function create(target,model,opts={}){
   }
   const outcome=scenario.outcome;
   const recorded=saved&&!saved.stale?saved.revision:null;
+  // V336 PP: ler a ficha independente antes de mostrar níveis e saldo.
+  const profiles=host.CRAQUE_MANAGER_FICHAS_V324;
+  let profileContext=null,savedProfile=null,readError='';
+  if(profiles)try{
+   profileContext=profiles.fromScenario(scenario,model);
+   savedProfile=profiles.read(storage(),profileContext);
+  }catch(e){readError=String(e.message||e)}
   let output=outcome;
   if(recorded&&Array.isArray(recorded.levels)&&outcome.plan.status==='hipotese'){
    output={...outcome,plan:{...outcome.plan,levels:recorded.levels.slice(),pp:recorded.pp,
     remaining:0}};
   }
-  panel.append(renderPlan(output,Boolean(recorded)));
+  if(savedProfile&&profiles?.validTraining(savedProfile.train,outcome.plan.pp)&&
+     outcome.plan.status==='hipotese'){
+   const used=host.SCOUT_TACTICS_V220.total(savedProfile.train);
+   output={...outcome,plan:{...outcome.plan,levels:savedProfile.train.slice(),
+    remaining:outcome.plan.pp-used}};
+  }
+  panel.append(renderPlan(output,Boolean(recorded||savedProfile)));
   const skills=el('section','ct311-panel');skills.append(el('h3','','Até 5 habilidades adicionais · somente recomendações'));
   const list=el('ol','ct311-list');
   const recommendations=recorded?.recommendations||outcome.suggestedSkills||[];
@@ -245,22 +265,16 @@ function create(target,model,opts={}){
   panel.append(booster);
   // V324: salvar uma ficha consultiva INDEPENDENTE por técnico, edição, posição
   // e estilo. Nenhuma habilidade/ímpeto é marcado como equipado.
-  const profiles=host.CRAQUE_MANAGER_FICHAS_V324;
   if(profiles){
    const editor=el('section','ct311-panel ct324-profile');
    editor.append(el('h3','','Minha ficha neste técnico · '+scenario.position+' / '+scenario.style));
-   let context=null,savedProfile=null,readError='';
-   try{
-    context=profiles.fromScenario(scenario,model);
-    savedProfile=profiles.read(storage(),context);
-   }catch(e){readError=String(e.message||e)}
    if(readError)editor.append(el('p','ct311-alert','Ficha independente indisponível: '+readError+
     '. Nada foi sobrescrito; selecione uma edição comprovada e confira PP.'));
    else{
     const currentPlan=savedProfile?.train||recorded?.levels||outcome.plan.levels;
-    const ok=profiles.validTraining(currentPlan,context.budget);
+    const ok=profiles.validTraining(currentPlan,profileContext.budget);
     editor.append(el('p','ct311-note','Contexto isolado: '+scenario.manager+' · '+scenario.position+
-     ' · '+scenario.style+' · '+context.budget+' PP. Não copia fichas de outros técnicos.'));
+     ' · '+scenario.style+' · '+profileContext.budget+' PP. Não copia fichas de outros técnicos.'));
     if(savedProfile)editor.append(el('p','ct311-confirm','Rascunho independente salvo · revisão '+
      savedProfile.revision+' · somente recomendação, não equipamento no eFootball.'));
     if(savedProfile&&ok)editor.append(el('p','ct311-note','PP desta ficha: '+
@@ -312,7 +326,7 @@ function create(target,model,opts={}){
      try{
       if(!ok)throw Error('PP da edição não conferidos. Ficha permanece pendente.');
       const skills=choices.filter(x=>x.checked).map(x=>x.value);
-      profiles.save(storage(),context,{train:currentPlan,skills,
+      profiles.save(storage(),profileContext,{train:currentPlan,skills,
        booster:selectBooster.value,source:'Revisão manual da ficha contextual V324'});
       status.textContent='Ficha consultiva salva em '+scenario.manager+'/'+scenario.position+'/'+scenario.style+
        '. Nenhum ímpeto ou habilidade foi equipado automaticamente.';
@@ -377,23 +391,21 @@ function create(target,model,opts={}){
   panel.append(comparison);
   // V326: primeiro uma decisão legível; toda a engenharia fica acessível
   // sob demanda, inclusive revisões e comparador. Nenhum dado é descartado.
-  const profilesSummary=host.CRAQUE_MANAGER_FICHAS_V324;
-  let savedProfile=null,profileError='';
-  if(profilesSummary){
-   try{savedProfile=profilesSummary.read(storage(),profilesSummary.fromScenario(scenario,model))}
-   catch(e){profileError=String(e?.message||e)}
-  }
+  const profilesSummary=profiles;
+  let profileError=readError;
   const coaching=coach?.name||'Técnico não selecionado';
   const planned=savedProfile?.train||recorded?.levels||outcome.plan.levels;
   const ppReady=outcome.plan.status==='hipotese'&&Array.isArray(planned)&&
    !profileError&&(!profilesSummary||profilesSummary.validTraining(planned,outcome.plan.pp));
   const familiarityConfirmed=scenario.compatibility.eligible===true;
   const selectedManager=Boolean(coach?.name&&scenario.manager!=='sem-tecnico');
-  const verified=Boolean(saved?.revision?.approved===true&&!saved.stale);
   const guide=host.CRAQUE_FICHA_DECISION_V327;
   let decision=null;
-  if(guide)try{decision=guide.resolve(scenario,model,host.SCOUT_TACTICS_V220,saved,savedProfile)}
+  if(guide&&(!readError||!profileContext))try{decision=guide.resolve(scenario,model,host.SCOUT_TACTICS_V220,saved,savedProfile)}
   catch(e){profileError=profileError||String(e?.message||e)}
+  // V335: aprovação antiga não homologa PP alterados no rascunho independente.
+  const verified=decision?.approved===true;
+  const equipment=guide?.equipmentSummary?.(savedProfile,recommendations,candidate);
   const hero=el('section','ct326-focus');
   hero.setAttribute('aria-label','Ficha em foco para a posição e o técnico');
   hero.append(el('div','ct326-kicker','FICHA EM FOCO · '+scenario.position+' · '+scenario.style.toUpperCase()));
@@ -410,22 +422,67 @@ function create(target,model,opts={}){
    item.append(name,el('strong','ct326-metric-value',value),el('small','ct326-metric-help',foot));
    return item;
   };
-  const candidateNames=(savedProfile?.skills?.length?savedProfile.skills:
-    recommendations.map(displaySkill).filter(Boolean)).slice(0,5);
-  const proposedBooster=savedProfile?.booster||candidate;
+  const candidateNames=equipment?.skills||
+    (savedProfile?[]:recommendations.map(displaySkill).filter(Boolean).slice(0,5));
+  const proposedBooster=equipment?equipment.booster:(savedProfile?null:candidate);
   cards.append(
-   metric('◈','Treinamento',ppReady?outcome.plan.pp+' PP':'Pendente',
-    savedProfile?'Rascunho independente salvo':ppReady?'Distribuição calculada, não homologada':'Confira nível máximo e evidências'),
-   metric('✦','Habilidades',candidateNames.length?candidateNames.length+' candidatas':'A conferir',
-    'Não representa habilidades equipadas'),
-   metric('◇','Ímpeto',proposedBooster?'Sugestão disponível':'Pendente',
+   metric('◈','Treinamento',ppReady&&Number.isInteger(decision?.usedPP)?
+     (decision.usedPP===decision.pp?decision.pp+' PP':decision.usedPP+' / '+decision.pp+' PP'):
+     ppReady?outcome.plan.pp+' PP':'Pendente',
+    savedProfile?(decision?.remainingPP>0?
+     decision.remainingPP+' PP livres · rascunho independente salvo':'Rascunho independente salvo'):
+     ppReady?'Distribuição calculada, não homologada':'Confira nível máximo e evidências'),
+   metric('✦','Habilidades',equipment?.skillsLabel||
+     (candidateNames.length?candidateNames.length+' candidatas':'A conferir'),
+    equipment?.hasDraft?'Selecionadas neste contexto; não equipadas automaticamente':'Candidatas não equipadas'),
+   metric('◇','Ímpeto',equipment?.boosterLabel||
+     (proposedBooster?'Sugestão disponível':'Pendente'),
     'Slot e ativação exigem comprovação')
   );
   hero.append(cards);
   if(candidateNames.length)hero.append(el('p','ct326-priority',
-   'Habilidades em análise: '+candidateNames.join(' · ')));
+   (equipment?.hasDraft?'Habilidades selecionadas no rascunho: ':'Habilidades em análise: ')+
+    candidateNames.join(' · ')));
+  else if(equipment?.hasDraft)hero.append(el('p','ct326-priority',
+   'Nenhuma habilidade adicional selecionada neste rascunho.'));
   if(proposedBooster)hero.append(el('p','ct326-priority',
-   'Ímpeto candidato: '+proposedBooster+' · não equipado automaticamente'));
+   (equipment?.hasDraft?'Ímpeto selecionado no rascunho: ':'Ímpeto candidato: ')+
+    proposedBooster+' · não equipado automaticamente'));
+  else if(equipment?.hasDraft)hero.append(el('p','ct326-priority',
+   'Nenhum ímpeto adicional selecionado neste rascunho.'));
+  if(equipment?.hasDraft)hero.append(el('p','ct326-clarification',equipment.note));
+  // V336: a pessoa consulta o motivo por habilidade e ímpeto sem abrir toda
+  // a engenharia. Se o motor não tem motivo para a seleção, declarar pendência.
+  if(equipment && guide?.explainEquipment){
+   const rankingForWhy=recorded?.boosterRanking||outcome.booster||null;
+   const why=guide.explainEquipment(equipment,recommendations,rankingForWhy);
+   const explanation=el('details','ct336-equipment-evidence');
+   explanation.append(el('summary','','Por que estas habilidades e ímpeto?'));
+   const body=el('div','ct336-equipment-body');
+   body.append(el('p','ct336-source-note',equipment.hasDraft?
+    'Seleções recuperadas do rascunho independente desta posição, técnico e estilo.':
+    'Candidatas calculadas para esta posição, técnico e estilo. Nenhuma foi selecionada no jogo.'));
+   const names=el('ul','ct336-equipment-list');
+   for(const item of why.skills){
+    const li=el('li','ct336-equipment-item');
+    li.append(el('strong','',item.name));
+    li.append(el('p','',item.reason));
+    if(item.synergies.length)li.append(el('p','ct336-synergy',
+     'Sinergias apontadas pela proposta: '+item.synergies.join(' · ')));
+    li.append(el('small','ct336-source-note',item.source));
+    names.append(li);
+   }
+   if(why.skills.length)body.append(el('h4','','Habilidades adicionais'),names);
+   else body.append(el('p','ct336-pending',equipment.hasDraft?
+    'Nenhuma habilidade foi selecionada no rascunho: não foram inventadas justificativas.':
+    'Sem habilidades candidatas nesta posição: confira nativas e provas dos slots.'));
+   body.append(el('h4','','Ímpeto adicional'));
+   body.append(el('p','ct336-booster-reason',
+    (why.booster.name?why.booster.name+' — ':'')+why.booster.reason));
+   body.append(el('p','ct336-source-note',why.booster.source));
+   body.append(el('p','ct336-warning',why.warning));
+   explanation.append(body);hero.append(explanation);
+  }
   if(profileError)hero.append(el('p','ct311-alert','Perfil indisponível: '+profileError+
    '. O histórico original permanece preservado.'));
   if(decision){
@@ -442,7 +499,7 @@ function create(target,model,opts={}){
   else if(!selectedManager)hero.append(el('p','ct326-caution',
    'Escolha o técnico e sua edição para obter uma ficha realmente contextual.'));
   else hero.append(el('p','ct326-clarification',verified?
-   'Aprovação registrada no histórico; ainda não comprova equipamento no jogo.':
+   'Aprovação registrada para os PP exibidos; ainda não comprova equipamento no jogo.':
    'É uma proposta consultiva. Nenhum treinamento, habilidade ou ímpeto é aplicado automaticamente.'));
   const deep=el('details','ct326-deep-dive');
   deep.open=advancedOpen;
@@ -485,7 +542,7 @@ function create(target,model,opts={}){
      return guide.resolve(hypothetical,model,host.SCOUT_TACTICS_V220,historical,profile);
     });
     const compared=guide.compare(decision||modes.find(item=>item.style===scenario.style),
-     modes,outcome.plan.categories||host.SCOUT_TACTICS_V220?.CATEGORIES||[]);
+     modes,outcome.plan.categories||host.SCOUT_TACTICS_V220?.CATEGORIES||[],host.SCOUT_TACTICS_V220);
     altNote.textContent=compared.statement;
     for(const item of compared.rows){
      const row=el('article','ct327-style-row');
@@ -494,11 +551,19 @@ function create(target,model,opts={}){
      row.append(el('div','ct327-style-name',item.label+
       (item.selected?' · SELECIONADO':'')));
      row.append(el('p','ct327-style-status',item.title+
-      (item.pp===null?' · PP pendentes':' · '+item.pp+' PP')));
+      (item.pp===null?' · PP pendentes':item.costBasis==='custo_progressivo_exato'?
+       ' · '+item.usedPP+' / '+item.pp+' PP utilizados':' · '+item.pp+' PP')));
      row.append(el('p','ct327-style-desc',item.description));
      if(item.major.length)row.append(el('p','ct327-style-delta',
-      'Mudanças de níveis versus '+guide.LABEL[scenario.style]+': '+
-      item.major.map(d=>d.name+' '+(d.delta>0?'+':'')+d.delta).join(' · ')));
+      'Diferença de investimento versus '+guide.LABEL[scenario.style]+': '+
+      item.major.map(d=>d.name+' '+(d.delta>0?'+':'')+d.delta+' nv.'+
+       (Number.isInteger(d.deltaPP)?' · '+(d.deltaPP>0?'+':'')+d.deltaPP+' PP':'')).join(' · ')));
+     if(item.costBasis==='custo_progressivo_exato'&&item.major.length)
+      row.append(el('p','ct327-style-desc',
+       item.redistributedPP+' PP redistribuídos'+
+       (item.netDeltaPP?' · gasto varia '+(item.netDeltaPP>0?'+':'')+
+        item.netDeltaPP+' PP':' · gasto total mantido')+
+       ' · '+item.remainingPP+' PP livres nesta comparação.'));
      if(!item.selected){
       const activate=el('button','ct327-style-activate','Visualizar este estilo');
       activate.type='button';activate.dataset.style=item.style;

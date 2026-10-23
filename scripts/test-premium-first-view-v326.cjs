@@ -37,7 +37,11 @@ assert(positional.includes('details.append(hero,deep)'));
 assert(positional.includes('node.classList.toggle(\'ct326-expanded\',advancedOpen)'));
 assert(positional.includes("ppReady?'Proposta para avaliar':'Dados insuficientes para recomendar'"));
 assert(positional.includes("outcome.plan.status==='hipotese'"));
-assert(positional.includes("saved?.revision?.approved===true&&!saved.stale"));
+// V335: a aprovação depende do vetor de PP efetivamente exibido na ficha.
+assert(positional.includes("const verified=decision?.approved===true"),
+ 'Só usar decisão contextual V327 para a aprovação exibida');
+assert(!positional.includes("const verified=Boolean(saved?.revision?.approved"),
+ 'A revisão anterior isolada não comprova aprovação do treino atual');
 assert(positional.includes('familiaridade da posição pendente'));
 assert(positional.includes('não equipado automaticamente'));
 assert(positional.includes("const alternative=el('button','ct326-secondary-action'"));
@@ -45,7 +49,7 @@ assert(positional.includes("const comparison=el('details','ct311-compare')")&&
  positional.includes("guide.compare(decision||modes.find"),
  'V327 deve manter comparação MAT-SA na área técnica e mostrar as cinco táticas no resumo');
 assert(positional.includes('save.disabled=false'));
-assert(positional.includes('selectedEntry(scenario)') && positional.includes('profiles.save(storage(),context'),
+assert(positional.includes('selectedEntry(scenario)') && positional.includes('profiles.save(storage(),profileContext'),
  'Não remover revisões e botão de salvar da interface anterior');
 for(const fragment of ['.ct326-metrics','.ct326-primary-action','.ct326-deep-dive',
  '.ct311-positional:not(.ct326-expanded)>.ct311-actions']){
