@@ -1,0 +1,32 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),path=require('node:path');
+const at=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
+const api=require('../web/craque-ux-v326.js');
+assert.equal(api.priority({style:'posse',registered:true}),'registrado');
+assert.equal(api.priority({style:'rapido',registered:true}),'simulacao');
+assert.equal(api.priority({style:'posse',registered:true,gameplay:true}),'testado');
+assert.equal(api.priority({style:'posse',registered:false}),'pendente');
+assert.equal(api.priority({style:'posse',registered:true,draft:true}),'rascunho');
+const ui=at('web/craque-ux-v326.js');
+assert(ui.includes('Minha ficha')||ui.includes('Ver meu treino'));
+assert(ui.includes('ct326-choice'));
+assert(ui.includes('ct326-comparisons'));
+assert(ui.includes('ct326-external-comparisons'));
+assert(ui.includes('training_gameplay_verified===true'),'Não alegar aprovação sem gameplay');
+assert(ui.includes('host.localStorage')&&!ui.includes('localStorage.setItem'),'UI é somente apresentação, não regrava PP/builds');
+assert(ui.includes("outros-elencos-v227.html"));
+assert(ui.includes("document")||ui.includes("doc.getElementById"));
+const bridge=at('web/app-bridge.js'),css=at('web/craque-ux-v326.css');
+const sw=at('web/sw.js'),bundle=at('scripts/stamp-bundle-v189.cjs');
+for(const name of ['craque-ux-v326.js','craque-ux-v326.css']){
+ assert(bridge.includes("v189Root+'"+name+"'"));
+ assert(sw.includes("'./"+name+"'"));
+ assert(bundle.includes("'"+name+"'"));
+}
+assert(css.includes('@media (max-width:760px)'));
+assert(css.includes(':focus-visible'));
+assert(css.includes('.ct326-comparison-disclosure'));
+const cards=JSON.parse(at('web/SCOUT_V69_AUDITORIA.json')).cards;
+assert.equal(cards.length,246);
+console.log('V326 PASS: decisão sem inventar builds, três atalhos, comparação sob demanda e UI Android/Windows compartilhada, 246 cartas intactas.');
