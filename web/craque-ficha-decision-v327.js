@@ -79,6 +79,26 @@
    note:'As cinco alternativas representam estilos diferentes, não um ranking de força. Mudá-las não equipa nem homologa builds.'
   });
  }
+ // V335: o rascunho independente define a SELEÇÃO exibida, inclusive
+ // quando o usuário deliberadamente deixou habilidades/ímpeto vazios.
+ // Sugestões calculadas nunca substituem silenciosamente uma seleção vazia.
+ function equipmentSummary(profile,suggestedSkills=[],suggestedBooster=null){
+  const hasDraft=Boolean(profile && typeof profile==='object');
+  const names=hasDraft?(Array.isArray(profile.skills)?profile.skills:[]):suggestedSkills;
+  const skills=Array.isArray(names)?names.map(item=>
+   str(typeof item==='string'?item:item?.name||item?.nome)).filter(Boolean).slice(0,5):[];
+  const booster=hasDraft?str(profile.booster):str(suggestedBooster);
+  const origin=hasDraft?'rascunho_independente':'proposta_contextual';
+  return Object.freeze({
+   origin,hasDraft,skills:Object.freeze(skills),booster:booster||null,
+   skillsLabel:hasDraft?skills.length+' selecionadas no rascunho':
+    skills.length?skills.length+' candidatas a avaliar':'Nenhuma candidata documentada',
+   boosterLabel:hasDraft?(booster?'Selecionado no rascunho':'Nenhum selecionado'):
+    (booster?'Sugestão disponível':'Pendente'),
+   note:hasDraft?'Seleção salva neste contexto; não comprova equipamento no eFootball.':
+    'Sugestões calculadas para avaliar; nada foi salvo nem equipado.'
+  });
+ }
  function diff(base,alternative,categoryNames=[]){
   if(!base?.levels||!alternative?.levels||base.pp!==alternative.pp)return [];
   return base.levels.flatMap((level,i)=>{
@@ -134,5 +154,5 @@
     'Compare as diferenças e mantenha a que corresponde ao técnico, posição e tática usados.'
   });
  }
- return Object.freeze({MODES,LABEL,validPlan,validateLevels,resolve,diff,compare});
+ return Object.freeze({MODES,LABEL,validPlan,validateLevels,resolve,equipmentSummary,diff,compare});
 });

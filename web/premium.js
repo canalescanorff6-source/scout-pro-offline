@@ -2,6 +2,34 @@
 'use strict';
 const $=(s,root=document)=>root.querySelector(s), $$=(s,root=document)=>Array.from(root.querySelectorAll(s));
 const fold=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+// V332: a abertura mostra quatro caminhos principais; ferramentas secundárias
+// permanecem acessíveis, sem excluir links ou alterar armazenamento.
+if(document.body.dataset.page==='catalog'){
+ const actions=document.querySelector('.hero-actions');
+ if(actions && !actions.querySelector('.hero-more-tools')){
+  const links=Array.from(actions.querySelectorAll(':scope > a[href]'));
+  const destinations=[
+   link=>link.getAttribute('href')==='#catalogo',
+   link=>/meu-time-duas-formacoes/.test(link.getAttribute('href')||''),
+   link=>/outros-elencos/.test(link.getAttribute('href')||''),
+   link=>/meu-time-testes/.test(link.getAttribute('href')||'')
+  ];
+  const primary=destinations.map(match=>links.find(match)).filter(Boolean);
+  const remaining=links.filter(link=>!primary.includes(link));
+  if(primary.length===4 && remaining.length){
+   const details=document.createElement('details');
+   details.className='hero-more-tools';
+   const summary=document.createElement('summary');
+   summary.textContent='Mais ferramentas e análises ('+remaining.length+')';
+   const tools=document.createElement('div');
+   tools.className='hero-more-links';
+   remaining.forEach(link=>tools.appendChild(link));
+   details.append(summary,tools);
+   primary.forEach(link=>actions.appendChild(link));
+   actions.appendChild(details);
+  }
+ }
+}
 if(document.body.dataset.page==='catalog'){
  const cards=Array.from(document.querySelectorAll('.player-card')), search=$('#search'), sort=$('#sort'), styleSelect=$('#style-filter'), count=$('#shown-count'), allcount=$('#all-count'), more=$('#more'), none=$('#none');
  const grid=$('#cards'), foldedSearch=new Map(cards.map(el=>[el,fold(el.dataset.search)]));
