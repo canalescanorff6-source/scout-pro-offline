@@ -195,12 +195,15 @@ function makeCard(c,owned,favs){
  });
  compare.setAttribute('aria-pressed',String(compared.has(c.catalog_id)));
  actions.append(own,fav,compare,button('Usar como padrão',()=>persistDefault(c),'primary'));
- actions.append(button(imgData?'Trocar retrato':'Adicionar retrato',()=>uploadPortrait(c)));
- if(imgData)actions.append(button('Remover retrato',()=>{
+ node.append(actions);
+ const detail=el('details','hub-details');detail.append(el('summary','','Bônus · combinações · origem · retrato'));
+ // Controles de imagem são secundários: não ocupam a área de decisão.
+ const photos=el('div','hub-v329-photo-actions');
+ photos.append(button(imgData?'Trocar retrato':'Adicionar retrato',()=>uploadPortrait(c)));
+ if(imgData)photos.append(button('Remover retrato',()=>{
   try{host.localStorage.removeItem(portraitKey(c.catalog_id));render();feedbackMessage('Retrato removido somente desta edição.')}catch(_){}
  }));
- node.append(actions);
- const detail=el('details','hub-details');detail.append(el('summary','','Bônus · combinações · origem'));
+ detail.append(photos);
  if(c.afinidade_PTBR)detail.append(el('p','','Afinidade para comandar: '+c.afinidade_PTBR));
   detail.append(el('h3','','Bônus de técnico divulgados'));
  detail.append(el('p','',(c.boosters_PTBR||c.boosters_EN)?.length?(c.boosters_PTBR||c.boosters_EN).join(' · '):'Não documentados nesta edição.'));
