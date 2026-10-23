@@ -206,3 +206,8 @@
 .ct342-live-audit[data-status="revisar_habilidades"],
 .ct342-live-audit[data-status="pp_pendente"]{background:#382b22;border-color:#c79961;color:#ffe8c4}
 .ct324-profile .ct311-button:disabled{opacity:.53;cursor:not-allowed}
+
+/* V343 — evidência explícita de slot ausente na própria ficha. */
+.ct343-slot-evidence{margin:9px 0;padding:10px 12px;border-left:3px solid #d49a54;
+ background:#302720;color:#ffe5c1;font-size:12px;line-height:1.55;border-radius:7px}
+.ct342-live-audit[data-status="revisar_impeto_slot"]{background:#38261d;border-color:#d49a54;color:#ffe5c1}
