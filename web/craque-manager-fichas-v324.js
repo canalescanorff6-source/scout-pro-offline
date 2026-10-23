@@ -22,11 +22,24 @@ function validateContext(c){
 }
 function fromScenario(s,model){
  if(!s||!model||!s.outcome)throw Error('Cenário da carta ausente');
+ const plan=s.outcome.plan||{};
+ let budget=model.pp;
+ // V325: a ficha externa guarda nível máximo, mas PP manual pode ser
+ // null. O motor V228/V309 já calcula 2*(nível máximo-1). Aceitar
+ // SOMENTE se nível, custo e hipótese do cenário forem coerentes.
+ if(!Number.isInteger(budget)&&model.collection==='outros-elencos'){
+  const level=model.level;
+  const expected=Number.isInteger(level)&&level>=1&&level<=120?2*(level-1):null;
+  if(plan.status==='hipotese'&&Number.isInteger(plan.pp)&&plan.pp===expected)
+   budget=expected;
+ }
+ if(Number.isInteger(budget)&&Number.isInteger(plan.pp)&&budget!==plan.pp)
+  throw Error('Divergência entre PP da carta e da ficha contextual; gravação bloqueada');
  return validateContext({
   collection:model.collection,owner:model.owner,cardKey:model.cardKey,
   cardId:model.cardId,edition:model.edition||'edicao-pendente',
   position:s.position,style:s.style,manager:s.manager,
-  budget:model.pp,sourceSignature:s.contentSignature
+  budget,sourceSignature:s.contentSignature
  });
 }
 function withStyle(c,style){
