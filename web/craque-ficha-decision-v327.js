@@ -99,6 +99,52 @@
     'Sugestões calculadas para avaliar; nada foi salvo nem equipado.'
   });
  }
+ // V336: explicações só reutilizam os motivos devolvidos pelo motor para
+ // ESTA posição, estilo, técnico e Card ID. Não são provas de gameplay.
+ const canonicalName=v=>str(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .toLocaleLowerCase('pt-BR').replace(/\s+/g,' ');
+ function explainEquipment(summary,recommendations=[],boosterRanking=null){
+  if(!summary||!Array.isArray(summary.skills)||typeof summary.hasDraft!=='boolean')
+   throw Error('Resumo contextual de habilidades indisponível');
+  const candidates=Array.isArray(recommendations)?recommendations:[];
+  const skillRows=summary.skills.map(name=>{
+   const candidate=candidates.find(item=>
+    canonicalName(typeof item==='string'?item:item?.name||item?.nome)===canonicalName(name));
+   const reason=str(candidate?.why||candidate?.motivo);
+   const synergies=Array.isArray(candidate?.synergies)?
+    candidate.synergies.filter(x=>typeof x==='string'&&x.trim()).slice(0,5):[];
+   return Object.freeze({
+    name,reason:reason||'Sem justificativa individual registrada nesta análise.',
+    synergies:Object.freeze(synergies.slice()),
+    status:reason?'racional_do_motor':'motivo_pendente',
+    source:reason?'Proposta contextual calculada, não prova de partida':
+      'Seleção mantida sem motivo calculado para este contexto'
+   });
+  });
+  const boosterName=summary.booster;
+  const pool=[];
+  if(boosterRanking?.primary)pool.push(boosterRanking.primary);
+  if(Array.isArray(boosterRanking?.alternatives))pool.push(...boosterRanking.alternatives);
+  const candidate=boosterName?pool.find(item=>
+   canonicalName(item?.name||item?.nome)===canonicalName(boosterName)):null;
+  const boosterReason=str(candidate?.reason||candidate?.motivo);
+  const booster=Object.freeze({
+   name:boosterName||null,
+   reason:boosterName?(boosterReason||'Sem justificativa individual registrada para este ímpeto.') :
+    (summary.hasDraft?'Nenhum ímpeto adicional selecionado no rascunho.':'Ímpeto candidato pendente.'),
+   status:!boosterName?'sem_selecao':boosterReason?'racional_do_motor':'motivo_pendente',
+   source:boosterReason?'Ranking consultivo deste cenário, não prova de slot liberado':
+     'Nenhuma comprovação de ímpeto ou slot foi inferida'
+  });
+  return Object.freeze({
+   mode:summary.origin,
+   skills:Object.freeze(skillRows),
+   booster,
+   warning:'São justificativas consultivas do cenário em análise, não validação em gameplay. '+
+    'A edição exata, as habilidades nativas, os slots reais e o equipamento no jogo '+
+    'precisam de confirmação independente.'
+  });
+ }
  function diff(base,alternative,categoryNames=[]){
   if(!base?.levels||!alternative?.levels||base.pp!==alternative.pp)return [];
   return base.levels.flatMap((level,i)=>{
@@ -154,5 +200,5 @@
     'Compare as diferenças e mantenha a que corresponde ao técnico, posição e tática usados.'
   });
  }
- return Object.freeze({MODES,LABEL,validPlan,validateLevels,resolve,equipmentSummary,diff,compare});
+ return Object.freeze({MODES,LABEL,validPlan,validateLevels,resolve,equipmentSummary,explainEquipment,diff,compare});
 });
