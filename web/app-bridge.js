@@ -661,9 +661,34 @@ function openAndroidUpdater(){
  });
 }
 if(window.scoutDesktop){
- btn.textContent='Atualizar Windows';
- window.scoutDesktop.onUpdate(e=>notify(e.message));
- btn.onclick=async()=>{notify('Buscando atualizações…');const result=await window.scoutDesktop.checkUpdates();if(!result?.ok)notify(result?.message||'Verificação indisponível.')};
+ let windowsUpdateReady=false,windowsActionPending=false;
+ const windowsButtonReady=ready=>{
+  windowsUpdateReady=ready;
+  btn.textContent=ready?'Instalar atualização':'Atualizar Windows';
+  btn.setAttribute('aria-label',ready?'Instalar atualização Windows já baixada':'Verificar atualização Windows');
+ };
+ windowsButtonReady(false);
+ window.scoutDesktop.onUpdate(e=>{
+  notify(e.message);
+  if(e.type==='ready'||e.type==='deferred')windowsButtonReady(true);
+  if(e.type==='available')windowsButtonReady(false);
+ });
+ btn.onclick=async()=>{
+  if(windowsActionPending)return;
+  windowsActionPending=true;btn.disabled=true;
+  try{
+   if(windowsUpdateReady){
+    const result=await window.scoutDesktop.installDownloadedUpdate();
+    if(!result?.ok)notify(result?.message||'Instalação adiada.');
+   }else{
+    notify('Buscando atualizações…');
+    const result=await window.scoutDesktop.checkUpdates();
+    if(result?.ready){windowsButtonReady(true);notify(result.message);}
+    else if(!result?.ok)notify(result?.message||'Verificação indisponível.');
+   }
+  }catch(e){notify('Atualização Windows indisponível: '+(e.message||String(e)));}
+  finally{windowsActionPending=false;btn.disabled=false;}
+ };
 }else if(nativeAndroid()){
  btn.textContent='Atualizar APK';
  btn.setAttribute('aria-label','Verificar e baixar atualização APK Android');
