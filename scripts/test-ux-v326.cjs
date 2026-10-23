@@ -27,6 +27,11 @@ for(const name of ['craque-ux-v326.js','craque-ux-v326.css']){
 assert(css.includes('@media (max-width:760px)'));
 assert(css.includes(':focus-visible'));
 assert(css.includes('.ct326-comparison-disclosure'));
+const order=at('web/position-order.js');
+assert(!order.includes("throw Error('Scout PRO: carta sem estilo para filtro"));
+assert(order.includes("fetch('SCOUT_V69_AUDITORIA.json')"));
+assert(order.includes("token(card.name)!==token(el.dataset.name)"));
+assert(order.includes("container.dataset.ready='true'"));
 const cards=JSON.parse(at('web/SCOUT_V69_AUDITORIA.json')).cards;
 assert.equal(cards.length,246);
 console.log('V326 PASS: decisão sem inventar builds, três atalhos, comparação sob demanda e UI Android/Windows compartilhada, 246 cartas intactas.');
