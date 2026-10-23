@@ -97,7 +97,7 @@ function render(){
  friendsEntry.append(friendsIcon,el('span','', 'Outros Elencos — Cadastre cartas de amigos sem misturar com suas 246 cartas'),el('span','scout-v227-friends-arrow','→'));
  links.appendChild(friendsEntry);
  const managersEntry=el('a','scout-v326-managers-entry','Central de Técnicos · escolher edição e estilo →');
- managersEntry.href='tecnicos-v307.html';links.insertBefore(managersEntry,links.firstChild);
+ managersEntry.href='tecnicos-v307.html';links.appendChild(managersEntry);
  const about=el('button','scout-v189-about','Como funciona a análise');
   about.type='button';about.setAttribute('aria-expanded','false');
   about.addEventListener('click',()=>{
