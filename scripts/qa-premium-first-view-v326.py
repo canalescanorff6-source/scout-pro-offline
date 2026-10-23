@@ -44,6 +44,19 @@ with sync_playwright() as pw:
    root=page.locator('.ct311-positional')
    root.wait_for(timeout=25000)
    assert root.locator('.ct326-focus').is_visible()
+   # V331: a ficha mostra posição e formação sem despejar dois seletores.
+   assert root.locator('.ct331-role-overview').is_visible()
+   assert 'Em análise:' in root.locator('.ct331-role-current').inner_text()
+   assert not root.locator('.ct331-role-chooser').evaluate('(e)=>e.open')
+   assert not root.locator('.ct311-controls .ct311-select').is_visible()
+   prior=page.evaluate("""() => JSON.stringify(
+     Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:v311:')).sort())""")
+   root.locator('.ct331-role-open').click()
+   assert root.locator('.ct331-role-chooser').evaluate('(e)=>e.open')
+   assert root.locator('.ct311-controls .ct311-select').is_visible()
+   assert prior==page.evaluate("""() => JSON.stringify(
+     Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:v311:')).sort())"""),(
+      'Abrir a escolha de posição não deve salvar fichas')
    assert not root.locator('.ct326-deep-dive').evaluate('(e)=>e.open'), 'Análise avançada inicia fechada'
    assert 'FICHA EM FOCO' in root.locator('.ct326-focus').inner_text()
    assert root.locator('.ct326-metric').count()==3

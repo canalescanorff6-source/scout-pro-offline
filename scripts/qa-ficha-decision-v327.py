@@ -42,6 +42,7 @@ with sync_playwright() as pw:
    assert 'RAPIDO' in root.locator('.ct326-kicker').inner_text()
    assert root.locator('.ct327-style-panel').is_visible()
    assert root.locator('.ct327-style-row[data-current="true"]').get_attribute('data-style')=='rapido'
+   root.locator('.ct331-role-open').click()
    root.locator('.ct311-controls .ct311-select').select_option('SA')
    assert ' SA · RAPIDO' in root.locator('.ct326-kicker').inner_text()
    root.locator('.ct311-controls .ct311-select').select_option('MAT')

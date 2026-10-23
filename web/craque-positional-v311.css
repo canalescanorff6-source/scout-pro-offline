@@ -133,3 +133,32 @@
 .ct327-style-activate:focus-visible,.ct327-why>summary:focus-visible{outline:3px solid #fff1ba;outline-offset:3px}
 @media(min-width:750px){.ct327-style-list{grid-template-columns:repeat(2,minmax(0,1fr))}.ct327-style-row{min-height:165px;display:flex;flex-direction:column}.ct327-style-activate{margin-top:auto;align-self:flex-start}}
 @media(max-width:570px){.ct327-style-panel{margin-left:-2px;margin-right:-2px}.ct327-style-list{grid-template-columns:1fr}.ct327-style-row{padding:11px 12px}}
+
+/* V331: uma linha de contexto, posição/formação sob demanda na ficha mobile. */
+.ct331-role-overview{display:grid;grid-template-columns:minmax(0,1fr) auto;
+ gap:5px 12px;align-items:center;padding:11px 13px;margin:8px 0;
+ border:1px solid #b39b6e;border-radius:13px;
+ background:linear-gradient(120deg,#152d3b,#0d2332);min-width:0}
+.ct331-role-current{grid-column:1;font-weight:900;color:#fff0c8;
+ font-size:13px;line-height:1.45;overflow-wrap:anywhere}
+.ct331-role-original{grid-column:1;color:#c0d2dd;font-size:11px;line-height:1.4}
+.ct331-role-open{grid-column:2;grid-row:1 / span 2;min-height:44px;
+ border:1px solid #d6b773;border-radius:9px;background:#e7c88c;
+ color:#152535;padding:9px 13px;font:inherit;font-size:12px;
+ font-weight:850;cursor:pointer}
+.ct331-role-open[aria-expanded=true]{background:#314c58;color:#ffe8af}
+.ct331-role-open:focus-visible,.ct331-role-chooser>summary:focus-visible{
+ outline:3px solid #ffecbb;outline-offset:3px}
+.ct331-role-chooser{border:1px solid #516877;border-radius:12px;
+ margin:5px 0 11px;padding:0 12px;background:#112838}
+.ct331-role-chooser:not([open])>:not(summary){display:none!important}
+.ct331-role-chooser>summary{cursor:pointer;min-height:44px;display:flex;
+ align-items:center;gap:8px;color:#efd7a8;font-size:12px;font-weight:850}
+.ct331-role-chooser>summary:after{content:'+';font-size:18px;margin-left:auto}
+.ct331-role-chooser[open]>summary:after{content:'−'}
+.ct331-role-description{font-size:12px;color:#bed0dc;margin:3px 0 10px;line-height:1.6}
+.ct331-role-chooser .ct311-controls{margin:0 0 8px;min-width:0}
+.ct331-role-chooser .ct314-formation-row{margin-bottom:13px}
+@media(max-width:560px){.ct331-role-overview{grid-template-columns:minmax(0,1fr);
+ padding:11px;gap:7px}.ct331-role-current,.ct331-role-original,
+ .ct331-role-open{grid-column:1;grid-row:auto}.ct331-role-open{width:100%}}
