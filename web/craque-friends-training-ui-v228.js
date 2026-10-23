@@ -178,14 +178,20 @@ function ensureManagerPanel(){
  const root=mk('section','friend-manager-v306');
  const heading=mk('h3','','Técnico e estilo desta carta');
  const subtitle=mk('p','','22 versões históricas em destaque + novo Kovač 90 Posse. Catálogo completo offline. A escolha orienta a tática; bônus não são PP.');
+ const searchLabel=mk('label','','Encontrar técnico ou edição');
+ const managerSearch=mk('input');managerSearch.type='search';
+ managerSearch.id='friend-v328-manager-search';managerSearch.placeholder='Ex.: Klopp, Kovač, Arteta';
+ managerSearch.autocomplete='off';managerSearch.setAttribute('aria-label','Buscar técnicos deste acervo');
+ searchLabel.append(managerSearch);
  const chooser=mk('label','','Versão do técnico');
  const selection=mk('select');selection.id='friend-manager-version';selection.setAttribute('aria-label','Versão do técnico de Outros Elencos');chooser.append(selection);
  const tacticLabel=mk('label','','Estilo coletivo do técnico');
  const tactic=mk('select');tactic.id='friend-manager-tactic';tacticLabel.append(tactic);
  const statusBox=mk('div','friend-manager-status');statusBox.id='friend-manager-status';statusBox.setAttribute('aria-live','polite');
- root.append(heading,subtitle,chooser,tacticLabel,statusBox);
+ root.append(heading,subtitle,searchLabel,chooser,tacticLabel,statusBox);
  target.parentNode.insertBefore(root,target);
- managerPanel={root,selection,tactic,statusBox};
+ managerPanel={root,selection,tactic,statusBox,managerSearch};
+ managerSearch.addEventListener('input',renderManager);
  selection.addEventListener('change',()=>{
   managerSelectedId=selection.value;
   const selected=managerData?.find(c=>c.catalog_id===managerSelectedId);
@@ -202,7 +208,11 @@ function ensureManagerPanel(){
 }
 function renderManager(){
  ensureManagerPanel();
- const {selection,tactic,statusBox}=managerPanel;
+ const {selection,tactic,statusBox,managerSearch}=managerPanel;
+ const needle=String(managerSearch?.value||'').normalize('NFD')
+  .replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+ const matches=c=>!needle||String([c.nome,c.versao_lancamento,c.catalog_id].join(' '))
+  .normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().includes(needle);
  selection.replaceChildren();tactic.replaceChildren();statusBox.replaceChildren();
  const empty=mk('option','','Nenhum técnico selecionado');empty.value='';selection.append(empty);
  if(!managers||!managerData){
@@ -212,8 +222,10 @@ function renderManager(){
  const curated=managers.curatedManagers(),curatedIDs=new Set(managers.CURATED_IDS);
  const remaining=managerData.filter(c=>!curatedIDs.has(c.catalog_id)).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
  for(const group of [{name:'22 VERSÕES COMPETITIVAS',items:curated},{name:'DEMAIS VERSÕES DO CATÁLOGO',items:remaining}]){
+  const filtered=group.items.filter(c=>matches(c)||c.catalog_id===managerSelectedId);
+  if(!filtered.length)continue;
   const g=mk('optgroup');g.label=group.name;
-  for(const c of group.items){
+  for(const c of filtered){
    const scores=managers.competitiveStyles(c,89).map(s=>s.label+' '+s.score).join(' / ');
    const opt=mk('option','',c.nome+' · '+(c.versao_lancamento||'data pendente')+
     (scores?' · '+scores:' · verificar proficiência'));
@@ -252,7 +264,13 @@ function renderManager(){
    entry.label+': '+(value===null?'pendente':value)+(!entry.supported?' · PP pendente':''));
   allScores.append(item);
  }
- statusBox.append(allScores);
+ const scoreDetails=mk('details','friend-v328-manager-scores');
+ scoreDetails.append(mk('summary','','Ver as seis proficiências'),allScores);
+ statusBox.append(scoreDetails);
+ statusBox.append(mk('p','friend-v328-manager-primary',
+  selected.nome+' · '+(managers.STYLES.find(st=>st.id===managerTactic)?.label||'Estilo pendente')+
+  ' · '+(statusModel.score===null?'Proficiência pendente':statusModel.score+' de proficiência')+
+  ' · Não são PP.'));
  statusBox.append(mk('p',statusModel.score!==null&&statusModel.score<85?'friend-manager-warning':'',
   'Proficiência: '+(statusModel.score??'não confirmada')+' · '+(
    !statusModel.canCalculate?'Sem motor específico de PP para este estilo.':
@@ -273,6 +291,13 @@ function renderManager(){
   'Sobreposição: sem ficha PP própria homologada. O painel abaixo conserva a última simulação de um dos cinco estilos suportados.'));
  statusBox.append(mk('p','',managerError||
   'Perfil documental V302; retratos externos não incorporados. Treino, habilidades e ímpetos continuam hipóteses específicas da carta e da tática.'));
+ // V328: manter todas as informações da versão, mas apenas quando
+ // solicitadas. Nenhuma informação nem seleção é removida da ficha.
+ const compact=Array.from(statusBox.children);
+ const extra=mk('details','friend-v328-manager-more');
+ extra.append(mk('summary','','Bônus, afinidade e condições de Link-Up'));
+ for(const child of compact.slice(4))extra.append(child);
+ if(extra.children.length>1)statusBox.append(extra);
 }
 function identity(){
  $('friend-analysis-title').textContent='Ficha do app · '+activeCard.name;
