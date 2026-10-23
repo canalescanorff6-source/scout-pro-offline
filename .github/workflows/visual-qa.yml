@@ -14,6 +14,7 @@ on:
       - 'scripts/qa-premium-first-view-v326.py'
       - 'scripts/qa-ficha-decision-v327.py'
       - 'scripts/qa-frontier-context-v339.py'
+      - 'scripts/qa-live-equipment-v342.py'
       - 'scripts/qa-manager-selector-v328.py'
       - 'scripts/qa-manager-premium-v329.py'
       - 'scripts/qa-lineup-focus-v330.py'
