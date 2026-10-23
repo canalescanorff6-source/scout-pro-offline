@@ -54,6 +54,19 @@ const ownSecond=core.save(store,ctx,{train:pp,skills:['Passe de primeira','Passe
 assert.equal(ownSecond.revision,2);
 assert.equal(core.readAll(store,ctx).length,2,'Manter histórico de revisões por técnico');
 assert.equal(core.read(store,otherManager).revision,1,'R. Rodríguez não pode herdar revisão Kovač');
+// Autoedição por +/- não deve preencher 50 revisões e travar a ficha.
+const auto=core.withManager(ctx,'CT-MGR-025');
+for(let i=0;i<60;i++)core.save(store,auto,{
+ train:pp,skills:[],booster:'',source:'V324 · Rascunho PP de posse'});
+assert.equal(core.readAll(store,auto).length,1,
+ 'Cliques de PP consolidam a revisão automática atual');
+core.save(store,auto,{train:pp,skills:['Passe na medida'],source:'Revisão manual'});
+assert.equal(core.readAll(store,auto).length,2,'Salvar manualmente cria nova revisão');
+core.save(store,auto,{train:pp,skills:['Passe na medida'],
+ source:'V324 · Rascunho PP de posse'});
+assert.equal(core.readAll(store,auto).length,3,'Autoedição após salvamento manual não o sobrescreve');
+assert.equal(core.readAll(store,auto)[1].skills[0],'Passe na medida',
+ 'Snapshot manual imutável após edição automática');
 const mutable=core.read(store,ctx);mutable.train[0]=999;mutable.skills.push('Invasão');
 assert.notDeepEqual(mutable.train,core.read(store,ctx).train,'A consulta deve ser cópia profunda');
 assert.throws(()=>core.save(store,ctx,{train:Array(10).fill(20)}),/PP|inválid/i);
@@ -93,6 +106,8 @@ assert(ui.includes('Até 5 habilidades adicionais'));
 assert(ui.includes('Salvar ficha independente deste técnico'));
 assert(ui.includes('scoutpro:v324:context-selected'));
 assert(editor.includes('const context=contextForTactic()'));
+assert(editor.includes('scoutpro:training-preview-v324'));
+assert(text('web/lab.js').includes('scoutpro:training-preview-v324'));
 assert(editor.includes('profiles.save(host.localStorage,context'));
 assert(editor.includes('if(!contextForTactic())try{host.localStorage.removeItem(keyForTactic())}'));
 assert(editor.includes('if(contextForTactic())return; // laboratórios antigos não atravessam técnico'));
