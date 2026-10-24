@@ -39,7 +39,7 @@
     .then(info=>{
      const version=String(info.version||'');
      const revision=String(info.git_revision||'');
-     installed=/^\\d+\\.\\d+\\.\\d+$/.test(version)
+     installed=/^\d+\.\d+\.\d+$/.test(version)
       ?'v'+version+(revision&&revision!=='source-unbuilt'?' · '+revision.slice(0,7):'')
       :'pacote sem versão verificada';
      writeProof(doc.body?.dataset.ctUiBoot||'loading');
