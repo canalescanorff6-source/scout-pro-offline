@@ -86,7 +86,7 @@ assert(ui.includes('const proposed=recorded?.recommendations||outcome.suggestedS
 assert(ui.includes('const proposed='));
 assert(ui.includes('Não mostrar como novas candidatas'));
 assert(ui.includes('Ranking teórico sem slot cadastrado'));
-assert(ui.includes('screened?.boosterSlot.slot==='ausente'?[]:['));
+assert(ui.includes("screened?.boosterSlot.slot===\'ausente\'?[]:["));
 assert(ui.includes('savedProfile?.booster||\'\''));
 assert(css.includes('.ct344-evidence-screen'));
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),cards);
