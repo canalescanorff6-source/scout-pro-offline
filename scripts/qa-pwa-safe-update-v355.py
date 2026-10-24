@@ -3,7 +3,7 @@
 import os,shutil
 from playwright.sync_api import sync_playwright
 BASE=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
-STUB="""() => {
+STUB="""(() => {
  const sw={
    controller:{version:'old'}, listeners:{},
    addEventListener(name,callback){this.listeners[name]=callback},
@@ -15,7 +15,7 @@ STUB="""() => {
  window.__testSW=sw;
  window.__testConfirmCalls=0;
  window.confirm=()=>{window.__testConfirmCalls++;return false};
-}"""
+})()"""
 with sync_playwright() as pw:
  exe=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
  browser=pw.chromium.launch(headless=True,executable_path=exe,
