@@ -32,7 +32,8 @@ assert(Object.isFrozen(noSelection)&&Object.isFrozen(selected.skills));
 const ui=read('web/craque-positional-ui-v311.js');
 // V344: a seleção salva tem prioridade; um candidato bruto com slot ausente
 // não pode ser reintroduzido no resumo só porque aparece no ranking.
-assert(ui.includes('const usableCandidate=screened?screened.boosterCandidate:candidate;'));
+assert(ui.includes('const usableCandidate=boosterReview?boosterReview.primary:'));
+assert(ui.includes('(screened?screened.boosterCandidate:candidate);'));
 assert(ui.includes('guide?.equipmentSummary?.(savedProfile,recommendations,usableCandidate)'));
 assert(ui.includes('const recommendations=screened?.skills||rawRecommendations;'));
 const screenedProfiles=require('../web/craque-manager-fichas-v324.js');
