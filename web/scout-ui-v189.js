@@ -243,7 +243,8 @@ function render(){
  showVersion();
  // V351: emitir somente quando a navegação Premium já está no DOM.
  // O bootstrap aguarda também o carregamento dos estilos finais.
- if(inCatalog)doc.dispatchEvent(new Event('scoutpro:ui-ready'));
+ if(inCatalog&&typeof root.Event==='function'&&typeof doc.dispatchEvent==='function')
+  doc.dispatchEvent(new root.Event('scoutpro:ui-ready'));
 }
 if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',render,{once:true});
 else render();
