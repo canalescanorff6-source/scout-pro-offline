@@ -20,7 +20,7 @@ const seeded=sete.seed(friends.empty(),friends,store,training,deps);
 assert.equal(seeded.inserted,3);
 assert.equal(seeded.data.cards.length,3);
 for(const card of seeded.data.cards){
- assert(/^\\d{5,20}$/.test(card.cardId),'Card ID original da edição obrigatório');
+ assert(/^\d{5,20}$/.test(card.cardId),'Card ID original da edição obrigatório');
  for(const style of training.MODES){
   const result=training.evaluate(card,style,deps),proposal=result.plan;
   assert.equal(proposal.status,'hipotese',card.name+' '+style);
