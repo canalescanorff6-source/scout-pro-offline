@@ -67,6 +67,7 @@ jobs:
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-frontier-context-v339.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-live-equipment-v342.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-booster-slot-v343.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-contextual-suggestions-v344.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-premium-first-view-v326.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-manager-history-v325.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-formation-v314.py
