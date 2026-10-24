@@ -97,6 +97,6 @@ assert(ui.includes("const skillKeyFor=host.SCOUT_RECOMMENDATIONS_V162?.keyFor||n
 assert(ui.includes('model.boosterSlot||\'pendente\',\n   skillKeyFor);'));
 assert(ui.includes('model.nativeSkills||\'\',model.skills||\'\',skillKeyFor);'));
 assert(ui.includes('boosterSlot:model.boosterSlot||\'pendente\',skillKeyFor'));
-assert(ui.includes('booster:selectBooster.value,source:\'Revisão manual da ficha contextual V324\',\n       skillKeyFor}'));
+assert(ui.includes('booster:selectBooster.value,source:\'Revisão manual da ficha contextual V324\',\n       skillKeyFor,'));
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),cards);
 console.log('V345 PASS: aliases V162 PT-BR/EN, listas multilinha, mesmo Card ID e posição, bloqueios em novas revisões, histórico e 246 cartas intactos.');
