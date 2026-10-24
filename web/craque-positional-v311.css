@@ -227,3 +227,6 @@
 .ct348-booster-evidence{margin:9px 0;border:1px solid #5c706c;border-radius:9px;background:#172b36;color:#e7e0ca;overflow-wrap:anywhere}
 .ct348-booster-evidence>summary{padding:10px 12px;cursor:pointer;font-size:12px;font-weight:700;min-height:42px}
 .ct348-booster-evidence ul{margin:0;padding:0 15px 12px 29px;line-height:1.55;font-size:12px}
+
+/* V349: sobreposição documental de ímpetos, sem alegar ativação no jogo. */
+.ct349-booster-inventory{margin:9px 0;padding:10px 12px;border:1px solid #b69263;border-radius:9px;background:#34291f;color:#ffe8ca;font-size:12px;line-height:1.55;overflow-wrap:anywhere}
