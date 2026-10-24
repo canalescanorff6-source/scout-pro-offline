@@ -25,6 +25,7 @@ on:
       - 'scripts/qa-atomic-premium-boot-v351.py'
       - 'scripts/qa-premium-interiors-v352.py'
       - 'scripts/qa-premium-workspaces-v353.py'
+      - 'scripts/qa-detail-first-paint-v354.py'
       - 'scripts/qa-manager-selector-v328.py'
       - 'scripts/qa-manager-premium-v329.py'
       - 'scripts/qa-lineup-focus-v330.py'
@@ -84,6 +85,7 @@ jobs:
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-atomic-premium-boot-v351.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-premium-interiors-v352.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-premium-workspaces-v353.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-detail-first-paint-v354.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-premium-first-view-v326.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-manager-history-v325.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-formation-v314.py
