@@ -48,8 +48,8 @@ with sync_playwright() as pw:
      page.locator('#friend-new-card').click()
      modal=page.locator('#friend-card-dialog')
      assert modal.is_visible()
-     assert 'rgb(22, 41, 66)' in modal.evaluate(
-      'e=>getComputedStyle(e).backgroundImage')
+     modal_bg=modal.evaluate('e=>getComputedStyle(e).backgroundImage')
+     assert 'rgb(22, 41, 66)' in modal_bg,(platform,'modal',modal_bg)
      page.locator('#friend-dialog-cancel').click()
      assert not modal.is_visible()
      assert page.locator('#friend-people').count()==1
