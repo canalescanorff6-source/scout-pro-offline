@@ -43,7 +43,8 @@ function summaryCard(result){
   infoRow('Função tática',plan.role||'Não informada'),
   infoRow('Orçamento',result.progress.pp===null?'PP pendentes / em conflito':
    result.progress.pp+' PP · '+(result.progress.source==='nivel_maximo'?'calculados do nível máximo':'informados manualmente')),
-  infoRow('Precisão',result.confidence==='simulacao_documentada_parcial'?'Simulação parcial':'Hipótese pendente de validação'));
+  infoRow('Precisão',result.confidence==='simulacao_documentada_parcial'?'Simulação parcial':'Hipótese pendente de validação'),
+  infoRow('Motor da ficha',plan.methodology||'Engenharia individual ainda indisponível'));
  el.append(meta);
  const focus=mk('p','friend-analysis-focus',plan.focus?.headline||'Informe posição e PP para uma distribuição simulada.');
  el.append(focus);
@@ -90,7 +91,25 @@ function training(result){
   }else compare.append(mk('p','','A proposta ficou idêntica ao treino manual cadastrado.'));
   panel.append(compare);
  }
- if(p.evidence.length)panel.append(mk('p','friend-analysis-fineprint','Critérios desta carta: '+p.evidence.join(' · ')));
+ if(p.evidence.length)panel.append(mk('p','friend-analysis-fineprint','Sinais individuais desta carta: '+p.evidence.join(' · ')));
+ if(p.tests?.length||p.tradeoffs?.length){
+  const details=mk('details','friend-analysis-compare');
+  details.append(mk('summary','','Como avaliar em campo · mesma engenharia individual das principais'));
+  const section=mk('div','friend-analysis-review');
+  if(p.tests?.length){
+   section.append(mk('strong','','Critérios de gameplay a testar'));
+   const checklist=mk('ul');
+   for(const item of p.tests)checklist.append(mk('li','',item));
+   section.append(checklist);
+  }
+  if(p.tradeoffs?.length){
+   section.append(mk('strong','','Compensações e evidências pendentes'));
+   const tradeoffs=mk('ul');
+   for(const item of p.tradeoffs)tradeoffs.append(mk('li','',item));
+   section.append(tradeoffs);
+  }
+  details.append(section);panel.append(details);
+ }
  panel.append(mk('p','friend-analysis-fineprint',p.note));
  return panel;
 }
