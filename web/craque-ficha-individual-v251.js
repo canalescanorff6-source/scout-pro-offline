@@ -653,6 +653,9 @@ const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasV
   exact,sourceFor,related,allocate,trainingFrontier,buildReview,catalogAudit});
 if(!host?.document)return api;
 const doc=host.document;
+// V339: em Outros Elencos usar apenas a API pura de fronteira, sem instalar
+// observadores de ficha pessoal que nunca existirão nesta página.
+if(doc.body?.dataset?.page==='friends')return api;
 const mk=(tag,cls,value)=>{
  const e=doc.createElement(tag);if(cls)e.className=cls;
  if(value!==undefined)e.textContent=String(value);

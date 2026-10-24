@@ -223,6 +223,9 @@ function create(target,model,opts={}){
   const recorded=saved&&!saved.stale?saved.revision:null;
   // V336 PP: ler a ficha independente antes de mostrar níveis e saldo.
   const profiles=host.CRAQUE_MANAGER_FICHAS_V324;
+  // V345: referenciar o dicionário de aliases V162 já carregado;
+  // nunca criar traduções ou equipar automaticamente.
+  const skillKeyFor=host.SCOUT_RECOMMENDATIONS_V162?.keyFor||null;
   let profileContext=null,savedProfile=null,readError='';
   if(profiles)try{
    profileContext=profiles.fromScenario(scenario,model);
@@ -242,23 +245,89 @@ function create(target,model,opts={}){
   panel.append(renderPlan(output,Boolean(recorded||savedProfile)));
   const skills=el('section','ct311-panel');skills.append(el('h3','','Até 5 habilidades adicionais · somente recomendações'));
   const list=el('ol','ct311-list');
-  const recommendations=recorded?.recommendations||outcome.suggestedSkills||[];
+  // V344: a mesma triagem alimenta painel, resumo Premium e editor.
+  const rawRecommendations=recorded?.recommendations||outcome.suggestedSkills||[];
+  const ranking=recorded?.boosterRanking||null;
+  const candidate=ranking?.primary?.name||recorded?.booster||outcome.booster?.primary?.nome||null;
+  const screened=profiles?.screenContextualSuggestions?.(rawRecommendations,
+   model.nativeSkills||'',model.skills||'',candidate||'',model.boosterSlot||'pendente',
+   skillKeyFor);
+  const recommendations=screened?.skills||rawRecommendations;
+  const capacity=screened?.additionalCapacity||
+   profiles?.reviewAdditionalCapacity?.(model.skills||'',recommendations,skillKeyFor);
+  const sourceBoosterAlternatives=ranking?.alternatives||outcome.booster?.alternatives||[];
+  // V348: uma única triagem do mesmo ranking para painel, editor e resumo.
+  // Nomes fixos/equipados deixam de ser promovidos como NOVOS candidatos.
+  const boosterReview=profiles?.reviewBoosterRanking?.(candidate,
+   sourceBoosterAlternatives,model.fixedBooster||'',model.booster||'',
+   model.boosterSlot||'pendente');
+  const usableCandidate=boosterReview?boosterReview.primary:
+   (screened?screened.boosterCandidate:candidate);
   for(const item of recommendations)list.append(el('li','',displaySkill(item)+
    ' — '+(item.why||'prioridade contextual, sem comprovação de equipamento')));
   if(!recommendations.length)list.append(el('li','','Sem candidatos suficientes; conferir habilidades nativas e os slots reais.'));
+  if(screened?.excluded.length){
+   const dropped=el('details','ct344-evidence-screen');
+   dropped.append(el('summary','','Não mostrar como novas candidatas ('+screened.excluded.length+')'));
+   const reasons=el('ul','ct311-list');
+   for(const item of screened.excluded)reasons.append(el('li','',
+    (item.name||'Nome pendente')+' — '+({
+     nativa_cadastrada:'consta nas nativas cadastradas desta carta',
+     adicional_informada:'consta nas adicionais informadas desta carta',
+     repetida_na_proposta:'repetida na lista de propostas',
+     nome_pendente:'nome não identificado'
+    }[item.reason]||'exige revisão')));
+   dropped.append(reasons);skills.append(dropped);
+  }
+  if(screened?.nativeInventory==='pendente')skills.append(el('p','ct311-note',
+   'Nativas desta edição não documentadas: ausência de lista não comprova slot livre.'));
+  if(capacity){
+   const msg=capacity.status==='pendente'?
+    'Ocupação das cinco habilidades adicionais: PENDENTE. Sem lista não significa cinco vagas livres.':
+    capacity.status==='revisar_cadastro'?
+     'REVISAR cadastro de habilidades adicionais: nomes repetidos ou mais de cinco informados.':
+     capacity.informedCount===5?
+      '5/5 adicionais informadas nesta edição: novas sugestões são ALTERNATIVAS DE SUBSTITUIÇÃO, não vagas disponíveis.':
+      capacity.informedCount+'/5 adicionais informadas. As outras '+
+       capacity.maxUnverifiedAdditional+' posições NÃO estão comprovadas como livres.';
+   skills.append(el('p','ct347-capacity-note',msg+
+    ' Nenhum equipamento real foi verificado.'));
+  }
   skills.append(el('p','ct311-note','Habilidades equipadas informadas: '+(model.skills||'não confirmadas')+
    '. Slots livres não são presumidos; até cinco CANDIDATAS são apresentadas para comparação.'+
    ' As sugestões não equipam habilidades nem criam vagas.'));
   skills.append(list);panel.append(skills);
   const booster=el('section','ct311-panel');booster.append(el('h3','','Ímpetos · posição '+scenario.position));
-  const ranking=recorded?.boosterRanking||null;
-  const candidate=ranking?.primary?.name||recorded?.booster||outcome.booster?.primary?.nome||null;
-  booster.append(el('p','',candidate?
-   'Primeiro candidato: '+candidate+' (não equipado automaticamente)':'Candidato confiável pendente'));
-  const alts=ranking?.alternatives||outcome.booster?.alternatives||[];
-  if(alts.length)booster.append(el('p','ct311-note','Alternativas: '+
+  booster.append(el('p','',screened?.boosterSlot.slot==='ausente'?
+   'SEM SLOT ADICIONAL cadastrado nesta edição: '+
+    (boosterReview?.theoretical?.[0]?.name||candidate||'ranking ainda pendente')+
+    ' é somente referência teórica, não candidata para esta carta.':
+    usableCandidate?'Primeiro candidato: '+usableCandidate+
+     ' (não equipado automaticamente)':'Candidato confiável pendente'));
+  const alts=boosterReview?
+   (boosterReview.slot.slot==='ausente'?boosterReview.theoretical:
+    boosterReview.alternatives):sourceBoosterAlternatives;
+  if(alts.length)booster.append(el('p','ct311-note',
+   (screened?.boosterSlot.slot==='ausente'?'Ranking teórico sem slot cadastrado: ':'Alternativas: ')+
    alts.map(x=>x.name||x.nome).join(' · ')));
-  if(ranking?.primary?.reason)booster.append(el('p','ct311-note','Motivo registrado: '+ranking.primary.reason));
+  if(boosterReview?.excluded.length){
+   const omitted=el('details','ct348-booster-evidence');
+   omitted.append(el('summary','','Ímpetos já citados ou repetidos ('+
+    boosterReview.excluded.length+')'));
+   const list=el('ul','ct311-list');
+   for(const item of boosterReview.excluded)list.append(el('li','',
+    item.name+' — '+({
+     mesmo_nome_do_fixo:'mesmo nome do ímpeto fixo informado',
+     ja_informado_como_adicional:'já consta como adicional informado',
+     repetido_no_ranking:'repetido neste ranking',
+     nome_pendente:'nome não identificado'
+    }[item.reason]||'conferência documental pendente')));
+   omitted.append(list);booster.append(omitted);
+  }
+  const primaryBoosterReason=boosterReview?.primaryInfo?.reason||
+   (!boosterReview?ranking?.primary?.reason:null);
+  if(primaryBoosterReason)booster.append(el('p','ct311-note',
+   'Motivo registrado neste cenário: '+primaryBoosterReason));
   booster.append(el('p','ct311-note','Ímpeto fixo: '+(model.fixedBooster||'não documentado')+
     ' · Slot: '+model.boosterSlot+' · Ímpeto adicional equipado: '+(model.booster||'não informado')+
     '. Ranking consultivo não comprova existência nem liberação de slot.'));
@@ -279,12 +348,17 @@ function create(target,model,opts={}){
      savedProfile.revision+' · somente recomendação, não equipamento no eFootball.'));
     if(savedProfile&&ok)editor.append(el('p','ct311-note','PP desta ficha: '+
      savedProfile.train.map((x,i)=>outcome.plan.categories?.[i]+': '+x).join(' · ')));
-    const proposed=recorded?.recommendations||outcome.suggestedSkills||[];
+    // Compartilhar com o painel o filtro documental; não esconder
+    // habilidades já SALVAS, que reviewSkillCandidates preservará.
+    const proposed=recommendations;
     // V325: os nomes salvos têm prioridade visual mesmo que a recomendação
     // mude. Nunca eliminá-los silenciosamente ao gerar nova revisão.
     const skillRows=profiles.reviewSkillCandidates(savedProfile?.skills||[],proposed,
-     model.nativeSkills||'',model.skills||'');
-    const skillLabel=el('p','ct311-note','Até 5 habilidades adicionais candidatas. '+
+     model.nativeSkills||'',model.skills||'',skillKeyFor);
+    const skillLabel=el('p','ct311-note',
+     (capacity?.informedCount===5?
+      'As cinco habilidades adicionais já estão informadas: propostas são alternativas de substituição, não novas vagas. ':
+      'Até 5 habilidades adicionais candidatas (ocupação real depende de comprovação). ')+
      'Itens salvos anteriormente permanecem visíveis e selecionados; desmarque para excluir da nova revisão. '+
      'Slots livres e equipamento real precisam ser confirmados no eFootball.');
     editor.append(skillLabel);
@@ -311,30 +385,83 @@ function create(target,model,opts={}){
     editor.append(candidates);
     const options=el('label','ct311-select-label','Ímpeto adicional candidato: ');
     const selectBooster=el('select','ct311-select ct324-booster');
+    // Histórico antigo permanece na seleção para revisão/limpeza; somente
+    // NOVOS candidatos vêm do mesmo ranking filtrado apresentado no painel.
+    const freshBoosters=boosterReview?
+     [boosterReview.primary||'',...boosterReview.alternatives.map(x=>x.name)]:
+     [recorded?.boosterRanking?.primary?.name||'',
+      outcome.booster?.primary?.nome||'',
+      ...(outcome.booster?.alternatives||[]).map(x=>x.nome)];
     const choicesBooster=[...new Set([
      savedProfile?.booster||'',
-     recorded?.boosterRanking?.primary?.name||'',
-     outcome.booster?.primary?.nome||'',
-     ...(outcome.booster?.alternatives||[]).map(x=>x.nome)
+     ...(screened?.boosterSlot.slot==='ausente'?[]:freshBoosters)
     ].filter(Boolean))].slice(0,6);
     const empty=el('option','','Sem sugestão selecionada');empty.value='';
     selectBooster.append(empty);
     for(const name of choicesBooster){const o=el('option','',name);o.value=name;selectBooster.append(o)}
     selectBooster.value=savedProfile?.booster||'';
     options.append(selectBooster);editor.append(options);
+    // V343: avisar no próprio seletor quando o cadastro afirma ausência de slot.
+    // Rascunhos antigos não são descartados ou alterados automaticamente.
+    if(String(model.boosterSlot||'').toLocaleLowerCase('pt-BR').trim()==='ausente')
+     editor.append(el('p','ct343-slot-evidence',
+      'SLOT ADICIONAL AUSENTE no cadastro desta edição. Não é possível salvar '+
+      'um novo ímpeto candidato até revisar o cadastro ou remover a seleção. '+
+      'Nenhuma ficha histórica será apagada.'));
     const action=makeBtn('Salvar ficha independente deste técnico',()=>{
      try{
       if(!ok)throw Error('PP da edição não conferidos. Ficha permanece pendente.');
       const skills=choices.filter(x=>x.checked).map(x=>x.value);
+      const audit=profiles.auditEquipmentSelection(skills,selectBooster.value,
+       model.nativeSkills||'',model.skills||'',model.fixedBooster||'',model.boosterSlot||'pendente',
+       skillKeyFor);
+      // Revisões antigas nunca são alteradas por uma colisão nova.
+      if(audit.hasSkillConflict)throw Error('Revisar antes de salvar: '+
+       audit.conflicts.map(x=>x.name+' ('+x.sources.join(' e ')+')').join(' · ')+
+       '. Desmarque a candidata coincidente; o histórico foi preservado.');
+      const readiness=profiles.reviewDraftReadiness({
+       train:currentPlan,budget:profileContext.budget,skills,
+       booster:selectBooster.value,native:model.nativeSkills||'',
+       equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
+       boosterSlot:model.boosterSlot||'pendente',skillKeyFor
+      });
+      if(!readiness.canSave)throw Error(readiness.issues.join(' '));
       profiles.save(storage(),profileContext,{train:currentPlan,skills,
-       booster:selectBooster.value,source:'Revisão manual da ficha contextual V324'});
+       booster:selectBooster.value,source:'Revisão manual da ficha contextual V324',
+       skillKeyFor,native:model.nativeSkills||'',equipped:model.skills||'',
+       fixedBooster:model.fixedBooster||'',
+       boosterSlot:model.boosterSlot||'pendente'});
       status.textContent='Ficha consultiva salva em '+scenario.manager+'/'+scenario.position+'/'+scenario.style+
        '. Nenhum ímpeto ou habilidade foi equipado automaticamente.';
       draw();
      }catch(e){status.textContent='Ficha NÃO salva: '+String(e.message||e)}
     });
-    action.disabled=!ok;
-    editor.append(action,el('p','ct311-note',
+    // V342: feedback ao vivo é SOMENTE LEITURA; nenhuma alteração no
+    // armazenamento até o clique explícito em Salvar e validação novamente.
+    const readinessNote=el('p','ct342-live-audit');
+    readinessNote.setAttribute('role','status');
+    readinessNote.setAttribute('aria-live','polite');
+    const updateReadiness=()=>{
+     const result=profiles.reviewDraftReadiness({
+      train:currentPlan,budget:profileContext.budget,
+      skills:choices.filter(x=>x.checked).map(x=>x.value),
+      booster:selectBooster.value,native:model.nativeSkills||'',
+      equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
+      boosterSlot:model.boosterSlot||'pendente',skillKeyFor
+     });
+     action.disabled=!ok||!result.canSave;
+     readinessNote.dataset.status=result.status;
+     readinessNote.dataset.slotStatus=result.slotReview.status;
+     readinessNote.textContent=result.canSave?
+      'RASCUNHO PRONTO · '+result.skillCount+' candidatas · '+
+       result.spent+' / '+result.budget+' PP usados · '+
+       result.remainingPP+' PP livres. '+result.advisories.join(' '):
+      'NÃO SALVAR · '+result.issues.join(' ')+' '+result.advisories.join(' ');
+    };
+    for(const input of choices)input.addEventListener('change',updateReadiness);
+    selectBooster.addEventListener('change',updateReadiness);
+    updateReadiness();
+    editor.append(readinessNote,action,el('p','ct311-note',
      'A ficha usa a hipótese de PP exibida neste cenário ou o último rascunho independente salvo. '+
      'Para editar níveis em Minhas Cartas, use o editor principal; não sobrescreverá outras edições. '+
      'Ímpetos fixos, cinco slots e habilidades equipadas continuam preservados.'));
@@ -389,6 +516,77 @@ function create(target,model,opts={}){
    }catch(e){comparison.append(el('p','','Comparação indisponível: '+e.message))}
   }else comparison.append(el('p','','A posição atual já é a original. Selecione outra para comparar.'));
   panel.append(comparison);
+  // V339: comparar a mesma ficha V324 através do motor V251, sob demanda.
+  const ppFrontier=el('details','ct339-frontier');
+  ppFrontier.append(el('summary','','Comparar investimentos de PP desta ficha'));
+  const frontierContent=el('div','ct339-frontier-content');
+  ppFrontier.append(frontierContent);
+  ppFrontier.addEventListener('toggle',()=>{
+   if(!ppFrontier.open||ppFrontier.dataset.ready==='true')return;
+   // V251 pode carregar depois da UI. Se faltar motor, permitir nova tentativa
+   // ao reabrir em vez de marcar uma comparação incompleta como pronta.
+   frontierContent.replaceChildren();
+   let analysis;
+   try{analysis=host.CRAQUE_FRONTIER_CONTEXT_V339?.compare(storage(),model,scenario)}
+   catch(e){analysis={status:'PENDENTE',reason:String(e.message||e)}}
+   if(analysis?.status!=='CONSULTIVO'){
+    frontierContent.append(el('p','ct311-alert',
+     analysis?.reason||'Comparador ainda indisponível; ficha salva preservada.'));
+    return;
+   }
+   ppFrontier.dataset.ready='true';
+   const frontier=analysis.comparison;
+   frontierContent.append(el('p','ct311-note',analysis.saved?
+    'Referência: rascunho independente salvo · revisão '+analysis.revision+
+    ' · '+analysis.referenceSpent+' / '+analysis.budget+' PP.':
+    'Referência: proposta matemática temporária, sem rascunho salvo nesta identidade.'));
+   frontierContent.append(el('p','ct311-note',analysis.warning+' '+frontier.warning));
+   const label=el('label','ct311-select-label','Distribuição consultiva: ');
+   const choice=el('select','ct311-select ct339-candidate');
+   choice.setAttribute('aria-label','Comparar investimentos sem alterar treino');
+   for(const c of frontier.candidates){
+    const option=el('option','',c.origins.join(' / ')+
+     (c.registered?' · SALVO':c.onFrontier?' · fronteira amostral':' · troca hipotética')+
+     ' · '+c.spent+' PP');
+    option.value=c.id;choice.append(option);
+   }
+   label.append(choice);frontierContent.append(label);
+   const summary=el('p','ct311-budget');summary.setAttribute('aria-live','polite');
+   const table=el('table','ct311-table ct339-cost-table');
+   const head=el('tr');
+   for(const name of ['Grupo','Referência','Alternativa','Variação PP'])
+    head.append(el('th','',name));
+   table.append(head);
+   const rows=el('tbody');table.append(rows);
+   const axes=el('p','ct311-note');
+   const render=()=>{
+    const selected=frontier.candidates.find(c=>c.id===choice.value);
+    if(!selected)return;
+    summary.textContent=selected.spent+' / '+analysis.budget+' PP utilizados · '+
+     selected.remainingPP+' PP livres · '+selected.redistributedPP+
+     ' PP redistribuídos · '+selected.freePPInvested+' PP investidos do saldo.'+
+     (selected.registered?' Rascunho salvo preservado.':
+      ' Apenas simulação; nenhuma distribuição será gravada.');
+    rows.replaceChildren();
+    selected.levels.forEach((level,i)=>{
+     if(analysis.role==='GO'?i<7:i>6)return;
+     const previous=frontier.reference[i];
+     const delta=host.SCOUT_TACTICS_V220.ppCost(level)-
+      host.SCOUT_TACTICS_V220.ppCost(previous);
+     const row=el('tr');
+     row.append(el('td','',host.SCOUT_TACTICS_V220.CATEGORIES[i]),
+      el('td','',previous+' nv.'),el('td','',level+' nv.'),
+      el('td','',(delta>0?'+':'')+delta+' PP'));
+     rows.append(row);
+    });
+    axes.textContent=frontier.axes.map(a=>a.label+': '+
+     selected.objectives[a.key].toFixed(2)).join(' · ')+
+     ' · índices relativos, não atributos finais.';
+   };
+   choice.value=analysis.initial;choice.addEventListener('change',render);
+   frontierContent.append(summary,table,axes);render();
+  });
+  panel.append(ppFrontier);
   // V326: primeiro uma decisão legível; toda a engenharia fica acessível
   // sob demanda, inclusive revisões e comparador. Nenhum dado é descartado.
   const profilesSummary=profiles;
@@ -405,7 +603,10 @@ function create(target,model,opts={}){
   catch(e){profileError=profileError||String(e?.message||e)}
   // V335: aprovação antiga não homologa PP alterados no rascunho independente.
   const verified=decision?.approved===true;
-  const equipment=guide?.equipmentSummary?.(savedProfile,recommendations,candidate);
+  const equipment=guide?.equipmentSummary?.(savedProfile,recommendations,usableCandidate);
+  const equipmentAudit=profiles?.auditEquipmentSelection?.(equipment?.skills||[],
+   equipment?.booster||'',model.nativeSkills||'',model.skills||'',
+   model.fixedBooster||'',model.boosterSlot||'pendente',skillKeyFor);
   const hero=el('section','ct326-focus');
   hero.setAttribute('aria-label','Ficha em foco para a posição e o técnico');
   hero.append(el('div','ct326-kicker','FICHA EM FOCO · '+scenario.position+' · '+scenario.style.toUpperCase()));
@@ -424,7 +625,7 @@ function create(target,model,opts={}){
   };
   const candidateNames=equipment?.skills||
     (savedProfile?[]:recommendations.map(displaySkill).filter(Boolean).slice(0,5));
-  const proposedBooster=equipment?equipment.booster:(savedProfile?null:candidate);
+  const proposedBooster=equipment?equipment.booster:(savedProfile?null:usableCandidate);
   cards.append(
    metric('◈','Treinamento',ppReady&&Number.isInteger(decision?.usedPP)?
      (decision.usedPP===decision.pp?decision.pp+' PP':decision.usedPP+' / '+decision.pp+' PP'):
@@ -440,6 +641,18 @@ function create(target,model,opts={}){
     'Slot e ativação exigem comprovação')
   );
   hero.append(cards);
+  if(equipmentAudit?.hasSkillConflict)hero.append(el('p','ct340-evidence-conflict',
+   'REVISAR HABILIDADES: '+equipmentAudit.conflicts.map(c=>
+    c.name+' ('+c.sources.map(x=>x==='nativa_cadastrada'?
+     'consta nas nativas cadastradas':'consta nas adicionais informadas').join(', ')+')').join(' · ')+
+   '. A seleção anterior continua preservada.'));
+  if(screened?.boosterSlot.slot==='ausente')hero.append(el('p','ct343-slot-evidence',
+   savedProfile?.booster?
+    'Rascunho histórico com ímpeto preservado, mas slot adicional cadastrado como AUSENTE. Revise antes de nova gravação.':
+    'Sem slot adicional cadastrado: ranking de ímpetos somente teórico nesta edição.'));
+  if(equipmentAudit?.fixedBoosterSame)hero.append(el('p','ct340-evidence-conflict',
+   'REVISAR ÍMPETO: o nome do candidato coincide com o ímpeto fixo cadastrado. '+
+   'Confira slots e compatibilidade no jogo; nenhuma ativação foi inferida.'));
   if(candidateNames.length)hero.append(el('p','ct326-priority',
    (equipment?.hasDraft?'Habilidades selecionadas no rascunho: ':'Habilidades em análise: ')+
     candidateNames.join(' · ')));

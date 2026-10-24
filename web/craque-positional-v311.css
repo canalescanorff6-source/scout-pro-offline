@@ -183,3 +183,47 @@
  border-radius:8px;padding:10px 11px;line-height:1.6;margin:4px 0 0}
 @media(max-width:560px){.ct336-equipment-body{padding:11px 12px 13px}
  .ct336-equipment-evidence>summary{padding:11px 12px}}
+
+/* V339 — análise financeira de PP sob demanda, compacta e legível nos dois acervos. */
+.ct339-frontier{margin:14px 0;border:1px solid #6f795f;border-radius:13px;background:#1a2834}
+.ct339-frontier>summary{padding:12px 14px;cursor:pointer;color:#f0e4c3;font-weight:700}
+.ct339-frontier-content{padding:0 14px 14px;min-width:0;overflow-x:auto}
+.ct339-frontier-content .ct311-note{line-height:1.55}
+.ct339-frontier-content .ct339-cost-table{min-width:340px;width:100%}
+.ct339-frontier-content .ct311-budget{margin:10px 0}
+@media(max-width:560px){.ct339-frontier-content{padding:0 10px 12px}
+ .ct339-frontier>summary{padding:10px 12px;font-size:13px}}
+
+/* V340 — colisões documentais visíveis, sem classificar equipamento como confirmado. */
+.ct340-evidence-conflict{margin:9px 0;padding:11px 12px;border:1px solid #c39b59;
+ background:#34291e;color:#fff0d4;border-radius:9px;font-size:12px;line-height:1.6}
+@media(max-width:560px){.ct340-evidence-conflict{font-size:12px;padding:10px}}
+
+/* V342 — diagnóstico dinâmico sem nova camada visual na tela inicial. */
+.ct342-live-audit{padding:10px 12px;margin:10px 0;border-radius:10px;
+ border:1px solid #72876e;background:#1d3437;color:#e0f2dd;
+ line-height:1.55;font-size:12px;overflow-wrap:anywhere}
+.ct342-live-audit[data-status="revisar_habilidades"],
+.ct342-live-audit[data-status="pp_pendente"]{background:#382b22;border-color:#c79961;color:#ffe8c4}
+.ct324-profile .ct311-button:disabled{opacity:.53;cursor:not-allowed}
+
+/* V343 — evidência explícita de slot ausente na própria ficha. */
+.ct343-slot-evidence{margin:9px 0;padding:10px 12px;border-left:3px solid #d49a54;
+ background:#302720;color:#ffe5c1;font-size:12px;line-height:1.55;border-radius:7px}
+.ct342-live-audit[data-status="revisar_impeto_slot"]{background:#38261d;border-color:#d49a54;color:#ffe5c1}
+
+/* V347 — diferença legível entre cadastro e vagas efetivamente comprovadas. */
+.ct347-capacity-note{margin:9px 0;padding:10px 12px;border:1px solid #62736b;
+ border-radius:9px;background:#1a2e34;color:#f0dfbb;
+ font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+
+/* V344 — explicar exclusões documentais sem aumentar a primeira dobra. */
+.ct344-evidence-screen{margin:9px 0;border:1px solid #596b69;border-radius:9px;
+ background:#1d3038;color:#d7eced;overflow-wrap:anywhere}
+.ct344-evidence-screen>summary{padding:9px 12px;cursor:pointer;font-size:12px;font-weight:700}
+.ct344-evidence-screen ul{margin:0;padding:0 16px 11px 29px;font-size:12px;line-height:1.55}
+
+/* V348 — motivos de candidatos a ímpeto omitidos, recolhidos por padrão. */
+.ct348-booster-evidence{margin:9px 0;border:1px solid #5c706c;border-radius:9px;background:#172b36;color:#e7e0ca;overflow-wrap:anywhere}
+.ct348-booster-evidence>summary{padding:10px 12px;cursor:pointer;font-size:12px;font-weight:700;min-height:42px}
+.ct348-booster-evidence ul{margin:0;padding:0 15px 12px 29px;line-height:1.55;font-size:12px}
