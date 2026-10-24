@@ -21,7 +21,7 @@ for(const [name,id,position,level,pp] of expected){
  assert.equal(c.name,name);assert.equal(c.position,position);
  assert.equal(c.level,level);assert.equal(c.pp,pp);
  assert.equal(c.boosterSlot,'pendente');assert.equal(c.skills,'');assert.equal(c.booster,'');
- assert(c.notes.includes('simulador'));assert(c.image.startsWith('data:image/webp;base64,'));
+ assert(/simulador/i.test(c.notes));assert(c.image.startsWith('data:image/webp;base64,'));
  assert(friends.bytes(c.image)<=friends.MAX_IMAGE);
  const image=Buffer.from(c.image.split(',')[1],'base64');
  assert(image.length>12000,'Recorte da carta não pode ser um ícone borrado');
