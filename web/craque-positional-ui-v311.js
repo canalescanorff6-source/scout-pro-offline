@@ -253,6 +253,8 @@ function create(target,model,opts={}){
    model.nativeSkills||'',model.skills||'',candidate||'',model.boosterSlot||'pendente',
    skillKeyFor);
   const recommendations=screened?.skills||rawRecommendations;
+  const capacity=screened?.additionalCapacity||
+   profiles?.reviewAdditionalCapacity?.(model.skills||'',recommendations,skillKeyFor);
   const usableCandidate=screened?screened.boosterCandidate:candidate;
   for(const item of recommendations)list.append(el('li','',displaySkill(item)+
    ' — '+(item.why||'prioridade contextual, sem comprovação de equipamento')));
@@ -272,6 +274,18 @@ function create(target,model,opts={}){
   }
   if(screened?.nativeInventory==='pendente')skills.append(el('p','ct311-note',
    'Nativas desta edição não documentadas: ausência de lista não comprova slot livre.'));
+  if(capacity){
+   const msg=capacity.status==='pendente'?
+    'Ocupação das cinco habilidades adicionais: PENDENTE. Sem lista não significa cinco vagas livres.':
+    capacity.status==='revisar_cadastro'?
+     'REVISAR cadastro de habilidades adicionais: nomes repetidos ou mais de cinco informados.':
+     capacity.informedCount===5?
+      '5/5 adicionais informadas nesta edição: novas sugestões são ALTERNATIVAS DE SUBSTITUIÇÃO, não vagas disponíveis.':
+      capacity.informedCount+'/5 adicionais informadas. As outras '+
+       capacity.maxUnverifiedAdditional+' posições NÃO estão comprovadas como livres.';
+   skills.append(el('p','ct347-capacity-note',msg+
+    ' Nenhum equipamento real foi verificado.'));
+  }
   skills.append(el('p','ct311-note','Habilidades equipadas informadas: '+(model.skills||'não confirmadas')+
    '. Slots livres não são presumidos; até cinco CANDIDATAS são apresentadas para comparação.'+
    ' As sugestões não equipam habilidades nem criam vagas.'));
@@ -314,7 +328,10 @@ function create(target,model,opts={}){
     // mude. Nunca eliminá-los silenciosamente ao gerar nova revisão.
     const skillRows=profiles.reviewSkillCandidates(savedProfile?.skills||[],proposed,
      model.nativeSkills||'',model.skills||'',skillKeyFor);
-    const skillLabel=el('p','ct311-note','Até 5 habilidades adicionais candidatas. '+
+    const skillLabel=el('p','ct311-note',
+     (capacity?.informedCount===5?
+      'As cinco habilidades adicionais já estão informadas: propostas são alternativas de substituição, não novas vagas. ':
+      'Até 5 habilidades adicionais candidatas (ocupação real depende de comprovação). ')+
      'Itens salvos anteriormente permanecem visíveis e selecionados; desmarque para excluir da nova revisão. '+
      'Slots livres e equipamento real precisam ser confirmados no eFootball.');
     editor.append(skillLabel);
