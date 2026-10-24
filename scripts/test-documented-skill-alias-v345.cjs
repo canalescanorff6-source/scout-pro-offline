@@ -45,6 +45,16 @@ const suggestions=profiles.reviewSkillCandidates(
  '','Double Touch',key);
 assert.deepEqual(suggestions.map(x=>x.name),['One-touch Pass','Chute de primeira']);
 assert.equal(suggestions[0].saved,true,'Histórico não deve desaparecer na triagem');
+// Dois nomes legados equivalentes devem aparecer em separado, para
+// o proprietário poder conferir e desmarcar apenas na próxima revisão.
+const oldAliases=profiles.reviewSkillCandidates(
+ ['One-touch Pass','Passe de primeira'],['Toque duplo'],'','',key);
+assert.deepEqual(oldAliases.slice(0,2).map(x=>x.name),
+ ['One-touch Pass','Passe de primeira']);
+assert.equal(oldAliases[0].saved,true);
+assert.equal(oldAliases[1].saved,true);
+assert.match(oldAliases[1].conflict,/histórico/);
+assert.equal(oldAliases.filter(x=>x.name==='Toque duplo').length,1);
 const audit=profiles.auditEquipmentSelection(
  ['Passe de primeira','Toque duplo'],'','One-touch Pass\nThrough Passing',
  'Double Touch','','pendente',key);
