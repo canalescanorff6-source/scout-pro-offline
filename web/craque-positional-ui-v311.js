@@ -223,6 +223,9 @@ function create(target,model,opts={}){
   const recorded=saved&&!saved.stale?saved.revision:null;
   // V336 PP: ler a ficha independente antes de mostrar níveis e saldo.
   const profiles=host.CRAQUE_MANAGER_FICHAS_V324;
+  // V345: referenciar o dicionário de aliases V162 já carregado;
+  // nunca criar traduções ou equipar automaticamente.
+  const skillKeyFor=host.SCOUT_RECOMMENDATIONS_V162?.keyFor||null;
   let profileContext=null,savedProfile=null,readError='';
   if(profiles)try{
    profileContext=profiles.fromScenario(scenario,model);
@@ -247,7 +250,8 @@ function create(target,model,opts={}){
   const ranking=recorded?.boosterRanking||null;
   const candidate=ranking?.primary?.name||recorded?.booster||outcome.booster?.primary?.nome||null;
   const screened=profiles?.screenContextualSuggestions?.(rawRecommendations,
-   model.nativeSkills||'',model.skills||'',candidate||'',model.boosterSlot||'pendente');
+   model.nativeSkills||'',model.skills||'',candidate||'',model.boosterSlot||'pendente',
+   skillKeyFor);
   const recommendations=screened?.skills||rawRecommendations;
   const usableCandidate=screened?screened.boosterCandidate:candidate;
   for(const item of recommendations)list.append(el('li','',displaySkill(item)+
@@ -309,7 +313,7 @@ function create(target,model,opts={}){
     // V325: os nomes salvos têm prioridade visual mesmo que a recomendação
     // mude. Nunca eliminá-los silenciosamente ao gerar nova revisão.
     const skillRows=profiles.reviewSkillCandidates(savedProfile?.skills||[],proposed,
-     model.nativeSkills||'',model.skills||'');
+     model.nativeSkills||'',model.skills||'',skillKeyFor);
     const skillLabel=el('p','ct311-note','Até 5 habilidades adicionais candidatas. '+
      'Itens salvos anteriormente permanecem visíveis e selecionados; desmarque para excluir da nova revisão. '+
      'Slots livres e equipamento real precisam ser confirmados no eFootball.');
@@ -363,7 +367,8 @@ function create(target,model,opts={}){
       if(!ok)throw Error('PP da edição não conferidos. Ficha permanece pendente.');
       const skills=choices.filter(x=>x.checked).map(x=>x.value);
       const audit=profiles.auditEquipmentSelection(skills,selectBooster.value,
-       model.nativeSkills||'',model.skills||'',model.fixedBooster||'',model.boosterSlot||'pendente');
+       model.nativeSkills||'',model.skills||'',model.fixedBooster||'',model.boosterSlot||'pendente',
+       skillKeyFor);
       // Revisões antigas nunca são alteradas por uma colisão nova.
       if(audit.hasSkillConflict)throw Error('Revisar antes de salvar: '+
        audit.conflicts.map(x=>x.name+' ('+x.sources.join(' e ')+')').join(' · ')+
@@ -372,11 +377,12 @@ function create(target,model,opts={}){
        train:currentPlan,budget:profileContext.budget,skills,
        booster:selectBooster.value,native:model.nativeSkills||'',
        equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
-       boosterSlot:model.boosterSlot||'pendente'
+       boosterSlot:model.boosterSlot||'pendente',skillKeyFor
       });
       if(!readiness.canSave)throw Error(readiness.issues.join(' '));
       profiles.save(storage(),profileContext,{train:currentPlan,skills,
-       booster:selectBooster.value,source:'Revisão manual da ficha contextual V324'});
+       booster:selectBooster.value,source:'Revisão manual da ficha contextual V324',
+       skillKeyFor});
       status.textContent='Ficha consultiva salva em '+scenario.manager+'/'+scenario.position+'/'+scenario.style+
        '. Nenhum ímpeto ou habilidade foi equipado automaticamente.';
       draw();
@@ -393,7 +399,7 @@ function create(target,model,opts={}){
       skills:choices.filter(x=>x.checked).map(x=>x.value),
       booster:selectBooster.value,native:model.nativeSkills||'',
       equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
-      boosterSlot:model.boosterSlot||'pendente'
+      boosterSlot:model.boosterSlot||'pendente',skillKeyFor
      });
      action.disabled=!ok||!result.canSave;
      readinessNote.dataset.status=result.status;
@@ -552,7 +558,7 @@ function create(target,model,opts={}){
   const equipment=guide?.equipmentSummary?.(savedProfile,recommendations,usableCandidate);
   const equipmentAudit=profiles?.auditEquipmentSelection?.(equipment?.skills||[],
    equipment?.booster||'',model.nativeSkills||'',model.skills||'',
-   model.fixedBooster||'',model.boosterSlot||'pendente');
+   model.fixedBooster||'',model.boosterSlot||'pendente',skillKeyFor);
   const hero=el('section','ct326-focus');
   hero.setAttribute('aria-label','Ficha em foco para a posição e o técnico');
   hero.append(el('div','ct326-kicker','FICHA EM FOCO · '+scenario.position+' · '+scenario.style.toUpperCase()));
