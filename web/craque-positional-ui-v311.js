@@ -414,7 +414,7 @@ function create(target,model,opts={}){
       const skills=choices.filter(x=>x.checked).map(x=>x.value);
       const audit=profiles.auditEquipmentSelection(skills,selectBooster.value,
        model.nativeSkills||'',model.skills||'',model.fixedBooster||'',model.boosterSlot||'pendente',
-       skillKeyFor);
+       skillKeyFor,model.booster||'');
       // Revisões antigas nunca são alteradas por uma colisão nova.
       if(audit.hasSkillConflict)throw Error('Revisar antes de salvar: '+
        audit.conflicts.map(x=>x.name+' ('+x.sources.join(' e ')+')').join(' · ')+
@@ -423,14 +423,16 @@ function create(target,model,opts={}){
        train:currentPlan,budget:profileContext.budget,skills,
        booster:selectBooster.value,native:model.nativeSkills||'',
        equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
-       boosterSlot:model.boosterSlot||'pendente',skillKeyFor
+       boosterSlot:model.boosterSlot||'pendente',skillKeyFor,
+       informedBooster:model.booster||''
       });
       if(!readiness.canSave)throw Error(readiness.issues.join(' '));
       profiles.save(storage(),profileContext,{train:currentPlan,skills,
        booster:selectBooster.value,source:'Revisão manual da ficha contextual V324',
        skillKeyFor,native:model.nativeSkills||'',equipped:model.skills||'',
        fixedBooster:model.fixedBooster||'',
-       boosterSlot:model.boosterSlot||'pendente'});
+       boosterSlot:model.boosterSlot||'pendente',
+       informedBooster:model.booster||''});
       status.textContent='Ficha consultiva salva em '+scenario.manager+'/'+scenario.position+'/'+scenario.style+
        '. Nenhum ímpeto ou habilidade foi equipado automaticamente.';
       draw();
@@ -447,7 +449,8 @@ function create(target,model,opts={}){
       skills:choices.filter(x=>x.checked).map(x=>x.value),
       booster:selectBooster.value,native:model.nativeSkills||'',
       equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
-      boosterSlot:model.boosterSlot||'pendente',skillKeyFor
+      boosterSlot:model.boosterSlot||'pendente',skillKeyFor,
+      informedBooster:model.booster||''
      });
      action.disabled=!ok||!result.canSave;
      readinessNote.dataset.status=result.status;
@@ -606,7 +609,8 @@ function create(target,model,opts={}){
   const equipment=guide?.equipmentSummary?.(savedProfile,recommendations,usableCandidate);
   const equipmentAudit=profiles?.auditEquipmentSelection?.(equipment?.skills||[],
    equipment?.booster||'',model.nativeSkills||'',model.skills||'',
-   model.fixedBooster||'',model.boosterSlot||'pendente',skillKeyFor);
+   model.fixedBooster||'',model.boosterSlot||'pendente',skillKeyFor,
+   model.booster||'');
   const hero=el('section','ct326-focus');
   hero.setAttribute('aria-label','Ficha em foco para a posição e o técnico');
   hero.append(el('div','ct326-kicker','FICHA EM FOCO · '+scenario.position+' · '+scenario.style.toUpperCase()));
@@ -653,6 +657,9 @@ function create(target,model,opts={}){
   if(equipmentAudit?.fixedBoosterSame)hero.append(el('p','ct340-evidence-conflict',
    'REVISAR ÍMPETO: o nome do candidato coincide com o ímpeto fixo cadastrado. '+
    'Confira slots e compatibilidade no jogo; nenhuma ativação foi inferida.'));
+  if(equipmentAudit?.informedBoosterSame)hero.append(el('p','ct349-booster-inventory',
+   'ÍMPETO JÁ INFORMADO: o candidato também consta no inventário adicional '+
+   'desta edição. Não representa nova opção; a seleção histórica foi preservada.'));
   if(candidateNames.length)hero.append(el('p','ct326-priority',
    (equipment?.hasDraft?'Habilidades selecionadas no rascunho: ':'Habilidades em análise: ')+
     candidateNames.join(' · ')));
