@@ -273,14 +273,14 @@ function create(target,model,opts={}){
    ' As sugestões não equipam habilidades nem criam vagas.'));
   skills.append(list);panel.append(skills);
   const booster=el('section','ct311-panel');booster.append(el('h3','','Ímpetos · posição '+scenario.position));
-  booster.append(el('p','',screened?.boosterSlot.blocking?
+  booster.append(el('p','',screened?.boosterSlot.slot==='ausente'?
    'SEM SLOT ADICIONAL cadastrado nesta edição: '+candidate+
     ' é somente referência teórica, não candidata para esta carta.':
     usableCandidate?'Primeiro candidato: '+usableCandidate+
      ' (não equipado automaticamente)':'Candidato confiável pendente'));
   const alts=ranking?.alternatives||outcome.booster?.alternatives||[];
   if(alts.length)booster.append(el('p','ct311-note',
-   (screened?.boosterSlot.blocking?'Ranking teórico sem slot cadastrado: ':'Alternativas: ')+
+   (screened?.boosterSlot.slot==='ausente'?'Ranking teórico sem slot cadastrado: ':'Alternativas: ')+
    alts.map(x=>x.name||x.nome).join(' · ')));
   if(ranking?.primary?.reason)booster.append(el('p','ct311-note','Motivo registrado: '+ranking.primary.reason));
   booster.append(el('p','ct311-note','Ímpeto fixo: '+(model.fixedBooster||'não documentado')+
@@ -340,7 +340,7 @@ function create(target,model,opts={}){
     // Sem slot: conservar somente o legado para permitir limpar o candidato.
     const choicesBooster=[...new Set([
      savedProfile?.booster||'',
-     ...(screened?.boosterSlot.blocking?[]:[
+     ...(screened?.boosterSlot.slot==='ausente'?[]:[
       recorded?.boosterRanking?.primary?.name||'',
       outcome.booster?.primary?.nome||'',
       ...(outcome.booster?.alternatives||[]).map(x=>x.nome)
@@ -592,7 +592,7 @@ function create(target,model,opts={}){
     c.name+' ('+c.sources.map(x=>x==='nativa_cadastrada'?
      'consta nas nativas cadastradas':'consta nas adicionais informadas').join(', ')+')').join(' · ')+
    '. A seleção anterior continua preservada.'));
-  if(screened?.boosterSlot.blocking)hero.append(el('p','ct343-slot-evidence',
+  if(screened?.boosterSlot.slot==='ausente')hero.append(el('p','ct343-slot-evidence',
    savedProfile?.booster?
     'Rascunho histórico com ímpeto preservado, mas slot adicional cadastrado como AUSENTE. Revise antes de nova gravação.':
     'Sem slot adicional cadastrado: ranking de ímpetos somente teórico nesta edição.'));
