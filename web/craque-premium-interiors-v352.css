@@ -79,6 +79,14 @@ body[data-page="friends"] :is(.friends-safe,.ct311-panel,.ct324-profile details,
  background:#182b46!important;border-color:#627993!important;
  color:var(--ct352-text)!important;
 }
+/* Diálogos vivem no top-layer: dar prioridade explícita às duas IDs.
+ * Evita a cor antiga do cadastro/da análise sobrepondo o tema final. */
+body[data-page="friends"] dialog#friend-card-dialog.friends-dialog,
+body[data-page="friends"] dialog#friend-analysis-dialog.friends-dialog{
+ background:linear-gradient(145deg,#162942,#101e34 75%)!important;
+ border:1px solid var(--ct352-line)!important;color:var(--ct352-text)!important;
+ box-shadow:var(--ct352-shadow)!important;border-radius:17px!important;
+}
 body[data-page="friends"] .friend-analysis-dialog .friends-dialog-head{
  background:#14243b!important;border-bottom-color:#526b89!important;
 }
