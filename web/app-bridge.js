@@ -171,7 +171,12 @@ if(inCard){
    document.head.appendChild(selector329);
    // V251 precisa da interpretação V233 e da familiaridade EXATA V246.
    // Jamais deduzir posição treinada de Overall calculado.
+   const hasCompetitiveScript=(file)=>[...document.querySelectorAll('script[src]')].some(s=>
+    s.src.split('?')[0].endsWith('/'+file));
    const loadV251=()=>{
+    // V359: só uma instância da engenharia individual em cada página.
+    if(window.CRAQUE_FICHA_INDIVIDUAL_V251||
+       hasCompetitiveScript('craque-ficha-individual-v251.js'))return;
     const v251=document.createElement('script');v251.src=v189Root+'craque-ficha-individual-v251.js';
     document.head.appendChild(v251);
    };
@@ -387,7 +392,17 @@ if(inCard){
    // mesma interpretação e o mesmo distribuidor de PP dos Outros Elencos.
    // Se faltar algum arquivo offline, a ficha informa PENDENTE em vez de
    // usar outro motor silenciosamente.
-   const ensure=(file,globalName,next)=>window[globalName]?next():load(file,next);
+   const ensure=(file,globalName,next)=>{
+    if(window[globalName])return next();
+    // Cadeia V251 antiga pode estar carregando: aguardar sem duplicar scripts.
+    const pending=[...document.querySelectorAll('script[src]')].find(s=>
+     s.src.split('?')[0].endsWith('/'+file));
+    if(pending){
+     pending.addEventListener('load',()=>{if(window[globalName])next();},{once:true});
+     return;
+    }
+    load(file,next);
+   };
    ensure('scout-multitactic-engine-v220.js','SCOUT_TACTICS_V220',()=>
     ensure('craque-role-intelligence-v233.js','CRAQUE_INTERPRETATION_V233',()=>
      ensure('craque-ficha-individual-v251.js','CRAQUE_FICHA_INDIVIDUAL_V251',()=>
