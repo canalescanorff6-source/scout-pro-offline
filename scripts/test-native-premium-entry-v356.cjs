@@ -52,4 +52,46 @@ for(const forbidden of ['localStorage.clear(', 'indexedDB.deleteDatabase(', 'cac
  assert(!boot.includes(forbidden)&&!ui.includes(forbidden),
  'A correção visual não pode apagar dados: '+forbidden);
 }
+// V356: simulação do DOM no Android. O evento "load" nunca será emitido;
+// CSS e home já estão prontos em DOMContentLoaded: devemos liberar o Premium.
+const vm=require('node:vm');
+const api=require('../web/craque-ui-bootstrap-v351.js');
+const docEvents={},hostEvents={},frames=[],classes=new Set(['ct-v351-boot']);
+const badge={dataset:{},textContent:''},body={dataset:{page:'catalog',scoutV189:'1'},
+ setAttribute(){},removeAttribute(){}};
+const doc={
+ readyState:'loading',body,
+ documentElement:{classList:{
+  contains:name=>classes.has(name),remove:name=>classes.delete(name)
+ }},
+ querySelector:selector=>selector==='.scout-v189-home'?{}:null,
+ querySelectorAll:selector=>selector==='link[rel="stylesheet"]'
+  ?api.REQUIRED.map(name=>({sheet:{},getAttribute:()=>name})):[],
+ getElementById:()=>badge,
+ addEventListener:(name,fn)=>{docEvents[name]=fn}
+};
+const host={
+ document:doc,
+ addEventListener:(name,fn)=>{hostEvents[name]=fn},
+ requestAnimationFrame:fn=>{frames.push(fn)},
+ setTimeout:()=>0
+};
+api.init(host);
+assert(classes.has('ct-v351-boot'));
+docEvents['scoutpro:ui-ready']();
+assert(classes.has('ct-v351-boot'),'DOM incompleto não libera Premium');
+doc.readyState='interactive';
+docEvents.DOMContentLoaded();
+assert.equal(frames.length,1,'O DOM pronto agenda primeira pintura');
+frames.shift()();frames.shift()();
+assert.equal(body.dataset.ctUiBoot,'premium');
+assert.equal(classes.has('ct-v351-boot'),false);
+assert.equal(badge.dataset.status,'premium');
+assert(hostEvents.load,'O fallback load pode existir, mas NÃO deve ser exigido');
+const validVersion=vm.runInNewContext(
+ boot.split('installed=')[1].split('.test(version)')[0]
+);
+assert(validVersion instanceof Object || typeof validVersion.test==='function');
+assert(validVersion.test('1.1.1004'),'Versão real do APK deve ser reconhecida');
+assert(!validVersion.test('source-unbuilt'));
 console.log('V356 PASS: entrada Premium estática, resgate Android, versão real visível, nenhuma carta alterada e pacote único.');
