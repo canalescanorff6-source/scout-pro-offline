@@ -212,6 +212,11 @@
  background:#302720;color:#ffe5c1;font-size:12px;line-height:1.55;border-radius:7px}
 .ct342-live-audit[data-status="revisar_impeto_slot"]{background:#38261d;border-color:#d49a54;color:#ffe5c1}
 
+/* V347 — diferença legível entre cadastro e vagas efetivamente comprovadas. */
+.ct347-capacity-note{margin:9px 0;padding:10px 12px;border:1px solid #62736b;
+ border-radius:9px;background:#1a2e34;color:#f0dfbb;
+ font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+
 /* V344 — explicar exclusões documentais sem aumentar a primeira dobra. */
 .ct344-evidence-screen{margin:9px 0;border:1px solid #596b69;border-radius:9px;
  background:#1d3038;color:#d7eced;overflow-wrap:anywhere}
