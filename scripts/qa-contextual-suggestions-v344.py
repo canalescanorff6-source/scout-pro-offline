@@ -54,7 +54,7 @@ with sync_playwright() as pw:
    # Nenhum candidato novo de ímpeto para um slot AUSENTE.
    opts=box.locator('select.ct324-booster option')
    assert opts.count()==1,[opts.nth(i).inner_text() for i in range(opts.count())]
-   assert opts.first.input_value()==''
+   assert opts.first.get_attribute('value')==''
    panel=root.locator('.ct311-panel').filter(has_text='Ímpetos · posição')
    assert panel.count()>=1
    assert 'SEM SLOT ADICIONAL' in panel.first.inner_text()
