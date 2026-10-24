@@ -30,7 +30,18 @@ assert.equal(pending.skills.length,0);
 assert.equal(pending.boosterLabel,'Pendente');
 assert(Object.isFrozen(noSelection)&&Object.isFrozen(selected.skills));
 const ui=read('web/craque-positional-ui-v311.js');
-assert(ui.includes('guide?.equipmentSummary?.(savedProfile,recommendations,candidate)'));
+// V344: a seleção salva tem prioridade; um candidato bruto com slot ausente
+// não pode ser reintroduzido no resumo só porque aparece no ranking.
+assert(ui.includes('const usableCandidate=screened?screened.boosterCandidate:candidate;'));
+assert(ui.includes('guide?.equipmentSummary?.(savedProfile,recommendations,usableCandidate)'));
+assert(ui.includes('const recommendations=screened?.skills||rawRecommendations;'));
+const screenedProfiles=require('../web/craque-manager-fichas-v324.js');
+const noSlot=screenedProfiles.screenContextualSuggestions(suggestions,'','',
+ 'Instinto Artilheiro','ausente');
+assert.equal(noSlot.boosterCandidate,null);
+assert.equal(guide.equipmentSummary(null,noSlot.skills,noSlot.boosterCandidate).booster,null);
+assert.equal(guide.equipmentSummary(saved,noSlot.skills,noSlot.boosterCandidate).booster,'Técnica',
+ 'Ímpeto de histórico independente deve permanecer sem ser substituído');
 assert(ui.includes('const verified=decision?.approved===true'),
  'Apenas a aprovação verificada pela decisão contextual pode ser anunciada');
 assert(!ui.includes('const verified=Boolean(saved?.revision?.approved'),
