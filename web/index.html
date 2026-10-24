@@ -24,6 +24,14 @@ body[data-page="catalog"] .hero-text>.hero-actions{display:none!important}
 #ct356-boot-proof[data-status="premium"]{border-color:#cba65f}
 #ct356-boot-proof[data-status="fallback"]{border-color:#efba75;color:#ffdf9d}
 @media(max-width:355px){#ct356-static-shell{gap:7px}#ct356-static-shell a{min-height:74px;padding:9px}}
+/* Em aparelhos com CSS viewport 320px, manter diagnóstico sem deslocar
+ * as cartas: o selo fica no espaço superior da hero, sem capturar toques. */
+@media(max-width:340px){
+ body[data-page="catalog"] .hero-text{position:relative}
+ #ct356-boot-proof{position:absolute;top:4px;right:6px;z-index:3;
+  max-width:calc(100% - 12px);margin:0;padding:2px 5px;
+  font-size:9px;pointer-events:none}
+}
 </style>
 <link rel="stylesheet" href="scout-ui-v189.css" data-ct356-core="v189"/>
 <link rel="stylesheet" href="craque-design-v230.css" data-ct356-core="v230"/>
