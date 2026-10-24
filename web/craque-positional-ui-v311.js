@@ -674,8 +674,14 @@ function create(target,model,opts={}){
   // V336: a pessoa consulta o motivo por habilidade e ímpeto sem abrir toda
   // a engenharia. Se o motor não tem motivo para a seleção, declarar pendência.
   if(equipment && guide?.explainEquipment){
-   const rankingForWhy=recorded?.boosterRanking||outcome.booster||null;
-   const why=guide.explainEquipment(equipment,recommendations,rankingForWhy);
+   // V350: justificar somente candidatos ainda elegíveis da MESMA edição
+   // e função. A lista original pode conter ímpetos fixos/adicionais e
+   // nunca deve emprestar seu motivo a um rascunho legado sobreposto.
+   const rankingForWhy=boosterReview?{
+    primary:boosterReview.primaryInfo,
+    alternatives:boosterReview.alternatives
+   }:(recorded?.boosterRanking||outcome.booster||null);
+   const why=guide.explainEquipment(equipment,recommendations,rankingForWhy,skillKeyFor);
    const explanation=el('details','ct336-equipment-evidence');
    explanation.append(el('summary','','Por que estas habilidades e ímpeto?'));
    const body=el('div','ct336-equipment-body');
