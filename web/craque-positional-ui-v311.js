@@ -242,21 +242,45 @@ function create(target,model,opts={}){
   panel.append(renderPlan(output,Boolean(recorded||savedProfile)));
   const skills=el('section','ct311-panel');skills.append(el('h3','','Até 5 habilidades adicionais · somente recomendações'));
   const list=el('ol','ct311-list');
-  const recommendations=recorded?.recommendations||outcome.suggestedSkills||[];
+  // V344: a mesma triagem alimenta painel, resumo Premium e editor.
+  const rawRecommendations=recorded?.recommendations||outcome.suggestedSkills||[];
+  const ranking=recorded?.boosterRanking||null;
+  const candidate=ranking?.primary?.name||recorded?.booster||outcome.booster?.primary?.nome||null;
+  const screened=profiles?.screenContextualSuggestions?.(rawRecommendations,
+   model.nativeSkills||'',model.skills||'',candidate||'',model.boosterSlot||'pendente');
+  const recommendations=screened?.skills||rawRecommendations;
+  const usableCandidate=screened?screened.boosterCandidate:candidate;
   for(const item of recommendations)list.append(el('li','',displaySkill(item)+
    ' — '+(item.why||'prioridade contextual, sem comprovação de equipamento')));
   if(!recommendations.length)list.append(el('li','','Sem candidatos suficientes; conferir habilidades nativas e os slots reais.'));
+  if(screened?.excluded.length){
+   const dropped=el('details','ct344-evidence-screen');
+   dropped.append(el('summary','','Não mostrar como novas candidatas ('+screened.excluded.length+')'));
+   const reasons=el('ul','ct311-list');
+   for(const item of screened.excluded)reasons.append(el('li','',
+    (item.name||'Nome pendente')+' — '+({
+     nativa_cadastrada:'consta nas nativas cadastradas desta carta',
+     adicional_informada:'consta nas adicionais informadas desta carta',
+     repetida_na_proposta:'repetida na lista de propostas',
+     nome_pendente:'nome não identificado'
+    }[item.reason]||'exige revisão')));
+   dropped.append(reasons);skills.append(dropped);
+  }
+  if(screened?.nativeInventory==='pendente')skills.append(el('p','ct311-note',
+   'Nativas desta edição não documentadas: ausência de lista não comprova slot livre.'));
   skills.append(el('p','ct311-note','Habilidades equipadas informadas: '+(model.skills||'não confirmadas')+
    '. Slots livres não são presumidos; até cinco CANDIDATAS são apresentadas para comparação.'+
    ' As sugestões não equipam habilidades nem criam vagas.'));
   skills.append(list);panel.append(skills);
   const booster=el('section','ct311-panel');booster.append(el('h3','','Ímpetos · posição '+scenario.position));
-  const ranking=recorded?.boosterRanking||null;
-  const candidate=ranking?.primary?.name||recorded?.booster||outcome.booster?.primary?.nome||null;
-  booster.append(el('p','',candidate?
-   'Primeiro candidato: '+candidate+' (não equipado automaticamente)':'Candidato confiável pendente'));
+  booster.append(el('p','',screened?.boosterSlot.blocking?
+   'SEM SLOT ADICIONAL cadastrado nesta edição: '+candidate+
+    ' é somente referência teórica, não candidata para esta carta.':
+    usableCandidate?'Primeiro candidato: '+usableCandidate+
+     ' (não equipado automaticamente)':'Candidato confiável pendente'));
   const alts=ranking?.alternatives||outcome.booster?.alternatives||[];
-  if(alts.length)booster.append(el('p','ct311-note','Alternativas: '+
+  if(alts.length)booster.append(el('p','ct311-note',
+   (screened?.boosterSlot.blocking?'Ranking teórico sem slot cadastrado: ':'Alternativas: ')+
    alts.map(x=>x.name||x.nome).join(' · ')));
   if(ranking?.primary?.reason)booster.append(el('p','ct311-note','Motivo registrado: '+ranking.primary.reason));
   booster.append(el('p','ct311-note','Ímpeto fixo: '+(model.fixedBooster||'não documentado')+
@@ -311,11 +335,14 @@ function create(target,model,opts={}){
     editor.append(candidates);
     const options=el('label','ct311-select-label','Ímpeto adicional candidato: ');
     const selectBooster=el('select','ct311-select ct324-booster');
+    // Sem slot: conservar somente o legado para permitir limpar o candidato.
     const choicesBooster=[...new Set([
      savedProfile?.booster||'',
-     recorded?.boosterRanking?.primary?.name||'',
-     outcome.booster?.primary?.nome||'',
-     ...(outcome.booster?.alternatives||[]).map(x=>x.nome)
+     ...(screened?.boosterSlot.blocking?[]:[
+      recorded?.boosterRanking?.primary?.name||'',
+      outcome.booster?.primary?.nome||'',
+      ...(outcome.booster?.alternatives||[]).map(x=>x.nome)
+     ])
     ].filter(Boolean))].slice(0,6);
     const empty=el('option','','Sem sugestão selecionada');empty.value='';
     selectBooster.append(empty);
@@ -520,7 +547,7 @@ function create(target,model,opts={}){
   catch(e){profileError=profileError||String(e?.message||e)}
   // V335: aprovação antiga não homologa PP alterados no rascunho independente.
   const verified=decision?.approved===true;
-  const equipment=guide?.equipmentSummary?.(savedProfile,recommendations,candidate);
+  const equipment=guide?.equipmentSummary?.(savedProfile,recommendations,usableCandidate);
   const equipmentAudit=profiles?.auditEquipmentSelection?.(equipment?.skills||[],
    equipment?.booster||'',model.nativeSkills||'',model.skills||'',
    model.fixedBooster||'',model.boosterSlot||'pendente');
@@ -542,7 +569,7 @@ function create(target,model,opts={}){
   };
   const candidateNames=equipment?.skills||
     (savedProfile?[]:recommendations.map(displaySkill).filter(Boolean).slice(0,5));
-  const proposedBooster=equipment?equipment.booster:(savedProfile?null:candidate);
+  const proposedBooster=equipment?equipment.booster:(savedProfile?null:usableCandidate);
   cards.append(
    metric('◈','Treinamento',ppReady&&Number.isInteger(decision?.usedPP)?
      (decision.usedPP===decision.pp?decision.pp+' PP':decision.usedPP+' / '+decision.pp+' PP'):
@@ -563,6 +590,10 @@ function create(target,model,opts={}){
     c.name+' ('+c.sources.map(x=>x==='nativa_cadastrada'?
      'consta nas nativas cadastradas':'consta nas adicionais informadas').join(', ')+')').join(' · ')+
    '. A seleção anterior continua preservada.'));
+  if(screened?.boosterSlot.blocking)hero.append(el('p','ct343-slot-evidence',
+   savedProfile?.booster?
+    'Rascunho histórico com ímpeto preservado, mas slot adicional cadastrado como AUSENTE. Revise antes de nova gravação.':
+    'Sem slot adicional cadastrado: ranking de ímpetos somente teórico nesta edição.'));
   if(equipmentAudit?.fixedBoosterSame)hero.append(el('p','ct340-evidence-conflict',
    'REVISAR ÍMPETO: o nome do candidato coincide com o ímpeto fixo cadastrado. '+
    'Confira slots e compatibilidade no jogo; nenhuma ativação foi inferida.'));
