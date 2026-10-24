@@ -61,6 +61,8 @@ assert(ui.includes("skillKeyFor,native:model.nativeSkills||'',equipped:model.ski
 assert(ui.includes("fixedBooster:model.fixedBooster||''"));
 assert(ui.includes("boosterSlot:model.boosterSlot||'pendente'});"));
 const core=read('web/craque-manager-fichas-v324.js');
-assert(core.includes('if(native!==undefined||equipped!==undefined||boosterSlot!==undefined)'));
+assert(core.includes('if(native!==undefined||equipped!==undefined||boosterSlot!==undefined||'));
+assert(core.includes('informedBooster!==undefined)'));
+
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 console.log('V346 PASS: escrita com evidências, bloqueios por alias/slot, histórico imutável, duas coleções isoladas e 246 cartas preservadas.');
