@@ -780,6 +780,11 @@ document.head.appendChild(ct234Theme);
  const ct352Final=document.querySelector('link[data-ct352-final="true"]');
  if(ct352Final&&['friends','team'].includes(document.body.dataset.page))
   document.head.appendChild(ct352Final);
+ // V353: os laboratórios recebem a folha Premium desde o HTML.
+ // Mantê-la por último após os temas dinâmicos impede o legado de
+ // reassumir a cascata quando a página termina de carregar.
+ const ct353Final=document.querySelector('link[data-ct353-final="true"]');
+ if(ct353Final)document.head.appendChild(ct353Final);
 const ct234MotionCss=document.createElement('link');ct234MotionCss.rel='stylesheet';
 ct234MotionCss.href=v189Root+'craque-card-effects-v234.css';
 document.head.appendChild(ct234MotionCss);
