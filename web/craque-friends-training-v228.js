@@ -90,8 +90,9 @@ function allocate(card,tactic,deps){
   return pending(progress.reason||'Informe o nível máximo e PP da edição exata.');
  if(!individual?.allocate||!interpretation?.interpret)
   return pending('Engenharia individual V251/V233 não carregada. Não usar ficha genérica.');
- if(!/^\\d{5,20}$/.test(String(card.cardId||'').trim())||!String(card.edition||'').trim())
-  return pending('Card ID numérico e edição exata necessários à análise individual.');
+ // Identidade incompleta mantém a comparação matemática em estado hipotético.
+ // A avaliação abaixo NÃO a converterá em versão comprovada nem autorizará uso.
+
  const aligned={...source,id:String(card.cardId),card_id:String(card.cardId),
   edition:String(card.edition),versao:String(card.edition),pp:budget,
   max_level:card.level??null,
