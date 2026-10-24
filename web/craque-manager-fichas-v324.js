@@ -104,6 +104,42 @@ function reviewSkillCandidates(saved=[],suggested=[],native=[],equipped=[]){
  suggested.slice(0,30).forEach(n=>{if(rows.length<previous.length+5)append(n,false)});
  return rows;
 }
+// V344: compartilhar a MESMA lista de candidatas consultivas entre
+// painel principal, comparador explicativo e editor, sem modificar originais.
+function screenContextualSuggestions(recommendations=[],native=[],equipped=[],
+ booster='',boosterSlot='pendente'){
+ const input=Array.isArray(recommendations)?recommendations:[];
+ const nativeNames=skillList(native),equippedNames=skillList(equipped);
+ const nativeKeys=new Set(nativeNames.map(skillToken));
+ const equippedKeys=new Set(equippedNames.map(skillToken));
+ const seen=new Set(),skills=[],excluded=[];
+ for(const item of input.slice(0,40)){
+  const name=skillName(item),token=skillToken(name);
+  if(!name||!token){excluded.push(Object.freeze({name:name||'',reason:'nome_pendente'}));continue;}
+  const reason=nativeKeys.has(token)?'nativa_cadastrada':
+   equippedKeys.has(token)?'adicional_informada':
+   seen.has(token)?'repetida_na_proposta':null;
+  if(reason){excluded.push(Object.freeze({name,reason}));continue;}
+  seen.add(token);
+  if(skills.length<5){
+   const copy=item&&typeof item==='object'&&!Array.isArray(item)?
+    {...item,name}: {name};
+   skills.push(Object.freeze(copy));
+  }
+ }
+ const slot=reviewBoosterSlot(booster,boosterSlot);
+ return Object.freeze({
+  skills:Object.freeze(skills),excluded:Object.freeze(excluded),
+  nativeInventory: nativeNames.length?'lista_cadastrada_sem_recibo':'pendente',
+  equippedInventory: equippedNames.length?'lista_informada_sem_recibo':'pendente',
+  boosterCandidate:slot.blocking?null:normalize(booster)||null,
+  theoreticalBooster:slot.blocking?normalize(booster)||null:null,
+  boosterSlot:slot,
+  warning:'Filtro documental da mesma carta: itens cadastrados como nativos ou '+ 
+   'adicionais não são novas candidatas. Listas e slots requerem confirmação '+ 
+   'independente na edição exata e no jogo; nenhuma habilidade é equipada.'
+ });
+}
 // V340: auditoria documental da MESMA carta; não valida equipamento real.
 // O histórico imutável nunca é alterado ou apagado por esta função.
 function auditEquipmentSelection(skills=[],booster='',native=[],equipped=[],fixedBooster='',boosterSlot='pendente'){
@@ -259,5 +295,5 @@ function deleteDraft(store,c){
 }
 return Object.freeze({PREFIX,SCHEMA,STYLES,POSITIONS,validateContext,
  fromScenario,withStyle,withManager,withPosition,key,ppCost,validTraining,
- cleanSkills,skillName,skillToken,reviewSkillCandidates,auditEquipmentSelection,reviewBoosterSlot,reviewDraftReadiness,readAll,read,save,deleteDraft});
+ cleanSkills,skillName,skillToken,reviewSkillCandidates,screenContextualSuggestions,auditEquipmentSelection,reviewBoosterSlot,reviewDraftReadiness,readAll,read,save,deleteDraft});
 });
