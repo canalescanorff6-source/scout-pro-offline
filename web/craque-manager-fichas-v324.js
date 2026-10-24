@@ -80,24 +80,37 @@ function skillName(value){
 function skillToken(value){
  return skillName(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').replace(/\s+/g,' ').trim();
 }
+// V345: dicionário V162 somente quando o chamador disponibiliza keyFor.
+ // Nomes desconhecidos não ganham traduções ou equivalências inventadas.
+function skillEvidenceKey(value,keyFor=null){
+ const name=skillName(value);
+ if(!name)return '';
+ let documented='';
+ if(typeof keyFor==='function'){
+  try{documented=keyFor(name)||''}catch(_){documented=''}
+ }
+ return documented?'v162:'+documented:'literal:'+skillToken(name);
+}
 function skillList(value){
  if(Array.isArray(value))return value.map(skillName).filter(Boolean);
- if(typeof value==='string')return value.split(/[;,]/).map(normalize).filter(Boolean);
+ // Aceitar também múltiplas linhas, como o cadastro de evidências V162.
+ if(typeof value==='string')return value.split(/[;,\n\r]+/).map(normalize).filter(Boolean);
  return [];
 }
-function reviewSkillCandidates(saved=[],suggested=[],native=[],equipped=[]){
+function reviewSkillCandidates(saved=[],suggested=[],native=[],equipped=[],keyFor=null){
  const previous=cleanSkills(saved);
- const nativeSet=new Set(skillList(native).map(skillToken));
- const equippedSet=new Set(skillList(equipped).map(skillToken));
+ const token=name=>skillEvidenceKey(name,keyFor);
+ const nativeSet=new Set(skillList(native).map(token));
+ const equippedSet=new Set(skillList(equipped).map(token));
  const selected=new Set(),rows=[];
  function append(name,wasSaved){
-  const clean=skillName(name),token=skillToken(clean);
-  if(!clean||selected.has(token))return;
+  const clean=skillName(name),id=token(clean);
+  if(!clean||selected.has(id))return;
   // Não exibir novas candidatas que já sejam habilidades nativas/equipadas.
-  if(!wasSaved&&(nativeSet.has(token)||equippedSet.has(token)))return;
-  selected.add(token);
+  if(!wasSaved&&(nativeSet.has(id)||equippedSet.has(id)))return;
+  selected.add(id);
   rows.push(Object.freeze({name:clean,saved:wasSaved,
-   conflict:nativeSet.has(token)?'nativa':equippedSet.has(token)?'já equipada':null}));
+   conflict:nativeSet.has(id)?'nativa':equippedSet.has(id)?'já equipada':null}));
  }
  previous.forEach(n=>append(n,true));
  if(!Array.isArray(suggested))throw Error('Recomendações de habilidade inválidas');
@@ -107,20 +120,21 @@ function reviewSkillCandidates(saved=[],suggested=[],native=[],equipped=[]){
 // V344: compartilhar a MESMA lista de candidatas consultivas entre
 // painel principal, comparador explicativo e editor, sem modificar originais.
 function screenContextualSuggestions(recommendations=[],native=[],equipped=[],
- booster='',boosterSlot='pendente'){
+ booster='',boosterSlot='pendente',keyFor=null){
  const input=Array.isArray(recommendations)?recommendations:[];
+ const token=name=>skillEvidenceKey(name,keyFor);
  const nativeNames=skillList(native),equippedNames=skillList(equipped);
- const nativeKeys=new Set(nativeNames.map(skillToken));
- const equippedKeys=new Set(equippedNames.map(skillToken));
+ const nativeKeys=new Set(nativeNames.map(token));
+ const equippedKeys=new Set(equippedNames.map(token));
  const seen=new Set(),skills=[],excluded=[];
  for(const item of input.slice(0,40)){
-  const name=skillName(item),token=skillToken(name);
-  if(!name||!token){excluded.push(Object.freeze({name:name||'',reason:'nome_pendente'}));continue;}
-  const reason=nativeKeys.has(token)?'nativa_cadastrada':
-   equippedKeys.has(token)?'adicional_informada':
-   seen.has(token)?'repetida_na_proposta':null;
+  const name=skillName(item),id=token(name);
+  if(!name||!id){excluded.push(Object.freeze({name:name||'',reason:'nome_pendente'}));continue;}
+  const reason=nativeKeys.has(id)?'nativa_cadastrada':
+   equippedKeys.has(id)?'adicional_informada':
+   seen.has(id)?'repetida_na_proposta':null;
   if(reason){excluded.push(Object.freeze({name,reason}));continue;}
-  seen.add(token);
+  seen.add(id);
   if(skills.length<5){
    const copy=item&&typeof item==='object'&&!Array.isArray(item)?
     {...item,name}: {name};
@@ -142,14 +156,15 @@ function screenContextualSuggestions(recommendations=[],native=[],equipped=[],
 }
 // V340: auditoria documental da MESMA carta; não valida equipamento real.
 // O histórico imutável nunca é alterado ou apagado por esta função.
-function auditEquipmentSelection(skills=[],booster='',native=[],equipped=[],fixedBooster='',boosterSlot='pendente'){
+function auditEquipmentSelection(skills=[],booster='',native=[],equipped=[],fixedBooster='',boosterSlot='pendente',keyFor=null){
  const selected=cleanSkills(skills);
- const nativeSet=new Set(skillList(native).map(skillToken));
- const equippedSet=new Set(skillList(equipped).map(skillToken));
+ const token=name=>skillEvidenceKey(name,keyFor);
+ const nativeSet=new Set(skillList(native).map(token));
+ const equippedSet=new Set(skillList(equipped).map(token));
  const conflicts=selected.flatMap(name=>{
-  const token=skillToken(name),sources=[];
-  if(nativeSet.has(token))sources.push('nativa_cadastrada');
-  if(equippedSet.has(token))sources.push('adicional_informada');
+  const id=token(name),sources=[];
+  if(nativeSet.has(id))sources.push('nativa_cadastrada');
+  if(equippedSet.has(id))sources.push('adicional_informada');
   return sources.length?[Object.freeze({name,sources:Object.freeze(sources)})]:[];
  });
  const boosterSelected=normalize(booster),fixed=normalize(fixedBooster);
@@ -195,7 +210,7 @@ function reviewBoosterSlot(booster='',boosterSlot='pendente'){
 // V342: pré-verificação PURA para o estado atual do editor.
  // Nenhuma aprovação/equipamento é inferida da presença de uma candidata.
 function reviewDraftReadiness({train,budget,skills=[],booster='',native=[],
- equipped=[],fixedBooster='',boosterSlot='pendente'}={}){
+ equipped=[],fixedBooster='',boosterSlot='pendente',skillKeyFor=null}={}){
  const spent=Array.isArray(train)&&train.length===10&&
   train.every(x=>Number.isInteger(x)&&x>=0&&x<=20)?
    train.reduce((n,x)=>n+ppCost(x),0):null;
@@ -207,9 +222,9 @@ function reviewDraftReadiness({train,budget,skills=[],booster='',native=[],
  try{
   const selected=cleanSkills(skills);
   skillCount=selected.length;
-  if(new Set(selected.map(skillToken)).size!==selected.length)
-   issues.push('Há habilidades com nomes equivalentes após normalizar acentos e espaços.');
-  audit=auditEquipmentSelection(selected,booster,native,equipped,fixedBooster,boosterSlot);
+  if(new Set(selected.map(x=>skillEvidenceKey(x,skillKeyFor))).size!==selected.length)
+   issues.push('Há habilidades equivalentes segundo os nomes documentados ou a grafia normalizada.');
+  audit=auditEquipmentSelection(selected,booster,native,equipped,fixedBooster,boosterSlot,skillKeyFor);
   if(audit.hasSkillConflict)issues.push('Habilidade já consta nas listas cadastradas: '+
    audit.conflicts.map(x=>x.name).join(' · ')+'. Desmarque para registrar nova revisão.');
  }catch(e){issues.push('Seleção de habilidades inválida: '+String(e.message||e));}
@@ -254,13 +269,13 @@ function read(store,c){
  const row=versions.at(-1);
  return row?JSON.parse(JSON.stringify(row)):null;
 }
-function save(store,c,{train,skills=[],booster='',source='Edição manual de cenário'}={}){
+function save(store,c,{train,skills=[],booster='',source='Edição manual de cenário',skillKeyFor=null}={}){
  validateContext(c);
  if(!validTraining(train,c.budget))throw Error('Distribuição excede PP ou contém níveis inválidos');
  const names=cleanSkills(skills),boost=normalize(booster);
  // V342: bloquear novas revisões com nomes equivalentes (acentos/espaços),
  // sem invalidar o formato ou apagar revisões legadas previamente salvas.
- if(new Set(names.map(skillToken)).size!==names.length)
+ if(new Set(names.map(name=>skillEvidenceKey(name,skillKeyFor))).size!==names.length)
   throw Error('Habilidades com nomes equivalentes; revise a seleção antes de salvar.');
  if(boost.length>100)throw Error('Ímpeto candidato inválido');
  if(typeof source!=='string'||source.length>120)throw Error('Fonte da proposta inválida');
@@ -295,5 +310,5 @@ function deleteDraft(store,c){
 }
 return Object.freeze({PREFIX,SCHEMA,STYLES,POSITIONS,validateContext,
  fromScenario,withStyle,withManager,withPosition,key,ppCost,validTraining,
- cleanSkills,skillName,skillToken,reviewSkillCandidates,screenContextualSuggestions,auditEquipmentSelection,reviewBoosterSlot,reviewDraftReadiness,readAll,read,save,deleteDraft});
+ cleanSkills,skillName,skillToken,skillEvidenceKey,reviewSkillCandidates,screenContextualSuggestions,auditEquipmentSelection,reviewBoosterSlot,reviewDraftReadiness,readAll,read,save,deleteDraft});
 });
