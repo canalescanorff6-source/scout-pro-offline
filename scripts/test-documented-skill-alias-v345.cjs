@@ -72,7 +72,7 @@ const ctx={collection:'outros-elencos',owner:'bruno',cardKey:'external-v345',
  position:'MAT',style:'posse',budget:62,sourceSignature:'v345-current'};
 profiles.save(store,ctx,{train,skills:['One-touch Pass','Passe de primeira'],
  booster:'',source:'Registro anterior antes do dicionário'});
-const previous=store.get(profiles.key(ctx)),count=writes.length;
+const previous=data.get(profiles.key(ctx)),count=writes.length;
 assert.deepEqual(profiles.read(store,ctx).skills,
  ['One-touch Pass','Passe de primeira'],'Legado com aliases não deve ficar ilegível');
 assert.throws(()=>profiles.save(store,ctx,{train,
