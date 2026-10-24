@@ -189,7 +189,9 @@ body.scout-native-android #scout-app-bar [hidden]{
  * Igualar a superfície à paleta V234 elimina a passagem pelo tema V72.
  * Sem alterar arte, tabelas, treinos, formações ou armazenamento.
  */
-body[data-page="detail"]{
+/* Especificidade maior que a V230 injetada: evita voltar ao fundo
+ * anterior enquanto a V234, atrasada, ainda não foi carregada. */
+html body[data-page="detail"]{
  --ct354-bg:#060d18;--ct354-ink:#e9eef7;
  --ct354-ivory:#fcf7e9;--ct354-gold:#f3cd77;
  --ct354-line:rgba(151,172,202,.36);
