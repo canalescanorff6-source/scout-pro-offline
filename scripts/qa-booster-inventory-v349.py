@@ -43,7 +43,7 @@ with sync_playwright() as pw:
    page.locator('#friend-card-position').select_option('MAT')
    page.locator('#friend-card-level').fill('35')
    page.locator('#friend-card-fixed-booster').fill('Defesa')
-   page.locator('#friend-card-booster').fill('Regista; Técnica\\nForça')
+   page.locator('#friend-card-booster').fill('Regista; Técnica\nForça')
    page.locator('#friend-card-booster-slot').select_option('ocupado')
    page.locator('#friend-dialog-save').click()
    page.locator('.friends-card .friends-analysis-action').first.click()
