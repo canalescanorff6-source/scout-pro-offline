@@ -276,7 +276,8 @@ function read(store,c){
  const row=versions.at(-1);
  return row?JSON.parse(JSON.stringify(row)):null;
 }
-function save(store,c,{train,skills=[],booster='',source='Edição manual de cenário',skillKeyFor=null}={}){
+function save(store,c,{train,skills=[],booster='',source='Edição manual de cenário',
+ skillKeyFor=null,native,equipped,fixedBooster,boosterSlot}={}){
  validateContext(c);
  if(!validTraining(train,c.budget))throw Error('Distribuição excede PP ou contém níveis inválidos');
  const names=cleanSkills(skills),boost=normalize(booster);
@@ -286,6 +287,19 @@ function save(store,c,{train,skills=[],booster='',source='Edição manual de cen
   throw Error('Habilidades com nomes equivalentes; revise a seleção antes de salvar.');
  if(boost.length>100)throw Error('Ímpeto candidato inválido');
  if(typeof source!=='string'||source.length>120)throw Error('Fonte da proposta inválida');
+ // V346: a proteção da interface deve valer também no ponto central de
+ // gravação. Evidências são opcionais para chamadas antigas; quando presentes,
+ // revalidar sem presumir nativas, equipamento ou slots não documentados.
+ if(native!==undefined||equipped!==undefined||boosterSlot!==undefined){
+  const boundary=reviewDraftReadiness({
+   train,budget:c.budget,skills:names,booster:boost,
+   native:native??[],equipped:equipped??[],
+   fixedBooster:fixedBooster??'',boosterSlot:boosterSlot??'pendente',
+   skillKeyFor
+  });
+  if(!boundary.canSave)throw Error('Gravação bloqueada por evidência da carta: '+
+   boundary.issues.join(' '));
+ }
  const versions=readAll(store,c); // erro em dado corrompido proíbe sobrescrita
  // Cada clique de +/- no editor é um auto-rascunho (coalescido).
  // Revisões salvas explicitamente pela ficha V311 continuam imutáveis.
