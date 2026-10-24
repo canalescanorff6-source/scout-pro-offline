@@ -115,21 +115,36 @@
  // ESTA posição, estilo, técnico e Card ID. Não são provas de gameplay.
  const canonicalName=v=>str(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'')
   .toLocaleLowerCase('pt-BR').replace(/\s+/g,' ');
- function explainEquipment(summary,recommendations=[],boosterRanking=null){
+ // V350: conferir correspondência com o DICIONÁRIO DOCUMENTADO V162.
+ // Nomes desconhecidos não são traduzidos; igualdades literais vêm antes
+ // de aliases oficiais. A justificativa é do cenário em foco, não da
+ // aprovação histórica nem de uma partida real.
+ function evidenceAlias(name,keyFor){
+  if(typeof keyFor!=='function')return '';
+  try{return str(keyFor(str(name)))}catch(_){return ''}
+ }
+ function explainEquipment(summary,recommendations=[],boosterRanking=null,skillKeyFor=null){
   if(!summary||!Array.isArray(summary.skills)||typeof summary.hasDraft!=='boolean')
    throw Error('Resumo contextual de habilidades indisponível');
   const candidates=Array.isArray(recommendations)?recommendations:[];
   const skillRows=summary.skills.map(name=>{
-   const candidate=candidates.find(item=>
+   const literal=candidates.find(item=>
     canonicalName(typeof item==='string'?item:item?.name||item?.nome)===canonicalName(name));
+   const alias=evidenceAlias(name,skillKeyFor);
+   const candidate=literal||(alias?candidates.find(item=>
+    evidenceAlias(typeof item==='string'?item:item?.name||item?.nome,skillKeyFor)===alias):null);
    const reason=str(candidate?.why||candidate?.motivo);
+   const matchedBy=literal?'grafia_normalizada':candidate?'alias_v162_documentado':'pendente';
    const synergies=Array.isArray(candidate?.synergies)?
     candidate.synergies.filter(x=>typeof x==='string'&&x.trim()).slice(0,5):[];
    return Object.freeze({
     name,reason:reason||'Sem justificativa individual registrada nesta análise.',
     synergies:Object.freeze(synergies.slice()),
     status:reason?'racional_do_motor':'motivo_pendente',
-    source:reason?'Proposta contextual calculada, não prova de partida':
+    matchedBy,
+    source:reason?(matchedBy==='alias_v162_documentado'?
+      'Mesmo nome de habilidade por alias documentado V162; motivo do cenário atual, não prova da build salva':
+      'Motivo registrado no cenário atual, não prova de partida nem de equipamento'):
       'Seleção mantida sem motivo calculado para este contexto'
    });
   });

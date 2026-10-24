@@ -40,6 +40,30 @@ const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribut
 bar.innerHTML='<div><strong>CRAQUE TÁTICO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Craque Tático"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
+// V354: um único ponto de atualização da marca para as 246 fichas.
+ // Executa no script defer ANTES do DOMContentLoaded, sem alterar
+ // conteúdo documental, arte das cartas, Card IDs ou builds.
+if(inCard&&document.body.dataset.page==='detail'&&
+   typeof document.querySelector==='function'){
+ const brand=document.querySelector('.topbar .brand');
+ if(brand){
+  const oldLogo=brand.querySelector('.brand-logo');
+  if(oldLogo&&typeof oldLogo.replaceWith==='function'){
+   const logo=document.createElement('img');
+   logo.className='brand-logo-img';
+   logo.src='../assets/craque-tatico-icon.svg';
+   logo.alt='Craque Tático';
+   logo.width=42;logo.height=42;
+   oldLogo.replaceWith(logo);
+  }
+  const name=brand.querySelector('.brand-copy b');
+  if(name&&/^scout pro$/i.test(String(name.textContent||'').trim()))
+   name.textContent='CRAQUE TÁTICO';
+  const subtitle=brand.querySelector('.brand-copy small');
+  if(subtitle&&/build engine/i.test(String(subtitle.textContent||'')))
+   subtitle.textContent='LABORATÓRIO DE FUTEBOL';
+ }
+}
 // V189: mesmo design e bundle responsivo em Android, Windows e navegador.
 const v189Root=inCard?'../':'';
 const craqueBackupScript=document.createElement('script');
@@ -774,6 +798,17 @@ if(inCard){
 const ct234Theme=document.createElement('link');ct234Theme.rel='stylesheet';
 ct234Theme.href=v189Root+'craque-visual-system-v234.css';
 document.head.appendChild(ct234Theme);
+ // V352: tema já disponível no HTML sem piscada na tela interna.
+ // Reposicionar a MESMA folha depois da V234 garante que os estilos
+ // internos prevaleçam sem duplicar downloads nem ocultar ferramentas.
+ const ct352Final=document.querySelector('link[data-ct352-final="true"]');
+ if(ct352Final&&['friends','team'].includes(document.body.dataset.page))
+  document.head.appendChild(ct352Final);
+ // V353: os laboratórios recebem a folha Premium desde o HTML.
+ // Mantê-la por último após os temas dinâmicos impede o legado de
+ // reassumir a cascata quando a página termina de carregar.
+ const ct353Final=document.querySelector('link[data-ct353-final="true"]');
+ if(ct353Final)document.head.appendChild(ct353Final);
 const ct234MotionCss=document.createElement('link');ct234MotionCss.rel='stylesheet';
 ct234MotionCss.href=v189Root+'craque-card-effects-v234.css';
 document.head.appendChild(ct234MotionCss);

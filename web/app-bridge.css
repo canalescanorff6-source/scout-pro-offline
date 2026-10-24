@@ -183,3 +183,78 @@ body.scout-native-android #scout-app-bar [hidden]{
  transform:translate(-50%,-50%)!important;
  max-height:min(85vh,680px);
 }
+
+/* V354 — primeira pintura das 246 fichas com marca Craque Tático.
+ * Esta folha já está no HTML das fichas (antes dos CSS/JS dinâmicos).
+ * Igualar a superfície à paleta V234 elimina a passagem pelo tema V72.
+ * Sem alterar arte, tabelas, treinos, formações ou armazenamento.
+ */
+/* Especificidade maior que a V230 injetada: evita voltar ao fundo
+ * anterior enquanto a V234, atrasada, ainda não foi carregada. */
+html body[data-page="detail"]{
+ --ct354-bg:#060d18;--ct354-ink:#e9eef7;
+ --ct354-ivory:#fcf7e9;--ct354-gold:#f3cd77;
+ --ct354-line:rgba(151,172,202,.36);
+ color:var(--ct354-ink)!important;
+ background:radial-gradient(ellipse 110% 420px at 52% -110px,rgba(29,77,137,.26),transparent 78%),
+ linear-gradient(160deg,#070e1a,#0a1628 52%,#080f1e)!important;
+ color-scheme:dark;accent-color:#ffc629;
+}
+html body[data-page="detail"] .topbar{
+ background:linear-gradient(110deg,#0c172a,#122642)!important;
+ border-bottom:1px solid rgba(243,205,119,.44)!important;
+ box-shadow:0 5px 22px rgba(0,4,16,.24)!important;
+}
+html body[data-page="detail"] .topbar .brand-copy b{
+ color:var(--ct354-ivory)!important;letter-spacing:.025em;
+}
+html body[data-page="detail"] .topbar :is(.brand-copy small,.edition){
+ color:#bbc8d9!important;
+}
+html body[data-page="detail"] .topbar .brand-logo{
+ display:block!important;width:42px;height:42px;flex:0 0 42px;
+ background:transparent url("assets/craque-tatico-icon.svg") center / contain no-repeat;
+ color:transparent!important;font-size:0!important;overflow:hidden;
+}
+html body[data-page="detail"] .topbar .brand-logo-img{
+ width:42px;height:42px;flex:0 0 42px;object-fit:contain;
+ filter:drop-shadow(0 4px 13px rgba(243,205,119,.19));
+}
+html body[data-page="detail"] :is(.side-card,.mobile-profile,.profile-content>.panel,
+ .profile-content>.section,.profile-content>.scout-v188-principal){
+ background:linear-gradient(145deg,#162942,#101e34 75%)!important;
+ border-color:var(--ct354-line)!important;color:var(--ct354-ink)!important;
+ box-shadow:0 14px 36px rgba(0,4,15,.3)!important;
+ border-radius:17px;
+}
+html body[data-page="detail"] :is(.side-nav,.side-info,.side-art){
+ border-color:var(--ct354-line)!important;
+}
+html body[data-page="detail"] .side-art{
+ background:radial-gradient(circle at 50% 26%,#243c5c,#101e32 78%)!important;
+}
+html body[data-page="detail"] .side-art img{
+ object-fit:contain; /* A arte original não sofre corte. */
+}
+html body[data-page="detail"] :is(.player-name,.profile-content h1,
+ .profile-content h2,.side-info-row b){color:var(--ct354-ivory)!important}
+html body[data-page="detail"] :is(.breadcrumbs,.side-info-row label,
+ .mobile-profile .eyebrow){color:#bbc8d9!important}
+html body[data-page="detail"] :is(button,a,input,select,textarea,summary):focus-visible{
+ outline:3px solid #ffc629!important;outline-offset:3px!important;
+}
+html body[data-page="detail"] :is(.nav-cta,.btn.primary){
+ background:linear-gradient(140deg,#ffe09a,#d6a947)!important;
+ border:1px solid #ffe3a4!important;color:#101d31!important;
+}
+@media(max-width:560px){
+ html body[data-page="detail"] .topbar .brand-logo,
+ html body[data-page="detail"] .topbar .brand-logo-img{
+  width:35px;height:35px;flex-basis:35px;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ html body[data-page="detail"] :is(.side-card,.mobile-profile,.topbar){
+  animation:none!important;transition:none!important;
+ }
+}
