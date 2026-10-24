@@ -121,6 +121,10 @@ function render(){
    panel.append(indicator,caption,searchBlock,actions,details,about);
   }else panel.append(indicator,caption,actions,details,about);
   hero.appendChild(panel);
+  // V356: apenas quando a navegação nova realmente existe removemos
+  // a navegação de contingência que veio estaticamente com o APK.
+  const rescue=typeof doc.getElementById==='function'?doc.getElementById('ct356-static-shell'):null;
+  if(rescue)rescue.hidden=true;
   const brand=doc.querySelector('.topbar .nav-cta');
   if(brand)brand.textContent='Meu elenco';
  }
