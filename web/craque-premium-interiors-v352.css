@@ -116,9 +116,7 @@ body[data-page="team"] .p-slot{
 body[data-page="team"] .p-slot[aria-pressed="true"]{
  border-color:#ffe3a4!important;box-shadow:0 0 0 2px #c5a35b!important;
 }
-body[data-page="team"] :is(.pitch,.p-slot img){/* Gramado: sem troca da identidade verde. */
- background-color:initial;
-}
+/* Gramado V177: nenhum override visual na relva, linhas ou posições. */
 /* V307 — a central tem folha própria e não usa app-bridge: mesma linguagem visual. */
 body[data-page="manager-hub"] .hub-header{
  background:linear-gradient(110deg,#0c172a,#122642)!important;
