@@ -73,8 +73,15 @@ craqueBackupScript.onload=()=>{
 };
 document.head.appendChild(craqueBackupScript);
 
-const v189Css=document.createElement('link');v189Css.rel='stylesheet';v189Css.href=v189Root+'scout-ui-v189.css';document.head.appendChild(v189Css);
-const v189Js=document.createElement('script');v189Js.src=v189Root+'scout-ui-v189.js';v189Js.defer=true;document.head.appendChild(v189Js);
+// V356: a home tem CSS/JS Premium declarativos no HTML (APK incluso).
+// Nenhuma segunda cópia assíncrona pode competir com esse script de entrada.
+const v189Css=document.querySelector('link[data-ct356-core="v189"]')||document.createElement('link');
+v189Css.rel='stylesheet';v189Css.href=v189Root+'scout-ui-v189.css';
+if(!v189Css.parentNode)document.head.appendChild(v189Css);
+if(!document.querySelector('script[data-ct356-entry="premium-home"]')){
+ const v189Js=document.createElement('script');
+ v189Js.src=v189Root+'scout-ui-v189.js';v189Js.defer=true;document.head.appendChild(v189Js);
+}
 // V190: uma única folha de acabamento responsivo é empacotada pelos dois instaladores.
 const v190Css=document.createElement('link');v190Css.rel='stylesheet';v190Css.href=v189Root+'scout-polish-v190.css';document.head.appendChild(v190Css);
 // V192: acabamento aprovado sobre a base V189/V190, na mesma web/ das duas plataformas.
@@ -764,8 +771,9 @@ const craqueTheme=document.createElement('link');
 craqueTheme.rel='stylesheet';craqueTheme.href=v189Root+'craque-theme-v226.css';document.head.appendChild(craqueTheme);
 
 // V230: CSS único ouro + azul do escudo; pictogramas e idiomas, somente UI.
-const design230=document.createElement('link');design230.rel='stylesheet';
-design230.href=v189Root+'craque-design-v230.css';document.head.appendChild(design230);
+const design230=document.querySelector('link[data-ct356-core="v230"]')||document.createElement('link');
+design230.rel='stylesheet';design230.href=v189Root+'craque-design-v230.css';
+if(!design230.parentNode)document.head.appendChild(design230);
 if(inCard){
  const train230=document.createElement('script');train230.src=v189Root+'craque-training-icons-v230.js';
  train230.defer=true;document.head.appendChild(train230);
@@ -775,10 +783,10 @@ labels230.defer=true;document.head.appendChild(labels230);
 
 // V232: experiência mobile: navegação rápida, tipografia e barra inferior contida.
 // Um único bundle web atende APK Android, Electron/Windows e PWA; sem alterar dados.
-const experience232Css=document.createElement('link');
+const experience232Css=document.querySelector('link[data-ct356-core="v232"]')||document.createElement('link');
 experience232Css.rel='stylesheet';
 experience232Css.href=v189Root+'craque-experience-v232.css';
-document.head.appendChild(experience232Css);
+if(!experience232Css.parentNode)document.head.appendChild(experience232Css);
 const experience232Js=document.createElement('script');
 experience232Js.src=v189Root+'craque-experience-v232.js';
 document.head.appendChild(experience232Js);
@@ -795,8 +803,10 @@ if(inCard){
 // V234: revisão global de cores + acabamentos por raridade, sem substituição
 // das 246 artes. CSS FINAL após V226/V230/V232/V233 para eliminar heranças verdes.
 // Ambos instaladores (Capacitor/Electron) e PWA recebem o mesmo conjunto offline.
-const ct234Theme=document.createElement('link');ct234Theme.rel='stylesheet';
+const ct234Theme=document.querySelector('link[data-ct356-core="v234"]')||document.createElement('link');
+ct234Theme.rel='stylesheet';
 ct234Theme.href=v189Root+'craque-visual-system-v234.css';
+// A mesma folha declarativa vai ao fim depois do legado; sem segundo download.
 document.head.appendChild(ct234Theme);
  // V352: tema já disponível no HTML sem piscada na tela interna.
  // Reposicionar a MESMA folha depois da V234 garante que os estilos
