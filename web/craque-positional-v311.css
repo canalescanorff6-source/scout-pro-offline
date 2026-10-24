@@ -211,3 +211,9 @@
 .ct343-slot-evidence{margin:9px 0;padding:10px 12px;border-left:3px solid #d49a54;
  background:#302720;color:#ffe5c1;font-size:12px;line-height:1.55;border-radius:7px}
 .ct342-live-audit[data-status="revisar_impeto_slot"]{background:#38261d;border-color:#d49a54;color:#ffe5c1}
+
+/* V344 — explicar exclusões documentais sem aumentar a primeira dobra. */
+.ct344-evidence-screen{margin:9px 0;border:1px solid #596b69;border-radius:9px;
+ background:#1d3038;color:#d7eced;overflow-wrap:anywhere}
+.ct344-evidence-screen>summary{padding:9px 12px;cursor:pointer;font-size:12px;font-weight:700}
+.ct344-evidence-screen ul{margin:0;padding:0 16px 11px 29px;font-size:12px;line-height:1.55}
