@@ -20,13 +20,38 @@
  function init(host){
   const doc=host.document,html=doc?.documentElement;
   if(!html?.classList?.contains(BOOT))return;
-  let loaded=doc.readyState==='complete',finished=false,pending=false;
+  // V356: DOMContentLoaded encerra a espera por imagens de 246 cartas.
+  // window.load pode demorar em aparelhos lentos e causar falso fallback.
+  let loaded=doc.readyState!=='loading',finished=false,pending=false;
+  const badge=typeof doc.getElementById==='function'
+   ?doc.getElementById('ct356-boot-proof'):null;
+  let installed='versão não identificada';
+  const writeProof=(mode)=>{
+   if(!badge)return;
+   badge.dataset.status=mode;
+   badge.textContent=(mode==='premium'?'Premium ativo':mode==='fallback'
+    ?'Premium em recuperação':'Verificando interface')+' · '+installed;
+  };
+  writeProof('loading');
+  if(badge&&typeof host.fetch==='function'){
+   host.fetch('scout-build-info.json',{cache:'no-store'})
+    .then(r=>{if(!r.ok)throw Error('missing build');return r.json()})
+    .then(info=>{
+     const version=String(info.version||'');
+     const revision=String(info.git_revision||'');
+     installed=/^\d+\.\d+\.\d+$/.test(version)
+      ?'v'+version+(revision&&revision!=='source-unbuilt'?' · '+revision.slice(0,7):'')
+      :'pacote sem versão verificada';
+     writeProof(doc.body?.dataset.ctUiBoot||'loading');
+    }).catch(()=>{installed='pacote não identificado';writeProof(doc.body?.dataset.ctUiBoot||'loading')});
+  }
   const close=(mode)=>{
    if(finished)return;
    finished=true;
    doc.body?.removeAttribute('aria-busy');
    if(doc.body)doc.body.dataset.ctUiBoot=mode;
    html.classList.remove(BOOT);
+   writeProof(mode);
   };
   function check(){
    if(finished||pending||!ready(doc,loaded))return;
@@ -40,7 +65,12 @@
   }
   const finishLoad=()=>{loaded=true;check()};
   if(loaded)check();
-  else host.addEventListener('load',finishLoad,{once:true});
+  else{
+   // DOM pronto e CSS carregado já são suficientes; não aguardar
+   // 246 imagens e recursos remotos para liberar a interface Premium.
+   doc.addEventListener('DOMContentLoaded',finishLoad,{once:true});
+   host.addEventListener('load',finishLoad,{once:true});
+  }
   doc.addEventListener('scoutpro:ui-ready',check);
   // Falha segura: nunca prender o usuário em splash se o CSS/JS falhar.
   // A versão de compatibilidade fica assinalada para diagnóstico.

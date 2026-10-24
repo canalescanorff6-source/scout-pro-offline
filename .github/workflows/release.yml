@@ -414,6 +414,10 @@ jobs:
           mkdir -p ../build-demo
           cp app/build/outputs/apk/debug/app-debug.apk ../build-demo/ScoutPRO-Android-TESTE.apk
           cp ../web/scout-build-info.json ../build-demo/scout-build-info.json
+      - name: Verificar a interface Premium dentro do APK compilado
+        run: |
+          python3 scripts/verify-android-premium-payload-v356.py --self-test
+          python3 scripts/verify-android-premium-payload-v356.py android/app/build/outputs/apk/debug/app-debug.apk
       - name: Compilar APK release para assinatura
         if: steps.keys.outputs.signed == 'true'
         shell: bash
@@ -454,6 +458,7 @@ jobs:
           APK="release-out/ScoutPRO-Android.apk"
           test -s "$APK"
           unzip -t "$APK" >/dev/null
+          python3 scripts/verify-android-premium-payload-v356.py "$APK"
           AAPT="$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1)"
           test -x "$AAPT" || { echo 'AAPT não encontrado' >&2; exit 1; }
           "$AAPT" dump badging "$APK" > /tmp/scout-apk-badging.txt
