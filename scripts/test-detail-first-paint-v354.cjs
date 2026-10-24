@@ -20,6 +20,10 @@ for(const token of ['body[data-page="detail"]','.topbar .brand-logo','.brand-log
  assert(css.includes(token),'Primeira pintura Premium: '+token);
 }
 assert(!/display\s*:\s*none\s*!important/.test(css.split('/* V354')[1]));
+assert(css.includes('html body[data-page="detail"]{'),
+ 'A primeira pintura deve prevalecer sobre CSS V230 carregado depois');
+assert(css.includes('html body[data-page="detail"] .topbar'),
+ 'O cabeçalho também precisa vencer CSS legado assíncrono');
 assert(js.includes("if(inCard&&document.body.dataset.page==='detail'"));
 assert(js.includes("name.textContent='CRAQUE TÁTICO'"));
 assert(js.includes("subtitle.textContent='LABORATÓRIO DE FUTEBOL'"));
