@@ -193,7 +193,11 @@ function screenContextualSuggestions(recommendations=[],native=[],equipped=[],
 // Duplicar o nome do fixo NÃO prova incompatibilidade no jogo; sinaliza
 // sobreposição documental, mantendo o histórico anterior intocado.
 function reviewBoosterRanking(primary=null,alternatives=[],fixed='',equipped='',boosterSlot='pendente'){
- const fixedKey=skillToken(fixed),equippedKey=skillToken(equipped);
+ // V349: o campo adicional em Outros Elencos é uma TEXTAREA;
+ // nomes separados por ponto e vírgula ou quebra de linha são independentes.
+ // Comparar o bloco inteiro ocultava sobreposições já documentadas.
+ const fixedKeys=new Set(skillList(fixed).map(skillToken).filter(Boolean));
+ const informedKeys=new Set(skillList(equipped).map(skillToken).filter(Boolean));
  const raw=[primary,...(Array.isArray(alternatives)?alternatives.slice(0,15):[])];
  const seen=new Set(),fresh=[],excluded=[];
  for(const item of raw){
@@ -204,8 +208,8 @@ function reviewBoosterRanking(primary=null,alternatives=[],fixed='',equipped='',
   if(!id){if(item!==null&&item!==undefined)excluded.push(Object.freeze({
    name:name||'',reason:'nome_pendente'}));continue}
   const why=seen.has(id)?'repetido_no_ranking':
-   fixedKey&&id===fixedKey?'mesmo_nome_do_fixo':
-   equippedKey&&id===equippedKey?'ja_informado_como_adicional':null;
+   fixedKeys.has(id)?'mesmo_nome_do_fixo':
+   informedKeys.has(id)?'ja_informado_como_adicional':null;
   seen.add(id);
   if(why)excluded.push(Object.freeze({name,reason:why}));
   else fresh.push(Object.freeze({name,reason}));
@@ -226,7 +230,7 @@ function reviewBoosterRanking(primary=null,alternatives=[],fixed='',equipped='',
 }
 // V340: auditoria documental da MESMA carta; não valida equipamento real.
 // O histórico imutável nunca é alterado ou apagado por esta função.
-function auditEquipmentSelection(skills=[],booster='',native=[],equipped=[],fixedBooster='',boosterSlot='pendente',keyFor=null){
+function auditEquipmentSelection(skills=[],booster='',native=[],equipped=[],fixedBooster='',boosterSlot='pendente',keyFor=null,informedBooster=''){
  const selected=cleanSkills(skills);
  const token=name=>skillEvidenceKey(name,keyFor);
  const nativeSet=new Set(skillList(native).map(token));
@@ -238,14 +242,17 @@ function auditEquipmentSelection(skills=[],booster='',native=[],equipped=[],fixe
   return sources.length?[Object.freeze({name,sources:Object.freeze(sources)})]:[];
  });
  const boosterSelected=normalize(booster),fixed=normalize(fixedBooster);
- const fixedBoosterSame=Boolean(boosterSelected&&fixed&&
-  skillToken(boosterSelected)===skillToken(fixed));
+ const chosen=skillToken(boosterSelected);
+ const fixedBoosterSame=Boolean(chosen&&skillList(fixed).some(v=>skillToken(v)===chosen));
+ const informedBoosterSame=Boolean(chosen&&
+  skillList(informedBooster).some(v=>skillToken(v)===chosen));
  return Object.freeze({
   conflicts:Object.freeze(conflicts),hasSkillConflict:conflicts.length>0,
-  fixedBoosterSame,fixedBoosterDeclared:fixed||null,
+  fixedBoosterSame,informedBoosterSame,fixedBoosterDeclared:fixed||null,
   slotEvidence:normalize(boosterSlot)||'pendente',
   status:conflicts.length?'revisar_habilidades':
-   fixedBoosterSame?'revisar_impeto_fixo':'sem_colisao_documental',
+   fixedBoosterSame?'revisar_impeto_fixo':
+   informedBoosterSame?'revisar_impeto_informado':'sem_colisao_documental',
   warning:'Conferência apenas contra listas cadastradas nesta carta. Não comprova '+ 
    'vagas livres, habilidades equipadas, ímpeto adicional ou desempenho em partida.'
  });
@@ -280,7 +287,8 @@ function reviewBoosterSlot(booster='',boosterSlot='pendente'){
 // V342: pré-verificação PURA para o estado atual do editor.
  // Nenhuma aprovação/equipamento é inferida da presença de uma candidata.
 function reviewDraftReadiness({train,budget,skills=[],booster='',native=[],
- equipped=[],fixedBooster='',boosterSlot='pendente',skillKeyFor=null}={}){
+ equipped=[],fixedBooster='',boosterSlot='pendente',skillKeyFor=null,
+ informedBooster=''}={}){
  const spent=Array.isArray(train)&&train.length===10&&
   train.every(x=>Number.isInteger(x)&&x>=0&&x<=20)?
    train.reduce((n,x)=>n+ppCost(x),0):null;
@@ -294,7 +302,8 @@ function reviewDraftReadiness({train,budget,skills=[],booster='',native=[],
   skillCount=selected.length;
   if(new Set(selected.map(x=>skillEvidenceKey(x,skillKeyFor))).size!==selected.length)
    issues.push('Há habilidades equivalentes segundo os nomes documentados ou a grafia normalizada.');
-  audit=auditEquipmentSelection(selected,booster,native,equipped,fixedBooster,boosterSlot,skillKeyFor);
+  audit=auditEquipmentSelection(selected,booster,native,equipped,
+   fixedBooster,boosterSlot,skillKeyFor,informedBooster);
   if(audit.hasSkillConflict)issues.push('Habilidade já consta nas listas cadastradas: '+
    audit.conflicts.map(x=>x.name).join(' · ')+'. Desmarque para registrar nova revisão.');
  }catch(e){issues.push('Seleção de habilidades inválida: '+String(e.message||e));}
@@ -312,6 +321,9 @@ function reviewDraftReadiness({train,budget,skills=[],booster='',native=[],
  if(slotReview.reason&&!slotReview.blocking)advisories.push(slotReview.reason);
  if(audit?.fixedBoosterSame)advisories.push(
   'O ímpeto candidato coincide com o fixo informado. Verifique os slots no jogo.');
+ if(audit?.informedBoosterSame)advisories.push(
+  'O ímpeto candidato já consta como adicional informado nesta edição. '+
+  'Não é uma nova recomendação; confira a lista e o jogo antes de alterar o rascunho.');
  advisories.push('Nenhuma habilidade, ímpeto ou treino é equipado por este salvamento.');
  return Object.freeze({
   canSave:issues.length===0,
@@ -348,7 +360,7 @@ function read(store,c){
  return row?JSON.parse(JSON.stringify(row)):null;
 }
 function save(store,c,{train,skills=[],booster='',source='Edição manual de cenário',
- skillKeyFor=null,native,equipped,fixedBooster,boosterSlot}={}){
+ skillKeyFor=null,native,equipped,fixedBooster,boosterSlot,informedBooster}={}){
  validateContext(c);
  if(!validTraining(train,c.budget))throw Error('Distribuição excede PP ou contém níveis inválidos');
  const names=cleanSkills(skills),boost=normalize(booster);
@@ -361,12 +373,13 @@ function save(store,c,{train,skills=[],booster='',source='Edição manual de cen
  // V346: a proteção da interface deve valer também no ponto central de
  // gravação. Evidências são opcionais para chamadas antigas; quando presentes,
  // revalidar sem presumir nativas, equipamento ou slots não documentados.
- if(native!==undefined||equipped!==undefined||boosterSlot!==undefined){
+ if(native!==undefined||equipped!==undefined||boosterSlot!==undefined||
+    informedBooster!==undefined){
   const boundary=reviewDraftReadiness({
    train,budget:c.budget,skills:names,booster:boost,
    native:native??[],equipped:equipped??[],
    fixedBooster:fixedBooster??'',boosterSlot:boosterSlot??'pendente',
-   skillKeyFor
+   informedBooster:informedBooster??'',skillKeyFor
   });
   if(!boundary.canSave)throw Error('Gravação bloqueada por evidência da carta: '+
    boundary.issues.join(' '));
