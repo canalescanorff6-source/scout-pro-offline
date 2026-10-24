@@ -43,13 +43,16 @@ with sync_playwright() as pw:
     const dockVisible=dock&&getComputedStyle(dock).display!=='none'&&dock.getBoundingClientRect().height>0;
     const dr=dockVisible?dock.getBoundingClientRect():null;
     const apply=document.querySelector('#ct355-apply-update').getBoundingClientRect();
+    const overlap=dr && br.left<dr.right && br.right>dr.left &&
+      br.top<dr.bottom && br.bottom>dr.top;
     return {overflow:document.documentElement.scrollWidth-innerWidth,
       bottom:br.bottom,top:br.top, dockTop:dr?.top??null,
+      overlap:!!overlap,
       buttonHeight:apply.height,background:getComputedStyle(banner).backgroundImage};
    }""")
    assert data['overflow']<=3,(name,data)
    assert data['buttonHeight']>=43,(name,'botão pequeno',data)
-   assert data['dockTop'] is None or data['bottom']<=data['dockTop']+4,(name,'obstrui ações',data)
+   assert not data['overlap'],(name,'o aviso obstrui os controles reais',data)
    assert 'rgb(22, 41, 66)' in data['background'],(name,'visual antigo',data)
    page.evaluate("""() => {
       const form=document.createElement('form');
