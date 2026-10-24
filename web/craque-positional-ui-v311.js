@@ -303,7 +303,9 @@ function create(target,model,opts={}){
      savedProfile.revision+' · somente recomendação, não equipamento no eFootball.'));
     if(savedProfile&&ok)editor.append(el('p','ct311-note','PP desta ficha: '+
      savedProfile.train.map((x,i)=>outcome.plan.categories?.[i]+': '+x).join(' · ')));
-    const proposed=recorded?.recommendations||outcome.suggestedSkills||[];
+    // Compartilhar com o painel o filtro documental; não esconder
+    // habilidades já SALVAS, que reviewSkillCandidates preservará.
+    const proposed=recommendations;
     // V325: os nomes salvos têm prioridade visual mesmo que a recomendação
     // mude. Nunca eliminá-los silenciosamente ao gerar nova revisão.
     const skillRows=profiles.reviewSkillCandidates(savedProfile?.skills||[],proposed,
