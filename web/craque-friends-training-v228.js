@@ -14,6 +14,16 @@ const progression=typeof window!=='undefined'?window.CRAQUE_PP_UNIVERSAL_V309:
   require('./craque-pp-universal-v309.js');
 if(!progression)throw Error('Motor universal de PP ausente. Verifique a instalação offline.');
 const levelBudget=progression.budget,resolveBudget=progression.resolve;
+// V359: o cálculo competitivo de TODOS os acervos passa pelos MESMOS
+// motores V251 (distribuição) e V233 (interpretação) de Minhas Cartas.
+// Dependências consultadas ao abrir: preservar o carregamento assíncrono.
+const primaryEngines=deps=>({
+ individual:deps?.individual||(typeof window!=='undefined'?
+  window.CRAQUE_FICHA_INDIVIDUAL_V251:require('./craque-ficha-individual-v251.js')),
+ interpretation:deps?.interpretation||(typeof window!=='undefined'?
+  window.CRAQUE_INTERPRETATION_V233:require('./craque-role-intelligence-v233.js'))
+});
+const METHODOLOGY='V251/V233 · mesma engenharia das fichas principais';
 const getDeps=(deps)=>deps||{
  tactical:typeof window!=='undefined'?window.SCOUT_TACTICS_V220:null,
  skills:typeof window!=='undefined'?window.SCOUT_RECOMMENDATIONS_V162:null,
@@ -34,7 +44,7 @@ const profileOf=card=>({
 });
 function sourceSignature(card){
  const signatureParts=[
-  card.name,card.cardId,card.edition,card.position,card.style,card.pp,
+  'motor-individual-v359',card.name,card.cardId,card.edition,card.position,card.style,card.pp,
   card.nativeSkills,card.skills,card.booster,card.fixedBooster,card.boosterSlot,card.trainingLevels
  ];
  // Preservar assinaturas V228 de builds manuais existentes; apenas o PP derivado
@@ -63,56 +73,54 @@ function parseBaseline(card,t){
   return {levels:null,error:'Treino informado usa categorias fora da função escolhida; confirme a posição.'};
  return {levels:values,error:null};
 }
-// Multiple-choice knapsack. Exact PP only, categories <=20 and step costs equal to the game engine.
-// Marginal value declines by level; a single generic allocation is not copied to every card.
+// Paridade V359: utilizar a distribuição exata da engenharia V251 e a leitura
+// V233. Não converter OVR/atributos do eFHub com técnico em atributos-base.
+// Na falta de motor, não apresentar a heurística antiga como equivalente.
 function allocate(card,tactic,deps){
- const {tactical:t}=getDeps(deps);
+ const {tactical:t}=getDeps(deps),{individual,interpretation}=primaryEngines(deps);
  if(!t?.strategy||!t?.ppCost||!t?.valid||!t?.roleOf)
   throw Error('Motor tático V220 indisponível; nenhuma ficha pode ser calculada.');
  if(!MODES.includes(tactic))throw Error('Estilo tático inválido.');
- const progress=resolveBudget(card);
- const budget=progress.pp,source=profileOf(card),role=t.roleOf(source);
- if(!role)return {status:'pendente',reason:'Cadastre uma posição reconhecida (CA, SA, MAT, MLG, VOL, ZC, LD, LE, GO ou ponta).',levels:null};
- // PP manuais permanecem utilizáveis conforme V228, mas divergências ficam documentadas.
+ const progress=resolveBudget(card),budget=progress.pp;
+ const source=profileOf(card),role=t.roleOf(source);
+ const pending=reason=>({status:'pendente',reason,levels:null,role:role||null,
+  methodology:METHODOLOGY});
+ if(!role)return pending('Cadastre uma posição reconhecida para analisar esta função.');
  if(!Number.isInteger(budget)||budget<0||budget>300)
-  return {status:'pendente',reason:progress.reason||'Informe o nível máximo da carta para calcular os PP.',levels:null,role};
- const cfg=t.strategy(source,tactic);
- const allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
- const upper=allowed.length*60;
- if(budget>upper)return {status:'pendente',reason:'PP informados excedem o máximo das categorias permitidas ('+upper+'). Confira o cadastro.',levels:null,role};
- const weights=cfg.weights;
- let dp=Array(budget+1).fill(null);dp[0]={score:0,levels:Array(10).fill(0)};
- const costs=Array.from({length:21},(_,n)=>t.ppCost(n));
- const diminishing=Array(21).fill(0);
- for(let n=1;n<=20;n++)diminishing[n]=diminishing[n-1]+1/(1+0.23*(n-1));
- for(const index of allowed){
-  const next=Array(budget+1).fill(null);
-  for(let spent=0;spent<=budget;spent++){
-   const previous=dp[spent];if(!previous)continue;
-   for(let n=0;n<=20&&spent+costs[n]<=budget;n++){
-    const target=spent+costs[n],score=previous.score+weights[index]*diminishing[n];
-    if(!next[target]||score>next[target].score+1e-9){
-     const levels=previous.levels.slice();levels[index]=n;
-     next[target]={score,levels};
-    }
-   }
-  }
-  dp=next;
- }
- const result=dp[budget];
- if(!result||!t.valid(result.levels)||t.total(result.levels)!==budget)
-  return {status:'pendente',reason:'Não há combinação válida que utilize exatamente os PP declarados.',levels:null,role};
- const base=parseBaseline(card,t);
- const differences=base.levels?t.CATEGORIES.flatMap((name,i)=>base.levels[i]!==result.levels[i]?
-   [{name,was:base.levels[i],proposed:result.levels[i]}]:[]):[];
- const evidence=[...cfg.signals];
+  return pending(progress.reason||'Informe o nível máximo e PP da edição exata.');
+ if(!individual?.allocate||!interpretation?.interpret)
+  return pending('Engenharia individual V251/V233 não carregada. Não usar ficha genérica.');
+ // Identidade incompleta mantém a comparação matemática em estado hipotético.
+ // A avaliação abaixo NÃO a converterá em versão comprovada nem autorizará uso.
+
+ const aligned={...source,id:String(card.cardId),card_id:String(card.cardId),
+  edition:String(card.edition),versao:String(card.edition),pp:budget,
+  max_level:card.level??null,
+  // Esta fonte NÃO é comprovante de nível conferido dentro do eFootball.
+  pp_origem:'nivel_informado_no_cadastro_externo',
+  recommended_levels:null,niveis:null,base_stats_known:false,
+  pp_estimado:progress.source==='manual_divergente'};
+ const context=interpretation.interpret(aligned,tactic,null);
+ if(!context||context.role!==role||!Array.isArray(context.weights)||
+    context.weights.length!==10)return pending('Interpretação individual da edição indisponível.');
+ const baseline=parseBaseline(card,t);
+ const levels=individual.allocate(context.weights,context.role,budget,baseline.levels);
+ if(!t.valid(levels)||t.total(levels)!==budget)
+  return pending('Motor V251 não encontrou distribuição compatível com os PP.');
+ const differences=baseline.levels?t.CATEGORIES.flatMap((name,i)=>
+  baseline.levels[i]!==levels[i]?[{name,was:baseline.levels[i],proposed:levels[i]}]:[]):[];
  return {
-  status:'hipotese',role,levels:result.levels,pp:budget,remaining:0,
+  status:'hipotese',role:context.role,levels,pp:budget,remaining:0,
   categories:t.CATEGORIES,style:tactic,
-  focus:t.focus(source,tactic),evidence,
-  baselineValid:Boolean(base.levels),baselineError:base.error,
-  differences,
-  note:'Treino experimental com PP fechados. Simulação por função, tática e informações fornecidas; não comprova atributos finais nem desempenho.'
+  focus:{...t.focus(source,tactic),priority:context.priorities.slice(0,4).map(x=>({
+   index:x.index,name:x.name,weight:x.weight}))},
+  evidence:[...context.signals],baselineValid:Boolean(baseline.levels),
+  baselineError:baseline.error,differences,
+  methodology:METHODOLOGY,
+  tests:context.tests.slice(),
+  tradeoffs:context.tradeoffs.slice(),
+  confidence:'hipotese_documental_sem_gameplay',
+  note:'Mesmo motor de distribuição V251 e interpretação V233 de Minhas Cartas; comparação individual por função, estilo, habilidades e PP. NÃO otimiza Overall e NÃO prova desempenho real nem autoriza trocar treino aprovado.'
  };
 }
 function evaluate(card,tactic='posse',deps){
@@ -204,5 +212,5 @@ function validateSaved(card,record,deps){
  }
  return true;
 }
-return Object.freeze({MODES,LABEL,levelBudget,resolveBudget,profileOf,sourceSignature,parseBaseline,allocate,evaluate,generate,validateSaved});
+return Object.freeze({MODES,LABEL,METHODOLOGY,levelBudget,resolveBudget,profileOf,sourceSignature,parseBaseline,allocate,evaluate,generate,validateSaved});
 });
