@@ -382,7 +382,9 @@ function create(target,model,opts={}){
       if(!readiness.canSave)throw Error(readiness.issues.join(' '));
       profiles.save(storage(),profileContext,{train:currentPlan,skills,
        booster:selectBooster.value,source:'Revisão manual da ficha contextual V324',
-       skillKeyFor});
+       skillKeyFor,native:model.nativeSkills||'',equipped:model.skills||'',
+       fixedBooster:model.fixedBooster||'',
+       boosterSlot:model.boosterSlot||'pendente'});
       status.textContent='Ficha consultiva salva em '+scenario.manager+'/'+scenario.position+'/'+scenario.style+
        '. Nenhum ímpeto ou habilidade foi equipado automaticamente.';
       draw();
