@@ -88,9 +88,9 @@ assert.equal(body.dataset.ctUiBoot,'premium');
 assert.equal(classes.has('ct-v351-boot'),false);
 assert.equal(badge.dataset.status,'premium');
 assert(hostEvents.load,'O fallback load pode existir, mas NÃO deve ser exigido');
-const validVersion=vm.runInNewContext(
- boot.split('installed=')[1].split('.test(version)')[0]
-);
+const expr=boot.match(/installed=(\/\^.*?\$\/)\.test\(version\)/);
+assert(expr&&expr[1],'Validar o regex da versão embarcada, não o texto de fallback');
+const validVersion=vm.runInNewContext(expr[1]);
 assert(validVersion instanceof Object || typeof validVersion.test==='function');
 assert(validVersion.test('1.1.1004'),'Versão real do APK deve ser reconhecida');
 assert(!validVersion.test('source-unbuilt'));
