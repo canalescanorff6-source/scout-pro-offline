@@ -285,4 +285,4 @@ html body[data-page="detail"] :is(.nav-cta,.btn.primary){
  #ct355-update-ready{left:12px;right:12px;width:auto;max-height:42dvh}
  #ct355-update-ready button{flex:1 1 125px}
 }
-@media print{#ct355-update-ready{display:none!important}}
+@media print{#ct355-update-ready{visibility:hidden}}
