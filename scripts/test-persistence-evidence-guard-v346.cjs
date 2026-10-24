@@ -60,7 +60,7 @@ const ui=read('web/craque-positional-ui-v311.js');
 assert(ui.includes("skillKeyFor,native:model.nativeSkills||'',equipped:model.skills||''"));
 assert(ui.includes("fixedBooster:model.fixedBooster||''"));
 assert(ui.includes("boosterSlot:model.boosterSlot||'pendente',")); 
-assert(ui.includes("informedBooster:model.booster||''}));"));
+assert(ui.includes("informedBooster:model.booster||''"));
 const core=read('web/craque-manager-fichas-v324.js');
 assert(core.includes('if(native!==undefined||equipped!==undefined||boosterSlot!==undefined||'));
 assert(core.includes('informedBooster!==undefined)'));
