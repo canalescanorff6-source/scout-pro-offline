@@ -27,6 +27,7 @@ on:
       - 'scripts/qa-premium-workspaces-v353.py'
       - 'scripts/qa-detail-first-paint-v354.py'
       - 'scripts/qa-pwa-safe-update-v355.py'
+      - 'scripts/qa-native-premium-entry-v356.py'
       - 'scripts/qa-manager-selector-v328.py'
       - 'scripts/qa-manager-premium-v329.py'
       - 'scripts/qa-lineup-focus-v330.py'
