@@ -17,7 +17,7 @@ assert(html.indexOf('id="ct-v351-boot-cover"')<html.indexOf('<header class="topb
 assert.equal((html.match(/class="player-card"/g)||[]).length,246);
 for(const file of api.REQUIRED)assert(bridge.includes(file),'Estilo Premium pendente: '+file);
 for(const file of ['scout-v189-home','scout-v189-extra'])assert(read('web/scout-ui-v189.js').includes(file));
-assert(read('web/scout-ui-v189.js').includes("dispatchEvent(new Event('scoutpro:ui-ready'))"));
+assert(read('web/scout-ui-v189.js').includes("dispatchEvent(new root.Event('scoutpro:ui-ready'))"));
 const sw=read('web/sw.js'),stamp=read('scripts/stamp-bundle-v189.cjs');
 assert(sw.includes("'./craque-ui-bootstrap-v351.js'"));
 assert(stamp.includes("'craque-ui-bootstrap-v351.js'"));
