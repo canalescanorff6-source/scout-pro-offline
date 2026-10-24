@@ -17,6 +17,7 @@ on:
       - 'scripts/qa-live-equipment-v342.py'
       - 'scripts/qa-booster-slot-v343.py'
       - 'scripts/qa-contextual-suggestions-v344.py'
+      - 'scripts/qa-skill-alias-v345.py'
       - 'scripts/qa-manager-selector-v328.py'
       - 'scripts/qa-manager-premium-v329.py'
       - 'scripts/qa-lineup-focus-v330.py'
