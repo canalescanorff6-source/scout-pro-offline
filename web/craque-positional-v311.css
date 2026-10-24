@@ -222,3 +222,8 @@
  background:#1d3038;color:#d7eced;overflow-wrap:anywhere}
 .ct344-evidence-screen>summary{padding:9px 12px;cursor:pointer;font-size:12px;font-weight:700}
 .ct344-evidence-screen ul{margin:0;padding:0 16px 11px 29px;font-size:12px;line-height:1.55}
+
+/* V348 — motivos de candidatos a ímpeto omitidos, recolhidos por padrão. */
+.ct348-booster-evidence{margin:9px 0;border:1px solid #5c706c;border-radius:9px;background:#172b36;color:#e7e0ca;overflow-wrap:anywhere}
+.ct348-booster-evidence>summary{padding:10px 12px;cursor:pointer;font-size:12px;font-weight:700;min-height:42px}
+.ct348-booster-evidence ul{margin:0;padding:0 15px 12px 29px;line-height:1.55;font-size:12px}
