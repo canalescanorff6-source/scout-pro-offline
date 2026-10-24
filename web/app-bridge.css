@@ -258,3 +258,31 @@ html body[data-page="detail"] :is(.nav-cta,.btn.primary){
   animation:none!important;transition:none!important;
  }
 }
+
+/* V355 · Atualização PWA opcional. Não encobre os comandos Android/Windows. */
+#ct355-update-ready{
+ position:fixed;z-index:11995;right:max(12px,env(safe-area-inset-right,0px));
+ bottom:calc(105px + env(safe-area-inset-bottom,0px));
+ width:min(390px,calc(100vw - 24px));max-height:55dvh;overflow-y:auto;
+ padding:15px 16px;background:linear-gradient(145deg,#162942,#101e34);
+ border:1px solid #dbb66f;border-radius:15px;color:#e9eef7;
+ box-shadow:0 12px 38px rgba(0,4,15,.65);font:13px/1.55 system-ui,Arial,sans-serif;
+}
+#ct355-update-ready strong{display:block;font-size:15px;color:#fcf7e9}
+#ct355-update-ready p{margin:7px 0 12px;color:#bbc8d9}
+#ct355-update-ready .ct355-update-actions{display:flex;flex-wrap:wrap;gap:8px}
+#ct355-update-ready button{
+ min-height:44px;padding:9px 12px;border-radius:10px;
+ background:#203a59;border:1px solid #6481a1;color:#f2f5fa;
+ font:700 12px system-ui,Arial,sans-serif;cursor:pointer;
+}
+#ct355-update-ready #ct355-apply-update{
+ background:linear-gradient(140deg,#ffe09a,#d6a947);color:#101d31;
+ border-color:#ffe3a4;
+}
+#ct355-update-ready button:focus-visible{outline:3px solid #ffc629;outline-offset:3px}
+@media(max-width:540px){
+ #ct355-update-ready{left:12px;right:12px;width:auto;max-height:42dvh}
+ #ct355-update-ready button{flex:1 1 125px}
+}
+@media print{#ct355-update-ready{display:none!important}}
