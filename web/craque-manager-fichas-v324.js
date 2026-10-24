@@ -97,6 +97,32 @@ function skillList(value){
  if(typeof value==='string')return value.split(/[;,\n\r]+/).map(normalize).filter(Boolean);
  return [];
 }
+// V347: capacidade DOCUMENTAL de habilidades adicionais. O cadastro manual
+// informa nomes, não prova que todas as cinco vagas estejam ocupadas/livres.
+// Propostas são alternativas de ficha e nunca equipamento aplicado.
+function reviewAdditionalCapacity(equipped=[],proposed=[],keyFor=null){
+ const names=skillList(equipped);
+ const key=name=>skillEvidenceKey(name,keyFor);
+ const ids=names.map(key).filter(Boolean),unique=new Set(ids);
+ const candidates=Array.isArray(proposed)?proposed.map(skillName).filter(Boolean):skillList(proposed);
+ const newCandidates=new Set(candidates.map(key).filter(id=>id&&!unique.has(id)));
+ const informed=names.length>0,distinct=unique.size;
+ const duplicates=ids.length-distinct;
+ const maxUnverified=informed?Math.max(0,5-distinct):null;
+ const replacements=informed?Math.max(0,newCandidates.size-maxUnverified):null;
+ return Object.freeze({
+  status:!informed?'pendente':
+   (names.length>5||distinct>5||duplicates>0)?'revisar_cadastro':'informado_sem_recibo',
+  informedCount:informed?distinct:null,
+  duplicateEntries:duplicates,
+  maxUnverifiedAdditional:maxUnverified,
+  proposedNewCount:newCandidates.size,
+  minReplacementsIfAllProposed:replacements,
+  warning:'Até cinco habilidades adicionais, mas a lista informada não comprova '+
+   'vagas livres ou equipamento real; candidatas extras exigiriam substituição '+
+   'caso as habilidades cadastradas permaneçam equipadas.'
+ });
+}
 function reviewSkillCandidates(saved=[],suggested=[],native=[],equipped=[],keyFor=null){
  const previous=cleanSkills(saved);
  const token=name=>skillEvidenceKey(name,keyFor);
@@ -151,6 +177,7 @@ function screenContextualSuggestions(recommendations=[],native=[],equipped=[],
  const slot=reviewBoosterSlot(booster,boosterSlot);
  return Object.freeze({
   skills:Object.freeze(skills),excluded:Object.freeze(excluded),
+  additionalCapacity:reviewAdditionalCapacity(equipped,skills,keyFor),
   nativeInventory: nativeNames.length?'lista_cadastrada_sem_recibo':'pendente',
   equippedInventory: equippedNames.length?'lista_informada_sem_recibo':'pendente',
   boosterCandidate:slot.blocking?null:normalize(booster)||null,
@@ -238,6 +265,14 @@ function reviewDraftReadiness({train,budget,skills=[],booster='',native=[],
  const slotReview=reviewBoosterSlot(booster,boosterSlot);
  if(slotReview.blocking)issues.push(slotReview.reason);
  const advisories=[];
+ const capacity=reviewAdditionalCapacity(equipped,skills,skillKeyFor);
+ if(capacity.status==='revisar_cadastro')
+  advisories.push('Lista de habilidades adicionais cadastradas exige revisão: '+
+   'há repetição ou mais de cinco nomes informados; não inferir vagas livres.');
+ if(capacity.minReplacementsIfAllProposed>0)
+  advisories.push('Se todas as candidatas fossem equipadas junto às '+
+   'habilidades informadas, seria necessário substituir ao menos '+
+   capacity.minReplacementsIfAllProposed+' delas. É comparação consultiva.');
  if(slotReview.reason&&!slotReview.blocking)advisories.push(slotReview.reason);
  if(audit?.fixedBoosterSame)advisories.push(
   'O ímpeto candidato coincide com o fixo informado. Verifique os slots no jogo.');
@@ -248,7 +283,7 @@ function reviewDraftReadiness({train,budget,skills=[],booster='',native=[],
    issues.length?'revisar_habilidades':'pronto_para_rascunho',
   budget:budgetOk?budget:null,spent,remainingPP:spent!==null&&budgetOk?budget-spent:null,
   skillCount,issues:Object.freeze(issues),advisories:Object.freeze(advisories),
-  audit,slotReview,source:'listas_informadas_na_mesma_carta_sem_confirmacao_de_gameplay'
+  audit,slotReview,capacity,source:'listas_informadas_na_mesma_carta_sem_confirmacao_de_gameplay'
  });
 }
 function validateRecord(row,c){
@@ -331,5 +366,5 @@ function deleteDraft(store,c){
 }
 return Object.freeze({PREFIX,SCHEMA,STYLES,POSITIONS,validateContext,
  fromScenario,withStyle,withManager,withPosition,key,ppCost,validTraining,
- cleanSkills,skillName,skillToken,skillEvidenceKey,reviewSkillCandidates,screenContextualSuggestions,auditEquipmentSelection,reviewBoosterSlot,reviewDraftReadiness,readAll,read,save,deleteDraft});
+ cleanSkills,skillName,skillToken,skillEvidenceKey,reviewAdditionalCapacity,reviewSkillCandidates,screenContextualSuggestions,auditEquipmentSelection,reviewBoosterSlot,reviewDraftReadiness,readAll,read,save,deleteDraft});
 });
