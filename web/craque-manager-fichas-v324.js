@@ -105,7 +105,14 @@ function reviewSkillCandidates(saved=[],suggested=[],native=[],equipped=[],keyFo
  const selected=new Set(),rows=[];
  function append(name,wasSaved){
   const clean=skillName(name),id=token(clean);
-  if(!clean||selected.has(id))return;
+  if(!clean||(!wasSaved&&selected.has(id)))return;
+  // V345: manter TODAS as entradas históricas, mesmo se V162 agora
+  // reconhecer aliases equivalentes. A nova revisão exigirá reconciliação.
+  if(wasSaved&&selected.has(id)){
+   rows.push(Object.freeze({name:clean,saved:true,
+    conflict:'equivalência documental no histórico; revise antes de salvar'}));
+   return;
+  }
   // Não exibir novas candidatas que já sejam habilidades nativas/equipadas.
   if(!wasSaved&&(nativeSet.has(id)||equippedSet.has(id)))return;
   selected.add(id);
