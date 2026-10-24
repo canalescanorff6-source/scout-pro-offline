@@ -255,7 +255,14 @@ function create(target,model,opts={}){
   const recommendations=screened?.skills||rawRecommendations;
   const capacity=screened?.additionalCapacity||
    profiles?.reviewAdditionalCapacity?.(model.skills||'',recommendations,skillKeyFor);
-  const usableCandidate=screened?screened.boosterCandidate:candidate;
+  const sourceBoosterAlternatives=ranking?.alternatives||outcome.booster?.alternatives||[];
+  // V348: uma única triagem do mesmo ranking para painel, editor e resumo.
+  // Nomes fixos/equipados deixam de ser promovidos como NOVOS candidatos.
+  const boosterReview=profiles?.reviewBoosterRanking?.(candidate,
+   sourceBoosterAlternatives,model.fixedBooster||'',model.booster||'',
+   model.boosterSlot||'pendente');
+  const usableCandidate=boosterReview?boosterReview.primary:
+   (screened?screened.boosterCandidate:candidate);
   for(const item of recommendations)list.append(el('li','',displaySkill(item)+
    ' — '+(item.why||'prioridade contextual, sem comprovação de equipamento')));
   if(!recommendations.length)list.append(el('li','','Sem candidatos suficientes; conferir habilidades nativas e os slots reais.'));
@@ -292,15 +299,35 @@ function create(target,model,opts={}){
   skills.append(list);panel.append(skills);
   const booster=el('section','ct311-panel');booster.append(el('h3','','Ímpetos · posição '+scenario.position));
   booster.append(el('p','',screened?.boosterSlot.slot==='ausente'?
-   'SEM SLOT ADICIONAL cadastrado nesta edição: '+candidate+
+   'SEM SLOT ADICIONAL cadastrado nesta edição: '+
+    (boosterReview?.theoretical?.[0]?.name||candidate||'ranking ainda pendente')+
     ' é somente referência teórica, não candidata para esta carta.':
     usableCandidate?'Primeiro candidato: '+usableCandidate+
      ' (não equipado automaticamente)':'Candidato confiável pendente'));
-  const alts=ranking?.alternatives||outcome.booster?.alternatives||[];
+  const alts=boosterReview?
+   (boosterReview.slot.slot==='ausente'?boosterReview.theoretical:
+    boosterReview.alternatives):sourceBoosterAlternatives;
   if(alts.length)booster.append(el('p','ct311-note',
    (screened?.boosterSlot.slot==='ausente'?'Ranking teórico sem slot cadastrado: ':'Alternativas: ')+
    alts.map(x=>x.name||x.nome).join(' · ')));
-  if(ranking?.primary?.reason)booster.append(el('p','ct311-note','Motivo registrado: '+ranking.primary.reason));
+  if(boosterReview?.excluded.length){
+   const omitted=el('details','ct348-booster-evidence');
+   omitted.append(el('summary','','Ímpetos já citados ou repetidos ('+
+    boosterReview.excluded.length+')'));
+   const list=el('ul','ct311-list');
+   for(const item of boosterReview.excluded)list.append(el('li','',
+    item.name+' — '+({
+     mesmo_nome_do_fixo:'mesmo nome do ímpeto fixo informado',
+     ja_informado_como_adicional:'já consta como adicional informado',
+     repetido_no_ranking:'repetido neste ranking',
+     nome_pendente:'nome não identificado'
+    }[item.reason]||'conferência documental pendente')));
+   omitted.append(list);booster.append(omitted);
+  }
+  const primaryBoosterReason=boosterReview?.primaryInfo?.reason||
+   (!boosterReview?ranking?.primary?.reason:null);
+  if(primaryBoosterReason)booster.append(el('p','ct311-note',
+   'Motivo registrado neste cenário: '+primaryBoosterReason));
   booster.append(el('p','ct311-note','Ímpeto fixo: '+(model.fixedBooster||'não documentado')+
     ' · Slot: '+model.boosterSlot+' · Ímpeto adicional equipado: '+(model.booster||'não informado')+
     '. Ranking consultivo não comprova existência nem liberação de slot.'));
@@ -358,14 +385,16 @@ function create(target,model,opts={}){
     editor.append(candidates);
     const options=el('label','ct311-select-label','Ímpeto adicional candidato: ');
     const selectBooster=el('select','ct311-select ct324-booster');
-    // Sem slot: conservar somente o legado para permitir limpar o candidato.
+    // Histórico antigo permanece na seleção para revisão/limpeza; somente
+    // NOVOS candidatos vêm do mesmo ranking filtrado apresentado no painel.
+    const freshBoosters=boosterReview?
+     [boosterReview.primary||'',...boosterReview.alternatives.map(x=>x.name)]:
+     [recorded?.boosterRanking?.primary?.name||'',
+      outcome.booster?.primary?.nome||'',
+      ...(outcome.booster?.alternatives||[]).map(x=>x.nome)];
     const choicesBooster=[...new Set([
      savedProfile?.booster||'',
-     ...(screened?.boosterSlot.slot==='ausente'?[]:[
-      recorded?.boosterRanking?.primary?.name||'',
-      outcome.booster?.primary?.nome||'',
-      ...(outcome.booster?.alternatives||[]).map(x=>x.nome)
-     ])
+     ...(screened?.boosterSlot.slot==='ausente'?[]:freshBoosters)
     ].filter(Boolean))].slice(0,6);
     const empty=el('option','','Sem sugestão selecionada');empty.value='';
     selectBooster.append(empty);
