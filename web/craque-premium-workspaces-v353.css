@@ -43,7 +43,7 @@ body[data-page="rarity-audit"]) :is(input,textarea)::placeholder{color:#adbed2;o
 body[data-page="video-evidence"],body[data-page="player-model"],
 body[data-page="boosters"],body[data-page="tactical-review"],
 body[data-page="batch-8"],body[data-page="batch-9"],
-body[data-page="rarity-audit"]) :is(.panel,.card,.block,.notice,.metric,.status,.fact,
+body[data-page="rarity-audit"]) :is(.panel,.card,.block,.notice,.metric,.status:not([data-status]):not(.warn):not(.error),.fact:not(.warn):not(.good),
  .ct248-checker,.ct250-transfer,.scout-rotation-panel,.scout-rotation-team,
  main>section){
  background:linear-gradient(145deg,#162942,#101e34 75%)!important;
