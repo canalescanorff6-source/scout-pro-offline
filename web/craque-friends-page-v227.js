@@ -27,6 +27,15 @@ if(!locked&&bruno){
  catch(e){status('Não foi possível registrar a coleção Bruno Santos CD: '+e.message+
   '. Seus acervos existentes foram mantidos.')}
 }
+// V357: coleção independente 7$ com 3 versões exatas, sem tocar no catálogo de 246.
+const sete=window.CRAQUE_SETE_V357;
+if(!locked&&sete){
+ try{
+  const seeded=sete.seed(data,api,localStorage,budgets);
+  data=seeded.data;
+  if(seeded.inserted)status('Elenco 7$: '+seeded.inserted+' cartas exatas adicionadas com imagens e cinco fichas por tática.');
+ }catch(e){status('Acervo 7$ não foi carregado: '+e.message+'. Dados anteriores preservados.')}
+}
 // V309: todas as novas cartas próprias usam o MESMO motor de PP/5 fichas.
 const personalRequested=(()=>{
  try{return new URLSearchParams(location.search).get('colecao')==='minhas-cartas-adicionadas'}
@@ -46,6 +55,7 @@ function restoreSelection(){
  try{
   const target=new URLSearchParams(location.search).get('colecao');
   if(target==='bruno-santos-cd'&&brunoOwner())selected=brunoOwner().id;
+  if(target==='7-dollar'&&sete){const sevenOwner=data.owners.find(o=>sete.normalize(o.name)===sete.normalize(sete.NAME));if(sevenOwner)selected=sevenOwner.id;}
   if(target==='minhas-cartas-adicionadas'&&data.owners.some(x=>x.id===api.PERSONAL_OWNER_ID))
    selected=api.PERSONAL_OWNER_ID;
  }catch(_e){}
@@ -146,7 +156,7 @@ function makeCard(card){
   const details=el('details');details.append(el('summary','','Dados e observações'));
   const body=el('p','friends-card-more',extra.join('\n'));details.append(body);info.append(details);
  }
- node.append(info);return node;
+ node.append(info);if(sete)sete.renderEvidence(node,card);return node;
 }
 function renderCards(){
  const hasOwner=Boolean(getOwner());
@@ -354,5 +364,6 @@ function eraseCard(card){
  try{save(api.removeCard(data,owner.id,card.id),'Carta excluída apenas do acervo de '+owner.name+'.')}
  catch(e){status(e.message)}
 }
+if(sete)sete.renderShortcut(document);
 render();
 })();

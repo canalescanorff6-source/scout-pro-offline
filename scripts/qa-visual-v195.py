@@ -1303,11 +1303,42 @@ def run():
                 # V227: acervos de outras pessoas isolados, sem tocar as 246 cartas oficiais.
                 page.goto(URL + "/outros-elencos-v227.html", wait_until="domcontentloaded", timeout=35000)
                 page.locator("#friend-person-name").wait_for(timeout=12000)
-                # V304: coleção Bruno Santos CD criada uma única vez, com
-                # Zico 106 SA agora com nível máximo 35 e 68 PP confirmados. Não tocar nas 246 próprias.
-                if page.locator("#bruno-featured").count()!=1 or (
-                    page.locator("#friend-people .friends-person").count()!=1):
-                    problems.append(f"{name}: V304 coleção Bruno não apareceu em Outros Elencos")
+                # V357: duas coleções originais, preservando Bruno e 246 cartas.
+                page.wait_for_function("""() => {
+                  const s=localStorage.getItem('scoutpro:v227:friends-collections');
+                  if(!s)return false;
+                  const d=JSON.parse(s);
+                  const owner=d.owners.find(o=>o.name==='7$');
+                  return d.owners.some(o=>o.name==='Bruno Santos CD') &&
+                    owner && d.cards.filter(c=>c.ownerId===owner.id).length===3;
+                }""",timeout=12000)
+                if (page.locator("#bruno-featured").count()!=1 or
+                    page.locator("#ct7-featured").count()!=1 or
+                    page.locator("#friend-people .friends-person").count()!=2):
+                    problems.append(f"{name}: V357 Bruno/7$ não aparecem como coleções separadas")
+                seven=page.evaluate("""() => {
+                  const d=JSON.parse(localStorage.getItem('scoutpro:v227:friends-collections'));
+                  const owner=d.owners.find(o=>o.name==='7$');
+                  const cards=d.cards.filter(c=>c.ownerId===owner?.id);
+                  return {
+                    ids:cards.map(c=>c.cardId).sort(),
+                    levels:cards.map(c=>c.level).sort(),
+                    pp:cards.map(c=>c.pp).sort(),
+                    images:cards.every(c=>c.image?.startsWith('data:image/webp;base64,')),
+                    profiles:cards.every(c=>Object.keys(c.analysis?.profiles||{}).length===5)
+                  };
+                }""")
+                if (seven['ids']!=sorted(['89137214427270','88041460993477','89138556700485']) or
+                    seven['levels']!=[32,33,33] or seven['pp']!=[62,64,64] or
+                    not seven['images'] or not seven['profiles']):
+                    problems.append(f"{name}: V357 identidade, progresso ou fotos não verificados: {seven}")
+                page.locator("#ct7-featured button").click()
+                if page.locator("#friend-cards .friends-card").count()!=3:
+                    problems.append(f"{name}: V357 não mostrou as três cartas do 7$")
+                if not page.locator('#friend-cards .friends-card img').first.evaluate(
+                    '(e)=>e.complete && e.naturalWidth>0'):
+                    problems.append(f"{name}: V357 a imagem não carregou na coleção 7$")
+                page.locator("#bruno-open-collection").click()
                 page.locator("#bruno-open-collection").click()
                 page.locator("#friend-cards .friends-card").first.wait_for(timeout=15000)
                 # V305: acesso visível e exclusivo por carta às cinco fichas do app.
@@ -1344,11 +1375,11 @@ def run():
                     teams:coll.owners.length,cards:coll.cards.length}
                 }""")
                 if recorded!={'id':'','pp':68,'level':35,'position':'SA',
-                    'image':True,'teams':1,'cards':1}:
+                    'image':True,'teams':2,'cards':4}:
                     problems.append(f"{name}: V310 falhou ao guardar nível/PP confirmados do Zico: {recorded}")
                 page.reload(wait_until="domcontentloaded")
-                if page.locator("#friend-people .friends-person").count()!=1:
-                    problems.append(f"{name}: V304 duplicou Bruno ao recarregar")
+                if page.locator("#friend-people .friends-person").count()!=2:
+                    problems.append(f"{name}: V357 duplicou ou perdeu Bruno/7$ ao recarregar")
                 page.locator("#friend-person-name").fill("Acervo da Ana")
                 page.locator("#friend-person-form button[type=submit]").click()
                 page.locator("#friend-new-card").click()
@@ -1443,8 +1474,8 @@ def run():
                     page.locator("#scout-backup-modal").wait_for(state='visible',timeout=12000)
                     page.locator("#scout-close").click()
                 page.reload(wait_until="domcontentloaded")
-                if page.locator("#friend-people .friends-person").count()!=3:
-                    problems.append(f"{name}: V227/V304 coleções desapareceram após recarregar")
+                if page.locator("#friend-people .friends-person").count()!=4:
+                    problems.append(f"{name}: V227/V304/V357 coleções desapareceram após recarregar")
                 stored_guests=page.evaluate("""() => {
                   const v=JSON.parse(localStorage.getItem('scoutpro:v227:friends-collections')||'null');
                   return {owners:v?.owners?.length||0,cards:v?.cards?.length||0,
@@ -1452,7 +1483,7 @@ def run():
                    horizontalOverflow:document.documentElement.scrollWidth-innerWidth}
                 }""")
                 result['friends_v227']=stored_guests
-                if stored_guests['owners']!=3 or stored_guests['cards']!=3 or stored_guests['horizontalOverflow']>8:
+                if stored_guests['owners']!=4 or stored_guests['cards']!=6 or stored_guests['horizontalOverflow']>8:
                     problems.append(f"{name}: V227 isolamento/persistência/layout falhou {stored_guests}")
                 page.screenshot(path=str(OUT / f"{name}_friends_v227.png"),full_page=False,animations="disabled")
                 if errors:
