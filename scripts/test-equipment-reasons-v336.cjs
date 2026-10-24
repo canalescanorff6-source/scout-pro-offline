@@ -53,9 +53,11 @@ const ui=read('web/craque-positional-ui-v311.js');
 const css=read('web/craque-positional-v311.css');
 assert(ui.includes("el('details','ct336-equipment-evidence')"));
 assert(ui.includes("Por que estas habilidades e ímpeto?"));
-assert(ui.includes("recorded?.boosterRanking||outcome.booster||null"),
- 'Explicação do ímpeto deve vir do cenário atual ou revisão vigente');
-assert(ui.includes('guide.explainEquipment(equipment,recommendations,rankingForWhy)'));
+assert(ui.includes("(recorded?.boosterRanking||outcome.booster||null)"),
+ 'Ranking original continua como fallback quando não há filtro documental');
+assert(ui.includes('primary:boosterReview.primaryInfo'),
+ 'Nova justificativa tem origem no candidato filtrado da edição e da função');
+assert(ui.includes('guide.explainEquipment(equipment,recommendations,rankingForWhy,skillKeyFor)'));
 assert(!ui.includes("explanation.open=true"),'Justificativas iniciam recolhidas');
 assert(css.includes('ct336-equipment-evidence>summary:focus-visible'));
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),original);
