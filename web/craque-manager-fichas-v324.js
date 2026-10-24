@@ -188,6 +188,42 @@ function screenContextualSuggestions(recommendations=[],native=[],equipped=[],
    'independente na edição exata e no jogo; nenhuma habilidade é equipada.'
  });
 }
+// V348: só a evidência cadastrada da EDIÇÃO filtra novos ímpetos.
+// Não atribuir equivalência sem fonte: comparar grafia/acento normalizados.
+// Duplicar o nome do fixo NÃO prova incompatibilidade no jogo; sinaliza
+// sobreposição documental, mantendo o histórico anterior intocado.
+function reviewBoosterRanking(primary=null,alternatives=[],fixed='',equipped='',boosterSlot='pendente'){
+ const fixedKey=skillToken(fixed),equippedKey=skillToken(equipped);
+ const raw=[primary,...(Array.isArray(alternatives)?alternatives.slice(0,15):[])];
+ const seen=new Set(),fresh=[],excluded=[];
+ for(const item of raw){
+  const name=normalize(typeof item==='string'?item:(item?.name||item?.nome||''));
+  const reason=normalize(typeof item==='object'&&item!==null?
+   (item.reason||item.motivo||''):'');
+  const id=skillToken(name);
+  if(!id){if(item!==null&&item!==undefined)excluded.push(Object.freeze({
+   name:name||'',reason:'nome_pendente'}));continue}
+  const why=seen.has(id)?'repetido_no_ranking':
+   fixedKey&&id===fixedKey?'mesmo_nome_do_fixo':
+   equippedKey&&id===equippedKey?'ja_informado_como_adicional':null;
+  seen.add(id);
+  if(why)excluded.push(Object.freeze({name,reason:why}));
+  else fresh.push(Object.freeze({name,reason}));
+ }
+ const slot=reviewBoosterSlot(fresh[0]?.name||'',boosterSlot);
+ const absent=slot.slot==='ausente';
+ return Object.freeze({
+  primary:absent?null:fresh[0]?.name||null,
+  primaryInfo:absent?null:fresh[0]||null,
+  alternatives:Object.freeze(absent?[]:fresh.slice(1,6)),
+  theoretical:Object.freeze(absent?fresh.slice(0,6):[]),
+  excluded:Object.freeze(excluded),
+  slot,source:'ranking_consultivo_da_mesma_edicao_e_funcao',
+  warning:'Nomes iguais aos ímpetos fixos ou adicionais informados não são '+
+   'apresentados como NOVAS recomendações. Isso não prova proibição de '+
+   'ímpetos iguais, ativação, existência ou liberdade de slot no jogo.'
+ });
+}
 // V340: auditoria documental da MESMA carta; não valida equipamento real.
 // O histórico imutável nunca é alterado ou apagado por esta função.
 function auditEquipmentSelection(skills=[],booster='',native=[],equipped=[],fixedBooster='',boosterSlot='pendente',keyFor=null){
@@ -366,5 +402,5 @@ function deleteDraft(store,c){
 }
 return Object.freeze({PREFIX,SCHEMA,STYLES,POSITIONS,validateContext,
  fromScenario,withStyle,withManager,withPosition,key,ppCost,validTraining,
- cleanSkills,skillName,skillToken,skillEvidenceKey,reviewAdditionalCapacity,reviewSkillCandidates,screenContextualSuggestions,auditEquipmentSelection,reviewBoosterSlot,reviewDraftReadiness,readAll,read,save,deleteDraft});
+ cleanSkills,skillName,skillToken,skillEvidenceKey,reviewAdditionalCapacity,reviewSkillCandidates,screenContextualSuggestions,reviewBoosterRanking,auditEquipmentSelection,reviewBoosterSlot,reviewDraftReadiness,readAll,read,save,deleteDraft});
 });
