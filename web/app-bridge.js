@@ -774,6 +774,12 @@ if(inCard){
 const ct234Theme=document.createElement('link');ct234Theme.rel='stylesheet';
 ct234Theme.href=v189Root+'craque-visual-system-v234.css';
 document.head.appendChild(ct234Theme);
+ // V352: tema já disponível no HTML sem piscada na tela interna.
+ // Reposicionar a MESMA folha depois da V234 garante que os estilos
+ // internos prevaleçam sem duplicar downloads nem ocultar ferramentas.
+ const ct352Final=document.querySelector('link[data-ct352-final="true"]');
+ if(ct352Final&&['friends','team'].includes(document.body.dataset.page))
+  document.head.appendChild(ct352Final);
 const ct234MotionCss=document.createElement('link');ct234MotionCss.rel='stylesheet';
 ct234MotionCss.href=v189Root+'craque-card-effects-v234.css';
 document.head.appendChild(ct234MotionCss);
