@@ -44,8 +44,8 @@ with sync_playwright() as pw:
     'stale':'motivo_pendente','fresh':'Complemento por função','blocked':1
    },res
    page.locator('#friend-new-card').click()
-    # V360: abrir os campos avançados como o usuário antes de validar/salvar.
-    page.locator('details.friend-card-advanced > summary').click()
+   # V360: abrir os campos avançados como o usuário antes de validar/salvar.
+   page.locator('details.friend-card-advanced > summary').click()
    page.locator('#friend-card-name').fill('V350 razões por habilidade')
    page.locator('#friend-card-edition').fill('Edição de teste V350')
    page.locator('#friend-card-gameid').fill('105297')
