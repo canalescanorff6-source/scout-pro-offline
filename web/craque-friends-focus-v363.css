@@ -1,0 +1,80 @@
+/* V363 · Priorizar as cartas da coleção selecionada no Android.
+   Somente apresentação/filtro: mantém armazenamento, PP, fichas, imagens e ações. */
+body.ct362-design[data-page="friends"] .ct363-readiness{
+ display:grid;gap:7px;margin:7px 0 9px;padding:9px;
+ background:#0e1928;border:1px solid #526a86;border-radius:12px;
+}
+body.ct362-design[data-page="friends"] .ct363-readiness-actions{
+ display:grid;grid-template-columns:.9fr 1.5fr 1.05fr;gap:5px;
+}
+body.ct362-design[data-page="friends"] .ct363-readiness-actions button{
+ display:flex;justify-content:center;align-items:center;min-width:0;min-height:41px;
+ padding:8px 5px;border-radius:8px;border:1px solid #556d88;
+ background:#1c2b3f;color:#d6e2ef;font-weight:800;font-size:11px;
+ line-height:1.2;text-align:center;cursor:pointer;
+}
+body.ct362-design[data-page="friends"] .ct363-readiness-actions button[aria-pressed="true"]{
+ background:#f1c775!important;color:#142034!important;
+ border-color:#ffe0a2!important;font-weight:950;
+}
+body.ct362-design[data-page="friends"] #ct363-filter-count{
+ color:#b7cce0;font-size:11px;font-weight:700;
+}
+body.ct362-design[data-page="friends"] .ct363-method{
+ padding:5px 0;color:#cbd8e7;
+}
+body.ct362-design[data-page="friends"] .ct363-method>summary{
+ display:list-item;cursor:pointer;padding:5px 0;color:#f3cf88;
+ font-size:11px;font-weight:800;
+}
+body.ct362-design[data-page="friends"] .ct363-method>p{margin:7px 0 0;line-height:1.55}
+body.ct362-design[data-page="friends"] .friends-fichas-bar{gap:7px!important}
+body.ct362-design[data-page="friends"] .friends-fichas-bar h3{margin:2px 0!important}
+body.ct362-design[data-page="friends"] .friends-main .friends-section-heading{align-items:center}
+body.ct362-design[data-page="friends"] #friend-current-name{
+ color:#fff4d9;font-size:clamp(19px,5vw,24px);
+}
+body.ct362-design[data-page="friends"] .friends-card[data-ready="true"]{
+ border-left:3px solid #7da8a5!important;
+}
+body.ct362-design[data-page="friends"] .friends-card[data-ready="false"]{
+ border-left:3px solid #e3bc75!important;
+}
+@media(max-width:780px){
+ body.ct362-design[data-page="friends"] .friends-layout{
+  display:flex!important;flex-direction:column!important;gap:10px!important;
+ }
+ body.ct362-design[data-page="friends"] .friends-layout>.friends-hero{order:0}
+ body.ct362-design[data-page="friends"] .friends-layout>.friends-jump{
+  order:1;position:sticky!important;top:4px;z-index:25;
+  background:#101c2d!important;box-shadow:0 7px 18px #0008!important;
+ }
+ body.ct362-design[data-page="friends"] .friends-layout>.friends-columns{
+  order:2;display:grid;grid-template-columns:minmax(0,1fr);
+  gap:10px;min-width:0;width:100%;
+ }
+ body.ct362-design[data-page="friends"] .friends-columns>.friends-main{order:0}
+ body.ct362-design[data-page="friends"] .friends-columns>.friends-people{order:1}
+ body.ct362-design[data-page="friends"] .friends-layout>.friends-featured-owner{order:3}
+ body.ct362-design[data-page="friends"] .friends-layout>.friends-bottom{order:4}
+ body.ct362-design[data-page="friends"] .friends-layout>#friend-feedback{order:5}
+ body.ct362-design[data-page="friends"] .friends-hero{margin:0!important}
+ body.ct362-design[data-page="friends"] .friends-featured-owner{margin:0!important}
+ body.ct362-design[data-page="friends"] .friends-main{min-height:0!important}
+ body.ct362-design[data-page="friends"] .friends-people{scroll-margin-top:100px}
+ body.ct362-design[data-page="friends"] #friend-selected{scroll-margin-top:110px}
+ body.ct362-design[data-page="friends"] .friends-fichas-bar{padding:8px!important}
+ body.ct362-design[data-page="friends"] .friends-toolbar{margin:9px 0!important;gap:7px!important}
+ body.ct362-design[data-page="friends"] #friend-new-card{min-height:42px}
+}
+@media(max-width:390px){
+ body.ct362-design[data-page="friends"] .ct363-readiness{padding:7px}
+ body.ct362-design[data-page="friends"] .ct363-readiness-actions{gap:4px}
+ body.ct362-design[data-page="friends"] .ct363-readiness-actions button{
+  font-size:10px;min-height:42px;padding:5px 3px;
+ }
+ body.ct362-design[data-page="friends"] .friends-layout>.friends-jump{
+  flex-direction:column!important;align-items:stretch!important;
+ }
+ body.ct362-design[data-page="friends"] .friends-jump a{min-height:38px!important}
+}

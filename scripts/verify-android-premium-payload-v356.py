@@ -24,6 +24,9 @@ CRITICAL = (
     "craque-visual-rebuild-v361.css",
     "craque-app-shell-v362.js",
     "craque-app-shell-v362.css",
+    "outros-elencos-v227.html",
+    "craque-friends-page-v227.js",
+    "craque-friends-focus-v363.css",
     "craque-design-v230.css",
     "craque-experience-v232.css",
     "craque-visual-system-v234.css",
@@ -53,6 +56,20 @@ REQUIRED_MARKERS = {
         "DOMContentLoaded",
         "scout-build-info.json",
         "ct356-boot-proof",
+    ),
+    "outros-elencos-v227.html": (
+        'id="ct363-readiness"',
+        'data-ct363-friends="true"',
+        'id="ct363-filter-count"',
+    ),
+    "craque-friends-page-v227.js": (
+        "ct363Readiness='all'",
+        "ct363Readiness==='ready'",
+        "ct363Readiness==='pending'",
+    ),
+    "craque-friends-focus-v363.css": (
+        'friends-columns>.friends-main',
+        'ct363-readiness',
     ),
     "craque-app-shell-v362.js": (
         'ct362-design-proof',

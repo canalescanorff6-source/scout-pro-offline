@@ -9,6 +9,7 @@ on:
       - 'scripts/qa-visual-v195.py'
       - 'scripts/qa-visual-rebuild-v361.py'
       - 'scripts/qa-app-shell-v362.py'
+      - 'scripts/qa-friends-focus-v363.py'
       - 'scripts/qa-managers-v307.py'
       - 'scripts/qa-pp-v309.py'
       - 'scripts/qa-position-v311.py'
@@ -73,6 +74,7 @@ jobs:
           done
           # V315: testar primeiro o caso novo; falhar claramente em bloqueios de navegação.
           # Mantém todos os QA anteriores, sem afrouxar assertivas.
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-friends-focus-v363.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-app-shell-v362.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-visual-rebuild-v361.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-lineup-focus-v330.py

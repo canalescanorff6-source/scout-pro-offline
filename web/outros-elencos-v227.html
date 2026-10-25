@@ -37,6 +37,7 @@
 <script defer src="craque-friends-page-v227.js"></script>
 <script defer src="pwa.js"></script>
 <link rel="stylesheet" href="craque-app-shell-v362.css" data-ct362-design="true"/>
+<link rel="stylesheet" href="craque-friends-focus-v363.css" data-ct363-friends="true"/>
 </head>
 <body data-page="friends">
 <header class="friends-head">
@@ -93,9 +94,17 @@
      <label for="friend-search">Buscar neste acervo<input id="friend-search" type="search" placeholder="Nome, edição, posição, Card ID…" autocomplete="off"/></label>
      <label for="friend-position">Posição<select id="friend-position"><option value="">Todas as posições</option><option>CA</option><option>SA</option><option>MAT</option><option>MLG</option><option>VOL</option><option>ZC</option><option>LD</option><option>LE</option><option>GO</option><option>PD</option><option>PE</option><option>Outra</option></select></label>
     </div>
+    <div id="ct363-readiness" class="ct363-readiness" role="group" aria-label="Filtrar cartas por dados disponíveis">
+     <div class="ct363-readiness-actions">
+      <button type="button" data-filter="all" aria-pressed="true">Todas</button>
+      <button type="button" data-filter="ready" aria-pressed="false">Com PP e posição</button>
+      <button type="button" data-filter="pending" aria-pressed="false">Pendentes</button>
+     </div>
+     <output id="ct363-filter-count" aria-live="polite">Carregando cartas...</output>
+    </div>
     <div class="friends-fichas-bar">
      <div><span class="friends-eyebrow">FICHAS GERADAS PELO CRAQUE TÁTICO</span>
-       <h3>Cartas e análises</h3><p>Cadastre também suas novas cartas em <strong>Minhas Cartas Adicionadas</strong>: cada carta com nível máximo e posição conhecidos já gera as cinco fichas. Abra <strong>Ver ficha do app</strong> em cada carta para comparar as cinco táticas, habilidades e ímpetos. Com nível máximo confirmado, os PP são calculados automaticamente; Card ID continua como verificação separada.</p></div>
+       <h3>Cartas e análises</h3><details class="ct363-method"><summary>Como funcionam as cinco fichas e os PP</summary><p>Cadastre também suas novas cartas em <strong>Minhas Cartas Adicionadas</strong>: cada carta com nível máximo e posição conhecidos já gera as cinco fichas. Abra <strong>Ver ficha do app</strong> em cada carta para comparar as cinco táticas, habilidades e ímpetos. Com nível máximo confirmado, os PP são calculados automaticamente; Card ID continua como verificação separada.</p></details></div>
      <div id="friend-fichas-count" class="friends-fichas-count" aria-live="polite">0 fichas com PP</div>
     </div>
     <div id="friend-cards" class="friends-card-grid" aria-live="polite"></div>
