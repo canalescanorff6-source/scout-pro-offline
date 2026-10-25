@@ -20,6 +20,8 @@ CRITICAL = (
     "craque-ui-bootstrap-v351.js",
     "scout-ui-v189.js",
     "scout-ui-v189.css",
+    "craque-visual-rebuild-v361.js",
+    "craque-visual-rebuild-v361.css",
     "craque-design-v230.css",
     "craque-experience-v232.css",
     "craque-visual-system-v234.css",
@@ -34,15 +36,28 @@ REQUIRED_MARKERS = {
         'data-ct356-core="v234"',
         'id="ct356-static-shell"',
         'id="ct356-boot-proof"',
+        'data-ct361-final="true"',
     ),
     "app-bridge.js": (
         'script[data-ct356-entry="premium-home"]',
         'link[data-ct356-core="v234"]',
+        'craque-visual-rebuild-v361.css',
+        'craque-visual-rebuild-v361.js',
     ),
     "craque-ui-bootstrap-v351.js": (
         "DOMContentLoaded",
         "scout-build-info.json",
         "ct356-boot-proof",
+    ),
+    "craque-visual-rebuild-v361.js": (
+        'ct361-player-glance',
+        'ct361-glance-stats',
+        'options.insertBefore(update,options.firstChild)',
+    ),
+    "craque-visual-rebuild-v361.css": (
+        '.ct361-player-glance',
+        'ct361-detail-ready',
+        'ct361-dock-ready',
     ),
     "scout-ui-v189.js": (
         "ct356-static-shell",
