@@ -881,6 +881,12 @@ document.head.appendChild(ct360Final);
 if(inCard){const focus360=document.createElement('script');
  focus360.src=v189Root+'craque-detail-focus-v360.js';focus360.defer=true;
  document.head.appendChild(focus360);}
+// V361: novo layout real, última folha na cascata e cockpit original da carta.
+const ct361Final=document.querySelector('link[data-ct361-final="true"]')||document.createElement('link');
+ct361Final.rel='stylesheet';ct361Final.href=v189Root+'craque-visual-rebuild-v361.css';
+document.head.appendChild(ct361Final);
+const ct361Ui=document.createElement('script');ct361Ui.src=v189Root+'craque-visual-rebuild-v361.js';
+ct361Ui.defer=true;document.head.appendChild(ct361Ui);
 window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
