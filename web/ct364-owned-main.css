@@ -112,3 +112,20 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
  }
 }
 @media(prefers-reduced-motion:reduce){.ct364-player-card{transition:none}}
+
+/* V364.1 — corrigir a primeira dobra de 320px sem esconder filtros nem cartas.
+   O título Biblioteca já descreve a área; repetição do subtítulo e da
+   sobrancelha empurrava a primeira carta original para baixo do dock.
+   Mantém summary das 15 adições com alvo de toque de 39px e cards originais. */
+@media(max-width:355px){
+ body[data-page="catalog"].ct362-design #catalogo > .section-top .section-desc,
+ body[data-page="catalog"].ct362-design #catalogo > .section-top .eyebrow{
+  display:none!important;
+ }
+ body[data-page="catalog"].ct362-design #catalogo > .section-top{
+  gap:0!important;margin-bottom:1px!important;
+ }
+ body[data-page="catalog"].ct362-design #catalogo > .section-top .section-title{
+  line-height:1.12!important;
+ }
+}
