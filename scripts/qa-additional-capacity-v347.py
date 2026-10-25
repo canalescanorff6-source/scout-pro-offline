@@ -27,6 +27,8 @@ with sync_playwright() as pw:
    }""")
    assert state=={'missing':None,'count':5,'remaining':0,'swap':1},state
    page.locator('#friend-new-card').click()
+    # V360: abrir os campos avançados como o usuário antes de validar/salvar.
+    page.locator('details.friend-card-advanced > summary').click()
    page.locator('#friend-card-name').fill('V347 ocupação das adicionais')
    page.locator('#friend-card-edition').fill('Edição de teste V347')
    page.locator('#friend-card-gameid').fill('105297')
