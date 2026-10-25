@@ -5,6 +5,8 @@ const budgets=window.CRAQUE_FRIEND_TRAINING_V228;
 const $=id=>document.getElementById(id);
 if(!api||!$('friend-people'))return;
 let data,locked=false,selected=null,cardImage='',imageModified=false;
+// V363: filtro de prontidão é APENAS visual, nunca altera uma carta ou PP.
+let ct363Readiness='all';
 const status=(value)=>{$('friend-feedback').textContent=String(value||'');};
 const el=(tag,className,text)=>{
  const node=document.createElement(tag);
@@ -66,6 +68,7 @@ restoreSelection();
 function selectOwner(id){
  if(!data.owners.some(x=>x.id===id))return;
  selected=id;
+ ct363Readiness='all';
  try{sessionStorage.setItem('craque:v227:selected-owner',id)}catch(_e){}
  $('friend-search').value='';$('friend-position').value='';
  render();
@@ -173,7 +176,7 @@ function renderCards(){
  const hasOwner=Boolean(getOwner());
  $('friend-no-selection').hidden=hasOwner;
  $('friend-selected').hidden=!hasOwner;
- if(!hasOwner)return;
+ if(!hasOwner){const counter=$('ct363-filter-count');if(counter)counter.textContent='Escolha uma coleção para consultar as cartas.';return;}
  const owner=getOwner(),current=personCards(owner.id);
  $('friend-current-name').textContent=owner.name;
  $('friend-current-meta').textContent=current.length+' carta'+(current.length===1?'':'s')+' cadastrada'+(current.length===1?'':'s')+' · coleção independente';
@@ -183,8 +186,16 @@ function renderCards(){
  const position=$('friend-position').value;
  const shown=current.filter(card=>{
   const text=[card.name,card.cardId,card.edition,card.style,card.rarity].join(' ').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-  return (!search||text.includes(search))&&(!position||card.position===position);
+  const progress=budgets.resolveBudget(card);
+  const ready=Number.isInteger(progress.pp)&&progress.pp>=0&&Boolean(card.position);
+  return (!search||text.includes(search))&&(!position||card.position===position)&&
+    (ct363Readiness==='all'||(ct363Readiness==='ready'&&ready)||(ct363Readiness==='pending'&&!ready));
  }).sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+ const counter=$('ct363-filter-count');
+ if(counter)counter.textContent=shown.length+' de '+current.length+' carta'+(current.length===1?'':'s')+' exibida'+(shown.length===1?'':'s');
+ const selector=$('ct363-readiness');
+ if(selector)for(const btn of selector.querySelectorAll('button[data-filter]'))
+  btn.setAttribute('aria-pressed',String(btn.dataset.filter===ct363Readiness));
  const area=$('friend-cards');area.replaceChildren(...shown.map(makeCard));
  $('friend-cards-empty').hidden=shown.length>0;
  $('friend-cards-empty').textContent=current.length?'Nenhuma carta encontrada neste filtro.':'Ainda não há cartas nesta coleção. Toque em “Nova carta” para cadastrar a primeira.';
@@ -212,6 +223,14 @@ if(quick)quick.addEventListener('change',()=>{
 });
 $('friend-search').addEventListener('input',renderCards);
 $('friend-position').addEventListener('change',renderCards);
+const ct363Filters=$('ct363-readiness');
+if(ct363Filters)ct363Filters.addEventListener('click',event=>{
+ const btn=event.target.closest?.('button[data-filter]');
+ if(!btn||!ct363Filters.contains(btn))return;
+ const next=btn.dataset.filter;
+ if(!['all','ready','pending'].includes(next)||next===ct363Readiness)return;
+ ct363Readiness=next;renderCards();
+});
 $('friend-new-card').onclick=()=>openCard();
 $('friend-rename').onclick=()=>{
  const owner=getOwner();if(!owner)return;
