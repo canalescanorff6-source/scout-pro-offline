@@ -13,8 +13,8 @@ with sync_playwright() as pw:
    page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(URL+'/outros-elencos-v227.html?colecao=minhas-cartas-adicionadas',wait_until='domcontentloaded')
    page.locator('#friend-new-card').click()
-    # V360: abrir os campos avançados como o usuário antes de validar/salvar.
-    page.locator('details.friend-card-advanced > summary').click()
+   # V360: abrir os campos avançados como o usuário antes de validar/salvar.
+   page.locator('details.friend-card-advanced > summary').click()
    page.locator('#friend-card-name').fill('V343 Sem Slot')
    page.locator('#friend-card-edition').fill('Edição de ensaio V343')
    page.locator('#friend-card-gameid').fill('105297')
