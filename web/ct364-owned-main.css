@@ -1,10 +1,18 @@
 /* V364: 15 cartas DO ACERVO PRINCIPAL, com artes reais e análises por função.
    Mantém intactas 246 .player-card e separação física de Outros Elencos. */
 body[data-page="catalog"].ct362-design .ct364-owned-section{
- display:grid;gap:11px;margin:12px 0 18px;
+ display:block;margin:8px 0 12px;
  background:#0e192b;border:1px solid #5d7291;border-left:3px solid #e9c47b;
- border-radius:14px;padding:13px;color:#f6f0e5;
+ border-radius:14px;padding:0;color:#f6f0e5;
 }
+.ct364-owned-toggle{
+ display:list-item;list-style-position:inside;padding:11px 13px;
+ color:#f8d390;font-size:12px;font-weight:900;cursor:pointer;
+ min-height:42px;line-height:1.4;
+}
+.ct364-owned-toggle::marker{color:#e8c47d}
+.ct364-owned-inner{display:grid;gap:11px;padding:0 13px 13px}
+.ct364-owned-section:not([open]) .ct364-owned-inner{display:none!important}
 body[data-page="catalog"].ct362-design .ct364-owned-section[hidden]{display:none!important}
 .ct364-owned-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .ct364-owned-head h3{font-size:clamp(17px,4vw,23px);color:#f4d18d;margin:3px 0}
@@ -74,7 +82,9 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
  border:0;border-radius:9px;min-height:44px;font-weight:900;padding:9px 15px}
 .ct364-feedback{color:#f1c880;margin:0;min-height:20px;font-size:11px}
 @media(max-width:720px){
- body[data-page="catalog"].ct362-design .ct364-owned-section{margin:8px 0 10px;padding:10px;gap:8px}
+ body[data-page="catalog"].ct362-design .ct364-owned-section{margin:8px 0 10px;padding:0;gap:0}
+ .ct364-owned-toggle{padding:9px;font-size:11px;min-height:39px}
+ .ct364-owned-inner{padding:0 9px 10px;gap:7px}
  .ct364-owned-head{align-items:flex-start}
  .ct364-owned-head p{font-size:10px}
  .ct364-owned-count{font-size:9px;padding:5px;max-width:85px;white-space:normal;text-align:center}
