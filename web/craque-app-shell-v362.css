@@ -654,3 +654,13 @@ body.ct362-design[data-page="detail"] :is(.ct-manager-v329-favorite,.ct-manager-
   padding:10px!important
  }
 }
+
+/* IDs de diálogo têm seletores históricos com especificidade alta (V352).
+   Superar a cascata explicitamente, sem depender da ordem de carregamento. */
+body.ct362-design[data-page="friends"] dialog#friend-card-dialog.friends-dialog,
+body.ct362-design[data-page="friends"] dialog#friend-analysis-dialog.friends-dialog{
+ background:#131e2e!important;background-image:none!important;
+ background-color:#131e2e!important;color:#f6f2e8!important;
+ border:1px solid #60748f!important;border-radius:14px!important;
+ box-shadow:0 20px 48px #000a!important
+}
