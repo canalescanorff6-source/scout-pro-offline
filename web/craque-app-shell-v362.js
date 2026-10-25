@@ -97,6 +97,7 @@ function catalog(){
  tiles.querySelectorAll('.scout-v189-tile .scout-v189-mark').forEach((mark,i)=>{mark.textContent=String(i+1).padStart(2,'0')});
  const section=d.querySelector('#catalogo .section-title');
  if(section)section.textContent='Biblioteca de jogadores';
+ const existing=d.getElementById('ct361-home-mark');if(existing)existing.textContent='CENTRAL · V362';
  d.body.dataset.ct362Catalog='true';
 }
 function detail(){
@@ -131,6 +132,7 @@ function friends(){
    // O seletor tem prioridade visual; a coleção especial continua disponível logo abaixo.
    featured.parentNode.insertBefore(jump,featured);
  }
+ const existing=d.getElementById('ct361-friends-mark');if(existing)existing.textContent='ACERVOS INDEPENDENTES · V362';
  d.body.dataset.ct362Friends='true';
 }
 function generic(){
