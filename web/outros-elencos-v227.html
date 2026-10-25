@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="craque-positional-v311.css"/><link rel="stylesheet" href="craque-formation-context-v314.css"/>
 <link rel="stylesheet" href="craque-managers-v306.css"/>
 <link rel="stylesheet" href="craque-premium-interiors-v352.css" data-ct352-final="true"/>
+<link rel="stylesheet" href="craque-ux-lite-v360.css" data-ct360-final="true"/>
 <script defer src="scout-config.js"></script>
 <script defer src="app-bridge.js"></script>
 <script defer src="scout-multitactic-engine-v220.js"></script>
@@ -58,10 +59,14 @@
    <span class="friends-eyebrow">COLEÇÃO ESPECIAL · OUTROS ELENCOS</span>
    <h2 id="bruno-title">Bruno Santos CD</h2>
    <p><strong id="bruno-featured-count">1 carta</strong> catalogada inicialmente: <strong>Zico · SA · 106 exibido no print</strong>.</p>
-   <p>Álbum independente preparado para adicionar todas as próximas cartas do Bruno. Edição exata, Card ID, nível, PP e habilidades são confirmados individualmente; a imagem 108 MAT não foi confundida com esta carta.</p>
+   <details><summary>Informações da coleção</summary><p>Álbum independente preparado para adicionar todas as próximas cartas do Bruno. Edição exata, Card ID, nível, PP e habilidades são confirmados individualmente; a imagem 108 MAT não foi confundida com esta carta.</p></details>
    <button type="button" id="bruno-open-collection" class="friends-primary">Ver cartas do Bruno Santos CD →</button>
   </div>
  </section>
+ <nav class="friends-jump" aria-label="Trocar rapidamente de coleção">
+  <label for="friend-owner-jump">Coleção ativa<select id="friend-owner-jump" aria-label="Escolher coleção"><option value="">Carregando coleções…</option></select></label>
+  <a href="#friend-people">Gerenciar pessoas</a>
+ </nav>
  <div class="friends-columns">
   <aside class="friends-panel friends-people">
    <div class="friends-section-heading"><div><span class="friends-eyebrow">01 · PESSOAS</span><h2>Acervos cadastrados</h2></div><span class="friends-count" id="friend-person-count">0</span></div>
@@ -129,6 +134,7 @@
    <label>Nível MÁXIMO da carta<input id="friend-card-level" type="number" min="1" max="120" placeholder="Ex.: 35 para Zico"/><small>Use o nível máximo, não o nível atual nem o Overall.</small></label>
    <label>PP manuais (opcional)<input id="friend-card-pp" type="number" min="0" max="300" placeholder="Automático pelo nível"/><small>Deixe em branco para calcular. Divergências não serão sobrescritas.</small></label>
    <p id="friend-budget-preview" class="friends-wide friend-budget-preview" aria-live="polite">Informe o nível máximo da carta para calcular automaticamente os PP.</p>
+   <details class="friend-card-advanced friends-wide"><summary>Mais detalhes · habilidades, ímpetos e treino atual</summary><div class="friends-form-grid">
    <label class="friends-wide">Habilidades adicionais (se informadas)<textarea id="friend-card-skills" maxlength="600" rows="2" placeholder="Não presumir habilidades não conferidas"></textarea></label>
    <label class="friends-wide">Ímpetos / boosters (se confirmados)<textarea id="friend-card-booster" maxlength="200" rows="2"></textarea></label>
    <label class="friends-wide">Habilidades nativas da carta (se confirmadas; separar por ponto e vírgula)<textarea id="friend-card-native" maxlength="1200" rows="3" placeholder="Ex.: Passe de primeira; Passe em profundidade. Não confundir com adicionais."></textarea></label>
@@ -137,6 +143,7 @@
    <label class="friends-wide">Treino atual da carta (opcional, 10 grupos)<input id="friend-card-training-levels" maxlength="150" placeholder="Ex.: 7, 5, 9, 8, 6, 0, 0, 0, 0, 0"/><small>Ordem: Chute, Passe, Drible, Destreza, Pernas, Jogo aéreo, Defesa, GO1, GO2, GO3. O custo precisa fechar exatamente os PP.</small></label>
    <div class="friends-wide friends-auto-note">Após salvar, o Craque Tático calcula automaticamente <strong>cinco fichas de treino</strong> e propõe até cinco habilidades adicionais e um ímpeto por tática. Todas as recomendações são hipóteses; dados não documentados continuam pendentes e não viram atributos inventados.</div>
    <label class="friends-wide">Observações e fonte dos dados<textarea id="friend-card-notes" maxlength="1500" rows="3" placeholder="Ex.: carta enviada por João; atributos ainda pendentes"></textarea></label>
+   </div></details>
   </div>
   <label class="friends-photo-picker" for="friend-photo"><span>Imagem da carta (opcional)</span><input id="friend-photo" type="file" accept="image/png,image/jpeg,image/webp"/><small>O aplicativo salva uma miniatura compactada para backup. Nenhum print é enviado a servidores.</small></label>
   <div class="friends-photo-preview"><img id="friend-photo-preview" hidden alt="Miniatura da carta selecionada"/><button type="button" id="friend-photo-remove" hidden>Remover imagem</button></div>
