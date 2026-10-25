@@ -83,3 +83,68 @@ body[data-page="detail"] details.ct360-card-extra[open]>summary{margin-bottom:8p
 body[data-page="detail"] details.ct360-card-extra>.topic{margin:0!important}
 body[data-page="detail"] #foco,body[data-page="detail"] #pontos,body[data-page="detail"] #jogar{scroll-margin-top:80px}
 @media(max-width:520px){body[data-page="detail"] .ct360-card-quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:8px;gap:6px}body[data-page="detail"] .ct360-card-quick a{padding:7px 5px;font-size:10px;min-height:42px}body[data-page="detail"] details.ct360-card-extra{padding:8px}}
+
+/* V360 ajuste real de primeira dobra, aferido em 8 resoluções pelo QA V195.
+   Mantém busca, quatro atalhos, filtros, imagens de cartas e todos os campos. */
+body[data-page="catalog"] .scout-v189-home{padding:0!important}
+body[data-page="catalog"] .hero .scout-v189-tile{min-height:51px!important}
+body[data-page="catalog"] .scout-v189-quick{gap:6px!important;margin:5px 0!important}
+@media(max-width:720px){
+ body[data-page="catalog"] .hero .hero-text{padding:8px 10px!important}
+ body[data-page="catalog"] .hero h1{font-size:clamp(20px,5.7vw,24px)!important;line-height:1.03!important;margin:0 0 3px!important}
+ body[data-page="catalog"] .scout-v189-home{padding:0!important}
+ body[data-page="catalog"] .hero .scout-v189-tile{min-height:46px!important;padding:6px!important}
+ body[data-page="catalog"] .scout-v189-quick{gap:5px!important;margin:4px 0!important}
+ body[data-page="catalog"] .scout-v192-search-block{margin:4px 0!important}
+ body[data-page="catalog"] .scout-v189-extra:not([open]){margin-top:0!important;padding-top:4px!important}
+ body[data-page="catalog"] #catalogo .toolbar{padding-top:4px!important}
+ body[data-page="catalog"] #catalogo .section-top{margin-bottom:5px!important}
+ body[data-page="detail"] nav.ct360-card-quick{
+  display:flex!important;flex-wrap:nowrap!important;overflow-x:auto;
+  gap:4px!important;margin:4px 0 6px!important;padding:4px!important;
+  scrollbar-width:thin;scrollbar-color:#647992 transparent;
+ }
+ body[data-page="detail"] nav.ct360-card-quick a{
+  min-height:35px!important;flex:0 0 auto;white-space:nowrap;
+  padding:6px 10px!important;font-size:11px!important;
+ }
+ body[data-page="detail"] .profile-content>.mobile-profile{
+  grid-template-columns:78px minmax(0,1fr)!important;
+  gap:8px!important;padding:6px!important;margin-bottom:3px!important;
+ }
+ body[data-page="detail"] .profile-content>.mobile-profile img{
+  width:78px!important;height:109px!important;max-height:109px!important;
+ }
+ body[data-page="detail"] #scout-v188-principal{margin-top:3px!important}
+}
+@media(min-width:721px) and (max-width:1199px){
+ body[data-page="catalog"] .hero .hero-visual{
+  height:197px!important;min-height:197px!important;max-height:197px!important;
+ }
+ body[data-page="catalog"] .hero .hero-visual .featured.one{
+  top:20px!important;width:100px!important;height:143px!important;
+ }
+ body[data-page="catalog"] .hero .hero-visual .featured.two{
+  top:8px!important;width:115px!important;height:165px!important;
+ }
+ body[data-page="catalog"] .hero .hero-visual .featured.three{
+  top:44px!important;width:75px!important;height:108px!important;
+ }
+}
+@media(min-width:1200px){
+ body[data-page="catalog"] .hero .hero-visual{
+  height:230px!important;min-height:230px!important;max-height:230px!important;
+ }
+ body[data-page="catalog"] .hero .hero-visual .featured.one{
+  top:26px!important;width:107px!important;height:155px!important;
+ }
+ body[data-page="catalog"] .hero .hero-visual .featured.two{
+  top:8px!important;width:123px!important;height:177px!important;
+ }
+ body[data-page="catalog"] .hero .hero-visual .featured.three{
+  top:49px!important;width:83px!important;height:120px!important;
+ }
+ body[data-page="catalog"] .hero .hero-visual .hero-stamp{
+  bottom:7px!important;font-size:8px!important;
+ }
+}
