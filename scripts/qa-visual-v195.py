@@ -183,7 +183,8 @@ def run():
                 library = home["elements"].get("#catalogo") or {}
                 if mobile and library.get("y", 9999) > (700 if width <= 340 else 645):
                     problems.append(f"{name}: catálogo começa muito abaixo da primeira tela: y={library.get('y')}")
-                # V203: posição, raridade, ordenação e controle de animação preservados.
+                # V360: posição, raridade e ordenação preservadas;
+                # controle de animação removido para reduzir custo do catálogo.
                 panel = page.locator("#scout-v203-filter-panel")
                 if panel.evaluate("(e)=>e.open"):
                     problems.append(f"{name}: filtros avançados não devem ocupar a primeira tela por padrão")
@@ -191,11 +192,11 @@ def run():
                     problems.append(f"{name}: filtros originais não foram movidos, ou foram duplicados")
                 if page.locator("#scout-v203-filter-panel #sort").count()!=1:
                     problems.append(f"{name}: ordenação original ficou inacessível")
-                motion_button=page.locator("#catalogo .scout-v238-filter-motion-row .scout-motion-toggle")
-                if motion_button.count()!=1 or not motion_button.is_visible():
-                    problems.append(f"{name}: botão de animação não aparece ao lado dos filtros")
-                if page.locator("#scout-v203-filter-panel .scout-motion-toggle").count()!=0:
-                    problems.append(f"{name}: botão de animação voltou a ficar escondido nos filtros")
+                motion_button=page.locator(".scout-motion-toggle")
+                if motion_button.count()!=0 and motion_button.first.is_visible():
+                    problems.append(f"{name}: V360 mostrou controle de animação desativado")
+                if page.evaluate("() => document.body.classList.contains('scout-motion-on') || document.querySelectorAll('.scout-motion-layer,.ct234-motion-prism').length > 0"):
+                    problems.append(f"{name}: V360 manteve camadas de efeitos ativas")
                 initial_count=int(page.locator("#all-count").inner_text())
                 if initial_count!=246:
                     problems.append(f"{name}: acervo inicial não tem 246 cartas: {initial_count}")
