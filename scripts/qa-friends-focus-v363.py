@@ -22,7 +22,7 @@ with sync_playwright() as pw:
    page.on("pageerror",lambda error:errors.append(str(error)))
    page.goto(BASE+"/outros-elencos-v227.html",wait_until="domcontentloaded",timeout=45000)
    page.locator("body.ct362-design").wait_for(timeout=16000)
-   page.locator("#friend-owner-jump option").first.wait_for(timeout=18000)
+   page.locator("#friend-owner-jump option").first.wait_for(state="attached",timeout=18000)
    page.locator("#ct363-readiness").wait_for(state="visible",timeout=16000)
    assert page.locator("#ct363-readiness button").count()==3
    assert not page.locator(".ct363-method").evaluate("(e)=>e.open"),(platform,"instruções devem iniciar recolhidas")
