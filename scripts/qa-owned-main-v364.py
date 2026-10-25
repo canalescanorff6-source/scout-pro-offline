@@ -23,7 +23,7 @@ with sync_playwright() as pw:
    page.on("pageerror",lambda x:error.append(str(x)))
    page.goto(BASE+"/index.html",wait_until="domcontentloaded",timeout=55000)
    page.locator("body[data-ct364-owned=ready]").wait_for(state="attached",timeout=25000)
-   page.locator("#ct364-owned-grid .ct364-player-card").first.wait_for(timeout=14000)
+   page.locator("#ct364-owned-grid .ct364-player-card").first.wait_for(state="attached",timeout=14000)
    assert page.locator("#cards .player-card").count()==246,(name,"246 originais mudadas")
    assert page.locator("#ct364-owned-grid .ct364-player-card").count()==15,(name,"15 adicionais faltam")
    assert page.locator("#ct364-owned-section").is_visible()
