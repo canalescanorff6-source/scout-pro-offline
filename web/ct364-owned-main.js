@@ -169,7 +169,7 @@ function renderSkills(c,body){
 function renderBoost(c,body){
  const s=section('Ímpetos exibidos no eFHub');
  c.observed.boostersSimulated.forEach((b,i)=>line(s,i===0?'Ímpeto mostrado 1':'Ímpeto mostrado 2',b));
- note(s,'Não é possível afirmar que os ímpetos acima estão equipados na sua conta nem que a carta possui slot extra confirmado.');
+ note(s,'A simulação eFHub não comprova que os ímpetos acima estão equipados na sua conta nem que a carta possui slot extra confirmado.');
  body.append(s);
 }
 function renderBody(c,body){
