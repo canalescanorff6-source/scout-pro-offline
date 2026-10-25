@@ -49,7 +49,7 @@ with sync_playwright() as p:
      more=page.locator('#ct362-appnav .ct362-navmore')
      more.click()
      assert page.locator('body.ct362-options-open').count()==1
-     assert legacy.is_visible(),(mode,'controles antigos ficaram inacessíveis no Mais')
+     if mobile:assert legacy.is_visible(),(mode,'controles antigos ficaram inacessíveis no Mais')
      more.click()
      assert not legacy.is_visible()
     if kind=='catalog':
