@@ -1401,6 +1401,8 @@ def run():
                 # Registrar somente informações fornecidas pelo dono da carta.
                 page.locator('#friend-cards .friends-actions button').filter(has_text='Editar').click()
                 page.locator('#friend-card-pp').fill('62')
+                # V360: campos avançados só são editáveis após abrir o painel.
+                page.locator('details.friend-card-advanced > summary').click()
                 page.locator('#friend-card-native').fill('Passe de primeira; Toque duplo')
                 page.locator('#friend-card-skills').fill('Passe em profundidade')
                 page.locator('#friend-card-fixed-booster').fill('Technique')
