@@ -176,3 +176,18 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
  outline:2px solid #f4d18d;outline-offset:2px;
 }
 .ct364-area .ct364-ack{margin-top:6px;line-height:1.45}
+
+/* V364.4: o QA mede a primeira carta real em uma tela de 320x700.
+   Reduz apenas margens decorativas ACIMA da biblioteca, mantendo alvos de
+   toque, filtros, texto de identidade, coleção e 261 imagens intactos. */
+@media(max-width:355px){
+ body.ct362-design[data-page="catalog"] .hero{
+  margin-block:0!important;
+ }
+ body.ct362-design[data-page="catalog"] .hero h1{
+  margin-bottom:0!important;
+ }
+ body.ct362-design[data-page="catalog"] .scout-v189-quick{
+  margin-bottom:1px!important;
+ }
+}
