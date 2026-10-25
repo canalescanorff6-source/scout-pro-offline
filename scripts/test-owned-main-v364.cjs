@@ -41,6 +41,13 @@ for(const name of ['ct364-owned-main.js','ct364-owned-main.css','ct364-owned-car
 assert.match(js,/CRAQUE_FRIEND_TRAINING_V228/,'mesmo motor de análise tática');
 assert.match(js,/const STYLE_IDS=\['posse','normal','rapido','fora','longo'\]/);
 assert.match(js,/scoutpro:v364:owned-confirmed/);
+assert.match(js,/scoutpro:v364:owned-equipment/,'skills e ímpetos manuais sem armazenamento isolado');
+assert.match(js,/equipmentSave/,'gravação manual por edição ausente');
+assert.match(js,/unique.size!==names.length/,'colisão entre skills adicionais não bloqueada');
+assert.match(js,/known.has\(normalize\(v\)\)/,'colisão com nativa simulada não bloqueada');
+assert.match(js,/ct364-equipped-booster/,'ípetos manuais não possuem campo individual');
+assert.ok(index.indexOf('craque-app-shell-v362.css')<index.indexOf('ct364-owned-main.css'),
+ 'CSS V364 deve carregar DEPOIS de V362 para corrigir cascata visual em 320px');
 assert.match(js,/ct364-owned-section/);
 assert.match(js,/ct364-owned-grid/);
 assert.match(js,/ct364-card-navigator/,'navegacao 15 cartas ausente');
