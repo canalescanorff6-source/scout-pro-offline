@@ -27,6 +27,9 @@ CRITICAL = (
     "outros-elencos-v227.html",
     "craque-friends-page-v227.js",
     "craque-friends-focus-v363.css",
+    "ct364-owned-main.js",
+    "ct364-owned-main.css",
+    "ct364-owned-cards.json",
     "craque-design-v230.css",
     "craque-experience-v232.css",
     "craque-visual-system-v234.css",
@@ -43,6 +46,7 @@ REQUIRED_MARKERS = {
         'id="ct356-boot-proof"',
         'data-ct361-final="true"',
         'data-ct362-design="true"',
+        'data-ct364-owned="true"',
     ),
     "app-bridge.js": (
         'script[data-ct356-entry="premium-home"]',
@@ -70,6 +74,20 @@ REQUIRED_MARKERS = {
     "craque-friends-focus-v363.css": (
         'friends-columns>.friends-main',
         'ct363-readiness',
+    ),
+    "ct364-owned-main.js": (
+        "ct364-owned-cards.json",
+        "ct364-owned-section",
+        "CRAQUE_FRIEND_TRAINING_V228",
+        "scoutpro:v364:owned-confirmed",
+    ),
+    "ct364-owned-main.css": (
+        "ct364-owned-section",
+        "ct364-dialog",
+    ),
+    "ct364-owned-cards.json": (
+        '"schema": "craque-owned-cards-v364"',
+        '"additions": 15',
     ),
     "craque-app-shell-v362.js": (
         'ct362-design-proof',
@@ -122,6 +140,23 @@ def verify(apk_path: Path, web_dir: Path) -> dict:
                 if marker not in decoded:
                     raise ValueError("Entrada Premium V356 ausente em " + name + ": " + marker)
             compared[name] = hashlib.sha256(packaged).hexdigest()
+        # V364: validar os 15 WebP REAIS individualmente, não só HTML/JS.
+        manifest = json.loads(apk.read("assets/public/ct364-owned-cards.json"))
+        if manifest.get("schema") != "craque-owned-cards-v364" or len(manifest.get("cards", [])) != 15:
+            raise ValueError("15 cartas próprias V364 ausentes no APK")
+        if len({c.get("key") for c in manifest["cards"]}) != 15:
+            raise ValueError("V364 contém identidades duplicadas")
+        for card in manifest["cards"]:
+            name = card.get("image")
+            if not isinstance(name, str) or not name.startswith("cartas/novas/ct364_") or not name.endswith(".webp"):
+                raise ValueError("Caminho de arte própria inválido")
+            zip_name = "assets/public/" + name
+            source_path = web_dir / name
+            if zip_name not in names or not source_path.is_file():
+                raise ValueError("Arte V364 não empacotada: " + name)
+            if apk.read(zip_name) != source_path.read_bytes():
+                raise ValueError("Arte V364 divergente da fonte: " + name)
+            compared[name] = hashlib.sha256(apk.read(zip_name)).hexdigest()
         metadata = json.loads(apk.read("assets/public/scout-build-info.json"))
         if metadata.get("schema") != "scout_v189_shared_web_bundle":
             raise ValueError("Metadados da versão Android inválidos")
