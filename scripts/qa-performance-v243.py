@@ -40,8 +40,7 @@ def run() -> int:
             page.goto(BASE + "/index.html", wait_until="domcontentloaded", timeout=35000)
             page.wait_for_function("""() =>
               document.querySelectorAll('#cards .player-card').length===246 &&
-              document.querySelectorAll('#cards .card-art[data-ct234-premium="1"]').length===246 &&
-              document.querySelector('.scout-motion-toggle')
+              window.CRAQUE_MOTION_PAUSED_V360===true
             """, timeout=28000)
             catalog = page.evaluate("""async () => {
               const grid=document.getElementById('cards');
@@ -79,10 +78,12 @@ def run() -> int:
                 originalOrderKept:originally.join(',')===afterRepeat.join(','),
                 reverseFirst:reverse[0],reverseCount:reverse.length,
                 searchResults:match,finalVisible:visible().length,
-                activeEffects:document.querySelectorAll(
-                  '#cards .card-art[data-ct234-premium="1"]'
+                fxLayerCount:document.querySelectorAll(
+                  '#cards .scout-motion-layer, #cards .ct234-motion-prism'
                 ).length,
-                animationsAllowed:document.body.classList.contains('scout-motion-on')
+                effectsPaused:window.CRAQUE_MOTION_PAUSED_V360===true &&
+                  !document.body.classList.contains('scout-motion-on'),
+                effectsScriptsSkipped:document.body.dataset.scoutMotionInit!=='1'
               };
             }""")
             report["catalog"] = catalog
@@ -96,44 +97,29 @@ def run() -> int:
                         "Ordem do catálogo incorreta")
             assert_that(catalog["searchResults"] == ["Sergi Cardona"],
                         "Busca Cardona incorreta")
-            assert_that(catalog["activeEffects"] == 246,
-                        "Os reflexos originais não foram decorados em todas as cartas")
+            # V360: os efeitos pesados foram removidos a pedido do proprietário.
+            # As mesmas 246 cartas continuam presentes, mas não instalam observers,
+            # layers ou animações em segundo plano no Android.
+            assert_that(catalog["fxLayerCount"] == 0 and
+                        catalog["effectsPaused"] and catalog["effectsScriptsSkipped"],
+                        "V360: efeitos de cartas continuam criando custo de GPU/DOM")
             assert_that(not errors, "Erro JS na biblioteca: " + repr(errors))
-
-            # V244: conferir CSS efetivamente aplicado, não somente presença do texto.
             page.wait_for_function("""() =>
-              !!document.querySelector('#cards .player-card:not([hidden]) .card-art[data-scout-motion-active="true"] .scout-motion-layer')
+              !!document.querySelector('#cards .player-card:not([hidden]) .card-art')
             """, timeout=18000)
             motion = page.evaluate("""() => {
-              const art=document.querySelector(
-                '#cards .player-card:not([hidden]) .card-art[data-scout-motion-active="true"]');
-              const layer=art?.querySelector('.scout-motion-layer');
-              const prism=art?.querySelector('.ct234-motion-prism');
+              const art=document.querySelector('#cards .player-card:not([hidden]) .card-art');
               return {
-                mobile:matchMedia('(max-width:720px) and (pointer:coarse)').matches,
-                effectOn:document.body.classList.contains('scout-motion-on'),
-                aura:getComputedStyle(layer,'::before').animationName,
-                sweep:getComputedStyle(layer,'::after').animationName,
-                extraSweep:getComputedStyle(prism,'::after').animationName,
-                rarity:art?.dataset.scoutMotionRarity
+                noFxLayers:!art?.querySelector('.scout-motion-layer, .ct234-motion-prism'),
+                hiddenControls:!document.querySelector('.scout-motion-toggle'),
+                bodyOff:!document.body.classList.contains('scout-motion-on'),
+                noForcedTransforms:getComputedStyle(art).animationName==='none'
               };
             }""")
-            report["mobile_motion_v244"] = motion
-            assert_that(motion["mobile"] and motion["effectOn"],
-                        "O QA deve testar modo móvel com efeitos habilitados")
-            assert_that(motion["aura"] == "none" and motion["extraSweep"] == "none",
-                        "V244: gradientes móveis redundantes continuam animados")
-            assert_that("scout-v186-sweep" in motion["sweep"],
-                        "V244: o reflexo original das cartas foi removido")
-            page.locator('.scout-motion-toggle').first.click()
-            assert_that(not page.evaluate(
-                "() => document.body.classList.contains('scout-motion-on')"),
-                "Efeitos OFF deixou animações ligadas")
-            page.locator('.scout-motion-toggle').first.click()
-            assert_that(page.evaluate(
-                "() => document.body.classList.contains('scout-motion-on')"),
-                "Efeitos ON não reativou os reflexos")
-
+            report["mobile_motion_v360"] = motion
+            assert_that(all(motion.values()),
+                        "V360: efeito decorativo foi reativado indevidamente")
+            
             page.goto(BASE + "/fichas/007_Sergi_Cardona.html",
                       wait_until="domcontentloaded", timeout=35000)
             page.wait_for_function("""() => {
@@ -156,7 +142,8 @@ def run() -> int:
                 mainTrainingCount:document.querySelectorAll('#scout-v220-training #scout-v208-training').length,
                 modes:tabs.length,hasPP:Boolean(training?.textContent.trim()),
                 layoutOverflow:document.documentElement.scrollWidth-innerWidth,
-                effectsToggle:Boolean(document.querySelector('.scout-motion-toggle'))
+                fxLayerCount:document.querySelectorAll('.scout-motion-layer, .ct234-motion-prism').length,
+                effectsPaused:window.CRAQUE_MOTION_PAUSED_V360===true
               };
             }""")
             report["cardona"] = cardona
@@ -167,7 +154,8 @@ def run() -> int:
                         "Cardona perdeu ficha única ou estilos")
             assert_that(cardona["hasPP"] and cardona["layoutOverflow"] <= 8,
                         "Cardona perdeu PP ou criou rolagem horizontal")
-            assert_that(cardona["effectsToggle"], "Botão Efeitos ON/OFF ausente")
+            assert_that(cardona["effectsPaused"] and cardona["fxLayerCount"] == 0,
+                        "Ficha individual não respeitou o modo V360 sem efeitos")
             page.screenshot(path=str(OUT / "cardona_390.png"),
                             full_page=False, animations="disabled")
             assert_that(not errors, "Erro JS no Cardona: " + repr(errors))
