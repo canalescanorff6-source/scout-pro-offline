@@ -499,3 +499,77 @@ body.ct362-design[data-page="friends"] :is(
  .friends-primary,.friends-actions button,#friend-dialog-save){
  box-shadow:none!important;border-radius:9px!important;
 }
+
+
+/* V362: anti-sobreposição — nunca exibir dock V189 e dock global simultaneamente. */
+body.ct362-design:has(#ct362-appnav) #scout-app-bar{
+ display:none!important;
+}
+body.ct362-design.ct362-options-open:has(#ct362-appnav) #scout-app-bar{
+ display:flex!important;position:fixed!important;
+ bottom:238px!important;left:50%!important;transform:translateX(-50%)!important;
+ width:min(calc(100vw - 20px),480px)!important;
+ box-sizing:border-box!important;z-index:30002!important;
+ flex-wrap:wrap!important;background:#17253a!important;
+ border:1px solid #8290a6!important;padding:9px!important;
+ border-radius:13px!important;box-shadow:0 15px 30px #0009!important;
+}
+body.ct362-design .ct362-appnav .ct362-navmore{
+ display:flex;flex:1;min-width:0;min-height:52px;
+ flex-direction:column;align-items:center;justify-content:center;gap:2px;
+ border:0!important;border-radius:11px!important;background:transparent!important;
+ box-shadow:none!important;color:#cdd7e1!important;font:750 10px/1.2 inherit!important;
+ cursor:pointer;padding:5px!important;
+}
+body.ct362-design .ct362-appnav .ct362-navmore[aria-expanded=true]{
+ background:#eac679!important;color:#132036!important
+}
+body.ct362-design .ct362-appnav .ct362-tools-popup{
+ position:absolute;bottom:calc(100% + 8px);right:0;z-index:30001;
+ display:grid;gap:4px;min-width:min(240px,82vw);
+ background:#111f30;border:1px solid #71859d;border-radius:12px;
+ padding:8px;box-shadow:0 12px 28px #0009
+}
+body.ct362-design .ct362-appnav .ct362-tools-popup[hidden]{display:none!important}
+body.ct362-design .ct362-appnav .ct362-tools-popup>a{
+ display:block;color:#f4e4c8!important;text-decoration:none;
+ background:#1d2c41;border-radius:9px;padding:11px;
+ border:1px solid #455f7b;font-size:12px;font-weight:800
+}
+/* Painel antigo verde do seletor de técnicos → o mesmo sistema da ficha. */
+body.ct362-design[data-page="detail"] details.ct-manager-v302{
+ background:#131f30!important;background-image:none!important;
+ border:1px solid #526a84!important;border-left:3px solid #e9c47b!important;
+ border-radius:11px!important;box-shadow:none!important;
+ padding:9px!important;margin:6px 0!important;color:#eff2ee!important
+}
+body.ct362-design[data-page="detail"] details.ct-manager-v302>summary{
+ background:#1c3047!important;color:#f4d38f!important;
+ border-radius:8px!important;border:1px solid #506981!important;
+ font-size:12px!important;font-weight:900!important;
+ padding:9px!important;min-height:39px!important
+}
+body.ct362-design[data-page="detail"] details.ct-manager-v302>p{
+ color:#aebed0!important;font-size:11px!important;
+ line-height:1.35!important;margin:6px 0!important
+}
+body.ct362-design[data-page="detail"] .ct-manager-v329-tools{
+ background:#121d2d!important;border:1px solid #455b74!important;
+ border-radius:9px!important;box-shadow:none!important;padding:8px!important
+}
+body.ct362-design[data-page="detail"] .ct-manager-v329-tools :is(input,select){
+ border:1px solid #5c728b!important;background:#0c1727!important;
+ border-radius:9px!important;min-height:42px!important
+}
+body.ct362-design[data-page="detail"] :is(.ct-manager-v329-favorite,.ct-manager-actions button){
+ background:#273850!important;border:1px solid #61738a!important;
+ border-radius:9px!important;color:#f1d89b!important;box-shadow:none!important
+}
+@media(max-width:720px){
+ body.ct362-design[data-page="detail"] .ct-manager-v329-tools{
+  gap:6px!important
+ }
+ body.ct362-design[data-page="detail"] details.ct-manager-v302>summary{
+  font-size:11px!important;padding:8px!important
+ }
+}
