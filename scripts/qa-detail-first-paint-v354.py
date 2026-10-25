@@ -20,6 +20,8 @@ with sync_playwright() as pw:
     page.goto(BASE+'/fichas/'+file,wait_until='domcontentloaded',timeout=45000)
     page.wait_for_function("""() =>
      document.querySelector('.topbar .brand-copy b')?.textContent === 'CRAQUE TÁTICO'""",timeout=30000)
+    page.locator('#ct362-design-proof').wait_for(state='attached',timeout=15000)
+    page.wait_for_function("""() => [...document.styleSheets].some(s=>s.href?.includes('craque-app-shell-v362.css'))""",timeout=15000)
     got=page.evaluate("""() => {
      const bar=document.querySelector('.topbar');
      const logo=bar?.querySelector('.brand-logo-img');
@@ -28,7 +30,7 @@ with sync_playwright() as pw:
      return {name:bar?.querySelector('.brand-copy b')?.textContent,
       subtitle:bar?.querySelector('.brand-copy small')?.textContent,
       icon:logo?.getAttribute('src'),alt:logo?.alt,
-      background:body.backgroundImage,
+      background:body.backgroundColor,
       staticCSS:styles.some(s=>s.href?.includes('app-bridge.css')),
       count:document.querySelectorAll('.topbar .brand-logo-img').length,
       images:document.querySelectorAll('.side-art img').length,
@@ -40,7 +42,7 @@ with sync_playwright() as pw:
     assert got['alt']=='Craque Tático'
     assert got['count']==1
     assert got['staticCSS'],(name,file,'CSS de primeira pintura ausente')
-    assert 'rgb(7, 14, 26)' in got['background'],(name,file,'tema antigo',got)
+    assert got['background']=='rgb(7, 12, 20)',(name,file,'design V362 ausente',got)
     assert got['images']>=1 and got['cardSource'] and got['cardSource'].startswith('../cartas/'),(name,file,'arte não preservada',got)
     assert got['overflow']<=3,(name,file,'rolagem horizontal',got)
     assert page.locator('.side-nav').count()>=1
