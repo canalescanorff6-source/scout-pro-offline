@@ -42,6 +42,16 @@ with sync_playwright() as p:
     assert surface['overflow']<=12,(mode,label,'overflow',surface)
     if kind in ('friends','team','manager-hub','rotation-lab'):
      assert surface['nav']==4,(mode,label,'navegação unificada ausente',surface)
+    if kind=='friends':
+     legacy=page.locator('#scout-app-bar')
+     legacy.wait_for(state='attached',timeout=15000)
+     assert not legacy.is_visible(),(mode,'barra antiga duplicada sobre navegação V362')
+     more=page.locator('#ct362-appnav .ct362-navmore')
+     more.click()
+     assert page.locator('body.ct362-options-open').count()==1
+     assert legacy.is_visible(),(mode,'controles antigos ficaram inacessíveis no Mais')
+     more.click()
+     assert not legacy.is_visible()
     if kind=='catalog':
      page.locator('.scout-v189-quick a').first.wait_for(timeout=20000)
      assert page.locator('#cards .player-card').count()==246
@@ -57,6 +67,9 @@ with sync_playwright() as p:
      assert page.locator('#scout-v220-training').count()==1
      assert page.locator('#scout-v220-recs').count()==1
      assert page.locator('#scout-v220-hero .scout-v220-practice').count()==1
+     coach=page.locator('details.ct-manager-v302')
+     coach.wait_for(state='attached',timeout=15000)
+     assert coach.evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgb(19, 31, 48)',(mode,'seletor de técnico com visual antigo')
      if mobile:
       assert page.locator('.scout-v220-head').evaluate("(e)=>getComputedStyle(e).display=='none'"),'Cabeçalho V220 antigo ainda duplicado'
     if label in ('home','friends','managers','detail'):
