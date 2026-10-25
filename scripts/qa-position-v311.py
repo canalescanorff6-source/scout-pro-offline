@@ -13,6 +13,8 @@ with sync_playwright() as p:
    page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(ROOT+'/outros-elencos-v227.html?colecao=minhas-cartas-adicionadas',wait_until='domcontentloaded')
    page.locator('#friend-new-card').click()
+    # V360: navegar até as opções avançadas antes de escolher slot.
+    page.locator('details.friend-card-advanced > summary').click()
    page.locator('#friend-card-name').fill('Cenário MAT SA')
    page.locator('#friend-card-position').select_option('MAT')
    page.locator('#friend-card-level').fill('35')
