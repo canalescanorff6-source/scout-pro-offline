@@ -483,3 +483,19 @@ body.ct362-design[data-page] :is(summary,button){touch-action:manipulation}
   animation:none!important;transition:none!important;scroll-behavior:auto!important
  }
 }
+
+/* V362: diálogos fazem parte do mesmo sistema; não deixá-los no tema anterior. */
+body.ct362-design[data-page="friends"] :is(
+ #friend-card-dialog,.friend-analysis-dialog,.friends-dialog,.friends-modal){
+ background:#131e2e!important;background-image:none!important;
+ border:1px solid #60748f!important;border-radius:14px!important;
+ box-shadow:0 20px 48px #000a!important;color:#f6f2e8!important;
+}
+body.ct362-design[data-page="friends"] :is(
+ #friend-card-dialog,.friend-analysis-dialog) :is(.friends-dialog-head,.friends-dialog-actions){
+ background:#151f30!important;border-color:#415672!important;
+}
+body.ct362-design[data-page="friends"] :is(
+ .friends-primary,.friends-actions button,#friend-dialog-save){
+ box-shadow:none!important;border-radius:9px!important;
+}
