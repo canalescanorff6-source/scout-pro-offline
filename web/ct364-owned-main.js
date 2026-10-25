@@ -3,6 +3,7 @@
 (()=>{'use strict';
 if(document.body?.dataset.page!=='catalog')return;
 const SOURCE='ct364-owned-cards.json',STORAGE='scoutpro:v364:owned-confirmed';
+const EQUIP_STORAGE='scoutpro:v364:owned-equipment';
 const STYLE_IDS=['posse','normal','rapido','fora','longo'];
 const STYLE_NAMES={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'};
 const $=(s,root=document)=>root.querySelector(s),mk=(tag,cls,txt)=>{
@@ -16,6 +17,28 @@ const loadConfirmed=()=>{try{
  return parsed&&typeof parsed==='object'&&!Array.isArray(parsed)?parsed:{};
 }catch(_){return {}}};
 confirmed=loadConfirmed();
+const loadEquipment=()=>{try{
+ const data=JSON.parse(localStorage.getItem(EQUIP_STORAGE)||'{}');
+ return data&&typeof data==='object'&&!Array.isArray(data)?data:{};
+}catch(_){return {}}};
+let equipment=loadEquipment();
+const equipmentOf=card=>{
+ const data=equipment[card.key];
+ if(!data||typeof data!=='object'||Array.isArray(data))return {skills:[],slot:'pendente',booster:''};
+ const skills=Array.isArray(data.skills)?data.skills.filter(v=>typeof v==='string').slice(0,5):[];
+ const slot=['pendente','ocupado','vazio','ausente'].includes(data.slot)?data.slot:'pendente';
+ return {skills,slot,booster:slot==='ocupado'&&typeof data.booster==='string'?data.booster:''};
+};
+const validEquipmentName=value=>typeof value==='string'&&value.trim().length<=80;
+const equipmentSave=(card,value)=>{
+ const current=loadEquipment();
+ const next={...current,[card.key]:{
+  ...value,source:'declaracao_manual_proprietario',confirmedByOwner:true,
+  updatedAt:new Date().toISOString()
+ }};
+ localStorage.setItem(EQUIP_STORAGE,JSON.stringify(next));
+ equipment=next;
+};
 const numberOrNull=(v)=>Number.isInteger(v)&&v>0&&v<=120?v:null;
 const confirmationOf=card=>{
  const v=confirmed[card.key];
@@ -157,21 +180,98 @@ async function renderTraining(c,body){
  }catch(e){note(area,'Motor competitivo indisponível nesta execução: '+String(e.message||e)+'. Nenhum treino foi inventado.')}
 }
 renderTraining.generation=0;
+function equipmentConsent(section){
+ const label=mk('label','ct364-ack');
+ const check=mk('input');check.type='checkbox';
+ check.setAttribute('aria-label','Confirmo que conferi os dados no meu jogo');
+ label.append(check,mk('span','', 'Conferi diretamente na minha carta do eFootball. Esta anotação não comprova a edição ou a instalação em outro dispositivo.'));
+ section.append(label);return check;
+}
+function equipmentFeedback(section){
+ const msg=mk('p','ct364-feedback');msg.setAttribute('role','status');
+ section.append(msg);return msg;
+}
 function renderSkills(c,body){
  const s=section('Habilidades observadas na captura eFHub');
  const chips=mk('div','ct364-skill-list');
  c.observed.nativeSkills.forEach(skill=>chips.append(mk('span','',skill)));s.append(chips);
- note(s,'Lista observada na simulação da edição. Ainda não comprova quais habilidades adicionais já foram equipadas na conta.');
+ note(s,'Habilidades mostradas no simulador, não validação das habilidades equipadas na sua conta.');
  body.append(s);
- const more=section('Cinco habilidades adicionais');
- note(more,'Sugestões dependem da edição/Card ID confirmado, habilidades nativas e função selecionada. Não preencher automaticamente slots como se fossem reais.');
- body.append(more);
+ const additional=section('Minhas habilidades adicionais — cadastro manual (0 a 5)');
+ note(additional,'Preencha somente nomes conferidos no jogo. Campos vazios continuam pendentes. Este registro não altera o equipamento no eFootball.');
+ const saved=equipmentOf(c);
+ const inputs=[];
+ for(let i=0;i<5;i++){
+  const label=mk('label','ct364-form-label','Habilidade adicional '+(i+1));
+  const inp=mk('input');inp.type='text';inp.maxLength=80;inp.autocomplete='off';
+  inp.dataset.skillSlot=String(i+1);inp.value=saved.skills[i]||'';
+  inp.placeholder='Pendente — conferir no jogo';
+  label.append(inp);additional.append(label);inputs.push(inp);
+ }
+ const consent=equipmentConsent(additional);
+ const save=mk('button','ct364-save','Registrar habilidades desta carta');save.type='button';
+ const feedback=equipmentFeedback(additional);
+ save.onclick=()=>{
+  const names=inputs.map(el=>el.value.trim()).filter(Boolean);
+  const known=new Set(c.observed.nativeSkills.map(normalize));
+  const unique=new Set(names.map(normalize));
+  if(!consent.checked){feedback.textContent='Marque a confirmação após conferir diretamente na carta do jogo.';return}
+  if(names.some(v=>!validEquipmentName(v))||unique.size!==names.length){
+   feedback.textContent='Nomes inválidos ou repetidos. Revise cada uma das cinco vagas.';return;
+  }
+  if(names.some(v=>known.has(normalize(v)))){
+   feedback.textContent='Conflito com habilidade observada como nativa no eFHub. Confira a edição antes de registrar.';return;
+  }
+  try{
+   const old=equipmentOf(c);
+   equipmentSave(c,{skills:names,slot:old.slot,booster:old.booster});
+   feedback.textContent='Registro manual salvo apenas neste aparelho para '+c.name+'. Nenhuma habilidade foi equipada automaticamente.';
+  }catch(e){feedback.textContent='Falha ao gravar localmente: '+String(e.message||e)}
+ };
+ additional.append(save);
+ body.append(additional);
 }
 function renderBoost(c,body){
- const s=section('Ímpetos exibidos no eFHub');
- c.observed.boostersSimulated.forEach((b,i)=>line(s,i===0?'Ímpeto mostrado 1':'Ímpeto mostrado 2',b));
- note(s,'A simulação eFHub não comprova que os ímpetos acima estão equipados na sua conta nem que a carta possui slot extra confirmado.');
+ const s=section('Ímpetos exibidos na simulação eFHub');
+ c.observed.boostersSimulated.forEach((b,i)=>line(s,i===0?'Ímpeto simulado 1':'Ímpeto simulado 2',b));
+ note(s,'A simulação não confirma o ímpeto fixo, um segundo slot nem equipamento na sua conta.');
  body.append(s);
+ const additional=section('Estado real do slot adicional — registro manual');
+ const saved=equipmentOf(c);
+ const label=mk('label','ct364-form-label','Slot adicional da carta');
+ const slot=mk('select','ct364-equipment-select');
+ for(const [id,name] of [
+  ['pendente','Pendente: não conferido'],
+  ['ausente','Sem slot adicional — conferido'],
+  ['vazio','Slot adicional vazio — conferido'],
+  ['ocupado','Slot adicional ocupado — conferido']
+ ]){
+  const option=mk('option','',name);option.value=id;slot.append(option);
+ }
+ slot.value=saved.slot;label.append(slot);additional.append(label);
+ const boosterLabel=mk('label','ct364-form-label','Nome do ímpeto adicional equipado');
+ const booster=mk('input');booster.type='text';booster.maxLength=80;booster.autocomplete='off';
+ booster.value=saved.booster;booster.placeholder='Somente quando o slot está ocupado';
+ boosterLabel.append(booster);additional.append(boosterLabel);
+ const sync=()=>{booster.disabled=slot.value!=='ocupado';if(booster.disabled)booster.value='';};
+ slot.addEventListener('change',sync);sync();
+ note(additional,'O estado declarado por você fica separado do ímpeto visto no simulador e não habilita gasto de tokens sem evidência da edição.');
+ const consent=equipmentConsent(additional);
+ const save=mk('button','ct364-save','Registrar estado do ímpeto');save.type='button';
+ const feedback=equipmentFeedback(additional);
+ save.onclick=()=>{
+  const name=booster.value.trim();
+  if(!consent.checked){feedback.textContent='Confirme que conferiu o slot na sua carta do jogo.';return;}
+  if(slot.value==='ocupado'&&(!name||!validEquipmentName(name))){
+   feedback.textContent='Informe o nome do ímpeto somente se o slot estiver comprovadamente ocupado.';return;
+  }
+  try{
+   const old=equipmentOf(c);
+   equipmentSave(c,{skills:old.skills,slot:slot.value,booster:slot.value==='ocupado'?name:''});
+   feedback.textContent='Estado manual salvo somente neste aparelho. Nenhum ímpeto foi equipado ou aplicado no jogo.';
+  }catch(e){feedback.textContent='Falha ao gravar localmente: '+String(e.message||e)}
+ };
+ additional.append(save);body.append(additional);
 }
 function renderBody(c,body){
  const s=section('Dados corporais do simulador');
