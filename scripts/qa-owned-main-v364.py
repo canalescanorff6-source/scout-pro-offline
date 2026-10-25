@@ -33,7 +33,9 @@ with sync_playwright() as pw:
      width:document.documentElement.scrollWidth-innerWidth,
      original:document.querySelectorAll('#cards .player-card').length
    })""")
-   page.locator("#ct364-owned-grid img").first.evaluate("(i)=>i.decode()")
+   # As 15 artes são loading=lazy no aplicativo. O QA precisa forçar a
+   # decodificação, pois imagens fora da viewport não são baixadas sozinhas.
+   page.locator("#ct364-owned-grid img").evaluate_all("(imgs)=>imgs.forEach(i=>i.loading='eager')")
    page.wait_for_function("()=>[...document.querySelectorAll('#ct364-owned-grid img')].every(i=>i.complete&&i.naturalWidth>0)",timeout=24000)
    assert result["width"]<=12,(name,"rolagem horizontal",result)
    assert result["original"]==246
