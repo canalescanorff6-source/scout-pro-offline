@@ -573,3 +573,55 @@ body.ct362-design[data-page="detail"] :is(.ct-manager-v329-favorite,.ct-manager-
   font-size:11px!important;padding:8px!important
  }
 }
+
+
+/* Telas 320px: a busca e a primeira carta devem aparecer sem rolagem inútil. */
+@media(max-width:355px){
+ body.ct362-design .ct362-proof{
+  top:35px!important;right:7px!important;
+  font-size:8px!important;padding:2px 5px!important
+ }
+ body.ct362-design[data-page="catalog"] #ct356-boot-proof{
+  display:none!important; /* A identificação V362 permanece no cabeçalho. */
+ }
+ body.ct362-design[data-page="catalog"] .hero{
+  margin:4px 0!important;border-radius:12px!important
+ }
+ body.ct362-design[data-page="catalog"] .hero .hero-text{
+  padding:7px!important
+ }
+ body.ct362-design[data-page="catalog"] .hero h1{
+  font-size:21px!important;margin:2px 0 5px!important;
+  line-height:1!important
+ }
+ body.ct362-design[data-page="catalog"] .scout-v189-eyebrow{
+  font-size:8px!important;line-height:1.15!important;
+  margin:2px 0 3px!important
+ }
+ body.ct362-design[data-page="catalog"] .scout-v192-search-block{margin:2px 0 5px!important}
+ body.ct362-design[data-page="catalog"] .scout-v192-search-shell,
+ body.ct362-design[data-page="catalog"] .scout-v192-search-shell input{
+  height:41px!important;min-height:41px!important
+ }
+ body.ct362-design[data-page="catalog"] .scout-v189-quick{
+  gap:5px!important;margin-bottom:4px!important
+ }
+ body.ct362-design[data-page="catalog"] .scout-v189-tile{
+  min-height:46px!important;grid-template-columns:26px minmax(0,1fr)!important;
+  padding:4px!important;gap:5px!important
+ }
+ body.ct362-design[data-page="catalog"] .scout-v189-mark{
+  width:26px!important;height:28px!important;
+  font-size:11px!important
+ }
+ body.ct362-design[data-page="catalog"] .scout-v189-tile strong{
+  font-size:10px!important
+ }
+ body.ct362-design[data-page="catalog"] .scout-v189-tile small{
+  display:none!important
+ }
+ body.ct362-design[data-page="catalog"] #catalogo{margin-top:3px!important;padding-top:3px!important}
+ body.ct362-design[data-page="catalog"] #catalogo .section-top{margin-bottom:3px!important}
+ body.ct362-design[data-page="catalog"] #catalogo .section-title{font-size:20px!important}
+ body.ct362-design[data-page="catalog"] #catalogo .list-meta{margin:2px 0 3px!important}
+}
