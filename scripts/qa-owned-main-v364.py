@@ -27,6 +27,11 @@ with sync_playwright() as pw:
    assert page.locator("#cards .player-card").count()==246,(name,"246 originais mudadas")
    assert page.locator("#ct364-owned-grid .ct364-player-card").count()==15,(name,"15 adicionais faltam")
    assert page.locator("#ct364-owned-section").is_visible()
+   assert not page.locator("#ct364-owned-section").evaluate("(e)=>e.open"),(name,"novas cartas devem iniciar recolhidas")
+   # Expandir a seção intencionalmente para validar as 15 imagens; tela inicial
+   # deve continuar com as 246 originais acessíveis na primeira dobra.
+   page.locator("#ct364-owned-section > summary").click()
+   assert page.locator("#ct364-owned-section").evaluate("(e)=>e.open")
    result=page.evaluate("""() => ({
      count:document.querySelectorAll('#ct364-owned-grid img').length,
      images:[...document.querySelectorAll('#ct364-owned-grid img')].map(i=>({src:i.getAttribute('src'),ok:i.complete&&i.naturalWidth>0})),
