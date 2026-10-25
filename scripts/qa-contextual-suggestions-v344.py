@@ -32,8 +32,8 @@ with sync_playwright() as pw:
     'excluded':['nativa_cadastrada','repetida_na_proposta'],
     'booster':None,'theoretical':'Técnica'},checked
    page.locator('#friend-new-card').click()
-    # V360: abrir os campos avançados como o usuário antes de validar/salvar.
-    page.locator('details.friend-card-advanced > summary').click()
+   # V360: abrir os campos avançados como o usuário antes de validar/salvar.
+   page.locator('details.friend-card-advanced > summary').click()
    page.locator('#friend-card-name').fill('V344 Evidence Consistent')
    page.locator('#friend-card-edition').fill('Edição de ensaio V344')
    page.locator('#friend-card-gameid').fill('105297')
