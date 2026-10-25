@@ -37,6 +37,8 @@ with sync_playwright() as pw:
     'slot':'slot_ocupado','absent':None,
     'theoretical':['Técnica','Força']},reviewed
    page.locator('#friend-new-card').click()
+   # V360: abrir os campos avançados como o usuário antes de validar/salvar.
+   page.locator('details.friend-card-advanced > summary').click()
    page.locator('#friend-card-name').fill('V348 ranking de ímpetos')
    page.locator('#friend-card-edition').fill('Edição simulada V348')
    page.locator('#friend-card-gameid').fill('105297')

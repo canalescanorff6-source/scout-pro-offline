@@ -39,6 +39,8 @@ with sync_playwright() as pw:
     'one':'onepass','portuguese':'onepass'},check
    # Validar no editor real e histórico independente sem alterar treino salvo.
    page.locator('#friend-new-card').click()
+   # V360: abrir os campos avançados como o usuário antes de validar/salvar.
+   page.locator('details.friend-card-advanced > summary').click()
    page.locator('#friend-card-name').fill('V345 Alias')
    page.locator('#friend-card-edition').fill('Edição de ensaio V345')
    page.locator('#friend-card-gameid').fill('105297')

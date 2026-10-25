@@ -97,6 +97,17 @@ function renderBruno(){
 }
 function renderPeople(){
  const root=$('friend-people');root.replaceChildren();
+ // V360: troca rápida, sem abrir uma segunda lista de pessoas.
+ const quick=$('friend-owner-jump');
+ if(quick){
+  quick.replaceChildren();
+  for(const owner of data.owners){
+   const option=el('option','',owner.name+' · '+personCards(owner.id).length+' carta(s)');
+   option.value=owner.id;quick.append(option);
+  }
+  quick.value=selected||'';
+  quick.disabled=locked||data.owners.length===0;
+ }
  $('friend-person-count').textContent=String(data.owners.length);
  $('friend-people-empty').hidden=data.owners.length!==0;
  for(const owner of data.owners){
@@ -193,6 +204,12 @@ $('friend-person-form').onsubmit=event=>{
   $('friend-person-name').value='';selectOwner(owner.id);
  }catch(e){status('Não foi possível cadastrar: '+e.message)}
 };
+const quick=$('friend-owner-jump');
+if(quick)quick.addEventListener('change',()=>{
+ if(quick.value===selected)return;
+ selectOwner(quick.value);
+ $('friend-selected')?.scrollIntoView({block:'start',behavior:'auto'});
+});
 $('friend-search').addEventListener('input',renderCards);
 $('friend-position').addEventListener('change',renderCards);
 $('friend-new-card').onclick=()=>openCard();
@@ -297,6 +314,8 @@ function openCard(card=null){
   budgetPreview.textContent+=' Sugestão do print de Zico: confirme que o nível 35 pertence à mesma edição antes de salvar. Nenhum dado foi modificado ainda.';
  }
  setPreview();
+ const advanced=dialog.querySelector('.friend-card-advanced');
+ if(advanced)advanced.open=Boolean(card&&(card.skills||card.booster||card.nativeSkills||card.fixedBooster||card.trainingLevels||card.notes));
  if(!dialog.open)dialog.showModal();
  $('friend-card-name').focus();
 }

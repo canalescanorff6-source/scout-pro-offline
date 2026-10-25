@@ -11,6 +11,8 @@
  });
  if(typeof module==='object'&&module.exports)module.exports=API;
  if(!host?.document)return;
+// V360: nenhum prisma, observador ou tilt enquanto o modo leve estiver ativo.
+if(host.CRAQUE_MOTION_PAUSED_V360)return;
  const doc=host.document;
  let pending=false,last=null,observer=null;
  let tiltQueued=false,tiltEvent=null;

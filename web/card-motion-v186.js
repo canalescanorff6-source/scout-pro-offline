@@ -14,6 +14,8 @@ function classifyRarity(value){
 const labels={show:'Show Time · energia',epic:'Épica · brilho lendário',big:'Big Time · impacto',highlight:'Distinguido · reflexos'};
 if(typeof module!=='undefined'&&module.exports)module.exports={classifyRarity,normalize,SETTINGS_KEY,labels};
 if(!host||!host.document)return;
+// V360: saída antecipada antes dos 246 nós, observers e listeners de efeitos.
+if(host.CRAQUE_MOTION_PAUSED_V360)return;
 const doc=host.document;
 function run(){
  if(doc.body.dataset.scoutMotionInit==='1')return;
