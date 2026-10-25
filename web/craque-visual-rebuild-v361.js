@@ -82,6 +82,7 @@
  }
  function dock(){
   if(!['catalog','detail'].includes(d.body?.dataset.page))return;
+  if(typeof win.matchMedia==='function'&&!win.matchMedia('(max-width:720px)').matches)return;
   const more=d.querySelector('#scout-app-bar .scout-v189-dock-more');
   const options=more?.querySelector('.scout-v189-dock-options');
   if(!more||!options||more.dataset.ct361Dock==='1')return;
