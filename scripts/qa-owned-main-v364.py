@@ -56,6 +56,18 @@ with sync_playwright() as pw:
    dialog=page.locator("#ct364-dialog")
    assert dialog.is_visible(),(name,"ficha adicional não abre")
    assert page.locator("#ct364-title").inner_text()=="K. Karetsas"
+   # V364.2: navegar como nas cartas principais, isolando identidade e edicao.
+   assert page.locator("#ct364-card-navigator").is_visible(),(name,"navegacao ausente")
+   assert page.locator("#ct364-jump option").count()==15
+   page.locator(".ct364-next").click()
+   assert page.locator("#ct364-title").inner_text()=="Ethan Nwaneri"
+   page.locator(".ct364-previous").click()
+   assert page.locator("#ct364-title").inner_text()=="K. Karetsas"
+   page.locator("#ct364-jump").select_option("ct364-15")
+   assert page.locator("#ct364-title").inner_text()=="Joane Gadou"
+   page.locator(".ct364-next").click()
+   assert page.locator("#ct364-title").inner_text()=="K. Karetsas"
+   assert "Minha carta 1 de 15" in page.locator("#ct364-card-index").inner_text()
    assert "PP" in page.locator("#ct364-panel").inner_text() or "PENDENTE" in page.locator("#ct364-panel").inner_text()
    page.locator('#ct364-tabs [data-panel="skills"]').click()
    assert page.locator(".ct364-skill-list span").count()==10
