@@ -10,6 +10,7 @@ on:
       - 'scripts/qa-visual-rebuild-v361.py'
       - 'scripts/qa-app-shell-v362.py'
       - 'scripts/qa-friends-focus-v363.py'
+      - 'scripts/qa-owned-main-v364.py'
       - 'scripts/qa-managers-v307.py'
       - 'scripts/qa-pp-v309.py'
       - 'scripts/qa-position-v311.py'
