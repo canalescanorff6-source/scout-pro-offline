@@ -148,3 +148,11 @@ body[data-page="catalog"] .scout-v189-quick{gap:6px!important;margin:5px 0!impor
   bottom:7px!important;font-size:8px!important;
  }
 }
+
+/* V360: remover a faixa redundante de indicadores de abertura.
+   Os contadores reais continuam no catálogo, evitando rolagem no Windows. */
+body[data-page="catalog"] .stats-strip{display:none!important}
+@media(max-width:720px){
+ /* Os chips horizontais ocupam uma só linha sem empurrar as cinco táticas. */
+ body[data-page="detail"] nav.ct360-card-quick{margin:2px 0 2px!important}
+}
