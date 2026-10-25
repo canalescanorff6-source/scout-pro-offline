@@ -54,6 +54,34 @@ function shell(){
    if(page===item.page)a.setAttribute('aria-current','page');
    nav.append(a);
   }
+  const more=create('button','ct362-navmore');
+  more.type='button';more.setAttribute('aria-expanded','false');
+  more.setAttribute('aria-controls','ct362-navtools');
+  more.append(create('span','ct362-navicon','☰'),create('span','ct362-navlabel','Mais'));
+  const tools=create('div','ct362-tools-popup');tools.id='ct362-navtools';
+  tools.hidden=true;
+  const prefix=page==='detail'?'../':'';
+  for(const [label,href] of [
+   ['Conferir níveis e PP','conferir-progresso-v248.html'],
+   ['Habilidades e ímpetos','revisao-impetos-v103.html'],
+   ['Laboratório','meu-time-testes-v219.html']]){
+   const a=create('a','',label);a.href=prefix+href;tools.append(a);
+  }
+  const toggle=()=>{
+   const open=more.getAttribute('aria-expanded')!=='true';
+   more.setAttribute('aria-expanded',String(open));
+   tools.hidden=!open;
+   d.body.classList.toggle('ct362-options-open',open);
+  };
+  more.addEventListener('click',toggle);
+  d.addEventListener('click',event=>{
+   if(more.getAttribute('aria-expanded')!=='true')return;
+   if(more.contains(event.target)||tools.contains(event.target)||
+      d.getElementById('scout-app-bar')?.contains(event.target))return;
+   more.setAttribute('aria-expanded','false');tools.hidden=true;
+   d.body.classList.remove('ct362-options-open');
+  });
+  nav.append(more,tools);
   d.body.append(nav);
  }
 }
