@@ -102,4 +102,13 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
  .ct364-data-row{font-size:11px}
 }
 @media(max-width:350px){.ct364-owned-grid{grid-template-columns:1fr}.ct364-player-card{flex-direction:row}.ct364-card-art{width:58px;height:auto;aspect-ratio:264/374}}
+/* V364: 320px deve manter a primeira carta oficial na primeira dobra. */
+@media(max-width:355px){
+ body[data-page="catalog"].ct362-design .ct364-owned-section:not([open]){
+  margin:0 0 1px!important;
+ }
+ body[data-page="catalog"].ct362-design .ct364-owned-section:not([open])>.ct364-owned-toggle{
+  min-height:39px;padding:7px 9px;
+ }
+}
 @media(prefers-reduced-motion:reduce){.ct364-player-card{transition:none}}
