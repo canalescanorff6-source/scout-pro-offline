@@ -664,3 +664,9 @@ body.ct362-design[data-page="friends"] dialog#friend-analysis-dialog.friends-dia
  border:1px solid #60748f!important;border-radius:14px!important;
  box-shadow:0 20px 48px #000a!important
 }
+
+/* Fichas legadas definem background transparent com alta especificidade.
+   A janela inteira precisa manter o mesmo fundo V362 também na ficha real. */
+html:has(body.ct362-design) body.ct362-design[data-page]{
+ background-color:#070c14!important;color:#f6f2e8!important;
+}
