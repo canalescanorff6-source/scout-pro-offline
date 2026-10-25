@@ -5,6 +5,7 @@ const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p
 const index=read('web/index.html'),friends=read('web/outros-elencos-v227.html');
 const page=read('web/craque-friends-page-v227.js'),bridge=read('web/app-bridge.js');
 const nav=read('web/scout-ui-v189.js'),css=read('web/craque-ux-lite-v360.css');
+const focus=read('web/craque-detail-focus-v360.js');
 const sw=read('web/sw.js'),stamp=read('scripts/stamp-bundle-v189.cjs');
 const audit=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
 assert.equal(audit.length,246);
@@ -13,6 +14,12 @@ assert(index.includes('craque-ux-lite-v360.css" data-ct360-final="true"'));
 assert(friends.includes('craque-ux-lite-v360.css" data-ct360-final="true"'));
 assert(bridge.includes('document.head.appendChild(ct360Final)'));
 assert(sw.includes("'./craque-ux-lite-v360.css'")&&sw.includes('v360-ux-lite'));
+assert(sw.includes("'./craque-detail-focus-v360.js'")&&stamp.includes("'craque-detail-focus-v360.js'"));
+assert(bridge.includes("focus360.src=v189Root+'craque-detail-focus-v360.js'"));
+assert(focus.includes("'performance'")&&focus.includes("'status'")&&
+ focus.includes("'hashchange'")&&focus.includes("details.ct360-card-extra"));
+assert(css.includes('ct360-card-quick')&&css.includes('ct360-card-extra'));
+new vm.Script(focus);
 assert(stamp.includes("'craque-ux-lite-v360.css'"));
 assert(nav.includes("scout-v360-dock-friends")&&nav.includes('outros-elencos-v227.html'));
 assert(friends.includes('id="friend-owner-jump"'));
