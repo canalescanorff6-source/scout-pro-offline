@@ -161,3 +161,18 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
  grid-column:1/-1;text-align:center;color:#b8cce0;font:700 10px/1.1 system-ui,sans-serif;
 }
 @media(max-width:720px){.ct364-card-nav{margin:0 9px 8px;gap:5px}}
+
+/* V364.3 — documentação manual: inputs legíveis no Android/Windows,
+   sem equipar habilidades ou gastar tokens. */
+.ct364-form-label input,.ct364-equipment-select{
+ box-sizing:border-box;width:100%;max-width:100%;min-width:0;
+ background:#0c1c2d;color:#f5f1e8;border:1px solid #69839e;
+ border-radius:8px;min-height:44px;padding:9px;font:500 13px/1.35 system-ui,sans-serif;
+}
+.ct364-form-label input:disabled{
+ color:#a4b5c7;background:#172332;border-color:#435771;opacity:1;
+}
+.ct364-form-label input:focus-visible,.ct364-equipment-select:focus-visible{
+ outline:2px solid #f4d18d;outline-offset:2px;
+}
+.ct364-area .ct364-ack{margin-top:6px;line-height:1.45}
