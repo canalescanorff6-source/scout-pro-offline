@@ -1,0 +1,74 @@
+/* V360 — UX leve: mesma paleta Premium, sem efeitos de cartas.
+   Regras isoladas por página. Não toca dados, builds, PP ou imagens. */
+:root{--ct360-bg:#081322;--ct360-surface:#14253e;--ct360-line:#526781;--ct360-gold:#f3cd77}
+body[data-page="catalog"] .hero{gap:clamp(10px,2vw,22px)!important;padding-block:clamp(12px,3vw,25px)!important}
+body[data-page="catalog"] .hero h1{font-size:clamp(26px,5vw,43px)!important;line-height:1.06!important;margin-block:5px 8px!important}
+body[data-page="catalog"] .hero .eyebrow{font-size:10px!important;letter-spacing:.06em!important}
+body[data-page="catalog"] .scout-v189-home{padding:clamp(12px,2.5vw,20px)!important;gap:10px!important}
+body[data-page="catalog"] .scout-v189-quick{gap:8px!important}
+body[data-page="catalog"] .scout-v189-tile{min-height:66px!important}
+body[data-page="catalog"] .scout-v189-intro{font-size:12px!important;line-height:1.45!important}
+body[data-page="catalog"] #ct356-boot-proof{font-size:10px}
+body[data-page="catalog"] #catalogo{scroll-margin-top:72px}
+body[data-page="friends"] .friends-layout{gap:12px!important}
+body[data-page="friends"] .friends-hero{padding:16px!important;gap:12px!important;border-radius:17px!important}
+body[data-page="friends"] .friends-hero h1{font-size:clamp(24px,5vw,32px)!important}
+body[data-page="friends"] .friends-hero-icon{width:66px!important;height:66px!important}
+body[data-page="friends"] .friends-journey{display:none!important}
+body[data-page="friends"] .friends-hero p{font-size:12px!important;line-height:1.45!important}
+body[data-page="friends"] .friends-safe{font-size:11px!important;padding:8px!important}
+body[data-page="friends"] .friends-featured-owner{display:flex!important;align-items:center;gap:12px!important;padding:12px!important}
+body[data-page="friends"] .friends-featured-art img{max-width:62px;max-height:87px;object-fit:contain}
+body[data-page="friends"] .friends-featured-info{min-width:0;flex:1}
+body[data-page="friends"] .friends-featured-info h2{font-size:16px!important;margin-bottom:2px!important}
+body[data-page="friends"] .friends-featured-info p{font-size:11px!important;line-height:1.4!important;margin:3px 0 8px!important}
+body[data-page="friends"] .friends-featured-info button{min-height:40px!important}
+body[data-page="friends"] .friends-featured-info details{font-size:11px;color:#d1dbec;margin:4px 0}
+body[data-page="friends"] .friends-featured-info details summary{cursor:pointer;color:#f3cd77}
+body[data-page="friends"] .friends-jump{display:flex;align-items:end;gap:10px;padding:12px 14px;border:1px solid #536e8a;border-radius:15px;background:linear-gradient(135deg,#152d4b,#101e32)}
+body[data-page="friends"] .friends-jump label{flex:1;min-width:0;font-size:12px;color:#e6d8b6}
+body[data-page="friends"] .friends-jump select{width:100%;min-height:46px}
+body[data-page="friends"] .friends-jump a{display:grid;place-items:center;min-height:46px;padding:8px 12px;border-radius:10px;border:1px solid #788399;background:#26374f;color:#f3dfb0;text-decoration:none;font-size:12px;font-weight:800}
+body[data-page="friends"] .friends-panel{border-radius:16px!important}
+body[data-page="friends"] .friends-main .friends-section-heading{align-items:center}
+body[data-page="friends"] .friends-card{min-height:0!important}
+body[data-page="friends"] .friends-card-info strong{font-size:16px!important}
+body[data-page="friends"] .friends-people-list{gap:7px}
+body[data-page="friends"] .friends-people{scroll-margin-top:82px}
+body[data-page="friends"] .friends-fichas-bar{padding:10px!important}
+body[data-page="friends"] .friends-fichas-bar p{font-size:11px!important}
+body[data-page="friends"] .friend-card-advanced{border:1px solid #526782;background:#111f36;border-radius:12px;padding:12px;min-width:0}
+body[data-page="friends"] .friend-card-advanced>summary{font-size:13px;font-weight:800;color:#f2d08a;cursor:pointer;list-style-position:inside}
+body[data-page="friends"] .friend-card-advanced>.friends-form-grid{margin-top:12px}
+body[data-page="friends"] .friend-analysis-dialog .friends-dialog-head{z-index:5}
+body[data-page="friends"] .friend-analysis-dialog .friend-analysis-tabs{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body[data-page="friends"] .friend-analysis-tabs button{min-height:53px!important;padding:7px!important}
+body[data-page="friends"] .friend-analysis-tabs button strong{font-size:12px!important}
+body[data-page="friends"] .friend-analysis-tabs button small{font-size:10px!important}
+body[data-page="friends"] .friend-analysis-sections{position:sticky;top:60px;z-index:4;padding:5px;background:#0c192b;border-radius:12px}
+body[data-page="friends"] .friend-analysis-content{contain:layout}
+body[data-page="friends"] .friend-analysis-cta{background:#111e32!important}
+body[data-page="catalog"] #scout-app-bar .scout-v360-dock-friends,
+body[data-page="detail"] #scout-app-bar .scout-v360-dock-friends{display:flex;align-items:center;min-height:44px;padding:9px 11px;border:1px solid #6d8098;border-radius:10px;color:#f7e2ae;background:#172b48;text-decoration:none;font-size:12px;font-weight:800}
+body[data-page="catalog"] :is(.scout-motion-layer,.ct234-motion-prism),
+body[data-page="detail"] :is(.scout-motion-layer,.ct234-motion-prism){display:none!important}
+body[data-page="catalog"] .player-card,
+body[data-page="detail"] .side-art{transform:none!important;animation:none!important;transition:none!important}
+body[data-page="catalog"] .scout-motion-controls,
+body[data-page="detail"] .scout-motion-controls{display:none!important}
+@media(max-width:540px){
+ body[data-page="catalog"] .hero-visual{display:none!important}
+ body[data-page="catalog"] .hero{grid-template-columns:minmax(0,1fr)!important}
+ body[data-page="catalog"] .scout-v189-home{padding:10px!important}
+ body[data-page="friends"] .friends-hero-icon{display:none!important}
+ body[data-page="friends"] .friends-jump{flex-wrap:wrap}
+ body[data-page="friends"] .friends-jump a{width:100%}
+ body[data-page="friends"] .friends-featured-owner{align-items:flex-start}
+ body[data-page="friends"] .friends-featured-art img{max-width:52px}
+ body[data-page="friends"] .friends-panel{padding:12px!important}
+ body[data-page="friends"] .friend-analysis-dialog .friend-analysis-sections{top:54px}
+ body[data-page="friends"] .friends-dialog-actions{gap:7px}
+}
+@media(prefers-reduced-motion:reduce){
+ body[data-page="friends"] *,body[data-page="catalog"] *,body[data-page="detail"] *{scroll-behavior:auto!important}
+}
