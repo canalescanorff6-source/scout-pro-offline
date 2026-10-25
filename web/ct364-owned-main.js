@@ -131,7 +131,7 @@ async function renderTraining(c,body){
  tools.append(modes);const area=mk('div','ct364-training-area');
  tools.append(area);body.append(tools);
  const identity=confirmationOf(c);
- if(!identity.level)note(area,'Os PP ainda não são calculáveis: o nível mostrado no simulador não confirma o nível MÁXIMO da edição. Informe esse dado na seção Confirmar dados da ficha.');
+ if(!identity.level)note(area,'PP PENDENTES: o nível mostrado no simulador não confirma o nível MÁXIMO da edição. Informe esse dado na seção Confirmar dados da ficha.');
  const generation=++renderTraining.generation;
  try{
   await ensureEngine();
