@@ -80,6 +80,7 @@ with sync_playwright() as pw:
    page.locator(".ct364-save").click()
    assert "Conflito" in page.locator(".ct364-feedback").inner_text()
    page.locator('[data-skill-slot="1"]').fill("Habilidade de QA descartável")
+   page.locator('[data-skill-slot="3"]').fill("Outra habilidade de QA descartável")
    page.locator(".ct364-save").click()
    assert "salvo" in page.locator(".ct364-feedback").inner_text()
    page.locator(".ct364-next").click()
@@ -88,6 +89,8 @@ with sync_playwright() as pw:
    page.locator(".ct364-previous").click()
    page.locator('#ct364-tabs [data-panel="skills"]').click()
    assert page.locator('[data-skill-slot="1"]').input_value()=="Habilidade de QA descartável"
+   assert page.locator('[data-skill-slot="2"]').input_value()==""
+   assert page.locator('[data-skill-slot="3"]').input_value()=="Outra habilidade de QA descartável"
    page.locator('#ct364-tabs [data-panel="boost"]').click()
    page.locator("#ct364-booster-slot").select_option("ocupado")
    page.locator("#ct364-equipped-booster").fill("Ímpeto de QA descartável")
@@ -96,7 +99,9 @@ with sync_playwright() as pw:
    assert "salvo" in page.locator(".ct364-feedback").inner_text()
    manual=page.evaluate("""() => JSON.parse(localStorage.getItem('scoutpro:v364:owned-equipment')||'{}')""")
    assert manual["ct364-01"]["slot"]=="ocupado"
-   assert manual["ct364-01"]["skills"]==["Habilidade de QA descartável"]
+   assert manual["ct364-01"]["skills"]==[
+    "Habilidade de QA descartável","","Outra habilidade de QA descartável","",""
+   ],(name,"indices das cinco vagas foram compactados")
    assert "ct364-02" not in manual,(name,"skills foram compartilhadas entre cartas")
    page.locator('#ct364-tabs [data-panel="boost"]').click()
    assert "simulação" in page.locator("#ct364-panel").inner_text().lower()
