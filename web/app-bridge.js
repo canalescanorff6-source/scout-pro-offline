@@ -32,6 +32,8 @@ async function scoutSaveJson(data,fileName){
  return {status:'requested'}; // Navegador: o usuário deve conferir o download.
 }
 window.SCOUT_FILE_EXPORT=Object.freeze({saveJson:scoutSaveJson});
+// V360: visual estático por padrão; não ativar observadores nem shaders de cartas.
+window.CRAQUE_MOTION_PAUSED_V360=true;
 if(document.getElementById('scout-app-bar'))return;
 const repo=String(window.SCOUT_GITHUB_REPO||'').trim();
 const scoutNativeAndroid=Boolean(window.Capacitor?.isNativePlatform?.() && window.Capacitor?.getPlatform?.()==='android');
@@ -871,6 +873,10 @@ if(document.body.dataset.page==='catalog'||document.body.dataset.page==='detail'
  ct249Script.defer=true;document.head.appendChild(ct249Script);
 }
 
+// V360: folha final única para evitar a cascata antiga sobre a interface.
+const ct360Final=document.querySelector('link[data-ct360-final="true"]')||document.createElement('link');
+ct360Final.rel='stylesheet';ct360Final.href=v189Root+'craque-ux-lite-v360.css';
+document.head.appendChild(ct360Final);
 window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
