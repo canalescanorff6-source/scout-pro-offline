@@ -207,3 +207,30 @@ body.ct361-dock-ready #scout-app-bar .scout-v189-dock-options #scout-update{
   scroll-behavior:auto!important;animation:none!important;transition:none!important
  }
 }
+
+/* V361 ajuste medido pela QA em 8 resoluções: cockpit visível sem empurrar o treino.
+   A navegação V360 já contém Foco/Treinamento/Jogar/Lab/Status, portanto remover a
+   segunda faixa de CTA da primeira dobra evita duplicação sem perder atalhos. */
+@media(max-width:720px){
+ body[data-page="detail"] .ct361-player-glance{
+  padding:8px!important;gap:5px!important;margin-bottom:5px!important;
+ }
+ body[data-page="detail"] .ct361-glance-art{height:121px!important}
+ body[data-page="detail"] .ct361-glance-actions{display:none!important}
+ body[data-page="detail"] .ct361-glance-stat{padding:5px!important}
+ body[data-page="detail"] .ct361-glance-cardno{margin-top:2px!important}
+ body[data-page="detail"] .ct361-glance-name{margin:4px 0!important}
+ body[data-page="detail"].ct361-detail-ready #ct360-card-quick{
+  padding:2px!important;margin:2px 0 3px!important;
+ }
+}
+@media(min-width:721px){
+ body[data-page="catalog"].ct361-home-ready .ct361-home-mark{
+  position:absolute;top:8px;right:10px;z-index:3;
+  margin:0!important;pointer-events:none;
+ }
+ body[data-page="catalog"].ct361-home-ready .hero{
+  margin-top:6px!important;margin-bottom:3px!important;
+  padding-top:7px!important;padding-bottom:7px!important;
+ }
+}
