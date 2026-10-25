@@ -66,20 +66,9 @@ function catalog(){
  heading.innerHTML='<span>O SEU FUTEBOL.</span><em>SEM COMPLICAÇÃO.</em>';
  const indicator=hero.querySelector('.scout-v189-eyebrow');
  if(indicator)indicator.textContent='FICHAS · TREINOS · ESCALAÇÕES · ANÁLISE REAL';
- const captions=[
-  ['01','MINHAS CARTAS','Abrir biblioteca e fichas'],
-  ['02','OUTROS ELENCOS','Coleções separadas'],
-  ['03','MEU TIME','Escalação e reservas'],
-  ['04','LABORATÓRIO','Comparações e testes']
- ];
- tiles.querySelectorAll('.scout-v189-tile').forEach((tile,i)=>{
-  const m=captions[i];if(!m)return;
-  const mark=tile.querySelector('.scout-v189-mark');
-  const strong=tile.querySelector('strong'),small=tile.querySelector('small');
-  if(mark)mark.textContent=m[0];if(strong)strong.textContent=m[1];if(small)small.textContent=m[2];
- });
+ tiles.querySelectorAll('.scout-v189-tile .scout-v189-mark').forEach((mark,i)=>{mark.textContent=String(i+1).padStart(2,'0')});
  const section=d.querySelector('#catalogo .section-title');
- if(section)section.textContent='Suas cartas';
+ if(section)section.textContent='Biblioteca de jogadores';
  d.body.dataset.ct362Catalog='true';
 }
 function detail(){
@@ -105,7 +94,7 @@ function detail(){
 function friends(){
  if(at()!=='friends'||d.body.dataset.ct362Friends==='true')return;
  const heading=d.querySelector('.friends-hero h1');if(!heading)return;
- heading.textContent='Elencos de clientes';
+ heading.textContent='Outros Elencos';
  const paragraph=d.querySelector('.friends-hero h1 + p');
  if(paragraph)paragraph.textContent='Selecione uma pessoa, abra suas cartas e consulte as mesmas fichas competitivas — sem misturar com seu elenco.';
  const jump=d.querySelector('.friends-jump');
