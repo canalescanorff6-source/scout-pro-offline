@@ -877,6 +877,10 @@ if(document.body.dataset.page==='catalog'||document.body.dataset.page==='detail'
 const ct360Final=document.querySelector('link[data-ct360-final="true"]')||document.createElement('link');
 ct360Final.rel='stylesheet';ct360Final.href=v189Root+'craque-ux-lite-v360.css';
 document.head.appendChild(ct360Final);
+// V360: navegação compacta de ficha; não modifica os motores documentais.
+if(inCard){const focus360=document.createElement('script');
+ focus360.src=v189Root+'craque-detail-focus-v360.js';focus360.defer=true;
+ document.head.appendChild(focus360);}
 window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
