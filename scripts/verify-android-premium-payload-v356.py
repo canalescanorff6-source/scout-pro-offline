@@ -186,9 +186,22 @@ def self_test() -> None:
                 "mobile_web_container": "Capacitor webDir=web",
                 "version": "1.1.1004", "git_revision": "test"
             }) if name == "scout-build-info.json"
+            else json.dumps({
+                "schema": "craque-owned-cards-v364",
+                "additions": 15,
+                "cards": [{"key": "ct364-" + str(i).zfill(2),
+                           "image": "cartas/novas/ct364_Test" + str(i) + ".webp"}
+                          for i in range(1, 16)]
+            }, ensure_ascii=False, indent=2) if name == "ct364-owned-cards.json"
             else "\n".join(REQUIRED_MARKERS.get(name, ("arquivo presente",))))
             (web / name).write_text(content, encoding="utf-8")
             entries["assets/public/" + name] = content.encode()
+        for i in range(1, 16):
+            path = "cartas/novas/ct364_Test" + str(i) + ".webp"
+            full = web / path
+            full.parent.mkdir(parents=True, exist_ok=True)
+            full.write_bytes(b"RIFF_TEST_WEBP_" + str(i).encode())
+            entries["assets/public/" + path] = full.read_bytes()
         entries["assets/public/SCOUT_V69_AUDITORIA.json"] = json.dumps(
             {"cards": [{} for _ in range(246)]}).encode()
         apk = root / "test.apk"
@@ -197,7 +210,7 @@ def self_test() -> None:
                 for name, data in entries.items():
                     output.writestr(name, data)
         make_apk()
-        assert verify(apk, web)["verified_files"] == len(CRITICAL)
+        assert verify(apk, web)["verified_files"] == len(CRITICAL) + 15
         entries.pop("assets/public/scout-ui-v189.js")
         make_apk()
         try:
