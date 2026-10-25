@@ -49,6 +49,6 @@ assert.match(js,/function navigateOwned/,'anterior/proxima ausentes');
 assert.match(js,/ct364-jump/,'ir ao numero especifico ausente');
 assert.match(css,/ct364-player-card/);
 assert.match(css,/ct364-card-nav/,'navegador responsivo ausente');
-assert.match(css,/V364\\.2/,'correcao da primeira dobra ausente');
+assert.match(css,/V364[.]2/,'correcao da primeira dobra ausente');
 assert.doesNotMatch(js,/SCOUT_V69_AUDITORIA|localStorage\.removeItem\(/,'não sobrescrever originais/backup');
 console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 5 táticas mesmo motor, Android/Windows offline.');
