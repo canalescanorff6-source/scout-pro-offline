@@ -218,6 +218,11 @@ function renderDialog(){
  $('#ct364-dialog-role').value=activeRole||c.position;
  const subtitle=$('#ct364-dialog-subtitle');subtitle.textContent=
   c.position+' · '+c.style+' · '+c.observed.shownLevel+' nível no eFHub (simulação)';
+ const jump=$('#ct364-jump');
+ if(jump)jump.value=c.key;
+ const position=entries.findIndex(x=>x.key===c.key);
+ const indicator=$('#ct364-card-index');
+ if(indicator)indicator.textContent='Minha carta '+(position+1)+' de '+entries.length+' · cadastro independente da versão original';
  const tabs=$('#ct364-tabs');tabs.replaceChildren();
  const labels={resumo:'Visão geral',treino:'5 fichas',skills:'Habilidades',boost:'Ímpetos',body:'Biotipo',confirm:'Confirmar dados'};
  for(const [id,text] of Object.entries(labels)){
@@ -233,11 +238,23 @@ function renderDialog(){
  else if(activePanel==='body')renderBody(c,body);
  else if(activePanel==='confirm')renderConfirm(c,body);
 }
-function openCard(c){
+function switchOwnedCard(c){
+ if(!c||!entries.some(item=>item.key===c.key))return;
+ // Muda somente o contexto consultivo; nunca copia PP, equipamento ou
+ // confirmação entre edições homônimas ou entre Minhas Cartas e Outros.
  active=c;activeRole=c.position;activeStyle='posse';activePanel='resumo';
  renderDialog();
+ const dialog=$('#ct364-dialog');if(dialog)dialog.scrollTop=0;
+}
+function navigateOwned(delta){
+ const index=entries.findIndex(c=>c.key===active?.key);
+ if(index<0)return;
+ switchOwnedCard(entries[(index+delta+entries.length)%entries.length]);
+}
+function openCard(c){
+ switchOwnedCard(c);
  const dialog=$('#ct364-dialog');
- if(typeof dialog.showModal==='function')dialog.showModal();
+ if(typeof dialog.showModal==='function'&&!dialog.open)dialog.showModal();
  else dialog.setAttribute('open','');
 }
 function prepare(data){
@@ -275,10 +292,26 @@ function prepare(data){
  }
  sel.onchange=()=>{activeRole=sel.value;renderDialog()};
  choices.append(sel);
+ const nav=mk('nav','ct364-card-nav');nav.id='ct364-card-navigator';
+ nav.setAttribute('aria-label','Navegar entre as 15 cartas adicionadas ao elenco principal');
+ const previous=mk('button','ct364-previous','‹');previous.type='button';
+ previous.setAttribute('aria-label','Carta anterior');previous.onclick=()=>navigateOwned(-1);
+ const jump=mk('select');jump.id='ct364-jump';
+ jump.setAttribute('aria-label','Ir diretamente ao número da carta adicionada');
+ entries.forEach((card,i)=>{
+  const option=mk('option','',String(i+1).padStart(2,'0')+' · '+card.name);
+  option.value=card.key;jump.append(option);
+ });
+ jump.onchange=()=>switchOwnedCard(entries.find(card=>card.key===jump.value));
+ const next=mk('button','ct364-next','›');next.type='button';
+ next.setAttribute('aria-label','Próxima carta');next.onclick=()=>navigateOwned(1);
+ const index=mk('small','', 'Minha carta 1 de 15');
+ index.id='ct364-card-index';index.setAttribute('aria-live','polite');
+ nav.append(previous,jump,next,index);
  const tabs=mk('nav','ct364-tabs');tabs.id='ct364-tabs';
  tabs.setAttribute('aria-label','Seções da ficha');
  const panel=mk('div','ct364-panel');panel.id='ct364-panel';
- dialog.append(h,choices,tabs,panel);
+ dialog.append(h,choices,nav,tabs,panel);
  dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
  document.body.append(dialog);
  const search=$('#search'),sort=$('#sort');
