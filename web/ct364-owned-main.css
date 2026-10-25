@@ -129,3 +129,35 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
   line-height:1.12!important;
  }
 }
+
+/* V364.2 — 320px: libertar espaço da biblioteca antes da primeira carta
+   sem remover conteúdo e sem reduzir os alvos de toque dos controles. */
+@media(max-width:355px){
+ body.ct362-design[data-page="catalog"] #catalogo > .section-top{
+  margin:0!important;padding:0!important;
+ }
+ body.ct362-design[data-page="catalog"] #catalogo .list-meta{
+  margin:0 0 1px!important;padding:0!important;
+ }
+ body.ct362-design[data-page="catalog"] #catalogo .scout-v203-filter-panel{
+  margin:1px 0 2px!important;
+ }
+}
+.ct364-card-nav{
+ display:grid;grid-template-columns:44px minmax(0,1fr) 44px;
+ gap:6px;align-items:center;margin:0 13px 11px;
+}
+.ct364-card-nav button,.ct364-card-nav select{
+ box-sizing:border-box;min-width:0;min-height:44px;border:1px solid #66829c;
+ border-radius:9px;color:#f7e8c9;background:#19314a;
+ font:800 12px/1.3 system-ui,sans-serif;
+}
+.ct364-card-nav button{cursor:pointer;font-size:23px}
+.ct364-card-nav select{width:100%;padding:6px}
+.ct364-card-nav button:focus-visible,.ct364-card-nav select:focus-visible{
+ outline:2px solid #ffe0a2;outline-offset:2px;
+}
+.ct364-card-nav small{
+ grid-column:1/-1;text-align:center;color:#b8cce0;font:700 10px/1.1 system-ui,sans-serif;
+}
+@media(max-width:720px){.ct364-card-nav{margin:0 9px 8px;gap:5px}}
