@@ -71,6 +71,33 @@ with sync_playwright() as pw:
    assert "PP" in page.locator("#ct364-panel").inner_text() or "PENDENTE" in page.locator("#ct364-panel").inner_text()
    page.locator('#ct364-tabs [data-panel="skills"]').click()
    assert page.locator(".ct364-skill-list span").count()==10
+   # V364.3: as cinco vagas manuais não presumem equipamento; nomes
+   # duplicados com habilidades observadas e edições vizinhas ficam isolados.
+   assert page.locator('[data-skill-slot]').count()==5,(name,"faltam cinco vagas manuais")
+   own_native=page.locator(".ct364-skill-list span").first.inner_text()
+   page.locator('[data-skill-slot="1"]').fill(own_native)
+   page.locator(".ct364-ack input").check()
+   page.locator(".ct364-save").click()
+   assert "Conflito" in page.locator(".ct364-feedback").inner_text()
+   page.locator('[data-skill-slot="1"]').fill("Habilidade de QA descartável")
+   page.locator(".ct364-save").click()
+   assert "salvo" in page.locator(".ct364-feedback").inner_text()
+   page.locator(".ct364-next").click()
+   page.locator('#ct364-tabs [data-panel="skills"]').click()
+   assert page.locator('[data-skill-slot="1"]').input_value()=="",(name,"equipamento vazou para Nwaneri")
+   page.locator(".ct364-previous").click()
+   page.locator('#ct364-tabs [data-panel="skills"]').click()
+   assert page.locator('[data-skill-slot="1"]').input_value()=="Habilidade de QA descartável"
+   page.locator('#ct364-tabs [data-panel="boost"]').click()
+   page.locator("#ct364-booster-slot").select_option("ocupado")
+   page.locator("#ct364-equipped-booster").fill("Ímpeto de QA descartável")
+   page.locator(".ct364-ack input").check()
+   page.locator(".ct364-save").click()
+   assert "salvo" in page.locator(".ct364-feedback").inner_text()
+   manual=page.evaluate("""() => JSON.parse(localStorage.getItem('scoutpro:v364:owned-equipment')||'{}')""")
+   assert manual["ct364-01"]["slot"]=="ocupado"
+   assert manual["ct364-01"]["skills"]==["Habilidade de QA descartável"]
+   assert "ct364-02" not in manual,(name,"skills foram compartilhadas entre cartas")
    page.locator('#ct364-tabs [data-panel="boost"]').click()
    assert "simulação" in page.locator("#ct364-panel").inner_text().lower()
    page.locator('#ct364-tabs [data-panel="treino"]').click()
