@@ -94,41 +94,31 @@ def run():
                 home["quick_links"] = shortcuts
                 home["errors"] = list(errors)
 
-                # V248: verificar GEOMETRIA REAL das cartas no hero Windows.
-                # Screenshot do usuário: 1151px, busca/atalhos cobrindo as artes.
+                # V362: as três artes decorativas do hero são escondidas por projeto.
+                # A biblioteca REAL de 246 artes deve permanecer intacta,
+                # e busca/atalhos devem ocupar somente a área de entrada.
                 if not mobile:
                     geometry = page.evaluate("""() => {
                       const text=document.querySelector('.hero-text');
                       const art=document.querySelector('.hero-visual');
                       const quick=document.querySelector('.scout-v189-quick');
                       const search=document.querySelector('.scout-v192-search-shell');
-                      const cardNodes=[...document.querySelectorAll('.hero-visual .featured')];
-                      if(!text||!art||!quick||!search||cardNodes.length!==3)return {ok:false,error:'Nós do cabeçalho ausentes'};
-                      const rect=e=>e.getBoundingClientRect();
-                      const a=rect(text),b=rect(art),q=rect(quick),s=rect(search);
-                      const horizontal=a.right<=b.left+2;
-                      const vertical=a.bottom<=b.top+2;
-                      const layout=horizontal?'colunas':vertical?'empilhado':'sobreposto';
-                      const inside=e=>{
-                        const r=rect(e);
-                        return r.left>=a.left-2&&r.right<=a.right+2;
-                      };
-                      const gallery=cardNodes.map(img=>{
-                        const r=rect(img);
-                        const width=Math.max(0,Math.min(r.right,b.right)-Math.max(r.left,b.left));
-                        const height=Math.max(0,Math.min(r.bottom,b.bottom)-Math.max(r.top,b.top));
-                        const ratio=(width*height)/Math.max(1,r.width*r.height);
-                        return {visibleRatio:+ratio.toFixed(3),loaded:img.complete&&img.naturalWidth>0};
-                      });
+                      const gallery=[...document.querySelectorAll('.hero-visual .featured')];
+                      const cards=[...document.querySelectorAll('#cards .player-card')];
+                      const images=cards.map(e=>e.querySelector('.card-art img'));
+                      const hidden=!!art && getComputedStyle(art).display==='none';
+                      const inside=!!text && !!quick && !!search &&
+                        text.contains(quick) && text.contains(search);
                       return {
-                        ok:layout!=='sobreposto'&&inside(quick)&&inside(search)&&
-                          gallery.every(x=>x.loaded&&x.visibleRatio>=.90),
-                        layout,searchInside:inside(search),quickInside:inside(quick),gallery
+                       ok:hidden&&inside&&gallery.length===3&&cards.length===246&&
+                         images.length===246&&images.every(e=>!!e?.getAttribute('src')),
+                       artHidden:hidden,searchInside:inside,cardCount:cards.length,
+                       originalArtworkCount:images.length,decorativeItems:gallery.length
                       };
                     }""")
-                    home["v248_hero_geometry"] = geometry
+                    home["v362_hero_geometry"] = geometry
                     if not geometry["ok"]:
-                        problems.append(f"{name}: conteúdo ocupa espaço das artes ou imagem cortada: {geometry}")
+                        problems.append(f"{name}: V362 painel minimalista ocultou cartas reais ou perdeu navegação: {geometry}")
 
                 if shortcuts != 4:
                     problems.append(f"{name}: home precisa de 4 atalhos, recebeu {shortcuts}")

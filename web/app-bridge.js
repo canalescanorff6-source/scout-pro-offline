@@ -887,6 +887,16 @@ ct361Final.rel='stylesheet';ct361Final.href=v189Root+'craque-visual-rebuild-v361
 document.head.appendChild(ct361Final);
 const ct361Ui=document.createElement('script');ct361Ui.src=v189Root+'craque-visual-rebuild-v361.js';
 ct361Ui.defer=true;document.head.appendChild(ct361Ui);
+// V362: camada visual GLOBAL, última cascata para todas as rotas com app-bridge.
+const ct362Style=document.querySelector('link[data-ct362-design="true"]')||document.createElement('link');
+ct362Style.rel='stylesheet';ct362Style.href=v189Root+'craque-app-shell-v362.css';
+ct362Style.dataset.ct362Design='true';document.head.appendChild(ct362Style);
+if(!document.querySelector('script[data-ct362-design="true"]')){
+ const ct362Script=document.createElement('script');
+ ct362Script.src=v189Root+'craque-app-shell-v362.js';
+ ct362Script.defer=true;ct362Script.dataset.ct362Design='true';
+ document.head.appendChild(ct362Script);
+}
 window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
