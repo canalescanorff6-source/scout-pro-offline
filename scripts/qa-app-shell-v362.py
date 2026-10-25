@@ -56,7 +56,7 @@ with sync_playwright() as p:
      assert page.locator('.ct361-glance-art img').get_attribute('src')==page.locator('.mobile-profile img').get_attribute('src')
      assert page.locator('#scout-v220-training').count()==1
      assert page.locator('#scout-v220-recs').count()==1
-     assert page.locator('#scout-v220-practice').count()==1
+     assert page.locator('#scout-v220-hero .scout-v220-practice').count()==1
      if mobile:
       assert page.locator('.scout-v220-head').evaluate("(e)=>getComputedStyle(e).display=='none'"),'Cabeçalho V220 antigo ainda duplicado'
     if label in ('home','friends','managers','detail'):
