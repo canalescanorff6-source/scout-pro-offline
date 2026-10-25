@@ -25,7 +25,11 @@ let equipment=loadEquipment();
 const equipmentOf=card=>{
  const data=equipment[card.key];
  if(!data||typeof data!=='object'||Array.isArray(data))return {skills:[],slot:'pendente',booster:''};
- const skills=Array.isArray(data.skills)?data.skills.filter(v=>typeof v==='string').slice(0,5):[];
+ // Preservar vagas vazias: slot #3 não pode migrar para #1.
+ const skills=Array.from({length:5},(_,i)=>{
+  const value=Array.isArray(data.skills)?data.skills[i]:null;
+  return typeof value==='string'&&value.length<=80?value.trim():'';
+ });
  const slot=['pendente','ocupado','vazio','ausente'].includes(data.slot)?data.slot:'pendente';
  return {skills,slot,booster:slot==='ocupado'&&typeof data.booster==='string'?data.booster:''};
 };
@@ -47,11 +51,12 @@ const confirmationOf=card=>{
  const id=/^\d{5,20}$/.test(String(v.cardId||''))?String(v.cardId):'';
  return {level,cardId:id};
 };
-const cardAsEngine=(card,role)=>{const p=confirmationOf(card);
+const cardAsEngine=(card,role)=>{const p=confirmationOf(card),manual=equipmentOf(card);
  return {name:card.name,position:role||card.position,style:card.style,
-  level:p.level,pp:null,cardId:p.cardId,edition:p.cardId?'Edição indicada manualmente; conferir Card ID':'',
-  skills:'',nativeSkills:card.observed.nativeSkills.join('; '),
-  booster:'',fixedBooster:'',boosterSlot:'pendente',trainingLevels:''};
+  level:p.level,pp:null,cardId:p.cardId,edition:'',
+  // Anotações manuais NÃO provam slot livre, Card ID ou versão.
+  skills:manual.skills.filter(Boolean).join('; '),nativeSkills:card.observed.nativeSkills.join('; '),
+  booster:manual.booster,fixedBooster:'',boosterSlot:manual.slot,trainingLevels:''};
 };
 function section(title){const s=mk('section','ct364-area');s.append(mk('h3','',title));return s}
 function line(parent,label,value){const row=mk('div','ct364-data-row');row.append(mk('span','',label),mk('strong','',value??'Pendente'));parent.append(row)}
@@ -157,7 +162,7 @@ async function renderTraining(c,body){
  const identity=confirmationOf(c);
  if(!identity.level)note(area,'PP PENDENTES: o nível mostrado no simulador não confirma o nível MÁXIMO da edição. Informe esse dado na seção Confirmar dados da ficha.');
  const manual=equipmentOf(c);
- if(manual.skills.length)line(area,'Habilidades informadas por você',manual.skills.join(' · ')+' · registro local, não validação automática');
+ if(manual.skills.some(Boolean))line(area,'Habilidades informadas por você',manual.skills.filter(Boolean).join(' · ')+' · registro local, não validação automática');
  if(manual.slot!=='pendente')line(area,'Slot de ímpeto informado por você',
   {ausente:'Sem slot',vazio:'Vazio',ocupado:'Ocupado'}[manual.slot]+
   (manual.slot==='ocupado'?' · '+manual.booster:'')+' · a conferir por edição');
@@ -177,7 +182,20 @@ async function renderTraining(c,body){
    plan.categories.forEach((name,i)=>line(table,name,plan.levels[i]+' níveis'));
    area.append(table);line(area,'PP restantes',plan.remaining);
   }
-  if(result.warnings?.length){
+  const suggestions=result.suggestedSkills||[];
+   if(suggestions.length){
+    const options=section('Habilidades para testar nesta função');
+    const list=mk('div','ct364-skill-list');
+    for(const suggestion of suggestions.slice(0,5)){
+     const name=typeof suggestion==='string'?suggestion:
+       String(suggestion?.name||suggestion?.skill||'').trim();
+     if(name)list.append(mk('span','',name));
+    }
+    if(list.children.length)options.append(list);
+    note(options,'Candidatas calculadas pelo motor V162 para posição e tática selecionadas. Não pressupõem slots livres nem habilidades instaladas. Confira edição e habilidades nativas.');
+    area.append(options);
+   }
+   if(result.warnings?.length){
    const more=mk('details','ct364-warnings'),summary=mk('summary','',result.warnings.length+' ressalvas e verificações');
    const ul=mk('ul');result.warnings.forEach(x=>ul.append(mk('li','',x)));
    more.append(summary,ul);area.append(more);
@@ -217,7 +235,8 @@ function renderSkills(c,body){
  const save=mk('button','ct364-save','Registrar habilidades desta carta');save.type='button';
  const feedback=equipmentFeedback(additional);
  save.onclick=()=>{
-  const names=inputs.map(el=>el.value.trim()).filter(Boolean);
+  const slots=inputs.map(el=>el.value.trim());
+  const names=slots.filter(Boolean);
   const known=new Set(c.observed.nativeSkills.map(normalize));
   const unique=new Set(names.map(normalize));
   if(!consent.checked){feedback.textContent='Marque a confirmação após conferir diretamente na carta do jogo.';return}
@@ -229,7 +248,7 @@ function renderSkills(c,body){
   }
   try{
    const old=equipmentOf(c);
-   equipmentSave(c,{skills:names,slot:old.slot,booster:old.booster});
+   equipmentSave(c,{skills:slots,slot:old.slot,booster:old.booster});
    feedback.textContent='Registro manual salvo apenas neste aparelho para '+c.name+'. Nenhuma habilidade foi equipada automaticamente.';
   }catch(e){feedback.textContent='Falha ao gravar localmente: '+String(e.message||e)}
  };
