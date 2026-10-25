@@ -156,6 +156,11 @@ async function renderTraining(c,body){
  tools.append(area);body.append(tools);
  const identity=confirmationOf(c);
  if(!identity.level)note(area,'PP PENDENTES: o nível mostrado no simulador não confirma o nível MÁXIMO da edição. Informe esse dado na seção Confirmar dados da ficha.');
+ const manual=equipmentOf(c);
+ if(manual.skills.length)line(area,'Habilidades informadas por você',manual.skills.join(' · ')+' · registro local, não validação automática');
+ if(manual.slot!=='pendente')line(area,'Slot de ímpeto informado por você',
+  {ausente:'Sem slot',vazio:'Vazio',ocupado:'Ocupado'}[manual.slot]+
+  (manual.slot==='ocupado'?' · '+manual.booster:'')+' · a conferir por edição');
  const generation=++renderTraining.generation;
  try{
   await ensureEngine();
@@ -239,7 +244,7 @@ function renderBoost(c,body){
  const additional=section('Estado real do slot adicional — registro manual');
  const saved=equipmentOf(c);
  const label=mk('label','ct364-form-label','Slot adicional da carta');
- const slot=mk('select','ct364-equipment-select');
+ const slot=mk('select','ct364-equipment-select');slot.id='ct364-booster-slot';
  for(const [id,name] of [
   ['pendente','Pendente: não conferido'],
   ['ausente','Sem slot adicional — conferido'],
@@ -250,7 +255,8 @@ function renderBoost(c,body){
  }
  slot.value=saved.slot;label.append(slot);additional.append(label);
  const boosterLabel=mk('label','ct364-form-label','Nome do ímpeto adicional equipado');
- const booster=mk('input');booster.type='text';booster.maxLength=80;booster.autocomplete='off';
+ const booster=mk('input');booster.id='ct364-equipped-booster';
+ booster.type='text';booster.maxLength=80;booster.autocomplete='off';
  booster.value=saved.booster;booster.placeholder='Somente quando o slot está ocupado';
  boosterLabel.append(booster);additional.append(boosterLabel);
  const sync=()=>{booster.disabled=slot.value!=='ocupado';if(booster.disabled)booster.value='';};
