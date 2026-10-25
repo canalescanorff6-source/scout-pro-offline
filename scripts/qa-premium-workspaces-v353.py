@@ -33,15 +33,18 @@ with sync_playwright() as pw:
      const at=css.findIndex(e=>e.href.includes('craque-premium-workspaces-v353.css'));
      const legacy=css.findIndex(e=>e.href.includes('craque-visual-system-v234.css'));
      const style=getComputedStyle(document.body);
+     const current=css.findIndex(e=>e.href.includes('craque-app-shell-v362.css'));
      return {page:document.body.dataset.page,style:style.backgroundImage,
+      bg:style.backgroundColor, newIndex:current,
       color:style.color,at,legacy,
       loaded:css.filter(e=>e.href.includes('craque-premium-workspaces-v353.css')).length,
       overflow:document.documentElement.scrollWidth-innerWidth};
     }""")
     assert result['page']==identity,(platform,label,result)
-    assert 'rgb(7, 14, 26)' in result['style'],(platform,label,'tema antigo',result)
+    assert result['bg']=='rgb(7, 12, 20)',(platform,label,'shell V362 não venceu',result)
+    assert result['newIndex']>result['at'],(platform,label,'CSS V362 não é o último',result)
     assert result['loaded']==1,(platform,label,'CSS duplicado',result)
-    assert result['color']=='rgb(233, 238, 247)',(platform,label,'cor',result)
+    assert result['color']=='rgb(246, 242, 232)',(platform,label,'cor V362',result)
     assert result['overflow']<=3,(platform,label,'overflow',result)
     if result['legacy']>=0:
      assert result['at']>result['legacy'],(platform,label,'CSS antigo venceu',result)
