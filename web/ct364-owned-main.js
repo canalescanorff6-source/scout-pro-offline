@@ -34,6 +34,12 @@ const equipmentOf=card=>{
  return {skills,slot,booster:slot==='ocupado'&&typeof data.booster==='string'?data.booster:''};
 };
 const validEquipmentName=value=>typeof value==='string'&&value.trim().length<=80;
+// O backup V226 já exporta todas as chaves scoutpro:, mas exige notificação
+// após as edições para criar snapshots sem aguardar o próximo intervalo.
+const notifyBackup=()=>{
+ try{window.dispatchEvent(new Event('craque:data-changed'));}
+ catch(_){/* O backup periódico permanece ativo. */}
+};
 const equipmentSave=(card,value)=>{
  const current=loadEquipment();
  const next={...current,[card.key]:{
@@ -42,6 +48,7 @@ const equipmentSave=(card,value)=>{
  }};
  localStorage.setItem(EQUIP_STORAGE,JSON.stringify(next));
  equipment=next;
+ notifyBackup();
 };
 const numberOrNull=(v)=>Number.isInteger(v)&&v>0&&v<=120?v:null;
 const confirmationOf=card=>{
@@ -329,6 +336,7 @@ function renderConfirm(c,body){
   }
   const next={...confirmed,[c.key]:{maxLevel:level,cardId:id}};
   try{localStorage.setItem(STORAGE,JSON.stringify(next));confirmed=next;
+   notifyBackup();
    feedback.textContent='Salvo localmente · PP poderão ser calculados como hipótese. Edição permanece a conferir.';
    const b=$('[data-owned-id="'+c.key+'"] .ct364-card-tag');
    if(b)b.textContent='Nível máximo informado · conferir edição';
