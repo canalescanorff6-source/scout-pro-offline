@@ -36,7 +36,7 @@ with sync_playwright() as p:
      return {loaded:body.dataset.ct362Ui,
        version:tag?.textContent||'', background:getComputedStyle(body).backgroundColor,
        overflow:document.documentElement.scrollWidth-innerWidth,
-       nav:document.querySelectorAll('#ct362-appnav a').length}
+       nav:document.querySelectorAll('#ct362-appnav > a.ct362-navitem').length}
     }""")
     assert surface['loaded']=='true' and 'V362' in surface['version'],(mode,label,surface)
     assert surface['overflow']<=12,(mode,label,'overflow',surface)
