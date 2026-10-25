@@ -625,3 +625,32 @@ body.ct362-design[data-page="detail"] :is(.ct-manager-v329-favorite,.ct-manager-
  body.ct362-design[data-page="catalog"] #catalogo .section-title{font-size:20px!important}
  body.ct362-design[data-page="catalog"] #catalogo .list-meta{margin:2px 0 3px!important}
 }
+
+/* Ajustes finais vistos nas capturas reais: uma navegação, conteúdo direto. */
+@media(max-width:720px){
+ body.ct362-design[data-page="friends"] .friends-head .friends-back,
+ body.ct362-design[data-page="manager-hub"] .hub-header nav{
+  display:none!important /* Os destinos continuam acessíveis no dock de 5 ações. */
+ }
+ body.ct362-design[data-page="friends"] .friends-head{
+  min-height:57px!important;padding:8px 10px!important
+ }
+ body.ct362-design[data-page="friends"] .friends-safe{
+  display:none!important /* aviso informativo redundante; sem excluir dados */
+ }
+ body.ct362-design[data-page="friends"] .friends-hero{
+  padding:10px!important;margin:5px 0!important
+ }
+ body.ct362-design[data-page="friends"] .friends-hero>div>p{
+  font-size:11px!important;line-height:1.25!important;margin:4px 0!important
+ }
+ body.ct362-design[data-page="friends"] .friends-jump{
+  padding:8px!important;gap:5px!important
+ }
+ body.ct362-design[data-page="friends"] .friends-featured-owner{
+  padding:7px!important
+ }
+ body.ct362-design[data-page="manager-hub"] .hub-header{
+  padding:10px!important
+ }
+}
