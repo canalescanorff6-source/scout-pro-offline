@@ -56,7 +56,7 @@ with sync_playwright() as pw:
                 assert page.locator("#scout-update").is_visible(),(device,"Atualizador sumiu no Mais")
                 page.locator("#scout-app-bar .scout-v189-dock-more > summary").click()
             else:
-                assert state["glance"]=="none" and state["original"]!="none",(device,state)
+                assert state["glance"]=="none" and page.locator(".profile-sidebar .side-art img").is_visible(),(device,state)
             page.screenshot(path=str(ART/(device+"-ficha.png")),full_page=False)
             page.goto(BASE+"/outros-elencos-v227.html",wait_until="domcontentloaded",timeout=45000)
             page.locator("#ct361-friends-mark").wait_for(state="visible",timeout=15000)
