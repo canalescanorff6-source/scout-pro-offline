@@ -86,7 +86,10 @@ function shell(){
  }
 }
 function catalog(){
- if(at()!=='catalog'||d.body.dataset.ct362Catalog==='true')return;
+ if(at()!=='catalog')return;
+ const previous=d.getElementById('ct361-home-mark');
+ if(previous)previous.textContent='CENTRAL · V362';
+ if(d.body.dataset.ct362Catalog==='true')return;
  const hero=d.querySelector('.hero .hero-text');
  const heading=hero?.querySelector('h1');
  const tiles=hero?.querySelector('.scout-v189-quick');
@@ -121,7 +124,10 @@ function detail(){
  d.body.dataset.ct362Detail='true';
 }
 function friends(){
- if(at()!=='friends'||d.body.dataset.ct362Friends==='true')return;
+ if(at()!=='friends')return;
+ const previous=d.getElementById('ct361-friends-mark');
+ if(previous)previous.textContent='ACERVOS INDEPENDENTES · V362';
+ if(d.body.dataset.ct362Friends==='true')return;
  const heading=d.querySelector('.friends-hero h1');if(!heading)return;
  heading.textContent='Outros Elencos';
  const paragraph=d.querySelector('.friends-hero h1 + p');
