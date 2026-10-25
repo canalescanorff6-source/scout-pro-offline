@@ -50,7 +50,7 @@ with sync_playwright() as p:
      color=page.locator('.hero').evaluate("(e)=>getComputedStyle(e).backgroundColor")
      assert color not in ('rgba(0, 0, 0, 0)','transparent'),(mode,label,'hero velho',color)
     if kind=='detail':
-     page.locator('#ct361-player-glance').wait_for(timeout=20000)
+     page.locator('#ct361-player-glance').wait_for(state='attached',timeout=20000)
      page.locator('#scout-v220-tabs button').first.wait_for(timeout=20000)
      assert page.locator('.ct361-glance-name').inner_text()=='Daniele Massaro'
      assert page.locator('.ct361-glance-art img').get_attribute('src')==page.locator('.mobile-profile img').get_attribute('src')
