@@ -65,6 +65,7 @@ function syncResults(){
  const old=new Map([...grid.children].map(x=>[x.dataset.ownedId,x]));
  grid.replaceChildren(...filtered.map(c=>old.get(c.key)||makeCard(c)));
  panel.hidden=!filtered.length;
+ if(normalize($('#search')?.value)&&filtered.length)panel.open=true;
  $('#ct364-owned-count').textContent=filtered.length+' de '+entries.length+' adicionais';
  // O estado "nenhuma carta" original só é verdadeiro quando AMBOS os grupos estão vazios.
  if(filtered.length&&$('#none'))$('#none').hidden=true;
@@ -247,7 +248,9 @@ function prepare(data){
  entries=data.cards;
  const toolbar=$('#catalogo'),original=$('#cards');
  if(!toolbar||!original)return;
- const wrapper=mk('section','ct364-owned-section');wrapper.id='ct364-owned-section';
+ const wrapper=mk('details','ct364-owned-section');wrapper.id='ct364-owned-section';
+ const toggle=mk('summary','ct364-owned-toggle','Minhas 15 cartas novas · abrir fichas e imagens');
+ wrapper.append(toggle);
  const header=mk('div','ct364-owned-head');
  const title=mk('div');
  title.append(mk('span','ct364-eyebrow','MINHAS CARTAS · MAIS 15 EDIÇÕES'));
@@ -256,7 +259,7 @@ function prepare(data){
  const counter=mk('strong','ct364-owned-count','15 adicionais');counter.id='ct364-owned-count';
  header.append(title,counter);
  const grid=mk('div','ct364-owned-grid');grid.id='ct364-owned-grid';
- wrapper.append(header,grid);
+ const inner=mk('div','ct364-owned-inner');inner.append(header,grid);wrapper.append(inner);
  toolbar.insertBefore(wrapper,original);
  const dialog=mk('dialog','ct364-dialog');dialog.id='ct364-dialog';
  const h=mk('header','ct364-dialog-head');
