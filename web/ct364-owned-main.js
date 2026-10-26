@@ -449,7 +449,8 @@ function renderRevisionHistory(host,record,title){
   row.append(mk('strong','',(i===0?'Atual':'Anterior')+' · '+(item.updatedAt||'Data pendente')));
   line(row,'Partidas informadas',(item.matches??'PENDENTE')+' · não cumulativas');
   note(row,typeof item.notes==='string'?item.notes.slice(0,700):'Observações indisponíveis');
-  note(row,revisionSummary(item));list.append(row);
+  note(row,revisionSummary(item));
+  appendObservedSummary(row,item,false);list.append(row);
  }
  detail.append(list);
  // Comparar qualquer revisão existente, inclusive além das 12 visíveis no
@@ -572,6 +573,79 @@ function renderTestQueue(host,selected,role,tactic){
   note(inner,'Não foi possível obter as 246 originais: '+String(e.message||e));
  });
 }
+/* V372 — critérios observáveis DECLARADOS, sem Overall/telemetria. */
+const ACTIONS_372=[['shortPass','Passes curtos sob pressão'],['receive','Recepções sob pressão'],
+ ['support','Apoios centrais para tabelas'],['recover','Desarmes/interceptações']];
+function observedData(record){
+ const raw=record?.observed;
+ if(!raw||typeof raw!=='object'||Array.isArray(raw))return {};
+ const out={};
+ for(const [key] of ACTIONS_372){
+  const v=raw[key];
+  if(v&&Number.isInteger(v.total)&&Number.isInteger(v.success)&&v.total>=1&&
+    v.total<=999&&v.success>=0&&v.success<=v.total)out[key]={total:v.total,success:v.success};
+ }
+ return out;
+}
+function renderObservedForm(host,record){
+ const details=mk('details','ct372-observed');
+ details.append(mk('summary','','Ações observadas · opcional'));
+ note(details,'Contagens manuais desta carta, posição e tática. Use ações do jogador, nunca estatísticas da equipe.');
+ const list=mk('div','ct372-observed-grid'),previous=observedData(record);
+ for(const [key,title] of ACTIONS_372){
+  const field=mk('fieldset','ct372-observed-item');
+  field.append(mk('legend','',title));
+  const cells=mk('div','ct372-observed-inputs');
+  for(const type of ['total','success']){
+   const label=mk('label','ct364-form-label',type==='total'?'Tentativas':'Êxitos');
+   const el=mk('input','ct372-observed-count');el.type='number';el.step='1';
+   el.min=type==='total'?'1':'0';el.max='999';
+   el.setAttribute('data-ct372-'+type,key);
+   el.value=previous[key]?String(previous[key][type]):'';
+   label.append(el);cells.append(label);
+  }
+  field.append(cells);list.append(field);
+ }
+ details.append(list);
+ note(details,'Não somar revisões: mesmas partidas podem reaparecer no histórico. Não medir qualidade pelo Overall.');
+ host.append(details);return details;
+}
+function collectObserved(details){
+ const result={};
+ for(const [key,title] of ACTIONS_372){
+  const a=details.querySelector('[data-ct372-total="'+key+'"]')?.value.trim();
+  const b=details.querySelector('[data-ct372-success="'+key+'"]')?.value.trim();
+  if(!a&&!b)continue;
+  if(!a||!b||!/^\\d+$/.test(a)||!/^\\d+$/.test(b))
+   return {error:title+': preencha tentativas e êxitos inteiros ou deixe ambos vazios.'};
+  const total=Number(a),success=Number(b);
+  if(total<1||total>999||success<0||success>total)
+   return {error:title+': êxitos devem ficar entre 0 e tentativas (1–999).'};
+  result[key]={total,success};
+ }
+ return {value:result};
+}
+function appendObservedSummary(parent,record,stale){
+ const box=mk('div','ct372-evidence-summary');
+ box.append(mk('strong','','Ações individuais declaradas'));
+ const evidence=observedData(record);
+ if(stale)note(box,'Registro de outra build/edição: não comparar taxas com a versão atual.');
+ else if(!Object.keys(evidence).length)note(box,'PENDENTE: sem ações quantificadas.');
+ else{
+  const list=mk('ul','ct372-evidence-list');
+  for(const [key,title] of ACTIONS_372){
+   const item=evidence[key];if(!item)continue;
+   const li=mk('li','',title+': '+item.success+' / '+item.total+' êxitos');
+   li.append(mk('small','',item.total>=5?
+    ' · '+Math.round(100*item.success/item.total)+'% desta amostra declarada':
+    ' · amostra pequena, sem percentual'));
+   list.append(li);
+  }
+  box.append(list);
+  note(box,'Somente anotação pessoal; sem ranking meta, telemetria ou comparação estatística homologada.');
+ }
+ parent.append(box);
+}
 function renderGameplay(c,body){
  const role=activeRole||c.position,tactic=activeStyle;
  const base=section('Laboratório de gameplay por carta, função e tática');
@@ -606,6 +680,7 @@ function renderGameplay(c,body){
  ack.append(checked,mk('span','',
   'Confirmei as partidas e observações no jogo. Não confundo simulação eFHub, vídeo de outra versão ou estatística do time com rendimento desta carta.'));
  base.append(ack);
+ const observedForm=renderObservedForm(base,saved);
  const save=mk('button','ct364-save','Salvar observação desta carta');
  save.type='button';save.id='ct367-save';
  const feedback=mk('p','ct364-feedback');feedback.id='ct367-feedback';feedback.setAttribute('role','status');
@@ -615,8 +690,10 @@ function renderGameplay(c,body){
   if(!Number.isInteger(count)||count<1||count>200||value.length<15||video===null){
    feedback.textContent='Informe 1 a 200 partidas, pelo menos 15 caracteres e link HTTPS válido quando houver.';return;
   }
+  const actions=collectObserved(observedForm);
+  if(actions.error){feedback.textContent=actions.error;observedForm.open=true;return}
   const record={cardKey:c.key,role,tactic,cardIdAtCapture:id,
-   buildSnapshot:gameplayBuildSnapshot(c),matches:count,
+   buildSnapshot:gameplayBuildSnapshot(c),matches:count,observed:actions.value,
    notes:value,url:video||'',ownerConfirmed:true,updatedAt:new Date().toISOString()};
   try{
    const all=gameplayData(),previous=gameplayOf(c,role,tactic);
@@ -697,6 +774,7 @@ function renderOriginalEvidence(card,role,tactic,parent,refresh){
  agree.append(ack,mk('span','',
   'Conferi pessoalmente as partidas e que esta é a carta original indicada pelo CAP e Card ID. Isso não constitui verificação independente.'));
  box.append(agree);
+ const observedForm=renderObservedForm(box,record);
  const save=mk('button','ct364-save','Salvar observação da carta original');save.type='button';save.id='ct368-save';
  const feedback=mk('p','ct364-feedback');feedback.id='ct368-feedback';feedback.setAttribute('role','status');
  save.onclick=()=>{
@@ -705,8 +783,10 @@ function renderOriginalEvidence(card,role,tactic,parent,refresh){
   if(!Number.isInteger(m)||m<1||m>200||n.length<15||url===null){
    feedback.textContent='Informe 1 a 200 partidas, notas de 15 caracteres e link HTTPS válido quando fornecido.';return;
   }
+  const actions=collectObserved(observedForm);
+  if(actions.error){feedback.textContent=actions.error;observedForm.open=true;return}
   const entry={cap:card.numero,role,tactic,cardIdAtCapture:String(card.id||''),
-   snapshot:originalSnapshot(card),matches:m,notes:n,url:url||'',
+   snapshot:originalSnapshot(card),matches:m,notes:n,url:url||'',observed:actions.value,
    ownerConfirmed:true,updatedAt:new Date().toISOString()};
   try{
    const all=originalGameplayData(),previous=originalGameplayOf(card,role,tactic);
@@ -756,6 +836,7 @@ function renderGameplayComparison(c,role,tactic,base){
    if(stale)note(panel,'Build alterada; reconferir o gameplay desta versão.');
    line(panel,'Card ID no teste',value.cardIdAtCapture||'PENDENTE');
    note(panel,value.notes);
+   appendObservedSummary(panel,value,stale);
    const valid=validVideoLink(value.url);
    if(valid&&!stale){
     const anchor=mk('a','ct367-video-link','Abrir vídeo registrado');
@@ -781,6 +862,7 @@ function renderGameplayComparison(c,role,tactic,base){
    line(panel,'Partidas anotadas',value.matches+' · declaração do proprietário');
    if(stale)note(panel,'Cadastro de referência atualizado: reconferir edição e build observada.');
    note(panel,value.notes);
+   appendObservedSummary(panel,value,stale);
    const valid=validVideoLink(value.url);
    if(valid&&!stale){
     const anchor=mk('a','ct367-video-link','Abrir vídeo registrado');
