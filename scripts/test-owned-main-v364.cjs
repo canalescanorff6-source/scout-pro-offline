@@ -157,4 +157,38 @@ assert.deepEqual(Array.from(originalDiff.changes,x=>x.label).sort(),
 const corrupt=testSandbox.compare({snapshot:'INVALID_JSON'},newerOriginal);
 assert.ok(corrupt.unreadable&&corrupt.pending.length>0,
  'V370 não deve mascarar snapshot inválido');
+// V371: checklist funcional por mudanças documentais, função e tática.
+assert.match(js,/function buildRetestPlan/,'V371 sem gatilhos verificáveis por diff');
+assert.match(js,/function renderRetestPlan/,'V371 sem apresentação consultiva');
+assert.match(js,/data-retest-plan|dataset.retestPlan/,'V371 sem painel isolado do histórico');
+assert.match(css,/\.ct371-retest-item/,'V371 sem checklist responsivo');
+assert.match(js,/não homologados nem salvos como gameplay/,'V371 confundiu checklist com evidência');
+const planFromVm={};
+const startPlan=js.indexOf('function buildRetestPlan('),endPlan=js.indexOf('function renderRevisionDiff(',startPlan);
+assert.ok(startPlan>0&&endPlan>startPlan,'bloco testável V371 indisponível');
+vm.runInNewContext(js.slice(startPlan,endPlan)+';this.plan=buildRetestPlan;',planFromVm);
+const plan=planFromVm.plan;
+const specificDiff={changes:[{label:'Habilidade adicional · vaga 2',before:'Passe curto',after:'Interceptação'}],pending:[],unreadable:false};
+const posse=plan(specificDiff,'MAT','posse');
+assert.equal(posse.state,'retest');
+assert.ok(posse.checks.some(x=>x.key==='skills'&&x.label.includes('vaga 2')));
+assert.ok(posse.checks.some(x=>x.key==='role'&&x.label.includes('triangulações')));
+assert.ok(posse.checks.some(x=>x.key==='tactic'&&x.label.includes('Posse de Bola')));
+assert.ok(posse.checks.some(x=>x.key==='sampling'&&x.label.includes('3–5 partidas')));
+const volante=plan(specificDiff,'VOL','rapido');
+assert.ok(volante.checks.some(x=>x.label.includes('interceptações')));
+assert.ok(volante.checks.some(x=>x.label.includes('Contra-Ataque Rápido')));
+assert.ok(!volante.checks.some(x=>x.label.includes('Na Posse de Bola')),'V371 misturou estilos');
+const allPending=plan({changes:[],pending:[{label:'Ímpeto adicional anotado'}],unreadable:false},'CA','posse');
+assert.equal(allPending.state,'verify');
+assert.ok(!allPending.checks.some(x=>x.key==='sampling'),'pendência não pode obrigar declarar partidas como comprovadas');
+const diffIdentity=plan({changes:[{label:'Card ID'}],pending:[],unreadable:false},'CA','posse');
+assert.equal(diffIdentity.state,'identity-change');
+assert.match(diffIdentity.explanation,/não autoriza comparação causal/);
+const noDiff=plan({changes:[],pending:[],unreadable:false},'MAT','posse');
+assert.equal(noDiff.state,'unchanged');
+assert.equal(noDiff.checks.length,0);
+const booster=plan({changes:[{label:'Estado do segundo slot'}],pending:[{label:'Ímpeto adicional anotado'}],unreadable:false},'SA','normal');
+assert.ok(booster.checks.some(x=>x.key==='booster'&&x.label.includes('tokens')));
+assert.ok(booster.checks.some(x=>x.key==='pending'));
 console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 5 táticas mesmo motor, Android/Windows offline.');
