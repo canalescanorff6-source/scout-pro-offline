@@ -616,7 +616,7 @@ function collectObserved(details){
   const a=details.querySelector('[data-ct372-total="'+key+'"]')?.value.trim();
   const b=details.querySelector('[data-ct372-success="'+key+'"]')?.value.trim();
   if(!a&&!b)continue;
-  if(!a||!b||!/^\\d+$/.test(a)||!/^\\d+$/.test(b))
+  if(!a||!b||!/^\d+$/.test(a)||!/^\d+$/.test(b))
    return {error:title+': preencha tentativas e êxitos inteiros ou deixe ambos vazios.'};
   const total=Number(a),success=Number(b);
   if(total<1||total>999||success<0||success>total)
