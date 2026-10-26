@@ -419,8 +419,16 @@ function prepare(data){
   if(!hint||typeof window.matchMedia!=='function')return;
   const compact=window.matchMedia('(max-width:355px)').matches;
   hint.hidden=compact;
-  if(compact)hint.style.setProperty('display','none','important');
-  else hint.style.removeProperty('display');
+  if(compact){
+   hint.style.setProperty('display','none','important');
+   // A seção recolhida de 15 cartas deixa uma faixa decorativa excedente
+   // antes da grade original em CSS viewport 320px. Recuperar apenas 10px
+   // desse espaço sem reduzir altura nem área de toque do resumo e filtros.
+   original.style.setProperty('margin-top','-10px','important');
+  }else{
+   hint.style.removeProperty('display');
+   original.style.removeProperty('margin-top');
+  }
  };
  compactHint();
  window.addEventListener('resize',compactHint,{passive:true});
