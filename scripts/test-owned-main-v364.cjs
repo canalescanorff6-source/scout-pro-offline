@@ -228,4 +228,17 @@ assert.equal(validEvidence.error,undefined);
 assert.equal(validEvidence.value.shortPass.success,6);
 assert.equal(validEvidence.value.recover.success,0);
 assert.equal(Object.keys(validEvidence.value).length,2);
+// V372: protocolo exige evidência e bloqueia comparações sem identidade.
+const pStart=js.indexOf('function retestEvidenceProtocol(');
+const pEnd=js.indexOf('function renderRetestPlan(',pStart);
+assert.ok(pStart>0&&pEnd>pStart);
+const proto={};vm.runInNewContext(js.slice(pStart,pEnd)+';this.proto=retestEvidenceProtocol;',proto);
+assert.equal(proto.proto(posse).scope,'observational');
+assert.equal(proto.proto(posse).eligible,true);
+assert.ok(proto.proto(posse).fields.includes('Conexão / lag / aquecimento'));
+assert.equal(proto.proto(diffIdentity).eligible,false);
+assert.equal(proto.proto(allPending).eligible,false);
+assert.equal(proto.proto(noDiff).eligible,false);
+assert.match(js,/renderEvidenceProtocol\(block,plan\)/);
+assert.match(css,/\.ct372-protocol-fields/);
 console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 5 táticas mesmo motor, Android/Windows offline.');
