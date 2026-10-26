@@ -200,3 +200,41 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
   display:none!important;
  }
 }
+
+/* V365 — conferência responsável de níveis, PP calculados e identidade por carta.
+   Área fechada por padrão: não desloca a primeira dobra 320px da home. */
+.ct365-review{margin:0;border:1px solid #536983;background:#101d30;border-radius:11px;overflow:hidden}
+.ct365-review>summary{
+ min-height:44px;display:list-item;list-style-position:inside;cursor:pointer;
+ color:#f5d18c;font:800 12px/1.4 system-ui,sans-serif;
+ padding:11px 12px;background:#192d44
+}
+.ct365-review>summary:focus-visible,.ct365-review-open:focus-visible,.ct365-review-filter:focus-visible{
+ outline:2px solid #ffdfa0;outline-offset:-2px
+}
+.ct365-review-body{display:grid;gap:9px;padding:11px}
+.ct365-review-explainer{margin:0;color:#c4d4e5;font-size:11px;line-height:1.55}
+.ct365-review-count{margin:0;color:#f7e1b6;font-size:11px;font-weight:800}
+.ct365-review-filter-label{display:grid;gap:5px;color:#d8e2ed;font-size:11px;font-weight:800}
+.ct365-review-filter{
+ width:100%;max-width:340px;min-height:44px;background:#0d1a2a;color:#f5f3ed;
+ border:1px solid #617c98;border-radius:8px;padding:9px;font:700 12px system-ui,sans-serif
+}
+.ct365-review-rows{display:grid;gap:7px}
+.ct365-review-row{
+ display:flex;align-items:center;gap:10px;justify-content:space-between;
+ border:1px solid #3a516e;border-radius:9px;background:#15273d;padding:10px
+}
+.ct365-review-info{display:grid;gap:4px;min-width:0}
+.ct365-review-info strong{color:#f8e5bf;font-size:12px}
+.ct365-review-info span{color:#c4d4e5;font-size:11px;line-height:1.4;overflow-wrap:anywhere}
+.ct365-review-open{
+ flex:none;min-height:44px;min-width:106px;padding:8px 11px;cursor:pointer;
+ border:1px solid #e7c17d;border-radius:8px;background:#273a50;
+ color:#ffe1a6;font:800 11px/1.3 system-ui,sans-serif
+}
+.ct365-empty{color:#c5d7e4;font-size:11px;margin:0}
+@media(max-width:355px){
+ .ct365-review-row{flex-direction:column;align-items:stretch;gap:8px}
+ .ct365-review-open{width:100%}
+}
