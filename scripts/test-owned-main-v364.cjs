@@ -191,4 +191,41 @@ assert.equal(noDiff.checks.length,0);
 const booster=plan({changes:[{label:'Estado do segundo slot'}],pending:[{label:'Ímpeto adicional anotado'}],unreadable:false},'SA','normal');
 assert.ok(booster.checks.some(x=>x.key==='booster'&&x.label.includes('tokens')));
 assert.ok(booster.checks.some(x=>x.key==='pending'));
+// V372: dados observados de ações individuais não podem virar nota fabricada.
+assert.match(js,/function observedData/,'V372 sem sanitização de métricas');
+assert.match(js,/function renderObservedForm/,'V372 sem entrada de dados observáveis');
+assert.match(js,/function collectObserved/,'V372 sem validação de contagens');
+assert.match(js,/function appendObservedSummary/,'V372 sem observações na comparação/histórico');
+assert.match(js,/observed:actions.value/,'V372 não salva dados na revisão por carta');
+assert.match(css,/\.ct372-observed-inputs/,'V372 formulário não responsivo');
+const observedVm={};
+let obsStart=js.indexOf('const ACTIONS_372='),obsEnd=js.indexOf('function renderObservedForm(',obsStart);
+assert.ok(obsStart>0&&obsEnd>obsStart);
+vm.runInNewContext(js.slice(obsStart,obsEnd)+';this.parseObserved=observedData;',observedVm);
+const clean=observedVm.parseObserved({observed:{
+ shortPass:{total:10,success:8},
+ receive:{total:4,success:4},
+ support:{total:6,success:9},
+ recover:{total:0,success:0},
+ injected:{total:100,success:100}
+}});
+assert.deepEqual(Object.keys(clean),['shortPass','receive'],'V372 deve rejeitar dados sem denominador e êxitos acima de tentativas');
+const formStart=js.indexOf('function collectObserved('),formEnd=js.indexOf('function appendObservedSummary(',formStart);
+assert.ok(formStart>0&&formEnd>formStart);
+const forms={};
+vm.runInNewContext(js.slice(obsStart,obsEnd)+js.slice(formStart,formEnd)+';this.collect=collectObserved;',forms);
+function mockFields(d){
+ return {querySelector(selector){
+  const m=selector.match(/data-ct372-(total|success)="([^"]+)"/);
+  return m?{value:d[m[2]]?.[m[1]]??''}:null;
+ }};
+}
+assert.equal(forms.collect(mockFields({shortPass:{total:'8',success:'9'}})).error.includes('êxitos devem'),true);
+assert.ok(forms.collect(mockFields({shortPass:{total:'8',success:''}})).error);
+assert.ok(forms.collect(mockFields({receive:{total:'2.5',success:'2'}})).error);
+const validEvidence=forms.collect(mockFields({shortPass:{total:'8',success:'6'},recover:{total:'3',success:'0'}}));
+assert.equal(validEvidence.error,undefined);
+assert.equal(validEvidence.value.shortPass.success,6);
+assert.equal(validEvidence.value.recover.success,0);
+assert.equal(Object.keys(validEvidence.value).length,2);
 console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 5 táticas mesmo motor, Android/Windows offline.');

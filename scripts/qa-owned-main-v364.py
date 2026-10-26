@@ -195,10 +195,20 @@ with sync_playwright() as pw:
    page.locator('#ct364-tabs [data-panel="gameplay"]').click()
    assert page.locator("#ct367-gameplay").is_visible()
    assert "PENDENTE" in page.locator("#ct367-gameplay").inner_text()
+   assert page.locator("#ct367-gameplay > .ct372-observed").is_visible()
    page.locator("#ct367-matches").fill("2")
    page.locator("#ct367-notes").fill("Passe curto e recepção sob pressão observados em duas partidas.")
-   page.locator("#ct367-link").fill("javascript:alert(1)")
+   page.locator("#ct367-link").fill("")
    page.locator("#ct367-ack").check()
+   # V372: rejeitar êxitos acima das tentativas antes de salvar.
+   page.locator("#ct367-gameplay > .ct372-observed summary").click()
+   page.locator('[data-ct372-total="shortPass"]').fill("8")
+   page.locator('[data-ct372-success="shortPass"]').fill("9")
+   page.locator("#ct367-save").click()
+   assert "êxitos devem ficar entre" in page.locator("#ct367-feedback").inner_text()
+   assert page.evaluate("() => localStorage.getItem('scoutpro:v367:owned-gameplay')") is None
+   page.locator('[data-ct372-success="shortPass"]').fill("6")
+   page.locator("#ct367-link").fill("javascript:alert(1)")
    page.locator("#ct367-save").click()
    assert "link HTTPS válido" in page.locator("#ct367-feedback").inner_text()
    page.locator("#ct367-link").fill("https://www.youtube.com/watch?v=abcdefghijk")
@@ -207,6 +217,9 @@ with sync_playwright() as pw:
    stored=page.evaluate("""() => JSON.parse(localStorage.getItem('scoutpro:v367:owned-gameplay')||'{}')""")
    assert "ct364-01|MAT|posse" in stored,(name,"evidência de gameplay não isolada")
    assert stored["ct364-01|MAT|posse"]["matches"]==2
+   assert stored["ct364-01|MAT|posse"]["observed"]["shortPass"]=={"total":8,"success":6}
+   assert "Passes curtos sob pressão: 6 / 8" in page.locator("#ct367-comparison").inner_text()
+   assert "75% desta amostra declarada" in page.locator("#ct367-comparison").inner_text()
    assert stored["ct364-01|MAT|posse"]["cardIdAtCapture"]==""
    # V369 — segunda revisão mantém a primeira, mas NÃO soma partidas.
    page.locator("#ct367-notes").fill("Segunda revisão da observação: passe curto seguro, mesmo total de duas partidas.")
@@ -254,6 +267,9 @@ with sync_playwright() as pw:
    assert "PENDENTE: sem partidas pessoais registradas" in comparison.inner_text()
    assert comparison.locator("#ct368-matches").is_visible()
    page.locator("#ct368-matches").fill("3")
+   page.locator(".ct368-original-form .ct372-observed summary").click()
+   page.locator('.ct368-original-form [data-ct372-total="receive"]').fill("3")
+   page.locator('.ct368-original-form [data-ct372-success="receive"]').fill("2")
    page.locator("#ct368-notes").fill("Observei três partidas do Guirassy original na função MAT com passes curtos e movimentação.")
    page.locator("#ct368-save").click()
    assert "Confirme que observou" in page.locator("#ct368-feedback").inner_text()
@@ -290,6 +306,8 @@ with sync_playwright() as pw:
     original:localStorage.getItem('SCOUT_V69_AUDITORIA.json')
    })""")
    assert origin["game"]["cap:181|MAT|posse"]["matches"]==3
+   assert origin["game"]["cap:181|MAT|posse"]["observed"]["receive"]=={"total":3,"success":2}
+   assert "amostra pequena, sem percentual" in page.locator("#ct367-comparison").inner_text()
    assert len(origin["game"]["cap:181|MAT|posse"]["history"])==1
    assert origin["game"]["cap:181|MAT|posse"]["cardIdAtCapture"],(name,"original sem ID exato de referência")
    assert origin["original"] is None,(name,"cadastro original modificado em localStorage")
