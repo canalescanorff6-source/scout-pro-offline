@@ -411,6 +411,19 @@ function prepare(data){
  const grid=mk('div','ct364-owned-grid');grid.id='ct364-owned-grid';
  const inner=mk('div','ct364-owned-inner');inner.append(header,grid);wrapper.append(inner);
  toolbar.insertBefore(wrapper,original);
+ // Correção estrutural: em 320px o aviso repetido ainda aparecia apesar do
+ // CSS e empurrava a primeira carta sob o dock. Aplicar após montar a V364.
+ // Manter o aviso original acessível em telas maiores.
+ const compactHint=()=>{
+  const hint=toolbar.querySelector('.list-meta > span:last-child');
+  if(!hint||typeof window.matchMedia!=='function')return;
+  const compact=window.matchMedia('(max-width:355px)').matches;
+  hint.hidden=compact;
+  if(compact)hint.style.setProperty('display','none','important');
+  else hint.style.removeProperty('display');
+ };
+ compactHint();
+ window.addEventListener('resize',compactHint,{passive:true});
  const dialog=mk('dialog','ct364-dialog');dialog.id='ct364-dialog';
  const h=mk('header','ct364-dialog-head');
  const art=mk('img');art.id='ct364-dialog-art';art.alt='Arte da carta cadastrada';art.width=80;art.height=116;
