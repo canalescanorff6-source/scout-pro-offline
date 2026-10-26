@@ -9,7 +9,8 @@ const raw=read('web/SCOUT_V69_AUDITORIA.json'),cards=JSON.parse(raw).cards;
 const S=require('../web/skills-booster-v162.js'),B=require('../web/booster-engine-v103.js');
 const V=require('../web/craque-ficha-individual-v251.js'),I=require('../web/craque-role-intelligence-v233.js');
 const indexRaw=read('web/SCOUT_V221_EVIDENCE_INDEX.json'),index=JSON.parse(indexRaw).cards;
-const images=fs.readdirSync(path.join(root,'web/cartas')).sort();
+const images=fs.readdirSync(path.join(root,'web/cartas'),{withFileTypes:true})
+ .filter(entry=>entry.isFile()).map(entry=>entry.name).sort(); // Subpastas novas NÃO entram na trava das 246 artes originais.
 const imageHash=crypto.createHash('sha256');
 for(const file of images){imageHash.update(file+'\0');imageHash.update(fs.readFileSync(path.join(root,'web/cartas',file)))}
 const corpusHash=imageHash.digest('hex');
