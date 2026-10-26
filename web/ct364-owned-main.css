@@ -382,3 +382,28 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
 .ct371-retest-item span{flex:1;min-width:0}
 .ct371-retest-item:focus-within{outline:2px solid #ffe0a5;outline-offset:1px}
 @media(max-width:355px){.ct371-retest{padding:9px}.ct371-retest-item{padding:9px;gap:9px}}
+
+/* V372 — ações individuais observáveis, formulário opcional recolhido.
+   Não expande a primeira dobra do catálogo em 320px. */
+.ct372-observed{border:1px solid #617c99;border-radius:9px;margin:10px 0;
+ background:#152a41;color:#ebdec9;overflow:hidden}
+.ct372-observed>summary{min-height:44px;cursor:pointer;padding:12px;
+ background:#233b54;color:#ffdfa4;font:800 12px/1.5 system-ui,sans-serif}
+.ct372-observed>summary:focus-visible{outline:2px solid #ffe0a4;outline-offset:-2px}
+.ct372-observed>.ct364-note{margin:10px 12px}
+.ct372-observed-grid{padding:10px;display:grid;gap:10px}
+.ct372-observed-item{min-width:0;box-sizing:border-box;border:1px solid #516d87;
+ border-radius:9px;padding:9px;background:#102338;color:#f8e5c3}
+.ct372-observed-item legend{font:700 12px/1.5 system-ui,sans-serif;padding:0 5px}
+.ct372-observed-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ct372-observed-count{box-sizing:border-box;width:100%;min-width:0;min-height:44px;
+ border-radius:8px;border:1px solid #738ca1;background:#0d1e31;
+ padding:9px;color:#f6ecdd;font:600 13px system-ui,sans-serif}
+.ct372-observed-count:focus-visible{outline:2px solid #ffe0a4;outline-offset:1px}
+.ct372-evidence-summary{display:grid;gap:7px;min-width:0;margin:9px 0;
+ padding:9px;background:#11253b;border:1px solid #455f7c;border-radius:8px}
+.ct372-evidence-summary>strong{color:#ffe2a8;font-size:12px}
+.ct372-evidence-list{padding-left:19px;margin:0;display:grid;gap:7px;
+ color:#d8e4f0;font:500 11px/1.5 system-ui,sans-serif;overflow-wrap:anywhere}
+.ct372-evidence-list small{color:#f2d6a7;font-size:11px}
+@media(max-width:355px){.ct372-observed-inputs{gap:6px}.ct372-observed-grid{padding:6px}}
