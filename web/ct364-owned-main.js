@@ -354,12 +354,35 @@ function buildRetestPlan(diff,role,tactic){
    hasChanges?'Ações para investigar hipóteses da build; não significa que os ajustes melhoraram a gameplay.':
    'Somente lacunas documentais: conferir antes de afirmar que houve alguma mudança no jogo.'};
 }
+/* V372 — protocolo observacional: nenhum placar ou evidência é inferido. */
+function retestEvidenceProtocol(plan){
+ const blocking=plan.state==='identity-change';
+ const scope=plan.state==='unchanged'?'no-change':plan.state==='verify'?'documentary':blocking?'identity':'observational';
+ return {scope,eligible:scope==='observational',
+  fields:['Data e horário','Versão exata / Card ID','Posição e tática','Adversário e contexto','Conexão / lag / aquecimento','Partidas da condição A','Partidas da condição B','Ações observadas sem Overall'],
+  caution:blocking?'Versões diferentes não podem ser tratadas como uma mudança isolada da mesma build.':
+  scope==='documentary'?'Complete a identificação e os dados faltantes antes de comparar partidas.':
+  scope==='no-change'?'Sem mudança documentada; não há hipótese nova de build para testar.':
+  'Mantenha a mesma posição, tática e condições comparáveis; descreva as ações, não declare superioridade sem dados.'};
+}
+function renderEvidenceProtocol(host,plan){
+ const p=retestEvidenceProtocol(plan);
+ const section=mk('section','ct372-protocol');
+ section.append(mk('h5','','Protocolo de evidências de campo'));
+ note(section,p.caution);
+ if(!p.eligible){note(section,'Registro de resultados bloqueado nesta comparação; primeiro reconfira os dados documentais.');host.append(section);return}
+ const list=mk('ul','ct372-protocol-fields');
+ for(const field of p.fields)list.append(mk('li','',field));
+ section.append(list);
+ note(section,'Roteiro para anotar fora desta comparação: nenhum resultado, vitória, partida ou avaliação é gerado ou salvo automaticamente.');
+ host.append(section);
+}
 function renderRetestPlan(host,plan){
  const block=mk('section','ct371-retest');block.dataset.retestPlan='true';
  block.append(mk('h4','','Plano de reconferência por posição e tática'));
  note(block,(plan.role||'Função pendente')+' · '+(STYLE_NAMES[plan.tactic]||'Tática pendente'));
  note(block,plan.explanation);
- if(!plan.checks.length){host.append(block);return}
+ if(!plan.checks.length){renderEvidenceProtocol(block,plan);host.append(block);return}
  const checklist=mk('div','ct371-retest-checklist');
  const progress=mk('p','ct371-retest-progress');
  progress.setAttribute('role','status');
@@ -375,6 +398,7 @@ function renderRetestPlan(host,plan){
  count();
  block.append(checklist);
  note(block,'Marcar uma conferência não cria evidência de partida, não altera a ficha e não valida automaticamente uma build.');
+ renderEvidenceProtocol(block,plan);
  host.append(block);
 }
 function renderRevisionDiff(detail,records){

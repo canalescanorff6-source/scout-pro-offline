@@ -407,3 +407,9 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
  color:#d8e4f0;font:500 11px/1.5 system-ui,sans-serif;overflow-wrap:anywhere}
 .ct372-evidence-list small{color:#f2d6a7;font-size:11px}
 @media(max-width:355px){.ct372-observed-inputs{gap:6px}.ct372-observed-grid{padding:6px}}
+
+/* V372 — protocolo compacto e legível no histórico de revisões. */
+.ct372-protocol{margin-top:10px;padding:10px;border-top:1px solid #56718b;display:grid;gap:8px;min-width:0}
+.ct372-protocol h5{font:800 12px/1.5 system-ui,sans-serif;color:#ffdfa8;margin:0}
+.ct372-protocol-fields{margin:0;padding-left:19px;display:grid;gap:5px;color:#d9e8f0;font:500 12px/1.5 system-ui,sans-serif}
+.ct372-protocol-fields li{overflow-wrap:anywhere}
