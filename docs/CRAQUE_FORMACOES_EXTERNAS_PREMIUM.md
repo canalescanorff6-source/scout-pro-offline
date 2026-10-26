@@ -1,6 +1,6 @@
 # Formações Premium em página independente
 
-O catálogo oferece **Formações Premium ↗**, logo abaixo dos quatro atalhos. Abre uma página online separada, sem embutir o caderno no aplicativo:
+O catálogo oferece **Formações Premium ↗** na linha de status do cabeçalho, preservando os quatro atalhos e o espaço inicial das cartas. Abre uma página online separada, sem embutir o caderno no aplicativo:
 
 https://craque-tatico-formacoes-premium.vocalclock33.chatgpt.site/
 

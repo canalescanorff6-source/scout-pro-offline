@@ -701,12 +701,11 @@ html:has(body.ct362-design) body.ct362-design[data-page]{
 }
 
 /* Acesso ao caderno online; independente dos quatro atalhos do acervo. */
-.ct-formacoes-premium-access{margin:10px 0 0}
-.ct-formacoes-premium-link{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:42px;padding:10px 13px;border:1px solid #d8b87759;border-radius:10px;color:#e6c88e;background:#d8b87709;text-decoration:none;font-size:12px}
-.ct-formacoes-premium-link strong{font-weight:750}.ct-formacoes-premium-link span{font-size:10px;color:#aebec9}
+.ct-formacoes-premium-access{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 8px;min-width:0}
+.ct-formacoes-premium-access #ct356-boot-proof{min-width:0;justify-self:start}
+.ct-formacoes-premium-link{grid-column:2;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:28px;padding:4px 8px;border:1px solid #d8b87759;border-radius:7px;color:#e6c88e;background:#d8b87709;text-decoration:none;font-size:10px;white-space:nowrap}
+.ct-formacoes-premium-link strong{font-weight:750}.ct-formacoes-premium-link span{font-size:9px;color:#aebec9}
 .ct-formacoes-premium-link:hover,.ct-formacoes-premium-link:focus-visible{background:#d8b87716;outline:2px solid #d8b877;outline-offset:3px}
-.ct-formacoes-premium-status{display:block;color:#e6c88e;font-size:11px;margin-top:7px}.ct-formacoes-premium-status[hidden]{display:none}
-@media(max-width:380px){.ct-formacoes-premium-link{flex-wrap:wrap;gap:3px}.ct-formacoes-premium-link span{font-size:9px}}
-/* Telas estreitas: manter a primeira carta acessível na primeira dobra. */
-@media(max-width:355px){.ct-formacoes-premium-access{margin-top:0}.ct-formacoes-premium-link{min-height:36px;padding:7px 10px;font-size:11px;line-height:1.3}}
+.ct-formacoes-premium-status{grid-column:1/-1;display:block;color:#e6c88e;font-size:11px;margin-top:7px}.ct-formacoes-premium-status[hidden]{display:none}
+@media(max-width:720px){.ct-formacoes-premium-link span{display:none}.ct-formacoes-premium-access{gap:0 5px}}
 

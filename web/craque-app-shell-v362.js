@@ -167,7 +167,9 @@ function externalFormacoes(){
    await browser.open({url,toolbarColor:'#09121b'});
   }catch(_error){status.textContent='Não consegui abrir o navegador. Confira a conexão e tente novamente.';status.hidden=false;}
  });
- wrap.append(link,status);quick.after(wrap);
+ const proof=d.getElementById('ct356-boot-proof');
+ if(proof?.parentNode){proof.parentNode.insertBefore(wrap,proof);wrap.append(proof,link,status);}
+ else{wrap.append(link,status);quick.after(wrap);}
 }
 function boot(){shell();catalog();detail();friends();generic();externalFormacoes();}
 if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',boot,{once:true});else boot();

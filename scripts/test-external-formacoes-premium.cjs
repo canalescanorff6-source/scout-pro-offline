@@ -8,12 +8,14 @@ const root = path.resolve(__dirname, '..');
 const URL_FORMACOES = 'https://craque-tatico-formacoes-premium.vocalclock33.chatgpt.site/';
 const source = fs.readFileSync(path.join(root, 'web/craque-app-shell-v362.js'), 'utf8');
 
-function catalog(native = false, reject = false, page = 'catalog') {
+function catalog(native = false, reject = false, page = 'catalog', withProof = false) {
   const ids = new Map(), events = new Map(), opens = [];
   const element = tag => ({tagName:tag, children:[], attrs:{}, handlers:{}, hidden:false,
     append(...nodes){this.children.push(...nodes); for(const n of nodes)if(n.id)ids.set(n.id,n)},
     setAttribute(k,v){this.attrs[k]=v}, addEventListener(k,fn){this.handlers[k]=fn}});
   const quick = {after(node){ids.set(node.id,node);this.inserted=node}};
+  const proofParent={insertBefore(node){this.inserted=node}};
+  if(withProof){const proof=element('div');proof.id='ct356-boot-proof';proof.parentNode=proofParent;ids.set(proof.id,proof)}
   const document = {readyState:'complete',body:{dataset:{page}},
     getElementById:id=>id==='ct362-design-proof'?{}:ids.get(id)||null,
     querySelector:selector=>selector==='.scout-v189-quick'?quick:null,
@@ -23,7 +25,7 @@ function catalog(native = false, reject = false, page = 'catalog') {
       opens.push(options);if(reject)throw Error('offline');
     }}}}};
   vm.runInNewContext(source,{window},{timeout:3000});
-  return {ids,quick,events,opens};
+  return {ids,quick,events,opens,proofParent};
 }
 
 async function run(){
@@ -35,6 +37,10 @@ async function run(){
   assert.equal(web.opens.length,0,'Nunca abrir página automaticamente');
   const first=web.quick.inserted;web.events.get('scoutpro:ui-ready')();
   assert.equal(web.quick.inserted,first,'Eventos de UI não duplicam o acesso');
+  const compact=catalog(false,false,'catalog',true);
+  assert(compact.proofParent.inserted,'Reutilizar a linha de status para preservar a primeira dobra');
+  assert.equal(compact.quick.inserted,undefined,'Não acrescentar uma linha sob os quatro atalhos');
+  assert(compact.proofParent.inserted.children.some(n=>n.id==='ct356-boot-proof'),'Preservar o mesmo indicador de versão');
   assert.equal(catalog(false,false,'friends').ids.has('ct-formacoes-premium-link'),false);
   const android=catalog(true);let prevented=false;
   await android.ids.get('ct-formacoes-premium-link').handlers.click({preventDefault(){prevented=true}});
