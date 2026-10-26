@@ -1002,6 +1002,60 @@ function ensureEngine(){
  loadEngine=jobs.reduce((p,[path,key])=>p.then(()=>script(path,key)),Promise.resolve());
  return loadEngine;
 }
+/* V373: parecer competitivo individual V251/V233/V162/V103, sem equipar nada. */
+function renderProfessionalDossier(result,host,kind){
+ const pro=result?.professional;
+ if(!pro){note(host,'Parecer PRO pendente: motor não retornou critérios individuais.');return}
+ const block=section(kind==='treino'?'Auditoria da ficha de treino':
+  kind==='skills'?'Cinco habilidades: carteira balanceada':'Ímpetos: comparação contextual');
+ block.classList.add('ct373-pro');block.dataset.proKind=kind;
+ note(block,'Critérios competitivos inspirados em Rentão/Blackjhon; nenhuma build ou opinião atribuída a vídeo não verificado da edição.');
+ line(block,'Função · tática',(pro.role||'PENDENTE')+' · '+(STYLE_NAMES[pro.tactic]||pro.tactic));
+ if(kind==='treino'){
+  line(block,'Distribuição',pro.trainingStatus==='hipotese'?'PROPOSTA NÃO HOMOLOGADA':'PENDENTE — nível/PP');
+  line(block,'Treino atual',pro.baselineValid?'Manual válido para comparar':'NÃO CONFERIDO — não presumir diferença');
+  const differences=pro.trainingDifferences||[];
+  if(differences.length){
+   const ol=mk('ol','ct373-pro-list');
+   for(const d of differences){const li=mk('li');
+    li.append(mk('strong','',d.name),mk('p','',d.was+' → '+d.proposed+' · hipótese sem aplicação'));
+    ol.append(li);}block.append(ol);
+  }else note(block,'Nenhuma mudança comprovada entre o treino atual e a proposta.');
+  for(const [title,items] of [['Testes por função',pro.roleTests],['Compensações',pro.tradeoffs]]){
+   if(!items?.length)continue;
+   const details=mk('details','ct373-pro-method');details.append(mk('summary','',title));
+   const ul=mk('ul');for(const item of items)ul.append(mk('li','',item));details.append(ul);block.append(details);
+  }
+ }else if(kind==='skills'){
+  line(block,'Vagas livres comprovadas',pro.freeSkillSlots===null?'NÃO COMPROVADAS':String(pro.freeSkillSlots));
+  const list=mk('ol','ct373-pro-list');
+  for(const item of pro.skillPortfolio){
+   const li=mk('li');li.append(mk('strong','',item.priority+'. '+item.name));
+   note(li,'Função: '+item.functionReason);note(li,'Equilíbrio: '+item.explanation);
+   if(item.nativeRelation)note(li,'Nativas: '+item.nativeRelation);
+   if(item.situation)note(li,'Teste: '+item.situation);list.append(li);
+  }
+  if(list.children.length)block.append(list);
+  else note(block,'Sem cinco candidatas documentáveis: conferir edição, nativas e função.');
+  note(block,'Evita repetir a mesma família sem necessidade; cinco sugestões NÃO significam cinco slots disponíveis.');
+ }else{
+  line(block,'Ímpeto fixo',pro.factoryBooster||'PENDENTE');
+  line(block,'Slot adicional comprovado',pro.slotSupported?'Indicado no catálogo; verificar no jogo':'NÃO COMPROVADO');
+  const list=mk('ol','ct373-pro-list');
+  for(const item of pro.boosterAlternatives){
+   const li=mk('li');li.append(mk('strong','',item.priority+'. '+item.name));
+   if(item.axes?.length)note(li,'Atributos envolvidos: '+item.axes.join(' · '));
+   note(li,'Sobreposição com ímpeto fixo: '+(item.overlapWithFixed===null?'pendente':item.overlapWithFixed+' de 4'));
+   note(li,'Índice relativo de função/tática; não prova melhor gameplay.');list.append(li);
+  }
+  if(list.children.length)block.append(list);else note(block,'Sem alternativas documentadas suficientes.');
+  line(block,'Gastar tokens','NÃO AUTORIZADO');
+ }
+ const details=mk('details','ct373-pro-method');
+ details.append(mk('summary','','Pendências e limitações ('+pro.issues.length+')'));
+ const ul=mk('ul');for(const item of pro.issues.slice(0,12))ul.append(mk('li','',item));
+ details.append(ul);block.append(details);host.append(block);
+}
 async function renderTraining(c,body){
  const tools=section('Escolha a tática — cinco fichas do mesmo motor');
  const modes=mk('nav','ct364-modes');
@@ -1045,6 +1099,7 @@ async function renderTraining(c,body){
     note(options,'Candidatas calculadas pelo motor V162 para posição e tática selecionadas. Não pressupõem slots livres nem habilidades instaladas. Confira edição e habilidades nativas.');
     area.append(options);
    }
+   renderProfessionalDossier(result,area,'treino');
    if(result.warnings?.length){
    const more=mk('details','ct364-warnings'),summary=mk('summary','',result.warnings.length+' ressalvas e verificações');
    const ul=mk('ul');result.warnings.forEach(x=>ul.append(mk('li','',x)));
@@ -1122,6 +1177,7 @@ function renderAdvisory(c,body,kind){
    note(results,booster?.note||'Estado do ímpeto fixo e segundo slot sem evidência conclusiva.');
    line(results,'Gastar tokens','NÃO AUTORIZADO — apenas consulta');
   }
+  renderProfessionalDossier(result,results,kind);
  }).catch(error=>{
   if(gen!==advisoryGeneration||active!==c||activePanel!==panel||!block.isConnected)return;
   results.replaceChildren();note(results,'Motor indisponível: '+String(error.message||error)+'. Nenhuma recomendação genérica será usada.');
