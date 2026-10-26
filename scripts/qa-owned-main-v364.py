@@ -177,15 +177,10 @@ with sync_playwright() as pw:
    }""")
    assert recorded["card"]["maxLevel"]==35
    assert recorded["changedOriginal"] is None
-   page.locator("#ct365-review > summary").click()
-   assert "14 níveis máximos pendentes" in page.locator("#ct365-review-summary").inner_text()
+   # O diálogo modal ainda está aberto: conferir a DOM sem clicar sob backdrop.
+   assert "14 níveis máximos pendentes" in page.locator("#ct365-review-summary").text_content()
    saved_row=page.locator('[data-review-card="ct364-01"]')
-   assert "Máximo informado: 35 · 68 PP calculados" in saved_row.inner_text()
-   page.locator("#ct365-review-filter").select_option("with-level")
-   assert page.locator("#ct365-review-rows .ct365-review-row").count()==1
-   page.locator("#ct365-review-filter").select_option("missing-level")
-   assert page.locator("#ct365-review-rows .ct365-review-row").count()==14
-   page.locator("#ct365-review > summary").click()
+   assert "Máximo informado: 35 · 68 PP calculados" in saved_row.text_content()
    assert page.evaluate("() => window.__ct364BackupSignals")>=3,(name,"salvamentos não notificaram o backup completo")
    page.locator('#ct364-tabs [data-panel="treino"]').click()
    page.locator('.ct364-modes button').filter(has_text='Contra-Ataque Normal').click()
@@ -194,6 +189,12 @@ with sync_playwright() as pw:
    assert page.locator("#ct364-dialog-role").input_value()=="SA"
    page.locator(".ct364-close").click()
    assert dialog.is_hidden()
+   page.locator("#ct365-review > summary").click()
+   page.locator("#ct365-review-filter").select_option("with-level")
+   assert page.locator("#ct365-review-rows .ct365-review-row").count()==1
+   page.locator("#ct365-review-filter").select_option("missing-level")
+   assert page.locator("#ct365-review-rows .ct365-review-row").count()==14
+   page.locator("#ct365-review > summary").click()
    page.locator("#search").fill("")
    assert page.locator("#ct364-owned-grid .ct364-player-card").count()==15
    # Check scripts are not throwing even with lazy engines.
