@@ -57,13 +57,57 @@ function summaryCard(result){
  }
  return el;
 }
+/* V373: mesmo parecer das cartas principais; exibição consultiva e segura. */
+function professionalView(result,kind){
+ const pro=result.professional,box=mk('section','ct373-pro');
+ box.dataset.proKind=kind;box.append(mk('h3','','Revisão competitiva individual · PRO'));
+ if(!pro){box.append(mk('p','','Motor ainda não retornou um parecer.'));return box}
+ box.append(mk('p','ct373-pro-disclaimer','Critérios metodológicos inspirados em Rentão/Blackjhon, sem autoria atribuída a vídeo não comprovado da edição. '+(pro.role||'Função pendente')+' · '+result.label));
+ const row=(k,v)=>{const r=mk('div','ct373-pro-row');r.append(mk('strong','',k),mk('span','',v));box.append(r)};
+ if(kind==='treino'){
+  row('Treino atual',pro.baselineValid?'Manual cadastrado':'PENDENTE · não presume build anterior');
+  row('Proposta',pro.trainingStatus==='hipotese'?'HIPÓTESE, NÃO APLICADA':'PENDENTE');
+  for(const change of pro.trainingDifferences)row(change.name,change.was+' → '+change.proposed+' · só hipótese');
+  const ul=mk('ul','ct373-pro-list');
+  for(const item of [...pro.roleTests,...pro.tradeoffs])ul.append(mk('li','',item));
+  if(ul.children.length)box.append(ul);
+ }else if(kind==='skills'){
+  row('Vagas verificadas',pro.freeSkillSlots===null?'NÃO COMPROVADAS — cinco sugestões ≠ cinco vagas':String(pro.freeSkillSlots));
+  const ol=mk('ol','ct373-pro-list');
+  for(const item of pro.skillPortfolio){
+   const li=mk('li');
+   li.append(mk('strong','',item.priority+'. '+item.name),
+    mk('p','',item.functionReason),
+    mk('small','',item.explanation));
+   if(item.nativeRelation)li.append(mk('small','','Nativas: '+item.nativeRelation));
+   ol.append(li);
+  }
+  if(ol.children.length)box.append(ol);
+  else box.append(mk('p','','Carteira pendente: confira nativas e edição.'));
+ }else{
+  row('Ímpeto fixo',pro.factoryBooster||'PENDENTE');
+  row('Segundo slot',pro.slotSupported?'Catálogo indica: confirmar na conta':'NÃO COMPROVADO');
+  const ol=mk('ol','ct373-pro-list');
+  for(const item of pro.boosterAlternatives){
+   const li=mk('li');li.append(mk('strong','',item.priority+'. '+item.name));
+   if(item.axes?.length)li.append(mk('p','','Atributos relacionados: '+item.axes.join(' · ')));
+   li.append(mk('small','','Sobreposição com fixo: '+(item.overlapWithFixed===null?'pendente':item.overlapWithFixed+' de 4')));
+   ol.append(li);
+  }
+  if(ol.children.length)box.append(ol);row('Tokens','NÃO AUTORIZADOS');
+ }
+ const detail=mk('details','ct373-pro-limits');
+ detail.append(mk('summary','','Pendências ('+pro.issues.length+')'));
+ const ul=mk('ul');for(const item of pro.issues.slice(0,12))ul.append(mk('li','',item));
+ detail.append(ul);box.append(detail);return box;
+}
 function training(result){
  const panel=mk('section','friend-analysis-panel');panel.dataset.panel='treino';
  panel.append(mk('h3','','Ficha de treino · '+result.label));
  const p=result.plan;
  if(p.status!=='hipotese'||!p.levels){
   panel.append(mk('p','friend-analysis-warning','Treino ainda não calculável: '+(p.reason||'Dados insuficientes.')));
-  panel.append(mk('p','friend-analysis-fineprint','Informe o nível máximo no cadastro para calcular PP = 2 × (nível máximo − 1). Edição e Card ID continuam sob conferência.'));return panel;
+  panel.append(mk('p','friend-analysis-fineprint','Informe o nível máximo no cadastro para calcular PP = 2 × (nível máximo − 1). Edição e Card ID continuam sob conferência.'));panel.append(professionalView(result,'treino'));return panel;
  }
  const header=mk('div','friend-analysis-pp');
  header.append(mk('strong','',p.pp+' / '+result.plan.pp+' PP distribuídos'),mk('span','','Restante: '+p.remaining+' PP · 10 categorias'));
@@ -111,13 +155,14 @@ function training(result){
   details.append(section);panel.append(details);
  }
  panel.append(mk('p','friend-analysis-fineprint',p.note));
+ panel.append(professionalView(result,'treino'));
  return panel;
 }
 function skills(result){
  const panel=mk('section','friend-analysis-panel');panel.dataset.panel='skills';
  panel.append(mk('h3','','Habilidades adicionais · candidatas por função'));
  if(!result.skills){
-  panel.append(mk('p','friend-analysis-warning','Informe a posição da carta para recomendar habilidades.'));return panel;
+  panel.append(mk('p','friend-analysis-warning','Informe a posição da carta para recomendar habilidades.'));panel.append(professionalView(result,'skills'));return panel;
  }
  const s=result.skills;
  const slotsVerified=Number.isInteger(result.freeSkillSlots);
@@ -145,6 +190,7 @@ function skills(result){
  const alts=s.alternatives.slice(0,3).map(x=>x.name);
  if(alts.length)panel.append(mk('p','friend-analysis-fineprint','Alternativas: '+alts.join(' · ')));
  panel.append(mk('p','friend-analysis-fineprint','Lista por função, tática, estilo e habilidades nativas informadas. Recomendações não equipadas automaticamente.'));
+ panel.append(professionalView(result,'skills'));
  return panel;
 }
 function booster(result){
@@ -152,7 +198,7 @@ function booster(result){
  panel.append(mk('h3','','Ímpeto ideal e disponibilidade'));
  const b=result.booster;
  if(!b){
-  panel.append(mk('p','friend-analysis-warning','Cadastre a posição para estimar o melhor ímpeto.'));return panel;
+  panel.append(mk('p','friend-analysis-warning','Cadastre a posição para estimar o melhor ímpeto.'));panel.append(professionalView(result,'boost'));return panel;
  }
  panel.append(infoRow('Ímpeto fixo',activeCard.fixedBooster||'Não informado'));
  panel.append(infoRow('Situação do slot',({
@@ -175,6 +221,7 @@ function booster(result){
     'Slot relatado vazio, mas a edição não possui prova independente de elegibilidade. Ranking consultivo; NÃO gastar tokens.':
     'Não aplicar ímpeto: slot inexistente, ocupado ou ainda sem confirmação. O ranking é apenas consultivo.'));
  panel.append(mk('p','friend-analysis-fineprint',b.note||'Ranking teórico sem status finais ou partida comprovada.'));
+ panel.append(professionalView(result,'boost'));
  return panel;
 }
 function buildCache(){

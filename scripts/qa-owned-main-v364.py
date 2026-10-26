@@ -131,6 +131,9 @@ with sync_playwright() as pw:
    assert page.locator("#ct366-advisory .ct364-modes button").count()==5
    page.wait_for_function("""() => document.querySelector('#ct366-advisory .ct366-results')?.textContent.includes('Vagas adicionais livres verificadas')""",timeout=25000)
    assert "PENDENTE" in page.locator("#ct366-advisory").inner_text()
+   assert page.locator('#ct366-advisory [data-pro-kind="skills"]').count()==1,(name,"V373 não mostrou carteira de habilidades")
+   assert "Vagas livres comprovadas" in page.locator('#ct366-advisory [data-pro-kind="skills"]').inner_text()
+   assert "NÃO COMPROVADAS" in page.locator('#ct366-advisory [data-pro-kind="skills"]').inner_text()
    page.locator("#ct366-advisory .ct364-modes button").filter(has_text="Contra-Ataque Normal").click()
    assert "Contra-Ataque Normal" in page.locator("#ct366-advisory").inner_text()
    assert page.locator("#ct366-advisory .ct364-modes button[aria-pressed=true]").count()==1
@@ -159,6 +162,8 @@ with sync_playwright() as pw:
    assert page.locator("#ct366-advisory .ct364-modes button").count()==5
    page.wait_for_function("""() => document.querySelector('#ct366-advisory .ct366-results')?.textContent.includes('Gastar tokens')""",timeout=25000)
    assert "NÃO AUTORIZADO" in page.locator("#ct366-advisory").inner_text()
+   assert page.locator('#ct366-advisory [data-pro-kind="boost"]').count()==1,(name,"V373 sem alternativas por função")
+   assert "Slot adicional comprovado" in page.locator('#ct366-advisory [data-pro-kind="boost"]').inner_text()
    page.locator("#ct364-dialog-role").select_option("SA")
    assert "Papel SA" in page.locator("#ct366-advisory").inner_text()
    page.locator("#ct364-dialog-role").select_option("MAT")
@@ -178,6 +183,8 @@ with sync_playwright() as pw:
    page.locator('#ct364-tabs [data-panel="treino"]').click()
    assert page.locator(".ct364-modes button").count()==5
    assert "PENDENTE" in page.locator("#ct364-panel").inner_text().upper()
+   page.wait_for_function("""() => document.querySelector('#ct364-panel [data-pro-kind="treino"]')!==null""",timeout=25000)
+   assert "Treino atual" in page.locator('#ct364-panel [data-pro-kind="treino"]').inner_text()
    page.locator('#ct364-tabs [data-panel="confirm"]').click()
    page.locator("#ct364-max-level").fill("35")
    page.locator(".ct364-save").click()

@@ -123,6 +123,60 @@ function allocate(card,tactic,deps){
   note:'Mesmo motor de distribuição V251 e interpretação V233 de Minhas Cartas; comparação individual por função, estilo, habilidades e PP. NÃO otimiza Overall e NÃO prova desempenho real nem autoriza trocar treino aprovado.'
  };
 }
+/* V373 — dossiê PRO usa SÓ as hipóteses do motor oficial V251/V233/V162/V103.
+   Rentão/Blackjhon são referência de critérios, não autores destas builds. */
+function professionalAudit(card,result){
+ const sk=result.skills,boost=result.booster,plan=result.plan;
+ const byKey=new Map((sk?.rankedCandidates||[]).map(x=>[x.key,x]));
+ const portfolio=(sk?.balancedPortfolio?.candidates||[]).slice(0,5).map((x,i)=>{
+  const r=byKey.get(x.key);return {
+   priority:i+1,name:x.name,family:x.family,explanation:x.explanation,
+   functionReason:r?.decision?.reason||r?.why||'Função a conferir',
+   situation:r?.decision?.situation||null,
+   nativeRelation:r?.decision?.nativeRelation||null,
+   eligibility:r?.decision?.eligibility||'pendente',
+   applyAuthorized:false};
+ });
+ const overlap=boost?.complementarity?.comparisons||[];
+ const boosters=(boost?.decisionEvidence?.candidates||[]).slice(0,3).map((x,i)=>{
+  const original=i===0?boost.primary:boost.alternatives?.[i-1];
+  return {priority:i+1,name:x.displayName||x.technicalName,
+   technicalName:x.technicalName,relativeScore:x.relativeScore,
+   axes:(original?.atributos||[]).slice(0,4),
+   overlapWithFixed:Number.isInteger(overlap[i]?.shared)?overlap[i].shared:null,
+   factors:x.factors,applyAuthorized:false};
+ });
+ const issues=[];
+ if(!result.identityConfirmed)issues.push('Card ID e edição exata pendentes: não copiar treinos de outra versão.');
+ else issues.push('Card ID informado com formato plausível, mas não é recibo da edição.');
+ if(!sk?.nativeKnown)issues.push('Inventário de habilidades nativas pendente.');
+ if(sk?.requiresReconciliation)issues.push('Habilidades adicionais/nativas em conflito ou sem confirmação.');
+ if(result.freeSkillSlots===null)issues.push('Vagas livres de skills NÃO comprovadas: cinco opções não significam cinco vagas.');
+ if(!plan?.levels)issues.push('Treino e PP pendentes. Não substituir build aprovada.');
+ if(plan?.baselineError)issues.push(plan.baselineError);
+ if(!boost?.slotSupported)issues.push('Segundo slot de ímpeto NÃO comprovado.');
+ if(!boost?.complementarity?.factoryDocumented)
+  issues.push('Ímpeto fixo não identificado; complementaridade não comprovada.');
+ issues.push(...(boost?.decisionEvidence?.warnings||[]));
+ return Object.freeze({
+  schema:'craque-pro-v373',role:plan?.role||null,tactic:result.tactic,
+  creatorMethod:'critérios competitivos inspirados em Rentão/Blackjhon, sem vídeo da edição atribuído',
+  status:'HIPOTESE_SEM_HOMOLOGACAO',noOverall:true,autoWrite:false,
+  trainingStatus:plan?.status||'pendente',trainingDifferences:(plan?.differences||[]).slice(),
+  baselineValid:plan?.baselineValid===true,
+  proposedLevels:plan?.levels?plan.levels.slice():null,
+  skillsStatus:!sk?.nativeKnown?'nativas_pendentes':sk?.requiresReconciliation?'conciliar':'consultivo',
+  freeSkillSlots:result.freeSkillSlots,
+  skillPortfolio:portfolio,boosterAlternatives:boosters,
+  factoryBooster:boost?.natural||null,
+  fixedOverlapVerified:boost?.complementarity?.factoryDocumented===true,
+  slotSupported:boost?.slotSupported===true,
+  tokenSpendAuthorized:false,
+  roleTests:(plan?.tests||[]).slice(0,5),
+  tradeoffs:(plan?.tradeoffs||[]).slice(0,5),
+  issues:[...new Set(issues)]
+ });
+}
 function evaluate(card,tactic='posse',deps){
  const {tactical:t,skills:s,boosters:b}=getDeps(deps);
  if(!t||!s||!b)throw Error('Um dos motores oficiais do Craque Tático não carregou.');
@@ -168,7 +222,7 @@ function evaluate(card,tactic='posse',deps){
  // estimativa em disponibilidade real (compartilhado nos dois acervos).
  const candidateCapacity=skill?Math.max(0,5-skill.alreadyEquippedProvided):0;
  const freeSkillSlots=skill&&Number.isInteger(skill.slotsRemaining)?skill.slotsRemaining:null;
- return {
+ const result={
   tactic,label:LABEL[tactic],plan,progress,skills:skill,booster:boost,
   suggestedSkills:skill?.recommendations.slice(0,candidateCapacity)||[],
   candidateCapacity,freeSkillSlots,
@@ -187,6 +241,7 @@ function evaluate(card,tactic='posse',deps){
     identity&&nativeDocumented?'simulacao_documentada_parcial':'hipotese_dados_incompletos',
   warnings:[...new Set(warnings)]
  };
+ return {...result,professional:professionalAudit(card,result)};
 }
 function generate(card,deps){
  const source=sourceSignature(card);
@@ -212,5 +267,5 @@ function validateSaved(card,record,deps){
  }
  return true;
 }
-return Object.freeze({MODES,LABEL,METHODOLOGY,levelBudget,resolveBudget,profileOf,sourceSignature,parseBaseline,allocate,evaluate,generate,validateSaved});
+return Object.freeze({MODES,LABEL,METHODOLOGY,levelBudget,resolveBudget,profileOf,sourceSignature,parseBaseline,allocate,evaluate,professionalAudit,generate,validateSaved});
 });

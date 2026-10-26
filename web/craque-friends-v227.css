@@ -287,3 +287,20 @@ body[data-page=friends] .friend-analysis-cta button{min-height:46px;flex:1 1 170
 .friend-manager-v328-fav[aria-pressed="true"]{background:#55452a;color:#fff3c5}
 .friend-manager-v328-fav:disabled{opacity:.55;cursor:not-allowed}
 @media(max-width:520px){.friend-manager-v328-tools{grid-template-columns:minmax(0,1fr)}.friend-manager-v328-count,.friend-manager-v328-fav{grid-column:1}.friend-manager-v328-fav{justify-self:stretch}}
+
+/* V373: dossiê único de cinco skills, treino e ímpeto, também em Outros Elencos. */
+.friend-analysis-content .ct373-pro{display:grid;gap:9px;min-width:0;max-width:100%;
+ box-sizing:border-box;padding:12px;margin:12px 0;border:1px solid #a99b70;
+ border-radius:10px;background:#102c38;color:#e9f5f5}
+.friend-analysis-content .ct373-pro h3{color:#f8dfa7;margin:0;font-size:13px}
+.friend-analysis-content .ct373-pro-disclaimer{font-size:11px;line-height:1.5}
+.friend-analysis-content .ct373-pro-row{display:grid;gap:4px;
+ padding:8px 4px;border-bottom:1px solid #456475;overflow-wrap:anywhere;font-size:12px}
+.friend-analysis-content .ct373-pro-row strong{color:#f6dfb4}
+.friend-analysis-content .ct373-pro-list{display:grid;gap:9px;padding-left:20px;font-size:12px}
+.friend-analysis-content .ct373-pro-list li{overflow-wrap:anywhere}
+.friend-analysis-content .ct373-pro-list p,.friend-analysis-content .ct373-pro-list small{display:block;margin:5px 0;line-height:1.5}
+.friend-analysis-content .ct373-pro-limits{padding:10px;border:1px solid #577b8a;border-radius:8px}
+.friend-analysis-content .ct373-pro-limits summary{cursor:pointer;min-height:36px}
+.friend-analysis-content .ct373-pro-limits li{padding:4px 0;overflow-wrap:anywhere}
+@media(max-width:355px){.friend-analysis-content .ct373-pro{padding:9px}}
