@@ -28,6 +28,13 @@ with sync_playwright() as pw:
    assert page.locator("#ct364-owned-grid .ct364-player-card").count()==15,(name,"15 adicionais faltam")
    assert page.locator("#ct364-owned-section").is_visible()
    assert not page.locator("#ct364-owned-section").evaluate("(e)=>e.open"),(name,"novas cartas devem iniciar recolhidas")
+   hint=page.locator("#catalogo .list-meta > span:last-child")
+   if width<=355:
+    assert hint.is_hidden(),(name,"dica redundante ainda ocupa a primeira dobra")
+    first=page.locator("#cards .player-card:visible").first.bounding_box()
+    assert first and first["y"]<height-38,(name,"primeira carta encoberta",first)
+   else:
+    assert hint.is_visible(),(name,"dica deve continuar em telas mais amplas")
    # Expandir a seção intencionalmente para validar as 15 imagens; tela inicial
    # deve continuar com as 246 originais acessíveis na primeira dobra.
    page.locator("#ct364-owned-section > summary").click()
