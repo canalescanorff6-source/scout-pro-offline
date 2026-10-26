@@ -413,3 +413,18 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
 .ct372-protocol h5{font:800 12px/1.5 system-ui,sans-serif;color:#ffdfa8;margin:0}
 .ct372-protocol-fields{margin:0;padding-left:19px;display:grid;gap:5px;color:#d9e8f0;font:500 12px/1.5 system-ui,sans-serif}
 .ct372-protocol-fields li{overflow-wrap:anywhere}
+
+/* V373: diagnóstico profissional por edição, função e tática, recolhe pendências. */
+.ct373-pro{display:grid;gap:9px;min-width:0;background:#14283e;border:1px solid #b69b6b;
+ border-radius:10px;padding:12px;margin:10px 0;color:#ecf2fa}
+.ct373-pro h3{margin:0;font:800 13px/1.4 system-ui,sans-serif;color:#ffe1a3}
+.ct373-pro .ct364-data-row{display:grid;gap:5px;overflow-wrap:anywhere}
+.ct373-pro-list{display:grid;gap:8px;margin:3px 0;padding-left:22px}
+.ct373-pro-list li{padding:6px 0;border-bottom:1px solid #496079;overflow-wrap:anywhere;
+ font:500 11px/1.5 system-ui,sans-serif}
+.ct373-pro-list strong{display:block;color:#ffe2ac;font-size:12px}
+.ct373-pro-list p,.ct373-pro-list .ct364-note{margin:5px 0;color:#d8e4ee}
+.ct373-pro-method{border:1px solid #59738c;border-radius:8px;padding:10px}
+.ct373-pro-method summary{min-height:36px;cursor:pointer;color:#e9d9b9}
+.ct373-pro-method li{margin:5px 0;overflow-wrap:anywhere;font-size:11px}
+@media(max-width:355px){.ct373-pro{padding:9px}.ct373-pro-list{padding-left:19px}}
