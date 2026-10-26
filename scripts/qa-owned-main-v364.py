@@ -198,7 +198,7 @@ with sync_playwright() as pw:
    assert page.locator("#ct367-gameplay > .ct372-observed").is_visible()
    page.locator("#ct367-matches").fill("2")
    page.locator("#ct367-notes").fill("Passe curto e recepção sob pressão observados em duas partidas.")
-   page.locator("#ct367-link").fill("javascript:alert(1)")
+   page.locator("#ct367-link").fill("")
    page.locator("#ct367-ack").check()
    # V372: rejeitar êxitos acima das tentativas antes de salvar.
    page.locator("#ct367-gameplay > .ct372-observed summary").click()
@@ -208,6 +208,7 @@ with sync_playwright() as pw:
    assert "êxitos devem ficar entre" in page.locator("#ct367-feedback").inner_text()
    assert page.evaluate("() => localStorage.getItem('scoutpro:v367:owned-gameplay')") is None
    page.locator('[data-ct372-success="shortPass"]').fill("6")
+   page.locator("#ct367-link").fill("javascript:alert(1)")
    page.locator("#ct367-save").click()
    assert "link HTTPS válido" in page.locator("#ct367-feedback").inner_text()
    page.locator("#ct367-link").fill("https://www.youtube.com/watch?v=abcdefghijk")
