@@ -1002,6 +1002,22 @@ function ensureEngine(){
  loadEngine=jobs.reduce((p,[path,key])=>p.then(()=>script(path,key)),Promise.resolve());
  return loadEngine;
 }
+/* V374 — auditoria de duplicação por vaga, sem instalar nada. */
+function auditSkillPortfolio(c,portfolio){
+ const manual=equipmentOf(c),native=c.observed.nativeSkills||[];
+ const nativeKeys=new Set(native.map(normalize)),manualKeys=new Set(manual.skills.filter(Boolean).map(normalize));
+ const seen=new Set();
+ return (portfolio||[]).map(item=>{
+  const name=String(item.name||'').trim(),key=normalize(name);
+  let status='CANDIDATA — CONFERIR EDIÇÃO';
+  if(!key)status='PENDENTE — NOME AUSENTE';
+  else if(nativeKeys.has(key))status='JÁ NATIVA OBSERVADA — NÃO DUPLICAR';
+  else if(manualKeys.has(key))status='JÁ ANOTADA COMO ADICIONAL — NÃO DUPLICAR';
+  else if(seen.has(key))status='DUPLICADA NA PROPOSTA — REVISAR';
+  if(key)seen.add(key);
+  return {name,status};
+ });
+}
 /* V373: parecer competitivo individual V251/V233/V162/V103, sem equipar nada. */
 function renderProfessionalDossier(result,host,kind){
  const pro=result?.professional;
@@ -1029,8 +1045,10 @@ function renderProfessionalDossier(result,host,kind){
  }else if(kind==='skills'){
   line(block,'Vagas livres comprovadas',pro.freeSkillSlots===null?'NÃO COMPROVADAS':String(pro.freeSkillSlots));
   const list=mk('ol','ct373-pro-list');
-  for(const item of pro.skillPortfolio){
+  const audit=auditSkillPortfolio(active,pro.skillPortfolio);
+  for(const [idx,item] of pro.skillPortfolio.entries()){
    const li=mk('li');li.append(mk('strong','',item.priority+'. '+item.name));
+   note(li,'Auditoria: '+audit[idx].status);
    note(li,'Função: '+item.functionReason);note(li,'Equilíbrio: '+item.explanation);
    if(item.nativeRelation)note(li,'Nativas: '+item.nativeRelation);
    if(item.situation)note(li,'Teste: '+item.situation);list.append(li);
