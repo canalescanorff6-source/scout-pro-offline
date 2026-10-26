@@ -274,3 +274,18 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
 .ct367-compare-card .ct364-note{overflow-wrap:anywhere}
 .ct367-video-link{font-size:12px;color:#ffe1a6;text-decoration:underline}
 @media(max-width:600px){.ct367-compare-rows{grid-template-columns:1fr}}
+
+/* V368 — comparação transversal 15+246 por CAP, sem alterar a primeira dobra. */
+.ct368-form-slot{display:grid;gap:9px}
+.ct368-original-form{display:grid;gap:9px;border:1px solid #536b87;border-radius:10px;
+ background:#111f31;padding:12px;min-width:0}
+.ct368-original-form h4{margin:0;color:#f4d39a;font-size:13px;line-height:1.4}
+.ct368-original-form .ct364-form-label{max-width:100%;overflow-wrap:anywhere}
+.ct368-original-form input[type="number"],
+.ct368-original-form input[type="url"]{
+ width:100%;min-height:44px;box-sizing:border-box;border:1px solid #687c94;
+ border-radius:8px;background:#0c1b2d;color:#f7f3ea;padding:9px;
+ font:500 12px/1.4 system-ui,sans-serif
+}
+.ct368-original-form input:focus-visible{outline:2px solid #ffe0a4;outline-offset:2px}
+.ct367-compare-card .ct367-video-link{min-height:32px;display:inline-flex;align-items:center}
