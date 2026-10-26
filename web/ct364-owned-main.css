@@ -289,3 +289,57 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
 }
 .ct368-original-form input:focus-visible{outline:2px solid #ffe0a4;outline-offset:2px}
 .ct367-compare-card .ct367-video-link{min-height:32px;display:inline-flex;align-items:center}
+
+/* V369 — histórico não destrutivo e fila documental para as 261 edições.
+   Fechados por padrão: não deslocar as cartas na primeira dobra Android. */
+.ct369-history,.ct369-test-queue{
+ margin:10px 0;border:1px solid #667b8b;border-radius:10px;overflow:hidden;
+ background:#112238;color:#f4e3c6
+}
+.ct369-history>summary,.ct369-test-queue>summary{
+ min-height:44px;padding:12px;cursor:pointer;
+ background:#20364c;font:800 12px/1.5 system-ui,sans-serif;
+ color:#ffe3b6;list-style-position:inside
+}
+.ct369-history>summary:focus-visible,.ct369-test-queue>summary:focus-visible,
+.ct369-queue-search:focus-visible,.ct369-queue-select:focus-visible,
+.ct369-queue-action:focus-visible{outline:2px solid #ffe2aa;outline-offset:-2px}
+.ct369-history>.ct364-note{margin:10px}
+.ct369-history-list{margin:0;padding:0 14px 10px 30px;display:grid;gap:8px}
+.ct369-history-item{
+ padding:9px 7px;color:#d6e3ed;font-size:11px;line-height:1.5;
+ border-bottom:1px solid #50647c
+}
+.ct369-history-item>strong{display:block;color:#ffe4b7;font-size:12px;margin-bottom:7px}
+.ct369-history-item .ct364-data-row{display:grid;gap:3px;overflow-wrap:anywhere}
+.ct369-history-item .ct364-note{overflow-wrap:anywhere}
+.ct369-queue-inner{padding:11px;display:grid;gap:9px}
+.ct369-queue-select,.ct369-queue-search{
+ width:100%;box-sizing:border-box;border-radius:8px;border:1px solid #71869b;
+ min-height:44px;padding:8px 10px;color:#f5eeda;background:#0e2033;
+ font:600 12px/1.4 system-ui,sans-serif
+}
+.ct369-queue-stats{
+ margin:0;font:700 11px/1.5 system-ui,sans-serif;color:#f7dba6
+}
+.ct369-queue-list{display:grid;gap:7px}
+.ct369-queue-item{
+ display:flex;align-items:center;justify-content:space-between;gap:11px;
+ border:1px solid #435a74;border-radius:8px;background:#182d44;padding:10px
+}
+.ct369-queue-info{min-width:0;display:grid;gap:5px}
+.ct369-queue-info strong{color:#f9dfb1;font-size:12px;overflow-wrap:anywhere}
+.ct369-queue-info span,.ct369-queue-info small{
+ color:#c9dce8;font-size:11px;line-height:1.4;overflow-wrap:anywhere
+}
+.ct369-queue-action,.ct369-show-more{
+ min-height:44px;border:1px solid #cdaa74;border-radius:8px;
+ background:#304b62;color:#ffe0a8;font:800 11px/1.35 system-ui,sans-serif;
+ padding:8px 11px;cursor:pointer
+}
+.ct369-queue-action{flex:none;min-width:104px}
+.ct369-show-more{width:100%}
+@media(max-width:355px){
+ .ct369-queue-item{flex-direction:column;align-items:stretch}
+ .ct369-queue-action{width:100%}
+}
