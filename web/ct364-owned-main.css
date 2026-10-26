@@ -191,3 +191,12 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
   margin-bottom:1px!important;
  }
 }
+
+/* V364.6 — correção baseada na captura real QA 320x700: o texto "Toque na
+   carta para abrir a ficha" ocupa uma linha sob o contador e empurra a
+   primeira carta para o dock. Instrução redundante apenas em 320–355px. */
+@media(max-width:355px){
+ body.ct362-design[data-page="catalog"] #catalogo .list-meta>span:last-child{
+  display:none!important;
+ }
+}
