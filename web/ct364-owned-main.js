@@ -49,6 +49,7 @@ const equipmentSave=(card,value)=>{
  localStorage.setItem(EQUIP_STORAGE,JSON.stringify(next));
  equipment=next;
  notifyBackup();
+ refreshReview();
 };
 const numberOrNull=(v)=>Number.isInteger(v)&&v>0&&v<=120?v:null;
 const confirmationOf=card=>{
@@ -104,6 +105,73 @@ function syncResults(){
  $('#ct364-owned-count').textContent=filtered.length+' de '+entries.length+' adicionais';
  // O estado "nenhuma carta" original só é verdadeiro quando AMBOS os grupos estão vazios.
  if(filtered.length&&$('#none'))$('#none').hidden=true;
+}
+
+/* V365 — diagnóstico local, sem inferir Card ID, nível máximo ou PP dos prints.
+   PP=2×(nível máximo declarado−1) é cálculo, nunca comprovação da edição. */
+function refreshReview(){
+ const rows=$('#ct365-review-rows'),summary=$('#ct365-review-summary');
+ if(!rows||!summary)return;
+ const known=entries.filter(c=>Boolean(confirmationOf(c).level));
+ const idKnown=entries.filter(c=>Boolean(confirmationOf(c).cardId));
+ summary.textContent='Conferir minhas 15 cartas · '+(entries.length-known.length)+
+  ' níveis máximos pendentes';
+ const count=$('#ct365-review-count');
+ if(count)count.textContent=known.length+' de '+entries.length+' níveis máximos informados · '+
+  idKnown.length+' Card IDs anotados (identidade ainda não homologada)';
+ const mode=$('#ct365-review-filter')?.value||'all';
+ const shown=entries.filter(c=>{
+  const conf=confirmationOf(c);
+  return mode==='missing-level'?!conf.level:
+   mode==='missing-id'?!conf.cardId:
+   mode==='with-level'?Boolean(conf.level):true;
+ });
+ const frag=document.createDocumentFragment();
+ for(const c of shown){
+  const conf=confirmationOf(c);
+  const item=mk('div','ct365-review-row');
+  item.dataset.reviewCard=c.key;
+  const left=mk('div','ct365-review-info');
+  left.append(mk('strong','',c.name+' · '+c.position));
+  left.append(mk('span','','eFHub: nível '+c.observed.shownLevel+' (simulação, não máximo)'));
+  left.append(mk('span','',conf.level?
+    'Máximo informado: '+conf.level+' · '+(2*(conf.level-1))+' PP calculados, não homologados':
+    'Nível máximo: PENDENTE · PP: PENDENTES'));
+  left.append(mk('span','',conf.cardId?
+    'Card ID anotado (edição ainda não validada)':'Card ID: PENDENTE'));
+  const action=mk('button','ct365-review-open',conf.level?'Revisar dados':'Informar nível');
+  action.type='button';action.setAttribute('aria-label','Conferir nível máximo e Card ID de '+c.name);
+  action.onclick=()=>openCard(c,'confirm');
+  item.append(left,action);frag.append(item);
+ }
+ rows.replaceChildren(frag);
+ if(!shown.length)rows.append(mk('p','ct365-empty','Nenhuma carta nesta condição.'));
+}
+function createReview(){
+ const review=mk('details','ct365-review');review.id='ct365-review';
+ const toggle=mk('summary','','Conferir minhas 15 cartas · níveis pendentes');
+ toggle.id='ct365-review-summary';review.append(toggle);
+ const content=mk('div','ct365-review-body');
+ const description=mk('p','ct365-review-explainer',
+  'Aqui você confere todas as 15 cartas de Minhas Cartas. Nível observado no eFHub não é nível máximo. PP só aparecem como cálculo após sua confirmação no jogo. Não preenche dados automaticamente.');
+ description.id='ct365-review-description';
+ content.append(description);
+ const count=mk('p','ct365-review-count');count.id='ct365-review-count';
+ count.setAttribute('aria-live','polite');content.append(count);
+ const label=mk('label','ct365-review-filter-label','Mostrar cartas');
+ const filter=mk('select','ct365-review-filter');filter.id='ct365-review-filter';
+ for(const [value,desc] of [
+  ['all','Todas as 15'],
+  ['missing-level','Sem nível máximo informado'],
+  ['missing-id','Sem Card ID anotado'],
+  ['with-level','Com nível máximo informado']
+ ]){
+  const option=mk('option','',desc);option.value=value;filter.append(option);
+ }
+ filter.onchange=refreshReview;label.append(filter);content.append(label);
+ const rows=mk('div','ct365-review-rows');rows.id='ct365-review-rows';
+ content.append(rows);review.append(content);
+ return review;
 }
 function renderOverview(c,body){
  const meta=section('Identidade e função da carta');
@@ -337,6 +405,7 @@ function renderConfirm(c,body){
   const next={...confirmed,[c.key]:{maxLevel:level,cardId:id}};
   try{localStorage.setItem(STORAGE,JSON.stringify(next));confirmed=next;
    notifyBackup();
+   refreshReview();
    feedback.textContent='Salvo localmente · PP poderão ser calculados como hipótese. Edição permanece a conferir.';
    const b=$('[data-owned-id="'+c.key+'"] .ct364-card-tag');
    if(b)b.textContent='Nível máximo informado · conferir edição';
@@ -384,8 +453,9 @@ function navigateOwned(delta){
  if(index<0)return;
  switchOwnedCard(entries[(index+delta+entries.length)%entries.length]);
 }
-function openCard(c){
+function openCard(c,panel='resumo'){
  switchOwnedCard(c);
+ if(panel==='confirm'){activePanel='confirm';renderDialog();}
  const dialog=$('#ct364-dialog');
  if(typeof dialog.showModal==='function'&&!dialog.open)dialog.showModal();
  else dialog.setAttribute('open','');
@@ -409,7 +479,9 @@ function prepare(data){
  const counter=mk('strong','ct364-owned-count','15 adicionais');counter.id='ct364-owned-count';
  header.append(title,counter);
  const grid=mk('div','ct364-owned-grid');grid.id='ct364-owned-grid';
- const inner=mk('div','ct364-owned-inner');inner.append(header,grid);wrapper.append(inner);
+ const inner=mk('div','ct364-owned-inner');
+ const review=createReview();
+ inner.append(header,review,grid);wrapper.append(inner);
  toolbar.insertBefore(wrapper,original);
  // Correção estrutural: em 320px o aviso repetido ainda aparecia apesar do
  // CSS e empurrava a primeira carta sob o dock. Aplicar após montar a V364.
@@ -476,6 +548,7 @@ function prepare(data){
  const params=new URLSearchParams(location.search);
  if(params.has('owned')){const found=entries.find(c=>c.key===params.get('owned'));if(found)setTimeout(()=>openCard(found),300)}
  syncResults();
+ refreshReview();
  document.body.dataset.ct364Owned='ready';
 }
 const start=()=>{
