@@ -319,9 +319,15 @@ with sync_playwright() as pw:
    page.locator("#ct367-notes").fill("Terceira revisão, já com habilidade alterada; observações exigem testes independentes.")
    page.locator("#ct367-ack").check()
    page.locator("#ct367-save").click()
+   assert "Registro individual salvo" in page.locator("#ct367-feedback").inner_text()
    page.locator("#ct369-owned-history summary").click()
    owned_diff=page.locator("#ct369-owned-history .ct370-diff")
-   assert "Habilidade adicional · vaga 3" in owned_diff.inner_text()
+   diagnostic=page.evaluate("""() => {
+    const v=JSON.parse(localStorage.getItem('scoutpro:v367:owned-gameplay')||'{}')['ct364-01|MAT|posse'];
+    return {history:v?.history?.map(x=>x.buildSnapshot),now:v?.buildSnapshot,
+     n:v?.history?.length};
+   }""")
+   assert "Habilidade adicional · vaga 3" in owned_diff.inner_text(),(name,diagnostic,owned_diff.inner_text())
    assert "Nova habilidade de QA após o teste" in owned_diff.inner_text()
    assert "PENDENTE — dado incompleto" in owned_diff.inner_text()
    # Inverter cronologia deve ser bloqueado, não mostrar falsa mudança.
