@@ -56,6 +56,12 @@ with sync_playwright() as pw:
    dialog=page.locator("#ct364-dialog")
    assert dialog.is_visible(),(name,"ficha adicional não abre")
    assert page.locator("#ct364-title").inner_text()=="K. Karetsas"
+   page.evaluate("""() => {
+      window.__ct364BackupSignals=0;
+      window.addEventListener('craque:data-changed',()=>{
+       window.__ct364BackupSignals++;
+      });
+   }""")
    # V364.2: navegar como nas cartas principais, isolando identidade e edicao.
    assert page.locator("#ct364-card-navigator").is_visible(),(name,"navegacao ausente")
    assert page.locator("#ct364-jump option").count()==15
@@ -121,6 +127,7 @@ with sync_playwright() as pw:
    }""")
    assert recorded["card"]["maxLevel"]==35
    assert recorded["changedOriginal"] is None
+   assert page.evaluate("() => window.__ct364BackupSignals")>=3,(name,"salvamentos não notificaram o backup completo")
    page.locator('#ct364-tabs [data-panel="treino"]').click()
    page.locator('.ct364-modes button').filter(has_text='Contra-Ataque Normal').click()
    assert page.locator('.ct364-modes button[aria-pressed="true"]').count()==1
