@@ -1326,9 +1326,18 @@ def run():
                 page.locator("#ct7-featured button").click()
                 if page.locator("#friend-cards .friends-card").count()!=3:
                     problems.append(f"{name}: V357 não mostrou as três cartas do 7$")
-                if not page.locator('#friend-cards .friends-card img').first.evaluate(
-                    '(e)=>e.complete && e.naturalWidth>0'):
-                    problems.append(f"{name}: V357 a imagem não carregou na coleção 7$")
+                # V371 QA: data URI WebP dos três cards pode terminar decode
+                # após o clique em Android. Aguarde decodificação real antes
+                # de exigir largura natural; nunca considere src só como prova.
+                seven_images=page.evaluate("""async () => {
+                  const images=[...document.querySelectorAll('#friend-cards .friends-card img')];
+                  if(images.length!==3)return {total:images.length,decoded:0};
+                  await Promise.all(images.map(i=>i.decode().catch(()=>null)));
+                  return {total:images.length,decoded:images.filter(i=>
+                    i.complete&&i.naturalWidth>0&&i.naturalHeight>0).length};
+                }""")
+                if seven_images!={'total':3,'decoded':3}:
+                    problems.append(f"{name}: V357 a imagem não carregou na coleção 7$: {seven_images}")
                 page.locator("#bruno-open-collection").click()
                 page.locator("#bruno-open-collection").click()
                 page.locator("#friend-cards .friends-card").first.wait_for(timeout=15000)

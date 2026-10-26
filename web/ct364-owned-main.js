@@ -288,6 +288,95 @@ function revisionDiff(before,after){
  }
  return {changes,pending,unreadable:!revisionSnapshot(before)||!revisionSnapshot(after)};
 }
+/* V371 — retestes por evidência documental, não predição de desempenho.
+   Diferenças são anotadas pelo usuário/catálogo: um novo campo não comprova
+   que houve alteração dentro do eFootball. Nenhum dado é persistido aqui. */
+function buildRetestPlan(diff,role,tactic){
+ const changed=diff.changes||[],pending=diff.pending||[];
+ const found=items=>[...changed,...pending].some(x=>items.test(x.label));
+ const editionChanged=changed.some(x=>/^(Card ID|Edição)$/.test(x.label));
+ const editionUnknown=pending.some(x=>/^(Card ID|Edição)$/.test(x.label));
+ const skills=found(/^Habilidade adicional · vaga [1-5]$/);
+ const boost=found(/^(Ímpeto adicional anotado|Estado do segundo slot)$/);
+ const training=found(/^(Treino catalogado|PP do catálogo|Nível máximo informado)$/);
+ const primaryRole=String(role||'').toUpperCase();
+ const roleTest=/^(CA|SA|SS|CF|ATA)$/.test(primaryRole)?
+  'Testar apoios frontais, desmarques centrais, finalização sob pressão e devoluções curtas.':
+  /^(MAT|AMF|MEI|MLG|CMF)$/.test(primaryRole)?
+  'Testar recepção entrelinhas, triangulações, último passe e passe de primeira.':
+  /^(VOL|DMF)$/.test(primaryRole)?
+  'Testar cobertura do corredor central, interceptações e saída curta sob pressão.':
+  /^(ZG|CB|ZAG)$/.test(primaryRole)?
+  'Testar antecipação, recuperação de posição e primeiro passe após recuperar a bola.':
+  /^(LE|LD|LB|RB)$/.test(primaryRole)?
+  'Testar posicionamento sem bola, proteção do corredor e saída curta por dentro.':
+  /^(GOL|GK)$/.test(primaryRole)?
+  'Testar posicionamento, reposição curta e reação às finalizações sem comparar só nota geral.':
+  'Testar recepção orientada, deslocamentos sem bola, passe curto e cobertura da função escolhida.';
+ const tacticTest={
+  posse:'Na Posse de Bola, conferir passe curto, 1–2, triangulações centrais e segurança contra pressão sem depender de cruzamentos.',
+  normal:'No Contra-Ataque Normal, conferir primeiro passe da transição, apoios entrelinhas e recomposição após perda.',
+  rapido:'No Contra-Ataque Rápido, conferir desmarque imediato, passe vertical de primeira e retorno defensivo após perda.',
+  fora:'Na estratégia Por Fora, conferir oferta de passe e cobertura nas faixas laterais; não presumir cruzamentos como requisito.',
+  longo:'Na Bola Longa, conferir recepção da bola longa, disputa da segunda bola e cobertura após perda.'
+ }[tactic]||'Conferir ações coerentes com a tática selecionada sem extrapolar para outras táticas.';
+ const checks=[];
+ const add=(key,label)=>{if(!checks.some(x=>x.key===key))checks.push({key,label})};
+ if(diff.unreadable||editionChanged||editionUnknown){
+  add('edition','Conferir no jogo a mesma versão da carta (Card ID, raridade e identidade). Identidades diferentes exigem duas linhas de base; não atribuir a diferença à build.');
+ }
+ if(pending.length){
+  add('pending','Conferir os '+pending.length+' campos que estavam ausentes ou incompletos nas revisões. Preenchimento posterior não é ganho medido.');
+ }
+ if(skills){
+  const names=[...changed,...pending].filter(x=>/^Habilidade adicional · vaga [1-5]$/.test(x.label)).map(x=>x.label.replace('Habilidade adicional · ',''));
+  add('skills','Conferir as habilidades e vagas indicadas ('+names.join(', ')+') na carta real; observar se a habilidade ativa em situações compatíveis com sua descrição, sem assumir que foi equipada.');
+ }
+ if(boost){
+  add('booster','Verificar se o ímpeto é fixo ou selecionável, qual está equipado de fato e se o efeito consta na versão exata; não gastar tokens para cumprir este checklist.');
+ }
+ if(training){
+  add('training','Conferir a distribuição de treino, o nível máximo e os PP usados na edição real antes de associar qualquer alteração observada aos atributos.');
+ }
+ const hasChanges=changed.length>0;
+ if(hasChanges){
+  add('role',roleTest);
+  add('tactic',tacticTest);
+  add('sampling','Realizar uma triagem de 3–5 partidas por condição, anotando adversários, estabilidade da conexão, posição, tática e ações observadas; é triagem, não prova estatística de superioridade.');
+ }else if(pending.length===0&&!diff.unreadable){
+  return {state:'unchanged',checks:[],role:primaryRole,tactic,
+   explanation:'Nenhuma alteração de build foi documentada. Não há reteste acionado por este par de revisões; observações e partidas editadas não provam melhoria.'};
+ }
+ return {state:editionChanged?'identity-change':hasChanges?'retest':'verify',checks,
+  role:primaryRole,tactic,
+  explanation:editionChanged?
+   'Identidade/edição divergente: primeiro separar as versões. Este plano NÃO autoriza comparação causal entre elas.':
+   hasChanges?'Ações para investigar hipóteses da build; não significa que os ajustes melhoraram a gameplay.':
+   'Somente lacunas documentais: conferir antes de afirmar que houve alguma mudança no jogo.'};
+}
+function renderRetestPlan(host,plan){
+ const block=mk('section','ct371-retest');block.dataset.retestPlan='true';
+ block.append(mk('h4','','Plano de reconferência por posição e tática'));
+ note(block,(plan.role||'Função pendente')+' · '+(STYLE_NAMES[plan.tactic]||'Tática pendente'));
+ note(block,plan.explanation);
+ if(!plan.checks.length){host.append(block);return}
+ const checklist=mk('div','ct371-retest-checklist');
+ const progress=mk('p','ct371-retest-progress');
+ progress.setAttribute('role','status');
+ const count=()=>{const done=[...checklist.querySelectorAll('input[type=checkbox]')].filter(x=>x.checked).length;
+  progress.textContent=done+' de '+plan.checks.length+' itens marcados nesta tela · não homologados nem salvos como gameplay.'};
+ block.append(progress);
+ for(const task of plan.checks){
+  const label=mk('label','ct371-retest-item');
+  const check=mk('input');check.type='checkbox';check.dataset.retestKey=task.key;
+  check.onchange=count;
+  label.append(check,mk('span','',task.label));checklist.append(label);
+ }
+ count();
+ block.append(checklist);
+ note(block,'Marcar uma conferência não cria evidência de partida, não altera a ficha e não valida automaticamente uma build.');
+ host.append(block);
+}
 function renderRevisionDiff(detail,records){
  if(records.length<2)return;
  const comparison=mk('section','ct370-diff');comparison.dataset.revisionDiff='true';
@@ -325,6 +414,7 @@ function renderRevisionDiff(detail,records){
    ...result.pending.map(x=>({...x,status:'PENDENTE — dado incompleto'}))];
   if(!items.length){
    note(output,'Nenhuma mudança de build documentada entre essas revisões. Observações e número de partidas podem ter sido editados, mas não comprovam evolução.');
+   renderRetestPlan(output,buildRetestPlan(result,activeRole,activeStyle));
    return;
   }
   const list=mk('div','ct370-diff-list');
@@ -338,6 +428,7 @@ function renderRevisionDiff(detail,records){
   }
   output.append(list);
   note(output,'Níveis, habilidades e ímpetos são anotações do proprietário; PP e treino das 246 originais vêm do catálogo. Nada foi alterado nas fichas.');
+  renderRetestPlan(output,buildRetestPlan(result,activeRole,activeStyle));
  };
  from.onchange=update;to.onchange=update;update();
 }

@@ -365,3 +365,20 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
 .ct370-diff-row .ct364-data-row{display:grid;gap:4px;overflow-wrap:anywhere}
 .ct370-diff-row .ct364-data-row strong{font-size:11px;color:#fff0ce}
 @media(max-width:600px){.ct370-controls{grid-template-columns:1fr}}
+
+/* V371 — plano de retestes consultivo, contextual e não persistente.
+   Dentro do histórico fechado por padrão: primeira dobra 320px preservada. */
+.ct371-retest{display:grid;gap:9px;margin-top:12px;padding:12px;border:1px solid #647e97;
+ border-radius:9px;background:#14283d;min-width:0}
+.ct371-retest h4{margin:0;color:#ffdfa8;font:800 13px/1.45 system-ui,sans-serif}
+.ct371-retest .ct364-note{overflow-wrap:anywhere}
+.ct371-retest-progress{margin:0;font:800 11px/1.4 system-ui,sans-serif;color:#f8ddb0}
+.ct371-retest-checklist{display:grid;gap:7px}
+.ct371-retest-item{display:flex;align-items:flex-start;gap:11px;border:1px solid #445f79;
+ border-radius:8px;padding:10px;background:#192f47;cursor:pointer;color:#d9e8f0;
+ font:500 12px/1.55 system-ui,sans-serif;overflow-wrap:anywhere}
+.ct371-retest-item input[type=checkbox]{flex:0 0 20px;width:20px;height:20px;min-width:20px;
+ margin:2px 0 0;accent-color:#d9b77b}
+.ct371-retest-item span{flex:1;min-width:0}
+.ct371-retest-item:focus-within{outline:2px solid #ffe0a5;outline-offset:1px}
+@media(max-width:355px){.ct371-retest{padding:9px}.ct371-retest-item{padding:9px;gap:9px}}

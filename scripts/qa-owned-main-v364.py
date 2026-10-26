@@ -223,6 +223,9 @@ with sync_playwright() as pw:
    owned_diff=page.locator("#ct369-owned-history .ct370-diff")
    assert owned_diff.is_visible()
    assert "Nenhuma mudança de build documentada" in owned_diff.inner_text()
+   # V371: não inventar reteste quando as duas revisões têm mesma build.
+   assert "Nenhuma alteração de build foi documentada" in owned_diff.locator(".ct371-retest").inner_text()
+   assert owned_diff.locator(".ct371-retest-item").count()==0
    assert owned_diff.locator(".ct370-from").input_value()=="0"
    assert owned_diff.locator(".ct370-to").input_value()=="1"
    page.locator("#ct369-owned-history summary").click()
@@ -270,6 +273,7 @@ with sync_playwright() as pw:
    original_diff=page.locator(".ct369-original-history .ct370-diff")
    assert original_diff.is_visible()
    assert "Nenhuma mudança de build documentada" in original_diff.inner_text()
+   assert original_diff.locator(".ct371-retest-item").count()==0
    page.locator(".ct369-original-history summary").click()
    page.locator("#ct369-test-queue summary").click()
    page.locator("#ct369-queue-collection").select_option("original")
@@ -330,6 +334,20 @@ with sync_playwright() as pw:
    assert "Habilidade adicional · vaga 2" in owned_diff.inner_text(),(name,diagnostic,owned_diff.inner_text())
    assert "Nova habilidade de QA após o teste" in owned_diff.inner_text()
    assert "PENDENTE — dado incompleto" in owned_diff.inner_text()
+   # V371: após completar vaga 2, a lista pede conferência e reteste
+   # na posição MAT/Posse, sem alterar gameplay ou o catálogo.
+   retest=owned_diff.locator(".ct371-retest")
+   assert retest.is_visible()
+   assert "MAT · Posse de Bola" in retest.inner_text()
+   assert "vaga 2" in retest.inner_text()
+   assert "Somente lacunas documentais" in retest.inner_text()
+   assert "3–5 partidas por condição" not in retest.inner_text()
+   assert retest.locator(".ct371-retest-item").count()>=2
+   assert "0 de " in retest.locator(".ct371-retest-progress").inner_text()
+   retest.locator(".ct371-retest-item input").first.check()
+   assert "1 de " in retest.locator(".ct371-retest-progress").inner_text()
+   # O checklist não persiste validação/partidas fictícias.
+   assert page.evaluate("""() => localStorage.getItem('scoutpro:v371:retest')""") is None
    # Inverter cronologia deve ser bloqueado, não mostrar falsa mudança.
    owned_diff.locator(".ct370-from").select_option("2")
    owned_diff.locator(".ct370-to").select_option("0")
@@ -338,14 +356,36 @@ with sync_playwright() as pw:
    owned_diff.locator(".ct370-to").select_option("2")
    assert "Habilidade adicional · vaga 2" in owned_diff.inner_text()
    page.locator("#ct369-owned-history summary").click()
+   # V371: uma mudança entre duas habilidades JÁ INFORMADAS habilita um plano
+   # contextual de reteste. Não alterar Card IDs ou treinos aprovados.
+   page.locator('#ct364-tabs [data-panel="skills"]').click()
+   page.locator('[data-skill-slot="2"]').fill("Habilidade diferente de QA para a mesma vaga")
+   page.locator(".ct364-ack input").check()
+   page.locator(".ct364-save").click()
+   assert "salvo" in page.locator(".ct364-feedback").inner_text()
+   page.locator('#ct364-tabs [data-panel="gameplay"]').click()
+   page.locator("#ct367-notes").fill("Quarta revisão após troca de habilidade anotada na mesma vaga para comparação documental.")
+   page.locator("#ct367-ack").check()
+   page.locator("#ct367-save").click()
+   assert "Registro individual salvo" in page.locator("#ct367-feedback").inner_text()
+   page.locator("#ct369-owned-history summary").click()
+   real=page.locator("#ct369-owned-history .ct370-diff")
+   assert "Habilidade adicional · vaga 2" in real.inner_text()
+   assert "Alteração registrada" in real.inner_text()
+   retest=real.locator(".ct371-retest")
+   assert "MAT · Posse de Bola" in retest.inner_text()
+   assert "triangulações centrais" in retest.inner_text()
+   assert "3–5 partidas por condição" in retest.inner_text()
+   assert retest.locator(".ct371-retest-item").count()>=3
+   page.locator("#ct369-owned-history summary").click()
    still=page.evaluate("""() => JSON.parse(localStorage.getItem('scoutpro:v367:owned-gameplay')||'{}')""")
    assert still["ct364-01|MAT|posse"]["matches"]==2,(name,"histórico da build anterior foi perdido")
-   assert len(still["ct364-01|MAT|posse"]["history"])==2,(name,"V370 apagou revisões após mudar uma build")
+   assert len(still["ct364-01|MAT|posse"]["history"])==3,(name,"V371 apagou revisões após reteste documental")
    # O diálogo modal ainda está aberto: conferir a DOM sem clicar sob backdrop.
    assert "14 níveis máximos pendentes" in page.locator("#ct365-review-summary").text_content()
    saved_row=page.locator('[data-review-card="ct364-01"]')
    assert "Máximo informado: 35 · 68 PP calculados" in saved_row.text_content()
-   assert page.evaluate("() => window.__ct364BackupSignals")>=9,(name,"gameplay não notificou o backup completo")
+   assert page.evaluate("() => window.__ct364BackupSignals")>=11,(name,"gameplay não notificou o backup completo")
    page.locator('#ct364-tabs [data-panel="treino"]').click()
    page.locator('.ct364-modes button').filter(has_text='Contra-Ataque Normal').click()
    assert page.locator('.ct364-modes button[aria-pressed="true"]').count()==1
