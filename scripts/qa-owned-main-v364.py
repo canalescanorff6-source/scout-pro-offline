@@ -32,6 +32,27 @@ with sync_playwright() as pw:
    if width<=355:
     assert hint.is_hidden(),(name,"dica redundante ainda ocupa a primeira dobra")
     first=page.locator("#cards .player-card:visible").first.bounding_box()
+    if not first or first["y"]>=height-38:
+     import json
+     detail=page.evaluate("""() => {
+       const rect=sel=>{const e=document.querySelector(sel),r=e?.getBoundingClientRect();
+         const c=e?getComputedStyle(e):null;
+         return r?{y:r.y,height:r.height,display:c.display,marginTop:c.marginTop,
+           marginBottom:c.marginBottom,paddingTop:c.paddingTop,style:e.getAttribute('style')}:null;};
+       const original=document.querySelector('#cards');
+       const c=original?.querySelector('.player-card');
+       const before=c?.getBoundingClientRect().y;
+       original?.style.setProperty('transform','translateY(-14px)','important');
+       const after=c?.getBoundingClientRect().y;
+       original?.style.removeProperty('transform');
+       return {width:innerWidth,media:matchMedia('(max-width:355px)').matches,
+         cardBefore:before,cardTransformTest:after,
+         catalog:rect('#catalogo'),sectionTop:rect('#catalogo .section-top'),
+         list:rect('#catalogo .list-meta'),lastHint:rect('#catalogo .list-meta>span:last-child'),
+         filter:rect('#scout-v203-filter-panel'),owned:rect('#ct364-owned-section'),
+         cards:rect('#cards'),firstCard:rect('#cards .player-card')};
+      }""")
+     print("V364 DEBUG 320PX: "+json.dumps(detail,ensure_ascii=False),flush=True)
     assert first and first["y"]<height-38,(name,"primeira carta encoberta",first)
    else:
     assert hint.is_visible(),(name,"dica deve continuar em telas mais amplas")
