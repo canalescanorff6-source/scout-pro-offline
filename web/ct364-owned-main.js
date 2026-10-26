@@ -173,6 +173,137 @@ function createReview(){
  content.append(rows);review.append(content);
  return review;
 }
+
+/* V367 — registros de gameplay são anotações do proprietário por carta,
+   posição e tática; nunca equivalem a validação da edição ou prova de meta.
+   Backups V226 capturam automaticamente as chaves scoutpro:. */
+const GAMEPLAY_STORAGE='scoutpro:v367:owned-gameplay';
+const gameplayKey=(c,role,tactic)=>[c.key,role,tactic].join('|');
+const gameplayData=()=>{try{
+ const value=JSON.parse(localStorage.getItem(GAMEPLAY_STORAGE)||'{}');
+ return value&&typeof value==='object'&&!Array.isArray(value)?value:{};
+}catch(_){return {}}};
+function gameplayOf(c,role,tactic){
+ const value=gameplayData()[gameplayKey(c,role,tactic)];
+ if(!value||value.cardKey!==c.key||value.role!==role||value.tactic!==tactic||
+    value.ownerConfirmed!==true||!Number.isInteger(value.matches)||value.matches<1||value.matches>200)
+   return null;
+ return value;
+}
+function gameplayStale(c,record){
+ if(!record)return false;
+ return (record.cardIdAtCapture||'')!==(confirmationOf(c).cardId||'');
+}
+function validVideoLink(raw){
+ const value=String(raw||'').trim();
+ if(!value)return '';
+ if(value.length>400)return null;
+ try{
+  const uri=new URL(value);
+  return uri.protocol==='https:'&&!uri.username&&!uri.password?uri.href:null;
+ }catch(_){return null}
+}
+function renderGameplay(c,body){
+ const role=activeRole||c.position,tactic=activeStyle;
+ const base=section('Laboratório de gameplay por carta, função e tática');
+ base.id='ct367-gameplay';
+ note(base,'Registro pessoal da carta exata: não usar dados da equipe inteira como estatística individual. Nenhuma avaliação de meta é gerada por Overall.');
+ const modes=mk('nav','ct364-modes');modes.setAttribute('aria-label','Tática do teste de gameplay');
+ for(const id of STYLE_IDS){
+  const btn=mk('button','',STYLE_NAMES[id]);btn.type='button';
+  btn.setAttribute('aria-pressed',String(id===tactic));
+  btn.onclick=()=>{activeStyle=id;renderDialog()};modes.append(btn);
+ }
+ base.append(modes);
+ line(base,'Contexto selecionado',role+' · '+STYLE_NAMES[tactic]+' · '+c.name);
+ const id=confirmationOf(c).cardId||'';
+ line(base,'Card ID desta edição',id? id+' (informado, não homologado)':'PENDENTE — preencher em Confirmar dados');
+ const saved=gameplayOf(c,role,tactic),stale=gameplayStale(c,saved);
+ if(saved)note(base,stale?'REGISTRO EXIGE RECONFERÊNCIA: o Card ID mudou desde a anotação.':
+   'Registro de gameplay informado pelo proprietário, não auditado externamente.');
+ const counter=mk('label','ct364-form-label','Partidas observadas com ESTA CARTA nesta posição e tática');
+ const matches=mk('input');matches.type='number';matches.min='1';matches.max='200';matches.step='1';
+ matches.id='ct367-matches';matches.value=saved?String(saved.matches):'';counter.append(matches);base.append(counter);
+ const clipLabel=mk('label','ct364-form-label','Vídeo da mesma carta (link HTTPS opcional)');
+ const link=mk('input');link.type='url';link.maxLength=400;link.id='ct367-link';
+ link.placeholder='https://… (não comprova a edição sozinho)';link.value=saved?.url||'';
+ clipLabel.append(link);base.append(clipLabel);
+ const noteLabel=mk('label','ct364-form-label','Observações reais por função (mínimo 15 caracteres)');
+ const notes=mk('textarea','ct367-observation');notes.rows=4;notes.maxLength=700;
+ notes.id='ct367-notes';notes.placeholder='Ex.: recepção sob pressão, qualidade dos passes curtos, desmarques, cobertura defensiva…';
+ notes.value=saved?.notes||'';noteLabel.append(notes);base.append(noteLabel);
+ const ack=mk('label','ct364-ack');const checked=mk('input');checked.type='checkbox';
+ checked.id='ct367-ack';checked.setAttribute('aria-label','Confirmo que estes jogos e notas são observações reais minhas');
+ ack.append(checked,mk('span','',
+  'Confirmei as partidas e observações no jogo. Não confundo simulação eFHub, vídeo de outra versão ou estatística do time com rendimento desta carta.'));
+ base.append(ack);
+ const save=mk('button','ct364-save','Salvar observação desta carta');
+ save.type='button';save.id='ct367-save';
+ const feedback=mk('p','ct364-feedback');feedback.id='ct367-feedback';feedback.setAttribute('role','status');
+ save.onclick=()=>{
+  const count=Number(matches.value),value=notes.value.trim(),video=validVideoLink(link.value);
+  if(!checked.checked){feedback.textContent='Confirme que a observação veio de partidas reais com esta carta.';return;}
+  if(!Number.isInteger(count)||count<1||count>200||value.length<15||video===null){
+   feedback.textContent='Informe 1 a 200 partidas, pelo menos 15 caracteres e link HTTPS válido quando houver.';return;
+  }
+  const record={cardKey:c.key,role,tactic,cardIdAtCapture:id,matches:count,
+   notes:value,url:video||'',ownerConfirmed:true,updatedAt:new Date().toISOString()};
+  try{
+   const all=gameplayData();
+   localStorage.setItem(GAMEPLAY_STORAGE,JSON.stringify({...all,[gameplayKey(c,role,tactic)]:record}));
+   notifyBackup();
+   feedback.textContent='Registro individual salvo neste aparelho. Não altera a build aprovada.';
+   renderGameplayComparison(c,role,tactic,base);
+  }catch(error){feedback.textContent='Não foi possível salvar: '+String(error.message||error)}
+ };
+ base.append(save,feedback);
+ const comparison=mk('div','ct367-comparison');comparison.id='ct367-comparison';
+ base.append(comparison);
+ body.append(base);renderGameplayComparison(c,role,tactic,base);
+}
+function renderGameplayComparison(c,role,tactic,base){
+ const box=base.querySelector('#ct367-comparison');if(!box)return;
+ const previously=box.querySelector('#ct367-other')?.value||'';
+ box.replaceChildren();
+ const heading=mk('h3','','Comparar evidências de duas cartas na mesma função');
+ box.append(heading);
+ note(box,'A comparação apresenta amostras e observações, não uma nota inventada. Testes com tamanhos/edições diferentes não demonstram superioridade.');
+ const label=mk('label','ct364-form-label','Comparar com outra carta de Minhas Cartas');
+ const select=mk('select','ct367-other');select.id='ct367-other';
+ const neutral=mk('option','','Selecionar outra carta');neutral.value='';select.append(neutral);
+ for(const other of entries.filter(x=>x.key!==c.key)){
+  const opt=mk('option','',other.name+' · '+other.position);
+  opt.value=other.key;select.append(opt);
+ }
+ select.value=previously;if(select.value!==previously)select.value='';
+ label.append(select);box.append(label);
+ const view=mk('div','ct367-compare-rows');box.append(view);
+ const show=()=>{
+  view.replaceChildren();
+  const other=entries.find(x=>x.key===select.value);
+  for(const card of [c,...(other?[other]:[])]){
+   const value=gameplayOf(card,role,tactic),stale=gameplayStale(card,value);
+   const panel=mk('section','ct367-compare-card');
+   panel.append(mk('strong','',card.name+' · '+role+' · '+STYLE_NAMES[tactic]));
+   const same=card.position!==role;
+   if(same)note(panel,'Função adaptada: a posição de origem da carta é '+card.position+'.');
+   if(!value){note(panel,'PENDENTE: sem partidas documentadas para esta combinação.');}
+   else{
+    line(panel,'Partidas anotadas',value.matches+' · declaração do proprietário');
+    if(stale)note(panel,'Edição alterada após registro; reconfirmar Card ID e partidas.');
+    line(panel,'Card ID registrado no teste',value.cardIdAtCapture||'PENDENTE');
+    note(panel,value.notes);
+    if(value.url&&!stale){
+     const a=mk('a','ct367-video-link','Abrir vídeo registrado');a.href=value.url;
+     a.target='_blank';a.rel='noopener noreferrer';panel.append(a);
+    }
+   }
+   view.append(panel);
+  }
+ };
+ select.onchange=show;show();
+ note(box,'Situação comparativa: PENDENTE DE AVALIAÇÃO. Evidências manuais não homologam nenhuma carta como meta ou superior.');
+}
 function renderOverview(c,body){
  const meta=section('Identidade e função da carta');
  line(meta,'Posição mostrada no jogo',c.position);
@@ -504,7 +635,7 @@ function renderDialog(){
  const indicator=$('#ct364-card-index');
  if(indicator)indicator.textContent='Minha carta '+(position+1)+' de '+entries.length+' · cadastro independente da versão original';
  const tabs=$('#ct364-tabs');tabs.replaceChildren();
- const labels={resumo:'Visão geral',treino:'5 fichas',skills:'Habilidades',boost:'Ímpetos',body:'Biotipo',confirm:'Confirmar dados'};
+ const labels={resumo:'Visão geral',treino:'5 fichas',skills:'Habilidades',boost:'Ímpetos',body:'Biotipo',gameplay:'Gameplay',confirm:'Confirmar dados'};
  for(const [id,text] of Object.entries(labels)){
   const b=mk('button','',text);b.type='button';b.dataset.panel=id;
   b.setAttribute('aria-pressed',String(activePanel===id));b.onclick=()=>{activePanel=id;renderDialog()};
@@ -516,6 +647,7 @@ function renderDialog(){
  else if(activePanel==='skills')renderSkills(c,body);
  else if(activePanel==='boost')renderBoost(c,body);
  else if(activePanel==='body')renderBody(c,body);
+ else if(activePanel==='gameplay')renderGameplay(c,body);
  else if(activePanel==='confirm')renderConfirm(c,body);
 }
 function switchOwnedCard(c){
