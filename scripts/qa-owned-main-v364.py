@@ -222,11 +222,22 @@ with sync_playwright() as pw:
    assert "PENDENTE DE AVALIAÇÃO" in page.locator("#ct367-comparison").inner_text()
    page.locator("#ct367-other").select_option("ct364-02")
    assert "PENDENTE" in page.locator("#ct367-comparison").inner_text()
+   # Uma alteração posterior das habilidades invalida a prova daquela build,
+   # mas conserva o registro (histórico) e não muda o jogador comparado.
+   page.locator('#ct364-tabs [data-panel="skills"]').click()
+   page.locator('[data-skill-slot="2"]').fill("Nova habilidade de QA após o teste")
+   page.locator(".ct364-ack input").check()
+   page.locator(".ct364-save").click()
+   assert "salvo" in page.locator(".ct364-feedback").inner_text()
+   page.locator('#ct364-tabs [data-panel="gameplay"]').click()
+   assert "REGISTRO EXIGE RECONFERÊNCIA" in page.locator("#ct367-gameplay").inner_text()
+   still=page.evaluate("""() => JSON.parse(localStorage.getItem('scoutpro:v367:owned-gameplay')||'{}')""")
+   assert still["ct364-01|MAT|posse"]["matches"]==2,(name,"histórico da build anterior foi perdido")
    # O diálogo modal ainda está aberto: conferir a DOM sem clicar sob backdrop.
    assert "14 níveis máximos pendentes" in page.locator("#ct365-review-summary").text_content()
    saved_row=page.locator('[data-review-card="ct364-01"]')
    assert "Máximo informado: 35 · 68 PP calculados" in saved_row.text_content()
-   assert page.evaluate("() => window.__ct364BackupSignals")>=4,(name,"gameplay não notificou o backup completo")
+   assert page.evaluate("() => window.__ct364BackupSignals")>=5,(name,"gameplay não notificou o backup completo")
    page.locator('#ct364-tabs [data-panel="treino"]').click()
    page.locator('.ct364-modes button').filter(has_text='Contra-Ataque Normal').click()
    assert page.locator('.ct364-modes button[aria-pressed="true"]').count()==1
