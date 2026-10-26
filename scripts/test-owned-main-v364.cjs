@@ -184,7 +184,7 @@ assert.equal(allPending.state,'verify');
 assert.ok(!allPending.checks.some(x=>x.key==='sampling'),'pendência não pode obrigar declarar partidas como comprovadas');
 const diffIdentity=plan({changes:[{label:'Card ID'}],pending:[],unreadable:false},'CA','posse');
 assert.equal(diffIdentity.state,'identity-change');
-assert.match(diffIdentity.explanation,/não autoriza comparação causal/);
+assert.match(diffIdentity.explanation,/NÃO autoriza comparação causal/);
 const noDiff=plan({changes:[],pending:[],unreadable:false},'MAT','posse');
 assert.equal(noDiff.state,'unchanged');
 assert.equal(noDiff.checks.length,0);
