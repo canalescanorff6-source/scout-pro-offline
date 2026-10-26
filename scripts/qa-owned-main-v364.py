@@ -327,7 +327,7 @@ with sync_playwright() as pw:
     return {history:v?.history?.map(x=>x.buildSnapshot),now:v?.buildSnapshot,
      n:v?.history?.length};
    }""")
-   assert "Habilidade adicional · vaga 3" in owned_diff.inner_text(),(name,diagnostic,owned_diff.inner_text())
+   assert "Habilidade adicional · vaga 2" in owned_diff.inner_text(),(name,diagnostic,owned_diff.inner_text())
    assert "Nova habilidade de QA após o teste" in owned_diff.inner_text()
    assert "PENDENTE — dado incompleto" in owned_diff.inner_text()
    # Inverter cronologia deve ser bloqueado, não mostrar falsa mudança.
@@ -336,7 +336,7 @@ with sync_playwright() as pw:
    assert "sem inverter a ordem cronológica" in owned_diff.inner_text()
    owned_diff.locator(".ct370-from").select_option("1")
    owned_diff.locator(".ct370-to").select_option("2")
-   assert "Habilidade adicional · vaga 3" in owned_diff.inner_text()
+   assert "Habilidade adicional · vaga 2" in owned_diff.inner_text()
    page.locator("#ct369-owned-history summary").click()
    still=page.evaluate("""() => JSON.parse(localStorage.getItem('scoutpro:v367:owned-gameplay')||'{}')""")
    assert still["ct364-01|MAT|posse"]["matches"]==2,(name,"histórico da build anterior foi perdido")
