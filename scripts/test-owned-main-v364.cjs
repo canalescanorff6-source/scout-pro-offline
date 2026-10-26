@@ -288,4 +288,19 @@ assert.equal(proVm.professionalAudit({boosterSlot:'ausente'},{
  tactic:'posse',identityConfirmed:false,freeSkillSlots:null,
  skills:null,booster:null,plan:{status:'pendente',role:null,levels:null}
 }).trainingStatus,'pendente','V373 não pode falhar em carta sem dados');
+// V374: evitar recomendar como nova uma habilidade já nativa ou anotada.
+const auditStart=js.indexOf('function auditSkillPortfolio(');
+const auditEnd=js.indexOf('function renderProfessionalDossier(',auditStart);
+assert.ok(auditStart>0&&auditEnd>auditStart);
+const skillVm={normalize:s=>String(s||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim().toLowerCase(),
+ equipmentOf:()=>({skills:['Passe de primeira','','','','']})};
+vm.runInNewContext(js.slice(auditStart,auditEnd)+';this.audit=auditSkillPortfolio;',skillVm);
+const audits=skillVm.audit({observed:{nativeSkills:['Interceptação']}},[
+ {name:'Interceptação'},{name:'Passe de primeira'},{name:'Controle de bola'},{name:'Controle de bola'}]);
+assert.match(audits[0].status,/NATIVA/);
+assert.match(audits[1].status,/ADICIONAL/);
+assert.match(audits[2].status,/CANDIDATA/);
+assert.match(audits[3].status,/DUPLICADA/);
+assert.match(js,/Slot declarado pelo proprietário/);
+assert.match(js,/Slot não conferido: alternativas são hipóteses/);
 console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 5 táticas mesmo motor, Android/Windows offline.');
