@@ -104,5 +104,17 @@ assert.match(js,/function renderOriginalEvidence/,'ausente formulário original 
 assert.match(js,/function renderOriginal=|const renderOriginal=/,'ausente comparação com original');
 assert.match(js,/PENDENTE DE AVALIAÇÃO/,'comparador deve recusar meta automático');
 assert.match(css,/\.ct368-original-form/,'V368 sem estilos mobile');
+assert.match(js,/function revisionHistory/,'V369 deve preservar revisões anteriores');
+assert.match(js,/history:revisionHistory\(previous\)/,'V369 sem histórico no mesmo registro atômico');
+assert.match(js,/function revisionSummary/,'V369 sem variação de build por nível habilidades e ímpeto');
+assert.match(js,/function renderRevisionHistory/,'V369 sem histórico visível');
+assert.match(js,/function renderTestQueue/,'V369 sem fila de novos testes');
+assert.match(js,/function refreshTestQueue/,'V369 sem atualização após novo registro');
+assert.match(js,/scoutpro:v367:owned-gameplay/,'V369 perdeu armazenamento V367');
+assert.match(js,/scoutpro:v368:original-gameplay/,'V369 perdeu armazenamento V368');
+assert.match(js,/i\.stale\?0:i\.identityMissing\?1:/,'V369 deve priorizar reconferência documental');
+assert.match(js,/Nenhuma versão recebe nota meta automática/,'V369 não deve criar classificação meta');
+assert.match(css,/\.ct369-history/,'V369 sem estilo de histórico');
+assert.match(css,/\.ct369-test-queue/,'V369 sem fila responsiva');
 
 console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 5 táticas mesmo motor, Android/Windows offline.');
