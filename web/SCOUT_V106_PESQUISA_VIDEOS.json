@@ -7688,7 +7688,9 @@
       "card_id": "PENDENTE — não inferido",
       "estado": "pendente",
       "videos": [],
-      "referencias_da_carta": [],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/kakita-yuki-105903424658357"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
@@ -7700,7 +7702,9 @@
       "card_id": "PENDENTE — não inferido",
       "estado": "pendente",
       "videos": [],
-      "referencias_da_carta": [],
+      "referencias_da_carta": [
+        "https://pesdb.net/efootball/players/kumasaka-koki-105903424704710"
+      ],
       "player_id_validado": false,
       "build_video_validada": false,
       "ultimo_rastreio": "2026-10-12"
