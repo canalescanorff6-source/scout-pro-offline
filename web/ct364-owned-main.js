@@ -1059,6 +1059,13 @@ function renderProfessionalDossier(result,host,kind){
  }else{
   line(block,'Ímpeto fixo',pro.factoryBooster||'PENDENTE');
   line(block,'Slot adicional comprovado',pro.slotSupported?'Indicado no catálogo; verificar no jogo':'NÃO COMPROVADO');
+  const equip=equipmentOf(active);
+  line(block,'Slot declarado pelo proprietário',({pendente:'PENDENTE',ausente:'AUSENTE',vazio:'VAZIO',ocupado:'OCUPADO'}[equip.slot]||'PENDENTE'));
+  if(equip.slot==='ocupado')line(block,'Ímpeto anotado como equipado',equip.booster||'PENDENTE');
+  note(block,equip.slot==='ausente'?'Sem slot adicional declarado: alternativas não podem ser aplicadas.':
+   equip.slot==='ocupado'?'Slot declarado ocupado: comparar o ímpeto existente antes de propor substituição.':
+   equip.slot==='vazio'?'Slot declarado vazio: conferir edição e custo antes de escolher.':
+   'Slot não conferido: alternativas são hipóteses e não autorizam tokens.');
   const list=mk('ol','ct373-pro-list');
   for(const item of pro.boosterAlternatives){
    const li=mk('li');li.append(mk('strong','',item.priority+'. '+item.name));
