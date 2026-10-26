@@ -190,9 +190,17 @@ function gameplayOf(c,role,tactic){
    return null;
  return value;
 }
+// Invalida o contexto da partida também quando nível máximo, habilidades
+// ou ímpeto anotado mudam: a build observada não deve ser atribuída à nova.
+function gameplayBuildSnapshot(c){
+ const conf=confirmationOf(c),eq=equipmentOf(c);
+ return JSON.stringify({cardId:conf.cardId||'',maxLevel:conf.level||null,
+  skills:eq.skills,booster:eq.booster,boosterSlot:eq.slot});
+}
 function gameplayStale(c,record){
  if(!record)return false;
- return (record.cardIdAtCapture||'')!==(confirmationOf(c).cardId||'');
+ return (record.cardIdAtCapture||'')!==(confirmationOf(c).cardId||'')||
+  (record.buildSnapshot!==undefined&&record.buildSnapshot!==gameplayBuildSnapshot(c));
 }
 function validVideoLink(raw){
  const value=String(raw||'').trim();
@@ -219,7 +227,7 @@ function renderGameplay(c,body){
  const id=confirmationOf(c).cardId||'';
  line(base,'Card ID desta edição',id? id+' (informado, não homologado)':'PENDENTE — preencher em Confirmar dados');
  const saved=gameplayOf(c,role,tactic),stale=gameplayStale(c,saved);
- if(saved)note(base,stale?'REGISTRO EXIGE RECONFERÊNCIA: o Card ID mudou desde a anotação.':
+ if(saved)note(base,stale?'REGISTRO EXIGE RECONFERÊNCIA: Card ID ou build anotada mudou desde as partidas.':
    'Registro de gameplay informado pelo proprietário, não auditado externamente.');
  const counter=mk('label','ct364-form-label','Partidas observadas com ESTA CARTA nesta posição e tática');
  const matches=mk('input');matches.type='number';matches.min='1';matches.max='200';matches.step='1';
@@ -246,7 +254,8 @@ function renderGameplay(c,body){
   if(!Number.isInteger(count)||count<1||count>200||value.length<15||video===null){
    feedback.textContent='Informe 1 a 200 partidas, pelo menos 15 caracteres e link HTTPS válido quando houver.';return;
   }
-  const record={cardKey:c.key,role,tactic,cardIdAtCapture:id,matches:count,
+  const record={cardKey:c.key,role,tactic,cardIdAtCapture:id,
+   buildSnapshot:gameplayBuildSnapshot(c),matches:count,
    notes:value,url:video||'',ownerConfirmed:true,updatedAt:new Date().toISOString()};
   try{
    const all=gameplayData();
@@ -290,7 +299,7 @@ function renderGameplayComparison(c,role,tactic,base){
    if(!value){note(panel,'PENDENTE: sem partidas documentadas para esta combinação.');}
    else{
     line(panel,'Partidas anotadas',value.matches+' · declaração do proprietário');
-    if(stale)note(panel,'Edição alterada após registro; reconfirmar Card ID e partidas.');
+    if(stale)note(panel,'Edição ou equipamento alterado após registro; reconfirmar Card ID, build e partidas.');
     line(panel,'Card ID registrado no teste',value.cardIdAtCapture||'PENDENTE');
     note(panel,value.notes);
     const checkedLink=validVideoLink(value.url);
