@@ -426,7 +426,11 @@ function renderGameplayComparison(c,role,tactic,base){
    const cap=Number(selected.slice(4)),original=originalMap?.get(cap);
    if(original){
     view.append(renderOriginal(original));
-    renderOriginalEvidence(original,role,tactic,form,show);
+    renderOriginalEvidence(original,role,tactic,form,()=>{
+     show();
+     const message=form.querySelector('#ct368-feedback');
+     if(message)message.textContent='Registro salvo separadamente; comparação atualizada. Nenhuma build original foi modificada.';
+    });
    }
   }else{
    const additional=entries.find(x=>x.key===selected);
