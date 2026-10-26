@@ -65,6 +65,18 @@ assert.match(css,/\.ct365-review-row/,'V365 sem estilo da tabela responsiva');
 assert.ok(index.includes('261 cartas'),'catálogo não informa o acervo total');
 
 assert.match(js,/ct364-card-navigator/,'navegacao 15 cartas ausente');
+assert.match(js,/scoutpro:v367:owned-gameplay/,'V367 sem registros persistentes de gameplay');
+assert.match(js,/function renderGameplay\(/,'V367 sem aba para anotação de partidas');
+assert.match(js,/function renderGameplayComparison\(/,'V367 sem confronto de evidências');
+assert.match(js,/gameplayKey=\(c,role,tactic\)/,'prova não isolada por edição e função');
+assert.match(js,/cardIdAtCapture:id/,'prova não associada à identidade cadastrada na data');
+assert.match(js,/function gameplayStale/,'alteração de Card ID não invalidou a prova');
+assert.match(js,/ownerConfirmed:true/,'prova não distingue declaração do proprietário');
+assert.match(js,/validVideoLink\(value.url\)/,'vídeo importado não é revalidado');
+assert.match(js,/notifyBackup\(\)/,'backup não notificado após nova prova');
+assert.match(js,/PENDENTE DE AVALIAÇÃO/,'comparador promove carta sem prova');
+assert.match(css,/\.ct367-compare-rows/,'V367 sem visual responsivo da comparação');
+
 assert.match(js,/function renderAdvisory/,'V366 sem parecer competitivo por carta');
 assert.match(js,/CRAQUE_FRIEND_TRAINING_V228\.evaluate\(cardAsEngine\(c,role\),tactic\)/,'V366 sem motor oficial');
 assert.match(js,/result.freeSkillSlots===null/,'V366 deve impedir presunção de cinco vagas');
