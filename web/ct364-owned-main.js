@@ -293,8 +293,9 @@ function renderGameplayComparison(c,role,tactic,base){
     if(stale)note(panel,'Edição alterada após registro; reconfirmar Card ID e partidas.');
     line(panel,'Card ID registrado no teste',value.cardIdAtCapture||'PENDENTE');
     note(panel,value.notes);
-    if(value.url&&!stale){
-     const a=mk('a','ct367-video-link','Abrir vídeo registrado');a.href=value.url;
+    const checkedLink=validVideoLink(value.url);
+    if(checkedLink&&!stale){
+     const a=mk('a','ct367-video-link','Abrir vídeo registrado');a.href=checkedLink;
      a.target='_blank';a.rel='noopener noreferrer';panel.append(a);
     }
    }
