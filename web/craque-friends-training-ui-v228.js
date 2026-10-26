@@ -107,7 +107,7 @@ function training(result){
  const p=result.plan;
  if(p.status!=='hipotese'||!p.levels){
   panel.append(mk('p','friend-analysis-warning','Treino ainda não calculável: '+(p.reason||'Dados insuficientes.')));
-  panel.append(mk('p','friend-analysis-fineprint','Informe o nível máximo no cadastro para calcular PP = 2 × (nível máximo − 1). Edição e Card ID continuam sob conferência.'));return panel;
+  panel.append(mk('p','friend-analysis-fineprint','Informe o nível máximo no cadastro para calcular PP = 2 × (nível máximo − 1). Edição e Card ID continuam sob conferência.'));panel.append(professionalView(result,'treino'));return panel;
  }
  const header=mk('div','friend-analysis-pp');
  header.append(mk('strong','',p.pp+' / '+result.plan.pp+' PP distribuídos'),mk('span','','Restante: '+p.remaining+' PP · 10 categorias'));
@@ -162,7 +162,7 @@ function skills(result){
  const panel=mk('section','friend-analysis-panel');panel.dataset.panel='skills';
  panel.append(mk('h3','','Habilidades adicionais · candidatas por função'));
  if(!result.skills){
-  panel.append(mk('p','friend-analysis-warning','Informe a posição da carta para recomendar habilidades.'));return panel;
+  panel.append(mk('p','friend-analysis-warning','Informe a posição da carta para recomendar habilidades.'));panel.append(professionalView(result,'skills'));return panel;
  }
  const s=result.skills;
  const slotsVerified=Number.isInteger(result.freeSkillSlots);
@@ -198,7 +198,7 @@ function booster(result){
  panel.append(mk('h3','','Ímpeto ideal e disponibilidade'));
  const b=result.booster;
  if(!b){
-  panel.append(mk('p','friend-analysis-warning','Cadastre a posição para estimar o melhor ímpeto.'));return panel;
+  panel.append(mk('p','friend-analysis-warning','Cadastre a posição para estimar o melhor ímpeto.'));panel.append(professionalView(result,'boost'));return panel;
  }
  panel.append(infoRow('Ímpeto fixo',activeCard.fixedBooster||'Não informado'));
  panel.append(infoRow('Situação do slot',({
