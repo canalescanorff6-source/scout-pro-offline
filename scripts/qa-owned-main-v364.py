@@ -127,6 +127,14 @@ with sync_playwright() as pw:
    assert "PP" in page.locator("#ct364-panel").inner_text() or "PENDENTE" in page.locator("#ct364-panel").inner_text()
    page.locator('#ct364-tabs [data-panel="skills"]').click()
    assert page.locator(".ct364-skill-list span").count()==10
+   # V366: recomendações do MESMO motor oficial, reagindo à tática.
+   assert page.locator("#ct366-advisory .ct364-modes button").count()==5
+   page.wait_for_function("""() => document.querySelector('#ct366-advisory .ct366-results')?.textContent.includes('Vagas adicionais livres verificadas')""",timeout=25000)
+   assert "PENDENTE" in page.locator("#ct366-advisory").inner_text()
+   page.locator("#ct366-advisory .ct364-modes button").filter(has_text="Contra-Ataque Normal").click()
+   assert "Contra-Ataque Normal" in page.locator("#ct366-advisory").inner_text()
+   assert page.locator("#ct366-advisory .ct364-modes button[aria-pressed=true]").count()==1
+   page.locator("#ct366-advisory .ct364-modes button").filter(has_text="Posse de Bola").click()
    # V364.3: as cinco vagas manuais não presumem equipamento; nomes
    # duplicados com habilidades observadas e edições vizinhas ficam isolados.
    assert page.locator('[data-skill-slot]').count()==5,(name,"faltam cinco vagas manuais")
@@ -148,6 +156,12 @@ with sync_playwright() as pw:
    assert page.locator('[data-skill-slot="2"]').input_value()==""
    assert page.locator('[data-skill-slot="3"]').input_value()=="Outra habilidade de QA descartável"
    page.locator('#ct364-tabs [data-panel="boost"]').click()
+   assert page.locator("#ct366-advisory .ct364-modes button").count()==5
+   page.wait_for_function("""() => document.querySelector('#ct366-advisory .ct366-results')?.textContent.includes('Gastar tokens')""",timeout=25000)
+   assert "NÃO AUTORIZADO" in page.locator("#ct366-advisory").inner_text()
+   page.locator("#ct364-dialog-role").select_option("SA")
+   assert "Papel SA" in page.locator("#ct366-advisory").inner_text()
+   page.locator("#ct364-dialog-role").select_option("MAT")
    page.locator("#ct364-booster-slot").select_option("ocupado")
    page.locator("#ct364-equipped-booster").fill("Ímpeto de QA descartável")
    page.locator(".ct364-ack input").check()
