@@ -235,6 +235,112 @@ function revisionSummary(record){
   return parts.join(' · ')||'Build sem componentes confirmados';
  }catch(_){return 'Estado da build não interpretável; conferir exportação'}
 }
+/* V370 — comparar snapshots efetivamente gravados, NUNCA reconstruir uma
+   revisão antiga usando a build atual. Ausência de campo é PENDENTE, não zero
+   ou slot comprovadamente vazio. Todos os textos são inseridos por textContent. */
+function revisionSnapshot(record){
+ const raw=record?.buildSnapshot||record?.snapshot;
+ if(typeof raw!=='string')return null;
+ try{
+  const parsed=JSON.parse(raw);
+  return parsed&&typeof parsed==='object'&&!Array.isArray(parsed)?parsed:null;
+ }catch(_){return null}
+}
+function revisionFields(snapshot){
+ if(!snapshot)return {};
+ const fields={
+  'Card ID':snapshot.cardId??snapshot.id,
+  'Edição':snapshot.versao,
+  'Nível máximo informado':snapshot.maxLevel,
+  'PP do catálogo':snapshot.pp,
+  'Treino catalogado':Array.isArray(snapshot.levels)?snapshot.levels:undefined,
+  'Estado do segundo slot':snapshot.boosterSlot,
+  'Ímpeto adicional anotado':snapshot.booster
+ };
+ for(let i=0;i<5;i++)
+  fields['Habilidade adicional · vaga '+(i+1)]=
+   Array.isArray(snapshot.skills)?snapshot.skills[i]:undefined;
+ return fields;
+}
+function revisionFieldKnown(value){
+ return value!==undefined&&value!==null&&
+  !(typeof value==='string'&&(!value.trim()||value.trim().toLowerCase()==='pendente'))&&
+  !(Array.isArray(value)&&!value.length);
+}
+function revisionFieldDisplay(value){
+ if(!revisionFieldKnown(value))return 'PENDENTE / não documentado';
+ if(Array.isArray(value))return value.map(x=>x===null||x===undefined?'?':String(x)).join(' / ');
+ if(typeof value==='object')return 'Estrutura não comparável · conferir cadastro';
+ return String(value);
+}
+function revisionDiff(before,after){
+ const earlier=revisionFields(revisionSnapshot(before)),later=revisionFields(revisionSnapshot(after));
+ const labels=[...new Set([...Object.keys(earlier),...Object.keys(later)])];
+ const changes=[],pending=[];
+ for(const label of labels){
+  const left=earlier[label],right=later[label];
+  const oldKnown=revisionFieldKnown(left),newKnown=revisionFieldKnown(right);
+  if(!oldKnown&&!newKnown)continue;
+  if(oldKnown&&newKnown&&JSON.stringify(left)===JSON.stringify(right))continue;
+  const item={label,before:revisionFieldDisplay(left),after:revisionFieldDisplay(right)};
+  if(oldKnown&&newKnown)changes.push(item);
+  else pending.push(item);
+ }
+ return {changes,pending,unreadable:!revisionSnapshot(before)||!revisionSnapshot(after)};
+}
+function renderRevisionDiff(detail,records){
+ if(records.length<2)return;
+ const comparison=mk('section','ct370-diff');comparison.dataset.revisionDiff='true';
+ comparison.append(mk('h4','','Comparar duas revisões da build'));
+ note(comparison,'Diferenças dos registros armazenados, não provas de melhoria no gameplay. Mudança de preenchimento não confirma alteração dentro do jogo.');
+ const selectors=mk('div','ct370-controls');
+ const fromLabel=mk('label','ct364-form-label','Revisão anterior');
+ const from=mk('select','ct370-select ct370-from');from.setAttribute('aria-label','Revisão anterior a comparar');
+ const toLabel=mk('label','ct364-form-label','Revisão posterior');
+ const to=mk('select','ct370-select ct370-to');to.setAttribute('aria-label','Revisão posterior a comparar');
+ records.forEach((entry,i)=>{
+  const name='Revisão '+(i+1)+' · '+(entry.updatedAt||'data pendente');
+  const before=mk('option','',name),after=mk('option','',name);
+  before.value=after.value=String(i);from.append(before);to.append(after);
+ });
+ from.value=String(records.length-2);to.value=String(records.length-1);
+ fromLabel.append(from);toLabel.append(to);selectors.append(fromLabel,toLabel);
+ comparison.append(selectors);
+ const output=mk('div','ct370-diff-output');output.setAttribute('aria-live','polite');
+ comparison.append(output);detail.append(comparison);
+ const update=()=>{
+  output.replaceChildren();
+  const i=Number(from.value),j=Number(to.value);
+  if(!Number.isInteger(i)||!Number.isInteger(j)||i>=j){
+   note(output,'Escolha uma revisão anterior e outra posterior, sem inverter a ordem cronológica.');
+   return;
+  }
+  const result=revisionDiff(records[i],records[j]);
+  const summary=mk('p','ct370-diff-summary',result.changes.length+
+   ' mudanças documentais · '+result.pending.length+' campos ainda inconclusivos');
+  output.append(summary);
+  if(result.unreadable)
+   note(output,'Pelo menos uma revisão não contém snapshot legível: não presumir campos desconhecidos.');
+  const items=[...result.changes.map(x=>({...x,status:'Alteração registrada'})),
+   ...result.pending.map(x=>({...x,status:'PENDENTE — dado incompleto'}))];
+  if(!items.length){
+   note(output,'Nenhuma mudança de build documentada entre essas revisões. Observações e número de partidas podem ter sido editados, mas não comprovam evolução.');
+   return;
+  }
+  const list=mk('div','ct370-diff-list');
+  for(const item of items){
+   const row=mk('div','ct370-diff-row');
+   row.append(mk('strong','',item.label));
+   row.append(mk('span','ct370-diff-status',item.status));
+   line(row,'Antes',item.before);
+   line(row,'Depois',item.after);
+   list.append(row);
+  }
+  output.append(list);
+  note(output,'Níveis, habilidades e ímpetos são anotações do proprietário; PP e treino das 246 originais vêm do catálogo. Nada foi alterado nas fichas.');
+ };
+ from.onchange=update;to.onchange=update;update();
+}
 function renderRevisionHistory(host,record,title){
  if(!host)return;
  host.replaceChildren();
@@ -255,6 +361,9 @@ function renderRevisionHistory(host,record,title){
   note(row,revisionSummary(item));list.append(row);
  }
  detail.append(list);
+ // Comparar qualquer revisão existente, inclusive além das 12 visíveis no
+ // histórico resumido: índices e snapshots permanecem isolados por edição.
+ renderRevisionDiff(detail,[...history,record]);
  if(records.length>12)note(detail,(records.length-12)+' revisões anteriores continuam armazenadas no backup e no dispositivo.');
 }
 /* V369 — fila de documentação para a FUNÇÃO e a TÁTICA escolhidas.

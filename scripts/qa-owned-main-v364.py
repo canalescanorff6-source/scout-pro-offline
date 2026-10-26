@@ -219,6 +219,12 @@ with sync_playwright() as pw:
    assert "Histórico de revisões · 2" in page.locator("#ct369-owned-history summary").inner_text()
    page.locator("#ct369-owned-history summary").click()
    assert "não cumulativas" in page.locator("#ct369-owned-history").inner_text()
+   # V370: duas revisões, mesma build — não inventar melhora de desempenho.
+   owned_diff=page.locator("#ct369-owned-history .ct370-diff")
+   assert owned_diff.is_visible()
+   assert "Nenhuma mudança de build documentada" in owned_diff.inner_text()
+   assert owned_diff.locator(".ct370-from").input_value()=="0"
+   assert owned_diff.locator(".ct370-to").input_value()=="1"
    page.locator("#ct369-owned-history summary").click()
    queue=page.locator("#ct369-test-queue")
    assert queue.is_visible() and not queue.evaluate("(e)=>e.open")
@@ -261,6 +267,9 @@ with sync_playwright() as pw:
    assert "Histórico de revisões · 2" in page.locator(".ct369-original-history summary").inner_text()
    page.locator(".ct369-original-history summary").click()
    assert "não cumulativas" in page.locator(".ct369-original-history").inner_text()
+   original_diff=page.locator(".ct369-original-history .ct370-diff")
+   assert original_diff.is_visible()
+   assert "Nenhuma mudança de build documentada" in original_diff.inner_text()
    page.locator(".ct369-original-history summary").click()
    page.locator("#ct369-test-queue summary").click()
    page.locator("#ct369-queue-collection").select_option("original")
@@ -306,13 +315,37 @@ with sync_playwright() as pw:
    assert "salvo" in page.locator(".ct364-feedback").inner_text()
    page.locator('#ct364-tabs [data-panel="gameplay"]').click()
    assert "REGISTRO EXIGE RECONFERÊNCIA" in page.locator("#ct367-gameplay").inner_text()
+   # V370: nova revisão depois de mudar uma habilidade da build.
+   page.locator("#ct367-notes").fill("Terceira revisão, já com habilidade alterada; observações exigem testes independentes.")
+   page.locator("#ct367-ack").check()
+   page.locator("#ct367-save").click()
+   assert "Registro individual salvo" in page.locator("#ct367-feedback").inner_text()
+   page.locator("#ct369-owned-history summary").click()
+   owned_diff=page.locator("#ct369-owned-history .ct370-diff")
+   diagnostic=page.evaluate("""() => {
+    const v=JSON.parse(localStorage.getItem('scoutpro:v367:owned-gameplay')||'{}')['ct364-01|MAT|posse'];
+    return {history:v?.history?.map(x=>x.buildSnapshot),now:v?.buildSnapshot,
+     n:v?.history?.length};
+   }""")
+   assert "Habilidade adicional · vaga 2" in owned_diff.inner_text(),(name,diagnostic,owned_diff.inner_text())
+   assert "Nova habilidade de QA após o teste" in owned_diff.inner_text()
+   assert "PENDENTE — dado incompleto" in owned_diff.inner_text()
+   # Inverter cronologia deve ser bloqueado, não mostrar falsa mudança.
+   owned_diff.locator(".ct370-from").select_option("2")
+   owned_diff.locator(".ct370-to").select_option("0")
+   assert "sem inverter a ordem cronológica" in owned_diff.inner_text()
+   owned_diff.locator(".ct370-from").select_option("1")
+   owned_diff.locator(".ct370-to").select_option("2")
+   assert "Habilidade adicional · vaga 2" in owned_diff.inner_text()
+   page.locator("#ct369-owned-history summary").click()
    still=page.evaluate("""() => JSON.parse(localStorage.getItem('scoutpro:v367:owned-gameplay')||'{}')""")
    assert still["ct364-01|MAT|posse"]["matches"]==2,(name,"histórico da build anterior foi perdido")
+   assert len(still["ct364-01|MAT|posse"]["history"])==2,(name,"V370 apagou revisões após mudar uma build")
    # O diálogo modal ainda está aberto: conferir a DOM sem clicar sob backdrop.
    assert "14 níveis máximos pendentes" in page.locator("#ct365-review-summary").text_content()
    saved_row=page.locator('[data-review-card="ct364-01"]')
    assert "Máximo informado: 35 · 68 PP calculados" in saved_row.text_content()
-   assert page.evaluate("() => window.__ct364BackupSignals")>=8,(name,"gameplay não notificou o backup completo")
+   assert page.evaluate("() => window.__ct364BackupSignals")>=9,(name,"gameplay não notificou o backup completo")
    page.locator('#ct364-tabs [data-panel="treino"]').click()
    page.locator('.ct364-modes button').filter(has_text='Contra-Ataque Normal').click()
    assert page.locator('.ct364-modes button[aria-pressed="true"]').count()==1

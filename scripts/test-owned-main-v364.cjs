@@ -117,4 +117,44 @@ assert.match(js,/Nenhuma versão recebe nota meta automática/,'V369 não deve c
 assert.match(css,/\.ct369-history/,'V369 sem estilo de histórico');
 assert.match(css,/\.ct369-test-queue/,'V369 sem fila responsiva');
 
+// V370: executar a lógica pura do diff com snapshots antigos/novos, sem DOM.
+assert.match(js,/function renderRevisionDiff/,'V370 sem interface de comparação histórica');
+assert.match(js,/function revisionDiff/,'V370 sem comparação documental');
+assert.match(js,/function revisionFieldKnown/,'V370 deve separar valor desconhecido de zero');
+assert.match(css,/\.ct370-diff-row/,'V370 sem diferenciação visual mobile');
+assert.match(css,/\.ct370-controls/,'V370 sem seleção de revisões');
+const vm=require('node:vm');
+const startDiff=js.indexOf('function revisionSnapshot(');
+const endDiff=js.indexOf('function renderRevisionDiff(',startDiff);
+assert.ok(startDiff>0&&endDiff>startDiff,'extrator isolado V370 falhou');
+const testSandbox={};
+vm.runInNewContext(js.slice(startDiff,endDiff)+';this.compare=revisionDiff;',testSandbox);
+const oldBuild={buildSnapshot:JSON.stringify({cardId:'',maxLevel:35,skills:['Passe curto','','','',''],
+ booster:'',boosterSlot:'pendente'})};
+const nextBuild={buildSnapshot:JSON.stringify({cardId:'',maxLevel:36,skills:['Passe curto','','Interceptação','',''],
+ booster:'Condução Firme',boosterSlot:'ocupado'})};
+const delta=testSandbox.compare(oldBuild,nextBuild);
+assert.deepEqual(Array.from(delta.changes,x=>x.label).sort(),
+ ['Nível máximo informado'],
+ 'V370 mudanças documentadas reais não detectadas');
+assert.ok(delta.pending.some(x=>x.label==='Estado do segundo slot'),
+ 'V370 estado do slot antes pendente não pode ser tratado como ausência comprovada');
+assert.ok(delta.pending.some(x=>x.label==='Habilidade adicional · vaga 3'),
+ 'V370 deve preservar índice de skill e marcar lacuna anterior');
+assert.ok(delta.pending.some(x=>x.label==='Ímpeto adicional anotado'),
+ 'V370 booster antigo ausente não autoriza afirmar que estava vazio');
+assert.ok(!delta.changes.some(x=>x.label==='Card ID'),
+ 'V370 não inventar alteração de Card ID desconhecido');
+const noChange=testSandbox.compare(oldBuild,{...oldBuild,notes:'Outra observação'});
+assert.equal(noChange.changes.length,0);
+assert.equal(noChange.pending.length,0);
+const oldOriginal={snapshot:JSON.stringify({id:'105123',versao:'Highlight',pp:60,levels:[3,4,5]})};
+const newerOriginal={snapshot:JSON.stringify({id:'105123',versao:'Highlight',pp:62,levels:[3,5,5]})};
+const originalDiff=testSandbox.compare(oldOriginal,newerOriginal);
+assert.deepEqual(Array.from(originalDiff.changes,x=>x.label).sort(),
+ ['PP do catálogo','Treino catalogado'].sort(),
+ 'V370 detectar treino/PP originais sem editar os dados fonte');
+const corrupt=testSandbox.compare({snapshot:'INVALID_JSON'},newerOriginal);
+assert.ok(corrupt.unreadable&&corrupt.pending.length>0,
+ 'V370 não deve mascarar snapshot inválido');
 console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 5 táticas mesmo motor, Android/Windows offline.');
