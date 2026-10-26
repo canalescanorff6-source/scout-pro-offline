@@ -257,6 +257,121 @@ function renderRevisionHistory(host,record,title){
  detail.append(list);
  if(records.length>12)note(detail,(records.length-12)+' revisões anteriores continuam armazenadas no backup e no dispositivo.');
 }
+/* V369 — fila de documentação para a FUNÇÃO e a TÁTICA escolhidas.
+   A ordem é de pendências de evidência, NÃO ranking de jogadores. */
+let testQueueRefresh=()=>{};
+function refreshTestQueue(){testQueueRefresh()}
+function renderTestQueue(host,selected,role,tactic){
+ if(!host)return;
+ host.replaceChildren();
+ const detail=mk('details','ct369-test-queue');detail.id='ct369-test-queue';
+ detail.append(mk('summary','','Fila de testes · 15 novas + 246 originais'));
+ host.append(detail);
+ const inner=mk('div','ct369-queue-inner');detail.append(inner);
+ note(inner,'Fila de documentação para '+role+' / '+STYLE_NAMES[tactic]+'. Ausência ou desatualização de testes NÃO significa carta inferior; não há nota por Overall.');
+ const selectorLabel=mk('label','ct364-form-label','Coleção a conferir');
+ const collection=mk('select','ct369-queue-select');collection.id='ct369-queue-collection';
+ for(const [key,title] of [['owned','15 adicionais'],['original','246 originais']]){
+  const opt=mk('option','',title);opt.value=key;collection.append(opt);
+ }
+ selectorLabel.append(collection);inner.append(selectorLabel);
+ const filterLabel=mk('label','ct364-form-label','Estado da evidência');
+ const status=mk('select','ct369-queue-select');status.id='ct369-queue-status';
+ for(const [key,title] of [['priority','Primeiro: pendentes e desatualizados'],['missing','Sem partidas anotadas'],['stale','Exigem reconferência'],['recorded','Com observação registrada'],['all','Todas as edições']]){
+  const opt=mk('option','',title);opt.value=key;status.append(opt);
+ }
+ filterLabel.append(status);inner.append(filterLabel);
+ const searchLabel=mk('label','ct364-form-label','Buscar por jogador ou CAP');
+ const search=mk('input','ct369-queue-search');search.id='ct369-queue-search';
+ search.type='search';search.placeholder='Nome ou número da carta';
+ searchLabel.append(search);inner.append(searchLabel);
+ const summary=mk('p','ct369-queue-stats');summary.id='ct369-queue-stats';
+ summary.setAttribute('aria-live','polite');inner.append(summary);
+ const list=mk('div','ct369-queue-list');list.id='ct369-queue-list';inner.append(list);
+ const more=mk('button','ct369-show-more','Mostrar mais cartas');more.type='button';
+ more.id='ct369-show-more';inner.append(more);
+ let map=null,limit=30;
+ const render=()=>{
+  if(!host.isConnected)return;
+  const source=collection.value;
+  const items=source==='owned'?entries.map(card=>({
+   key:card.key,name:card.name,role:card.position,card,
+   record:gameplayOf(card,role,tactic),
+   stale:gameplayStale(card,gameplayOf(card,role,tactic)),
+   identityMissing:!confirmationOf(card).cardId
+  })):map?[...map.values()].map(card=>({
+   key:'cap:'+card.numero,name:card.name,role:card.posicao,
+   card,record:originalGameplayOf(card,role,tactic),
+   stale:originalGameplayStale(card,originalGameplayOf(card,role,tactic)),
+   identityMissing:!card.id
+  })):[];
+  const stat={missing:0,stale:0,recorded:0};
+  for(const i of items){if(!i.record)stat.missing++;
+   else if(i.stale)stat.stale++;else stat.recorded++;}
+  const query=normalize(search.value);
+  const visible=items.filter(i=>{
+   if(query&&!normalize(i.name+' '+i.key).includes(query))return false;
+   if(status.value==='missing')return !i.record;
+   if(status.value==='stale')return Boolean(i.record&&i.stale);
+   if(status.value==='recorded')return Boolean(i.record&&!i.stale);
+   if(status.value==='priority')return !i.record||i.stale||i.identityMissing;
+   return true;
+  });
+  // Ordem documental estável: desatualizados, identidade pendente,
+  // sem registro, depois registros declarados. Não é qualidade de carta.
+  const rank=i=>i.stale?0:i.identityMissing?1:!i.record?2:3;
+  visible.sort((a,b)=>rank(a)-rank(b)||
+    (source==='original'?a.card.numero-b.card.numero:
+     entries.indexOf(a.card)-entries.indexOf(b.card)));
+  summary.textContent=source==='original'&&!map?'Carregando as 246 edições originais…':
+   items.length+' cartas · '+stat.missing+' sem testes · '+stat.stale+
+   ' exigem reconferência · '+stat.recorded+' com registros atuais · '+visible.length+' no filtro';
+  list.replaceChildren();
+  for(const i of visible.slice(0,limit)){
+   const row=mk('div','ct369-queue-item');row.dataset.testKey=i.key;
+   const info=mk('div','ct369-queue-info');
+   info.append(mk('strong','',(source==='original'? '#'+String(i.card.numero).padStart(3,'0')+' · ':'')+i.name));
+   const state=i.stale?'Rever após alteração da edição/build':!i.record?
+    'SEM TESTE INFORMADO':'Registro pessoal atual — não homologado';
+   info.append(mk('span','',state+' · análise '+role+' / '+STYLE_NAMES[tactic]));
+   if(i.identityMissing)info.append(mk('small','','Card ID pendente: conferir edição'));
+   else if(i.role!==role)info.append(mk('small','','Função adaptada: conferir resposta na posição '+role));
+   const button=mk('button','ct369-queue-action',source==='original'?'Comparar edição':'Abrir Gameplay');
+   button.type='button';
+   button.onclick=()=>{
+    if(source==='owned'){
+     switchOwnedCard(i.card);activeRole=role;activeStyle=tactic;
+     activePanel='gameplay';renderDialog();
+     return;
+    }
+    const other=baseSelection();
+    if(other){
+     other.value=i.key;other.dispatchEvent(new Event('change',{bubbles:true}));
+     other.focus();
+     // Voltar o usuário para o painel do comparador, sem rolar o modal fechado.
+     other.scrollIntoView?.({block:'nearest'});
+    }
+   };
+   row.append(info,button);list.append(row);
+  }
+  more.hidden=visible.length<=limit;
+  more.textContent='Mostrar mais '+Math.min(30,visible.length-limit)+' ('+limit+'/'+visible.length+')';
+ };
+ const baseSelection=()=>document.querySelector('#ct367-comparison #ct367-other');
+ testQueueRefresh=()=>{if(host.isConnected)render()};
+ for(const input of [collection,status,search]){
+  input.addEventListener(input===search?'input':'change',()=>{limit=30;render()});
+ }
+ more.onclick=()=>{limit+=30;render()};
+ detail.addEventListener('toggle',()=>{if(detail.open)render()});
+ loadOriginalCatalog().then(result=>{
+  if(!host.isConnected||active!==selected||activeRole!==role||activeStyle!==tactic)return;
+  map=result;if(detail.open&&collection.value==='original')render();
+ }).catch(e=>{
+  if(!host.isConnected)return;
+  note(inner,'Não foi possível obter as 246 originais: '+String(e.message||e));
+ });
+}
 function renderGameplay(c,body){
  const role=activeRole||c.position,tactic=activeStyle;
  const base=section('Laboratório de gameplay por carta, função e tática');
