@@ -241,4 +241,51 @@ assert.equal(proto.proto(allPending).eligible,false);
 assert.equal(proto.proto(noDiff).eligible,false);
 assert.match(js,/renderEvidenceProtocol\(block,plan\)/);
 assert.match(css,/\.ct372-protocol-fields/);
+// V373: mesmos critérios para Minhas Cartas adicionais e Outros Elencos.
+const friendEngine=read('craque-friends-training-v228.js');
+const friendView=read('craque-friends-training-ui-v228.js');
+const friendCss=read('craque-friends-v227.css');
+assert.match(friendEngine,/function professionalAudit/,'V373 exige motor comum');
+assert.match(friendEngine,/professional:professionalAudit\(card,result\)/,'V373 parecer não está ligado à avaliação');
+assert.match(friendEngine,/balancedPortfolio\?\.candidates/,'V373 perdeu balanceamento por família');
+assert.match(friendEngine,/decisionEvidence\?\.candidates/,'V373 sem contexto do ímpeto');
+assert.match(js,/function renderProfessionalDossier/,'ficha principal sem PRO');
+assert.match(js,/renderProfessionalDossier\(result,results,kind\)/,'skills/ímpetos principais não integrados');
+assert.match(js,/renderProfessionalDossier\(result,area,'treino'\)/,'treino principal não integrado');
+assert.match(friendView,/function professionalView/,'Outros Elencos sem dossiê');
+assert.match(friendView,/professionalView\(result,'skills'\)/,'Outros Elencos sem habilidades');
+assert.match(friendView,/professionalView\(result,'boost'\)/,'Outros Elencos sem ímpetos');
+assert.match(friendView,/professionalView\(result,'treino'\)/,'Outros Elencos sem treinamento');
+assert.match(css,/\.ct373-pro-list/);
+assert.match(friendCss,/\.ct373-pro-list/);
+const sourcePro=friendEngine.slice(friendEngine.indexOf('function professionalAudit('),
+ friendEngine.indexOf("function evaluate(card,tactic=",friendEngine.indexOf('function professionalAudit(')));
+const proVm={};vm.runInNewContext(sourcePro+';this.professionalAudit=professionalAudit;',proVm);
+const example={
+ tactic:'posse',identityConfirmed:false,freeSkillSlots:null,
+ skills:{nativeKnown:true,requiresReconciliation:false,rankedCandidates:[
+  {key:'onepass',why:'Passes curtos',decision:{reason:'Conectar MAT ao CA',situation:'Recepção entrelinhas'}}],
+  balancedPortfolio:{candidates:[{key:'onepass',name:'Passe de primeira',family:'passes',
+   explanation:'Equilíbrio tático, não indicação de slot equipado'}]}},
+ booster:{natural:'Technique',slotSupported:false,
+  primary:{atributos:['Passe','Controle']},alternatives:[],
+  complementarity:{factoryDocumented:false,comparisons:[]},
+  decisionEvidence:{candidates:[{displayName:'Passes',technicalName:'Passing',
+   relativeScore:12,factors:{funcao:5}}],warnings:['Sem prova do slot']} },
+ plan:{status:'hipotese',role:'MAT',levels:[0,5,5,5,4,0,0,0,0,0],
+  differences:[{name:'Passe',was:3,proposed:5}],baselineValid:true,
+  tests:['Teste do passe curto'],tradeoffs:['Compensação na corrida']}
+};
+const p=proVm.professionalAudit({boosterSlot:'pendente'},example);
+assert.equal(p.noOverall,true);assert.equal(p.autoWrite,false);
+assert.equal(p.freeSkillSlots,null);assert.equal(p.tokenSpendAuthorized,false);
+assert.equal(p.skillPortfolio.length,1);
+assert.equal(p.skillPortfolio[0].name,'Passe de primeira');
+assert.equal(p.boosterAlternatives.length,1);
+assert.equal(p.boosterAlternatives[0].overlapWithFixed,null);
+assert.ok(p.issues.some(x=>x.includes('NÃO comprovado')||x.includes('NÃO COMPROVADO')));
+assert.equal(proVm.professionalAudit({boosterSlot:'ausente'},{
+ tactic:'posse',identityConfirmed:false,freeSkillSlots:null,
+ skills:null,booster:null,plan:{status:'pendente',role:null,levels:null}
+}).trainingStatus,'pendente','V373 não pode falhar em carta sem dados');
 console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 5 táticas mesmo motor, Android/Windows offline.');
