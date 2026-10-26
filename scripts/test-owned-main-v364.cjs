@@ -49,7 +49,8 @@ assert.match(js,/ct364-equipped-booster/,'ípetos manuais não possuem campo ind
 assert.ok(index.indexOf('craque-app-shell-v362.css')<index.indexOf('ct364-owned-main.css'),
  'CSS V364 deve carregar DEPOIS de V362 para corrigir cascata visual em 320px');
 assert.match(js,/ct364-owned-section/);
-assert.match(js,/function compactHint/,'sinalização compacta via JS não instalada');
+assert.match(js,/const compactHint=/,'sinalização compacta via JS não instalada');
+assert.match(js,/margin-top','-10px'/,'espaçamento da grade principal em 320px não corrigido');
 assert.match(js,/\(max-width:355px\)/,'limite responsivo de 320px não configurado');
 assert.match(js,/ct364-owned-grid/);
 assert.match(js,/ct364-card-navigator/,'navegacao 15 cartas ausente');
