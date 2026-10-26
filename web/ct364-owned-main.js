@@ -211,6 +211,167 @@ function validVideoLink(raw){
   return uri.protocol==='https:'&&!uri.username&&!uri.password?uri.href:null;
  }catch(_){return null}
 }
+/* V369 — cada revisão mantém o estado anterior da anotação e build;
+   revisões não equivalem a partidas adicionais e não são somadas. */
+function revisionHistory(previous){
+ if(!previous)return [];
+ const past=Array.isArray(previous.history)?
+  previous.history.filter(v=>v&&typeof v==='object'&&!Array.isArray(v)):[];
+ const {history:ignored,...prior}=previous;
+ return [...past,prior];
+}
+function revisionSummary(record){
+ const raw=record?.buildSnapshot||record?.snapshot;
+ if(typeof raw!=='string')return 'Build não documentada';
+ try{
+  const v=JSON.parse(raw),parts=[];
+  if(v.cardId||v.id)parts.push('Card ID: '+(v.cardId||v.id));
+  if(v.maxLevel)parts.push('Nível máximo informado: '+v.maxLevel);
+  if(v.pp!==undefined&&v.pp!==null)parts.push('PP no catálogo: '+v.pp);
+  if(Array.isArray(v.skills)&&v.skills.some(Boolean))
+   parts.push('Habilidades anotadas: '+v.skills.filter(Boolean).join(', '));
+  if(v.booster)parts.push('Ímpeto anotado: '+v.booster);
+  if(Array.isArray(v.levels))parts.push('Treino catalogado: '+v.levels.join('/'));
+  return parts.join(' · ')||'Build sem componentes confirmados';
+ }catch(_){return 'Estado da build não interpretável; conferir exportação'}
+}
+function renderRevisionHistory(host,record,title){
+ if(!host)return;
+ host.replaceChildren();
+ const detail=mk('details','ct369-history');
+ detail.append(mk('summary','','Histórico de revisões · '+(record?1+(record.history?.length||0):0)));
+ host.append(detail);
+ note(detail,title+'. Histórico pessoal, não validação independente. Uma revisão não representa mais partidas.');
+ if(!record){note(detail,'PENDENTE: nenhum registro nesta função/tática.');return}
+ const history=Array.isArray(record.history)?record.history:[];
+ const records=[...history,record].reverse();
+ const list=mk('ol','ct369-history-list');
+ for(const [i,item] of records.slice(0,12).entries()){
+  if(!item||typeof item!=='object')continue;
+  const row=mk('li','ct369-history-item');
+  row.append(mk('strong','',(i===0?'Atual':'Anterior')+' · '+(item.updatedAt||'Data pendente')));
+  line(row,'Partidas informadas',(item.matches??'PENDENTE')+' · não cumulativas');
+  note(row,typeof item.notes==='string'?item.notes.slice(0,700):'Observações indisponíveis');
+  note(row,revisionSummary(item));list.append(row);
+ }
+ detail.append(list);
+ if(records.length>12)note(detail,(records.length-12)+' revisões anteriores continuam armazenadas no backup e no dispositivo.');
+}
+/* V369 — fila de documentação para a FUNÇÃO e a TÁTICA escolhidas.
+   A ordem é de pendências de evidência, NÃO ranking de jogadores. */
+let testQueueRefresh=()=>{};
+function refreshTestQueue(){testQueueRefresh()}
+function renderTestQueue(host,selected,role,tactic){
+ if(!host)return;
+ host.replaceChildren();
+ const detail=mk('details','ct369-test-queue');detail.id='ct369-test-queue';
+ detail.append(mk('summary','','Fila de testes · 15 novas + 246 originais'));
+ host.append(detail);
+ const inner=mk('div','ct369-queue-inner');detail.append(inner);
+ note(inner,'Fila de documentação para '+role+' / '+STYLE_NAMES[tactic]+'. Ausência ou desatualização de testes NÃO significa carta inferior; não há nota por Overall.');
+ const selectorLabel=mk('label','ct364-form-label','Coleção a conferir');
+ const collection=mk('select','ct369-queue-select');collection.id='ct369-queue-collection';
+ for(const [key,title] of [['owned','15 adicionais'],['original','246 originais']]){
+  const opt=mk('option','',title);opt.value=key;collection.append(opt);
+ }
+ selectorLabel.append(collection);inner.append(selectorLabel);
+ const filterLabel=mk('label','ct364-form-label','Estado da evidência');
+ const status=mk('select','ct369-queue-select');status.id='ct369-queue-status';
+ for(const [key,title] of [['priority','Primeiro: pendentes e desatualizados'],['missing','Sem partidas anotadas'],['stale','Exigem reconferência'],['recorded','Com observação registrada'],['all','Todas as edições']]){
+  const opt=mk('option','',title);opt.value=key;status.append(opt);
+ }
+ filterLabel.append(status);inner.append(filterLabel);
+ const searchLabel=mk('label','ct364-form-label','Buscar por jogador ou CAP');
+ const search=mk('input','ct369-queue-search');search.id='ct369-queue-search';
+ search.type='search';search.placeholder='Nome ou número da carta';
+ searchLabel.append(search);inner.append(searchLabel);
+ const summary=mk('p','ct369-queue-stats');summary.id='ct369-queue-stats';
+ summary.setAttribute('aria-live','polite');inner.append(summary);
+ const list=mk('div','ct369-queue-list');list.id='ct369-queue-list';inner.append(list);
+ const more=mk('button','ct369-show-more','Mostrar mais cartas');more.type='button';
+ more.id='ct369-show-more';inner.append(more);
+ let map=null,limit=30;
+ const render=()=>{
+  if(!host.isConnected)return;
+  const source=collection.value;
+  const items=source==='owned'?entries.map(card=>({
+   key:card.key,name:card.name,role:card.position,card,
+   record:gameplayOf(card,role,tactic),
+   stale:gameplayStale(card,gameplayOf(card,role,tactic)),
+   identityMissing:!confirmationOf(card).cardId
+  })):map?[...map.values()].map(card=>({
+   key:'cap:'+card.numero,name:card.name,role:card.posicao,
+   card,record:originalGameplayOf(card,role,tactic),
+   stale:originalGameplayStale(card,originalGameplayOf(card,role,tactic)),
+   identityMissing:!card.id
+  })):[];
+  const stat={missing:0,stale:0,recorded:0};
+  for(const i of items){if(!i.record)stat.missing++;
+   else if(i.stale)stat.stale++;else stat.recorded++;}
+  const query=normalize(search.value);
+  const visible=items.filter(i=>{
+   if(query&&!normalize(i.name+' '+i.key).includes(query))return false;
+   if(status.value==='missing')return !i.record;
+   if(status.value==='stale')return Boolean(i.record&&i.stale);
+   if(status.value==='recorded')return Boolean(i.record&&!i.stale);
+   if(status.value==='priority')return !i.record||i.stale||i.identityMissing;
+   return true;
+  });
+  // Ordem documental estável: desatualizados, identidade pendente,
+  // sem registro, depois registros declarados. Não é qualidade de carta.
+  const rank=i=>i.stale?0:i.identityMissing?1:!i.record?2:3;
+  visible.sort((a,b)=>rank(a)-rank(b)||
+    (source==='original'?a.card.numero-b.card.numero:
+     entries.indexOf(a.card)-entries.indexOf(b.card)));
+  summary.textContent=source==='original'&&!map?'Carregando as 246 edições originais…':
+   items.length+' cartas · '+stat.missing+' sem testes · '+stat.stale+
+   ' exigem reconferência · '+stat.recorded+' com registros atuais · '+visible.length+' no filtro';
+  list.replaceChildren();
+  for(const i of visible.slice(0,limit)){
+   const row=mk('div','ct369-queue-item');row.dataset.testKey=i.key;
+   const info=mk('div','ct369-queue-info');
+   info.append(mk('strong','',(source==='original'? '#'+String(i.card.numero).padStart(3,'0')+' · ':'')+i.name));
+   const state=i.stale?'Rever após alteração da edição/build':!i.record?
+    'SEM TESTE INFORMADO':'Registro pessoal atual — não homologado';
+   info.append(mk('span','',state+' · análise '+role+' / '+STYLE_NAMES[tactic]));
+   if(i.identityMissing)info.append(mk('small','','Card ID pendente: conferir edição'));
+   else if(i.role!==role)info.append(mk('small','','Função adaptada: conferir resposta na posição '+role));
+   const button=mk('button','ct369-queue-action',source==='original'?'Comparar edição':'Abrir Gameplay');
+   button.type='button';
+   button.onclick=()=>{
+    if(source==='owned'){
+     switchOwnedCard(i.card);activeRole=role;activeStyle=tactic;
+     activePanel='gameplay';renderDialog();
+     return;
+    }
+    const other=baseSelection();
+    if(other){
+     other.value=i.key;other.dispatchEvent(new Event('change',{bubbles:true}));
+     other.focus();
+     // Voltar o usuário para o painel do comparador, sem rolar o modal fechado.
+     other.scrollIntoView?.({block:'nearest'});
+    }
+   };
+   row.append(info,button);list.append(row);
+  }
+  more.hidden=visible.length<=limit;
+  more.textContent='Mostrar mais '+Math.min(30,visible.length-limit)+' ('+limit+'/'+visible.length+')';
+ };
+ const baseSelection=()=>document.querySelector('#ct367-comparison #ct367-other');
+ testQueueRefresh=()=>{if(host.isConnected)render()};
+ for(const input of [collection,status,search]){
+  input.addEventListener(input===search?'input':'change',()=>{limit=30;render()});
+ }
+ more.onclick=()=>{limit+=30;render()};
+ detail.addEventListener('toggle',()=>{if(detail.open)render()});
+ loadOriginalCatalog().then(result=>{
+  if(!host.isConnected||active!==selected||activeRole!==role||activeStyle!==tactic)return;
+  map=result;if(detail.open&&collection.value==='original')render();
+ }).catch(e=>{
+  if(!host.isConnected)return;
+  note(inner,'Não foi possível obter as 246 originais: '+String(e.message||e));
+ });
+}
 function renderGameplay(c,body){
  const role=activeRole||c.position,tactic=activeStyle;
  const base=section('Laboratório de gameplay por carta, função e tática');
@@ -258,17 +419,27 @@ function renderGameplay(c,body){
    buildSnapshot:gameplayBuildSnapshot(c),matches:count,
    notes:value,url:video||'',ownerConfirmed:true,updatedAt:new Date().toISOString()};
   try{
-   const all=gameplayData();
-   localStorage.setItem(GAMEPLAY_STORAGE,JSON.stringify({...all,[gameplayKey(c,role,tactic)]:record}));
+   const all=gameplayData(),previous=gameplayOf(c,role,tactic);
+   localStorage.setItem(GAMEPLAY_STORAGE,JSON.stringify({
+    ...all,[gameplayKey(c,role,tactic)]:{...record,history:revisionHistory(previous)}
+   }));
    notifyBackup();
    feedback.textContent='Registro individual salvo neste aparelho. Não altera a build aprovada.';
    renderGameplayComparison(c,role,tactic,base);
+   renderRevisionHistory(base.querySelector('#ct369-owned-history'),
+    gameplayOf(c,role,tactic),'Minha carta '+c.name);
+   refreshTestQueue();
   }catch(error){feedback.textContent='Não foi possível salvar: '+String(error.message||error)}
  };
  base.append(save,feedback);
  const comparison=mk('div','ct367-comparison');comparison.id='ct367-comparison';
  base.append(comparison);
+ const timeline=mk('div','ct369-owned-history');timeline.id='ct369-owned-history';
+ base.append(timeline);
+ const queue=mk('div','ct369-queue-host');queue.id='ct369-queue-host';base.append(queue);
  body.append(base);renderGameplayComparison(c,role,tactic,base);
+ renderRevisionHistory(timeline,gameplayOf(c,role,tactic),'Minha carta '+c.name);
+ renderTestQueue(queue,c,role,tactic);
 }
 /* V368: cruzamento de 15 cartas adicionais com as 246 ORIGINAIS por CAP.
    Fonte somente-leitura: catálogo SCOUT_V69_AUDITORIA.json. Nenhuma escrita no
@@ -338,15 +509,20 @@ function renderOriginalEvidence(card,role,tactic,parent,refresh){
    snapshot:originalSnapshot(card),matches:m,notes:n,url:url||'',
    ownerConfirmed:true,updatedAt:new Date().toISOString()};
   try{
-   const all=originalGameplayData();
+   const all=originalGameplayData(),previous=originalGameplayOf(card,role,tactic);
    localStorage.setItem(ORIGINAL_GAMEPLAY_STORAGE,JSON.stringify({
-    ...all,[originalGameplayKey(card.numero,role,tactic)]:entry
+    ...all,[originalGameplayKey(card.numero,role,tactic)]:{
+     ...entry,history:revisionHistory(previous)
+    }
    }));
    notifyBackup();feedback.textContent='Registro salvo separadamente. Nenhuma ficha ou build original foi modificada.';
    refresh();
+   refreshTestQueue();
   }catch(e){feedback.textContent='Falha ao salvar anotação: '+String(e.message||e)}
  };
  box.append(save,feedback);
+ const timeline=mk('div','ct369-original-history');box.append(timeline);
+ renderRevisionHistory(timeline,record,'Carta original #'+String(card.numero).padStart(3,'0'));
  if(stale)note(box,'A referência original mudou desde a anotação: histórico exige reconferência.');
 }
 function renderGameplayComparison(c,role,tactic,base){
