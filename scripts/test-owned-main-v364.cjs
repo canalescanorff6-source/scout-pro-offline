@@ -65,6 +65,13 @@ assert.match(css,/\.ct365-review-row/,'V365 sem estilo da tabela responsiva');
 assert.ok(index.includes('261 cartas'),'catálogo não informa o acervo total');
 
 assert.match(js,/ct364-card-navigator/,'navegacao 15 cartas ausente');
+assert.match(js,/function renderAdvisory/,'V366 sem parecer competitivo por carta');
+assert.match(js,/CRAQUE_FRIEND_TRAINING_V228\.evaluate\(cardAsEngine\(c,role\),tactic\)/,'V366 sem motor oficial');
+assert.match(js,/result.freeSkillSlots===null/,'V366 deve impedir presunção de cinco vagas');
+assert.match(js,/Gastar tokens','NÃO AUTORIZADO/,'V366 sem trava informativa de tokens');
+assert.match(js,/activeRole!==role/,'V366 permite vazamento assíncrono ao trocar posição');
+assert.match(css,/\.ct366-advisory/,'V366 sem estilos para painel consultivo');
+assert.match(css,/\.ct366-rank/,'V366 sem hierarquia de recomendações');
 assert.match(js,/function switchOwnedCard/,'isolamento entre fichas ausente');
 assert.match(js,/function navigateOwned/,'anterior/proxima ausentes');
 assert.match(js,/ct364-jump/,'ir ao numero especifico ausente');
