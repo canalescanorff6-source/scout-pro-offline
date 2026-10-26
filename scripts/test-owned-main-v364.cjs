@@ -135,8 +135,10 @@ const nextBuild={buildSnapshot:JSON.stringify({cardId:'',maxLevel:36,skills:['Pa
  booster:'Condução Firme',boosterSlot:'ocupado'})};
 const delta=testSandbox.compare(oldBuild,nextBuild);
 assert.deepEqual(Array.from(delta.changes,x=>x.label).sort(),
- ['Estado do segundo slot','Nível máximo informado'].sort(),
+ ['Nível máximo informado'],
  'V370 mudanças documentadas reais não detectadas');
+assert.ok(delta.pending.some(x=>x.label==='Estado do segundo slot'),
+ 'V370 estado do slot antes pendente não pode ser tratado como ausência comprovada');
 assert.ok(delta.pending.some(x=>x.label==='Habilidade adicional · vaga 3'),
  'V370 deve preservar índice de skill e marcar lacuna anterior');
 assert.ok(delta.pending.some(x=>x.label==='Ímpeto adicional anotado'),
