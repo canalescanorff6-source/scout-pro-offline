@@ -208,6 +208,28 @@ with sync_playwright() as pw:
    assert "ct364-01|MAT|posse" in stored,(name,"evidência de gameplay não isolada")
    assert stored["ct364-01|MAT|posse"]["matches"]==2
    assert stored["ct364-01|MAT|posse"]["cardIdAtCapture"]==""
+   # V369 — segunda revisão mantém a primeira, mas NÃO soma partidas.
+   page.locator("#ct367-notes").fill("Segunda revisão da observação: passe curto seguro, mesmo total de duas partidas.")
+   page.locator("#ct367-save").click()
+   saved_revision=page.evaluate("""() => JSON.parse(localStorage.getItem('scoutpro:v367:owned-gameplay')||'{}')['ct364-01|MAT|posse']""")
+   assert saved_revision["matches"]==2
+   assert len(saved_revision["history"])==1,(name,"revisão anterior apagada")
+   assert "recepção sob pressão" in saved_revision["history"][0]["notes"]
+   assert "mesmo total" in saved_revision["notes"]
+   assert "Histórico de revisões · 2" in page.locator("#ct369-owned-history summary").inner_text()
+   page.locator("#ct369-owned-history summary").click()
+   assert "não cumulativas" in page.locator("#ct369-owned-history").inner_text()
+   page.locator("#ct369-owned-history summary").click()
+   queue=page.locator("#ct369-test-queue")
+   assert queue.is_visible() and not queue.evaluate("(e)=>e.open")
+   page.locator("#ct369-test-queue summary").click()
+   assert "15 cartas" in page.locator("#ct369-queue-stats").inner_text()
+   assert page.locator("#ct369-queue-list .ct369-queue-item").count()>=1
+   page.locator("#ct369-queue-status").select_option("missing")
+   assert page.locator("#ct369-queue-list .ct369-queue-item").count()==14
+   page.locator("#ct369-queue-status").select_option("all")
+   assert page.locator("#ct369-queue-list .ct369-queue-item").count()==15
+   page.locator("#ct369-test-queue summary").click()
    page.locator("#ct367-other").select_option("ct364-02")
    assert "PENDENTE: sem partidas documentadas" in page.locator("#ct367-comparison").inner_text()
    assert "Função adaptada" in page.locator("#ct367-comparison").inner_text()
@@ -232,11 +254,28 @@ with sync_playwright() as pw:
    page.locator("#ct368-link").fill("https://www.youtube.com/watch?v=zzzzzzzzzzz")
    page.locator("#ct368-save").click()
    assert "Registro salvo" in page.locator("#ct368-feedback").inner_text()
+   page.locator("#ct368-notes").fill("Segunda revisão sobre o Guirassy #181 na mesma função, preservando as três partidas declaradas.")
+   page.locator("#ct368-ack").check()
+   page.locator("#ct368-save").click()
+   assert "Histórico de revisões · 2" in page.locator("#ct369-original-history summary").inner_text()
+   page.locator("#ct369-original-history summary").click()
+   assert "não cumulativas" in page.locator("#ct369-original-history").inner_text()
+   page.locator("#ct369-original-history summary").click()
+   page.locator("#ct369-test-queue summary").click()
+   page.locator("#ct369-queue-collection").select_option("original")
+   page.locator("#ct369-queue-status").select_option("all")
+   page.locator("#ct369-queue-search").fill("cap:181")
+   assert "246 cartas" in page.locator("#ct369-queue-stats").inner_text()
+   row=page.locator('#ct369-queue-list [data-test-key="cap:181"]')
+   assert row.count()==1,(name,"Guirassy original não aparece na fila")
+   assert "Registro pessoal atual" in row.inner_text()
+   page.locator("#ct369-test-queue summary").click()
    origin=page.evaluate("""() => ({
     game:JSON.parse(localStorage.getItem('scoutpro:v368:original-gameplay')||'{}'),
     original:localStorage.getItem('SCOUT_V69_AUDITORIA.json')
    })""")
    assert origin["game"]["cap:181|MAT|posse"]["matches"]==3
+   assert len(origin["game"]["cap:181|MAT|posse"]["history"])==1
    assert origin["game"]["cap:181|MAT|posse"]["cardIdAtCapture"],(name,"original sem ID exato de referência")
    assert origin["original"] is None,(name,"cadastro original modificado em localStorage")
    assert "3 · declaração do proprietário" in page.locator("#ct367-comparison").inner_text()
@@ -271,7 +310,7 @@ with sync_playwright() as pw:
    assert "14 níveis máximos pendentes" in page.locator("#ct365-review-summary").text_content()
    saved_row=page.locator('[data-review-card="ct364-01"]')
    assert "Máximo informado: 35 · 68 PP calculados" in saved_row.text_content()
-   assert page.evaluate("() => window.__ct364BackupSignals")>=6,(name,"gameplay não notificou o backup completo")
+   assert page.evaluate("() => window.__ct364BackupSignals")>=8,(name,"gameplay não notificou o backup completo")
    page.locator('#ct364-tabs [data-panel="treino"]').click()
    page.locator('.ct364-modes button').filter(has_text='Contra-Ataque Normal').click()
    assert page.locator('.ct364-modes button[aria-pressed="true"]').count()==1
