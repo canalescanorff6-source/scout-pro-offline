@@ -1351,12 +1351,18 @@ def run():
                 if not page.locator("#friend-analysis-content").inner_text().count("68 / 68 PP distribuídos"):
                     problems.append(f"{name}: V310 Zico 35 não gerou as cinco fichas com 68 PP")
                 page.locator('#friend-analysis-sections [data-panel="skills"]').click()
+                if page.locator('#friend-analysis-content [data-panel="skills"] .ct373-pro').count()!=1:
+                    problems.append(f"{name}: V373 dossiê PRO de habilidades ausente em Outros Elencos")
                 if not page.locator('#friend-analysis-content [data-panel="skills"]').is_visible():
                     problems.append(f"{name}: V305 habilidades adicionais não acessíveis")
                 page.locator('#friend-analysis-sections [data-panel="boost"]').click()
+                if page.locator('#friend-analysis-content [data-panel="boost"] .ct373-pro').count()!=1:
+                    problems.append(f"{name}: V373 dossiê PRO de ímpetos ausente em Outros Elencos")
                 if not page.locator('#friend-analysis-content [data-panel="boost"]').is_visible():
                     problems.append(f"{name}: V305 ímpetos não acessíveis")
                 page.locator('#friend-analysis-sections [data-panel="treino"]').click()
+                if page.locator('#friend-analysis-content [data-panel="treino"] .ct373-pro').count()!=1:
+                    problems.append(f"{name}: V373 dossiê PRO de treinamento ausente em Outros Elencos")
                 page.locator('#friend-analysis-close').click()
                 cover_valid=page.locator("#bruno-featured-card-art").evaluate(
                     "(e)=>e.complete && e.naturalWidth>0")
