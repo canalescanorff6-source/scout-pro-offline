@@ -165,7 +165,7 @@ function professionalAudit(card,result){
   trainingStatus:plan?.status||'pendente',trainingDifferences:(plan?.differences||[]).slice(),
   baselineValid:plan?.baselineValid===true,
   proposedLevels:plan?.levels?plan.levels.slice():null,
-  skillsStatus:!sk?.nativeKnown?'nativas_pendentes':sk.requiresReconciliation?'conciliar':'consultivo',
+  skillsStatus:!sk?.nativeKnown?'nativas_pendentes':sk?.requiresReconciliation?'conciliar':'consultivo',
   freeSkillSlots:result.freeSkillSlots,
   skillPortfolio:portfolio,boosterAlternatives:boosters,
   factoryBooster:boost?.natural||null,
