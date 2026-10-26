@@ -211,6 +211,40 @@ with sync_playwright() as pw:
    page.locator("#ct367-other").select_option("ct364-02")
    assert "PENDENTE: sem partidas documentadas" in page.locator("#ct367-comparison").inner_text()
    assert "Função adaptada" in page.locator("#ct367-comparison").inner_text()
+   # V368: ler as 246 originais da mesma fonte canônica, sem tocar suas builds.
+   page.wait_for_function("""() =>
+    document.querySelectorAll('#ct367-other optgroup[data-catalog="original"] option').length === 246
+   """,timeout=25000)
+   page.locator("#ct367-other").select_option("cap:181")
+   comparison=page.locator("#ct367-comparison")
+   assert "Serhou Guirassy" in comparison.inner_text(),(name,"CAP 181 não encontrado")
+   assert "Card ID catalogado" in comparison.inner_text()
+   assert "PENDENTE: sem partidas pessoais registradas" in comparison.inner_text()
+   assert comparison.locator("#ct368-matches").is_visible()
+   page.locator("#ct368-matches").fill("3")
+   page.locator("#ct368-notes").fill("Observei três partidas do Guirassy original na função MAT com passes curtos e movimentação.")
+   page.locator("#ct368-save").click()
+   assert "Confirme que observou" in page.locator("#ct368-feedback").inner_text()
+   page.locator("#ct368-link").fill("javascript:alert(1)")
+   page.locator("#ct368-ack").check()
+   page.locator("#ct368-save").click()
+   assert "link HTTPS válido" in page.locator("#ct368-feedback").inner_text()
+   page.locator("#ct368-link").fill("https://www.youtube.com/watch?v=zzzzzzzzzzz")
+   page.locator("#ct368-save").click()
+   assert "Registro salvo" in page.locator("#ct368-feedback").inner_text()
+   origin=page.evaluate("""() => ({
+    game:JSON.parse(localStorage.getItem('scoutpro:v368:original-gameplay')||'{}'),
+    original:localStorage.getItem('SCOUT_V69_AUDITORIA.json')
+   })""")
+   assert origin["game"]["cap:181|MAT|posse"]["matches"]==3
+   assert origin["game"]["cap:181|MAT|posse"]["cardIdAtCapture"],(name,"original sem ID exato de referência")
+   assert origin["original"] is None,(name,"cadastro original modificado em localStorage")
+   assert "3 · declaração do proprietário" in page.locator("#ct367-comparison").inner_text()
+   page.locator("#ct367-other").select_option("ct364-02")
+   assert page.locator("#ct368-matches").count()==0,(name,"original persistiu fora da comparação")
+   page.locator("#ct367-other").select_option("cap:181")
+   assert page.locator("#ct368-matches").input_value()=="3"
+   page.locator("#ct367-other").select_option("ct364-02")
    page.locator("#ct367-gameplay .ct364-modes button").filter(has_text="Contra-Ataque Normal").click()
    assert page.locator("#ct367-matches").input_value()=="",(name,"prova vazou para outra tática")
    page.locator("#ct367-gameplay .ct364-modes button").filter(has_text="Posse de Bola").click()
@@ -237,7 +271,7 @@ with sync_playwright() as pw:
    assert "14 níveis máximos pendentes" in page.locator("#ct365-review-summary").text_content()
    saved_row=page.locator('[data-review-card="ct364-01"]')
    assert "Máximo informado: 35 · 68 PP calculados" in saved_row.text_content()
-   assert page.evaluate("() => window.__ct364BackupSignals")>=5,(name,"gameplay não notificou o backup completo")
+   assert page.evaluate("() => window.__ct364BackupSignals")>=6,(name,"gameplay não notificou o backup completo")
    page.locator('#ct364-tabs [data-panel="treino"]').click()
    page.locator('.ct364-modes button').filter(has_text='Contra-Ataque Normal').click()
    assert page.locator('.ct364-modes button[aria-pressed="true"]').count()==1

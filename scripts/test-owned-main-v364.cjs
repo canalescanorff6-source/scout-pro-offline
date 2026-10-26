@@ -93,5 +93,16 @@ assert.match(js,/ct364-jump/,'ir ao numero especifico ausente');
 assert.match(css,/ct364-player-card/);
 assert.match(css,/ct364-card-nav/,'navegador responsivo ausente');
 assert.match(css,/V364[.]2/,'correcao da primeira dobra ausente');
-assert.doesNotMatch(js,/SCOUT_V69_AUDITORIA|localStorage\.removeItem\(/,'não sobrescrever originais/backup');
+assert.doesNotMatch(js,/localStorage\.removeItem\(/,'não apagar dados e backup');
+assert.doesNotMatch(js,/localStorage\.setItem\(['"]SCOUT_V69_AUDITORIA/,'não regravar catálogo original');
+assert.match(js,/fetch\('SCOUT_V69_AUDITORIA\.json'/,'ler coleção original com fonte canônica');
+assert.match(js,/data\.cards\.length!==246/,'não aceitar catálogo incompleto');
+assert.match(js,/originalGameplayKey\(cap,role,tactic\)/,'registro original não isola edição/posição/tática');
+assert.match(js,/scoutpro:v368:original-gameplay/,'evidência original não isolada');
+assert.match(js,/function originalGameplayStale/,'detectar referência original alterada');
+assert.match(js,/function renderOriginalEvidence/,'ausente formulário original separado');
+assert.match(js,/function renderOriginal=|const renderOriginal=/,'ausente comparação com original');
+assert.match(js,/PENDENTE DE AVALIAÇÃO/,'comparador deve recusar meta automático');
+assert.match(css,/\.ct368-original-form/,'V368 sem estilos mobile');
+
 console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 5 táticas mesmo motor, Android/Windows offline.');
