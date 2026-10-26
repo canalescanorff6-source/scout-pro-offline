@@ -28,7 +28,8 @@ with sync_playwright() as pw:
    assert page.locator("#ct364-owned-grid .ct364-player-card").count()==15,(name,"15 adicionais faltam")
    assert page.locator("#ct364-owned-section").is_visible()
    assert not page.locator("#ct364-owned-section").evaluate("(e)=>e.open"),(name,"novas cartas devem iniciar recolhidas")
-   hint=page.locator("#catalogo .list-meta > span:last-child")
+   hint=page.locator("#catalogo .list-meta").get_by_text("Toque na carta para abrir a ficha",exact=False)
+   assert hint.count()==1,(name,"instrução na DOM não localizada; revisar posicionamento mobile")
    if width<=355:
     assert hint.is_hidden(),(name,"dica redundante ainda ocupa a primeira dobra")
     first=page.locator("#cards .player-card:visible").first.bounding_box()
