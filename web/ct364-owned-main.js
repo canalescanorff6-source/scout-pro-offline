@@ -278,6 +278,80 @@ async function renderTraining(c,body){
  }catch(e){note(area,'Motor competitivo indisponível nesta execução: '+String(e.message||e)+'. Nenhum treino foi inventado.')}
 }
 renderTraining.generation=0;
+/* V366 — parecer do motor V228 (V251/V233/V162/V103) por função e tática.
+   Sem inventar slots, identidade, habilidades equipadas ou ímpetos. */
+let advisoryGeneration=0;
+function renderAdvisory(c,body,kind){
+ body.querySelector('.ct366-advisory')?.remove();
+ const block=section(kind==='skills'?'Habilidades recomendadas para esta função':
+   'Ímpetos para comparar nesta função');
+ block.classList.add('ct366-advisory');block.id='ct366-advisory';
+ const modes=mk('nav','ct364-modes');
+ modes.setAttribute('aria-label','Tática usada para o parecer competitivo');
+ for(const style of STYLE_IDS){
+  const button=mk('button','',STYLE_NAMES[style]);button.type='button';
+  button.setAttribute('aria-pressed',String(activeStyle===style));
+  button.onclick=()=>{activeStyle=style;renderDialog();};
+  modes.append(button);
+ }
+ block.append(modes);
+ const role=activeRole||c.position,tactic=activeStyle,panel=activePanel;
+ note(block,'Papel '+role+' · '+STYLE_NAMES[tactic]+'. Parecer consultivo: não comprova desempenho, edição ou equipamento real.');
+ const results=mk('div','ct366-results');results.setAttribute('aria-live','polite');
+ note(results,'Calculando parecer offline…');block.append(results);body.append(block);
+ const gen=++advisoryGeneration;
+ ensureEngine().then(()=>{
+  if(gen!==advisoryGeneration||active!==c||activeRole!==role||
+    activeStyle!==tactic||activePanel!==panel||!block.isConnected)return;
+  const result=window.CRAQUE_FRIEND_TRAINING_V228.evaluate(cardAsEngine(c,role),tactic);
+  results.replaceChildren();
+  const proof=confirmationOf(c);
+  note(results,proof.cardId?
+   'Card ID anotado manualmente; ainda sem comprovação da edição exata.':
+   'Card ID pendente. Os dados simulados do eFHub não confirmam a edição.');
+  if(kind==='skills'){
+   const choices=(result.suggestedSkills||[]).slice(0,5);
+   line(results,'Vagas adicionais livres verificadas',
+    result.freeSkillSlots===null?'PENDENTE — não assumir cinco vagas':String(result.freeSkillSlots));
+   line(results,'Habilidades adicionais anotadas',
+    equipmentOf(c).skills.filter(Boolean).length+' de 5 — inventário manual');
+   if(choices.length){
+    const list=mk('ol','ct366-rank');
+    for(const candidate of choices){
+     const item=mk('li');
+     item.append(mk('strong','',String(candidate.name||candidate.skill||'Candidata')));
+     if(candidate.reason)item.append(mk('p','',String(candidate.reason)));
+     if(candidate.situation)item.append(mk('small','',String(candidate.situation)));
+     list.append(item);
+    }
+    results.append(list);
+   }else note(results,'Sem candidatas ranqueáveis com os dados disponíveis.');
+   note(results,'Habilidades nativas vieram de captura simulada. Compare cada candidata com a carta real antes de considerar um slot. Nada é instalado automaticamente.');
+  }else{
+   const booster=result.booster;
+   const slot=equipmentOf(c).slot;
+   line(results,'Segundo slot declarado',({pendente:'Pendente',ausente:'Ausente',vazio:'Vazio',ocupado:'Ocupado'}[slot]));
+   line(results,'Slot adicional comprovado nesta edição',
+    booster?.slotSupported?'Indicado no catálogo':'NÃO COMPROVADO');
+   const candidates=[booster?.primary,...(booster?.alternatives||[])].filter(Boolean).slice(0,3);
+   if(candidates.length){
+    const list=mk('ol','ct366-rank');
+    for(const candidate of candidates){
+     const item=mk('li');
+     item.append(mk('strong','',String(candidate.nome_pt||candidate.nome||'Candidato pendente')));
+     item.append(mk('p','','Comparação relativa de função/tática, não equipamento recomendado para aplicar sem prova de edição e atributos finais.'));
+     list.append(item);
+    }
+    results.append(list);
+   }else note(results,'Ranking ainda indisponível; não escolher Instinto Artilheiro automaticamente.');
+   note(results,booster?.note||'Estado do ímpeto fixo e segundo slot sem evidência conclusiva.');
+   line(results,'Gastar tokens','NÃO AUTORIZADO — apenas consulta');
+  }
+ }).catch(error=>{
+  if(gen!==advisoryGeneration||active!==c||activePanel!==panel||!block.isConnected)return;
+  results.replaceChildren();note(results,'Motor indisponível: '+String(error.message||error)+'. Nenhuma recomendação genérica será usada.');
+ });
+}
 function equipmentConsent(section){
  const label=mk('label','ct364-ack');
  const check=mk('input');check.type='checkbox';
@@ -325,10 +399,12 @@ function renderSkills(c,body){
    const old=equipmentOf(c);
    equipmentSave(c,{skills:slots,slot:old.slot,booster:old.booster});
    feedback.textContent='Registro manual salvo apenas neste aparelho para '+c.name+'. Nenhuma habilidade foi equipada automaticamente.';
+    renderAdvisory(c,body,'skills');
   }catch(e){feedback.textContent='Falha ao gravar localmente: '+String(e.message||e)}
  };
  additional.append(save);
  body.append(additional);
+ renderAdvisory(c,body,'skills');
 }
 function renderBoost(c,body){
  const s=section('Ímpetos exibidos na simulação eFHub');
@@ -369,9 +445,11 @@ function renderBoost(c,body){
    const old=equipmentOf(c);
    equipmentSave(c,{skills:old.skills,slot:slot.value,booster:slot.value==='ocupado'?name:''});
    feedback.textContent='Estado manual salvo somente neste aparelho. Nenhum ímpeto foi equipado ou aplicado no jogo.';
+    renderAdvisory(c,body,'boost');
   }catch(e){feedback.textContent='Falha ao gravar localmente: '+String(e.message||e)}
  };
  additional.append(save);body.append(additional);
+ renderAdvisory(c,body,'boost');
 }
 function renderBody(c,body){
  const s=section('Dados corporais do simulador');
