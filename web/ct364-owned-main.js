@@ -415,20 +415,20 @@ function prepare(data){
  // CSS e empurrava a primeira carta sob o dock. Aplicar após montar a V364.
  // Manter o aviso original acessível em telas maiores.
  const compactHint=()=>{
-  const hint=toolbar.querySelector('.list-meta > span:last-child');
-  if(!hint||typeof window.matchMedia!=='function')return;
+  const hint=[...toolbar.querySelectorAll('.list-meta span,.list-meta p,.list-meta small')]
+   .find(el=>/^Toque na carta para abrir a ficha/i.test(el.textContent.trim()));
+  if(typeof window.matchMedia!=='function')return;
   const compact=window.matchMedia('(max-width:355px)').matches;
-  hint.hidden=compact;
-  if(compact){
-   hint.style.setProperty('display','none','important');
-   // A seção recolhida de 15 cartas deixa uma faixa decorativa excedente
-   // antes da grade original em CSS viewport 320px. Recuperar apenas 10px
-   // desse espaço sem reduzir altura nem área de toque do resumo e filtros.
-   original.style.setProperty('margin-top','-10px','important');
-  }else{
-   hint.style.removeProperty('display');
-   original.style.removeProperty('margin-top');
+  if(hint){
+   hint.hidden=compact;
+   if(compact)hint.style.setProperty('display','none','important');
+   else hint.style.removeProperty('display');
   }
+  // Não depender da existência da dica: renderizações legadas podem
+  // reordenar os spans de list-meta. Evitar o retorno prematuro V364.6.
+  if(compact){
+   original.style.setProperty('margin-top','-6px','important');
+  }else original.style.removeProperty('margin-top');
  };
  compactHint();
  window.addEventListener('resize',compactHint,{passive:true});
