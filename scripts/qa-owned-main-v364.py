@@ -191,11 +191,42 @@ with sync_playwright() as pw:
    }""")
    assert recorded["card"]["maxLevel"]==35
    assert recorded["changedOriginal"] is None
+   # V367: anotações reais associadas à carta, função e tática escolhidas.
+   page.locator('#ct364-tabs [data-panel="gameplay"]').click()
+   assert page.locator("#ct367-gameplay").is_visible()
+   assert "PENDENTE" in page.locator("#ct367-gameplay").inner_text()
+   page.locator("#ct367-matches").fill("2")
+   page.locator("#ct367-notes").fill("Passe curto e recepção sob pressão observados em duas partidas.")
+   page.locator("#ct367-link").fill("javascript:alert(1)")
+   page.locator("#ct367-ack").check()
+   page.locator("#ct367-save").click()
+   assert "link HTTPS válido" in page.locator("#ct367-feedback").inner_text()
+   page.locator("#ct367-link").fill("https://www.youtube.com/watch?v=abcdefghijk")
+   page.locator("#ct367-save").click()
+   assert "Registro individual salvo" in page.locator("#ct367-feedback").inner_text()
+   stored=page.evaluate("""() => JSON.parse(localStorage.getItem('scoutpro:v367:owned-gameplay')||'{}')""")
+   assert "ct364-01|MAT|posse" in stored,(name,"evidência de gameplay não isolada")
+   assert stored["ct364-01|MAT|posse"]["matches"]==2
+   assert stored["ct364-01|MAT|posse"]["cardIdAtCapture"]==""
+   page.locator("#ct367-other").select_option("ct364-02")
+   assert "PENDENTE: sem partidas documentadas" in page.locator("#ct367-comparison").inner_text()
+   assert "Função adaptada" in page.locator("#ct367-comparison").inner_text()
+   page.locator("#ct367-gameplay .ct364-modes button").filter(has_text="Contra-Ataque Normal").click()
+   assert page.locator("#ct367-matches").input_value()=="",(name,"prova vazou para outra tática")
+   page.locator("#ct367-gameplay .ct364-modes button").filter(has_text="Posse de Bola").click()
+   assert page.locator("#ct367-matches").input_value()=="2"
+   page.locator("#ct364-dialog-role").select_option("SA")
+   assert page.locator("#ct367-matches").input_value()=="",(name,"prova vazou para outra posição")
+   page.locator("#ct364-dialog-role").select_option("MAT")
+   assert page.locator("#ct367-matches").input_value()=="2"
+   assert "PENDENTE DE AVALIAÇÃO" in page.locator("#ct367-comparison").inner_text()
+   page.locator("#ct367-other").select_option("ct364-02")
+   assert "PENDENTE" in page.locator("#ct367-comparison").inner_text()
    # O diálogo modal ainda está aberto: conferir a DOM sem clicar sob backdrop.
    assert "14 níveis máximos pendentes" in page.locator("#ct365-review-summary").text_content()
    saved_row=page.locator('[data-review-card="ct364-01"]')
    assert "Máximo informado: 35 · 68 PP calculados" in saved_row.text_content()
-   assert page.evaluate("() => window.__ct364BackupSignals")>=3,(name,"salvamentos não notificaram o backup completo")
+   assert page.evaluate("() => window.__ct364BackupSignals")>=4,(name,"gameplay não notificou o backup completo")
    page.locator('#ct364-tabs [data-panel="treino"]').click()
    page.locator('.ct364-modes button').filter(has_text='Contra-Ataque Normal').click()
    assert page.locator('.ct364-modes button[aria-pressed="true"]').count()==1
