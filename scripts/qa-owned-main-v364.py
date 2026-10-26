@@ -24,6 +24,10 @@ with sync_playwright() as pw:
    page.goto(BASE+"/index.html",wait_until="domcontentloaded",timeout=55000)
    page.locator("body[data-ct364-owned=ready]").wait_for(state="attached",timeout=25000)
    page.locator("#ct364-owned-grid .ct364-player-card").first.wait_for(state="attached",timeout=14000)
+   external=page.locator("#ct-formacoes-premium-link")
+   assert external.count()==1 and external.is_visible(),(name,"acesso às formações ausente ou duplicado")
+   assert external.get_attribute("href")=="https://craque-tatico-formacoes-premium.vocalclock33.chatgpt.site/"
+   assert external.get_attribute("target")=="_blank"
    assert page.locator("#cards .player-card").count()==246,(name,"246 originais mudadas")
    assert page.locator("#ct364-owned-grid .ct364-player-card").count()==15,(name,"15 adicionais faltam")
    assert page.locator("#ct364-owned-section").is_visible()

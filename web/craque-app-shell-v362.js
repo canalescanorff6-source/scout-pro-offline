@@ -146,7 +146,32 @@ function generic(){
  const h=d.querySelector('main h1,.hub-hero h1');
  if(h&&page==='manager-hub')h.innerHTML='Escolha seu <em>técnico</em>';
 }
-function boot(){shell();catalog();detail();friends();generic();}
+// Caderno separado: o acervo e os planos offline continuam no aplicativo.
+function externalFormacoes(){
+ if(at()!=='catalog'||d.getElementById('ct-formacoes-premium-link'))return;
+ const quick=d.querySelector('.scout-v189-quick');if(!quick)return;
+ const url='https://craque-tatico-formacoes-premium.vocalclock33.chatgpt.site/';
+ const wrap=create('div','ct-formacoes-premium-access');wrap.id='ct-formacoes-premium-access';
+ const link=create('a','ct-formacoes-premium-link');link.id='ct-formacoes-premium-link';
+ link.href=url;link.target='_blank';link.rel='noopener noreferrer';
+ link.setAttribute('aria-label','Formações Premium, página online que abre no navegador');
+ link.append(create('strong','','Formações Premium ↗'),create('span','','100 planos · abre online'));
+ const status=create('span','ct-formacoes-premium-status');status.id='ct-formacoes-premium-status';
+ status.hidden=true;status.setAttribute('role','status');
+ link.addEventListener('click',async event=>{
+  const cap=host.Capacitor;if(!cap?.isNativePlatform?.())return;
+  event.preventDefault();status.hidden=true;
+  try{
+   const browser=cap.Plugins?.Browser||cap.registerPlugin?.('Browser');
+   if(!browser?.open)throw new Error('Browser indisponível');
+   await browser.open({url,toolbarColor:'#09121b'});
+  }catch(_error){status.textContent='Não consegui abrir o navegador. Confira a conexão e tente novamente.';status.hidden=false;}
+ });
+ const proof=d.getElementById('ct356-boot-proof');
+ if(proof?.parentNode){proof.parentNode.insertBefore(wrap,proof);wrap.append(proof,link,status);}
+ else{wrap.append(link,status);quick.after(wrap);}
+}
+function boot(){shell();catalog();detail();friends();generic();externalFormacoes();}
 if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 d.addEventListener('scoutpro:profile-ready',boot);
 d.addEventListener('scoutpro:ui-ready',boot);
