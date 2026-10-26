@@ -71,6 +71,9 @@ assert.match(js,/function renderGameplayComparison\(/,'V367 sem confronto de evi
 assert.match(js,/gameplayKey=\(c,role,tactic\)/,'prova não isolada por edição e função');
 assert.match(js,/cardIdAtCapture:id/,'prova não associada à identidade cadastrada na data');
 assert.match(js,/function gameplayStale/,'alteração de Card ID não invalidou a prova');
+assert.match(js,/function gameplayBuildSnapshot/,'V367 não vincula partidas à build documentada');
+assert.match(js,/buildSnapshot:gameplayBuildSnapshot\(c\)/,'build observada não foi salva com as partidas');
+assert.match(js,/record.buildSnapshot!==gameplayBuildSnapshot\(c\)/,'build alterada não sinaliza prova desatualizada');
 assert.match(js,/ownerConfirmed:true/,'prova não distingue declaração do proprietário');
 assert.match(js,/validVideoLink\(value.url\)/,'vídeo importado não é revalidado');
 assert.match(js,/notifyBackup\(\)/,'backup não notificado após nova prova');
