@@ -53,6 +53,17 @@ assert.match(js,/const compactHint=/,'sinalização compacta via JS não instala
 assert.match(js,/margin-top','-6px'/,'espaçamento da grade principal em 320px não corrigido');
 assert.match(js,/\(max-width:355px\)/,'limite responsivo de 320px não configurado');
 assert.match(js,/ct364-owned-grid/);
+assert.match(js,/function refreshReview/,'V365 sem auditoria consolidada das 15 cartas');
+assert.match(js,/function createReview/,'V365 sem montagem segura da central');
+assert.match(js,/ct365-review-summary/,'V365 sem painel de conferência');
+assert.match(js,/ct365-review-filter/,'V365 sem filtro de pendências');
+assert.match(js,/mode==='missing-level'/,'V365 não preserva níveis pendentes');
+assert.match(js,/mode==='missing-id'/,'V365 não identifica Card IDs pendentes');
+assert.match(js,/2\*\(conf.level-1\)/,'V365 deve distinguir PP calculados de atributos eFHub');
+assert.match(js,/openCard\(c,'confirm'\)/,'V365 não abre a ficha para confirmação');
+assert.match(css,/\.ct365-review-row/,'V365 sem estilo da tabela responsiva');
+assert.ok(index.includes('261 cartas'),'catálogo não informa o acervo total');
+
 assert.match(js,/ct364-card-navigator/,'navegacao 15 cartas ausente');
 assert.match(js,/function switchOwnedCard/,'isolamento entre fichas ausente');
 assert.match(js,/function navigateOwned/,'anterior/proxima ausentes');
