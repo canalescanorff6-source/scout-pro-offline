@@ -223,6 +223,9 @@ with sync_playwright() as pw:
    owned_diff=page.locator("#ct369-owned-history .ct370-diff")
    assert owned_diff.is_visible()
    assert "Nenhuma mudança de build documentada" in owned_diff.inner_text()
+   # V371: não inventar reteste quando as duas revisões têm mesma build.
+   assert "Nenhuma alteração de build foi documentada" in owned_diff.locator(".ct371-retest").inner_text()
+   assert owned_diff.locator(".ct371-retest-item").count()==0
    assert owned_diff.locator(".ct370-from").input_value()=="0"
    assert owned_diff.locator(".ct370-to").input_value()=="1"
    page.locator("#ct369-owned-history summary").click()
@@ -270,6 +273,7 @@ with sync_playwright() as pw:
    original_diff=page.locator(".ct369-original-history .ct370-diff")
    assert original_diff.is_visible()
    assert "Nenhuma mudança de build documentada" in original_diff.inner_text()
+   assert original_diff.locator(".ct371-retest-item").count()==0
    page.locator(".ct369-original-history summary").click()
    page.locator("#ct369-test-queue summary").click()
    page.locator("#ct369-queue-collection").select_option("original")
@@ -330,6 +334,20 @@ with sync_playwright() as pw:
    assert "Habilidade adicional · vaga 2" in owned_diff.inner_text(),(name,diagnostic,owned_diff.inner_text())
    assert "Nova habilidade de QA após o teste" in owned_diff.inner_text()
    assert "PENDENTE — dado incompleto" in owned_diff.inner_text()
+   # V371: após completar vaga 2, a lista pede conferência e reteste
+   # na posição MAT/Posse, sem alterar gameplay ou o catálogo.
+   retest=owned_diff.locator(".ct371-retest")
+   assert retest.is_visible()
+   assert "MAT · Posse de Bola" in retest.inner_text()
+   assert "vaga 2" in retest.inner_text()
+   assert "triangulações centrais" in retest.inner_text()
+   assert "3–5 partidas por condição" in retest.inner_text()
+   assert retest.locator(".ct371-retest-item").count()>=4
+   assert "0 de " in retest.locator(".ct371-retest-progress").inner_text()
+   retest.locator(".ct371-retest-item input").first.check()
+   assert "1 de " in retest.locator(".ct371-retest-progress").inner_text()
+   # O checklist não persiste validação/partidas fictícias.
+   assert page.evaluate("""() => localStorage.getItem('scoutpro:v371:retest')""") is None
    # Inverter cronologia deve ser bloqueado, não mostrar falsa mudança.
    owned_diff.locator(".ct370-from").select_option("2")
    owned_diff.locator(".ct370-to").select_option("0")
