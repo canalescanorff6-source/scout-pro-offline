@@ -60,7 +60,8 @@ const confirmationOf=card=>{
  return {level,cardId:id};
 };
 const cardAsEngine=(card,role)=>{const p=confirmationOf(card),manual=equipmentOf(card);
- return {name:card.name,position:role||card.position,style:card.style,
+ return {localKey:card.key,originalPosition:card.position,
+  name:card.name,position:role||card.position,style:card.style,
   level:p.level,pp:null,cardId:p.cardId,edition:'',
   // Anotações manuais NÃO provam slot livre, Card ID ou versão.
   skills:manual.skills.filter(Boolean).join('; '),nativeSkills:card.observed.nativeSkills.join('; '),
@@ -982,6 +983,9 @@ function renderOverview(c,body){
 }
 function ensureEngine(){
  if(loadEngine)return loadEngine;
+ if(![...document.querySelectorAll('link[rel="stylesheet"]')].some(x=>x.href.split('?')[0].endsWith('/craque-positional-v311.css'))){
+  const style=document.createElement('link');style.rel='stylesheet';style.href='craque-positional-v311.css';document.head.append(style);
+ }
  const jobs=[
  ['booster-engine-v103.js','SCOUT_BOOSTERS_V103'],
  ['skills-booster-v162.js','SCOUT_RECOMMENDATIONS_V162'],
@@ -989,7 +993,9 @@ function ensureEngine(){
  ['craque-role-intelligence-v233.js','CRAQUE_INTERPRETATION_V233'],
  ['craque-ficha-individual-v251.js','CRAQUE_FICHA_INDIVIDUAL_V251'],
  ['craque-pp-universal-v309.js','CRAQUE_PP_UNIVERSAL_V309'],
- ['craque-friends-training-v228.js','CRAQUE_FRIEND_TRAINING_V228']
+ ['craque-friends-training-v228.js','CRAQUE_FRIEND_TRAINING_V228'],
+ ['craque-positional-v311.js','CRAQUE_POSITIONAL_V311'],
+ ['craque-positional-ui-v311.js','CRAQUE_POSITIONAL_UI_V311']
  ];
  const script=(path,key)=>new Promise((resolve,reject)=>{
   if(window[key])return resolve();
@@ -1063,6 +1069,7 @@ async function renderTraining(c,body){
   b.setAttribute('aria-pressed',String(activeStyle===id));b.addEventListener('click',()=>{activeStyle=id;renderDialog();});modes.append(b)});
  tools.append(modes);const area=mk('div','ct364-training-area');
  tools.append(area);body.append(tools);
+ note(tools,'Sobreposição: perfil ainda pendente neste laboratório. As cinco táticas disponíveis mantêm cálculos independentes.');
  const identity=confirmationOf(c);
  if(!identity.level)note(area,'PP PENDENTES: o nível mostrado no simulador não confirma o nível MÁXIMO da edição. Informe esse dado na seção Confirmar dados da ficha.');
  const manual=equipmentOf(c);
@@ -1075,8 +1082,20 @@ async function renderTraining(c,body){
   await ensureEngine();
   if(active!==c||activePanel!=='treino'||generation!==renderTraining.generation)return;
   const engine=window.CRAQUE_FRIEND_TRAINING_V228;
+  const role=activeRole||c.position,tactic=activeStyle,engineCard=cardAsEngine(c,role);
   const result=engine.evaluate(cardAsEngine(c,activeRole),activeStyle);
   const plan=result.plan;
+  const draft=engine.readFunctionDraft(localStorage,engineCard,tactic);
+  const review=engine.functionReview(engineCard,result,draft&&!draft.stale?draft.levels:undefined);
+  const shared=window.CRAQUE_POSITIONAL_UI_V311?.reviewPanel;
+  if(shared)area.append(shared(review,{
+   referenceLabel:draft?(draft.stale?'Rascunho anterior desatualizado · preservado':
+    'Rascunho desta função · revisão '+draft.revision):'Nenhum rascunho salvo nesta função',
+   onAdopt:()=>{
+    engine.saveFunctionDraft(localStorage,cardAsEngine(c,role),tactic,result);
+    notifyBackup();renderDialog();return 'Proposta adotada em nova revisão independente.';
+   }
+  }));
   if(!plan.levels||plan.status!=='hipotese'){
    note(area,'Treino ainda PENDENTE: '+(plan.reason||'falta confirmar nível máximo/PP e Card ID da edição.'));
   }else{
@@ -1423,7 +1442,7 @@ function prepare(data){
  close.onclick=()=>dialog.close();h.append(art,label,close);
  const choices=mk('label','ct364-role','Analisar na posição:');
  const sel=mk('select');sel.id='ct364-dialog-role';
- for(const p of ['CA','SA','MAT','MLG','VOL','ZC','LE','LD','GO']){
+ for(const p of ['CA','SA','MAT','MLG','VOL','ZC','ZG','LE','LD','PTE','PTD','MLE','MLD','GO']){
   const opt=mk('option','',p);opt.value=p;sel.append(opt);
  }
  sel.onchange=()=>{activeRole=sel.value;renderDialog()};

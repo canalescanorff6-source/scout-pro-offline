@@ -66,15 +66,18 @@ assert(R.available(cards,excluded).every(c=>!blocked.has(c.numero)));
 assert.equal(engine.analyze(cards,excluded).excluded,23);
 assert.equal(engine.analyze(cards,excluded).available,223);
 for(const formation of plan.formations){
+ const expectedLeft=formation.id==='4213'?21:16; // V374: preserve five unfilled SA positions.
  const allCycles=[];
  for(const cycle of [1,2]){
   const result=engine.build(cards,formation,excluded,cycle);
   assert.equal(result.exactBlackMappingConfirmed,false,'Sem fotos não homologar lista real');
   assert.equal(result.teams.length,9,'O cenário de 23 restrições sem GO gera 9 elencos');
-  assert.equal(result.leftovers.length,16,'223 = 9x23 + 16');
+  assert.equal(result.leftovers.length,expectedLeft,'Unassigned cards include the SA vacancies, never forced adaptations');
   const numbers=[];
   for(const team of result.teams){
-   assert.equal(team.starters.length,11,'Cada time precisa 11 titulares');
+   const missing=formation.starters.filter(s=>!team.starters.some(x=>x.slot===s.slot)).map(x=>x.slot);
+   assert.deepEqual(missing,team.starters.length===11?[]:['sa']);
+   assert(team.starters.every(s=>s.fit==='posição original'),'Only documented positions may be auto-selected');
    assert.equal(team.bench.length,12,'Cada time precisa 12 reservas');
    assert(team.starters.some(s=>s.slot==='go'&&s.fit==='posição original'),'Goleiro original para cada XI');
    assert.equal(team.linkup.verifiedInGame,false,'Bônus nunca tratado como ativado');
@@ -83,8 +86,8 @@ for(const formation of plan.formations){
     numbers.push(c.cap);
    }
   }
-  assert.equal(numbers.length,207);
-  assert.equal(new Set(numbers).size,207,'Sem repetição entre as 9 equipes de mesma formação e rodada');
+  assert.equal(numbers.length,223-expectedLeft);
+  assert.equal(new Set(numbers).size,numbers.length,'Sem repetição entre as 9 equipes de mesma formação e rodada');
   for(const cap of result.leftovers)assert(!numbers.includes(cap),'Sobrantes não entram nos times desta rodada');
   allCycles.push(numbers);
  }
@@ -139,4 +142,4 @@ for(const file of ['scout-roster-restrictions-v222.js','scout-rotation-lab-v219.
  assert(read('scripts/stamp-bundle-v189.cjs').includes("'"+file+"'"),'Bundle digital precisa conter '+file);
 }
 assert.equal(cards.find(c=>c.numero===40).name,'Dwight Yorke','Não substituir jogador aprovado pela metodologia');
-console.log('V224 PASS: 246 cartas, 23 restrições verificadas por número+Card ID, 9x23 elencos em duas formações e duas rodadas, 16 restantes revezados, 0 jogadores bloqueados escalados.');
+console.log('V224 PASS: 246 cards, 23 exact-card restrictions, independent cycles, visible SA vacancies, no restricted players or unproven secondary roles selected.');

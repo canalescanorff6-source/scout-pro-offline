@@ -38,20 +38,23 @@ assert.throws(()=>E.analyze([{numero:1},{numero:1}],[]),'ID do catálogo duplica
 assert.deepEqual(E.excludedSet([1,1,800,undefined],cards),new Set([1]));
 let outputs=[];
 for(const form of plan.formations){
+ const expectedLeft=form.id==='4213'?21:16; // V374: five SA vacancies, never unproven adaptations.
  const result=E.build(cards,form,sampleBlocked),next=E.build(cards,form,sampleBlocked);
  assert.deepEqual(result,next,'Construção estável com mesmas cartas e exclusões');
  assert.equal(result.exactBlackMappingConfirmed,false,'Nunca identificar Black por inferência');
  assert.equal(result.teams.length,9);
- assert.equal(result.leftovers.length,16);
+ assert.equal(result.leftovers.length,expectedLeft);
  const all=new Set();
  for(const team of result.teams){
-  assert.equal(team.starters.length,11,form.id+' titulares');
+  const missing=form.starters.filter(s=>!team.starters.some(x=>x.slot===s.slot)).map(x=>x.slot);
+  assert.deepEqual(missing,team.starters.length===11?[]:['sa'],'Only the documented SA shortage may leave a vacancy');
   assert.equal(team.bench.length,12,form.id+' reservas');
-  assert(team.ready,form.id+' possui 11 titulares e 12 reservas com GO original');
-   assert.equal(team.positionallyConfirmed,team.starters.every(x=>x.fit==='posição original'));
+  assert.equal(team.ready,team.starters.length===11,form.id+' incomplete teams must be visible');
+  assert.equal(team.positionallyConfirmed,team.starters.length===11&&team.starters.every(x=>x.fit==='posição original'));
+  assert(team.starters.every(x=>x.fit==='posição original'),'No unproven secondary roles automatically selected');
    assert(!team.starters.some(x=>x.fit==='posição não compatível documentada'));
   assert.equal(team.starters.find(s=>s.slot==='go').fit,'posição original');
-  assert.equal(new Set([...team.starters.map(x=>x.cap),...team.bench.map(x=>x.cap)]).size,23);
+  assert.equal(new Set([...team.starters.map(x=>x.cap),...team.bench.map(x=>x.cap)]).size,team.starters.length+team.bench.length);
   assert.equal(team.linkup.verifiedInGame,false,'Nunca afirmar Link-Up ativo');
   for(const row of [...team.starters,...team.bench]){
    assert(!sampleBlocked.includes(row.cap),'Carta do mapeamento proibida');
@@ -59,22 +62,23 @@ for(const form of plan.formations){
    all.add(row.cap);
   }
  }
- assert.equal(all.size,207);
+ assert.equal(all.size,223-expectedLeft);
  for(const cap of result.leftovers)assert(!all.has(cap),'Sobrantes não usados');
  assert.equal(new Set([...all,...result.leftovers]).size,223,'Todas cartas disponíveis classificadas');
- if(form.id==='4213')assert(result.teams.some(t=>t.warnings.some(w=>w.includes('adaptação'))),
-  'A posição SA é escassa e a adaptação deve ficar evidente');
+ if(form.id==='4213')assert.equal(result.teams.filter(t=>!t.ready).length,5,
+  'Six SA minus two excluded leaves four documented SA for nine teams');
  outputs.push(result);
 }
 for(const form of plan.formations){
+ const expectedLeft=form.id==='4213'?21:16;
  const one=E.build(cards,form,sampleBlocked,1);
  const two=E.build(cards,form,sampleBlocked,2);
  assert.equal(two.cycle,2,'Segunda rodada explícita');
  assert.equal(two.teams.length,9);
- assert.equal(two.leftovers.length,16,'Cada rodada mantém quatro na espera');
+ assert.equal(two.leftovers.length,expectedLeft,'Position shortage must preserve all unassigned cards');
  const idsOne=new Set(one.teams.flatMap(t=>[...t.starters.map(s=>s.cap),...t.bench.map(s=>s.cap)]));
  const idsTwo=new Set(two.teams.flatMap(t=>[...t.starters.map(s=>s.cap),...t.bench.map(s=>s.cap)]));
- assert.equal(idsTwo.size,207,'A segunda rodada não repete jogadores entre times');
+ assert.equal(idsTwo.size,223-expectedLeft,'A segunda rodada não repete jogadores entre times');
  assert.equal(new Set([...idsOne,...idsTwo]).size,223,'TODAS as cartas restantes aparecem nas duas rodadas combinadas');
  for(const leftover of one.leftovers)assert(idsTwo.has(leftover),'Carta de fora da primeira rodada entra na segunda: '+leftover);
  for(const left of two.leftovers)assert(idsOne.has(left),'Carta de fora da segunda foi testada na primeira');
@@ -101,4 +105,4 @@ for(const term of ['MediaRecorder','MediaProjection','VirtualDisplay','START_NOT
 assert(installer.includes("registerPlugin(ScoutRecorderPlugin.class)"));
 assert(installer.includes('FOREGROUND_SERVICE_MEDIA_PROJECTION')&&installer.includes('android:foregroundServiceType="mediaProjection"'));
 assert(!service.includes('openai.com')&&!service.includes('chatgpt.com'),'Nenhum upload automático para ChatGPT');
-console.log('V219 PASS: 246 cartas; 23 excluídas (teste); 9 elencos de 23 sem repetição em cada formação, 16 sobrantes, GO e adaptações sinalizados; gravador Android com consentimento e envio manual.');
+console.log('V219 PASS: 246 cards, 23 excluded, nine independent roster contexts; SA shortages remain vacant, all available cards rotate without unproven adaptations.');

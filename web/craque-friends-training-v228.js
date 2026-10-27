@@ -30,6 +30,7 @@ const getDeps=(deps)=>deps||{
  boosters:typeof window!=='undefined'?window.SCOUT_BOOSTERS_V103:null
 };
 const profileOf=card=>({
+ capture:card.capture??null,id:String(card.cardId||''),edition:String(card.edition||''),
  posicao:card.position||'',shown_position:card.position||'',
  attack_style:card.style||'',estilo_ataque:card.style||'',
  native_skills:card.nativeSkills||'',habilidades_nativas:card.nativeSkills||'',
@@ -177,7 +178,100 @@ function professionalAudit(card,result){
   issues:[...new Set(issues)]
  });
 }
+/* V374: one individual function review for the 246 originals and additions.
+   Category investment is compared directly; it is never final-attribute proof. */
+function functionReview(card,result,currentLevels,provided){
+ const deps=getDeps(provided),t=deps.tactical,{interpretation}=primaryEngines(provided);
+ const analysis=interpretation?.interpret?.(profileOf(card),result.tactic,null);
+ const budget=result.plan.pp??result.progress.pp;
+ const role=result.plan.role||analysis?.role;
+ const allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ const usable=levels=>Number.isInteger(budget)&&t?.valid?.(levels)&&t.total(levels)<=budget&&
+  levels.every((n,i)=>n===0||allowed.includes(i));
+ const baseline=currentLevels===undefined?parseBaseline(card,t).levels:currentLevels;
+ const current=usable(baseline)?baseline.slice():null;
+ const proposed=result.plan.status==='hipotese'&&usable(result.plan.levels)&&
+  t.total(result.plan.levels)===budget?result.plan.levels.slice():null;
+ const positionCode=value=>({AC:'CA',ZC:'ZG',DC:'ZG',DD:'LD',DE:'LE',GR:'GO',MO:'MAT',MC:'MLG',ME:'MLG',MDF:'VOL'})[value]||String(value||'');
+ const sourcePosition=positionCode(card.originalPosition||card.position);
+ const position=positionCode(card.position);
+ const nativeSkills=String(card.nativeSkills||'').split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean);
+ const nativeKeys=new Set(nativeSkills.map(x=>deps.skills?.keyFor?.(x)).filter(Boolean));
+ const suggestions=(result.suggestedSkills||[]).filter(x=>{
+  const key=deps.skills?.keyFor?.(x.name);return !key||!nativeKeys.has(key);
+ }).slice(0,5).map(x=>({name:x.name,reason:x.why||x.reason||'Recurso para testar nesta função',
+  situation:x.situation||null}));
+ const changes=current&&proposed?proposed.flatMap((to,i)=>to===current[i]?[]:[{
+  index:i,category:t.CATEGORIES[i],from:current[i],to,
+  deltaPP:t.ppCost(to)-t.ppCost(current[i])
+ }]):[];
+ return {
+  schema:'CRAQUE_FUNCTION_REVIEW_V374',sourcePosition,position,role,tactic:result.tactic,
+  tacticLabel:LABEL[result.tactic],playerStyle:String(card.style||'Não cadastrado'),
+  job:analysis?.job||'Função pendente de identificação',
+  eligibleForLineup:position===sourcePosition||card.positionEvidence?.eligible===true,
+  positionEvidence:card.positionEvidence?.text||
+   (position===sourcePosition?'Posição original cadastrada':'Familiaridade secundária ainda não comprovada'),
+  priorities:(analysis?.priorities||[]).slice(0,4).map(x=>({index:x.index,category:x.name,attributes:x.stats})),
+  pp:Number.isInteger(budget)?budget:null,current,proposed,
+  spent:proposed?t.total(proposed):null,currentSpent:current?t.total(current):null,changes,
+  redistributedPP:Math.min(changes.reduce((n,x)=>n+Math.max(0,x.deltaPP),0),
+   changes.reduce((n,x)=>n+Math.max(0,-x.deltaPP),0)),
+  investedFromBalance:current&&proposed?Math.max(0,t.total(proposed)-t.total(current)):0,
+  nativeSkills,skills:suggestions,freeSkillSlots:Number.isInteger(result.freeSkillSlots)?result.freeSkillSlots:null,
+  fixedBooster:card.fixedBooster||null,
+  boosters:[result.booster?.primary,...(result.booster?.alternatives||[])].filter(Boolean).slice(0,3)
+   .map(x=>({name:x.nome_pt||x.nome,attributes:(x.atributos||[]).slice(0,4)})),
+  baseReference:card.baseReference===true?'Referência numérica parcial cadastrada':'Atributos-base completos pendentes',
+  finalAttributesVerified:false,
+  tests:(result.plan.tests||analysis?.tests||[]).slice(0,3),
+  canSave:Boolean(proposed&&String(card.localKey||'').trim()),
+  note:'Proposta de investimento por função e estilo; salvar cria uma revisão independente, sem equipar habilidades ou alterar a carta.'
+ };
+}
+const FUNCTION_DRAFT_PREFIX='scoutpro:v374:function-draft:';
+function functionDraftKey(card,tactic){
+ if(!String(card.localKey||'').trim()||!MODES.includes(tactic))throw Error('Carta local e tática necessárias para a ficha independente');
+ return FUNCTION_DRAFT_PREFIX+[card.localKey,card.cardId||'sem-card-id',card.edition||'edicao-pendente',
+  card.position,tactic,card.managerId||'sem-tecnico'].map(x=>encodeURIComponent(String(x))).join('|');
+}
+function readFunctionDraft(store,card,tactic){
+ const raw=store?.getItem(functionDraftKey(card,tactic));
+ if(!raw)return null;
+ let record;try{record=JSON.parse(raw)}catch(_){throw Error('Rascunho ilegível; histórico preservado')}
+ const t=getDeps().tactical||(typeof module==='object'?require('./scout-multitactic-engine-v220.js'):null);
+ const allowed=t?.roleOf?.(profileOf(card))==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ if(record?.schema!=='CRAQUE_FUNCTION_DRAFT_V374'||!t?.valid?.(record.levels)||
+  !Number.isInteger(record.pp)||record.pp<0||record.pp>300||t.total(record.levels)!==record.pp||
+  record.levels.some((n,i)=>n>0&&!allowed.includes(i))||record.position!==card.position||record.tactic!==tactic||
+  !Number.isInteger(record.revision)||record.revision<1||typeof record.source!=='string'||
+  !Array.isArray(record.history)||record.history.length>39)
+  throw Error('Rascunho não reconhecido; histórico preservado');
+ return {...record,stale:record.source!==sourceSignature(card)};
+}
+function saveFunctionDraft(store,card,tactic,result,provided){
+ if(!store?.setItem)throw Error('Armazenamento indisponível');
+ const t=getDeps(provided).tactical||(typeof module==='object'?require('./scout-multitactic-engine-v220.js'):null),plan=result?.plan;
+ if(result?.sourceSignature!==sourceSignature(card)||result?.tactic!==tactic)
+  throw Error('Dados da carta mudaram; recalcule a proposta atual');
+ const allowed=plan?.role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ if(plan?.status!=='hipotese'||!t?.valid?.(plan.levels)||
+  plan.pp!==resolveBudget(card).pp||t.total(plan.levels)!==plan.pp||
+  plan.levels.some((n,i)=>n>0&&!allowed.includes(i)))throw Error('PP ou categorias da proposta divergentes');
+ const prior=readFunctionDraft(store,card,tactic);
+ if(prior&&prior.history.length>=39)throw Error('Limite de 40 revisões atingido; histórico preservado. Exporte uma cópia antes de continuar.');
+ const previous=prior?Object.fromEntries(Object.entries(prior).filter(([key])=>!['history','stale'].includes(key))):null;
+ const record={schema:'CRAQUE_FUNCTION_DRAFT_V374',source:sourceSignature(card),
+  revision:(prior?.revision||0)+1,createdAt:new Date().toISOString(),
+  position:card.position,tactic,pp:plan.pp,levels:plan.levels.slice(),
+  skills:(result.suggestedSkills||[]).slice(0,5).map(x=>x.name),
+  booster:result.booster?.primary?.nome||null,provisional:true,
+  history:prior?[...prior.history,previous]:[]};
+ store.setItem(functionDraftKey(card,tactic),JSON.stringify(record));return record;
+}
 function evaluate(card,tactic='posse',deps){
+ if(!MODES.includes(tactic))throw Error(tactic==='sobreposicao'?
+  'Sobreposição: perfil ainda não disponível; não substituir por Posse de Bola.':'Estilo tático inválido.');
  const {tactical:t,skills:s,boosters:b}=getDeps(deps);
  if(!t||!s||!b)throw Error('Um dos motores oficiais do Craque Tático não carregou.');
  const progress=resolveBudget(card);
@@ -192,7 +286,8 @@ function evaluate(card,tactic='posse',deps){
  const existing=String(card.skills||'').trim();
  let skill=null,boost=null;
  if(plan.role){
-  skill=s.evaluate(raw,tactic,existing);
+  const equipmentConfirmed=Boolean(s.checkedEquipment?.(raw,existing,card.equipmentRecord));
+  skill=s.evaluate(raw,tactic,existing,{equippedConfirmed:equipmentConfirmed,equipmentRecord:card.equipmentRecord||null});
   boost=s.booster({...raw,niveis:plan.levels},tactic,b,card.boosterSlot||'pendente',card.booster||'');
  }
  // Usar a MESMA validação de nativas do motor V162; texto genérico
@@ -241,7 +336,8 @@ function evaluate(card,tactic='posse',deps){
     identity&&nativeDocumented?'simulacao_documentada_parcial':'hipotese_dados_incompletos',
   warnings:[...new Set(warnings)]
  };
- return {...result,professional:professionalAudit(card,result)};
+ return {...result,sourceSignature:sourceSignature(card),professional:professionalAudit(card,result),
+  functionReview:functionReview(card,result,undefined,deps)};
 }
 function generate(card,deps){
  const source=sourceSignature(card);
@@ -267,5 +363,6 @@ function validateSaved(card,record,deps){
  }
  return true;
 }
-return Object.freeze({MODES,LABEL,METHODOLOGY,levelBudget,resolveBudget,profileOf,sourceSignature,parseBaseline,allocate,evaluate,professionalAudit,generate,validateSaved});
+return Object.freeze({MODES,LABEL,METHODOLOGY,levelBudget,resolveBudget,profileOf,sourceSignature,parseBaseline,allocate,evaluate,professionalAudit,
+ functionReview,FUNCTION_DRAFT_PREFIX,functionDraftKey,readFunctionDraft,saveFunctionDraft,generate,validateSaved});
 });

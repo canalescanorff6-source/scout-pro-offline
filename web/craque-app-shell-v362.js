@@ -155,7 +155,7 @@ function externalFormacoes(){
  const link=create('a','ct-formacoes-premium-link');link.id='ct-formacoes-premium-link';
  link.href=url;link.target='_blank';link.rel='noopener noreferrer';
  link.setAttribute('aria-label','Formações Premium, página online que abre no navegador');
- link.append(create('strong','','Formações Premium ↗'),create('span','','100 planos · abre online'));
+ link.append(create('strong','','Formações Premium ↗'),create('span','','200 planos agrupados · abre online'));
  const status=create('span','ct-formacoes-premium-status');status.id='ct-formacoes-premium-status';
  status.hidden=true;status.setAttribute('role','status');
  link.addEventListener('click',async event=>{

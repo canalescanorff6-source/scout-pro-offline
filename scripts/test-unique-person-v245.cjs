@@ -54,14 +54,18 @@ for(const formation of forms){
  for(const tactic of modes)for(const cycle of [1,2]){
   const result=engine.build(roster,formation,[],cycle,tactic);
   assert.equal(result.teams.length,10,formation.id+' 10 equipes com 246 cartas');
+  const expectedVacancies=formation.id==='4213'?4:0;
+  assert.equal(result.teams.filter(t=>!t.ready).length,expectedVacancies,'Six original SA leave four explicit vacancies');
   const allCards=new Set();
   for(const team of result.teams){
    const members=[...team.starters,...team.bench];
-   assert.equal(team.starters.length,11,'11 titulares');
+   const missing=formation.starters.filter(s=>!team.starters.some(x=>x.slot===s.slot)).map(x=>x.slot);
+   assert.deepEqual(missing,team.starters.length===11?[]:['sa'],'Only the proven SA shortage can leave a vacancy');
+   assert(team.starters.every(s=>engine.positionConfirmed(s.fit)),'No false secondary position may fill a vacancy');
    assert.equal(team.bench.length,12,'12 reservas');
-   assert.equal(members.length,23,'23 pessoas');
+   assert.equal(members.length,team.starters.length+12,'All available members accounted for');
    const personKeys=members.map(x=>id(x.cap));
-   assert.equal(new Set(personKeys).size,23,
+   assert.equal(new Set(personKeys).size,members.length,
     'PESSOA duplicada em '+formation.id+'/'+tactic+'/'+cycle+'/'+team.id);
    assert(!new Set(team.starters.map(x=>id(x.cap))).has(
        'p:nao existe'),'Não inventar jogador');
@@ -70,8 +74,8 @@ for(const formation of forms){
     allCards.add(row.cap);
    }
   }
-  assert.equal(allCards.size,230,'230 cartas distribuídas em 10 elencos, sem apagar nenhuma');
-  assert.equal(result.leftovers.length,16,'16 cartas disponíveis em espera sem exclusões');
+  assert.equal(allCards.size,230-expectedVacancies,'No repeats or invented secondary-position starters');
+  assert.equal(result.leftovers.length,16+expectedVacancies,'Every unassigned card remains available');
  }
 }
 // Alternativas por função também não devem sugerir outras versões do mesmo titular.
@@ -99,4 +103,4 @@ const editor=read('web/meu-time-duas-formacoes-v177.js');
 assert(editor.includes('identity.benchFor('));
 assert(editor.includes('identity.key(byCap.get(Number(n)))===identity.key(c)'));
 assert.equal(JSON.stringify(roster),original,'Não alterar a base de 246 cartas');
-console.log('V245 OK: 2 formações × 5 estilos × 2 rodadas × 10 equipes; 11 titulares + 12 reservas sem pessoas duplicadas. 246 cartas originais intactas.');
+console.log('V245 OK: 200 independent contexts, visible SA vacancies, no repeated people/cards, all246 originals retained.');

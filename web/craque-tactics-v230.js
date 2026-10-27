@@ -106,7 +106,9 @@ function rank(cards,slot,mode,exclude=[],used=[]){
  return cards.filter(c=>!banned.has(Number(c.numero))&&
   (!identity||!busyNames.has(identity.key(c))))
  .map(c=>({card:c,...score(c,slot,mode)}))
- .filter(x=>x.score>=0)
+ // V374: a positive comparison score is not proof of a usable secondary role.
+ // fit/score remain available for conditional previews; recommendations require proof.
+ .filter(x=>x.score>=0&&fit(x.card,slot).match)
  .sort((a,b)=>b.score-a.score||Number(a.card.numero)-Number(b.card.numero));
 }
 return Object.freeze({MODES,POS,position,slotRole,fit,score,rank});

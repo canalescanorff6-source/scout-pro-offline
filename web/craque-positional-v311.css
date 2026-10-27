@@ -36,6 +36,19 @@
 .ct311-button+ .ct311-button{background:transparent;color:#ffe3ac}
 .ct311-button:focus-visible,.ct311-select:focus-visible{outline:3px solid #83e9ff;outline-offset:2px}
 .ct311-button:disabled{opacity:.55;cursor:not-allowed}
+/* V374: the same compact function review in all 261 own-card sheets. */
+.ct374-function-review{min-width:0;color:#edf3f6;overflow-wrap:anywhere}
+.ct374-function-review h4{margin:12px 0 5px;color:#f3d6a3;font-size:13px}
+.ct374-context{color:#f1cf8f;font-weight:700}
+.ct374-priorities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;list-style:none;padding:0;margin:10px 0}
+.ct374-priorities li{display:grid;gap:4px;background:#213745;padding:9px;border-radius:8px;font-size:12px}
+.ct374-priorities strong{color:#f1d9aa}.ct374-priorities span{color:#c8dbe6;line-height:1.4}
+.ct374-pp-comparison,.ct374-native-inventory{border:1px solid #526b7b;border-radius:8px;margin:8px 0;padding:9px}
+.ct374-function-review summary{cursor:pointer;min-height:30px;color:#f4d7a7;font-size:13px;font-weight:700}
+.ct374-function-review .ct311-table{table-layout:fixed}
+.ct374-function-review .ct311-button{width:100%;margin-top:10px}
+.ct374-skill-reasons{font-size:12px}
+@media(max-width:400px){.ct374-priorities{grid-template-columns:1fr}.ct374-function-review .ct311-table th,.ct374-function-review .ct311-table td{padding:6px 3px;font-size:11px}}
 @media(max-width:570px){.ct311-positional{margin:13px 0;padding:13px;border-radius:14px}
  .ct311-controls{grid-template-columns:1fr}.ct311-actions{display:grid}
  .ct311-button{width:100%}.ct311-table th,.ct311-table td{padding:6px 4px}}
