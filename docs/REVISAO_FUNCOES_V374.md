@@ -30,7 +30,7 @@ Os novos testes foram escritos e observados falhando antes das respectivas corre
 - `node scripts/test-function-review-v374.cjs`: Neymar #090 MLE→SA e Maldini #010 LD→ZG nos cinco estilos; recibos de equipamento; PP livres versus redistribuídos; revisão explícita, corrupção e desatualização; varredura das **261 × 5 = 1.305 revisões**. São 1.230 propostas dos originais com PP exatos e 75 cenários das adições com PP pendentes.
 - Regressões relacionadas: V219, V222, V230, V245, V246, V260, V311, V324, V359 e V364. O teste V374 também executa o renderizador HTML real do rodízio com um elenco incompleto e exige a vaga SA visível e a contagem 10/11.
 
-O teste visual da nova interface não foi executado: a automação do computador foi interrompida com Escape durante a inspeção da versão instalada, e permaneceu parada. A validação de layout e navegação no aplicativo instalado precisa de uma execução posterior autorizada. Não houve publicação, instalação ou modificação de configurações do computador.
+A inspeção visual manual da nova interface no computador do usuário não foi executada: Computer Use foi interrompido com Escape e permaneceu parado. Os testes visuais automatizados do CI são registrados separadamente no PR. Não houve publicação do app, instalação ou modificação de configurações do computador.
 
 Para essa revisão visual posterior: abrir Neymar #090, selecionar SA, comparar os grupos de PP e o indicador de familiaridade; repetir em Maldini #010 como ZG e em uma das 15 adições sem nível máximo. Confirmar que a distribuição permanece pendente nessa adição e que nenhum rascunho é salvo só ao abrir ou trocar o contexto.
 
@@ -58,3 +58,7 @@ Os motores não regravam o catálogo, fichas originais, JSON de cartas ou imagen
 ## Limites e decisões de integração
 
 A referência de Rentão foi conferida em transcrição automática de um vídeo original, não como build numérica para estas edições. O perfil de Blackjhon exige login. Não há evidência para afirmar que todas as cartas atingiram o melhor desempenho possível. Os testes provam cálculo, histórico e isolamento; não medem melhora em partidas online.
+
+## Catálogo em 320px
+
+A normalização dos rótulos passou a permitir que position-order criasse a instrução de ordenação. O V203 movia os controles para os filtros recolhidos, mas deixava essa instrução acima deles, ocupando cerca de61px. Agora move o mesmo nó junto da posição; mantém os eventos e a ordenação atual. O teste V203 foi reproduzido falhando e aprovado após a correção, sem alterar offsets CSS ou o limite de QA.

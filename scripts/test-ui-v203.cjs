@@ -13,6 +13,55 @@ const none={querySelector:()=>null};
 assert.equal(mod.selectedLabel(active,'Todos'),'CA · 44');
 assert.equal(mod.selectedLabel(none,'Todos'),'Todos');
 assert.equal(mod.build({body:{dataset:{page:'detail'}}}),false,'Fichas não devem receber filtros');
+// V374: a healthy position-order.js also creates this instruction node.
+// It belongs with the original role controls, not above the closed filter.
+class Node {
+ constructor(tag){this.tagName=tag;this.children=[];this.parentNode=null;this.attributes={};
+  this.dataset={};this.id='';this.className='';this.textContent='';this.listeners={};
+  const classes=new Set();this.classList={add:x=>classes.add(x),toggle:(x,on)=>on?classes.add(x):classes.delete(x)};
+ }
+ setAttribute(key,value){this.attributes[key]=value}
+ addEventListener(type,handler){(this.listeners[type]??=[]).push(handler)}
+ append(...nodes){nodes.forEach(n=>this.appendChild(n))}
+ appendChild(node){return this.insertBefore(node,null)}
+ insertBefore(node,before){
+  if(node.parentNode){const old=node.parentNode.children;old.splice(old.indexOf(node),1)}
+  const index=before?this.children.indexOf(before):this.children.length;
+  this.children.splice(index,0,node);node.parentNode=this;return node;
+ }
+ querySelector(selector){
+  const matches=n=>selector.startsWith('.')?n.className.split(/\s+/).includes(selector.slice(1)):
+   selector==='button[aria-pressed="true"]'?n.tagName==='button'&&n.attributes['aria-pressed']==='true':
+   selector==='button.active'?n.tagName==='button'&&n.className.split(/\s+/).includes('active'):false;
+  for(const child of this.children){if(matches(child))return child;const found=child.querySelector(selector);if(found)return found}return null;
+ }
+}
+const body=new Node('body');body.dataset.page='catalog';
+const catalog=new Node('section');catalog.id='catalogo';body.append(catalog);
+const tools=new Node('div');tools.className='tools';
+const sort=new Node('select');sort.id='sort';sort.value='position';sort.selectedOptions=[{textContent:'Posição • CA até GO'}];tools.append(sort);
+const roles=new Node('div');roles.id='roles';
+const rarities=new Node('div');rarities.id='rarities';
+for(const [group,value] of [[roles,'TODOS'],[rarities,'TODAS']]){
+ const button=new Node('button');button.dataset.value=value;button.setAttribute('aria-pressed','true');button.textContent=value;group.append(button);
+}
+const overview=new Node('div');overview.className='scout-role-overview';overview.textContent='Ordem personalizada por posição original da carta · use os filtros para acessar cada grupo.';
+const motion=new Node('div');motion.className='scout-motion-controls';
+const meta=new Node('div');meta.className='list-meta';
+catalog.append(tools,roles,overview,rarities,motion,meta);
+const walk=n=>[n,...n.children.flatMap(walk)];
+const document={body,createElement:tag=>new Node(tag),getElementById:id=>walk(body).find(n=>n.id===id)||null};
+let originalClicks=0;roles.addEventListener('click',()=>originalClicks++);
+assert.equal(mod.build(document),true);
+const content=catalog.querySelector('.scout-v203-filter-content');
+assert.equal(overview.parentNode===content,true,'Role instructions must move inside the filter with the original controls');
+assert.equal(content.children.indexOf(overview),content.children.indexOf(roles)+1);
+assert.equal(roles.parentNode,content);assert.equal(sort.value,'position','Original sort and reset semantics preserved');
+assert.equal(motion.parentNode.className,'scout-v238-filter-motion-row','Motion controls stay visible outside collapsed filters');
+assert.equal(Boolean(document.getElementById('scout-v203-filter-panel').open),false);
+for(const handler of roles.listeners.click)handler({target:{closest:()=>null}});
+assert.equal(originalClicks,1,'Moving the existing nodes preserves their handlers');
+assert.equal(mod.build(document),true);assert.equal(walk(body).filter(n=>n===overview).length,1,'No duplicate instruction or control nodes');
 const code=read('web/scout-finish-v203.js');
 for(const phrase of [
  'catalog.insertBefore(motionRow,meta)',

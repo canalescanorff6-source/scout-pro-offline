@@ -47,6 +47,10 @@
   // Mantém o botão e seus listeners fora do <details>, visível no celular/PC.
   const motion=catalog.querySelector('.scout-motion-controls');
   contents.append(roleTitle,roles,rarityTitle,rarities);
+  // V374: position-order also creates role instructions. Move that same
+  // node with its controls, so closed filters do not leave an orphan block.
+  const overview=catalog.querySelector('.scout-role-overview');
+  if(overview)contents.insertBefore(overview,rarityTitle);
   panel.append(summary,contents);
   // V238: reutiliza a altura do cabeçalho dos filtros para mostrar o botão.
   // Não adiciona uma faixa vertical extra antes das cartas no celular.
