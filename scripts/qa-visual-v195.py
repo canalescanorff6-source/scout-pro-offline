@@ -68,6 +68,109 @@ def metrics(page, selectors):
     }""")
     return result
 
+def rotation_metrics(page):
+    """Count actual members and renderable, documented vacancies independently."""
+    return page.evaluate("""async () => {
+      const [catalog,plans]=await Promise.all([
+        fetch('SCOUT_V69_AUDITORIA.json').then(r=>r.json()),
+        fetch('SCOUT_V177_DUAS_FORMACOES.json').then(r=>r.json())]);
+      const byCap=new Map(catalog.cards.map(c=>[Number(c.numero),c]));
+      const formation=document.querySelector('[data-series][aria-pressed="true"]').dataset.series;
+      const plan=plans.formations.find(f=>f.id===formation);
+      const roles=new Map(plan.starters.map(s=>[s.slot,s.role]));
+      const expectedSlots=plan.rows.flat();
+      const blocked=JSON.parse(localStorage.getItem('scoutpro:v219:black-caps')||'[]');
+      const available=catalog.cards.filter(c=>!blocked.includes(Number(c.numero)));
+      const squads=[...document.querySelectorAll('#squads details[data-team]')];
+      const readIds=nodes=>[...nodes].map(p=>Number(p.querySelector('small')?.textContent.match(/#([0-9]{3})/)?.[1]||0));
+      const ids=squads.flatMap(s=>readIds(s.querySelectorAll('.scout-rotation-player')));
+      const teams=squads.map(s=>{
+        const memberIds=readIds(s.querySelectorAll('.scout-rotation-player'));
+        const starterIds=readIds(s.querySelectorAll('.scout-rotation-players > section:first-child .scout-rotation-player'));
+        const spots=[...s.querySelectorAll('.scout-rotation-field-spot')];
+        const wasOpen=s.open;s.open=true;
+        const fieldErrors=[],vacancyRoles=[];
+        let visibleVacancies=0,filledSpots=0;
+        if(spots.length!==expectedSlots.length)fieldErrors.push('field slot count');
+        spots.forEach((spot,index)=>{
+          const slot=expectedSlots[index],role=roles.get(slot);
+          if(!role){fieldErrors.push('unknown formation slot');return;}
+          if(spot.classList.contains('missing')){
+            const declared=spot.dataset.vacantSlot;
+            if(declared!==slot||!spot.querySelector('small')?.textContent.trim())
+              fieldErrors.push('unlabelled or wrong vacancy');
+            vacancyRoles.push(role);
+            const rect=spot.getBoundingClientRect(),css=getComputedStyle(spot);
+            if(rect.width>0&&rect.height>0&&css.display!=='none'&&css.visibility!=='hidden')visibleVacancies++;
+          }else{
+            filledSpots++;
+            const label=spot.querySelector('small')?.textContent.split(' · ')[0].trim().toLowerCase();
+            const name=spot.querySelector('strong')?.textContent.trim();
+            const matching=starterIds.map(id=>byCap.get(id)).filter(c=>c?.name===name);
+            if(label!==slot||matching.length!==1||
+               !window.SCOUT_POSITION_TRAINING_V246.status(matching[0],role,localStorage).eligible)
+              fieldErrors.push('unproven or mismatched starter');
+          }
+        });
+        s.open=wasOpen;
+        const starters=starterIds.length,bench=memberIds.length-starters;
+        const complete=starters===11&&bench===12;
+        const readiness=s.querySelector('.scout-rotation-readiness')?.textContent||'';
+        const header=s.querySelector(':scope > summary small')?.textContent||'';
+        return {starters,bench,vacancyRoles,visibleVacancies,filledSpots,fieldErrors,
+          duplicatePeople:!window.SCOUT_PLAYER_IDENTITY_V245.unique(memberIds.map(id=>byCap.get(id))),
+          complete,readinessCorrect:complete?readiness.includes('Lista completa'):
+            /pendente/i.test(readiness)&&!readiness.includes('Lista completa'),
+          countsCorrect:header.includes(starters+'/11 titulares')&&header.includes(bench+'/12 reservas')};
+      });
+      const shortageByRole={};
+      for(const role of new Set(roles.values())){
+        const required=squads.length*[...roles.values()].filter(r=>r===role).length;
+        const eligible=available.filter(c=>window.SCOUT_POSITION_TRAINING_V246.status(c,role,localStorage).eligible).length;
+        if(required>eligible)shortageByRole[role]=required-eligible;
+      }
+      const vacancyByRole={};
+      for(const t of teams)for(const role of t.vacancyRoles)vacancyByRole[role]=(vacancyByRole[role]||0)+1;
+      const vacancies=teams.reduce((n,t)=>n+t.vacancyRoles.length,0);
+      const diagnostics=document.querySelector('#series-diagnostics')?.innerText||'';
+      return {squads:squads.length,players:ids.length,unique:new Set(ids).size,ids,
+        vacancies,vacancyByRole,shortageByRole,teams,
+        incompleteSquads:teams.filter(t=>!t.complete).length,
+        availableIds:available.map(c=>Number(c.numero)),blocked,
+        excluded:[...new Set(ids)].filter(n=>n>=1&&n<=23),
+        unknownIds:ids.filter(id=>!byCap.has(id)),
+        diagnosticsCorrect:diagnostics.includes(vacancies+' vaga(s) pendente(s)'),
+        overflow:Math.max(0,document.documentElement.scrollWidth-innerWidth)};
+    }""")
+
+def rotation_contract_valid(state):
+    """Nine contexts keep 23 places each; a vacancy is not an invented player."""
+    return (
+        state['squads'] == 9
+        and len(state['teams']) == state['squads']
+        and state['players'] + state['vacancies'] == state['squads'] * 23
+        and state['players'] == sum(t['starters'] + t['bench'] for t in state['teams'])
+        and state['vacancies'] == sum(len(t['vacancyRoles']) for t in state['teams'])
+        and state['unique'] == state['players']
+        and not state['excluded'] and not state['unknownIds']
+        and sorted(state['blocked']) == list(range(1, 24))
+        and state['overflow'] <= 8
+        and state['vacancyByRole'] == state['shortageByRole']
+        and state['diagnosticsCorrect']
+        and state['incompleteSquads'] == sum(not t['complete'] for t in state['teams'])
+        and all(
+            t['bench'] == 12
+            and t['starters'] + len(t['vacancyRoles']) == 11
+            and t['filledSpots'] == t['starters']
+            and t['visibleVacancies'] == len(t['vacancyRoles'])
+            and not t['fieldErrors'] and not t['duplicatePeople']
+            and all(role in state['shortageByRole'] for role in t['vacancyRoles'])
+            and t['readinessCorrect'] and t['countsCorrect']
+            and t['complete'] == (not t['vacancyRoles'])
+            for t in state['teams']
+        )
+    )
+
 def run():
     results = {}
     problems = []
@@ -1111,30 +1214,23 @@ def run():
                     document.querySelectorAll('#squads details[data-team]').length===9 &&
                     document.querySelector('#series-diagnostics').innerText.includes('Série 4213')
                 """,timeout=12000)
-                second=page.evaluate("""() => {
-                  const ids=[...document.querySelectorAll('#squads .scout-rotation-player div small:first-of-type')]
-                    .map(x=>Number(x.textContent.match(/#([0-9]{3})/)?.[1]||0));
-                  return {players:ids.length,unique:new Set(ids).size,
-                   overflow:Math.max(0,document.documentElement.scrollWidth-innerWidth)};
-                }""")
+                second=rotation_metrics(page)
                 result['rotation_lab_4213']=second
-                if second['players']!=207 or second['unique']!=207 or second['overflow']>8:
-                    problems.append(f"{name}: V219 4-2-1-3 incompleta ou repetida: {second}")
-                # Rodada 2: incluir em equipes as 16 cartas que sobraram na Rodada 1.
+                if not rotation_contract_valid(second):
+                    problems.append(f"{name}: V219 4-2-1-3 perdeu membros, vagas comprovadas ou restrições: {second}")
+                # Rodada 2: incluir todas as cartas disponíveis que ficaram fora da primeira.
                 diagnostics_before=page.locator('#series-diagnostics').inner_text()
                 page.locator('button[data-cycle="2"]').click()
                 page.wait_for_function("""() =>
                     document.querySelectorAll('#squads details[data-team]').length===9 &&
                     document.querySelector('#series-diagnostics').textContent.includes('Rodada 2')
                 """,timeout=10000)
-                cycle2=page.evaluate("""() => {
-                    const ids=[...document.querySelectorAll('#squads .scout-rotation-player div small:first-of-type')]
-                      .map(x=>Number(x.textContent.match(/#([0-9]{3})/)?.[1]||0));
-                    return {players:ids.length,unique:new Set(ids).size,overflow:document.documentElement.scrollWidth-innerWidth};
-                }""")
+                cycle2=rotation_metrics(page)
                 result['rotation_cycle_2']=cycle2
-                if cycle2['players']!=207 or cycle2['unique']!=207 or cycle2['overflow']>8:
-                    problems.append(f"{name}: V219 segunda rodada não manteve elenco sem repetição {cycle2}")
+                if not rotation_contract_valid(cycle2):
+                    problems.append(f"{name}: V219 segunda rodada perdeu membros, vagas comprovadas ou restrições {cycle2}")
+                if set(second['ids']) | set(cycle2['ids']) != set(second['availableIds']):
+                    problems.append(f"{name}: V219 duas rodadas não cobrem todas as cartas disponíveis")
                 page.screenshot(path=str(OUT / f"{name}_rotation_second_cycle_v219.png"),full_page=False,animations="disabled")
                 if not page.locator('#rec-start').is_disabled():
                     problems.append(f"{name}: V219 gravação web sem plugin Android não deveria fingir estar funcionando")
