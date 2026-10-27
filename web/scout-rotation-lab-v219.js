@@ -125,18 +125,19 @@ function updateBlack(ids,{reviewed=false,message='Lista atualizada nas duas form
 function inventory(){
  const a=engine.analyze(cards,excluded);
  status('black-count',a.excluded+' / 23');
- status('rotation-inventory',a.cards+' cartas reais · '+a.excluded+' reservadas · '+a.available+' disponíveis · '+a.maxTeams+' equipes completas possíveis por série · '+a.remaining+' cartas fora de equipes completas.');
+ status('rotation-inventory',a.cards+' cartas reais · '+a.excluded+' reservadas · '+a.available+' disponíveis · limite de '+a.maxTeams+' equipes por quantidade/GO. A comprovação das posições pode deixar vagas pendentes.');
  status('black-feedback',photoStatus());
 }
 function formatNumbers(arr){return arr.map(n=>'#'+String(n).padStart(3,'0')).join(', ')}
 function diagnostics(){
  const sheet=selected(),a=sheet.counts,links=sheet.teams.filter(t=>t.linkup.documentaryMatch).length;
- const caveats=sheet.teams.filter(t=>t.warnings.some(w=>w.includes('adaptação')||w.includes('fora da posição'))).length;
+ const complete=sheet.teams.filter(t=>t.ready).length;
+ const missing=sheet.teams.reduce((n,t)=>n+11-t.starters.length,0);
  const nativeSA=sheet.teams.filter(t=>t.starters.some(s=>s.slot==='sa'&&s.fit==='posição original')).length;
  $('series-diagnostics').innerHTML=
-  '<strong>'+sheet.teams.length+' equipes · 11 titulares + 12 reservas</strong> · '+(excluded.length===23?'23 restrições selecionadas. ':'PRÉVIA: confirme as 23 cartas proibidas. ')+esc(formatNumbers(sheet.leftovers))+' fora desta rodada (entram na rodada '+(cycle===1?'2':'1')+')'+ 
+  '<strong>'+sheet.teams.length+' contextos · '+complete+' elencos completos · '+missing+' vaga(s) pendente(s)</strong> · '+(excluded.length===23?'23 restrições selecionadas. ':'PRÉVIA: confirme as 23 cartas proibidas. ')+esc(formatNumbers(sheet.leftovers))+' fora desta rodada (entram na rodada '+(cycle===1?'2':'1')+')'+
   '<p>Estilo do técnico: '+esc(TACTICS[tactic])+'. Equipes experimentais, sem gameplay confirmado. '+a.keepers+' goleiros elegíveis · '+(sheet.teams.some(t=>!t.ready)?'Elencos incompletos exigem conferência; não repetir cartas. ':'')+(a.goalkeeperLimited?'NÚMERO LIMITADO PELOS GOLEIROS: não repetir goleiro entre equipes. ':'')+
-  'Série '+esc(active)+' · Rodada '+cycle+': '+links+' equipes com requisitos documentais simultâneos de Link-Up (não confirma ativação no jogo) · '+caveats+' equipes com possíveis adaptações.'+
+  'Série '+esc(active)+' · Rodada '+cycle+': '+links+' equipes com requisitos documentais simultâneos de Link-Up (não confirma ativação no jogo). Posições sem comprovação permanecem vagas.'+
   (active==='4213'?' SA na posição original: '+nativeSA+' equipe(s).':'')+'</p>'+
   '<p class="scout-rotation-caution">'+esc(photoStatus())+'</p>';
 }
@@ -147,7 +148,7 @@ function cardRow(cap,role,fit,slot,advice){
  return '<article class="scout-rotation-player">'+
   (image?'<img loading="lazy" src="'+esc(image)+'" alt="">':'<span class="scout-rotation-noart">#'+esc(cap)+'</span>')+
   '<div><strong>'+esc(c.name)+'</strong><small>#'+String(cap).padStart(3,'0')+' · '+esc(role)+' · '+esc(c.estilo_ataque)+'</small>'+
-  (fit&&fit!=='posição original'?'<small class="scout-rotation-caution">Adaptação a confirmar no jogo</small>':'')+
+  (fit&&fit!=='posição original'?'<small class="scout-rotation-caution">'+esc(engine.positionConfirmed(fit)?fit:'Adaptação a confirmar no jogo')+'</small>':'')+
   (advice?'<small class="scout-rotation-caution">'+esc(advice.eligible?advice.text:'SEM SUBSTITUIÇÃO CONFIRMADA')+'</small><small>'+esc(advice.reason)+'</small>':'')+
   '</div><a href="'+esc(anchor)+'" aria-label="Abrir ficha de '+esc(c.name)+'">Ficha ↗</a></article>';
 }
@@ -160,19 +161,19 @@ function metrics(team){
 }
 function teamHTML(team){
  return '<details class="scout-rotation-team" data-team="'+esc(team.id)+'"'+(opened===team.id?' open':'')+'>'+
- '<summary><span class="scout-rotation-team-num">'+String(team.index).padStart(2,'0')+'</span><span><strong>'+esc(team.name)+'</strong><small>'+metrics(team)+' · '+team.starters.length+'/11 titulares · '+team.bench.length+'/12 reservas</small></span><span class="scout-rotation-readiness">'+(team.ready?(team.requiresPositionReview?'Lista completa · rever posição':'Lista completa · posições originais'):'Revisar')+'</span></summary>'+
+ '<summary><span class="scout-rotation-team-num">'+String(team.index).padStart(2,'0')+'</span><span><strong>'+esc(team.name)+'</strong><small>'+metrics(team)+' · '+team.starters.length+'/11 titulares · '+team.bench.length+'/12 reservas</small></span><span class="scout-rotation-readiness">'+(team.ready?'Lista completa · posições documentadas':'Vaga pendente')+'</span></summary>'+
  '<div class="scout-rotation-team-inside"><div class="scout-rotation-tactical">'+
   '<div><b>'+esc(TACTICS[tactic]).toUpperCase()+' · 4-'+(active==='4312'?'3-1-2':'2-1-3')+'</b><span>'+team.starters.length+' titulares · '+team.bench.length+' reservas sem duplicação</span></div>'+
   '<div class="scout-rotation-field">'+formats.find(f=>f.id===active).rows.map(row=>
    '<div class="scout-rotation-field-row">'+row.map(slot=>{
     const s=team.starters.find(x=>x.slot===slot),c=getCard(s?.cap);
-    return c?'<div class="scout-rotation-field-spot'+(s.fit!=='posição original'?' provisional':'')+'" title="'+esc(s.fit)+'">'+
+    return c?'<div class="scout-rotation-field-spot'+(!engine.positionConfirmed(s.fit)?' provisional':'')+'" title="'+esc(s.fit)+'">'+
       (images.get(s.cap)?'<img loading="lazy" src="'+esc(images.get(s.cap))+'" alt="">':'')+
-      '<strong>'+esc(c.name)+'</strong><small>'+esc(slot.toUpperCase())+(s.fit!=='posição original'?' · A conferir':'')+'</small></div>':
-      '<div class="scout-rotation-field-spot missing">'+esc(slot.toUpperCase())+'<small>Pendente</small></div>';
+      '<strong>'+esc(c.name)+'</strong><small>'+esc(slot.toUpperCase())+(!engine.positionConfirmed(s.fit)?' · A conferir':'')+'</small></div>':
+      '<div class="scout-rotation-field-spot missing" data-vacant-slot="'+esc(slot)+'">'+esc(slot.toUpperCase())+'<small>Sem posição comprovada</small></div>';
    }).join('')+'</div>').join('')+'</div></div>'+
- '<div class="scout-rotation-players"><section><h3>11 titulares</h3>'+team.starters.map(s=>cardRow(s.cap,s.role,s.fit,s.slot)).join('')+
- '</section><section><h3>12 reservas</h3>'+team.bench.map(b=>cardRow(b.cap,b.role,null,null,benchAdvisor.recommend({
+ '<div class="scout-rotation-players"><section><h3>'+team.starters.length+'/11 titulares</h3>'+team.starters.map(s=>cardRow(s.cap,s.role,s.fit,s.slot)).join('')+
+ '</section><section><h3>'+team.bench.length+'/12 reservas</h3>'+team.bench.map(b=>cardRow(b.cap,b.role,null,null,benchAdvisor.recommend({
   card:getCard(b.cap),starters:team.starters,
   selections:Object.fromEntries(team.starters.map(x=>[x.slot,x.cap])),
   byCap,mode:tactic,training:window.SCOUT_POSITION_TRAINING_V246,
@@ -182,7 +183,7 @@ function teamHTML(team){
  '<p>VOL Orquestrador: '+(team.linkup.volOrchestrator?'identificado':'não identificado')+' · CA Artilheiro: '+(team.linkup.caArtilheiro?'identificado':'não identificado')+
  ' · MAT Armador criativo: '+(team.linkup.matCreative?'identificado':'não identificado')+'. Link-Up ativo no jogo: NÃO CONFIRMADO.</p>'+
  (team.warnings.length?'<ul>'+team.warnings.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':
- '<p>Todos os 11 titulares usam sua posição principal cadastrada. Estilos e movimentação ainda precisam ser testados.</p>')+
+ '<p>Os titulares usam posições documentadas. Estilos e movimentação ainda precisam ser testados.</p>')+
  '</section><section class="scout-rotation-match"><h3>Registrar partida de teste</h3>'+
  '<form data-match="'+esc(team.id)+'"><label>Resultado<select name="result"><option value="V">Vitória</option><option value="E">Empate</option><option value="D">Derrota</option></select></label>'+
  '<label>Gols marcados<input name="goals" type="number" min="0" max="30" value="0" required></label>'+

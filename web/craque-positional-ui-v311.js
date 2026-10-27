@@ -12,6 +12,103 @@ const makeBtn=(value,handler)=>{
  const b=el('button','ct311-button',value);b.type='button';b.addEventListener('click',handler);return b;
 };
 const displaySkill=x=>x.name||x.nome||'Habilidade não identificada';
+/* V374: shared visible review for originals, additions and external rosters. */
+function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta carta'}={}){
+ const block=el('section','ct311-panel ct374-function-review');
+ block.setAttribute('aria-label','Revisão individual por função e estilo');
+ block.append(el('h3','','Plano por função · '+review.sourcePosition+' → '+review.position));
+ const identity=review.identity||{};
+ block.append(el('p','ct375-identity',(Number.isInteger(identity.capture)?'#'+String(identity.capture).padStart(3,'0')+' · ':'')+
+  (identity.name||'Carta')+' · '+(identity.edition||'edição pendente')));
+ block.append(el('p','ct374-context',review.playerStyle+' · '+review.tacticLabel));
+ block.append(el('p','',review.job));
+ const fit=el('p',review.eligibleForLineup?'ct311-confirm':'ct311-alert',review.positionEvidence+
+  (review.eligibleForLineup?'':' · somente prévia; fora da seleção automática'));
+ block.append(fit);
+ const priorities=el('ul','ct374-priorities');
+ for(const p of review.priorities){const item=el('li');
+  item.append(el('strong','',p.category),el('span','',p.attributes));priorities.append(item)}
+ block.append(priorities,el('p','ct311-note',review.baseReference+' · atributos finais não validados.'));
+ if(review.proposed){
+  block.append(el('p','ct311-budget',review.spent+' / '+review.pp+' PP na proposta'+
+   (review.current?' · '+review.redistributedPP+' PP realocados'+
+    (review.investedFromBalance?' · '+review.investedFromBalance+' PP do saldo':''):
+    ' · treino atual ainda não conferido')));
+  block.append(el('p','ct311-note',referenceLabel+(review.current?' · '+review.currentSpent+' PP':' · sem comparação numérica disponível')));
+  const proposed=el('dl','ct375-training');
+  for(const g of review.trainingGroups||[]){const group=el('div');
+   group.append(el('dt','',g.category),el('dd','',g.proposed+' níveis'),el('small','',g.cost+' PP'));proposed.append(group)}
+  block.append(el('h4','','Nova distribuição de treino'),proposed);
+  const compare=el('details','ct374-pp-comparison');
+  compare.append(el('summary','','Comparar treino atual e proposta por grupo'));
+  const table=el('table','ct311-table'),head=el('tr');
+  for(const title of ['Grupo','Atual','Proposta','Δ PP'])head.append(el('th','',title));table.append(head);
+  const t=host.SCOUT_TACTICS_V220;
+  review.proposed.forEach((to,i)=>{
+   if(review.role==='GO'?i<7:i>6)return;
+   const from=review.current?.[i],row=el('tr');
+   const delta=Number.isInteger(from)?t.ppCost(to)-t.ppCost(from):null;
+   row.append(el('td','',t.CATEGORIES[i]),el('td','',from??'—'),el('td','',to),
+    el('td','',delta===null?'—':(delta>0?'+':'')+delta));table.append(row);
+  });
+  compare.append(table);block.append(compare);
+ }else block.append(el('p','ct311-alert','PP pendentes: confirme o nível máximo da edição para calcular a distribuição.'));
+ const inventory=el('details','ct374-native-inventory');
+ inventory.append(el('summary','','Nativas desta carta · '+review.nativeSkills.length),
+  el('p','ct311-note',(review.nativeSkillLabels||review.nativeSkills).join(' · ')||'Lista pendente'));
+ block.append(inventory);
+ if(review.equippedSkills?.length)block.append(el('p','ct311-note','Adicionais já informadas: '+(review.equippedSkillLabels||review.equippedSkills).join(' · ')));
+ block.append(el('p','ct311-note',review.freeSkillSlots===null?
+  'Vagas adicionais: não comprovadas; sugestões são alternativas para conferir.':
+  'Vagas adicionais conferidas nesta edição: '+review.freeSkillSlots+' · recibo da lista atual.'));
+ if(review.skills.length){
+  const list=el('ul','ct311-list ct374-skill-reasons');
+  for(const s of review.skills){const item=el('li');
+   item.append(el('strong','',s.name),el('p','',s.reason));
+   const why=el('details','ct375-skill-context');
+   why.append(el('summary','','Quando usar e por que complementa esta carta'),
+    el('p','',s.situation),el('p','',s.nativeRelation),el('p','',s.trainingRelation));item.append(why);list.append(item)}
+  block.append(el('h4','','Habilidades que complementam esta função'),list);
+ }
+ block.append(el('p','ct311-note','Ímpeto fixo: '+(review.fixedBoosterLabel||review.fixedBooster||'pendente')+
+  ' · Extra informado: '+(review.equippedBoosterLabel||review.equippedBooster||'nenhum informado')));
+ if(review.boosters.length){const primary=review.boosters[0],section=el('section','ct375-booster');
+  section.append(el('h4','','Ímpeto principal para comparar · '+primary.name),
+   el('p','',primary.attributes.join(' · ')),el('p','',primary.reason));
+  if(review.boosters.length>1){const alternatives=el('details');alternatives.append(el('summary','','Alternativas de ímpeto'));
+   for(const b of review.boosters.slice(1))alternatives.append(el('h5','',b.name),
+    el('p','',b.attributes.join(' · ')),el('p','',b.reason));section.append(alternatives)}
+  section.append(el('p','ct311-note','Slot extra: '+review.boosterSlot+
+   (review.boosterSlotSupported?' · suporte documentado da edição.':' · suporte da edição não comprovado.')+
+   ' A recomendação não equipa o ímpeto.'));block.append(section);
+ }
+ if(review.tests.length)block.append(el('p','ct311-note','Observar em jogo: '+review.tests.join(' · ')));
+ const exportStatus=el('p','ct375-copy-status');exportStatus.setAttribute('role','status');
+ const fallback=el('textarea','ct375-copy-fallback');fallback.hidden=true;fallback.readOnly=true;
+ fallback.setAttribute('aria-label','Ficha completa para copiar manualmente');
+ const copy=makeBtn('Copiar ficha completa',async()=>{
+  try{
+   const text=host.CRAQUE_FRIEND_TRAINING_V228.functionSheetText(review);
+   if(!host.navigator?.clipboard?.writeText)throw Error('Cópia automática indisponível');
+   await host.navigator.clipboard.writeText(text);fallback.hidden=true;
+   exportStatus.textContent='Ficha copiada. Nenhum treino ou equipamento foi alterado.';
+  }catch(_){
+   fallback.value=host.CRAQUE_FRIEND_TRAINING_V228.functionSheetText(review);
+   fallback.hidden=false;fallback.focus();fallback.select();
+   exportStatus.textContent='Selecione e copie o texto abaixo. A ficha não foi salva nem aplicada.';
+  }
+ });
+ block.append(copy,exportStatus,fallback);
+ if(onAdopt){
+  const feedback=el('p','ct311-status');feedback.setAttribute('role','status');
+  const adopt=makeBtn('Adotar proposta em nova revisão',()=>{
+   try{feedback.textContent=onAdopt()||'Nova revisão salva. Carta original e equipamentos preservados.'}
+   catch(e){feedback.textContent=String(e.message||e)}
+  });
+  adopt.disabled=!review.canSave;block.append(adopt,feedback);
+ }
+ block.append(el('p','ct311-note',review.note));return block;
+}
 function create(target,model,opts={}){
  if(!target||!model)return null;
  const node=el('section','ct311-positional');
@@ -282,7 +379,8 @@ function create(target,model,opts={}){
   if(screened?.nativeInventory==='pendente')skills.append(el('p','ct311-note',
    'Nativas desta edição não documentadas: ausência de lista não comprova slot livre.'));
   if(capacity){
-   const msg=capacity.status==='pendente'?
+   const msg=Number.isInteger(outcome.freeSkillSlots)?
+    (5-outcome.freeSkillSlots)+'/5 adicionais conferidas nesta edição · '+outcome.freeSkillSlots+' vagas livres no recibo atual.':capacity.status==='pendente'?
     'Ocupação das cinco habilidades adicionais: PENDENTE. Sem lista não significa cinco vagas livres.':
     capacity.status==='revisar_cadastro'?
      'REVISAR cadastro de habilidades adicionais: nomes repetidos ou mais de cinco informados.':
@@ -291,7 +389,7 @@ function create(target,model,opts={}){
       capacity.informedCount+'/5 adicionais informadas. As outras '+
        capacity.maxUnverifiedAdditional+' posições NÃO estão comprovadas como livres.';
    skills.append(el('p','ct347-capacity-note',msg+
-    ' Nenhum equipamento real foi verificado.'));
+    (Number.isInteger(outcome.freeSkillSlots)?' Confirmação registrada pelo proprietário.':' Nenhum equipamento real foi verificado.')));
   }
   skills.append(el('p','ct311-note','Habilidades equipadas informadas: '+(model.skills||'não confirmadas')+
    '. Slots livres não são presumidos; até cinco CANDIDATAS são apresentadas para comparação.'+
@@ -645,6 +743,34 @@ function create(target,model,opts={}){
     'Slot e ativação exigem comprovação')
   );
   hero.append(cards);
+  // The calculation stays visible before the advanced dossier. Compare with
+  // the currently saved context without overwriting that revision on opening.
+  const reviewEngine=host.CRAQUE_FRIEND_TRAINING_V228;
+  if(outcome.functionReview&&reviewEngine?.functionReview){
+   const reviewCard={localKey:model.cardKey,name:model.name,position:scenario.position,
+    originalPosition:model.position,style:model.style,level:model.level,pp:outcome.plan.pp,
+    cardId:model.cardId,edition:model.edition,nativeSkills:model.nativeSkills,skills:model.skills,
+    fixedBooster:model.fixedBooster,booster:model.booster,boosterSlot:model.boosterSlot,
+    trainingLevels:model.trainingLevels,positionEvidence:scenario.compatibility,
+    baseReference:model.evidenceCard?.base_stats_known===true};
+   const reference=savedProfile?.train||recorded?.levels;
+   const review=reviewEngine.functionReview(reviewCard,outcome,reference);
+   hero.append(reviewPanel(review,{
+    referenceLabel:savedProfile?'Rascunho deste técnico · revisão '+savedProfile.revision:
+     recorded?'Revisão contextual '+recorded.revision:'Treino cadastrado nesta carta',
+    onAdopt:()=>{
+     if(readError&&profileContext)throw Error(readError);
+     if(profileContext&&profiles){
+      profiles.save(storage(),profileContext,{train:outcome.plan.levels,
+       skills:savedProfile?.skills||[],booster:savedProfile?.booster||'',
+       source:'V374 · proposta por função adotada explicitamente',skillKeyFor,
+       native:model.nativeSkills||'',equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
+       boosterSlot:model.boosterSlot||'pendente',informedBooster:model.booster||''});
+     }else engine.save(storage(),scenario);
+     draw();return 'Proposta adotada em nova revisão independente.';
+    }
+   }));
+  }
   if(equipmentAudit?.hasSkillConflict)hero.append(el('p','ct340-evidence-conflict',
    'REVISAR HABILIDADES: '+equipmentAudit.conflicts.map(c=>
     c.name+' ('+c.sources.map(x=>x==='nativa_cadastrada'?
@@ -747,7 +873,7 @@ function create(target,model,opts={}){
   const alternatives=el('section','ct327-style-panel');
   alternatives.setAttribute('aria-label','Comparar cinco estilos coletivos nesta posição');
   const altTitle=el('h4','','Cinco estilos · a mesma carta e posição');
-  const altNote=el('p','ct327-style-note','O estilo em uso não é prova de superioridade.');
+  const altNote=el('p','ct327-style-note','O estilo em uso não é prova de superioridade. Sobreposição: perfil ainda pendente neste laboratório.');
   const altList=el('div','ct327-style-list');
   alternatives.append(altTitle,altNote,altList);
   const renderAlternatives=()=>{
@@ -853,6 +979,7 @@ function create(target,model,opts={}){
   root:node,get selectedPosition(){return select.value},
   get current(){return active},
   update(next={}){if(next.style)style=next.style;
+    if(next.model&&next.model.cardKey===model.cardKey)model=next.model;
     if(next.manager!==undefined)manager=next.manager;
     draw()},
   destroy(){alive=false;node.remove()}
@@ -869,7 +996,7 @@ function mainBoot(){
  .then(data=>{
   const card=data.cards?.find(x=>Number(x.numero)===Number(raw.capture));
   if(!card)return;
-  const model=engine.fromPersonal(card,raw),managerApi=host.CRAQUE_MANAGERS_V302;
+  const model=engine.fromPersonal(card,raw,storage()),managerApi=host.CRAQUE_MANAGERS_V302;
   const getStyle=()=>{
    const active=anchor.querySelector('.scout-v220-tab[aria-pressed="true"]');
    return active?.dataset.tactic||'posse';
@@ -888,6 +1015,14 @@ function mainBoot(){
   // Não modificar o painel de treino ORIGINAL aprovado. Esta área mostra propostas adicionais.
   host.document.addEventListener('scoutpro:tactic-selected-v220',e=>{
    if(e.detail?.tactic)panel.update({style:e.detail.tactic})});
+  host.document.addEventListener('scoutpro:skills-updated',event=>{
+   if(Number(event.detail?.capture)===Number(card.numero)&&String(event.detail?.card_id)===String(card.id))
+    panel.update({model:engine.fromPersonal(card,raw,storage())});
+  });
+  host.addEventListener('craque:data-changed',event=>{
+   if(String(event.detail?.key||'').startsWith('scoutpro:v103:booster:'))
+    panel.update({model:engine.fromPersonal(card,raw,storage())});
+  });
   host.document.addEventListener('change',e=>{
    if(['ct-manager-select','ct-manager-tactic'].includes(e.target?.id))
     panel.update({manager:getManager(),style:getStyle()})});
@@ -914,7 +1049,7 @@ function startMain(){
  });
  observer.observe(host.document.body,{childList:true,subtree:true});
 }
-host.CRAQUE_POSITIONAL_UI_V311=Object.freeze({create,mainBoot});
+host.CRAQUE_POSITIONAL_UI_V311=Object.freeze({create,mainBoot,reviewPanel});
 if(host.document.readyState==='loading')host.document.addEventListener('DOMContentLoaded',startMain,{once:true});
 else startMain();
 })(typeof window!=='undefined'?window:null);

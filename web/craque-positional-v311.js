@@ -8,7 +8,7 @@
 const KEY='scoutpro:v311:position-scenarios';
 const PREF='scoutpro:v311:position-selection:';
 const POS=Object.freeze(['CA','SA','MAT','MLG','VOL','ZG','LD','LE','PTE','PTD','MLE','MLD','GO']);
-const MAP=Object.freeze({AC:'CA',MO:'MAT',MC:'MLG',MDF:'VOL',ZC:'ZG',DC:'ZG',DD:'LD',DE:'LE',GR:'GO'});
+const MAP=Object.freeze({AC:'CA',MO:'MAT',MC:'MLG',ME:'MLG',MDF:'VOL',ZC:'ZG',DC:'ZG',DD:'LD',DE:'LE',GR:'GO'});
 const normalize=v=>MAP[String(v||'').trim().toUpperCase()]||String(v||'').trim().toUpperCase();
 const text=v=>String(v??'').trim();
 const depsDefault=()=>({
@@ -24,9 +24,9 @@ const hash=input=>{
  return a.toString(16).padStart(8,'0');
 };
 const json=x=>JSON.stringify(x);
-function fromPersonal(card,raw){
+function fromPersonal(card,raw,store){
  if(!card||!Number.isInteger(Number(card.numero)))throw Error('Carta pessoal sem número comprovado');
- return {
+ const model={
   collection:'minhas-246',owner:'principal',cardKey:String(card.numero)+'@'+text(card.id),
   name:text(card.name),edition:text(card.versao),cardId:text(card.id),
   position:normalize(card.posicao),level:card.max_level??null,pp:Number.isInteger(card.pp)?card.pp:null,
@@ -36,6 +36,24 @@ function fromPersonal(card,raw){
   trainingLevels:Array.isArray(card.niveis)?card.niveis.join(','):'',
   evidenceCard:card
  };
+ // V374: reuse existing account receipts without treating typed names as
+ // confirmed slots. Other editions never inherit this local equipment.
+ if(store?.getItem){
+  const s=depsDefault().skills;
+  const identity={capture:Number(card.numero),id:String(card.id),edition:String(card.versao||''),
+   shown_position:card.posicao,native_skills:card.habilidades_nativas,boost2:card.impeto_extra};
+  try{model.skills=text(store.getItem('scoutpro:v162:equipped:'+card.numero+':'+card.id))}catch(_){}
+  try{
+   const receipt=JSON.parse(store.getItem(s.confirmationKey(card.numero,card.id))||'null');
+   if(s.checkedEquipment(identity,model.skills,receipt))model.equipmentRecord=receipt;
+  }catch(_){}
+  try{
+   const receipt=JSON.parse(store.getItem('scoutpro:v103:booster:'+Number(card.numero))||'null');
+   const proof=s.boosterRecordEvidence(identity,receipt);
+   if(proof.valid){model.boosterSlot=proof.status;model.booster=proof.equipped||'';}
+  }catch(_){}
+ }
+ return model;
 }
 function fromExternal(card,owner){
  if(!card||!owner||card.ownerId!==owner.id)throw Error('Proprietário não corresponde à carta');
@@ -129,6 +147,9 @@ function compute(model,position='MAT',style='posse',manager='',provided){
  if(!deps.training?.evaluate||!deps.tactical?.strategy)throw Error('Motores de treinamento indisponíveis');
  const positionEvidence=familiarity(m,id.position,deps);
  const copy={
+  capture:m.evidenceCard?.numero??null,equipmentRecord:m.equipmentRecord||null,
+  localKey:m.cardKey,originalPosition:m.position,positionEvidence,
+  baseReference:m.evidenceCard?.base_stats_known===true,
   position:id.position,style:m.style,level:m.level,pp:m.pp,cardId:m.cardId,edition:m.edition,
   name:m.name,nativeSkills:m.nativeSkills,skills:m.skills,
   fixedBooster:m.fixedBooster,booster:m.booster,boosterSlot:m.boosterSlot,

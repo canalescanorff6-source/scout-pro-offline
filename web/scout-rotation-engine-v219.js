@@ -6,6 +6,7 @@
 'use strict';
 const ALIASES=Object.freeze({AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DC:'ZG',ZC:'ZG',ZG:'ZG',DD:'LD',LD:'LD',DE:'LE',LE:'LE',GR:'GO',GO:'GO',PTD:'PTD',PTE:'PTE',MLD:'MLD',MLE:'MLE'});
 const BENCH_SIZE=12,START_SIZE=11,SQUAD_SIZE=23;
+const positionConfirmed=fit=>['posição original','posição treinada confirmada','familiaridade confirmada'].includes(fit);
 const identity=host?.SCOUT_PLAYER_IDENTITY_V245||
  (typeof module==='object'&&module.exports?require('./scout-player-identity-v245.js'):null);
 if(!identity)throw Error('Motor de identidade de jogadores V245 indisponível');
@@ -124,7 +125,9 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
                      (exactCount(b.role)/slots.filter(s=>s.role===b.role).length)||
    (a.slot==='vole'?-1:b.slot==='vole'?1:a.slot.localeCompare(b.slot)));
  function takeFor(slot,teamIndex){
-  const possible=filtered.filter(c=>!used.has(Number(c.numero))&&!usedNames[teamIndex].has(identity.key(c))&&suitability(c,slot).score>=0);
+  // V374: conditional adaptation scores can be consulted, but never auto-select
+  // an unproven secondary position. Keep a vacancy instead of inventing eligibility.
+  const possible=filtered.filter(c=>!used.has(Number(c.numero))&&!usedNames[teamIndex].has(identity.key(c))&&positionConfirmed(suitability(c,slot).kind));
   if(!possible.length)return null;
   possible.sort((a,b)=>{
    const extras=card=>tactic==='posse'?0:Math.max(-150,tactical.score(card,slot,tactic).score)*0.6;
@@ -214,7 +217,6 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
   if(!team.linkup.documentaryMatch)team.warnings.push('Link-Up não atende a todos os requisitos documentais: não afirmar que o bônus está ativo.');
   team.ready=team.starters.length===START_SIZE&&team.bench.length===BENCH_SIZE&&
     team.starters.some(s=>s.slot==='go'&&s.fit==='posição original');
-  const positionConfirmed=fit=>['posição original','posição treinada confirmada','familiaridade confirmada'].includes(fit);
   team.positionallyConfirmed=team.starters.length===START_SIZE&&
     team.starters.every(s=>positionConfirmed(s.fit));
   team.requiresPositionReview=team.starters.some(s=>!positionConfirmed(s.fit));
@@ -230,7 +232,7 @@ function build(cards,formation,excluded,cycle=1,tactic='posse'){
   source:'SCOUT_V69_AUDITORIA.json',
   exactBlackMappingConfirmed:false};
 }
-const api=Object.freeze({ALIASES,NAMES,position,isKeeper,desired,suitability,evidenceScore,excludedSet,analyze,rosterFingerprint,build});
+const api=Object.freeze({ALIASES,NAMES,position,isKeeper,desired,positionConfirmed,suitability,evidenceScore,excludedSet,analyze,rosterFingerprint,build});
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(host)host.SCOUT_ROTATION_V219=api;
 })(typeof window!=='undefined'?window:null);
