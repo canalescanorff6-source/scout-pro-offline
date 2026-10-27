@@ -17,6 +17,9 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
  const block=el('section','ct311-panel ct374-function-review');
  block.setAttribute('aria-label','Revisão individual por função e estilo');
  block.append(el('h3','','Plano por função · '+review.sourcePosition+' → '+review.position));
+ const identity=review.identity||{};
+ block.append(el('p','ct375-identity',(Number.isInteger(identity.capture)?'#'+String(identity.capture).padStart(3,'0')+' · ':'')+
+  (identity.name||'Carta')+' · '+(identity.edition||'edição pendente')));
  block.append(el('p','ct374-context',review.playerStyle+' · '+review.tacticLabel));
  block.append(el('p','',review.job));
  const fit=el('p',review.eligibleForLineup?'ct311-confirm':'ct311-alert',review.positionEvidence+
@@ -32,6 +35,10 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
     (review.investedFromBalance?' · '+review.investedFromBalance+' PP do saldo':''):
     ' · treino atual ainda não conferido')));
   block.append(el('p','ct311-note',referenceLabel+(review.current?' · '+review.currentSpent+' PP':' · sem comparação numérica disponível')));
+  const proposed=el('dl','ct375-training');
+  for(const g of review.trainingGroups||[]){const group=el('div');
+   group.append(el('dt','',g.category),el('dd','',g.proposed+' níveis'),el('small','',g.cost+' PP'));proposed.append(group)}
+  block.append(el('h4','','Nova distribuição de treino'),proposed);
   const compare=el('details','ct374-pp-comparison');
   compare.append(el('summary','','Comparar treino atual e proposta por grupo'));
   const table=el('table','ct311-table'),head=el('tr');
@@ -48,20 +55,50 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
  }else block.append(el('p','ct311-alert','PP pendentes: confirme o nível máximo da edição para calcular a distribuição.'));
  const inventory=el('details','ct374-native-inventory');
  inventory.append(el('summary','','Nativas desta carta · '+review.nativeSkills.length),
-  el('p','ct311-note',review.nativeSkills.join(' · ')||'Lista pendente'));
+  el('p','ct311-note',(review.nativeSkillLabels||review.nativeSkills).join(' · ')||'Lista pendente'));
  block.append(inventory);
+ if(review.equippedSkills?.length)block.append(el('p','ct311-note','Adicionais já informadas: '+(review.equippedSkillLabels||review.equippedSkills).join(' · ')));
  block.append(el('p','ct311-note',review.freeSkillSlots===null?
   'Vagas adicionais: não comprovadas; sugestões são alternativas para conferir.':
   'Vagas adicionais conferidas nesta edição: '+review.freeSkillSlots+' · recibo da lista atual.'));
  if(review.skills.length){
   const list=el('ul','ct311-list ct374-skill-reasons');
-  for(const s of review.skills.slice(0,3))list.append(el('li','',s.name+' — '+s.reason));
+  for(const s of review.skills){const item=el('li');
+   item.append(el('strong','',s.name),el('p','',s.reason));
+   const why=el('details','ct375-skill-context');
+   why.append(el('summary','','Quando usar e por que complementa esta carta'),
+    el('p','',s.situation),el('p','',s.nativeRelation));item.append(why);list.append(item)}
   block.append(el('h4','','Habilidades que complementam esta função'),list);
  }
- if(review.boosters.length)block.append(el('p','ct311-note',
-  'Ímpeto fixo: '+(review.fixedBooster||'pendente')+' · comparar: '+review.boosters.map(x=>x.name).join(' · ')+
-  '. Sugestões não comprovam slot disponível.'));
+ block.append(el('p','ct311-note','Ímpeto fixo: '+(review.fixedBoosterLabel||review.fixedBooster||'pendente')+
+  ' · Extra informado: '+(review.equippedBoosterLabel||review.equippedBooster||'nenhum informado')));
+ if(review.boosters.length){const primary=review.boosters[0],section=el('section','ct375-booster');
+  section.append(el('h4','','Ímpeto principal para comparar · '+primary.name),
+   el('p','',primary.attributes.join(' · ')),el('p','',primary.reason));
+  if(review.boosters.length>1){const alternatives=el('details');alternatives.append(el('summary','','Alternativas de ímpeto'));
+   for(const b of review.boosters.slice(1))alternatives.append(el('h5','',b.name),
+    el('p','',b.attributes.join(' · ')),el('p','',b.reason));section.append(alternatives)}
+  section.append(el('p','ct311-note','Slot extra: '+review.boosterSlot+
+   (review.boosterSlotSupported?' · suporte documentado da edição.':' · suporte da edição não comprovado.')+
+   ' A recomendação não equipa o ímpeto.'));block.append(section);
+ }
  if(review.tests.length)block.append(el('p','ct311-note','Observar em jogo: '+review.tests.join(' · ')));
+ const exportStatus=el('p','ct375-copy-status');exportStatus.setAttribute('role','status');
+ const fallback=el('textarea','ct375-copy-fallback');fallback.hidden=true;fallback.readOnly=true;
+ fallback.setAttribute('aria-label','Ficha completa para copiar manualmente');
+ const copy=makeBtn('Copiar ficha completa',async()=>{
+  try{
+   const text=host.CRAQUE_FRIEND_TRAINING_V228.functionSheetText(review);
+   if(!host.navigator?.clipboard?.writeText)throw Error('Cópia automática indisponível');
+   await host.navigator.clipboard.writeText(text);fallback.hidden=true;
+   exportStatus.textContent='Ficha copiada. Nenhum treino ou equipamento foi alterado.';
+  }catch(_){
+   fallback.value=host.CRAQUE_FRIEND_TRAINING_V228.functionSheetText(review);
+   fallback.hidden=false;fallback.focus();fallback.select();
+   exportStatus.textContent='Selecione e copie o texto abaixo. A ficha não foi salva nem aplicada.';
+  }
+ });
+ block.append(copy,exportStatus,fallback);
  if(onAdopt){
   const feedback=el('p','ct311-status');feedback.setAttribute('role','status');
   const adopt=makeBtn('Adotar proposta em nova revisão',()=>{

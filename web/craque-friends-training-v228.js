@@ -197,16 +197,29 @@ function functionReview(card,result,currentLevels,provided){
  const position=positionCode(card.position);
  const nativeSkills=String(card.nativeSkills||'').split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean);
  const nativeKeys=new Set(nativeSkills.map(x=>deps.skills?.keyFor?.(x)).filter(Boolean));
+ const skillLabel=name=>deps.skills?.SKILLS?.[deps.skills?.keyFor?.(name)]?.name||name;
+ const boosterLabels=provided?.boosterLabels||(typeof window!=='undefined'?window.CRAQUE_IMPETOS_PTBR_V230:
+  require('./craque-impetos-ptbr-v230.js'));
+ const boosterLabel=value=>boosterLabels?.translate?boosterLabels.translate(value):
+  String(value||'').replace(/^([^+]+?)(\s*\+.*)?$/,(_all,name,suffix)=>
+   (deps.boosters?.displayName?.(name.trim())||name.trim())+(suffix||''));
+ const equippedSkills=String(card.skills||'').split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean);
  const suggestions=(result.suggestedSkills||[]).filter(x=>{
   const key=deps.skills?.keyFor?.(x.name);return !key||!nativeKeys.has(key);
- }).slice(0,5).map(x=>({name:x.name,reason:x.why||x.reason||'Recurso para testar nesta função',
-  situation:x.situation||null}));
+ }).slice(0,5).map(x=>({name:x.name,reason:x.decision?.reason||x.why||x.reason||'Recurso para testar nesta função',
+  situation:x.decision?.situation||x.situation||'Conferir a execução nesta função e estilo.',
+  nativeRelation:x.decision?.nativeRelation||'Comparar com o inventário nativo desta edição.',
+  eligibility:x.decision?.eligibility||'pendente',applyAuthorized:false}));
  const changes=current&&proposed?proposed.flatMap((to,i)=>to===current[i]?[]:[{
   index:i,category:t.CATEGORIES[i],from:current[i],to,
   deltaPP:t.ppCost(to)-t.ppCost(current[i])
  }]):[];
  return {
   schema:'CRAQUE_FUNCTION_REVIEW_V374',sourcePosition,position,role,tactic:result.tactic,
+  identity:{name:String(card.name||'Carta sem nome'),cardId:String(card.cardId||''),
+   edition:String(card.edition||''),localKey:String(card.localKey||''),
+   capture:Number.isInteger(card.capture)?card.capture:
+    /^\d+@/.test(String(card.localKey||''))?Number(String(card.localKey).split('@')[0]):null},
   tacticLabel:LABEL[result.tactic],playerStyle:String(card.style||'Não cadastrado'),
   job:analysis?.job||'Função pendente de identificação',
   eligibleForLineup:position===sourcePosition||card.positionEvidence?.eligible===true,
@@ -214,20 +227,67 @@ function functionReview(card,result,currentLevels,provided){
    (position===sourcePosition?'Posição original cadastrada':'Familiaridade secundária ainda não comprovada'),
   priorities:(analysis?.priorities||[]).slice(0,4).map(x=>({index:x.index,category:x.name,attributes:x.stats})),
   pp:Number.isInteger(budget)?budget:null,current,proposed,
+  trainingGroups:proposed?t.CATEGORIES.flatMap((category,i)=>allowed.includes(i)?[{
+   index:i,category,proposed:proposed[i],cost:t.ppCost(proposed[i]),current:current?.[i]??null
+  }]:[]):[],
   spent:proposed?t.total(proposed):null,currentSpent:current?t.total(current):null,changes,
   redistributedPP:Math.min(changes.reduce((n,x)=>n+Math.max(0,x.deltaPP),0),
    changes.reduce((n,x)=>n+Math.max(0,-x.deltaPP),0)),
   investedFromBalance:current&&proposed?Math.max(0,t.total(proposed)-t.total(current)):0,
-  nativeSkills,skills:suggestions,freeSkillSlots:Number.isInteger(result.freeSkillSlots)?result.freeSkillSlots:null,
+  nativeSkills,nativeSkillLabels:nativeSkills.map(skillLabel),skills:suggestions,
+  equippedSkills,equippedSkillLabels:equippedSkills.map(skillLabel),
+  freeSkillSlots:Number.isInteger(result.freeSkillSlots)?result.freeSkillSlots:null,
   fixedBooster:card.fixedBooster||null,
+  fixedBoosterLabel:boosterLabel(card.fixedBooster||''),
+  equippedBooster:card.booster||null,boosterSlot:String(card.boosterSlot||'pendente'),
+  equippedBoosterLabel:boosterLabel(card.booster||''),
+  boosterSlotSupported:result.booster?.slotSupported===true,
   boosters:[result.booster?.primary,...(result.booster?.alternatives||[])].filter(Boolean).slice(0,3)
-   .map(x=>({name:x.nome_pt||x.nome,attributes:(x.atributos||[]).slice(0,4)})),
+   .map(x=>({name:boosterLabels?.label?.(x.nome)||x.nome_pt||x.nome,technicalName:x.nome,
+    attributes:(x.atributos||[]).slice(0,4),reason:boosterLabel(x.motivo||'Comparar estes atributos na função escolhida.'),
+    applyAuthorized:false})),
   baseReference:card.baseReference===true?'Referência numérica parcial cadastrada':'Atributos-base completos pendentes',
   finalAttributesVerified:false,
   tests:(result.plan.tests||analysis?.tests||[]).slice(0,3),
   canSave:Boolean(proposed&&String(card.localKey||'').trim()),
   note:'Proposta de investimento por função e estilo; salvar cria uma revisão independente, sem equipar habilidades ou alterar a carta.'
  };
+}
+/* V375: the complete usable sheet is the same on screen and in exports.
+   Pure formatting: no reads/writes to account equipment, drafts or catalog. */
+function functionSheetText(review){
+ if(!review||review.schema!=='CRAQUE_FUNCTION_REVIEW_V374')throw Error('Ficha por função indisponível.');
+ const id=review.identity||{},capture=Number.isInteger(id.capture)?'#'+String(id.capture).padStart(3,'0')+' · ':'';
+ const out=['CRAQUE TÁTICO · FICHA POR FUNÇÃO',capture+(id.name||'Carta sem nome'),
+  'Edição: '+(id.edition||'pendente')+' · Card ID: '+(id.cardId||'pendente'),
+  'Posição original: '+review.sourcePosition+' → função: '+review.position,
+  'Estilo coletivo: '+review.tacticLabel,'Estilo individual cadastrado: '+review.playerStyle,
+  'Familiaridade: '+review.positionEvidence,review.job,'','TREINO PROPOSTO'];
+ if(review.proposed){
+  out.push(review.spent+' / '+review.pp+' PP · níveis de categoria, não atributos finais');
+  for(const g of review.trainingGroups)out.push(g.category+': '+g.proposed+' níveis · '+g.cost+' PP'+
+   (Number.isInteger(g.current)?' · atual '+g.current:''));
+  if(review.current)out.push('Realocação: '+review.redistributedPP+' PP · uso do saldo: '+review.investedFromBalance+' PP');
+ }else out.push('PP pendentes: confirmar o nível máximo e o orçamento da edição.');
+ out.push('','NATIVAS DA EDIÇÃO',(review.nativeSkillLabels||review.nativeSkills).join(' · ')||'Inventário pendente',
+  '','ADICIONAIS JÁ INFORMADAS',(review.equippedSkillLabels||review.equippedSkills)?.join(' · ')||'Nenhuma informada; isso não comprova vagas livres.',
+  '','HABILIDADES ADICIONAIS · CANDIDATAS',review.freeSkillSlots===null?
+   'Vagas livres não comprovadas. Conferir a lista no jogo antes de gastar tokens.':
+   'Vagas livres conferidas: '+review.freeSkillSlots);
+ if(!review.skills.length)out.push('Sem nova candidata disponível; conferir inventário e equipamentos.');
+ review.skills.forEach((s,i)=>out.push((i+1)+'. '+s.name+' — '+s.reason,
+  '   Situação: '+s.situation,'   Complemento às nativas: '+s.nativeRelation));
+ out.push('','ÍMPETO PRINCIPAL',
+  'Fixo cadastrado: '+(review.fixedBoosterLabel||review.fixedBooster||'pendente'),
+  'Extra já informado: '+(review.equippedBoosterLabel||review.equippedBooster||'nenhum informado'),
+  'Slot extra: '+review.boosterSlot+(review.boosterSlotSupported?' · edição com suporte documentado':' · suporte da edição não comprovado'));
+ review.boosters.forEach((b,i)=>out.push((i?'Alternativa '+i:'Principal')+': '+b.name,
+  'Atributos relacionados: '+b.attributes.join(', '),b.reason));
+ if(!review.boosters.length)out.push('Ímpeto candidato pendente.');
+ out.push('','OBSERVAR EM PARTIDAS ONLINE',...review.tests.map(x=>'• '+x),'',review.baseReference,
+  'Proposta calculada, sem validação em partidas online. Não comprova atributos finais, familiaridade ou ativação de estilo.',
+  'Não equipa habilidades/ímpetos nem altera a carta ou o treino aprovado.');
+ return out.join('\n');
 }
 const FUNCTION_DRAFT_PREFIX='scoutpro:v374:function-draft:';
 function functionDraftKey(card,tactic){
@@ -364,5 +424,5 @@ function validateSaved(card,record,deps){
  return true;
 }
 return Object.freeze({MODES,LABEL,METHODOLOGY,levelBudget,resolveBudget,profileOf,sourceSignature,parseBaseline,allocate,evaluate,professionalAudit,
- functionReview,FUNCTION_DRAFT_PREFIX,functionDraftKey,readFunctionDraft,saveFunctionDraft,generate,validateSaved});
+ functionReview,functionSheetText,FUNCTION_DRAFT_PREFIX,functionDraftKey,readFunctionDraft,saveFunctionDraft,generate,validateSaved});
 });

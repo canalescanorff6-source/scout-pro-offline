@@ -243,3 +243,15 @@
 
 /* V349: sobreposição documental de ímpetos, sem alegar ativação no jogo. */
 .ct349-booster-inventory{margin:9px 0;padding:10px 12px;border:1px solid #b69263;border-radius:9px;background:#34291f;color:#ffe8ca;font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+
+/* V375: ficha completa usa o mesmo painel em todos os acervos. */
+.ct375-identity{font-size:12px;color:#f0dfbb;overflow-wrap:anywhere}
+.ct375-training{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin:12px 0}
+.ct375-training>div{border:1px solid #5c706c;border-radius:8px;padding:9px;background:#172b36;min-width:0}
+.ct375-training dt{font-size:11px;overflow-wrap:anywhere}.ct375-training dd{margin:4px 0;font-weight:700;color:#ffe8c4}
+.ct375-training small{font-size:11px;color:#d7eced}
+.ct375-skill-context{font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.ct375-skill-context summary{cursor:pointer;padding:5px 0}
+.ct375-booster{border-top:1px solid #5c706c;margin:12px 0;padding-top:10px;overflow-wrap:anywhere}
+.ct375-copy-fallback{box-sizing:border-box;width:100%;min-height:220px;max-width:100%;background:#172b36;color:#f4ead4;border:1px solid #b69263;padding:10px;border-radius:8px}
+.ct375-copy-fallback[hidden]{display:none}.ct375-copy-status{font-size:12px;overflow-wrap:anywhere}
