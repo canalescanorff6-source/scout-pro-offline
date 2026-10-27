@@ -197,7 +197,10 @@ function functionReview(card,result,currentLevels,provided){
  const position=positionCode(card.position);
  const nativeSkills=String(card.nativeSkills||'').split(/[;,\n]+/).map(x=>x.trim()).filter(Boolean);
  const nativeKeys=new Set(nativeSkills.map(x=>deps.skills?.keyFor?.(x)).filter(Boolean));
- const skillLabel=name=>deps.skills?.SKILLS?.[deps.skills?.keyFor?.(name)]?.name||name;
+ const skillLabels=provided?.skillLabels||(typeof window!=='undefined'?window.SCOUT_SKILL_NAMES_V196:
+  require('./skill-names-v196.js'));
+ const skillLabel=name=>skillLabels?.supported?.(name)?skillLabels.display(name):
+  deps.skills?.SKILLS?.[deps.skills?.keyFor?.(name)]?.name||name;
  const boosterLabels=provided?.boosterLabels||(typeof window!=='undefined'?window.CRAQUE_IMPETOS_PTBR_V230:
   require('./craque-impetos-ptbr-v230.js'));
  const boosterLabel=value=>boosterLabels?.translate?boosterLabels.translate(value):
@@ -208,6 +211,7 @@ function functionReview(card,result,currentLevels,provided){
   const key=deps.skills?.keyFor?.(x.name);return !key||!nativeKeys.has(key);
  }).slice(0,5).map(x=>({name:x.name,reason:x.decision?.reason||x.why||x.reason||'Recurso para testar nesta função',
   situation:x.decision?.situation||x.situation||'Conferir a execução nesta função e estilo.',
+  trainingRelation:x.decision?.attributeRelation||'Sem atributos finais confirmados para quantificar o benefício.',
   nativeRelation:x.decision?.nativeRelation||'Comparar com o inventário nativo desta edição.',
   eligibility:x.decision?.eligibility||'pendente',applyAuthorized:false}));
  const changes=current&&proposed?proposed.flatMap((to,i)=>to===current[i]?[]:[{
@@ -276,7 +280,8 @@ function functionSheetText(review){
    'Vagas livres conferidas: '+review.freeSkillSlots);
  if(!review.skills.length)out.push('Sem nova candidata disponível; conferir inventário e equipamentos.');
  review.skills.forEach((s,i)=>out.push((i+1)+'. '+s.name+' — '+s.reason,
-  '   Situação: '+s.situation,'   Complemento às nativas: '+s.nativeRelation));
+  '   Situação: '+s.situation,'   Complemento às nativas: '+s.nativeRelation,
+  '   Relação com o treino: '+s.trainingRelation));
  out.push('','ÍMPETO PRINCIPAL',
   'Fixo cadastrado: '+(review.fixedBoosterLabel||review.fixedBooster||'pendente'),
   'Extra já informado: '+(review.equippedBoosterLabel||review.equippedBooster||'nenhum informado'),
@@ -347,7 +352,9 @@ function evaluate(card,tactic='posse',deps){
  let skill=null,boost=null;
  if(plan.role){
   const equipmentConfirmed=Boolean(s.checkedEquipment?.(raw,existing,card.equipmentRecord));
-  skill=s.evaluate(raw,tactic,existing,{equippedConfirmed:equipmentConfirmed,equipmentRecord:card.equipmentRecord||null});
+  // V375: skills and boosters must evaluate the SAME newly proposed investment.
+  // A category level is still not evidence of a final attribute or a free slot.
+  skill=s.evaluate({...raw,niveis:plan.levels},tactic,existing,{equippedConfirmed:equipmentConfirmed,equipmentRecord:card.equipmentRecord||null});
   boost=s.booster({...raw,niveis:plan.levels},tactic,b,card.boosterSlot||'pendente',card.booster||'');
  }
  // Usar a MESMA validação de nativas do motor V162; texto genérico

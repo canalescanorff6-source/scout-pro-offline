@@ -67,7 +67,7 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
    item.append(el('strong','',s.name),el('p','',s.reason));
    const why=el('details','ct375-skill-context');
    why.append(el('summary','','Quando usar e por que complementa esta carta'),
-    el('p','',s.situation),el('p','',s.nativeRelation));item.append(why);list.append(item)}
+    el('p','',s.situation),el('p','',s.nativeRelation),el('p','',s.trainingRelation));item.append(why);list.append(item)}
   block.append(el('h4','','Habilidades que complementam esta função'),list);
  }
  block.append(el('p','ct311-note','Ímpeto fixo: '+(review.fixedBoosterLabel||review.fixedBooster||'pendente')+

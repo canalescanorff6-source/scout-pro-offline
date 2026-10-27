@@ -11,9 +11,17 @@ const massaroText=F.functionSheetText(massaro);
 assert(massaroText.includes(S.SKILLS.heading.name)&&massaroText.includes('Fisicalidade +3'),
  'The actual clipboard/Markdown must use documented PT-BR names, not depend on a later DOM translator');
 assert(!massaroText.includes('Heading')&&!massaroText.includes('Physicality'));
+assert(massaroText.includes('Folha seca')&&massaroText.includes('Chute ascendente'),
+ 'The full existing native-skill vocabulary must also be used, beyond the trainable candidate subset');
 let count=0;
 for(const c of cards)for(const style of F.MODES){
  const result=P.compute(P.fromPersonal(c),P.normalize(c.posicao),style).outcome;
+ assert.equal(result.skills.investmentApplied,true,
+  'Skill analysis must receive the new role-specific training, not a null vector');
+ const expectedSkills=S.evaluate({...F.profileOf({...P.fromPersonal(c),
+  cardId:String(c.id),edition:c.versao,position:P.normalize(c.posicao),nativeSkills:c.habilidades_nativas,
+  style:c.estilo_ataque,pp:c.pp}),niveis:result.plan.levels},style,'');
+ assert.deepEqual(result.suggestedSkills.map(x=>x.key),expectedSkills.recommendations.map(x=>x.key));
  const r=result.functionReview,txt=F.functionSheetText(r);
  assert.equal(r.identity.name,c.name);assert.equal(r.identity.cardId,String(c.id));
  assert.equal(r.identity.edition,c.versao);assert.equal(r.identity.capture,c.numero);

@@ -6,6 +6,8 @@ Pedido: novas fichas, habilidades adicionais e ímpetos no app. O catálogo exte
 
 A revisão compartilhada de cada carta mostra identidade/edição, função escolhida, estilo, a distribuição proposta por categoria e o custo progressivo de PP. A comparação com o treino cadastrado continua disponível. Todas as candidatas adicionais disponíveis (até cinco) aparecem com motivo, situação e relação com as nativas. O ímpeto principal e duas alternativas apresentam os atributos relacionados e os motivos calculados. Nativas, adicionais já informadas, ímpeto fixo e extra informado permanecem distintos.
 
+Correção de cálculo: o adaptador de habilidades recebia `niveis:null`, enquanto o de ímpetos já recebia o treino proposto. Agora ambos avaliam o mesmo `plan.levels`. O motor V162 passa a incluir os sinais de investimento e a relação com o treino nos motivos das candidatas. Esse vetor continua sendo nível de categoria, sem presumir atributos finais. O caso foi observado falhando e corrigido com teste nos 1.230 cenários numéricos; sem PP, não há investimento inventado.
+
 **Copiar ficha completa** exporta a mesma consulta, sem salvar treinamento ou equipar habilidades. Se a área de transferência não estiver disponível, aparece um campo selecionável com o texto. Adoção continua sendo uma ação separada que cria revisão com histórico.
 
 Aplica-se às 246 cartas originais, às 15 adições e às cartas cadastradas em Outros Elencos. Identidade exata permanece na cópia. Nenhuma carta original, imagem, equipamento ou formação é regravada.
@@ -35,6 +37,6 @@ Sobreposição permanece explicitamente sem perfil numérico: não recebe indevi
 
 Computer Use permanece interrompido; não houve inspeção física/instalação nesta revisão. CI visual e compilações serão informados no PR. Merge e publicação exigem a autorização prevista em AGENTS.md.
 
-Revisão independente identificou nomes brutos em inglês na cópia. O caso real #001 falhou em teste antes da correção e passou após reutilizar os catálogos PT-BR V162/V230 também no texto exportado. Nomes técnicos sem correspondência documental não recebem tradução inventada. As listas e IDs originais continuam preservados.
+Revisão independente identificou nomes brutos em inglês na cópia. O caso real #001 falhou em teste antes da correção e passou após reutilizar os catálogos PT-BR V162/V196/V230 também no texto exportado. Nomes técnicos sem correspondência documental não recebem tradução inventada. As listas e IDs originais continuam preservados.
 
 Nota de revisão: o retorno de sucesso do botão de adoção já podia ficar em um nó removido pelo redesenho V374. Classificado como menor e registrado; não afeta o salvamento/histórico, nem a cópia nova, e não foi alterado nesta revisão.
