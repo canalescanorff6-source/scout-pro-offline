@@ -75,7 +75,7 @@ for(const card of cards){
  cases.push(auditRecord);
 }
 assert.equal(scenarios,1230);
-assert.equal(math,161);assert.equal(provisional,1);assert.equal(missing,84);
+assert.equal(math,159);assert.equal(provisional,1);assert.equal(missing,86);
 // Investimento não é usado quando orçamento inválido ou proposta não validada.
 const first=cards.find(x=>x.numero===1),mart=cards.find(x=>x.numero===191);
 const input=c=>({capture:c.numero,id:c.id,edition:c.versao,shown_position:c.posicao,

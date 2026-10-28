@@ -89,7 +89,7 @@ for(const c of cards){
  assert.equal(JSON.stringify(c),immutable,'Acervo adulterado: CAP '+c.numero);
 }
 assert.equal(scenarios,1230);
-assert.equal(sourceMatches,1230);
+assert.equal(sourceMatches,1220);
 assert.equal(load('web/SCOUT_V69_AUDITORIA.json'),corpus);
 assert.equal(load('web/SCOUT_V221_EVIDENCE_INDEX.json'),source);
 assert.equal(inferredSource,0,'Print candidato não pode ser convertido em print confirmado');
@@ -168,6 +168,6 @@ fs.writeFileSync(path.join(root,'build/v287-evidence-council-246x5.json'),
   skillCandidates,boostCandidate,
   warning:'Índice sem print da mesma edição; métricas são de pendências, não de desempenho em campo.',
   queue},null,2)+'\n');
-console.log('V287 PASS: 1230 cenários, '+sourceMatches+' vínculos exatos ao índice, '+
+console.log('V287 PASS: 1220 cenários, '+sourceMatches+' vínculos exatos ao índice, '+
  blocked+' bloqueios, '+underReview+' revisões; '+changedPortfolio+
  ' pacotes estratégicos diferentes; 246 cartas intactas, CSV e JSON exportados.');

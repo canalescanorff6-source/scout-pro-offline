@@ -52,9 +52,9 @@ for(const card of catalog){
  }
 }
 assert.equal(count,1230);
-assert.equal(valid,161);
+assert.equal(valid,159);
 assert.equal(provisional,1);
-assert.equal(missing,84);
+assert.equal(missing,86);
 const martinelli=catalog.find(c=>c.numero===191);
 assert(martinelli&&martinelli.pp===50&&martinelli.max_level===26);
 const baseProof=V.proofChecklist(martinelli,index.get(191),labFor(martinelli),null);

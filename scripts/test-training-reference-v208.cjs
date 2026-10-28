@@ -24,7 +24,7 @@ for(const c of roster){
   pending++;assert.equal(state.kind,'pendente');assert.equal(state.spent,null,'Sem zeros inventados');
  }
 }
-assert.equal(registered,162);assert.equal(pending,84);
+assert.equal(registered,160);assert.equal(pending,86);
 const p=ui.resolveTraining({pp:60,recommended_levels:null},{draftA:[11,4,4,11,7,0,0,0,0,0]});
 assert.equal(p.kind,'prévia experimental');assert.equal(p.spent,60);
 // V209: cabeçalho visual uniforme A em QUALQUER cenário; cenário real preservado para lógica.

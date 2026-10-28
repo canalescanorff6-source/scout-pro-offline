@@ -14,7 +14,7 @@ const untouched=JSON.stringify(cards);
 const summary=E.catalogAudit(cards);
 assert.equal(summary.total,246);
 assert.equal(summary.duplicateGroups,20);
-assert.equal(summary.duplicatedCards,56);
+assert.equal(summary.duplicatedCards,55);
 assert.equal(summary.confirmedBuildsByGameplay,0);
 const duplicated=new Set();
 for(const card of cards){
@@ -33,7 +33,7 @@ for(const card of cards){
  }
  assert.equal(JSON.stringify(card),before,'Comparação não modifica carta');
 }
-assert.equal(duplicated.size,56);
+assert.equal(duplicated.size,55);
 const yorke=cards.find(c=>c.numero===40);
 assert(yorke);
 const yr=E.related(yorke,cards);
@@ -41,7 +41,7 @@ assert.deepEqual(yr.map(c=>c.numero).sort((a,b)=>a-b),[43,182]);
 assert(yr.every(p=>p.id&&p.edition),'Mostrar edição e Card ID para o grupo do Yorke');
 const huijsen=cards.find(c=>c.numero===144);
 const defenders=E.related(huijsen,cards);
-assert.equal(defenders.length,8,'Listar todas as nove fichas idênticas do grupo');
+assert.equal(defenders.length,7,'Listar todas as nove fichas idênticas do grupo');
 assert(defenders.some(p=>p.numero===149),'Van Hecke permanece identificado');
 assert(defenders.some(p=>p.numero===150),'Konaté permanece identificado');
 assert(defenders.some(p=>p.differentSkills),'Há habilidades diferentes no grupo');

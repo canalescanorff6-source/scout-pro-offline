@@ -1,6 +1,7 @@
 'use strict';
+const {historicalRoster,historicalCards}=require('./historical-catalog-v377.cjs'); // Conciliação dos dois snapshots corrigidos.
 const fs=require('fs'),assert=require('assert');
-const a=JSON.parse(fs.readFileSync('web/SCOUT_V69_AUDITORIA.json','utf8'));
+const a=historicalRoster(JSON.parse(fs.readFileSync('web/SCOUT_V69_AUDITORIA.json','utf8')));
 const r=JSON.parse(fs.readFileSync('web/SCOUT_V213_AUDITORIA_INDIVIDUAL.json','utf8'));
 assert.strictEqual(a.cards.length,246);
 assert.strictEqual(r.cards.length,246);

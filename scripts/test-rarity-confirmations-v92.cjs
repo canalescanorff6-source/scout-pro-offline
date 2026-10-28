@@ -26,7 +26,7 @@ for(const c of m.cartas){
  }else assert.equal(c.raridade_anterior,c.raridade_confirmada,'Raridade não autorizada alterada: '+c.numero);
  if(c.grupo==='divergencia'){
   assert(!a.pendencias.includes('Raridade em conflito entre captura do jogo e banco externo'));
-  if([75,170].includes(c.numero))assert(!a.pendencias.some(p=>p.includes('Descrição histórica da edição diverge')),'Divergencia ja resolvida #'+c.numero);
+  if([75,153,170].includes(c.numero))assert(!a.pendencias.some(p=>p.includes('Descrição histórica da edição diverge')),'Divergencia ja resolvida #'+c.numero);
   else assert(a.pendencias.some(p=>p.includes('Descrição histórica da edição diverge')));
   const file=path.join(root,'fichas',a.arquivo.replace(/^fichas\//,''));
   const html=fs.readFileSync(file,'utf8');

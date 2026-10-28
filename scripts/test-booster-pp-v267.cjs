@@ -48,7 +48,7 @@ for(const c of cards){
  assert.equal(JSON.stringify(c),snapshot,'Carta alterada #'+c.numero);
 }
 assert.equal(total,1230);assert.equal(recorded+provisionalCount+absent,246);
-assert.equal(recorded,161);assert.equal(provisionalCount,1);assert.equal(absent,84);
+assert.equal(recorded,159);assert.equal(provisionalCount,1);assert.equal(absent,86);
 const massaro=cards.find(x=>x.numero===1),martinelli=cards.find(x=>x.numero===191);
 assert(massaro&&martinelli&&martinelli.pp===50&&martinelli.max_level===26);
 const exact=B.rank(martinelli,'posse')[0];

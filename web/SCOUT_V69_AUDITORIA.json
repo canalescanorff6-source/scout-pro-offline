@@ -13,8 +13,8 @@
     "level_user_entered": 85,
     "raridade_confirmada_pelo_usuario": 58,
     "treinos_propostos_experimentais_v95": 84,
-    "level_public_reference": 154,
-    "level_total": 239
+    "level_public_reference": 158,
+    "level_total": 243
   },
   "cards": [
     {
@@ -2810,7 +2810,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/061_Savinho.html"
+      "arquivo": "fichas/061_Savinho.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/savio-105821820296614",
+        "card_id": "105821820296614",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 62,
@@ -6530,7 +6538,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/144_Dean_Huijsen.html"
+      "arquivo": "fichas/144_Dean_Huijsen.html",
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/dean-huijsen-106766981558114",
+        "card_id": "106766981558114",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 145,
@@ -6885,36 +6901,23 @@
     {
       "numero": 153,
       "name": "Dean Huijsen",
-      "versao": "Show Time — New Year's Gift 2026 — Dean Huijsen",
-      "id": "106766981558114",
+      "versao": "Highlight — Summer Transfer 14 Aug '25 — Dean Huijsen",
+      "id": "105780749692770",
       "posicao": "ZC",
       "estilo_ataque": "Defensor criativo",
       "estilo_defesa": "Básico",
-      "pp": 52,
-      "pp_estimado": false,
+      "pp": 48,
+      "pp_estimado": true,
       "base_stats_known": false,
-      "recomendacao": "B",
-      "niveis": [
-        0,
-        4,
-        0,
-        0,
-        8,
-        8,
-        12,
-        0,
-        0,
-        0
-      ],
-      "impeto_fixo": "Rebuilding +3",
-      "impeto_extra": "PENDENTE — não confirmado",
-      "habilidades_nativas": "Heading; One-touch Pass; Through Passing; Weighted Pass; Visionary Pass; Man Marking; Interception; Blocker; Aerial Superiority; Fighting Spirit",
+      "recomendacao": null,
+      "niveis": null,
+      "impeto_fixo": "—",
+      "impeto_extra": "PENDENTE — conferir no jogo",
+      "habilidades_nativas": "Sole Control; Heading; Rising Shot; One-touch Pass; Penalty Specialist; Man Marking; Interception; Blocker; Aerial Superiority; Sliding Tackle",
       "adicionais_candidatas": [],
       "pendencias": [
-        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
-        "Atributos-base desta versão para cálculo de status finais",
-        "Segundo ímpeto realmente selecionado",
-        "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
+        "Treino atual desta edição no jogo",
+        "Habilidades adicionais e ímpeto extra efetivamente equipados na conta"
       ],
       "arquivo": "fichas/153_Dean_Huijsen.html",
       "raridade_confirmada": "DISTINGUIDO",
@@ -6922,10 +6925,37 @@
       "habilidades_nativas_origem": {
         "status": "documentado_em_base_externa",
         "fonte": "pesdb.net",
-        "card_id": "106766981558114",
-        "url": "https://pesdb.net/efootball/players/dean-huijsen-106766981558114",
+        "card_id": "105780749692770",
+        "url": "https://pesdb.net/efootball/players/dean-huijsen-105780749692770",
         "confirmacao_no_jogo": false,
-        "data": "2026-10-14"
+        "data": "2026-10-28"
+      },
+      "max_level": 25,
+      "pp_origem": "catalogo_publico_correcao_edicao_2026-10-28",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/dean-huijsen-105780749692770",
+        "card_id": "105780749692770",
+        "confirmed_in_game": false
+      },
+      "treino_proposto_nao_validado": true,
+      "identidade_correcao_v377": 153,
+      "treino_proposta_v377": {
+        "status": "proposta experimental não aprovada",
+        "pp": 48,
+        "niveis": [
+          0,
+          4,
+          1,
+          0,
+          4,
+          9,
+          12,
+          0,
+          0,
+          0
+        ],
+        "fonte": "web/fichas/153_Dean_Huijsen.html → lab-data.draftA"
       }
     },
     {
@@ -8782,44 +8812,59 @@
     {
       "numero": 196,
       "name": "Savinho",
-      "versao": "Highlight — Brazil & England National Team Campaign 6 Nov '25 — Savinho",
-      "id": "105821820296614",
+      "versao": "Highlight — Advertisement Reward 24 Apr '25 — Savinho",
+      "id": "105754711432614",
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": 56,
-      "pp_estimado": false,
+      "pp": 82,
+      "pp_estimado": true,
       "base_stats_known": false,
-      "recomendacao": "A",
-      "niveis": [
-        4,
-        4,
-        9,
-        11,
-        8,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
-      "impeto_extra": "NENHUM BOOSTER NATIVO CONFIRMADO",
+      "recomendacao": null,
+      "niveis": null,
+      "impeto_fixo": "—",
+      "impeto_extra": "PENDENTE — conferir no jogo",
       "habilidades_nativas": "Scissors Feint; Double Touch; Sombrero; Cut Behind & Turn; Sole Control; Pinpoint Crossing; Outside Curler; Gamesmanship",
       "adicionais_candidatas": [],
       "pendencias": [
-        "Cinco habilidades adicionais efetivamente equipadas na conta (a confirmar)",
-        "Atributos-base desta versão para cálculo de status finais",
-        "Proficiência se for usar em uma posição central"
+        "Treino atual desta edição no jogo",
+        "Habilidades adicionais e ímpeto extra efetivamente equipados na conta"
       ],
       "arquivo": "fichas/196_Savinho.html",
       "habilidades_nativas_origem": {
         "status": "documentado_em_base_externa",
         "fonte": "pesdb.net",
-        "card_id": "105821820296614",
-        "url": "https://pesdb.net/efootball/players/savio-105821820296614",
+        "card_id": "105754711432614",
+        "url": "https://pesdb.net/efootball/players/savio-105754711432614",
         "confirmacao_no_jogo": false,
-        "data": "2026-10-14"
+        "data": "2026-10-28"
+      },
+      "max_level": 42,
+      "pp_origem": "catalogo_publico_correcao_edicao_2026-10-28",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://efootballedge.com/en/cards/105754711432614-savinho",
+        "card_id": "105754711432614",
+        "confirmed_in_game": false
+      },
+      "treino_proposto_nao_validado": true,
+      "identidade_correcao_v377": 196,
+      "treino_proposta_v377": {
+        "status": "proposta experimental não aprovada",
+        "pp": 82,
+        "niveis": [
+          0,
+          8,
+          16,
+          9,
+          9,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "fonte": "web/fichas/196_Savinho.html → lab-data.draftA"
       }
     },
     {

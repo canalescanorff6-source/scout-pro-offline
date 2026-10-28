@@ -1,4 +1,5 @@
 'use strict';
+const {historicalRoster,historicalCards}=require('./historical-catalog-v377.cjs'); // Conciliação dos dois snapshots corrigidos.
 /* V233 — auditoria da interpretação por 246 cartas × 5 táticas:
  * sem mudança de treino, PP ou dados locais.
  */
@@ -6,7 +7,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
 const T=require('../web/scout-multitactic-engine-v220.js');
 const E=require('../web/craque-role-intelligence-v233.js');
-const cards=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
+const cards=historicalRoster(JSON.parse(read('web/SCOUT_V69_AUDITORIA.json'))).cards;
 const review=JSON.parse(read('web/SCOUT_V213_AUDITORIA_INDIVIDUAL.json')).cards;
 const snapshot=JSON.stringify(cards);
 const modes=['posse','normal','rapido','fora','longo'];

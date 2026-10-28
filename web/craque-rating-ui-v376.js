@@ -8,6 +8,7 @@
  });}
 })(typeof window!=='undefined'?window:null,function(){'use strict';
 const OBS='scoutpro:v376:ovr:';
+const observationKey=(ref,ctx)=>OBS+ref.key+':'+ctx.cardId;
 const LABELS=['Finalização','Passe','Drible','Destreza','Força nas pernas','Força aérea','Defesa','GO 1','GO 2','GO 3'];
 function paint(doc,parent,entry,context,result){
  parent.classList.add('ct376-art');
@@ -45,8 +46,9 @@ async function boot(w){
  const P=await load('craque-positional-v311.js','CRAQUE_POSITIONAL_V311');
  const Progress=await load('craque-progress-consistency-v249.js','CRAQUE_PROGRESS_CONSISTENCY_V249');
  const read=async file=>{const r=await w.fetch(root+file);if(!r.ok)throw Error('Catálogo local indisponível.');return r.json()};
- const [data,model,original,owned]=await Promise.all([
-  read('ct376-card-references.json'),read('ct376-rating-model.json'),read('SCOUT_V69_AUDITORIA.json'),read('ct364-owned-cards.json')]);
+ const [data,model,original,owned,corrections,Archive]=await Promise.all([
+  read('ct376-card-references.json'),read('ct376-rating-model.json'),read('SCOUT_V69_AUDITORIA.json'),read('ct364-owned-cards.json'),
+  read('ct377-identity-corrections.json'),load('craque-identity-archive-v377.js','CRAQUE_IDENTITY_ARCHIVE_V377')]);
  w.CRAQUE_REFERENCES_V376=data;
  const cards=new Map([...original.cards.map(c=>['cap:'+c.numero,c]),...owned.cards.map(c=>[c.key,c])]);
  const refs=new Map(data.cards.map(c=>[c.key,c]));
@@ -58,7 +60,7 @@ async function boot(w){
   let result=R.evaluate(ref,context.ctx,model);
   if(context.error)result={status:'pending',overall:null,reason:context.error};
   if(C.valid(context.ctx.training))try{
-   const proof=R.readObservation(JSON.parse(w.localStorage.getItem(OBS+ref.key)||'null'),ref,context.ctx,model);
+   const proof=R.readObservation(JSON.parse(w.localStorage.getItem(observationKey(ref,context.ctx))||w.localStorage.getItem(OBS+ref.key)||'null'),ref,context.ctx,model);
    if(proof)result={...result,status:'observed',label:'Observado no jogo',overall:proof.overall,
     manager:context.ctx.manager?.name||'Sem técnico',spent:C.cost(context.ctx.training),budget:context.ctx.budget,
     remaining:context.ctx.budget-C.cost(context.ctx.training)};
@@ -79,9 +81,28 @@ async function boot(w){
    ' · Orçamento: '+(ctx.budget??'pendente')+' PP'+
    (C.valid(ctx.training)?' · Distribuídos: '+C.cost(ctx.training)+' · Saldo: '+(ctx.budget-C.cost(ctx.training)):'')));
   panel.append(mk('p',context.source+'. '+context.warning));
+  if(ref.ownerMaximumOverall)panel.append(mk('p','Máximo informado por você: '+ref.ownerMaximumOverall.value+
+   ' OVR. Técnico e distribuição desse máximo ainda não foram vinculados; esta referência não altera o cálculo do treino atual.'));
   panel.append(mk('p','O cálculo é uma estimativa independente. O número máximo do banco não substitui seu treino. Bônus extras entram apenas com equipamento confirmado.'));
   for(const text of result.warnings||[])panel.append(mk('p',text));
   if(ref.reference){const link=mk('a','Ver referência desta edição ↗');link.href=ref.reference.url;link.target='_blank';link.rel='noopener noreferrer';panel.append(link);}
+  if(ref.reference?.levelSourceUrl&&ref.reference.levelSourceUrl!==ref.reference.url){
+   const link=mk('a',' · Referência do nível máximo ↗');link.href=ref.reference.levelSourceUrl;link.target='_blank';link.rel='noopener noreferrer';panel.append(link);
+  }
+  const correction=corrections.cards.find(c=>c.capture===ref.identityCorrectionKey);
+  if(correction){
+   const history=mk('details');history.className='ct377-history';
+   history.append(mk('summary','Histórico anterior à correção da edição'));
+   history.append(mk('p','Somente consulta. Estes treinos e comprovantes não são aplicados à identidade corrigida.'));
+   history.append(mk('p',correction.beforeCanonical.versao+' · ID '+correction.beforeCanonical.id+
+    ' · '+correction.beforeCanonical.pp+' PP · distribuição anterior: '+correction.beforeCanonical.niveis.join(' / ')));
+   const local=Archive.read(w.localStorage,correction);
+   for(const item of local.items){const entry=mk('details'),pre=mk('pre',item.raw);pre.style.whiteSpace='pre-wrap';pre.style.overflowWrap='anywhere';
+    entry.append(mk('summary',item.kind),pre);history.append(entry);}
+   for(const warning of local.warnings)history.append(mk('p',warning));
+   if(!local.items.length)history.append(mk('p','Nenhum registro local compatível encontrado para a identidade anterior.'));
+   panel.append(history);
+  }
   const form=mk('form');form.className='ct376-training-form';
   form.append(mk('p','Confira no jogo e informe os níveis das categorias do seu treino atual. Esta confirmação só atualiza a exibição no app.'));
   const inputs=LABELS.map((text,i)=>{
@@ -108,7 +129,7 @@ async function boot(w){
   observedForm.onsubmit=e=>{e.preventDefault();try{
    const current=state(ref).context.ctx;
    const proof=R.observation(ref,current,model,Number(observed.value),observedConsent.checked);
-   w.localStorage.setItem(OBS+ref.key,JSON.stringify(proof));w.dispatchEvent(new w.Event('craque:data-changed'));refresh();
+   w.localStorage.setItem(observationKey(ref,current),JSON.stringify(proof));w.dispatchEvent(new w.Event('craque:data-changed'));refresh();
   }catch(e){observedFeedback.textContent=e.message}};
   panel.append(observedForm);
  }
@@ -161,5 +182,5 @@ async function boot(w){
  refresh();
  return {refresh,state};
 }
-return Object.freeze({paint,boot});
+return Object.freeze({paint,boot,observationKey});
 });

@@ -60,7 +60,7 @@ const createIndex=function createIndex(roster,audit,similar){
 
 function load(file){return JSON.parse(fs.readFileSync(path.resolve(__dirname,'../web',file),'utf8'))}
 function run(){
- const result=createIndex(load('SCOUT_V69_AUDITORIA.json'),load('SCOUT_V213_AUDITORIA_INDIVIDUAL.json'),load('SCOUT_V211_REPETICOES_REVIEW.json'));
+ const result=createIndex(require('./historical-catalog-v377.cjs').historicalRoster(load('SCOUT_V69_AUDITORIA.json')),load('SCOUT_V213_AUDITORIA_INDIVIDUAL.json'),load('SCOUT_V211_REPETICOES_REVIEW.json'));
  const file=path.resolve(__dirname,'../web/SCOUT_V221_EVIDENCE_INDEX.json');
  const rendered=JSON.stringify(result,null,2)+'\n';
  if(process.argv.includes('--check')){

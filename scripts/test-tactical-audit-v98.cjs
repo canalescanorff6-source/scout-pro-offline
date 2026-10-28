@@ -1,7 +1,8 @@
 'use strict';
+const {historicalRoster,historicalCards}=require('./historical-catalog-v377.cjs'); // Conciliação dos dois snapshots corrigidos.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../web');
-const audit=JSON.parse(fs.readFileSync(path.join(root,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const audit=historicalRoster(JSON.parse(fs.readFileSync(path.join(root,'SCOUT_V69_AUDITORIA.json'),'utf8')));
 const m=JSON.parse(fs.readFileSync(path.join(root,'SCOUT_V98_AUDITORIA_TATICA.json'),'utf8'));
 const eng=require(path.join(root,'tactical-engine-v98.js'));
 assert.equal(m.version,'V98');assert.equal(m.total,246);assert.equal(m.cartas.length,246);

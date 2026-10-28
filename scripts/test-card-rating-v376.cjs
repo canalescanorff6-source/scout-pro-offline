@@ -14,12 +14,23 @@ for(const card of data.cards){
  baseCases++;
 }
 assert.equal(baseCases,239);
+for(const [key,value] of [['cap:171',106],['cap:185',97],['cap:205',103],['ct364-12',103]]){
+ const card=data.cards.find(c=>c.key===key);
+ assert.equal(card.ownerMaximumOverall?.value,value,'O máximo informado não é nível nem OVR do treino corrente');
+ assert.equal(card.ownerMaximumOverall.currentTrainingConfirmed,false);
+}
 for(const key of ['ct364-11','ct364-12','ct364-13','ct364-14']){
  const card=data.cards.find(c=>c.key===key);
  assert.equal(card.identityStatus,'declared_edition_match','Respeitar a confirmação específica das quatro versões externas');
  assert.equal(card.identityUsable,true);
 }
 assert.equal(data.cards.find(c=>c.key==='ct364-12').reference.maxLevel,null,'Confirmação da edição não inventa o nível ausente do Provedel');
+for(const capture of [169,171,173,174,175,176]){
+ const card=data.cards.find(c=>c.capture===capture);
+ const result=R.evaluate(card,{cardKey:card.key,cardId:card.cardId,edition:card.edition,
+  position:'GO',training:card.registeredLevels,budget:card.cataloguePP,manager:null},model);
+ assert.equal(result.status,'estimated','Treino registrado de goleiro com Jogo Aéreo precisa continuar calculável: '+capture);
+}
 const ney=data.cards.find(x=>x.key==='cap:90'),maldini=data.cards.find(x=>x.key==='cap:10');
 const current={cardKey:ney.key,cardId:ney.cardId,edition:ney.edition,position:'MLE',
  training:[4,8,8,8,8,2,6,0,0,0],budget:62,manager:null,extraBooster:null};
@@ -46,7 +57,7 @@ assert.deepEqual(R.evaluate(ney,{...current,extraBooster:{name:'Técnica',confir
 assert.throws(()=>R.observation(ney,{...current,budget:0},model,103,true),/treino atual/);
 const partial=R.evaluate(ney,{...current,training:[0,0,0,0,0,0,0,0,0,0]},model);
 assert.equal(partial.remaining,62);assert.equal(partial.status,'estimated');
-for(const key of ['cap:50','cap:61','cap:196']){
+for(const key of ['cap:50']){
  const c=data.cards.find(x=>x.key===key);
  assert.equal(R.evaluate(c,{...current,cardKey:c.key,cardId:c.cardId,edition:c.edition},model).status,'pending');
 }

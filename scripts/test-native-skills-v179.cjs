@@ -1,7 +1,8 @@
 'use strict';
+const {historicalRoster,historicalCards}=require('./historical-catalog-v377.cjs'); // Conciliação dos dois snapshots corrigidos.
 const assert=require('node:assert/strict'),fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'../web');
-const read=name=>JSON.parse(fs.readFileSync(path.join(root,name),'utf8'));
+const read=name=>{const data=JSON.parse(fs.readFileSync(path.join(root,name),'utf8'));return name==='SCOUT_V69_AUDITORIA.json'?historicalRoster(data):data;};
 const audit=read('SCOUT_V69_AUDITORIA.json'),tactic=read('SCOUT_V98_AUDITORIA_TATICA.json'),source=read('SCOUT_V179_NATIVE_SKILLS_RESEARCH.json');
 assert.equal(audit.cards.length,246);
 assert.equal(tactic.cartas.length,246);

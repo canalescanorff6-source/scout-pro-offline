@@ -19,6 +19,13 @@ const corpusHash=imageHash.digest('hex');
 // V376: approved missing max-level references are reconciled field by field.
 // Removing ONLY these verified additions must reproduce the complete old hash.
 const preserved=JSON.parse(raw),references=require('../web/ct376-card-references.json').cards;
+const corrections=require('../web/ct377-identity-corrections.json').cards;
+assert.deepEqual(corrections.map(c=>[c.capture,c.afterCanonical.id]),[[153,'105780749692770'],[196,'105754711432614']]);
+for(const correction of corrections){
+ const i=preserved.cards.findIndex(c=>c.numero===correction.capture);
+ assert.deepEqual(preserved.cards[i],correction.afterCanonical,'Conciliação exata da correção autorizada #'+correction.capture);
+ preserved.cards[i]=structuredClone(correction.beforeCanonical);
+}
 let referencedLevels=0;
 for(const c of preserved.cards)if(/^catalogo_publico_/.test(c.pp_origem||'')){
  const ref=references.find(r=>r.capture===c.numero);
@@ -27,8 +34,8 @@ for(const c of preserved.cards)if(/^catalogo_publico_/.test(c.pp_origem||'')){
  assert.deepEqual(c.nivel_referencia,{kind:'catalogo_publico',url:ref.reference.url,card_id:String(c.id),confirmed_in_game:false});
  delete c.max_level;delete c.pp_origem;delete c.nivel_referencia;referencedLevels++;
 }
-assert.equal(referencedLevels,154);
-assert.equal(preserved.summary.level_public_reference,154);assert.equal(preserved.summary.level_total,239);
+assert.equal(referencedLevels,156);
+assert.equal(preserved.summary.level_public_reference,158);assert.equal(preserved.summary.level_total,243);
 delete preserved.summary.level_public_reference;delete preserved.summary.level_total;
 assert.equal(hash(JSON.stringify(preserved,null,2)+'\n'),'143a8eb4a53857c8a7a1501b50c1d523aa6bd1475b0fe2b5eb17da7ef9f89d51');
 assert.equal(corpusHash,'fd764548717caf9e929a3486a32adb6bcb3714a1c6addbc62a38343f94f6dbcd');

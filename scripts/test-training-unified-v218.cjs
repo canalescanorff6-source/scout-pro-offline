@@ -44,7 +44,7 @@ for(const c of cards){
  if(p.kind==='registrado'){registered++;assert(UI.valid(p.levels));assert.equal(UI.total(p.levels),c.pp)}
  else{pending++;assert.equal(p.kind,'pendente');assert.equal(p.levels,null)}
 }
-assert.equal(registered,162);assert.equal(pending,84);
+assert.equal(registered,160);assert.equal(pending,86);
 assert.deepEqual(cards.map(x=>({num:x.numero,id:String(x.id),pp:x.pp,levels:x.niveis})),original,'Nenhuma build alterada');
 const logic=read('web/scout-training-unified-v218.js'),lab=read('web/lab.js'),css=read('web/scout-training-unified-v218.css');
 const bridge=read('web/app-bridge.js'),sw=read('web/sw.js'),bundle=read('scripts/stamp-bundle-v189.cjs');

@@ -79,9 +79,9 @@ for(const card of cards){
  rows.push(record);
 }
 assert.equal(cases,1230);
-assert.equal(coherent,161);
+assert.equal(coherent,159);
 assert.equal(provisional,1);
-assert.equal(noVectors,84);
+assert.equal(noVectors,86);
 assert.equal(JSON.stringify(cards),originals);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 const synthetic={shown_position:'CA',attack_style:'Artilheiro',native_skills:''};

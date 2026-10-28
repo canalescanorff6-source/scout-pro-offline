@@ -17,13 +17,13 @@ for(const card of audit.cards){
  assert.equal(report.pp,card.pp);assert.equal(report.performanceValidated,false);assert.equal(report.overallTarget,false);
  assert.equal(engine.cost(report.a.levels),card.pp,'PP errados #'+card.numero);
  if(report.b){distinct++;assert.equal(engine.cost(report.b.levels),card.pp);assert(!engine.same(report.a.levels,report.b.levels))}
- const matches=perf.variants(d,lab,null);assert(matches.some(v=>engine.same(v.levels,report.a.levels)),'V80 não identifica a proposta #'+card.numero);
+ const matches=perf.variants(d,lab,null);if([153,196].includes(card.numero))assert.equal(matches.length,0,'Referência pública não é PP confirmado no V80');else assert(matches.some(v=>engine.same(v.levels,report.a.levels)),'V80 não identifica a proposta #'+card.numero);
  const entry=index.match(new RegExp('<a class="player-card"[^>]*data-cap="'+card.numero+'"[^>]*>[\\s\\S]*?<\\/a>'));
  assert(entry);
  if(card.pp===0){zero++;assert.equal(card.numero,211);assert(entry[0].includes('0 PP confirmado'))}
- else assert(entry[0].includes('PP conferidos · treino por função'),'Status incorreto #'+card.numero);
+ else assert(entry[0].includes([153,196].includes(card.numero)?'PP de referência · treino a conferir':'PP conferidos · treino por função'),'Status incorreto #'+card.numero);
 }
-assert.equal(older,162);assert.equal(newer,84);assert.equal(zero,1);assert(distinct>=70,'Poucos planos B alternativos');
+assert.equal(older,160);assert.equal(newer,86);assert.equal(zero,1);assert(distinct>=70,'Poucos planos B alternativos');
 assert.equal(fs.readdirSync(path.join(root,'cartas')).filter(x=>/^CAP_\d{3}_.+\.png$/.test(x)).length,246);
 const bridge=fs.readFileSync(path.join(root,'app-bridge.js'),'utf8');
 assert(bridge.includes('training-review-v160.js')&&bridge.includes('tactical-engine-v98.js'));

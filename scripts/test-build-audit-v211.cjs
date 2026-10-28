@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const dir=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(dir,p),'utf8');
-const cards=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
+const cards=require('./historical-catalog-v377.cjs').historicalRoster(JSON.parse(read('web/SCOUT_V69_AUDITORIA.json'))).cards;
 const evidence=JSON.parse(read('web/SCOUT_V211_REPETICOES_REVIEW.json'));
 const audit=require('../web/scout-build-audit-v211.js');
 const display=require('../web/scout-training-reference-v208.js');

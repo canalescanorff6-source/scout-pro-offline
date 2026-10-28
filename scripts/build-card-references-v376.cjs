@@ -4,20 +4,27 @@ const fs=require('node:fs'),path=require('node:path');
 const S=require('../web/skills-booster-v162.js'),L=require('../web/skill-names-v196.js');
 const root=path.resolve(__dirname,'../web'),read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const token=s=>S.keyFor(s)||L.norm(L.display(s));
-const names=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+const names=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().replace(/^savio$/,'savinho');
 const position=s=>({AC:'CA',DC:'ZG',ZC:'ZG',MC:'MLG',ME:'MLG',MDF:'VOL',GR:'GO',DD:'LD',DE:'LE',MO:'MAT'})[s]||s;
 function build(folder){
  const originals=read(path.join(root,'SCOUT_V69_AUDITORIA.json')).cards,owned=read(path.join(root,'ct364-owned-cards.json')).cards;
  const originalSources=read(path.join(folder,'fontes-coletadas.json')),newSources=read(path.join(folder,'novas-fontes-candidatas.json'));
  const byId=new Map(originalSources.filter(x=>x.data).map(x=>[x.id,x]));
+ const supplementFile=path.join(folder,'fontes-suplementares.json');
+ const supplements=fs.existsSync(supplementFile)?read(supplementFile):[];
+ const correctionsFile=path.join(root,'ct377-identity-corrections.json');
+ const corrections=fs.existsSync(correctionsFile)?read(correctionsFile).cards:[];
  const shared=new Set(originals.filter(c=>originals.filter(x=>String(x.id)===String(c.id)).length>1).map(c=>String(c.id)));
  const ref=r=>{
   if(!r?.data)return null;const d=r.data;
-  const levelValid=Number.isInteger(d.maxLevel)&&d.maxLevel>1&&d.maxLevel<=120;
+  const supplement=supplements.find(x=>x.cardId===String(d.compare.playerId));
+  const maxLevel=d.maxLevel>1?d.maxLevel:supplement?.maxLevel??d.maxLevel;
+  const levelValid=Number.isInteger(maxLevel)&&maxLevel>1&&maxLevel<=120;
   return {cardId:String(d.compare.playerId),name:d.compare.playerName,edition:d.compare.featuredName,type:d.compare.cardType,
    url:r.url,htmlSha256:r.html_sha256,fetchedUtc:r.fetched_utc,position:d.position,positions:d.positions,
    height:d.height,weakFootAccuracy:d.weakFootAccuracy,baseOverall:d.baseOverall,databaseMaxOverall:d.databaseMaxOverall,
-   maxLevel:levelValid?d.maxLevel:null,levelValid,maxPP:levelValid?2*(d.maxLevel-1):null,
+   maxLevel:levelValid?maxLevel:null,levelValid,maxPP:levelValid?2*(maxLevel-1):null,
+   levelSourceUrl:supplement&&d.maxLevel<=1?supplement.url:r.url,
    reportedMaxLevel:d.maxLevel,baseStats:d.baseStats,nativeSkills:d.compare.playerSkills,
    fixedBoosters:d.boosters.filter(b=>!b.selectable&&b.active).map(b=>({name:b.name,stats:b.stats})),
    extraSlotInPublicEdition:d.boosters.some(b=>b.selectable),accountConfirmed:false};
@@ -30,7 +37,9 @@ function build(folder){
   const ficha=fs.readFileSync(path.join(root,c.arquivo),'utf8');
   const labMatch=ficha.match(/<script\b(?=[^>]*\bid=["']lab-data["'])[^>]*>([\s\S]*?)<\/script>/i);
   const lab=labMatch?JSON.parse(labMatch[1]):null;
+  const correction=corrections.find(x=>x.capture===c.numero);
   return {key:'cap:'+c.numero,capture:c.numero,cardKey:c.numero+'@'+c.id,name:c.name,cardId:String(c.id),edition:c.versao,
+   ...(correction?{previousIdentity:{cardId:correction.beforeCanonical.id,edition:correction.beforeCanonical.versao},identityCorrectionKey:c.numero}:{}),
    position:position(c.posicao),image,file:c.arquivo,labKey:lab?'scoutpro:v67:'+lab.id+':'+lab.card:null,
    cataloguePP:c.pp,registeredMaxLevel:c.max_level??null,
    registeredLevels:c.niveis||null,identityStatus:!r?'missing':repeated?'shared_id':allowed?'registered_id':'name_mismatch',
@@ -62,6 +71,10 @@ function build(folder){
  }
  const data={schema:'CRAQUE_CARD_REFERENCES_V376',sourceDescription:'Catálogos externos; não comprovam equipamento, treino ou identidade da conta.',
   ownerPackDeclaration:'Usuário declara possuir o pacote completo Borussia Dortmund 26-27 e confirma as quatro edições externas: Ezequiel19/10/26,ProvedelRanking2027,PavlovićAnúncio2027,ForlánVillarreal04-05. Não confirma treinos/equipamentos.',cards};
+ const ownerMaxima={'cap:171':106,'cap:185':97,'cap:205':103,'ct364-12':103};
+ for(const card of cards)if(ownerMaxima[card.key])card.ownerMaximumOverall={
+  value:ownerMaxima[card.key],source:'usuario_2026-10-28',currentTrainingConfirmed:false,
+  manager:null,training:null};
  return {data,model};
 }
 if(require.main===module){
