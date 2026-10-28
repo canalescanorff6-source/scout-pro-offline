@@ -653,7 +653,12 @@ def run():
                 manager=page.locator('#ct-manager-v302')
                 manager.wait_for(state='attached',timeout=20000)
                 if not manager.evaluate('(e)=>e.open'):
-                    problems.append(f"{name}: painel V303 deve abrir visível para escolha do técnico")
+                    # V378: com técnico escolhido, o resumo compacto é o acesso.
+                    if not page.locator('#ct-manager-select').input_value():
+                        problems.append(f"{name}: seletor sem técnico não pode começar recolhido")
+                    if not manager.locator(':scope > summary').is_visible():
+                        problems.append(f"{name}: acesso para alterar o técnico ficou oculto")
+                    manager.locator(':scope > summary').click()
                 page.locator('#ct-manager-select').wait_for(state='attached',timeout=35000)
                 reveal(page.locator('#ct-manager-select'))
                 page.locator('#ct-manager-select').select_option('CT-MGR-001')
