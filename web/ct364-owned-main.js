@@ -51,18 +51,27 @@ const equipmentSave=(card,value)=>{
  notifyBackup();
  refreshReview();
 };
+window.addEventListener('craque:references-ready',()=>{
+ for(const c of entries){const tag=document.querySelector('[data-owned-id="'+c.key+'"] .ct364-card-tag');
+  const value=confirmationOf(c,true);if(tag&&value.source==='public_reference')tag.textContent='Máximo de referência · conferir no jogo';}
+ if(active)renderDialog();
+});
 const numberOrNull=(v)=>Number.isInteger(v)&&v>0&&v<=120?v:null;
-const confirmationOf=card=>{
+const confirmationOf=(card,allowReference=false)=>{
+ if(allowReference&&window.CRAQUE_RATING_V376&&window.CRAQUE_REFERENCES_V376){
+  const entry=window.CRAQUE_REFERENCES_V376.cards.find(r=>r.key===card.key);
+  return window.CRAQUE_RATING_V376.ownedMetadata(card,confirmed[card.key],entry);
+ }
  const v=confirmed[card.key];
  if(!v||typeof v!=='object'||Array.isArray(v))return {};
  const level=numberOrNull(v.maxLevel);
  const id=/^\d{5,20}$/.test(String(v.cardId||''))?String(v.cardId):'';
  return {level,cardId:id};
 };
-const cardAsEngine=(card,role)=>{const p=confirmationOf(card),manual=equipmentOf(card);
+const cardAsEngine=(card,role)=>{const p=confirmationOf(card,true),manual=equipmentOf(card);
  return {localKey:card.key,originalPosition:card.position,
   name:card.name,position:role||card.position,style:card.style,
-  level:p.level,pp:null,cardId:p.cardId,edition:'',
+  level:p.level,pp:null,cardId:p.cardId,edition:p.engineEdition||'',
   // Anotações manuais NÃO provam slot livre, Card ID ou versão.
   skills:manual.skills.filter(Boolean).join('; '),nativeSkills:card.observed.nativeSkills.join('; '),
   booster:manual.booster,fixedBooster:'',boosterSlot:manual.slot,trainingLevels:''};
@@ -77,8 +86,9 @@ function makeCard(c){
  img.loading='lazy';img.decoding='async';art.append(img);
  const info=mk('span','ct364-card-info');
  info.append(mk('strong','',c.name),mk('small','',c.position+' · '+c.style));
- const conf=confirmationOf(c);
- info.append(mk('span','ct364-card-tag',conf.level?'Nível máximo informado · conferir edição':'Nível máximo / PP pendentes'));
+ const conf=confirmationOf(c,true);
+ info.append(mk('span','ct364-card-tag',conf.level?
+  (conf.source==='public_reference'?'Máximo de referência · conferir no jogo':'Nível máximo informado · conferir edição'):'Nível máximo / PP pendentes'));
  b.append(art,info);b.addEventListener('click',()=>openCard(c));return b;
 }
 function currentFilter(c){
@@ -1070,7 +1080,7 @@ async function renderTraining(c,body){
  tools.append(modes);const area=mk('div','ct364-training-area');
  tools.append(area);body.append(tools);
  note(tools,'Sobreposição: perfil ainda pendente neste laboratório. As cinco táticas disponíveis mantêm cálculos independentes.');
- const identity=confirmationOf(c);
+ const identity=confirmationOf(c,true);
  if(!identity.level)note(area,'PP PENDENTES: o nível mostrado no simulador não confirma o nível MÁXIMO da edição. Informe esse dado na seção Confirmar dados da ficha.');
  const manual=equipmentOf(c);
  if(manual.skills.some(Boolean))line(area,'Habilidades informadas por você',manual.skills.filter(Boolean).join(' · ')+' · registro local, não validação automática');
@@ -1368,6 +1378,8 @@ function renderDialog(){
  else if(activePanel==='body')renderBody(c,body);
  else if(activePanel==='gameplay')renderGameplay(c,body);
  else if(activePanel==='confirm')renderConfirm(c,body);
+ window.dispatchEvent(new CustomEvent('craque:owned-context-changed',{
+  detail:{key:c.key,position:activeRole||c.position,style:activeStyle}}));
 }
 function switchOwnedCard(c){
  if(!c||!entries.some(item=>item.key===c.key))return;
@@ -1439,7 +1451,8 @@ function prepare(data){
  const label=mk('div');label.append(mk('span','ct364-eyebrow','FICHA PRINCIPAL · V364'),mk('h2',''));label.lastChild.id='ct364-title';
  label.append(mk('p',''));label.lastChild.id='ct364-dialog-subtitle';
  const close=mk('button','ct364-close','×');close.type='button';close.setAttribute('aria-label','Fechar ficha');
- close.onclick=()=>dialog.close();h.append(art,label,close);
+ close.onclick=()=>dialog.close();const artWrap=mk('span','ct376-owned-dialog-art');artWrap.append(art);
+ h.append(artWrap,label,close);
  const choices=mk('label','ct364-role','Analisar na posição:');
  const sel=mk('select');sel.id='ct364-dialog-role';
  for(const p of ['CA','SA','MAT','MLG','VOL','ZC','ZG','LE','LD','PTE','PTD','MLE','MLD','GO']){

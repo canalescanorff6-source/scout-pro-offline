@@ -43,7 +43,7 @@ function reconcile(card,storage,vectors=[]){
   exceeds_budget:exceeded.length>0,
   exceeded,builds,
   status:mismatch?'divergente':saved?'confirmado_localmente':
-   Number.isInteger(card.max_level)&&card.pp_origem?'registrado':'pendente'
+   Number.isInteger(card.max_level)&&card.pp_origem&&!/^catalogo_publico_/.test(card.pp_origem)?'registrado':'pendente'
  });
 }
 const api=Object.freeze({SCHEMA,PREFIX,ppForLevel,key,points,validated,localReview,reconcile});
@@ -98,6 +98,10 @@ function paintDetail(card,raw,lab,store){
   title.textContent='Nível registrado no catálogo';
   body.textContent='Nível '+view.original_level+' · '+view.original_pp+
    ' PP na fonte documentada da edição. Ainda é possível conferir na sua conta.';
+ }else if(/^catalogo_publico_/.test(card.pp_origem||'')){
+  title.textContent='Nível máximo de referência pública';
+  body.textContent='Referência da edição: nível '+view.original_level+' · '+view.original_pp+
+   ' PP. Ainda precisa ser conferido no jogo; não comprova o treino aplicado na sua conta.';
  }else{
   title.textContent='Nível máximo desta edição ainda sem comprovação';
   body.textContent='A ficha usa '+view.original_pp+

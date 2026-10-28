@@ -31,7 +31,7 @@ for(const c of cards){
  const p='web/'+c.arquivo;
  if(!fs.existsSync(path.resolve(root,p))){mismatch.push('#'+c.numero+' HTML ausente');continue}
  const html=read(p),raw=embed(html,'scout-v68-data'),lab=embed(html,'lab-data');
- const hasProof=Number.isInteger(c.max_level)&&Boolean(c.pp_origem);
+ const hasProof=Number.isInteger(c.max_level)&&Boolean(c.pp_origem)&&!/^catalogo_publico_/.test(c.pp_origem);
  if(hasProof){
   verified.push(c.numero);
   if(c.pp!==2*(c.max_level-1))mismatch.push('#'+c.numero+' nível '+c.max_level+' PP '+c.pp);

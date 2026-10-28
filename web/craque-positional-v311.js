@@ -29,7 +29,12 @@ function fromPersonal(card,raw,store){
  const model={
   collection:'minhas-246',owner:'principal',cardKey:String(card.numero)+'@'+text(card.id),
   name:text(card.name),edition:text(card.versao),cardId:text(card.id),
-  position:normalize(card.posicao),level:card.max_level??null,pp:Number.isInteger(card.pp)?card.pp:null,
+  position:normalize(card.posicao),
+  // V376: a public reference is not a new owner declaration. Keeping the
+  // previous level identity avoids hiding saved histories when PP is unchanged.
+  level:/^catalogo_publico_/.test(String(card.pp_origem||''))?null:card.max_level??null,
+  publicMaxLevel:/^catalogo_publico_/.test(String(card.pp_origem||''))?card.max_level:null,
+  pp:Number.isInteger(card.pp)?card.pp:null,
   style:text(card.estilo_ataque),nativeSkills:text(card.habilidades_nativas||raw?.native_skills),
   skills:'',fixedBooster:text(card.impeto_fixo||raw?.boost1),
   booster:'',boosterSlot:'pendente',

@@ -145,7 +145,7 @@ const CONTEXT_NATIVE_GROUPS=Object.freeze({
   'Magnetic Feet','Pedalada'],
  distribuicao:['Outside Curler','Phenomenal Pass','Visionary Pass',
   'No Look Pass','Game-changing Pass','Passe sem olhar',
-  'Passe fenomenal','Curva para Fora'],
+  'Passe fenomenal','Passador nato','Curva para Fora'],
  amplitude:['Pinpoint Crossing','Edged Crossing','Edge Crossing',
   'Cruzamento preciso','Long Throw'],
  finalizacao:['Rising Shot','Dipping Shot','Chip Shot Control','Knuckle Shot',

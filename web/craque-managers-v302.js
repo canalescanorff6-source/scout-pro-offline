@@ -151,6 +151,9 @@ function portraitFor(id){
  }catch(_){return null}
 }
 function selectedManager(){return selected}
+function selectionRecord(manager,tactic){
+ return manager?{catalog_id:manager.catalog_id,tactic}:{catalog_id:null,tactic,cleared:true};
+}
 function mount(doc){
  if(!doc||ui)return Boolean(ui);
  const hero=doc.getElementById('scout-v220-hero');
@@ -329,7 +332,11 @@ function mount(doc){
  }
  let selectedTactic='posse';
  function notify(){
-  if(!selected)return;
+  if(!selected){
+   host.dispatchEvent(new host.CustomEvent('scoutpro:manager-selected-v302',{
+    detail:{catalog_id:null,tactic:selectedTactic,cleared:true,capture,card_id:cardId}}));
+   return;
+  }
   const detail={catalog_id:selected.catalog_id,manager_name:selected.nome,
    version:selected.versao_lancamento,tactic:selectedTactic,
    proficiency:proficiency(selected,selectedTactic),
@@ -354,10 +361,8 @@ function mount(doc){
   selected=find(select.value);
   selectedTactic=selected?preferred(selected,null):'posse';
   try{
-   if(selected){
-    const data=JSON.stringify({catalog_id:selected.catalog_id,tactic:selectedTactic});
-    host.localStorage.setItem(localKey,data);host.localStorage.setItem(backedKey,data);
-   }else{host.localStorage.removeItem(localKey);host.localStorage.removeItem(backedKey)}
+   const data=JSON.stringify(selectionRecord(selected,selectedTactic));
+   host.localStorage.setItem(localKey,data);host.localStorage.setItem(backedKey,data);
   }catch(_){}
   render();notify();
  });
@@ -428,5 +433,5 @@ if(host?.document){
   host.document.addEventListener('DOMContentLoaded',start,{once:true});
  else start();
 }
-return Object.freeze({STYLES,KEY,CURATED_IDS,KOVAC_20261022,withKovacEdition,curatedManagers,competitiveStyles,portraitFor,DATA_GZIP_BASE64,validate,load,find,model,preferred,proficiency,mount,selectedManager});
+return Object.freeze({STYLES,KEY,CURATED_IDS,KOVAC_20261022,withKovacEdition,curatedManagers,competitiveStyles,portraitFor,DATA_GZIP_BASE64,validate,load,find,model,preferred,proficiency,mount,selectedManager,selectionRecord});
 });
