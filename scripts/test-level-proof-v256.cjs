@@ -46,7 +46,7 @@ for(const card of catalog){
 }
 assert.equal(documented,85);
 assert.equal(withoutLevel,161);
-assert.equal(mathematicalButUnverified,161,
+assert.equal(mathematicalButUnverified,159,
  'PP matematicamente fechados em 161 edições não equivalem a nível confirmado');
 assert(mathematicalButUnverified>0,
  'O risco de PP matematicamente completos, porém não confirmados, precisa estar coberto');

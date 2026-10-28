@@ -6,7 +6,7 @@ const fs=require('node:fs'),path=require('node:path');
 const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
 const V=require('../web/craque-ficha-individual-v251.js');
 const T=require('../web/scout-multitactic-engine-v220.js');
-const audit=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
+const audit=require('./historical-catalog-v377.cjs').historicalRoster(JSON.parse(read('web/SCOUT_V69_AUDITORIA.json'))).cards;
 const index=JSON.parse(read('web/SCOUT_V221_EVIDENCE_INDEX.json')).cards;
 const unchanged=JSON.stringify(audit);
 assert.equal(audit.length,246);
@@ -119,7 +119,7 @@ assert.equal(V.localLevelReview(martinelli,{getItem:()=>JSON.stringify(Object.fr
 assert.equal(V.buildReview(martinelli,raw,{},audit,'posse',{store:storage}).status,'complete');
 stored.clear();
 // Nível ainda ausente no catálogo, mas confirmado LOCALMENTE com PP exatos.
-const missing=audit.find(x=>!Number.isInteger(x.max_level)&&x.pp>0&&x.pp<=238);
+const missing=audit.find(x=>![153,196].includes(x.numero)&&!Number.isInteger(x.max_level)&&x.pp>0&&x.pp<=238);
 assert(missing);
 const html=read('web/'+missing.arquivo),entry=getRaw(html);
 const before=V.buildReview(missing,entry,{},audit,'posse',{store:storage});

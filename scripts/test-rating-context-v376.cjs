@@ -43,7 +43,9 @@ const owned=require('../web/ct364-owned-cards.json').cards[0],ownedRef=refs.find
 for(const capture of [61,144,153,196]){
  const shared=refs.find(c=>c.capture===capture),original=cards.find(c=>c.numero===capture);
  const result=C.resolve(shared,original,store,{managers});
- assert.equal(result.maxLevel,null,'ID compartilhado não pode fornecer nível de outra edição: '+capture);
+ assert.equal(result.maxLevel,shared.reference.maxLevel,'Edição individualmente corrigida fornece apenas sua referência: '+capture);
+ const blocked=C.resolve({...shared,registeredMaxLevel:null,identityUsable:false},original,store,{managers});
+ assert.equal(blocked.maxLevel,null,'ID compartilhado não pode fornecer nível de outra edição: '+capture);
  assert.equal(result.ctx.budget,original.pp,'A pendência não pode apagar PP já existentes.');
 }
 x=C.resolve(ownedRef,owned,store,{managers});assert.equal(x.ctx.budget,60);assert.equal(x.ctx.training,null);
@@ -56,4 +58,8 @@ const retained=C.resolve(ownedRef,owned,store,{managers});
 assert.equal(retained.error,null,'Salvar treino deve preservar a identidade manual efetivamente selecionada');
 assert.equal(retained.ctx.cardId,'999991111');
 assert.equal(R.evaluate(ownedRef,retained.ctx,require('../web/ct376-rating-model.json')).overall,null,'ID manual distinto não herda atributos da candidata');
+const kahn=refs.find(c=>c.capture===169),kahnCard=cards.find(c=>c.numero===169);
+assert.doesNotThrow(()=>C.saveTraining(kahn,store,kahn.registeredLevels,kahn.cataloguePP,true),
+ 'O treino pessoal de goleiro pode incluir Jogo Aéreo, como no catálogo e laboratório existentes.');
+assert.equal(C.resolve(kahn,kahnCard,store,{managers}).source,'Treino confirmado por você');
 console.log('V376 contexto PASS: treino pessoal/confirmado, técnico, corrupção preservada e 15 sem treino inventado.');

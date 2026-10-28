@@ -44,8 +44,8 @@ for(const c of cards){
   assert(Number.isInteger(c.pp));
  }
 }
-assert.equal(references,162);
-assert.equal(pending,84);
+assert.equal(references,160);
+assert.equal(pending,86);
 for(const tactic of T.STYLES){
  const result=V.buildReview(martin,raw,lab,cards,tactic.id);
  assert(result.proposal,'Martinelli 26/50 não pode exibir zeros falsos para '+tactic.id);

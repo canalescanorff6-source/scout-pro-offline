@@ -6,7 +6,9 @@ const {suggestPreview,suggestIndividualPreview,previewCost,previewValid,individu
 const {inspect,contrast,role}=require('../web/scout-individual-v207.js');
 assert.equal(cards.length,246);assert.equal(role('AC'),'CA');assert.equal(role('ZC'),'ZG');
 const original=cards.filter(x=>Array.isArray(x.niveis)),provisional=cards.filter(x=>x.niveis===null);
-assert.equal(original.length,162);assert.equal(provisional.length,84);
+assert.equal(original.length,160);assert.equal(provisional.length,86);
+const corrected=require('../web/ct377-identity-corrections.json').cards;
+assert.equal(corrected.length,2);assert(corrected.every(c=>Array.isArray(c.beforeCanonical.niveis)&&c.afterCanonical.niveis===null));
 const c=i=>cards.find(x=>x.numero===i);
 function inspectCap(i){
  const x=c(i);return inspect(cards,{...x,capture:i,role_used:role(x.posicao),attack_style:x.estilo_ataque,recommended_levels:x.niveis});

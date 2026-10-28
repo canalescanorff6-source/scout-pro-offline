@@ -1,9 +1,10 @@
 'use strict';
+const {historicalRoster,historicalCards}=require('./historical-catalog-v377.cjs'); // Conciliação dos dois snapshots corrigidos.
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const read=f=>JSON.parse(fs.readFileSync(path.join(root,'web',f),'utf8'));
+const read=f=>{const data=JSON.parse(fs.readFileSync(path.join(root,'web',f),'utf8'));return f==='SCOUT_V69_AUDITORIA.json'?historicalRoster(data):data;};
 const a=read('SCOUT_V69_AUDITORIA.json');
 const v=read('SCOUT_V182_SKILLS_BOOSTERS_EVIDENCE.json');
 const engine=require('../web/booster-engine-v103.js');

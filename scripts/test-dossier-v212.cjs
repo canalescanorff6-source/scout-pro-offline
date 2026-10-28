@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const engine=require('../web/lab.js'),module212=require('../web/scout-dossier-v212.js'),audit=require('../web/scout-build-audit-v211.js');
-const roster=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
+const roster=require('./historical-catalog-v377.cjs').historicalRoster(JSON.parse(read('web/SCOUT_V69_AUDITORIA.json'))).cards;
 const groups=JSON.parse(read('web/SCOUT_V211_REPETICOES_REVIEW.json')).groups;
 const formation=JSON.parse(read('web/SCOUT_V176_POSSE_4312.json'));
 const all=module212.reviewCases(roster,groups,engine,formation);

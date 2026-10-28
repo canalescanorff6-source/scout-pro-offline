@@ -11,12 +11,12 @@ for(const file of files){
  if(d.pp===null){missing++;assert(d.recommended_levels===null||d.recommended_levels===undefined)}
  else{
   budgets++;assert(Number.isInteger(d.pp)&&d.pp>=0);assert.strictEqual(l.pp,d.pp);
-  if(d.recommended_levels===null){budgetNoBuild++;assert(manual.has(d.capture),'PP sem build não revisado: '+file);assert(d.recommended_scenario===null);assert.equal(d.max_level,manual.get(d.capture)[0]);assert.equal(d.pp,manual.get(d.capture)[1]);assert.equal(d.pp,2*(d.max_level-1));assert.match(d.pp_source,/usuario/)}
+  if(d.recommended_levels===null&&[153,196].includes(d.capture)){budgetNoBuild++;assert.equal(d.pp_estimated,true);assert.match(d.pp_origem,/catalogo_publico_correcao_edicao/);assert.equal(d.pp,2*(d.max_level-1));assert(Array.isArray(l.draftA));}else if(d.recommended_levels===null){budgetNoBuild++;assert(manual.has(d.capture),'PP sem build não revisado: '+file);assert(d.recommended_scenario===null);assert.equal(d.max_level,manual.get(d.capture)[0]);assert.equal(d.pp,manual.get(d.capture)[1]);assert.equal(d.pp,2*(d.max_level-1));assert.match(d.pp_source,/usuario/)}
   else{const p=d.recommended_levels;assert(Array.isArray(p)&&p.length===10,p);const cost=p.reduce((sum,n)=>{for(let i=0;i<n;i++)sum+=1+Math.floor(i/4);return sum},0);assert.strictEqual(cost,d.pp,'PP divergente '+file)}
  }
  if(d.base_stats_known)base++;if(d.has_native_skills)native++;
 }
-assert.equal(budgets,246);assert.equal(missing,0);assert.equal(budgetNoBuild,84);
+assert.equal(budgets,246);assert.equal(missing,0);assert.equal(budgetNoBuild,86);
 assert(fs.readFileSync(path.join(root,'web/app-bridge.js'),'utf8').includes('scout-engine-v74.js'));
 new (require('vm').Script)(fs.readFileSync(path.join(root,'web/scout-engine-v74.js'),'utf8'));
 console.log('V90 OK: '+files.length+' fichas, '+budgets+' PP, '+missing+' pendentes, '+budgetNoBuild+' treinamentos não distribuídos, '+base+' bases, '+native+' skills.');

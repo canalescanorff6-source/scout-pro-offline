@@ -4,15 +4,16 @@
  if(host)host.CRAQUE_RATING_CONTEXT_V376=api;
 })(typeof window!=='undefined'?window:null,function(host){'use strict';
 const PREFIX='scoutpro:v376:current-training:';
+const trainingKey=(ref,id=ref.cardId||ref.candidateId||'')=>PREFIX+ref.key+':'+String(id);
 const valid=v=>Array.isArray(v)&&v.length===10&&v.every(n=>Number.isInteger(n)&&n>=0&&n<=20);
 const cost=v=>v.reduce((sum,n)=>{for(let i=0;i<n;i++)sum+=1+Math.floor(i/4);return sum},0);
 const get=(store,key)=>{const raw=store.getItem(key);return raw?JSON.parse(raw):null};
 function saveTraining(ref,store,levels,budget,confirmed,resolvedCardId=ref.cardId||ref.candidateId||''){
  if(!confirmed||!valid(levels)||!Number.isInteger(budget)||budget<0||cost(levels)>budget)
   throw Error('Confirme a distribuição atual no jogo, sem exceder os PP.');
- const go=ref.position==='GO',allowed=go?[7,8,9]:[0,1,2,3,4,5,6];
+ const go=ref.position==='GO',allowed=go?[4,5,7,8,9]:[0,1,2,3,4,5,6];
  if(levels.some((n,i)=>n&&!allowed.includes(i)))throw Error('Categorias incompatíveis com a carta.');
- store.setItem(PREFIX+ref.key,JSON.stringify({schema:'CRAQUE_CURRENT_TRAINING_V376',cardKey:ref.key,
+ store.setItem(trainingKey(ref,resolvedCardId),JSON.stringify({schema:'CRAQUE_CURRENT_TRAINING_V376',cardKey:ref.key,
   cardId:String(resolvedCardId),budget,levels:levels.slice(),confirmedByOwner:true,updatedAt:new Date().toISOString()}));
 }
 function resolve(ref,card,store,options={}){
@@ -52,7 +53,12 @@ function resolve(ref,card,store,options={}){
    ctx.manager={id:row.catalog_id,name:row.nome||row.name||row.tecnico||row.catalog_id,
     proficiency:options.managers.proficiency(row,style),boosters:row.boosters_EN||[]};
   }
-  const current=get(store,PREFIX+ref.key);
+  let current=get(store,trainingKey(ref,ctx.cardId));
+  if(!current){
+   const legacy=get(store,PREFIX+ref.key);
+   if(legacy&&legacy.cardId===ctx.cardId)current=legacy;
+   else if(legacy)warning='Treino da identidade anterior preservado no histórico; confira o treino desta edição.';
+  }
   if(current){
    if(current.schema!=='CRAQUE_CURRENT_TRAINING_V376'||current.cardKey!==ref.key||
     current.cardId!==ctx.cardId||current.budget!==ctx.budget||!current.confirmedByOwner||
@@ -73,5 +79,5 @@ function resolve(ref,card,store,options={}){
   return {ctx,source,warning,maxLevel,error:null};
  }catch(e){ctx.training=null;return {ctx,source,warning,maxLevel,error:String(e.message||e)}}
 }
-return Object.freeze({PREFIX,valid,cost,saveTraining,resolve});
+return Object.freeze({PREFIX,trainingKey,valid,cost,saveTraining,resolve});
 });

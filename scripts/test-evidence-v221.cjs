@@ -2,7 +2,7 @@
 /* Scout PRO V221 — validação determinística de fonte + vínculo exato das 246 fichas. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),base=path.join(root,'web');
-const load=(file)=>JSON.parse(fs.readFileSync(path.join(base,file),'utf8'));
+const load=(file)=>{const value=JSON.parse(fs.readFileSync(path.join(base,file),'utf8'));return file==='SCOUT_V69_AUDITORIA.json'?require('./historical-catalog-v377.cjs').historicalRoster(value):value;};
 const roster=load('SCOUT_V69_AUDITORIA.json').cards;
 const audit=load('SCOUT_V213_AUDITORIA_INDIVIDUAL.json');
 const data=load('SCOUT_V221_EVIDENCE_INDEX.json');
@@ -32,7 +32,7 @@ for(const r of roster){
  const html=fs.readFileSync(file,'utf8');
  const match=html.match(/<script\b[^>]*\bid="scout-v68-data"[^>]*>([\s\S]*?)<\/script>/);
  assert(match,'Contexto individual presente #'+no);
- const c=JSON.parse(match[1]);
+ const c=require('./historical-catalog-v377.cjs').historicalRaw(JSON.parse(match[1]));
  assert.equal(c.capture,no,'Número da captura vinculada #'+no);
  assert.equal(String(c.id),String(r.id),'Card ID preservado #'+no);
  assert.equal(Number(c.pp),Number(r.pp),'PP preservado #'+no);

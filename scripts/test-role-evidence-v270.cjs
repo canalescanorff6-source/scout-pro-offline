@@ -70,7 +70,7 @@ for(const card of cards){
  assert.equal(JSON.stringify(card),snapshot,'Mutação de carta '+card.numero);
 }
 assert.equal(evaluations,1230);
-assert.equal(missingBuilds,85,'84 sem vetor + 1 proposta não validada permanecem bloqueados');
+assert.equal(missingBuilds,87,'84 sem vetor + 1 proposta não validada permanecem bloqueados');
 assert(ptNativeAliases>0,'Amostra PT-BR precisa existir no catálogo');
 assert((profileCounts.get('zagueiro_construtor')||0)>0);
 assert((profileCounts.get('lateral_de_apoio')||0)>0);

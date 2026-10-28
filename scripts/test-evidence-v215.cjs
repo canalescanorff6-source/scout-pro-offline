@@ -4,7 +4,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const root=path.resolve(__dirname,'..'),read=rel=>fs.readFileSync(path.join(root,rel),'utf8');
 const E=require('../web/scout-evidence-v215.js');
 const R=require('../web/skills-booster-v162.js');
-const originals=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
+const originals=require('./historical-catalog-v377.cjs').historicalRoster(JSON.parse(read('web/SCOUT_V69_AUDITORIA.json'))).cards;
 const audit=JSON.parse(read('web/SCOUT_V213_AUDITORIA_INDIVIDUAL.json')).cards;
 const snapshot=originals.map(c=>({n:c.numero,id:c.id,pp:c.pp,levels:c.niveis,skills:c.habilidades_nativas,candidates:c.adicionais_candidatas}));
 const rows=E.auditRoster(originals,audit,R.keyFor,R.evaluate);
