@@ -50,7 +50,7 @@ with sync_playwright() as pw:
    observed.locator('button[type=submit]').click()
    page.wait_for_function("()=>document.querySelector('.ct376-ovr')?.dataset.state==='observed'")
    assert page.locator('.ct376-ovr').first.locator('span').first.inner_text()=='105'
-   page.get_by_role('button',name='Sem técnico selecionado',exact=True).click()
+   page.locator('#ct-manager-v302').get_by_role('button',name='Sem técnico selecionado',exact=True).click()
    page.wait_for_function("()=>document.querySelector('.ct376-ovr')?.dataset.state==='estimated'")
    assert page.evaluate('document.documentElement.scrollWidth-innerWidth')<=12
    page.screenshot(path=str(OUT/(name+'-detail.png')),full_page=False)
