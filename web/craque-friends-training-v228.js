@@ -51,6 +51,7 @@ function sourceSignature(card){
  // Preservar assinaturas V228 de builds manuais existentes; apenas o PP derivado
  // precisa incluir o nível máximo para invalidar a hipótese se ele mudar.
  if(card.pp===null||card.pp===undefined)signatureParts.push(card.level);
+ if(card.managerId)signatureParts.push('manager',String(card.managerId));
  const serialized=JSON.stringify(signatureParts);
  // Marca de atualização, NÃO assinatura de segurança (backup usa SHA-256).
  let h=2166136261>>>0,j=0x9e3779b9>>>0;
@@ -69,7 +70,7 @@ function parseBaseline(card,t){
   return {levels:null,error:'Treino anterior inválido: informe os 10 níveis (0 a 20) na ordem das categorias.'};
  if(t.total(values)!==resolveBudget(card).pp)
   return {levels:null,error:'O treino anterior não fecha os PP informados; revise os dez grupos.'};
- const role=t.roleOf(profileOf(card)),allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ const role=t.roleOf(profileOf(card)),allowed=role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6];
  if(values.some((x,i)=>x>0&&!allowed.includes(i)))
   return {levels:null,error:'Treino informado usa categorias fora da função escolhida; confirme a posição.'};
  return {levels:values,error:null};
@@ -185,7 +186,7 @@ function functionReview(card,result,currentLevels,provided){
  const analysis=interpretation?.interpret?.(profileOf(card),result.tactic,null);
  const budget=result.plan.pp??result.progress.pp;
  const role=result.plan.role||analysis?.role;
- const allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ const allowed=role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6];
  const usable=levels=>Number.isInteger(budget)&&t?.valid?.(levels)&&t.total(levels)<=budget&&
   levels.every((n,i)=>n===0||allowed.includes(i));
  const baseline=currentLevels===undefined?parseBaseline(card,t).levels:currentLevels;
@@ -305,10 +306,11 @@ function readFunctionDraft(store,card,tactic){
  if(!raw)return null;
  let record;try{record=JSON.parse(raw)}catch(_){throw Error('Rascunho ilegível; histórico preservado')}
  const t=getDeps().tactical||(typeof module==='object'?require('./scout-multitactic-engine-v220.js'):null);
- const allowed=t?.roleOf?.(profileOf(card))==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ const allowed=t?.roleOf?.(profileOf(card))==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6];
  if(record?.schema!=='CRAQUE_FUNCTION_DRAFT_V374'||!t?.valid?.(record.levels)||
   !Number.isInteger(record.pp)||record.pp<0||record.pp>300||t.total(record.levels)!==record.pp||
   record.levels.some((n,i)=>n>0&&!allowed.includes(i))||record.position!==card.position||record.tactic!==tactic||
+  (record.budget!==undefined&&(!Number.isInteger(record.budget)||record.budget<record.pp||record.budget>300))||
   !Number.isInteger(record.revision)||record.revision<1||typeof record.source!=='string'||
   !Array.isArray(record.history)||record.history.length>39)
   throw Error('Rascunho não reconhecido; histórico preservado');
@@ -319,16 +321,16 @@ function saveFunctionDraft(store,card,tactic,result,provided){
  const t=getDeps(provided).tactical||(typeof module==='object'?require('./scout-multitactic-engine-v220.js'):null),plan=result?.plan;
  if(result?.sourceSignature!==sourceSignature(card)||result?.tactic!==tactic)
   throw Error('Dados da carta mudaram; recalcule a proposta atual');
- const allowed=plan?.role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ const allowed=plan?.role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6];
  if(plan?.status!=='hipotese'||!t?.valid?.(plan.levels)||
-  plan.pp!==resolveBudget(card).pp||t.total(plan.levels)!==plan.pp||
+  plan.pp!==resolveBudget(card).pp||t.total(plan.levels)>plan.pp||
   plan.levels.some((n,i)=>n>0&&!allowed.includes(i)))throw Error('PP ou categorias da proposta divergentes');
  const prior=readFunctionDraft(store,card,tactic);
  if(prior&&prior.history.length>=39)throw Error('Limite de 40 revisões atingido; histórico preservado. Exporte uma cópia antes de continuar.');
  const previous=prior?Object.fromEntries(Object.entries(prior).filter(([key])=>!['history','stale'].includes(key))):null;
  const record={schema:'CRAQUE_FUNCTION_DRAFT_V374',source:sourceSignature(card),
   revision:(prior?.revision||0)+1,createdAt:new Date().toISOString(),
-  position:card.position,tactic,pp:plan.pp,levels:plan.levels.slice(),
+  position:card.position,tactic,pp:t.total(plan.levels),budget:plan.pp,levels:plan.levels.slice(),
   skills:(result.suggestedSkills||[]).slice(0,5).map(x=>x.name),
   booster:result.booster?.primary?.nome||null,provisional:true,
   history:prior?[...prior.history,previous]:[]};

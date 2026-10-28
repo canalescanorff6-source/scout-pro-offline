@@ -2,6 +2,7 @@
 import json, os, shutil
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 BASE=os.environ.get('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 OUT=Path('artifacts/visual-qa/v376');OUT.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as pw:
@@ -45,7 +46,7 @@ with sync_playwright() as pw:
     window.dispatchEvent(new Event('scoutpro:manager-selected-v302'));
    }""")
    page.wait_for_function("()=>document.querySelector('.ct376-ovr')?.title.includes('Niko Kovač')")
-   panel=page.locator('.ct376-panel');panel.locator('summary').click()
+   panel=page.locator('.ct376-panel');reveal(panel);panel.locator('summary').click()
    form=panel.locator('.ct376-training-form')
    for i in range(10):form.locator('input[type=number]').nth(i).fill('0')
    form.locator('input[type=checkbox]').check();form.locator('button[type=submit]').click()
@@ -55,7 +56,8 @@ with sync_playwright() as pw:
    observed.locator('button[type=submit]').click()
    page.wait_for_function("()=>document.querySelector('.ct376-ovr')?.dataset.state==='observed'")
    assert page.locator('.ct376-ovr').first.locator('span').first.inner_text()=='105'
-   page.locator('#ct-manager-v302').get_by_role('button',name='Sem técnico selecionado',exact=True).click()
+   clear=page.locator('#ct-manager-v302').get_by_role('button',name='Sem técnico selecionado',exact=True)
+   reveal(page.locator('#ct-manager-select'));clear.click()
    page.wait_for_function("()=>document.querySelector('.ct376-ovr')?.dataset.state==='estimated'")
    assert page.evaluate('document.documentElement.scrollWidth-innerWidth')<=12
    page.screenshot(path=str(OUT/(name+'-detail.png')),full_page=False)
@@ -83,7 +85,7 @@ with sync_playwright() as pw:
     raise
    page.wait_for_function("()=>document.querySelector('.ct377-history')?.textContent.includes('current-training')")
    assert page.evaluate("()=>localStorage.getItem(CRAQUE_REFERENCES_V376.cards.find(c=>c.capture===153).labKey)") is None
-   panel=page.locator('.ct376-panel');panel.locator('summary').first.click()
+   panel=page.locator('.ct376-panel');reveal(panel);panel.locator('summary').first.click()
    panel.locator('.ct377-history > summary').click()
    assert 'current-training' in panel.locator('.ct377-history').inner_text()
    form=panel.locator('.ct376-training-form')

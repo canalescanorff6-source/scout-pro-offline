@@ -4,6 +4,15 @@
 if(document.body?.dataset.page!=='catalog')return;
 const SOURCE='ct364-owned-cards.json',STORAGE='scoutpro:v364:owned-confirmed';
 const EQUIP_STORAGE='scoutpro:v364:owned-equipment';
+const MANAGER_STORAGE='scoutpro:v378:owned-manager:';
+function managerOf(card){
+ for(const key of [MANAGER_STORAGE+card.key,'scoutpro:v307:default-manager','craque:v302:manager-selection'])try{
+  const value=JSON.parse(localStorage.getItem(key)||'null');
+  if(value&&typeof value==='object')return value.catalog_id||'';
+ }catch(_){}
+ return '';
+}
+
 const STYLE_IDS=['posse','normal','rapido','fora','longo'];
 const STYLE_NAMES={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'};
 const $=(s,root=document)=>root.querySelector(s),mk=(tag,cls,txt)=>{
@@ -11,7 +20,7 @@ const $=(s,root=document)=>root.querySelector(s),mk=(tag,cls,txt)=>{
  if(cls)node.className=cls;if(txt!==undefined)node.textContent=String(txt);return node;
 };
 const normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();
-let entries=[],active=null,activeRole='',activeStyle='posse',activePanel='resumo',confirmed={},loadEngine=null;
+let entries=[],active=null,activeRole='',activeStyle='posse',activePanel='treino',confirmed={},loadEngine=null;
 const loadConfirmed=()=>{try{
  const parsed=JSON.parse(localStorage.getItem(STORAGE)||'{}');
  return parsed&&typeof parsed==='object'&&!Array.isArray(parsed)?parsed:{};
@@ -73,7 +82,7 @@ const confirmationOf=(card,allowReference=false)=>{
 const cardAsEngine=(card,role)=>{const p=confirmationOf(card,true),manual=equipmentOf(card);
  return {localKey:card.key,originalPosition:card.position,
   name:card.name,position:role||card.position,style:card.style,
-  level:p.level,pp:null,cardId:p.cardId,edition:p.engineEdition||'',
+  level:p.level,pp:null,cardId:p.cardId,edition:p.engineEdition||'',managerId:managerOf(card),
   // Anotações manuais NÃO provam slot livre, Card ID ou versão.
   skills:manual.skills.filter(Boolean).join('; '),nativeSkills:card.observed.nativeSkills.join('; '),
   booster:manual.booster,fixedBooster:'',boosterSlot:manual.slot,trainingLevels:''};
@@ -211,7 +220,7 @@ function gameplayOf(c,role,tactic){
 // ou ímpeto anotado mudam: a build observada não deve ser atribuída à nova.
 function gameplayBuildSnapshot(c){
  const conf=confirmationOf(c),eq=equipmentOf(c);
- return JSON.stringify({cardId:conf.cardId||'',maxLevel:conf.level||null,
+ return JSON.stringify({...managerOf(c)?{managerId:managerOf(c)}:{},cardId:conf.cardId||'',maxLevel:conf.level||null,
   skills:eq.skills,booster:eq.booster,boosterSlot:eq.slot});
 }
 function gameplayStale(c,record){
@@ -1010,6 +1019,8 @@ function ensureEngine(){
  ['craque-ficha-individual-v251.js','CRAQUE_FICHA_INDIVIDUAL_V251'],
  ['craque-pp-universal-v309.js','CRAQUE_PP_UNIVERSAL_V309'],
  ['craque-friends-training-v228.js','CRAQUE_FRIEND_TRAINING_V228'],
+ ['craque-main-sheet-v378.js','CRAQUE_MAIN_SHEET_V378'],
+ ['craque-managers-v302.js','CRAQUE_MANAGERS_V302'],
  ['craque-positional-v311.js','CRAQUE_POSITIONAL_V311'],
  ['craque-positional-ui-v311.js','CRAQUE_POSITIONAL_UI_V311']
  ];
@@ -1079,13 +1090,16 @@ function renderProfessionalDossier(result,host,kind){
  details.append(ul);block.append(details);host.append(block);
 }
 async function renderTraining(c,body){
- const tools=section('Escolha a tática — cinco fichas do mesmo motor');
+ const tools=section('Minha ficha · escolha o estilo');
  const modes=mk('nav','ct364-modes');
  STYLE_IDS.forEach(id=>{const b=mk('button','',STYLE_NAMES[id]);b.type='button';
   b.setAttribute('aria-pressed',String(activeStyle===id));b.addEventListener('click',()=>{activeStyle=id;renderDialog();});modes.append(b)});
- tools.append(modes);const area=mk('div','ct364-training-area');
+ const styleLabel=mk('label','ct378-style-label','Estilo de jogo');const styleSelect=mk('select');styleSelect.id='ct378-owned-style';styleSelect.setAttribute('aria-label','Estilo da ficha adicionada');
+ STYLE_IDS.forEach(id=>{const option=mk('option','',STYLE_NAMES[id]);option.value=id;styleSelect.append(option)});
+ styleSelect.value=activeStyle;styleSelect.onchange=()=>{activeStyle=styleSelect.value;renderDialog()};styleLabel.append(styleSelect);tools.append(styleLabel);
+ const area=mk('div','ct364-training-area');
  tools.append(area);body.append(tools);
- note(tools,'Sobreposição: perfil ainda pendente neste laboratório. As cinco táticas disponíveis mantêm cálculos independentes.');
+
  const identity=confirmationOf(c,true);
  if(!identity.level)note(area,'PP PENDENTES: o nível mostrado no simulador não confirma o nível MÁXIMO da edição. Informe esse dado na seção Confirmar dados da ficha.');
  const manual=equipmentOf(c);
@@ -1098,28 +1112,50 @@ async function renderTraining(c,body){
   await ensureEngine();
   if(active!==c||activePanel!=='treino'||generation!==renderTraining.generation)return;
   const engine=window.CRAQUE_FRIEND_TRAINING_V228;
+  const managerApi=window.CRAQUE_MANAGERS_V302;
+  const managers=await managerApi.load();
+  if(active!==c||activePanel!=='treino'||generation!==renderTraining.generation)return;
+  const managerLabel=mk('label','ct378-owned-manager','Técnico desta carta');
+  const managerSelect=mk('select');managerSelect.id='ct378-owned-manager';managerSelect.setAttribute('aria-label','Escolher técnico desta carta');
+  const noManager=mk('option','','Sem técnico selecionado');noManager.value='';managerSelect.append(noManager);
+  for(const row of managers.tecnicos){const option=mk('option','',row.nome+' · '+(row.versao_lancamento||row.catalog_id));option.value=row.catalog_id;managerSelect.append(option);}
+  managerSelect.value=managerOf(c);
+  managerSelect.onchange=()=>{localStorage.setItem(MANAGER_STORAGE+c.key,JSON.stringify({catalog_id:managerSelect.value||null,tactic:activeStyle,cleared:!managerSelect.value}));notifyBackup();renderDialog();};
+  managerLabel.append(managerSelect);area.append(managerLabel);
+  const selectedManager=managerApi.find(managerOf(c));
+  if(selectedManager)note(area,selectedManager.nome+' · '+STYLE_NAMES[activeStyle]+' · proficiência '+managerApi.proficiency(selectedManager,activeStyle));
   const role=activeRole||c.position,tactic=activeStyle,engineCard=cardAsEngine(c,role);
   const result=engine.evaluate(cardAsEngine(c,activeRole),activeStyle);
   const plan=result.plan;
   const draft=engine.readFunctionDraft(localStorage,engineCard,tactic);
-  const review=engine.functionReview(engineCard,result,draft&&!draft.stale?draft.levels:undefined);
+  const selection={source:draft&&!draft.stale?'profile':'proposal',reference:window.CRAQUE_REFERENCES_V376?.cards.find(r=>r.key===c.key)};
+  if(draft&&!draft.stale){selection.levels=draft.levels;selection.skills=draft.skills||[];selection.booster=draft.booster||'';}
+  const mainSheet=window.CRAQUE_MAIN_SHEET_V378.resolve(engineCard,result,selection);
+  const review=mainSheet.review;review.managerId=managerOf(c);
+  const legacyTools=mk('details','ct378-sheet-options');legacyTools.append(mk('summary','','Outras opções · dados, comparações e histórico'));
+  legacyTools.append(modes);area.append(legacyTools);
+  if(engineCard.managerId){
+   const legacy=engine.readFunctionDraft(localStorage,{...engineCard,managerId:''},tactic);
+   if(legacy){const archive=mk('details','ct378-unscoped-history');archive.append(mk('summary','','Ficha anterior sem técnico · somente consulta'),mk('p','',legacy.levels.join(' / ')+' · '+legacy.pp+' PP · revisão '+legacy.revision));legacyTools.append(archive);}
+  }
   const shared=window.CRAQUE_POSITIONAL_UI_V311?.reviewPanel;
-  if(shared)area.append(shared(review,{
+  if(shared)area.insertBefore(shared(review,{
+   main:true,
    referenceLabel:draft?(draft.stale?'Rascunho anterior desatualizado · preservado':
     'Rascunho desta função · revisão '+draft.revision):'Nenhum rascunho salvo nesta função',
    onAdopt:()=>{
-    engine.saveFunctionDraft(localStorage,cardAsEngine(c,role),tactic,result);
+    engine.saveFunctionDraft(localStorage,cardAsEngine(c,role),tactic,{...result,plan:mainSheet.result.plan,suggestedSkills:review.skills,booster:mainSheet.result.booster});
     notifyBackup();renderDialog();return 'Proposta adotada em nova revisão independente.';
    }
-  }));
+  }),legacyTools);
   if(!plan.levels||plan.status!=='hipotese'){
-   note(area,'Treino ainda PENDENTE: '+(plan.reason||'falta confirmar nível máximo/PP e Card ID da edição.'));
+   note(legacyTools,'Treino ainda PENDENTE: '+(plan.reason||'falta confirmar nível máximo/PP e Card ID da edição.'));
   }else{
-   line(area,'Orçamento PP calculado',String(result.progress.pp)+' · nível máximo informado pelo proprietário');
-   line(area,'Status','HIPÓTESE COMPETITIVA · não homologada');
+   line(legacyTools,'Orçamento PP calculado',String(result.progress.pp)+' · nível máximo informado pelo proprietário');
+   line(legacyTools,'Status','HIPÓTESE COMPETITIVA · não homologada');
    const table=mk('div','ct364-stats');
    plan.categories.forEach((name,i)=>line(table,name,plan.levels[i]+' níveis'));
-   area.append(table);line(area,'PP restantes',plan.remaining);
+   legacyTools.append(table);line(legacyTools,'PP restantes',plan.remaining);
   }
   const suggestions=result.suggestedSkills||[];
    if(suggestions.length){
@@ -1132,13 +1168,13 @@ async function renderTraining(c,body){
     }
     if(list.children.length)options.append(list);
     note(options,'Candidatas calculadas pelo motor V162 para posição e tática selecionadas. Não pressupõem slots livres nem habilidades instaladas. Confira edição e habilidades nativas.');
-    area.append(options);
+    legacyTools.append(options);
    }
-   renderProfessionalDossier(result,area,'treino');
+   renderProfessionalDossier(result,legacyTools,'treino');
    if(result.warnings?.length){
    const more=mk('details','ct364-warnings'),summary=mk('summary','',result.warnings.length+' ressalvas e verificações');
    const ul=mk('ul');result.warnings.forEach(x=>ul.append(mk('li','',x)));
-   more.append(summary,ul);area.append(more);
+   more.append(summary,ul);legacyTools.append(more);
   }
  }catch(e){note(area,'Motor competitivo indisponível nesta execução: '+String(e.message||e)+'. Nenhum treino foi inventado.')}
 }
@@ -1370,12 +1406,14 @@ function renderDialog(){
  const indicator=$('#ct364-card-index');
  if(indicator)indicator.textContent='Minha carta '+(position+1)+' de '+entries.length+' · cadastro independente da versão original';
  const tabs=$('#ct364-tabs');tabs.replaceChildren();
- const labels={resumo:'Visão geral',treino:'5 fichas',skills:'Habilidades',boost:'Ímpetos',body:'Biotipo',gameplay:'Gameplay',confirm:'Confirmar dados'};
+ const labels={resumo:'Dados da carta',treino:'Minha ficha',skills:'Habilidades',boost:'Ímpetos',body:'Biotipo',gameplay:'Gameplay',confirm:'Confirmar dados'};
+ const extra=mk('details','ct378-owned-options');extra.append(mk('summary','','Outras opções da carta'));const extraTabs=mk('nav','ct364-tabs');extra.append(extraTabs);
  for(const [id,text] of Object.entries(labels)){
   const b=mk('button','',text);b.type='button';b.dataset.panel=id;
   b.setAttribute('aria-pressed',String(activePanel===id));b.onclick=()=>{activePanel=id;renderDialog()};
-  tabs.append(b);
+  if(id==='treino')tabs.append(b);else extraTabs.append(b);
  }
+ if(activePanel!=='treino')extra.open=true;tabs.append(extra);
  const body=$('#ct364-panel');body.replaceChildren();
  if(activePanel==='resumo')renderOverview(c,body);
  else if(activePanel==='treino')renderTraining(c,body);
@@ -1391,7 +1429,7 @@ function switchOwnedCard(c){
  if(!c||!entries.some(item=>item.key===c.key))return;
  // Muda somente o contexto consultivo; nunca copia PP, equipamento ou
  // confirmação entre edições homônimas ou entre Minhas Cartas e Outros.
- active=c;activeRole=c.position;activeStyle='posse';activePanel='resumo';
+ active=c;activeRole=c.position;activeStyle='posse';activePanel='treino';
  renderDialog();
  const dialog=$('#ct364-dialog');if(dialog)dialog.scrollTop=0;
 }

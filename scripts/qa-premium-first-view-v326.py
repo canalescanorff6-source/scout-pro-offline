@@ -4,6 +4,7 @@ Capturas são testes de interface e não substituem testes físicos APK/EXE.
 """
 import os,shutil
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 ROOT=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 with sync_playwright() as pw:
  exe=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
@@ -71,6 +72,7 @@ with sync_playwright() as pw:
    assert root.locator('.ct326-metric').count()==3
    assert 'não equipado automaticamente' in root.locator('.ct326-focus').inner_text() or 'Escolha o técnico' in root.locator('.ct326-focus').inner_text()
    assert not root.locator('.ct311-actions').is_visible(), 'Ações complexas devem ficar no detalhamento'
+   reveal(root.locator('.ct326-primary-action'))
    root.locator('.ct326-primary-action').click()
    assert root.locator('.ct326-deep-dive').evaluate('(e)=>e.open')
    assert root.locator('.ct311-actions').is_visible()
@@ -78,6 +80,7 @@ with sync_playwright() as pw:
    root.locator('.ct311-controls .ct311-select').select_option('SA')
    assert root.locator('.ct326-deep-dive').evaluate('(e)=>e.open'), 'Troca de posição não pode fechar ficha aberta'
    assert 'Cenário SA' in root.inner_text()
+   reveal(root.locator('.ct326-secondary-action'))
    root.locator('.ct326-secondary-action').click()
    assert root.locator('.ct327-style-panel').is_visible()
    assert root.locator('.ct327-style-row').count()==5

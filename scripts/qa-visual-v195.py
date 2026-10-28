@@ -9,6 +9,7 @@ import shutil
 import sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 from qa_competitive_v289 import run_competitive_qa
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -423,6 +424,14 @@ def run():
                     window.SCOUT_SKILL_NAMES_V196 &&
                     [...document.querySelectorAll('.skill-cloud .skill')].some(x=>x.textContent.trim()==='Cabeçada')
                 """, timeout=20000)
+                page.wait_for_function('()=>document.body.dataset.ct378Stage==="ready"',timeout=25000)
+                compact_main=rectangle(page,'.ct378-main-sheet') or {}
+                compact_style=rectangle(page,'#ct378-style') or {}
+                if page.locator('.ct378-main-sheet:visible').count()!=1:
+                    problems.append(f"{name}: V378 precisa de uma ficha principal visível")
+                if page.locator('#scout-v220-training').is_visible():
+                    problems.append(f"{name}: treino legado não ficou recolhido")
+                reveal(page.locator('#scout-v197-edition > summary'))
                 names = [x.strip() for x in page.locator(".skill-cloud .skill").all_text_contents()]
                 for expected in ("Cabeçada", "Efeito de longe", "Folha seca", "Chute ascendente", "Precisão à distância", "Chute de primeira"):
                     if expected not in names:
@@ -467,6 +476,7 @@ def run():
                 if tech.count()!=1 or tech.evaluate('(e)=>e.open'):
                     problems.append(f"{name}: V220 precisa iniciar com engenharia recolhida")
                 else:
+                    reveal(page.locator('#scout-v220-technical > summary'))
                     page.locator('#scout-v220-technical > summary').click()
                 primary = page.locator("#v188-top-rec").first.inner_text()
                 caution = page.locator("#v200-caution").first.inner_text()
@@ -502,15 +512,15 @@ def run():
                     problems.append(f"{name}: ficha com overflow horizontal de {detail['horizontalOverflow']} px")
                 if detail["navigator_buttons"] != 3:
                     problems.append(f"{name}: navegação entre cartas precisa de 3 controles")
-                main = detail["elements"].get("#scout-v188-principal") or {}
+                main = compact_main
                 nav = detail["elements"].get("#scout-card-navigator") or {}
-                if mobile and main.get("y",9999)>(555 if width<=340 else 520):
+                if mobile and main.get("y",9999)>height-90:
                     problems.append(f"{name}: ficha compacta V202 começa tarde: y={main.get('y')}")
-                if mobile and main.get("y", 9999) > (640 if width <= 340 else 590):
+                if mobile and main.get("y", 9999) > height-90:
                     problems.append(f"{name}: ficha principal começa muito abaixo: y={main.get('y')}")
                 if mobile and nav.get("height", 9999) > 94:
                     problems.append(f"{name}: navegador de cartas excessivamente alto: {nav.get('height')} px")
-                focus = rectangle(page,"#scout-v220-tabs") or {}
+                focus = compact_style
                 if mobile and focus.get("y", 9999) > (820 if width <= 340 else 800):
                     problems.append(f"{name}: seletor de estilos não aparece cedo: y={focus.get('y')}")
                 if mobile:
@@ -644,6 +654,8 @@ def run():
                 manager.wait_for(state='attached',timeout=20000)
                 if not manager.evaluate('(e)=>e.open'):
                     problems.append(f"{name}: painel V303 deve abrir visível para escolha do técnico")
+                page.locator('#ct-manager-select').wait_for(state='attached',timeout=35000)
+                reveal(page.locator('#ct-manager-select'))
                 page.locator('#ct-manager-select').select_option('CT-MGR-001')
                 page.wait_for_function("""() =>
                     document.querySelector('#ct-manager-style')?.value==='rapido' &&
@@ -662,7 +674,7 @@ def run():
                     document.querySelector('#scout-v220-tabs [data-tactic="posse"]')?.getAttribute('aria-pressed')==='true'
                 """,timeout=12000)
                 manager.locator('.ct-manager-actions button').click()
-                manager.locator('summary').click()
+                manager.locator(':scope > summary').click()
                 # V220: uma ficha principal para os CINCO estilos, sem segunda ficha concorrente.
                 main_tabs=page.locator('#scout-v220-tabs button[data-tactic]')
                 if main_tabs.count()!=5:
@@ -677,6 +689,7 @@ def run():
                 if main_skills!=5:
                     problems.append(f"{name}: V220 precisa mostrar cinco candidatas em Posse: {main_skills}")
                 # V221: Status do acervo deve aparecer na mesma ficha, sem outro formulário de treino.
+                reveal(page.locator('#scout-v221-review'))
                 page.locator('#scout-v221-review').wait_for(timeout=25000)
                 audit_label=page.locator('#scout-v221-review .scout-v221-stage').inner_text()
                 if 'REVISÃO' not in audit_label:
@@ -812,6 +825,7 @@ def run():
                   return archive&&identity&&archive.contains(identity)&&!archive.open;
                 }""",timeout=25000)
                 if not page.locator('#scout-v220-technical').evaluate('(e)=>e.open'):
+                    reveal(page.locator('#scout-v220-technical > summary'))
                     page.locator('#scout-v220-technical > summary').click()
                 page.locator('#scout-v229-legacy-archive > summary').click()
                 audit=page.evaluate("""() => {
@@ -937,6 +951,7 @@ def run():
                 # sem criar uma sexta habilidade ou modificar treino/PP.
                 # V220: painel de cadastro avançado deve permanecer oculto até solicitação explícita.
                 if not page.locator('#scout-v220-technical').evaluate('(e)=>e.open'):
+                    reveal(page.locator('#scout-v220-technical > summary'))
                     page.locator('#scout-v220-technical > summary').click()
                 if not page.locator('#scout-v220-advanced-skills').evaluate('(e)=>e.open'):
                     page.locator('#scout-v220-advanced-skills > summary').click()
@@ -994,6 +1009,7 @@ def run():
                 }""",timeout=25000)
                 # Abrir avançadas somente para os testes legados do laboratório.
                 if not page.locator('#scout-v220-technical').evaluate('(e)=>e.open'):
+                    reveal(page.locator('#scout-v220-technical > summary'))
                     page.locator('#scout-v220-technical > summary').click()
                 if not page.locator('#scout-v229-legacy-archive').evaluate('(e)=>e.open'):
                     page.locator('#scout-v229-legacy-archive > summary').click()
@@ -1758,9 +1774,11 @@ def run():
                               wait_until='domcontentloaded',timeout=35000)
                     # V253: a auditoria fica recolhida DENTRO da ficha principal.
                     review253=page.locator('#ct253-integrated-review')
+                    reveal(review253)
                     review253.wait_for(state='visible',timeout=22000)
                     if review253.evaluate('(e)=>e.open'):
                         problems.append(f"{name}: V253 abriu uma segunda ficha na tela principal")
+                    reveal(page.locator('#ct253-integrated-review > summary'))
                     page.locator('#ct253-integrated-review > summary').click()
                     v251=page.locator('#ct251-individual-ficha')
                     v251.wait_for(state='visible',timeout=22000)
@@ -1913,6 +1931,7 @@ def run():
                       localStorage.removeItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id);
                     }""")
                     page.reload(wait_until='domcontentloaded')
+                    reveal(page.locator('#ct253-integrated-review > summary'))
                     page.locator('#ct253-integrated-review > summary').click()
                     p251=page.locator('#ct251-individual-ficha')
                     p251.wait_for(state='visible',timeout=22000)
@@ -1939,6 +1958,7 @@ def run():
                     # somente após CAP + Card ID + edição exata.
                     page.goto(URL+'/fichas/191_Gabriel_Martinelli.html',
                               wait_until='domcontentloaded',timeout=35000)
+                    reveal(page.locator('#ct253-integrated-review > summary'))
                     page.locator('#ct253-integrated-review > summary').click()
                     martinelli_v251=page.locator('#ct251-individual-ficha')
                     martinelli_v251.wait_for(state='visible',timeout=22000)
@@ -1979,6 +1999,7 @@ def run():
                           confirmed_at:new Date().toISOString()}));
                     }""")
                     page.reload(wait_until='domcontentloaded')
+                    reveal(page.locator('#ct253-integrated-review > summary'))
                     page.locator('#ct253-integrated-review > summary').click()
                     martinelli_v251=page.locator('#ct251-individual-ficha')
                     martinelli_v251.wait_for(state='visible',timeout=22000)
@@ -2017,6 +2038,7 @@ def run():
                       localStorage.removeItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id);
                     }""")
                     page.reload(wait_until='domcontentloaded')
+                    reveal(page.locator('#ct253-integrated-review > summary'))
                     page.locator('#ct253-integrated-review > summary').click()
                     page.locator('#ct251-individual-ficha').wait_for(state='visible',timeout=22000)
                     if (page.locator('#scout-v218-status').get_attribute('data-mode')=='blocked' or
@@ -2042,6 +2064,7 @@ def run():
                     skill_count.wait_for(state='visible',timeout=18000)
                     if 'Slots não conferidos' not in skill_count.inner_text():
                         problems.append(f"{name}: V254 inventou slots vagos antes da confirmação")
+                    reveal(page.locator('#scout-v220-technical > summary'))
                     page.locator('#scout-v220-technical > summary').click()
                     page.locator('#scout-v220-advanced-skills > summary').click()
                     page.locator('#scout-v162 > details:not(#v273-dossier) > summary').click()
@@ -2068,6 +2091,7 @@ def run():
                     page.wait_for_function("""() => document.querySelector('#scout-v220-booster-why')
                       ?.textContent.includes('em Passe Longo')""",timeout=15000)
                     # Alterar texto sem confirmar invalida prova anterior.
+                    reveal(page.locator('#scout-v220-technical > summary'))
                     page.locator('#scout-v220-technical > summary').click()
                     page.locator('#scout-v220-advanced-skills > summary').click()
                     page.locator('#scout-v162 > details:not(#v273-dossier) > summary').click()

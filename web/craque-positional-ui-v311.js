@@ -13,10 +13,12 @@ const makeBtn=(value,handler)=>{
 };
 const displaySkill=x=>x.name||x.nome||'Habilidade não identificada';
 /* V374: shared visible review for originals, additions and external rosters. */
-function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta carta'}={}){
+function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta carta',main=false}={}){
  const block=el('section','ct311-panel ct374-function-review');
+ if(main){block.classList.add('ct378-main-sheet');block.dataset.tactic=review.tactic;
+  block.dataset.manager=review.managerId||'';block.dataset.source=review.sourceKind||'proposal';}
  block.setAttribute('aria-label','Revisão individual por função e estilo');
- block.append(el('h3','','Plano por função · '+review.sourcePosition+' → '+review.position));
+ block.append(el('h3','',main?(review.sourceLabel||'Treino da minha ficha'):'Plano por função · '+review.sourcePosition+' → '+review.position));
  const identity=review.identity||{};
  block.append(el('p','ct375-identity',(Number.isInteger(identity.capture)?'#'+String(identity.capture).padStart(3,'0')+' · ':'')+
   (identity.name||'Carta')+' · '+(identity.edition||'edição pendente')));
@@ -29,23 +31,29 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
  for(const p of review.priorities){const item=el('li');
   item.append(el('strong','',p.category),el('span','',p.attributes));priorities.append(item)}
  block.append(priorities,el('p','ct311-note',review.baseReference+' · atributos finais não validados.'));
+ if(main){
+  const about=el('details','ct378-about');about.append(el('summary','','Função, prioridades e dados da edição'));
+  for(const child of [...block.children].slice(1))about.append(child);block.append(about);
+  if(review.pending?.length)block.append(el('p','ct378-pending','Conferir: '+review.pending.join(' · ')));
+  for(const issue of review.issues||[])about.append(el('p','ct311-alert',issue.name+' · '+issue.reason+' · registro histórico preservado.'));
+ }
  if(review.proposed){
-  block.append(el('p','ct311-budget',review.spent+' / '+review.pp+' PP na proposta'+
+  block.append(el('p','ct311-budget',main?review.spent+' / '+review.pp+' PP · saldo '+(review.remaining??review.pp-review.spent):review.spent+' / '+review.pp+' PP na proposta'+
    (review.current?' · '+review.redistributedPP+' PP realocados'+
     (review.investedFromBalance?' · '+review.investedFromBalance+' PP do saldo':''):
     ' · treino atual ainda não conferido')));
-  block.append(el('p','ct311-note',referenceLabel+(review.current?' · '+review.currentSpent+' PP':' · sem comparação numérica disponível')));
+  if(!main)block.append(el('p','ct311-note',referenceLabel+(review.current?' · '+review.currentSpent+' PP':' · sem comparação numérica disponível')));
   const proposed=el('dl','ct375-training');
   for(const g of review.trainingGroups||[]){const group=el('div');
    group.append(el('dt','',g.category),el('dd','',g.proposed+' níveis'),el('small','',g.cost+' PP'));proposed.append(group)}
-  block.append(el('h4','','Nova distribuição de treino'),proposed);
+  block.append(el('h4','',main?'Distribuição de treino':'Nova distribuição de treino'),proposed);
   const compare=el('details','ct374-pp-comparison');
   compare.append(el('summary','','Comparar treino atual e proposta por grupo'));
   const table=el('table','ct311-table'),head=el('tr');
   for(const title of ['Grupo','Atual','Proposta','Δ PP'])head.append(el('th','',title));table.append(head);
   const t=host.SCOUT_TACTICS_V220;
   review.proposed.forEach((to,i)=>{
-   if(review.role==='GO'?i<7:i>6)return;
+   if(review.role==='GO'?![4,5,7,8,9].includes(i):i>6)return;
    const from=review.current?.[i],row=el('tr');
    const delta=Number.isInteger(from)?t.ppCost(to)-t.ppCost(from):null;
    row.append(el('td','',t.CATEGORIES[i]),el('td','',from??'—'),el('td','',to),
@@ -54,7 +62,7 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
   compare.append(table);block.append(compare);
  }else block.append(el('p','ct311-alert','PP pendentes: confirme o nível máximo da edição para calcular a distribuição.'));
  const inventory=el('details','ct374-native-inventory');
- inventory.append(el('summary','','Nativas desta carta · '+review.nativeSkills.length),
+ inventory.append(el('summary','','Nativas desta carta · '+review.nativeSkills.length+(review.nativeSource==='public'?' · referência pública':'')),
   el('p','ct311-note',(review.nativeSkillLabels||review.nativeSkills).join(' · ')||'Lista pendente'));
  block.append(inventory);
  if(review.equippedSkills?.length)block.append(el('p','ct311-note','Adicionais já informadas: '+(review.equippedSkillLabels||review.equippedSkills).join(' · ')));
@@ -82,18 +90,23 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
    (review.boosterSlotSupported?' · suporte documentado da edição.':' · suporte da edição não comprovado.')+
    ' A recomendação não equipa o ímpeto.'));block.append(section);
  }
+ if(main&&!review.boosters.length)block.append(el('h4','','Ímpeto adicional'),el('p','ct311-note',
+  review.boosterSlot==='ausente'?'Esta carta está cadastrada sem slot adicional.':
+   review.sourceKind==='profile'?'Nenhum ímpeto selecionado nesta ficha salva.':'Indicação pendente de dados da edição.'));
  if(review.tests.length)block.append(el('p','ct311-note','Observar em jogo: '+review.tests.join(' · ')));
  const exportStatus=el('p','ct375-copy-status');exportStatus.setAttribute('role','status');
  const fallback=el('textarea','ct375-copy-fallback');fallback.hidden=true;fallback.readOnly=true;
  fallback.setAttribute('aria-label','Ficha completa para copiar manualmente');
  const copy=makeBtn('Copiar ficha completa',async()=>{
   try{
-   const text=host.CRAQUE_FRIEND_TRAINING_V228.functionSheetText(review);
+   const text=review.sourceKind&&host.CRAQUE_MAIN_SHEET_V378?
+    host.CRAQUE_MAIN_SHEET_V378.text(review):host.CRAQUE_FRIEND_TRAINING_V228.functionSheetText(review);
    if(!host.navigator?.clipboard?.writeText)throw Error('Cópia automática indisponível');
    await host.navigator.clipboard.writeText(text);fallback.hidden=true;
    exportStatus.textContent='Ficha copiada. Nenhum treino ou equipamento foi alterado.';
   }catch(_){
-   fallback.value=host.CRAQUE_FRIEND_TRAINING_V228.functionSheetText(review);
+   fallback.value=review.sourceKind&&host.CRAQUE_MAIN_SHEET_V378?
+    host.CRAQUE_MAIN_SHEET_V378.text(review):host.CRAQUE_FRIEND_TRAINING_V228.functionSheetText(review);
    fallback.hidden=false;fallback.focus();fallback.select();
    exportStatus.textContent='Selecione e copie o texto abaixo. A ficha não foi salva nem aplicada.';
   }
@@ -101,7 +114,7 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
  block.append(copy,exportStatus,fallback);
  if(onAdopt){
   const feedback=el('p','ct311-status');feedback.setAttribute('role','status');
-  const adopt=makeBtn('Adotar proposta em nova revisão',()=>{
+  const adopt=makeBtn(main?'Guardar esta ficha em nova revisão':'Adotar proposta em nova revisão',()=>{
    try{feedback.textContent=onAdopt()||'Nova revisão salva. Carta original e equipamentos preservados.'}
    catch(e){feedback.textContent=String(e.message||e)}
   });
@@ -110,6 +123,7 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
  block.append(el('p','ct311-note',review.note));return block;
 }
 function create(target,model,opts={}){
+ let mainOptionsOpen=false;
  if(!target||!model)return null;
  const node=el('section','ct311-positional');
  node.setAttribute('aria-label','Inteligência posicional dinâmica · posição de uso');
@@ -232,6 +246,8 @@ function create(target,model,opts={}){
   return t;
  }
  function draw(){
+  const previousMainOptions=details.querySelector?.('.ct378-sheet-options');
+  if(previousMainOptions)mainOptionsOpen=previousMainOptions.open;
   if(!alive)return;
   // V326: o toggle do <details> pode ocorrer após o clique e antes da
   // próxima pintura. Ler o DOM real preserva a abertura ao mudar técnico.
@@ -746,6 +762,7 @@ function create(target,model,opts={}){
   // The calculation stays visible before the advanced dossier. Compare with
   // the currently saved context without overwriting that revision on opening.
   const reviewEngine=host.CRAQUE_FRIEND_TRAINING_V228;
+  const mainEngine=host.CRAQUE_MAIN_SHEET_V378;let mainSheet=null,mainBlock=null;
   if(outcome.functionReview&&reviewEngine?.functionReview){
    const reviewCard={localKey:model.cardKey,name:model.name,position:scenario.position,
     originalPosition:model.position,style:model.style,level:model.level,pp:outcome.plan.pp,
@@ -754,22 +771,32 @@ function create(target,model,opts={}){
     trainingLevels:model.trainingLevels,positionEvidence:scenario.compatibility,
     baseReference:model.evidenceCard?.base_stats_known===true};
    const reference=savedProfile?.train||recorded?.levels;
-   const review=reviewEngine.functionReview(reviewCard,outcome,reference);
-   hero.append(reviewPanel(review,{
+   const publicReference=host.CRAQUE_REFERENCES_V376?.cards.find(c=>c.cardKey===model.cardKey);
+   const selection={source:savedProfile?'profile':recorded?'revision':'proposal',reference:publicReference,
+    managerLabel:coaching};
+   if(savedProfile){selection.levels=savedProfile.train;selection.skills=savedProfile.skills||[];selection.booster=savedProfile.booster||'';}
+   else if(recorded)selection.levels=recorded.levels;
+   if(mainEngine&&model.collection==='minhas-246')try{mainSheet=mainEngine.resolve({...reviewCard,equipmentRecord:model.equipmentRecord},outcome,selection);}
+   catch(e){profileError=String(e.message||e);}
+   const review=mainSheet?.review||reviewEngine.functionReview(reviewCard,outcome,reference);
+   review.managerId=scenario.manager;
+   mainBlock=reviewPanel(review,{
+    main:Boolean(mainSheet),
     referenceLabel:savedProfile?'Rascunho deste técnico · revisão '+savedProfile.revision:
      recorded?'Revisão contextual '+recorded.revision:'Treino cadastrado nesta carta',
     onAdopt:()=>{
      if(readError&&profileContext)throw Error(readError);
      if(profileContext&&profiles){
-      profiles.save(storage(),profileContext,{train:outcome.plan.levels,
-       skills:savedProfile?.skills||[],booster:savedProfile?.booster||'',
+      profiles.save(storage(),profileContext,{train:mainSheet?.review.proposed||outcome.plan.levels,
+       skills:mainSheet?mainSheet.review.skills.map(s=>s.name):(savedProfile?.skills||[]),
+       booster:mainSheet?(mainSheet.review.boosters[0]?.technicalName||''):(savedProfile?.booster||''),
        source:'V374 · proposta por função adotada explicitamente',skillKeyFor,
        native:model.nativeSkills||'',equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
        boosterSlot:model.boosterSlot||'pendente',informedBooster:model.booster||''});
      }else engine.save(storage(),scenario);
      draw();return 'Proposta adotada em nova revisão independente.';
     }
-   }));
+   });hero.append(mainBlock);
   }
   if(equipmentAudit?.hasSkillConflict)hero.append(el('p','ct340-evidence-conflict',
    'REVISAR HABILIDADES: '+equipmentAudit.conflicts.map(c=>
@@ -947,7 +974,15 @@ function create(target,model,opts={}){
   alternatives.hidden=!alternativesOpen;
   if(alternativesOpen)renderAlternatives();
   hero.append(alternatives);
-  details.append(hero,deep);
+  if(mainSheet&&mainBlock){
+   const more=el('details','ct378-sheet-options');more.open=mainOptionsOpen;
+   more.append(el('summary','','Outras opções · comparar, ajustar e consultar histórico'));
+   for(const child of [...hero.children])if(child!==mainBlock&&
+     !child.classList.contains('ct326-kicker'))more.append(child);
+   more.append(deep,status,actions);hero.append(more);details.append(hero);
+   hero.classList.add('ct378-focus');
+   host.dispatchEvent(new host.CustomEvent('craque:main-sheet-ready-v378'));
+  }else details.append(hero,deep);
   node.classList.toggle('ct326-expanded',advancedOpen);
   save.disabled=false;
   status.textContent=scenario.status+' · '+scenario.position+' / '+scenario.style+
@@ -1012,6 +1047,7 @@ function mainBoot(){
     else panel?.update({style:tactic});
    }});
   if(!panel)return;
+  host.addEventListener('craque:references-ready',()=>panel.update());
   // Não modificar o painel de treino ORIGINAL aprovado. Esta área mostra propostas adicionais.
   host.document.addEventListener('scoutpro:tactic-selected-v220',e=>{
    if(e.detail?.tactic)panel.update({style:e.detail.tactic})});

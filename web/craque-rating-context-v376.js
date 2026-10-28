@@ -42,6 +42,7 @@ function resolve(ref,card,store,options={}){
    }
   }
   const idKey=ref.cardKey,managerKeys=[
+   ...(owned?['scoutpro:v378:owned-manager:'+ref.key]:[]),
    'scoutpro:v307:manager-selection:'+idKey,'craque:v302:manager-selection:'+idKey,
    'scoutpro:v307:default-manager','craque:v302:manager-selection'];
   let selected=null;
