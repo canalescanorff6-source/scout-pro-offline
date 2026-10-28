@@ -1,0 +1,131 @@
+/* SCOUT PRO V206 — identidade original dos dez ícones e superfícies premium.
+ * Escopo da ficha. Controles e dados preexistentes nunca são substituídos. */
+body[data-page="detail"]{--sc206-gold:#f3cd77;--sc206-mint:#d7e4f5;--sc206-border:rgba(163,184,216,.35)}
+body[data-page="detail"] [data-scout-training-icon]{--sc206-accent:#f3cd77}
+body[data-page="detail"] [data-scout-training-icon="chute"],
+body[data-page="detail"] [data-scout-training-icon="pernas"],
+body[data-page="detail"] [data-scout-training-icon="destreza"]{--sc206-accent:#ffe2a0}
+body[data-page="detail"] [data-scout-training-icon="drible"],
+body[data-page="detail"] [data-scout-training-icon="aereo"],
+body[data-page="detail"] [data-scout-training-icon="goleiro2"]{--sc206-accent:#a6c8ef}
+body[data-page="detail"] [data-scout-training-icon="defesa"],
+body[data-page="detail"] [data-scout-training-icon="goleiro1"],
+body[data-page="detail"] [data-scout-training-icon="goleiro3"]{--sc206-accent:#dce5f1}
+body[data-page="detail"] .scout-v201-icon.scout-v206-icon{
+ border-radius:14px!important;filter:none!important;flex:0 0 auto;
+ background:linear-gradient(145deg,rgba(31,55,88,.9),rgba(10,24,43,.97))!important;
+ box-shadow:0 3px 12px rgba(0,10,21,.2),inset 0 1px rgba(255,244,208,.08);
+ color:var(--sc206-accent);
+}
+body[data-page="detail"] .scout-v206-svg{width:100%;height:100%;display:block;overflow:hidden;color:var(--sc206-accent)}
+body[data-page="detail"] #scout-v188-principal .scout-v188-progress{
+ border:1px solid rgba(163,184,216,.36)!important;border-radius:19px!important;
+ background:linear-gradient(145deg,#132941,#0c1c31 65%,#081726)!important;
+ box-shadow:0 12px 30px rgba(0,12,23,.24),inset 0 1px rgba(255,248,226,.06)!important;
+}
+body[data-page="detail"] #scout-v188-principal .scout-v188-progress::before{
+ height:2px;opacity:.85;background:linear-gradient(90deg,transparent,#ffe0a1 27%,#668fcb 70%,transparent)
+}
+body[data-page="detail"] #scout-v188-principal .scout-v188-progress>h3{
+ font-size:15px!important;letter-spacing:-.015em;color:#f5f1e8;margin-bottom:13px!important
+}
+body[data-page="detail"] #v188-train.scout-v188-train{gap:10px!important;align-items:stretch}
+body[data-page="detail"] #v188-train .scout-v188-train-chip.scout-v201-enriched{
+ position:relative;display:flex;align-items:center;min-width:0;overflow:hidden;
+ min-height:74px!important;gap:11px!important;padding:11px 12px!important;
+ border:1px solid var(--sc206-border)!important;border-radius:16px!important;
+ background:linear-gradient(138deg,#193550,#0e223b 67%,#0a192c)!important;
+ box-shadow:0 5px 18px rgba(0,12,26,.16),inset 0 1px rgba(255,244,214,.055)!important;
+ color:#eaf0fa!important;font-weight:800!important;line-height:1.35!important;
+ font-variant-numeric:tabular-nums;
+}
+body[data-page="detail"] #v188-train .scout-v188-train-chip.scout-v201-enriched::before{
+ content:"";position:absolute;top:11px;bottom:11px;left:0;width:2px;
+ background:var(--sc206-accent);opacity:.85;pointer-events:none
+}
+body[data-page="detail"] #v188-train .scout-v188-train-chip .scout-v206-icon{width:45px;height:45px}
+body[data-page="detail"] #lab-controls .lab-group{
+ min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:9px!important;
+ min-height:80px!important;padding:11px!important;
+ border-radius:15px!important;border:1px solid rgba(163,184,216,.38)!important;
+ background:linear-gradient(145deg,#182e4a,#0d1f35)!important;
+ box-shadow:inset 0 1px rgba(255,246,220,.05),0 5px 15px rgba(0,10,20,.14);
+}
+body[data-page="detail"] #lab-controls .lab-group>label.scout-v201-enriched{
+ display:flex;align-items:center;flex:1 1 135px;min-width:105px;
+ gap:10px!important;font-size:12px;font-weight:800;line-height:1.35;color:#eaf0fa
+}
+body[data-page="detail"] #lab-controls .lab-group>label .scout-v206-icon{width:40px;height:40px;flex:0 0 40px}
+body[data-page="detail"] #lab-controls .lab-adjust{
+ display:inline-flex;align-items:center;justify-content:flex-end;gap:5px!important;flex:0 0 auto;min-width:0
+}
+body[data-page="detail"] #lab-controls .lab-adjust button{
+ min-width:40px!important;min-height:44px!important;border-radius:10px!important;
+ border:1px solid rgba(177,191,219,.51)!important;background:#1c3654!important;color:#f4f0e6!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.065)
+}
+body[data-page="detail"] #lab-controls .lab-adjust button:active{background:#294c74!important}
+body[data-page="detail"] #lab-controls .lab-adjust input{
+ min-width:40px;width:44px!important;min-height:44px!important;
+ border:1px solid rgba(177,191,219,.48)!important;background:#0a1a30!important;
+ color:#f6f1e6!important;border-radius:9px!important;font-size:13px;font-weight:800;
+ font-variant-numeric:tabular-nums
+}
+body[data-page="detail"] #lab-controls .lab-group>small{
+ flex:0 0 auto;color:#c1cde0!important;font-variant-numeric:tabular-nums
+}
+body[data-page="detail"] #lab-controls .lab-adjust :is(button,input):focus-visible{
+ outline:3px solid #e6c891!important;outline-offset:2px!important
+}
+body[data-page="detail"] .v68-progress-row .scout-v206-icon,
+body[data-page="detail"] #scout-training-v160 .v160-overflow td .scout-v206-icon{
+ width:28px;height:28px;background:transparent!important;box-shadow:none!important
+}
+body[data-page="detail"] .v68-progress-row>span.scout-v201-enriched{color:#e9eef8;font-weight:750;min-width:0;white-space:normal}
+body[data-page="detail"] #scout-training-v160 .v160-overflow td.scout-v201-enriched{color:#e9eef8;font-weight:750}
+@media(hover:hover) and (pointer:fine){
+ body[data-page="detail"] #v188-train .scout-v188-train-chip.scout-v201-enriched:hover{
+  border-color:rgba(243,205,119,.74)!important;box-shadow:0 8px 22px rgba(0,12,25,.22)!important
+ }
+}
+@media(max-width:720px){
+ body[data-page="detail"] #scout-v188-principal .scout-v188-progress{padding:11px!important;border-radius:15px!important}
+ body[data-page="detail"] #v188-train.scout-v188-train{gap:8px!important}
+ body[data-page="detail"] #v188-train .scout-v188-train-chip.scout-v201-enriched{
+  min-height:69px!important;gap:7px!important;padding:8px!important;font-size:12px!important;border-radius:13px!important
+ }
+ body[data-page="detail"] #v188-train .scout-v188-train-chip .scout-v206-icon{width:39px;height:39px;flex-basis:39px}
+ body[data-page="detail"] #lab-controls .lab-group{min-height:74px!important;padding:9px!important}
+ body[data-page="detail"] #lab-controls .lab-group>label.scout-v201-enriched{flex:1 1 125px}
+ body[data-page="detail"] #lab-controls .lab-adjust button{min-width:42px!important;min-height:44px!important}
+}
+@media(max-width:355px){
+ body[data-page="detail"] #v188-train .scout-v188-train-chip.scout-v201-enriched{
+  font-size:11px!important;gap:6px!important;padding:8px 6px!important
+ }
+ body[data-page="detail"] #v188-train .scout-v188-train-chip .scout-v206-icon{width:36px;height:36px;flex-basis:36px}
+ body[data-page="detail"] #lab-controls .lab-group>label.scout-v201-enriched{flex:1 1 100%;min-width:0}
+ body[data-page="detail"] #lab-controls .lab-adjust{flex:1 1 auto;justify-content:flex-start}
+ body[data-page="detail"] #lab-controls .lab-group>small{margin-left:auto}
+}
+@media(prefers-reduced-motion:reduce){body[data-page="detail"] .scout-v206-icon{transition:none!important}}
+
+/* V240 — acabamento do ícone existente, sem substituir seus SVGs ou funções. */
+body[data-page="detail"] :is(#v188-train,.scout-v208-table,#lab-controls) .scout-v201-icon.scout-v206-icon{
+ display:grid;place-items:center;
+ border:1px solid rgba(243,205,119,.36)!important;
+ background:linear-gradient(145deg,#263c5e,#11253d 70%)!important;
+ box-shadow:inset 0 1px 0 rgba(255,243,203,.11),0 6px 14px rgba(1,7,19,.32)!important;
+ border-radius:12px!important;
+}
+body[data-page="detail"] :is(#v188-train,#lab-controls) .scout-v206-svg{
+ color:var(--sc206-accent,#f3cd77)!important;
+ filter:drop-shadow(0 1px 2px rgba(1,7,18,.3));
+}
+body[data-page="detail"] #lab-controls .lab-adjust button:hover:not(:disabled){
+ border-color:rgba(243,205,119,.85)!important;
+ background:#294668!important;
+}
+body[data-page="detail"] #lab-controls .lab-adjust button:focus-visible{
+ outline:3px solid #ffc629!important;outline-offset:2px!important;
+}

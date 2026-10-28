@@ -1,0 +1,201 @@
+/* SCOUT PRO V219 — laboratório de escalações 4-3-1-2 / 4-2-1-3 */
+:root{color-scheme:dark;--rot-turquoise:#4ee0c2;--rot-bg:#081824;--rot-panel:#102838;--rot-border:rgba(121,193,188,.30);--rot-ink:#eef9fa;--rot-muted:#aecbd0}
+*{box-sizing:border-box}
+body[data-page="rotation-lab"]{margin:0;background:radial-gradient(ellipse at 0 0,rgba(27,87,99,.30),transparent 50%),#071722;color:var(--rot-ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:calc(85px + env(safe-area-inset-bottom))}
+.scout-rotation-top{background:#081b27;border-bottom:1px solid var(--rot-border);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px clamp(13px,3vw,26px);font-weight:800;font-size:12px;letter-spacing:.09em}
+.scout-rotation-top a{display:flex;align-items:center;gap:10px;color:#e8fffa;text-decoration:none}
+.scout-rotation-top img{width:42px;height:42px;object-fit:contain}
+.scout-rotation-top>span{color:var(--rot-turquoise)}
+.scout-rotation-wrap{max-width:1180px;margin:auto;padding:clamp(12px,3vw,28px);display:grid;gap:18px}
+.scout-rotation-hero{padding:18px 4px}
+.scout-rotation-eyebrow{color:#7ee7cc;letter-spacing:.12em;font-size:11px;font-weight:800}
+.scout-rotation-hero h1{font-size:clamp(26px,5vw,45px);margin:8px 0;letter-spacing:-.025em}
+.scout-rotation-hero p,.scout-rotation-panel>p{color:var(--rot-muted);font-size:14px;line-height:1.65}
+.scout-rotation-trust{border-left:3px solid #50e2bb;padding:12px 14px;background:#10372f;border-radius:4px 12px 12px 4px;font-size:13px;font-weight:700;line-height:1.55}
+.scout-rotation-panel{background:linear-gradient(145deg,#102b3b,#0a1c2d);border:1px solid var(--rot-border);border-radius:18px;padding:clamp(13px,3vw,25px);box-shadow:0 14px 25px #0002;min-width:0}
+.scout-rotation-title{display:flex;align-items:start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.scout-rotation-title span{border:1px solid #469d88;color:#a9e9d6;border-radius:9px;padding:6px 12px;white-space:nowrap;font-weight:800}
+.scout-rotation-panel h2{font-size:clamp(17px,3vw,23px);margin:0 0 12px;color:#ecfbf6}
+.scout-rotation-panel h3{font-size:16px;margin:10px 0;color:#bcefe0}
+.scout-rotation-panel label{display:block;color:#c8e6e2;font-size:13px;font-weight:700;margin-bottom:6px}
+.scout-rotation-panel input,.scout-rotation-panel textarea,.scout-rotation-panel select{display:block;width:100%;min-height:44px;padding:10px 12px;border-radius:9px;border:1px solid #35687a;background:#09212f;color:#f0fcfd;accent-color:#4ee0c2;resize:vertical;font:inherit;font-size:14px}
+.scout-rotation-panel textarea{min-height:80px}
+.scout-rotation-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.scout-rotation-btn{cursor:pointer;border:1px solid #477d87;border-radius:11px;color:#e3fbf5;background:#214958;padding:11px 15px;min-height:45px;font:inherit;font-size:13px;font-weight:800}
+.scout-rotation-btn.main,.scout-rotation-btn.selected{background:linear-gradient(118deg,#21b49a,#53d5bc);border-color:#6fe7d1;color:#04232b}
+.scout-rotation-btn:disabled{opacity:.42;cursor:not-allowed}
+.scout-rotation-panel button:focus-visible,.scout-rotation-panel summary:focus-visible,.scout-rotation-panel a:focus-visible{outline:3px solid #e9c88c;outline-offset:2px}
+.scout-rotation-feedback{color:#e9cb8b!important;font-size:12px!important;line-height:1.5!important}
+.scout-rotation-diagnostics{border:1px solid #35746c;background:#0e3436;border-radius:12px;padding:13px 15px;font-size:14px;color:#cdebe3;line-height:1.55;margin:14px 0}
+.scout-rotation-diagnostics p{margin:7px 0 0}
+.scout-rotation-caution{color:#f1d5a7!important;font-size:12px;line-height:1.55}
+.scout-rotation-squads{display:grid;gap:12px}
+.scout-rotation-team{border:1px solid var(--rot-border);background:#091f2b;border-radius:13px;min-width:0;overflow:hidden}
+.scout-rotation-team>summary{padding:12px;display:flex;align-items:center;gap:11px;cursor:pointer;min-height:76px}
+.scout-rotation-team>summary::-webkit-details-marker{display:none}
+.scout-rotation-team>summary>span:nth-child(2){flex:1;min-width:0}
+.scout-rotation-team>summary strong{display:block;font-size:15px;line-height:1.4}
+.scout-rotation-team>summary small{color:var(--rot-muted);font-size:11px;line-height:1.45;display:block;margin-top:3px}
+.scout-rotation-team-num{width:39px;height:39px;border:1px solid #45a18f;background:#114444;border-radius:10px;display:grid;place-items:center;color:#74f4d3;font-weight:850;flex-shrink:0}
+.scout-rotation-readiness{color:#a9efdf;font-size:11px;font-weight:800}
+.scout-rotation-team-inside{padding:10px 15px 18px;display:grid;gap:16px}
+.scout-rotation-tactical{padding:11px;border:1px solid rgba(94,190,154,.40);border-radius:13px;background:#072b2b}
+.scout-rotation-tactical>div:first-child{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:5px}
+.scout-rotation-tactical b{color:#a5f6d4}
+.scout-rotation-tactical span{color:#a6c8c6;font-size:12px}
+.scout-rotation-field{display:grid;gap:7px;min-height:500px;padding:15px 6px;background:repeating-linear-gradient(0deg,#123c32 0,#123c32 72px,#194c3a 72px,#194c3a 144px);border:1px solid #58a38e;border-radius:9px}
+.scout-rotation-field-row{display:flex;justify-content:space-around;align-items:center;gap:4px}
+.scout-rotation-field-spot{max-width:105px;flex:1 1 0;min-width:0;border:1px solid #aed9c988;border-radius:9px;background:#061c20cf;padding:6px 3px;display:flex;align-items:center;flex-direction:column;gap:3px;min-height:77px;text-align:center}
+.scout-rotation-field-spot img{width:auto;max-width:95%;height:48px;aspect-ratio:3/4;object-fit:contain}
+.scout-rotation-field-spot strong{font-size:clamp(9px,1.7vw,12px);overflow-wrap:anywhere;line-height:1.3}
+.scout-rotation-field-spot small{color:#98d9cb;font-size:10px}
+.scout-rotation-field-spot.missing{border-color:#ae8b50;color:#ffdaad}
+.scout-rotation-players{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.scout-rotation-players section{min-width:0}
+.scout-rotation-player{display:flex;align-items:center;gap:8px;border-bottom:1px solid #2a4e55;padding:9px 2px;min-width:0}
+.scout-rotation-player>img{width:30px;height:42px;object-fit:contain;flex:none}
+.scout-rotation-player>div{flex:1;min-width:0}
+.scout-rotation-player strong{display:block;overflow-wrap:anywhere;font-size:12px}
+.scout-rotation-player small{display:block;color:#91b7bd;font-size:10px;line-height:1.4}
+.scout-rotation-player>a{color:#79efcd;text-decoration:none;font-size:11px;white-space:nowrap}
+.scout-rotation-audit,.scout-rotation-match{background:#112c3d;padding:13px;border-radius:12px;border:1px solid #326875;color:#c2dfe5}
+.scout-rotation-audit p,.scout-rotation-audit li,.scout-rotation-match p{font-size:12px;line-height:1.65}
+.scout-rotation-audit ul{padding-left:19px;margin:8px 0}
+.scout-rotation-match form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.scout-rotation-match form label{min-width:0;margin:0}
+.scout-rotation-match form label.wide{grid-column:1/-1}
+.scout-rotation-match form button{grid-column:1/-1;justify-self:start}
+.scout-rotation-subtext{color:#abd0cf}
+.scout-rotation-footer{font-size:11px;color:#9bbec4;text-align:center;padding:10px}
+@media(max-width:760px){.scout-rotation-players{grid-template-columns:1fr}.scout-rotation-team-inside{padding-inline:10px}.scout-rotation-readiness{max-width:64px}.scout-rotation-panel{padding:14px}}
+@media(max-width:360px){.scout-rotation-field-spot img{height:40px}.scout-rotation-field-spot{min-height:68px}.scout-rotation-field{min-height:410px}.scout-rotation-team>summary{gap:7px;padding:9px}}
+
+/* V222 — seleção visual segura dos jogadores do Black.
+   Sem substituir as artes, identidades ou builds das 246 cartas. */
+.scout-rotation-picker{
+ border:1px solid rgba(92,216,180,.28);
+ background:linear-gradient(155deg,#10383a,#0a242f);
+ border-radius:15px;padding:clamp(10px,2.2vw,18px);margin:15px 0;
+}
+.scout-rotation-picker-head{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:12px;flex-wrap:wrap;margin-bottom:14px;
+}
+.scout-rotation-picker-head strong{font-size:clamp(15px,3vw,19px);color:#d9fff0}
+.scout-rotation-picker-head p{font-size:12px;line-height:1.5;color:#b5d4d0;margin:5px 0}
+.scout-rotation-pill{
+ display:inline-flex;min-height:34px;align-items:center;
+ border:1px solid rgba(107,231,195,.61);background:#1a5145;
+ color:#adf6db;padding:8px 11px;border-radius:99px;
+ font-size:12px;font-weight:850;white-space:nowrap;
+}
+.scout-rotation-pick-controls{
+ display:grid;grid-template-columns:minmax(0,2fr) minmax(120px,1fr);
+ gap:10px;min-width:0;margin:0 0 14px;
+}
+.scout-rotation-pick-controls label{min-width:0}
+.scout-rotation-picker-list{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:8px;max-height:min(520px,65vh);overflow:auto;
+ overscroll-behavior:contain;padding:2px;
+}
+.scout-rotation-picker-card{
+ display:flex;align-items:center;gap:10px;min-width:0;
+ background:#102d37;border:1px solid rgba(117,185,165,.34);
+ border-radius:12px;padding:10px;min-height:95px;
+}
+.scout-rotation-picker-card.selected{
+ background:rgba(44,118,96,.24);
+ border-color:#58cca7;min-height:54px;padding:10px;
+}
+.scout-rotation-picker-card img{
+ width:58px;height:76px;flex:none;object-fit:contain;
+ border-radius:9px;background:#071b29;
+}
+.scout-rotation-picker-card>.scout-rotation-noart{
+ width:58px;min-width:58px;height:76px;
+ display:grid;place-content:center;border:1px solid #356d6b;
+ border-radius:9px;background:#061e26;color:#e6c99b;
+}
+.scout-rotation-picker-meta{
+ min-width:0;flex:1;display:grid;gap:5px;
+}
+.scout-rotation-picker-meta strong{
+ color:#eefcf7;font-size:13px;line-height:1.35;
+ overflow-wrap:anywhere;
+}
+.scout-rotation-picker-meta small{
+ color:#b6d5d3;font-size:11px;line-height:1.3;
+ overflow-wrap:anywhere;
+}
+.scout-rotation-picker-meta .scout-rotation-edition{
+ color:#e1c998;font-size:10px;max-height:3.9em;overflow:hidden;
+}
+.scout-rotation-picker-card button{
+ flex:none;min-height:40px;padding:8px 11px;font-size:11px;
+}
+.scout-rotation-picker-card button.pick{
+ background:#176751;border-color:#6ae3b8;color:#e3fff2;
+}
+.scout-rotation-picker-card button.unpick{
+ background:#573d35;border-color:#aa8476;color:#f8d5bc;
+}
+.scout-rotation-picked-heading{
+ display:flex;flex-wrap:wrap;justify-content:space-between;
+ gap:10px;margin:16px 2px 10px;
+ color:#f3fff6;font-size:13px;font-weight:850;
+}
+.scout-rotation-picked-heading span{color:#a8eacf}
+.scout-rotation-picked{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:7px;min-width:0;
+}
+.scout-rotation-picked .scout-rotation-picker-card{
+ background:#0f443c;border-color:#57c9a4;
+}
+.scout-rotation-quick-paste{
+ border:1px solid rgba(80,155,154,.35);border-radius:11px;
+ background:#0a2533;padding:10px 13px;margin:12px 0;
+}
+.scout-rotation-quick-paste>summary{
+ color:#ccece2;font-size:13px;font-weight:800;
+ cursor:pointer;min-height:32px;line-height:1.4;
+}
+.scout-rotation-quick-paste textarea{margin:10px 0 0}
+.scout-rotation-review-label{
+ display:flex!important;align-items:flex-start;gap:12px;
+ padding:12px;margin:13px 0!important;border-radius:12px;
+ background:rgba(61,129,114,.17);
+ border:1px solid rgba(112,190,173,.36);
+ line-height:1.5;
+}
+.scout-rotation-review-label input[type=checkbox]{
+ display:block;width:22px;min-width:22px;max-width:22px;
+ height:22px;min-height:22px;margin:0;cursor:pointer;accent-color:#46dba9;
+}
+.scout-rotation-review-label input:disabled{opacity:.40;cursor:not-allowed}
+@media(max-width:760px){
+ .scout-rotation-picker-list,.scout-rotation-picked{grid-template-columns:1fr}
+ .scout-rotation-picker-card{min-height:85px}
+}
+@media(max-width:420px){
+ .scout-rotation-pick-controls{grid-template-columns:minmax(0,1fr)}
+ .scout-rotation-picker-card{gap:8px;padding:8px}
+ .scout-rotation-picker-card img,.scout-rotation-picker-card>.scout-rotation-noart{
+  width:47px;min-width:47px;height:65px
+ }
+ .scout-rotation-picker-meta strong{font-size:12px}
+ .scout-rotation-picker-card button{padding:7px 9px;font-size:10px;max-width:92px}
+}
+
+/* V224 — adaptação explícita: nunca apresentar posição provisória como homologada. */
+.scout-rotation-field-spot.provisional{border:2px dashed #deb77b!important;background:rgba(118,72,26,.25)!important}
+.scout-rotation-field-spot.provisional small{color:#ffdca7!important;font-weight:800}
+.scout-rotation-diagnostics{overflow-wrap:anywhere}
+
+/* Interface V226 — cartões, filtros, duas formações e backups com identidades de cor brasileiras. */
+.scout-rotation-squads{grid-template-columns:minmax(0,1fr)}
+.scout-rotation-panel .scout-rotation-actions>.scout-rotation-btn{flex:0 1 auto}
+.scout-rotation-team>summary:hover{background:rgba(22,133,91,.15)}
+.scout-rotation-pick-controls input:focus,.scout-rotation-pick-controls select:focus{border-color:#ffc629;box-shadow:0 0 0 3px rgba(255,198,41,.14)}
+@media(max-width:540px){.scout-rotation-actions .scout-rotation-btn{flex:1 1 calc(50% - 10px);min-height:48px}.scout-rotation-pick-controls{grid-template-columns:1fr}.scout-rotation-team>summary{gap:8px}}

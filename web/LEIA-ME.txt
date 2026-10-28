@@ -1,0 +1,12 @@
+SCOUT PRO — PERFORMANCE EDITION V66
+
+1. Extraia este ZIP completamente no celular ou PC.
+2. Abra o arquivo index.html no navegador.
+3. Pesquise por nome, versão, Card ID e filtre por posição ou raridade.
+4. Abra uma carta. Cada uma possui uma página individual com quatro partes e builds A/B.
+
+Funciona offline. Não mova index.html isoladamente: mantenha as pastas cartas e fichas e os arquivos premium.css e premium.js juntos.
+
+VALIDAÇÃO: 246 fichas individuais, 225 artes originais, 162 cartas com builds A e B, 14 cartas com subtotais detalhados.
+Apenas os dados documentados foram preservados; ímpetos escolhidos, habilidades adicionais equipadas e valores finais completos em campo precisam de validação.
+Não é produto oficial da Konami nem avaliação pessoal de Rentão/Blackjhon.

@@ -1,0 +1,291 @@
+{
+  "version": "V101",
+  "descricao": "15 edições exatas conferidas externamente. Medidas derivadas publicadas pelo PESDB, não prova de gameplay nem Player ID oculto.",
+  "fonte_oficial_jogabilidade": "https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00",
+  "fonte_externa": "https://pesdb.net/efootball/players/",
+  "total_roster": 246,
+  "verificados": 15,
+  "cartas": [
+    {
+      "numero": 2,
+      "card_id": "88036360649078",
+      "altura_cm": 178,
+      "peso_kg": 74,
+      "pe_dominante": "esquerdo",
+      "modelo_corporal": {
+        "comprimento_perna": 7,
+        "alcance_perna_cm": 171.77,
+        "colisao_tronco_cm": 49.48
+      },
+      "uso_perna_ruim": "raramente",
+      "precisao_perna_ruim": "alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/raul-88036360649078",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 10,
+      "card_id": "88039045074370",
+      "altura_cm": 186,
+      "peso_kg": 85,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 10,
+        "alcance_perna_cm": 181.16,
+        "colisao_tronco_cm": 51.27
+      },
+      "uso_perna_ruim": "regularmente",
+      "precisao_perna_ruim": "muito alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/paolo-maldini-88039045074370",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 11,
+      "card_id": "106788187832737",
+      "altura_cm": 193,
+      "peso_kg": 93,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 11,
+        "alcance_perna_cm": 188.56,
+        "colisao_tronco_cm": 54.49
+      },
+      "uso_perna_ruim": "raramente",
+      "precisao_perna_ruim": "alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/manuel-neuer-106788187832737",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 25,
+      "card_id": "88033139494377",
+      "altura_cm": 188,
+      "peso_kg": 80,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 8,
+        "alcance_perna_cm": 181.98,
+        "colisao_tronco_cm": 52.99
+      },
+      "uso_perna_ruim": "ocasionalmente",
+      "precisao_perna_ruim": "muito alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/marco-van-basten-88033139494377",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 33,
+      "card_id": "88039044941086",
+      "altura_cm": 189,
+      "peso_kg": 79,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 11,
+        "alcance_perna_cm": 184.65,
+        "colisao_tronco_cm": 53.83
+      },
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/dimitar-berbatov-88039044941086",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 39,
+      "card_id": "88036360723178",
+      "altura_cm": 183,
+      "peso_kg": 73,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 7,
+        "alcance_perna_cm": 176.6,
+        "colisao_tronco_cm": 50.99
+      },
+      "uso_perna_ruim": "ocasionalmente",
+      "precisao_perna_ruim": "muito alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/andriy-shevchenko-88036360723178",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 78,
+      "card_id": "88029918268943",
+      "altura_cm": 182,
+      "peso_kg": 78,
+      "pe_dominante": "esquerdo",
+      "modelo_corporal": {
+        "comprimento_perna": 5,
+        "alcance_perna_cm": 174.54,
+        "colisao_tronco_cm": 49.72
+      },
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/guti-88029918268943",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 95,
+      "card_id": "88040387251676",
+      "altura_cm": 184,
+      "peso_kg": 88,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 9,
+        "alcance_perna_cm": 178.66,
+        "colisao_tronco_cm": 51.6
+      },
+      "uso_perna_ruim": "raramente",
+      "precisao_perna_ruim": "alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/frank-lampard-88040387251676",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 104,
+      "card_id": "88036360719848",
+      "altura_cm": 190,
+      "peso_kg": 87,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 11,
+        "alcance_perna_cm": 185.63,
+        "colisao_tronco_cm": 53.07
+      },
+      "uso_perna_ruim": "raramente",
+      "precisao_perna_ruim": "muito alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/frank-rijkaard-88036360719848",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 106,
+      "card_id": "88040387251639",
+      "altura_cm": 181,
+      "peso_kg": 76,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 7,
+        "alcance_perna_cm": 174.67,
+        "colisao_tronco_cm": 51.05
+      },
+      "uso_perna_ruim": "ocasionalmente",
+      "precisao_perna_ruim": "alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/pep-guardiola-88040387251639",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 127,
+      "card_id": "105835242041536",
+      "altura_cm": 181,
+      "peso_kg": 84,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 10,
+        "alcance_perna_cm": 176.29,
+        "colisao_tronco_cm": 51.17
+      },
+      "uso_perna_ruim": "raramente",
+      "precisao_perna_ruim": "média",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/jules-kounde-105835242041536",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 143,
+      "card_id": "88039581945329",
+      "altura_cm": 176,
+      "peso_kg": 70,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 7,
+        "alcance_perna_cm": 169.84,
+        "colisao_tronco_cm": 49.73
+      },
+      "uso_perna_ruim": "raramente",
+      "precisao_perna_ruim": "alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/franco-baresi-88039581945329",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 145,
+      "card_id": "88039581945324",
+      "altura_cm": 181,
+      "peso_kg": 77,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 6,
+        "alcance_perna_cm": 174.12,
+        "colisao_tronco_cm": 50.93
+      },
+      "uso_perna_ruim": "ocasionalmente",
+      "precisao_perna_ruim": "alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/franz-beckenbauer-88039581945324",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 147,
+      "card_id": "88032334054195",
+      "altura_cm": 191,
+      "peso_kg": 83,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 11,
+        "alcance_perna_cm": 186.61,
+        "colisao_tronco_cm": 54.18
+      },
+      "uso_perna_ruim": "regularmente",
+      "precisao_perna_ruim": "alta",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/tony-adams-88032334054195",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    },
+    {
+      "numero": 150,
+      "card_id": "105873091445023",
+      "altura_cm": 194,
+      "peso_kg": 95,
+      "pe_dominante": "direito",
+      "modelo_corporal": {
+        "comprimento_perna": 11,
+        "alcance_perna_cm": 189.54,
+        "colisao_tronco_cm": 54.63
+      },
+      "uso_perna_ruim": "raramente",
+      "precisao_perna_ruim": "média",
+      "fonte": "PESDB eFootball 2027 (terceiros, conferência manual por Card ID)",
+      "url": "https://pesdb.net/efootball/players/ibrahima-konate-105873091445023",
+      "consultado_em": "2026-10-12",
+      "status": "documentado-fonte-terceiros",
+      "player_id_animacao": null
+    }
+  ]
+}

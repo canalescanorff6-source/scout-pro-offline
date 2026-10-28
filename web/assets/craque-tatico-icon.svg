@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Craque Tático - escudo brasileiro de futebol e tática">
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#031420"/><stop offset="1" stop-color="#092b32"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a5"/><stop offset=".28" stop-color="#ffc629"/><stop offset=".66" stop-color="#ad7113"/><stop offset="1" stop-color="#ffe48b"/></linearGradient>
+ <linearGradient id="field" x2="1" y2=".4"><stop stop-color="#003d33"/><stop offset=".5" stop-color="#009a62"/><stop offset="1" stop-color="#064c44"/></linearGradient>
+ <linearGradient id="blue" x2="1" y2="1"><stop stop-color="#005a8c"/><stop offset="1" stop-color="#001c38"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+<rect width="512" height="512" rx="92" fill="url(#bg)"/>
+<circle cx="256" cy="264" r="204" fill="none" stroke="#00c853" stroke-width="5" opacity=".45" filter="url(#glow)"/>
+<path d="M84 184 Q117 139 176 151 Q106 256 186 380 Q110 337 84 184Z M428 184 Q395 139 336 151 Q406 256 326 380 Q402 337 428 184Z" fill="url(#blue)" stroke="url(#gold)" stroke-width="10"/>
+<path d="M256 69 L414 140 L399 303 Q386 392 256 458 Q126 392 113 303 L98 140Z" fill="url(#gold)"/>
+<path d="M256 91 L389 153 L377 295 Q362 371 256 433 Q150 371 135 295 L123 153Z" fill="url(#blue)"/>
+<path d="M256 104 L372 162 L362 287 Q347 359 256 410 Q165 359 150 287 L140 162Z" fill="url(#field)"/>
+<path d="M256 104 V410 M140 230 H368 M170 170 H342 M173 342 H339" stroke="#cbda91" stroke-width="2" opacity=".35" fill="none"/>
+<path d="M195 112 L205 70 L230 88 L256 48 L282 88 L307 70 L317 112Z" fill="url(#gold)" stroke="#fff0b7" stroke-width="4"/>
+<rect x="193" y="107" width="126" height="15" rx="6" fill="#ffdc54"/>
+<circle cx="256" cy="258" r="109" fill="#001e33" stroke="url(#gold)" stroke-width="12"/>
+<circle cx="256" cy="258" r="94" fill="#f9f4db" stroke="#063457" stroke-width="4"/>
+<path d="M255 203 l42 29 -15 49 -52 0 -18 -49Z" fill="#003b72"/>
+<path d="M255 203 L255 164 M297 232 L335 213 M282 281 L304 325 M230 281 L204 326 M212 232 L176 213" stroke="#10405d" stroke-width="11"/>
+<path d="M170 199 l-21 -23 m21 0 l-21 23 M339 304 l-21 -22 m21 0 l-21 22" stroke="#ffc629" stroke-width="9" stroke-linecap="round"/>
+<path d="M162 306 A124 124 0 0 1 151 239 M350 196 A120 120 0 0 1 362 279" stroke="#ffdf62" stroke-width="7" fill="none" stroke-linecap="round"/>
+<path d="M145 248 l7 -17 12 13 M348 270 l15 17 8 -18" fill="none" stroke="#ffdf62" stroke-width="7" stroke-linecap="round"/>
+<path d="M256 360 l13 24 27 4 -19 19 4 27 -25 -13 -25 13 4 -27 -19 -19 27 -4Z" fill="url(#gold)" stroke="#fff4c0" stroke-width="2"/>
+<path d="M143 147 L256 95 L369 147" fill="none" stroke="#fff7bf" stroke-width="5" opacity=".8"/>
+</svg>

@@ -1,0 +1,129 @@
+/* Craque Tático V302 — técnico por versão dentro da ficha única */
+body[data-page="detail"] .ct-manager-v302{
+ display:block;margin:10px 0;
+ padding:16px;border:1px solid rgba(221,187,115,.45);
+ border-radius:16px;
+ background:linear-gradient(140deg,rgba(11,47,54,.96),rgba(15,25,39,.97));
+ box-shadow:inset 0 1px rgba(247,227,179,.13);
+ color:#f3f7f3;min-width:0;
+}
+body[data-page="detail"] .ct-manager-v302:not([open]) > :not(summary){display:none!important}
+body[data-page="detail"] .ct-manager-v302[open] > :not(summary){margin-top:11px}
+body[data-page="detail"] .ct-manager-v302>summary{
+ cursor:pointer;min-height:48px;box-sizing:border-box;
+ color:#f4da9b;font-size:14px;font-weight:850;
+ padding:8px 2px;line-height:1.5;
+}
+body[data-page="detail"] .ct-manager-v302>summary:focus-visible{outline:3px solid #e8c98d;outline-offset:3px}
+
+body[data-page="detail"] .ct-manager-v302 h3{
+ margin:0;font-size:clamp(17px,4vw,23px);font-weight:850;color:#f4da9b;
+}
+body[data-page="detail"] .ct-manager-v302>p,
+body[data-page="detail"] .ct-manager-details p{
+ margin:0;line-height:1.5;font-size:13px;overflow-wrap:anywhere;
+}
+body[data-page="detail"] .ct-manager-v302>p{color:#bed7d6}
+body[data-page="detail"] .ct-manager-v302 label{
+ display:grid;gap:7px;font-size:12px;font-weight:850;color:#c5e6dc;min-width:0;
+}
+body[data-page="detail"] .ct-manager-v302 select{
+ box-sizing:border-box;width:100%;min-width:0;max-width:100%;
+ min-height:46px;border-radius:11px;border:1px solid rgba(121,211,179,.6);
+ background:#0d2938;color:#f7fff9;padding:9px 10px;
+ font:inherit;font-size:13px;line-height:1.4;
+}
+body[data-page="detail"] .ct-manager-v302 select:focus-visible,
+body[data-page="detail"] .ct-manager-actions button:focus-visible{
+ outline:3px solid #e8c98d;outline-offset:2px;
+}
+body[data-page="detail"] .ct-manager-actions{
+ display:flex;flex-wrap:wrap;gap:8px;
+}
+body[data-page="detail"] .ct-manager-actions button{
+ cursor:pointer;border-radius:10px;min-height:40px;
+ border:1px solid #777b73;background:#21373e;color:#eaf7ee;
+ padding:9px 13px;font-weight:750;font-size:12px;
+}
+body[data-page="detail"] .ct-manager-details{
+ display:grid;gap:9px;padding:13px;border-radius:12px;
+ border:1px solid rgba(193,223,191,.2);background:rgba(4,23,31,.58);
+}
+body[data-page="detail"] .ct-manager-details strong{color:#dfcd99;font-size:13px}
+body[data-page="detail"] .ct-manager-details>div{display:grid;gap:6px}
+body[data-page="detail"] .ct-manager-identity{color:#ebd19c;font-weight:850}
+@media(max-width:420px){
+ body[data-page="detail"] .ct-manager-v302{padding:12px;margin:10px 0;gap:9px}
+ body[data-page="detail"] .ct-manager-v302 select{font-size:12px}
+}
+/* V303 — seleção claramente visível e status do cálculo por estilo */
+body[data-page="detail"] .ct-manager-v302[open]{border-color:rgba(236,199,114,.7)}
+body[data-page="detail"] .ct-manager-v302 select{font-size:clamp(13px,2.8vw,15px);min-height:48px}
+body[data-page="detail"] .ct-manager-v302>summary{font-size:clamp(13px,3vw,16px)}
+body[data-page="detail"] #scout-v303-style-summary{padding:7px 0 0;margin:5px 0 0;font-size:12px;line-height:1.5;color:#e4cf93;font-weight:650;overflow-wrap:anywhere}
+
+
+/* V307 — retratos locais e seis proficiências exibidas na ficha individual. */
+.ct-manager-portrait{width:88px;height:94px;object-fit:cover;border-radius:12px;border:2px solid #d5b67e}
+.ct-manager-six-styles{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px!important}
+.ct-manager-score{background:#263743;padding:6px;border-radius:8px;font-size:12px;color:#dce1e3}
+.ct-manager-score-elite{color:#bdf9a1;background:#254335}
+.ct-manager-score-strong{color:#ffe7a6;background:#423c27}
+.ct-manager-hub-link{display:inline-flex;align-items:center;padding:9px 13px;border:1px solid #c9a66c;border-radius:10px;color:#fbe5b5;font-weight:750;text-decoration:none;font-size:12px}
+@media(max-width:420px){.ct-manager-six-styles{grid-template-columns:1fr}}
+
+/* V329 · escolha principal simples nas 246 fichas; informações extras sob demanda. */
+body[data-page="detail"] .ct-manager-v329-tools{
+ display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);
+ gap:10px;align-items:end;padding:13px;border-radius:14px;
+ border:1px solid rgba(221,187,115,.38);
+ background:linear-gradient(140deg,#102d3b,#102133);
+}
+body[data-page="detail"] .ct-manager-v329-tools input,
+body[data-page="detail"] .ct-manager-v329-tools select{
+ width:100%;min-width:0;min-height:44px;box-sizing:border-box;
+ background:#071d2d;border:1px solid #567b84;color:#f7f8fb;
+ padding:9px 11px;border-radius:9px;font:inherit;font-size:13px;
+}
+body[data-page="detail"] .ct-manager-v329-tools input:focus-visible,
+body[data-page="detail"] .ct-manager-v329-tools select:focus-visible,
+body[data-page="detail"] .ct-manager-v329-favorite:focus-visible,
+body[data-page="detail"] .ct-manager-v329-more>summary:focus-visible{
+ outline:3px solid #f4d393;outline-offset:3px;
+}
+body[data-page="detail"] .ct-manager-v329-count{
+ grid-column:1;margin:0;color:#bed2dc;font-size:12px;line-height:1.45;
+}
+body[data-page="detail"] .ct-manager-v329-favorite{
+ grid-column:2;min-height:44px;border:1px solid #dec181;
+ color:#fff1c8;background:#223d4a;border-radius:9px;
+ cursor:pointer;font:inherit;font-size:12px;font-weight:850;padding:10px;
+}
+body[data-page="detail"] .ct-manager-v329-favorite[aria-pressed=true]{
+ background:#51442b;color:#fff5d2;
+}
+body[data-page="detail"] .ct-manager-v329-favorite:disabled{opacity:.53;cursor:not-allowed}
+body[data-page="detail"] .ct-manager-v329-more{
+ border-top:1px solid #496173;padding-top:7px;
+ border-radius:9px;min-width:0;
+}
+body[data-page="detail"] .ct-manager-v329-more>summary{
+ cursor:pointer;min-height:44px;display:flex;gap:8px;align-items:center;
+ color:#f0d6a2;font-size:12px;font-weight:800;line-height:1.4;
+}
+body[data-page="detail"] .ct-manager-v329-more>summary:after{
+ content:"+";margin-left:auto;font-size:19px;font-weight:400;
+}
+body[data-page="detail"] .ct-manager-v329-more[open]>summary:after{content:"−"}
+body[data-page="detail"] .ct-manager-v329-more:not([open])>:not(summary){
+ display:none!important;
+}
+body[data-page="detail"] .ct-manager-v329-more[open] .ct-manager-six-styles{
+ padding-top:9px;
+}
+@media(max-width:600px){
+ body[data-page="detail"] .ct-manager-v329-tools{grid-template-columns:minmax(0,1fr)}
+ body[data-page="detail"] .ct-manager-v329-count,
+ body[data-page="detail"] .ct-manager-v329-favorite{grid-column:1}
+ body[data-page="detail"] .ct-manager-v329-tools{padding:10px}
+}

@@ -1,0 +1,418 @@
+{
+  "schema": "ScoutProV184_eFHUB_visual_evidence",
+  "data": "2026-10-15",
+  "source": "Screenshots.rar enviado pelo usuario; imagens eFHUB sem numero Card ID visivel",
+  "summary": {
+    "images_in_archive": 241,
+    "transcribed_skill_lists": 241,
+    "skill_occurrences": 2243,
+    "different_skill_labels": 60,
+    "distinct_player_filenames": 210,
+    "unambiguous_name_only_candidates": 185,
+    "selected_detailed_observations": 15
+  },
+  "rules": {
+    "preserve_project_level_pp_training": true,
+    "may_modify_master_card_id": false,
+    "may_promote_simulator_booster_to_account_equipped": false,
+    "may_assume_native_in_exact_edition": false,
+    "player_model_is_observed_in_simulator": true,
+    "skills_status": "candidato_visual_print_sem_confirmacao_card_id_na_conta"
+  },
+  "observations": [
+    {
+      "cap": 75,
+      "player": "Luis Díaz",
+      "file": "Luis_D_az_efhub.jpg",
+      "level_in_eFHUB": 31,
+      "playing_style": "Ala produtivo",
+      "rarity_user": "SHOW TIME",
+      "boosters_eFHUB": [
+        "Rompe-barreira +3",
+        "Instinto artilheiro +1"
+      ],
+      "skills": [
+        "Toque duplo",
+        "Giro 360°",
+        "Controle com a sola",
+        "Efeito de longe",
+        "Finalização acrobática",
+        "Chute de primeira",
+        "Passe em profundidade",
+        "Cruzamento preciso",
+        "Curva para fora",
+        "Drible explosivo"
+      ],
+      "model": {
+        "leg": 175.9,
+        "arm": 164.6,
+        "jump": 249.7,
+        "collision": 50.4,
+        "base": 184
+      }
+    },
+    {
+      "cap": 151,
+      "player": "Willian Pacho",
+      "file": "Willian_Pacho_efhub.jpg",
+      "level_in_eFHUB": 27,
+      "playing_style": "O destruidor",
+      "rarity_user": "DISTINGUIDO",
+      "boosters_eFHUB": [
+        "Sem Impulso",
+        "Sem Impulso"
+      ],
+      "skills": [
+        "Marcação individual",
+        "Interceptação",
+        "Afastamento acrobático",
+        "Espírito guerreiro",
+        "Bloqueador",
+        "Superioridade aérea",
+        "Carrinho"
+      ],
+      "model": {
+        "leg": 181.7,
+        "arm": 169.4,
+        "jump": 275,
+        "collision": 52.8,
+        "base": 190
+      }
+    },
+    {
+      "cap": 170,
+      "player": "Jan Oblak",
+      "file": "Jan_Oblak_efhub.jpg",
+      "level_in_eFHUB": 26,
+      "playing_style": "Goleiro defensivo",
+      "rarity_user": "SHOW TIME",
+      "boosters_eFHUB": [
+        "Goleiro +3",
+        "Goleiro +1"
+      ],
+      "skills": [
+        "Reposição alta do GO",
+        "Arremesso longo do GO",
+        "Pegador de pênaltis",
+        "Liderança",
+        "Comandante da defesa (GO)"
+      ],
+      "model": {
+        "leg": 181.4,
+        "arm": 170.9,
+        "jump": 271.6,
+        "collision": 52.4,
+        "base": 188
+      }
+    },
+    {
+      "cap": 181,
+      "player": "Serhou Guirassy",
+      "file": "Serhou_Guirassy_efhub.jpg",
+      "level_in_eFHUB": 31,
+      "playing_style": "Artilheiro",
+      "rarity_user": "DISTINGUIDO",
+      "boosters_eFHUB": [
+        "Sem Impulso",
+        "Sem Impulso"
+      ],
+      "skills": [
+        "Controle com a sola",
+        "Cabeçada",
+        "Controle da cavadinha",
+        "Chute ascendente",
+        "Finalização acrobática",
+        "Chute de primeira",
+        "Especialista em pênalti",
+        "Malícia",
+        "Espírito guerreiro",
+        "Superioridade aérea"
+      ],
+      "model": {
+        "leg": 182.7,
+        "arm": 170,
+        "jump": 270.2,
+        "collision": 52.2,
+        "base": 191
+      }
+    },
+    {
+      "cap": 20,
+      "player": "Rodri",
+      "file": "Rodri_efhub.jpg",
+      "level_in_eFHUB": 27,
+      "playing_style": "Primeiro volante",
+      "boosters_eFHUB": [
+        "Sem Impulso",
+        "Sem Impulso"
+      ],
+      "skills": [
+        "Controle com a sola",
+        "Precisão à distância",
+        "Passe de primeira",
+        "Passe em profundidade",
+        "Passe aéreo baixo",
+        "Marcação individual",
+        "Interceptação",
+        "Espírito guerreiro",
+        "Bloqueador",
+        "Superioridade aérea"
+      ],
+      "model": {
+        "leg": 183.9,
+        "arm": 173.8,
+        "jump": 265.9,
+        "collision": 53.2,
+        "base": 191
+      },
+      "identity_note": "V185: print seleção Espanha é edição DIFERENTE de #225; habilidades com Bloqueador diferem do banco externo de #020. Manter separadas e confirmar a edição de #020 antes de atualizar."
+    },
+    {
+      "cap": 225,
+      "player": "Rodri",
+      "file": "Rodri_efhub_0.jpg",
+      "level_in_eFHUB": 27,
+      "playing_style": "Primeiro volante",
+      "boosters_eFHUB": [
+        "Sem Impulso",
+        "Sem Impulso"
+      ],
+      "skills": [
+        "Controle com a sola",
+        "Precisão à distância",
+        "Chute ascendente",
+        "Passe de primeira",
+        "Passe em profundidade",
+        "Passe aéreo baixo",
+        "Marcação individual",
+        "Interceptação",
+        "Espírito guerreiro",
+        "Superioridade aérea"
+      ],
+      "model": {
+        "leg": 183.9,
+        "arm": 173.8,
+        "jump": 265.9,
+        "collision": 53.2,
+        "base": 191
+      },
+      "identity_note": "V185: print Manchester City alinha com Rodri Highlight Back in the Game 14 Aug 2025, ID externo 105779675902175, 190cm, 52 PP, 10 habilidades. Número não é visível na captura; autenticação na conta pendente."
+    },
+    {
+      "cap": 24,
+      "player": "Cristiano Ronaldo",
+      "file": "Cristiano_Ronaldo_efhub.jpg",
+      "level_in_eFHUB": 32,
+      "boosters_eFHUB": [
+        "Instinto artilheiro +4",
+        "Fisicalidade +3"
+      ],
+      "skills": [
+        "Cabeçada",
+        "Precisão à distância",
+        "Chute de primeira",
+        "Curva para fora",
+        "Liderança",
+        "Espírito guerreiro",
+        "Superioridade aérea",
+        "Finalizador nato",
+        "Cabeçada Matadora",
+        "Foguete Rasante"
+      ]
+    },
+    {
+      "cap": 27,
+      "player": "Cristiano Ronaldo",
+      "file": "Cristiano_Ronaldo_efhub_0.jpg",
+      "level_in_eFHUB": 31,
+      "boosters_eFHUB": [
+        "Chute +3",
+        "Instinto artilheiro +1"
+      ],
+      "skills": [
+        "Pedalada simples",
+        "Cabeçada",
+        "Efeito de longe",
+        "Precisão à distância",
+        "Finalização acrobática",
+        "Chute de primeira",
+        "Especialista em pênalti",
+        "Liderança",
+        "Espírito guerreiro",
+        "Garra"
+      ]
+    },
+    {
+      "cap": 236,
+      "player": "Samuel Eto'o",
+      "file": "Samuel_Eto_o_efhub.jpg",
+      "level_in_eFHUB": 34,
+      "boosters_eFHUB": [
+        "Agilidade +4",
+        "Instinto artilheiro +1"
+      ],
+      "skills": [
+        "Toque duplo",
+        "Efeito de longe",
+        "Chute ascendente",
+        "Finalização acrobática",
+        "Toque de calcanhar",
+        "Chute de primeira",
+        "Curva para fora",
+        "Volta para marcar",
+        "Drible explosivo",
+        "Ímpeto de Ataque"
+      ]
+    },
+    {
+      "cap": 172,
+      "player": "Thibaut Courtois",
+      "file": "Thibaut_Courtois_efhub.jpg",
+      "level_in_eFHUB": 24,
+      "boosters_eFHUB": [
+        "Sem Impulso",
+        "Goleiro +1"
+      ],
+      "skills": [
+        "Reposição alta do GO",
+        "Arremesso longo do GO"
+      ]
+    },
+    {
+      "cap": null,
+      "player": "Lionel Messi",
+      "file": "Lionel_Messi_efhub.jpg",
+      "level_in_eFHUB": 29,
+      "boosters_eFHUB": [
+        "Proteção de Posse +3",
+        "Instinto artilheiro +1"
+      ],
+      "skills": [
+        "Toque duplo",
+        "Efeito de longe",
+        "Controle da cavadinha",
+        "Precisão à distância",
+        "Folha seca",
+        "Chute de primeira",
+        "Passe de primeira",
+        "Passe em profundidade",
+        "Especialista em pênalti",
+        "Liderança"
+      ],
+      "candidate_caps": [
+        50,
+        53,
+        57,
+        58
+      ]
+    },
+    {
+      "cap": null,
+      "player": "Lionel Messi",
+      "file": "Lionel_Messi_efhub_0.jpg",
+      "level_in_eFHUB": 1,
+      "boosters_eFHUB": [
+        "Sem Impulso",
+        "Sem Impulso"
+      ],
+      "skills": [
+        "Toque duplo",
+        "Efeito de longe",
+        "Controle da cavadinha",
+        "Precisão à distância",
+        "Folha seca",
+        "Chute de primeira",
+        "Passe de primeira",
+        "Passe em profundidade",
+        "Especialista em pênalti",
+        "Liderança"
+      ],
+      "candidate_caps": [
+        50,
+        53,
+        57,
+        58
+      ]
+    },
+    {
+      "cap": null,
+      "player": "Lionel Messi",
+      "file": "Lionel_Messi_efhub_1.jpg",
+      "level_in_eFHUB": 32,
+      "boosters_eFHUB": [
+        "Criador ofensivo +3",
+        "Instinto artilheiro +1"
+      ],
+      "skills": [
+        "Toque duplo",
+        "Efeito de longe",
+        "Precisão à distância",
+        "Folha seca",
+        "Chute de primeira",
+        "Passe de primeira",
+        "Passe em profundidade",
+        "Especialista em pênalti",
+        "Liderança",
+        "Passe visionário"
+      ],
+      "candidate_caps": [
+        50,
+        53,
+        57,
+        58
+      ]
+    },
+    {
+      "cap": null,
+      "player": "Rivaldo",
+      "file": "Rivaldo_efhub.jpg",
+      "level_in_eFHUB": 31,
+      "boosters_eFHUB": [
+        "Sem Impulso",
+        "Sem Impulso"
+      ],
+      "skills": [
+        "Pedalada simples",
+        "Giro 360°",
+        "Chapéu",
+        "Efeito de longe",
+        "Precisão à distância",
+        "Chute ascendente",
+        "Finalização acrobática",
+        "Passe em profundidade",
+        "Curva para fora",
+        "De letra"
+      ],
+      "candidate_caps": [
+        77,
+        81
+      ]
+    },
+    {
+      "cap": null,
+      "player": "Rivaldo",
+      "file": "Rivaldo_efhub_0.jpg",
+      "level_in_eFHUB": 37,
+      "boosters_eFHUB": [
+        "Chute +2",
+        "Sem Impulso"
+      ],
+      "skills": [
+        "Elástico",
+        "Giro 360°",
+        "Chapéu",
+        "Puxada de letra",
+        "Efeito de longe",
+        "Precisão à distância",
+        "Folha seca",
+        "Finalização acrobática",
+        "Passe em profundidade",
+        "Curva para fora"
+      ],
+      "candidate_caps": [
+        77,
+        81
+      ]
+    }
+  ]
+}

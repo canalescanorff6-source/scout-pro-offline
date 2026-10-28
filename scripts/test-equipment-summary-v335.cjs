@@ -1,0 +1,56 @@
+'use strict';
+// V335: nenhuma sugestão pode se passar por seleção salva/equipamento no jogo.
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),path=require('node:path');
+const root=path.resolve(__dirname,'..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const guide=require('../web/craque-ficha-decision-v327.js');
+const original=read('web/SCOUT_V69_AUDITORIA.json');
+const suggestions=[{name:'Passe de primeira'},{nome:'Passe em profundidade'}];
+const savedEmpty={skills:[],booster:''};
+const noSelection=guide.equipmentSummary(savedEmpty,suggestions,'Técnica');
+assert.equal(noSelection.hasDraft,true);
+assert.equal(noSelection.origin,'rascunho_independente');
+assert.deepEqual(noSelection.skills,[],'Rascunho sem skills não herda recomendações');
+assert.equal(noSelection.booster,null,'Rascunho sem ímpeto não herda candidato');
+assert.match(noSelection.skillsLabel,/0 selecionadas/);
+assert.equal(noSelection.boosterLabel,'Nenhum selecionado');
+const saved={skills:['Passe de primeira','Toque duplo'],booster:'Técnica'};
+const selected=guide.equipmentSummary(saved,suggestions,'Instinto Artilheiro');
+assert.deepEqual([...selected.skills],saved.skills);
+assert.equal(selected.booster,'Técnica');
+assert.match(selected.skillsLabel,/rascunho/);
+const calculated=guide.equipmentSummary(null,suggestions,'Técnica');
+assert.equal(calculated.hasDraft,false);
+assert.deepEqual([...calculated.skills],['Passe de primeira','Passe em profundidade']);
+assert.equal(calculated.booster,'Técnica');
+assert.match(calculated.skillsLabel,/candidatas/);
+const pending=guide.equipmentSummary(null,[],null);
+assert.equal(pending.skills.length,0);
+assert.equal(pending.boosterLabel,'Pendente');
+assert(Object.isFrozen(noSelection)&&Object.isFrozen(selected.skills));
+const ui=read('web/craque-positional-ui-v311.js');
+// V344: a seleção salva tem prioridade; um candidato bruto com slot ausente
+// não pode ser reintroduzido no resumo só porque aparece no ranking.
+assert(ui.includes('const usableCandidate=boosterReview?boosterReview.primary:'));
+assert(ui.includes('(screened?screened.boosterCandidate:candidate);'));
+assert(ui.includes('guide?.equipmentSummary?.(savedProfile,recommendations,usableCandidate)'));
+assert(ui.includes('const recommendations=screened?.skills||rawRecommendations;'));
+const screenedProfiles=require('../web/craque-manager-fichas-v324.js');
+const noSlot=screenedProfiles.screenContextualSuggestions(suggestions,'','',
+ 'Instinto Artilheiro','ausente');
+assert.equal(noSlot.boosterCandidate,null);
+assert.equal(guide.equipmentSummary(null,noSlot.skills,noSlot.boosterCandidate).booster,null);
+assert.equal(guide.equipmentSummary(saved,noSlot.skills,noSlot.boosterCandidate).booster,'Técnica',
+ 'Ímpeto de histórico independente deve permanecer sem ser substituído');
+assert(ui.includes('const verified=decision?.approved===true'),
+ 'Apenas a aprovação verificada pela decisão contextual pode ser anunciada');
+assert(!ui.includes('const verified=Boolean(saved?.revision?.approved'),
+ 'Uma revisão antiga pode ter PP diferente dos atuais');
+assert(ui.includes('Nenhuma habilidade adicional selecionada neste rascunho.'));
+assert(ui.includes('Nenhum ímpeto adicional selecionado neste rascunho.'));
+assert(ui.includes("equipment?.hasDraft?'Habilidades selecionadas no rascunho: '"));
+assert(ui.includes("equipment?.hasDraft?'Ímpeto selecionado no rascunho: '"));
+assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),original);
+assert.equal(JSON.parse(original).cards.length,246);
+console.log('V335 PASS: rascunho vazio preservado, sugestões separadas e aprovação válida somente para PP exibidos.');

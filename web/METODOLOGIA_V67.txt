@@ -1,0 +1,10 @@
+SCOUT PRO — PERFORMANCE LAB V67 (eFootball 2027)
+
+OBJETIVO: desenvolvimento para função e gameplay, não Overall.
+BASE: V66 e catálogo V64; não descarta dados e não confunde print do usuário com arte externa.
+LAB: controles offline por carta, custos calculados por faixas de 4 níveis; não altera progresso no jogo.
+C: experimento em cartas com base já cadastrada na V66; pondera atributos disponíveis por posição/estilo e preserva prioridades mínimas. É uma hipótese heurística, NÃO a prova de melhor performance. Não usa estatísticas faltantes como se fossem zero no jogo.
+SUBTOTAIS: base cadastrada + níveis do treino + bônus fixos documentados + bônus direto de R. Rodríguez. Não incluem outros efeitos da proficiência 88, condição ou segundo ímpeto escolhido. Confirmar em Plano de Jogo.
+MUITO IMPORTANTE: A confiança nos atributos-base herdados da V66 depende das fontes e da versão exata; estão sujeitos a revalidação antes de gastar recursos. Não presumir que as habilidades candidatas foram instaladas.
+TESTE: cinco partidas por cenário, adversários semelhantes, 1 mudança por vez. Registro local não é sincronizado e pode ser perdido ao limpar dados.
+FONTES GERAIS: https://www.konami.com/efootball/en-us/page/v6/versioninfo_v6-00 ; https://www.konami.com/efootball/en-us/page/v4/versioninfo_v4-00 ; https://efootball.cz/en/managers ; https://www.allgamesdb.com/tools/efootball/build-player/ 

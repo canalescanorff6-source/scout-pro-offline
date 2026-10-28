@@ -1,0 +1,15 @@
+/* V314 · slot real, mesma linguagem do laboratório posicional. */
+.ct314-formation-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;
+ background:#202d38;border:1px solid #73644a;border-radius:12px;padding:12px;margin:12px 0}
+.ct314-slot-label{display:grid;gap:6px;font-size:13px;font-weight:750;color:#f6ddb2}
+.ct314-slot-select{min-height:44px;width:100%;background:#0b1924;color:#fff0d4;
+ border:1px solid #ae9364;border-radius:9px;padding:9px;font-weight:700;font-size:13px}
+.ct314-formation-action{margin:8px 0 2px;width:100%;min-height:40px;
+ background:linear-gradient(120deg,#f0d394,#c5a168);color:#132531;
+ border-radius:10px;border:1px solid #f1e4ba;font-weight:800;cursor:pointer}
+.ct314-slot-panel{margin:12px 0;scroll-margin-top:30px}
+.ct314-slot-panel .ct311-positional{max-width:100%}
+.ct314-formation-note{border-left:3px solid #cda56b;background:#283640;padding:10px 12px;
+ border-radius:8px;font-size:13px;color:#f9e8c8}
+.ct314-error{color:#ffce92;border:1px solid #be8d5b;border-radius:9px;padding:10px}
+@media(max-width:600px){.ct314-formation-row{grid-template-columns:1fr;padding:10px}}

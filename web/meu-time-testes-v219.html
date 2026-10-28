@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#082B27"><title>Laboratório de Elencos | Craque Tático</title>
+<link rel="stylesheet" href="premium.css"><link rel="stylesheet" href="app-bridge.css">
+<link rel="stylesheet" href="scout-rotation-lab-v219.css">
+<script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script>
+<script defer src="scout-roster-restrictions-v222.js"></script>
+<script defer src="craque-tactics-v230.js"></script>
+<script defer src="scout-player-identity-v245.js"></script>
+<script defer src="scout-position-training-v246.js"></script><script defer src="craque-bench-advisor-v247.js"></script>
+<script defer src="scout-rotation-engine-v219.js"></script>
+<script defer src="scout-rotation-lab-v219.js"></script><script defer src="pwa.js"></script>
+<style>
+/* V246 — confirmação explícita, visível e acessível no seletor do jogador. */
+.ct-v246-choice{display:grid;gap:5px;min-width:0;margin:5px 0}
+.ct-v246-choice>.option{width:100%;min-width:0}
+.ct-v246-training{min-height:42px;padding:8px 12px;border:1px solid #a7874a;
+ border-radius:10px;background:#18314b;color:#ffe2a1;text-align:left;
+ font:inherit;font-size:12px;font-weight:650;cursor:pointer}
+.ct-v246-training:focus-visible{outline:2px solid #f8d182;outline-offset:2px}
+@media(max-width:420px){.ct-v246-training{font-size:11px}}
+</style>
+<link rel="stylesheet" href="craque-lineup-focus-v330.css"/>
+<script defer src="craque-lineup-focus-v330.js"></script>
+<link rel="stylesheet" href="craque-premium-workspaces-v353.css" data-ct353-final="true"/>
+</head><body data-page="rotation-lab"><header class="scout-rotation-top"><a href="index.html"><img src="assets/craque-tatico-icon.svg" alt="">CRAQUE TÁTICO</a><span>ELENCOS · LABORATÓRIO</span></header>
+<main class="scout-rotation-wrap"><section class="scout-rotation-hero"><div class="scout-rotation-eyebrow">CINCO ESTILOS · TESTE DE TODAS AS CARTAS</div>
+<h1>Laboratório de escalações</h1><p>Restringa as 23 cartas do mapeamento do Black e teste até 223 cartas em cada série. Com 11 titulares e 12 reservas, serão 9 elencos completos por formação e 16 cartas para a segunda rodada, desde que haja goleiros e posições elegíveis. Todas as escolhas são experimentais; o programa não inventa familiaridade de posição nem ativa Link-Up.</p>
+<nav class="scout-rotation-page-shortcuts" aria-label="Atalhos do laboratório"><a href="#black-heading">23 restrições</a><a href="#series-heading">Duas formações</a><a href="#video-heading">Gravação e partidas</a><a href="#craque-backup-panel">Backup e restauração</a></nav><div class="scout-rotation-trust" id="rotation-inventory" role="status">Carregando 246 cartas…</div></section>
+<section class="scout-rotation-panel" aria-labelledby="black-heading"><div class="scout-rotation-title"><h2 id="black-heading">01 · As 23 cartas que não quero escalar</h2><span id="black-count">0 / 23</span></div>
+<p>Envie as fotos do Black aqui na conversa para validar as identidades e Card IDs. Por enquanto, você pode digitar o <strong>número do catálogo</strong> de cada uma das 23 cartas. Elas ficam proibidas nas séries de teste das duas formações, mas nenhuma carta nem escalação original será apagada.</p>
+<div class="scout-rotation-picker">
+  <div class="scout-rotation-picker-head">
+    <div><strong>Escolha as cartas visualmente</strong><p>Toque em <b>Restringir</b> na carta correta. Cada escolha vale para as duas formações, titulares e reservas, nas duas rodadas.</p></div>
+    <span class="scout-rotation-pill" id="black-selected-count">0 protegidas</span>
+  </div>
+  <div class="scout-rotation-pick-controls">
+    <label for="black-search">Buscar nome, edição ou nº da carta<input id="black-search" type="search" autocomplete="off" spellcheck="false" placeholder="Ex.: Shevchenko, 039, Orquestrador"></label>
+    <label for="black-position">Filtrar posição<select id="black-position"><option value="">Todas as posições</option></select></label>
+  </div>
+  <div id="black-candidate-count" class="scout-rotation-subtext" aria-live="polite">Carregando cartas…</div>
+  <div id="black-candidates" class="scout-rotation-picker-list" aria-label="Cartas disponíveis para restringir"></div>
+  <div class="scout-rotation-picked-heading">Cartas protegidas da escalação do Black <span id="black-protected-label">0 de 23</span></div>
+  <div id="black-reserved" class="scout-rotation-picked" aria-label="Jogadores excluídos das duas formações"></div>
+</div>
+<details class="scout-rotation-quick-paste"><summary>Opcional: colar números das 23 cartas de uma vez</summary>
+<label for="black-input">Números das cartas (#), separados por espaço ou vírgula</label>
+<textarea id="black-input" rows="3" spellcheck="false" placeholder="Ex.: 011, 039, 106, 143… (somente os números das cartas conferidas)"></textarea></details>
+<label class="scout-rotation-review-label" for="black-reviewed"><input id="black-reviewed" type="checkbox" disabled> Conferi pessoalmente as 23 cartas nas imagens da escalação do Black (declaração pessoal, não verificação externa).</label>
+<div class="scout-rotation-actions">
+  <button id="black-save" type="button" class="scout-rotation-btn main">Aplicar números colados</button>
+  <button id="black-clear" type="button" class="scout-rotation-btn">Limpar lista</button>
+  <button id="black-export" type="button" class="scout-rotation-btn">Salvar restrições (.json)</button>
+</div>
+<label for="black-import">Importar lista de bloqueios de outro dispositivo (.json)
+  <input id="black-import" type="file" accept=".json,application/json" aria-label="Escolher lista Scout PRO de bloqueios para importar">
+</label>
+<p class="scout-rotation-subtext">Os bloqueios ficam salvos neste dispositivo. Para usar a mesma lista no Android e no Windows, exporte o arquivo JSON aqui e importe-o no outro app. A importação confere os números e os Card IDs, sem alterar as cartas.</p>
+<p id="black-feedback" class="scout-rotation-feedback" role="status">A lista ainda não foi validada pelos prints.</p></section>
+<section class="scout-rotation-panel" id="craque-backup-panel"><h2>Backup seguro · Exportar e restaurar</h2><p>Salve sua coleção de dados antes de atualizar ou trocar de aparelho. Para restaurar, confira a prévia e confirme: os dados atuais serão protegidos antes de aplicar o arquivo.</p><div class="scout-rotation-actions"><button id="craque-backup-open" type="button" class="scout-rotation-btn main">Abrir central de backup</button></div><div id="craque-backup-last" class="scout-rotation-feedback" role="status">Seus dados não foram alterados.</div></section><section class="scout-rotation-panel" aria-labelledby="series-heading"><h2 id="series-heading">02 · Séries de testes por formação</h2><p>O mesmo conjunto de 223 cartas poderá ser testado nas duas táticas independentes (4-3-1-2 personalizada e 4-2-1-3 estreita). <strong>Nenhuma carta se repete entre equipes da mesma formação e rodada. Adaptação de posição exige confirmação no jogo, e o Link-Up não é considerado ativo automaticamente.</strong></p>
+<section class="ct-v230-rotation-modes" aria-label="Estilos de jogo">
+ <h3>Estilo do técnico · escolha para as duas formações</h3>
+ <p>Os dois desenhos continuam estreitos. Recalcule os elencos segundo função, estilo e habilidades nativas, sem alterar suas 246 cartas nem os 23 bloqueios.</p>
+ <div id="ct-v230-rotation-modes" role="group" aria-label="Tática para rodízio" class="scout-rotation-actions">
+  <button type="button" class="scout-rotation-btn selected" data-tactic-mode="posse" aria-pressed="true">Posse de Bola</button>
+  <button type="button" class="scout-rotation-btn" data-tactic-mode="normal" aria-pressed="false">Contra-Ataque Normal</button>
+  <button type="button" class="scout-rotation-btn" data-tactic-mode="rapido" aria-pressed="false">Contra-Ataque Rápido</button>
+  <button type="button" class="scout-rotation-btn" data-tactic-mode="fora" aria-pressed="false">Por Fora</button>
+  <button type="button" class="scout-rotation-btn" data-tactic-mode="longo" aria-pressed="false">Bola Longa</button>
+ </div>
+ <p id="ct-v230-rotation-note" class="scout-rotation-feedback" role="status">Posse de Bola selecionada. Selecione outro estilo para testar combinações.</p>
+</section>
+<div role="group" aria-label="Escolher série" class="scout-rotation-actions"><button type="button" class="scout-rotation-btn selected" data-series="4312" aria-pressed="true">4-3-1-2 · Dois VOL</button><button type="button" class="scout-rotation-btn" data-series="4213" aria-pressed="false">4-2-1-3 · Dois CA + SA</button></div>
+<div role="group" aria-label="Rodada de testes" class="scout-rotation-actions"><button type="button" class="scout-rotation-btn selected" data-cycle="1" aria-pressed="true">Rodada 1 · Equipes iniciais</button><button type="button" class="scout-rotation-btn" data-cycle="2" aria-pressed="false">Rodada 2 · Testar as 16 restantes</button></div><div id="series-diagnostics" class="scout-rotation-diagnostics"></div>
+<div class="scout-rotation-actions"><button type="button" id="rotation-export" class="scout-rotation-btn">Exportar escalações e resultados (JSON)</button><button type="button" id="rotation-backup" class="scout-rotation-btn">Salvar backup restaurável (JSON)</button><button type="button" id="rotation-prompt" class="scout-rotation-btn">Copiar escalação para análise da partida</button></div>
+<div id="squads" class="scout-rotation-squads"></div></section>
+<section class="scout-rotation-panel" aria-labelledby="video-heading"><h2 id="video-heading">03 · Vídeo da partida · Gravação e análise</h2>
+<p>No <strong>Android nativo</strong>, a gravação de tela usa autorização do sistema e captura em MP4 com resolução adaptada ao limite de 1280×720 e 30 fps. Comece a gravação, escolha <strong>tela inteira</strong> (não somente a janela do Scout PRO), entre no eFootball e, ao terminar, use a notificação de gravação para parar. O primeiro protótipo grava <strong>apenas vídeo, sem áudio</strong> e encerra a captura em até 15 minutos.</p>
+<div class="scout-rotation-actions"><button type="button" id="rec-start" class="scout-rotation-btn main">Iniciar gravação Android</button><button type="button" id="rec-stop" class="scout-rotation-btn">Parar gravação</button><button type="button" id="rec-share" class="scout-rotation-btn">Compartilhar vídeo</button></div>
+<p id="rec-feedback" class="scout-rotation-feedback" role="status">Aguardando verificação do gravador Android.</p>
+<p class="scout-rotation-caution">O vídeo permanece no dispositivo até você escolher compartilhá-lo. O Craque Tático não acessa sua conta ChatGPT, não envia partidas sozinho e não controla a conversa. No compartilhamento, escolha ChatGPT, anexe o MP4 se necessário e confirme o envio. Você poderá obter análise de movimentação, tabelas, erros e momentos específicos, mas não é possível prometer identificar todas as ações de cada jogador.</p>
+</section>
+<section class="scout-rotation-panel"><h2>04 · Critérios de avaliação das partidas</h2>
+<p>A escalação reserva titulares e banco para testes práticos. Após jogar, registre o resultado e observações; quando houver vídeo, anote seu nome e envie-o com a escalação. Para jogadores diferentes, observe movimentação sem bola, primeiro toque, precisão dos passes, desmarques, cobertura, decisões sob pressão e eficácia defensiva. Comparações precisam de partidas semelhantes — não apenas um Overall alto.</p>
+</section><footer class="scout-rotation-footer">CRAQUE TÁTICO · CATÁLOGO ORIGINAL PRESERVADO · DADOS DE JOGO NÃO CONFIRMADOS PERMANECEM PENDENTES</footer>
+</main></body></html>

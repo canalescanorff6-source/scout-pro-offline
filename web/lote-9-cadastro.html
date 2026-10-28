@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scout PRO — Cadastro visual · Lote 9</title>
+<style>
+:root{color-scheme:dark;font-family:Arial,system-ui,sans-serif;background:#050608;color:#f6f8fb}
+*{box-sizing:border-box}body{margin:0;padding:16px}main{border:1px solid #34373c;border-radius:18px;padding:16px;max-width:780px;margin:auto}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}h1{font-size:18px;margin:0 0 8px}
+small,.hint,.sub{color:#bcc4d0}.hint{font-size:12px}.count{text-align:right;font-weight:700;font-size:19px;white-space:nowrap}
+.progress{height:6px;background:#25272a;border-radius:8px;margin:14px 0;overflow:hidden}.progress div{height:100%;width:0;background:#69c58e;transition:width .18s}
+label{font-size:13px;display:block;margin:14px 0 6px;font-weight:600}
+input,select{width:100%;height:42px;background:#07090b;border:1px solid #3d4045;border-radius:9px;color:#fff;padding:0 13px;font-size:14px}
+input:focus,select:focus{outline:2px solid #b4dfff;outline-offset:1px}
+.layout{display:grid;grid-template-columns:minmax(125px,200px) minmax(0,1fr);gap:18px;align-items:start;margin:18px 0 12px}
+.art-wrap{text-align:center}.art-wrap img{display:block;width:100%;height:auto;aspect-ratio:0.708;object-fit:contain;background:#0c1018;border:1px solid #464a54}.art-wrap small{display:block;font-size:11px;margin:7px 0}
+h2{font-size:16px;margin:0 0 8px}.sub{font-size:12px;line-height:1.45}button{cursor:pointer}
+.primary{width:100%;height:40px;border:0;border-radius:30px;background:#e9e9e9;color:#080808;font-size:14px;margin-top:12px}
+.primary:disabled{opacity:.42;cursor:not-allowed}
+.pager{display:flex;justify-content:space-between;align-items:center;gap:7px;margin:12px 0}.pager button{background:#070707;color:#ddd;border:1px solid #303236;border-radius:28px;padding:8px 14px}
+.pager button:disabled{opacity:.3}.pager span{color:#c0dfff;font-size:12px}
+.records{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.records button{border:1px solid #375440;background:#152b1c;color:#d4f6de;border-radius:22px;padding:8px;font-size:12px}
+.copy{width:100%;border:0;border-radius:25px;background:#212224;color:#fff;padding:13px;margin-top:10px}.copy:disabled{opacity:.4}
+.help{font-size:12px;line-height:1.6;color:#c5ced9}.warn{color:#ffcb7d;font-size:12px;min-height:15px;margin-top:6px}
+@media(max-width:540px){body{padding:5px}main{padding:13px;border-radius:12px}.layout{grid-template-columns:minmax(98px,34%) 1fr;gap:11px}.pager button{padding:8px}h2{font-size:14px}}
+</style><link rel="stylesheet" href="craque-premium-workspaces-v353.css" data-ct353-final="true"/>
+<link rel="stylesheet" href="craque-app-shell-v362.css" data-ct362-design="true"/>
+<script defer src="craque-app-shell-v362.js" data-ct362-design="true"></script>
+</head><body data-page="batch-9">
+<main>
+<header><div><h1>Cadastro visual · Lote 9</h1><div class="hint">Nível máximo e pontos de progresso</div></div><div class="count"><span id="done">0</span>/4<br><small style="font-size:12px;font-weight:400">Preenchidas</small></div></header>
+<div class="progress"><div id="progress"></div></div>
+<label for="choice">Selecione o jogador</label><select id="choice" aria-label="Selecionar jogador"></select>
+<section class="layout">
+<div class="art-wrap"><img id="art" src="cartas/CAP_243_Anthony_Gordon_ORIGINAL.png" alt="Carta original de Anthony Gordon" width="205" height="290"><small id="caption">#243 · Anthony Gordon</small></div>
+<div>
+<h2 id="title">#243 — Anthony Gordon</h2><div class="sub">Confira o nível máximo desta edição no eFootball 2027.</div>
+<form id="form">
+<label for="level">Nível máximo</label><input id="level" type="number" min="1" max="120" step="1" placeholder="Ex.: 33" inputmode="numeric" required>
+<label for="pp">Pontos de progresso (PP)</label><input id="pp" type="number" min="0" placeholder="Calculado automaticamente" readonly>
+<div id="error" class="warn"></div>
+<button id="save" class="primary" type="submit" disabled>✓ Salvar e avançar</button>
+</form>
+<div class="pager"><button id="previous" type="button">‹ Anterior</button><span id="step">1/4</span><button id="next" type="button">Próxima ›</button></div>
+</div></section>
+<div id="records" class="records" aria-label="Registros salvos"></div>
+<button id="copy" class="copy" type="button" disabled>Enviar 0 carta(s) para salvar no GitHub — copiar registros</button>
+<p class="help" id="message">Os registros são anotados localmente. Copie os dados e cole na conversa para solicitar o commit GitHub; esta página não publica dados sozinha.</p>
+</main>
+<script>
+(()=>{'use strict';
+const cards=[{"id":243,"name":"Anthony Gordon","art":"CAP_243_Anthony_Gordon_ORIGINAL.png"},{"id":244,"name":"Edmond Tapsoba","art":"CAP_244_Edmond_Tapsoba_ORIGINAL.png"},{"id":245,"name":"Justin Kluivert","art":"CAP_245_Justin_Kluivert_ORIGINAL.png"},{"id":246,"name":"Eric Cantona","art":"CAP_246_Eric_Cantona_ORIGINAL.png"}];
+const key='scoutpro:cadastro:lote9:v90';
+let current=0;
+let values={};
+try{values=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(e){values={}}
+const $=id=>document.getElementById(id);
+const select=$('choice');
+cards.forEach((c,i)=>{const opt=document.createElement('option');opt.value=String(i);select.appendChild(opt)});
+function count(){return cards.filter(c=>values[c.id]&&Number.isInteger(values[c.id].level)&&values[c.id].pp===2*(values[c.id].level-1)).length}
+function render(){const c=cards[current],v=values[c.id];select.value=String(current);[...select.options].forEach((o,i)=>o.textContent='#'+cards[i].id+' — '+cards[i].name+(values[cards[i].id]?' ✓':''));
+ $('title').textContent='#'+c.id+' — '+c.name;$('caption').textContent='#'+c.id+' · '+c.name;
+ $('art').src='cartas/'+c.art;$('art').alt='Carta original de '+c.name;
+ $('level').value=v?v.level:'';$('pp').value=v?v.pp:'';$('step').textContent=(current+1)+'/4';
+ $('previous').disabled=current===0;$('next').disabled=current===cards.length-1;
+ $('done').textContent=count();$('progress').style.width=(count()/4*100)+'%';
+ $('copy').disabled=count()!==4;$('copy').textContent='Enviar '+count()+' carta(s) para salvar no GitHub — copiar registros';
+ $('error').textContent='';$('save').disabled=!v;
+ const container=$('records');container.replaceChildren();
+ cards.forEach((c,i)=>{if(!values[c.id])return;const b=document.createElement('button');b.type='button';b.textContent='✓ #'+c.id+' · '+values[c.id].level+' / '+values[c.id].pp+' PP';b.onclick=()=>{current=i;render()};container.appendChild(b)});
+}
+$('level').addEventListener('input',()=>{
+ const raw=$('level').value.trim();const n=Number(raw);
+ const good=/^\d+$/.test(raw)&&Number.isSafeInteger(n)&&n>=1&&n<=120;
+ $('pp').value=good?String(2*(n-1)):'';
+ $('error').textContent=!raw?'':(good?'':'Informe nível inteiro entre 1 e 120');
+ $('save').disabled=!good;
+});
+$('form').addEventListener('submit',e=>{
+ e.preventDefault();const n=Number($('level').value);if(!Number.isSafeInteger(n)||n<1||n>120)return;
+ const c=cards[current];values[c.id]={level:n,pp:2*(n-1)};
+ try{localStorage.setItem(key,JSON.stringify(values))}catch(e){}
+ if(current<cards.length-1)current++;
+ render();
+});
+$('choice').onchange=()=>{current=Number(select.value);render()};
+$('previous').onclick=()=>{current=Math.max(0,current-1);render()};
+$('next').onclick=()=>{current=Math.min(cards.length-1,current+1);render()};
+$('copy').onclick=async()=>{
+ if(count()!==4)return;
+ const content='Confirmo os quatro registros do lote 9 do eFootball 2027. Atualize permanentemente o GitHub canalescanorff6-source/scout-pro-offline, fichas, índice, auditoria e testes; preserve 246 cartas, artes, Card IDs, habilidades, ímpetos, estilos e builds. Valide CI Windows/Android.\n'+cards.map(c=>'#'+c.id+' '+c.name+': nível máximo '+values[c.id].level+', PP '+values[c.id].pp).join('\n');
+ try{await navigator.clipboard.writeText(content);$('message').textContent='Copiado! Cole o texto na conversa do ChatGPT para solicitar o salvamento permanente.'}
+ catch(e){const t=document.createElement('textarea');t.value=content;document.body.appendChild(t);t.focus();t.select();try{document.execCommand('copy');$('message').textContent='Registros copiados. Cole na conversa.'}catch(err){$('message').textContent=content}t.remove()}
+};
+render();
+})();
+</script></body></html>

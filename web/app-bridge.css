@@ -1,0 +1,288 @@
+#scout-app-bar {position:fixed;z-index:12000;bottom:max(12px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(96%,720px);background:rgba(7,20,35,.96);border:1px solid rgba(128,184,176,.34);border-radius:16px;color:#d9eee7;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 10px 28px rgba(0,0,0,.38);font-family:system-ui,Arial,sans-serif;font-size:12px;backdrop-filter:blur(18px)}
+#scout-app-bar strong{color:#dcc58b;font-size:13px}#scout-app-bar button,#scout-app-bar a{color:#061621;background:#70dfc0;border:0;border-radius:9px;font-size:12px;padding:9px 12px;cursor:pointer;text-decoration:none;font-weight:700;white-space:nowrap}
+#scout-app-bar .app-small{font-size:11px;color:#acbec7;display:block;max-width:450px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#scout-app-bar .app-actions{display:flex;gap:6px}
+body{padding-bottom:84px!important}@media(max-width:540px){#scout-app-bar{font-size:11px;padding:8px}.app-actions{flex-direction:column}#scout-app-bar button{padding:8px;font-size:11px}}
+#scout-backup-modal{max-height:85vh;overflow:auto;border:1px solid #5d998e;border-radius:16px;background:#0c192b;color:white;padding:24px;max-width:530px;width:90%;box-shadow:0 20px 60px #000a}#scout-backup-modal::backdrop{background:#001a}#scout-backup-modal button{background:#71dec0;border:0;border-radius:8px;padding:10px 13px;margin:6px;color:#092132;font-weight:600;cursor:pointer}#scout-backup-modal p{line-height:1.5}
+
+/* V96 — atualização de APK específica do Android */
+#scout-android-update-modal{border:1px solid #5d998e;border-radius:16px;background:#0c192b;color:#f6fafc;padding:22px;width:min(94vw,510px);max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px #000b;font:14px/1.5 system-ui,Arial,sans-serif}
+#scout-android-update-modal::backdrop{background:rgba(0,0,0,.77)}
+#scout-android-update-modal h3{font-size:19px;color:#e9d39e;margin:0 0 14px}
+#scout-android-update-modal p{margin:9px 0;overflow-wrap:anywhere}
+#scout-android-update-modal #scout-android-status{padding:11px;background:#102d36;border:1px solid #3b6572;border-radius:8px}
+#scout-android-update-modal .scout-update-help{font-size:12px;color:#c3d2dc}
+#scout-android-update-modal .scout-update-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+#scout-android-update-modal button{background:#73ddbd;border:0;border-radius:9px;padding:11px 13px;color:#0c2330;font:600 13px system-ui;cursor:pointer}
+#scout-android-update-modal button[hidden]{display:none!important}
+#scout-android-update-modal button:disabled{opacity:.45;cursor:default}
+@media(max-width:540px){#scout-android-update-modal{padding:15px}#scout-android-update-modal .scout-update-actions button{flex:1 1 45%}}
+
+
+
+/* V97: native Android layout, isolated from the Windows desktop and mobile web. */
+body.scout-native-android{
+  --scout-native-safe-top:max(28px, env(safe-area-inset-top, 0px));
+  padding-top:var(--scout-native-safe-top);
+  padding-bottom:calc(90px + env(safe-area-inset-bottom, 0px))!important;
+  overflow-x:clip;
+}
+body.scout-native-android .topbar{
+  top:var(--scout-native-safe-top);
+}
+body.scout-native-android .topbar .nav{
+  min-width:0;
+}
+body.scout-native-android #scout-app-bar{
+  left:50%;
+  right:auto;
+  bottom:max(8px, env(safe-area-inset-bottom, 0px));
+  transform:translateX(-50%);
+  width:calc(100% - 16px)!important;
+  max-width:530px;
+  min-height:62px;
+  padding:6px 7px;
+  border-radius:16px;
+  display:flex!important;
+  flex-direction:row!important;
+  justify-content:space-evenly;
+  align-items:center;
+  gap:5px;
+}
+body.scout-native-android #scout-app-bar>div:first-child{
+  display:none!important;
+}
+body.scout-native-android #scout-app-bar .scout-page-actions,
+body.scout-native-android #scout-app-bar .app-actions{
+  display:contents!important;
+}
+body.scout-native-android #scout-app-bar button,
+body.scout-native-android #scout-app-bar a{
+  box-sizing:border-box;
+  flex:1 1 0;
+  width:auto;
+  min-width:0!important;
+  min-height:46px;
+  margin:0;
+  padding:7px 3px!important;
+  border-radius:10px;
+  font-size:clamp(10px,2.6vw,12px);
+  font-weight:750;
+  line-height:1.2;
+  text-align:center;
+  white-space:normal;
+  overflow-wrap:normal;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+body.scout-native-android #scout-app-bar [hidden]{
+  display:none!important;
+}
+#scout-android-toast{
+  position:fixed;
+  z-index:12002;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:calc(80px + env(safe-area-inset-bottom, 0px));
+  width:min(calc(100% - 30px),460px);
+  max-height:98px;
+  overflow-y:auto;
+  padding:11px 14px;
+  border:1px solid #416c75;
+  border-radius:12px;
+  background:#10273b;
+  color:#e5f3fc;
+  box-shadow:0 8px 26px #0009;
+  font-size:12px;
+  line-height:1.45;
+  text-align:center;
+}
+#scout-android-toast[hidden]{display:none!important}
+@media(max-width:700px){
+  body.scout-native-android .topbar{
+    height:62px;
+    z-index:40;
+  }
+  body.scout-native-android .topbar .wrap.nav{
+    padding-inline:11px;
+    gap:8px;
+  }
+  body.scout-native-android .topbar .brand{
+    flex:1 1 auto;
+    min-width:0;
+    gap:8px;
+  }
+  body.scout-native-android .topbar .brand-logo-img{
+    flex:0 0 auto;
+    width:35px;
+    height:35px;
+  }
+  body.scout-native-android .topbar .brand-copy{
+    flex:1 1 auto;
+    min-width:0;
+    max-width:100%;
+  }
+  body.scout-native-android .topbar .brand-copy b{
+    font-size:12px;
+    letter-spacing:.035em;
+    line-height:1.05;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  body.scout-native-android .topbar .brand-copy small{
+    font-size:8px;
+    letter-spacing:.05em;
+    margin-top:3px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  body.scout-native-android .topbar .nav-right{
+    flex:0 0 auto;
+    gap:0;
+    min-width:0;
+  }
+  body.scout-native-android .topbar .nav-cta{
+    padding:9px 10px;
+    font-size:11px;
+    line-height:1.1;
+    white-space:nowrap;
+  }
+  body.scout-native-android .topbar .edition{
+    display:none;
+  }
+  body.scout-native-android .wrap{
+    max-width:100%;
+  }
+}
+@media(max-width:350px){
+  body.scout-native-android .topbar .brand-copy small{display:none}
+  body.scout-native-android .topbar .nav-cta{font-size:10px;padding:9px 7px}
+  body.scout-native-android #scout-app-bar{gap:3px}
+  body.scout-native-android #scout-app-bar button,
+  body.scout-native-android #scout-app-bar a{font-size:10px;padding-inline:1px!important}
+}
+@media(orientation:landscape) and (max-height:500px){
+ body.scout-native-android{--scout-native-safe-top:max(20px,env(safe-area-inset-top,0px))}
+ body.scout-native-android #scout-app-bar{min-height:50px;padding:4px}
+ body.scout-native-android #scout-app-bar button,
+ body.scout-native-android #scout-app-bar a{min-height:38px}
+ #scout-android-toast{bottom:60px}
+}
+
+/* V105: Android System WebView dialog fallback, never obscured by bottom controls. */
+#scout-android-update-modal.scout-dialog-fallback[open]{
+ position:fixed!important;
+ z-index:12005!important;
+ top:50%!important;
+ left:50%!important;
+ right:auto!important;
+ margin:0!important;
+ transform:translate(-50%,-50%)!important;
+ max-height:min(85vh,680px);
+}
+
+/* V354 — primeira pintura das 246 fichas com marca Craque Tático.
+ * Esta folha já está no HTML das fichas (antes dos CSS/JS dinâmicos).
+ * Igualar a superfície à paleta V234 elimina a passagem pelo tema V72.
+ * Sem alterar arte, tabelas, treinos, formações ou armazenamento.
+ */
+/* Especificidade maior que a V230 injetada: evita voltar ao fundo
+ * anterior enquanto a V234, atrasada, ainda não foi carregada. */
+html body[data-page="detail"]{
+ --ct354-bg:#060d18;--ct354-ink:#e9eef7;
+ --ct354-ivory:#fcf7e9;--ct354-gold:#f3cd77;
+ --ct354-line:rgba(151,172,202,.36);
+ color:var(--ct354-ink)!important;
+ background:radial-gradient(ellipse 110% 420px at 52% -110px,rgba(29,77,137,.26),transparent 78%),
+ linear-gradient(160deg,#070e1a,#0a1628 52%,#080f1e)!important;
+ color-scheme:dark;accent-color:#ffc629;
+}
+html body[data-page="detail"] .topbar{
+ background:linear-gradient(110deg,#0c172a,#122642)!important;
+ border-bottom:1px solid rgba(243,205,119,.44)!important;
+ box-shadow:0 5px 22px rgba(0,4,16,.24)!important;
+}
+html body[data-page="detail"] .topbar .brand-copy b{
+ color:var(--ct354-ivory)!important;letter-spacing:.025em;
+}
+html body[data-page="detail"] .topbar :is(.brand-copy small,.edition){
+ color:#bbc8d9!important;
+}
+html body[data-page="detail"] .topbar .brand-logo{
+ display:block!important;width:42px;height:42px;flex:0 0 42px;
+ background:transparent url("assets/craque-tatico-icon.svg") center / contain no-repeat;
+ color:transparent!important;font-size:0!important;overflow:hidden;
+}
+html body[data-page="detail"] .topbar .brand-logo-img{
+ width:42px;height:42px;flex:0 0 42px;object-fit:contain;
+ filter:drop-shadow(0 4px 13px rgba(243,205,119,.19));
+}
+html body[data-page="detail"] :is(.side-card,.mobile-profile,.profile-content>.panel,
+ .profile-content>.section,.profile-content>.scout-v188-principal){
+ background:linear-gradient(145deg,#162942,#101e34 75%)!important;
+ border-color:var(--ct354-line)!important;color:var(--ct354-ink)!important;
+ box-shadow:0 14px 36px rgba(0,4,15,.3)!important;
+ border-radius:17px;
+}
+html body[data-page="detail"] :is(.side-nav,.side-info,.side-art){
+ border-color:var(--ct354-line)!important;
+}
+html body[data-page="detail"] .side-art{
+ background:radial-gradient(circle at 50% 26%,#243c5c,#101e32 78%)!important;
+}
+html body[data-page="detail"] .side-art img{
+ object-fit:contain; /* A arte original não sofre corte. */
+}
+html body[data-page="detail"] :is(.player-name,.profile-content h1,
+ .profile-content h2,.side-info-row b){color:var(--ct354-ivory)!important}
+html body[data-page="detail"] :is(.breadcrumbs,.side-info-row label,
+ .mobile-profile .eyebrow){color:#bbc8d9!important}
+html body[data-page="detail"] :is(button,a,input,select,textarea,summary):focus-visible{
+ outline:3px solid #ffc629!important;outline-offset:3px!important;
+}
+html body[data-page="detail"] :is(.nav-cta,.btn.primary){
+ background:linear-gradient(140deg,#ffe09a,#d6a947)!important;
+ border:1px solid #ffe3a4!important;color:#101d31!important;
+}
+@media(max-width:560px){
+ html body[data-page="detail"] .topbar .brand-logo,
+ html body[data-page="detail"] .topbar .brand-logo-img{
+  width:35px;height:35px;flex-basis:35px;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ html body[data-page="detail"] :is(.side-card,.mobile-profile,.topbar){
+  animation:none!important;transition:none!important;
+ }
+}
+
+/* V355 · Atualização PWA opcional. Não encobre os comandos Android/Windows. */
+#ct355-update-ready{
+ position:fixed;z-index:11995;right:max(12px,env(safe-area-inset-right,0px));
+ bottom:calc(105px + env(safe-area-inset-bottom,0px));
+ width:min(390px,calc(100vw - 24px));max-height:55dvh;overflow-y:auto;
+ padding:15px 16px;background:linear-gradient(145deg,#162942,#101e34);
+ border:1px solid #dbb66f;border-radius:15px;color:#e9eef7;
+ box-shadow:0 12px 38px rgba(0,4,15,.65);font:13px/1.55 system-ui,Arial,sans-serif;
+}
+#ct355-update-ready strong{display:block;font-size:15px;color:#fcf7e9}
+#ct355-update-ready p{margin:7px 0 12px;color:#bbc8d9}
+#ct355-update-ready .ct355-update-actions{display:flex;flex-wrap:wrap;gap:8px}
+#ct355-update-ready button{
+ min-height:44px;padding:9px 12px;border-radius:10px;
+ background:#203a59;border:1px solid #6481a1;color:#f2f5fa;
+ font:700 12px system-ui,Arial,sans-serif;cursor:pointer;
+}
+#ct355-update-ready #ct355-apply-update{
+ background:linear-gradient(140deg,#ffe09a,#d6a947);color:#101d31;
+ border-color:#ffe3a4;
+}
+#ct355-update-ready button:focus-visible{outline:3px solid #ffc629;outline-offset:3px}
+@media(max-width:540px){
+ #ct355-update-ready{left:12px;right:12px;width:auto;max-height:42dvh}
+ #ct355-update-ready button{flex:1 1 125px}
+}
+@media print{#ct355-update-ready{visibility:hidden}}

@@ -1,0 +1,128 @@
+{
+  "schema": "SCOUT_V164_LEADS_CARTAS_PENDENTES",
+  "as_of": "2026-10-13",
+  "source_catalogue": "web/SCOUT_V106_PESQUISA_VIDEOS.json",
+  "source_catalogue_summary": {
+    "cards": 246,
+    "unique_videos": 377,
+    "associations": 393,
+    "cards_without_video": 5
+  },
+  "reserved_url_count_prior": 31,
+  "new_distinct_urls": 5,
+  "combined_reserved_url_count": 36,
+  "associations_contextual": 7,
+  "safety": [
+    "Os cinco vídeos estão apenas reservados, nenhum deles comprova a edição exata da carta do usuário.",
+    "Os dois vídeos Kashiwa são contextuais e não garantem que Kakita ou Kumasaka apareçam em campo ou menu.",
+    "Short Kashiwa pode repetir trechos do vídeo longo do mesmo criador, não são evidências independentes.",
+    "Messi 104 Classic No.10 não basta para aceitar CAP050 e não reverte a associação rejeitada anteriormente pelo usuário.",
+    "Não alterar número das 246 cartas, arte, Card IDs, evolução PP, skills, ímpetos ou seu programa Windows/Android.",
+    "Não declarar pro player ou treino competitivo sem comprovação de vídeo em torneio e análise do gameplay.",
+    "Não transferir vídeos ao catálogo V158 e não atualizar estatísticas de cobertura até a verificação visual quadro a quadro."
+  ],
+  "videos": [
+    {
+      "target_cards": [
+        50
+      ],
+      "player": "Lionel Messi",
+      "url": "https://www.youtube.com/watch?v=r03Lun0CxfE",
+      "youtube_id": "r03Lun0CxfE",
+      "title": "104 FREE MESSI REVIEW || EFOOTBALL 2027",
+      "kind": "analise_individual",
+      "quality": "titulo_youtube_confirmado",
+      "reason": "Review do Messi gratuito 104 no eFootball 2027. Edição SHOW TIME da CAP050 não comprovada; não validar treino ou Card ID.",
+      "potentially_contains_exact_card": false,
+      "card_id_verified_in_frames": false,
+      "edition_exact_match_verified": false,
+      "player_visible_in_video_verified": false,
+      "training_PPs_validated": false,
+      "tournament_pro_verified": false,
+      "frames_reviewed": false,
+      "status": "LEAD_SEM_EDICAO_CONFIRMADA"
+    },
+    {
+      "target_cards": [
+        50
+      ],
+      "player": "Lionel Messi",
+      "url": "https://www.youtube.com/watch?v=9VMhUTd5z5s",
+      "youtube_id": "9VMhUTd5z5s",
+      "title": "¡Gracias, Leo! Free 104 Rated Lionel Messi Review in efootball 2027",
+      "kind": "analise_individual",
+      "quality": "titulo_e_descricao_youtube_confirmados",
+      "reason": "Review da versão gratuita 104, porém não comprova carta CAP050, campanha ou ID. Não assumir que OVR 104 equivale à carta do usuário.",
+      "potentially_contains_exact_card": false,
+      "card_id_verified_in_frames": false,
+      "edition_exact_match_verified": false,
+      "player_visible_in_video_verified": false,
+      "training_PPs_validated": false,
+      "tournament_pro_verified": false,
+      "frames_reviewed": false,
+      "status": "LEAD_SEM_EDICAO_CONFIRMADA"
+    },
+    {
+      "target_cards": [
+        50
+      ],
+      "player": "Lionel Messi",
+      "url": "https://www.youtube.com/shorts/ZH2If5D1Aks",
+      "youtube_id": "ZH2If5D1Aks",
+      "title": "FREE SHOWTIME MESSI 104 LOGIN BONUS! CLASSIC NO.10 TOP 5 BEAST TRAINING #efootball2027 #messi",
+      "kind": "short_guia_treinamento",
+      "quality": "titulo_e_descricao_youtube_confirmados",
+      "reason": "Short mostra tema Show Time Messi 104 Classic No.10 eFootball 2027; não há transcrição de PP ou verificação visual de edição CAP050.",
+      "potentially_contains_exact_card": false,
+      "card_id_verified_in_frames": false,
+      "edition_exact_match_verified": false,
+      "player_visible_in_video_verified": false,
+      "training_PPs_validated": false,
+      "tournament_pro_verified": false,
+      "frames_reviewed": false,
+      "status": "LEAD_SEM_EDICAO_CONFIRMADA"
+    },
+    {
+      "target_cards": [
+        234,
+        235
+      ],
+      "player": "Kakita Yuki / Kumasaka Koki",
+      "url": "https://www.youtube.com/watch?v=F2fd7sI6oeI",
+      "youtube_id": "F2fd7sI6oeI",
+      "title": "【新登場】リカルドロドリゲス監督はこう使え！この可変フォメがドハマり？圧倒的ポゼッションサッカー！ようやく最強の柏レイソルスカッドが完成したぞ！！！[efootballアプリ2027/イーフト]",
+      "kind": "tatica_com_elenco_kashiwa_reysol",
+      "quality": "titulo_e_descricao_youtube_confirmados",
+      "reason": "Apresenta tática de posse e elenco do Kashiwa Reysol no eFootball 2027; não comprova Kakita/Kumasaka individualmente nem as edições CAP234/CAP235. Fonte contextual, não conta cobertura de carta.",
+      "potentially_contains_exact_card": false,
+      "card_id_verified_in_frames": false,
+      "edition_exact_match_verified": false,
+      "player_visible_in_video_verified": false,
+      "training_PPs_validated": false,
+      "tournament_pro_verified": false,
+      "frames_reviewed": false,
+      "status": "LEAD_SEM_EDICAO_CONFIRMADA"
+    },
+    {
+      "target_cards": [
+        234,
+        235
+      ],
+      "player": "Kakita Yuki / Kumasaka Koki",
+      "url": "https://www.youtube.com/shorts/W3f1sdoc-GU",
+      "youtube_id": "W3f1sdoc-GU",
+      "title": "【最新】柏レイソルスカッド使ってみた！リカルドロドリゲス監督のポゼッションいいぞ #shorts #efootball #イーフト #イーフットボール #イーフトアプリ2027",
+      "kind": "short_tatico_elenco_kashiwa_reysol",
+      "quality": "titulo_youtube_confirmado",
+      "reason": "Demonstração curta de elenco Kashiwa Reysol e posse com Ricardo Rodríguez. Pode ser recorte do vídeo maior do mesmo criador; NÃO considerar evidência independente nem carta exata mostrada.",
+      "potentially_contains_exact_card": false,
+      "card_id_verified_in_frames": false,
+      "edition_exact_match_verified": false,
+      "player_visible_in_video_verified": false,
+      "training_PPs_validated": false,
+      "tournament_pro_verified": false,
+      "frames_reviewed": false,
+      "status": "LEAD_SEM_EDICAO_CONFIRMADA"
+    }
+  ]
+}

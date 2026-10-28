@@ -1,0 +1,20 @@
+{
+  "app": "Craque Tático — Laboratório de Futebol",
+  "milestone": "V243 — Estabilidade e fluidez da biblioteca",
+  "date": "2026-10-18",
+  "channel": "Official signed Android APK and Windows NSIS",
+  "merged_pr": 148,
+  "merge_sha": "45a18bc01cc9324591b6baa2c6e18962ca3e6b2d",
+  "validation_runs": {
+    "catalog_performance_chromium_mobile": 39163788740,
+    "main_ci_and_246_card_integrity": 39163788738,
+    "physical_data_audit_and_android_windows_smoke": 39163788829,
+    "visual_qa_six_viewports": 39163788812,
+    "published_upgrade_compatibility_v239": 39163788884
+  },
+  "changes": "Preserve original 246 cards and their animations while preventing repeated DOM moves on unchanged filter/order and limiting effects-decoration to genuinely new arts. Cardona #007 remains one main sheet with 5 tactics; historical comparison is collapsed. No new V241 animations.",
+  "authorization": "User said 'Próximo' to explicitly proposed integration and official publication of V243 Android and Windows.",
+  "publishing": "Trigger existing .github/workflows/release.yml via main push. Use 1.1.${{ github.run_number }} assigned by GitHub. Never publish QA/debug APK; require permanent official V99 signer, SHA256 and SHA512, same bundle fingerprints and green CI.",
+  "upgrade_baseline": "Existing official release v1.1.430; require installing update over current package without uninstalling; verify user data by physical device after release.",
+  "limits": "Browser emulation is not a benchmark on the user's device. No proof of FPS, temperature, app data retention or APK installation until device testing."
+}

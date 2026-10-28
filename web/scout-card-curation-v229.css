@@ -1,0 +1,61 @@
+/* Craque Tático V229 — uma ficha principal, seis painéis legados consultáveis sob demanda.
+   Sem apagar dados; ocultar redundâncias somente depois da montagem V220. */
+body[data-page="detail"].scout-v229-unified .profile-content > section.topic,
+body[data-page="detail"].scout-v229-unified .profile-content > details.scout-v218-advanced{display:none!important}
+body[data-page="detail"].scout-v229-unified #scout-v188-principal>.scout-v188-more{display:none!important}
+body[data-page="detail"].scout-v229-unified #scout-v220-technical .scout-v188-more{display:none!important}
+body[data-page="detail"] #scout-v229-legacy-archive{border:1px solid rgba(166,188,219,.42);background:linear-gradient(135deg,#1a304e,#0d1d34);border-radius:15px;min-width:0;overflow:hidden}
+body[data-page="detail"] #scout-v229-legacy-archive>summary{display:list-item;cursor:pointer;color:#f5f0df;padding:14px 15px;font-size:13px;font-weight:850;min-height:47px;line-height:1.5;list-style-position:inside}
+body[data-page="detail"] #scout-v229-legacy-archive>summary::marker{color:#ffc629}
+body[data-page="detail"] .scout-v229-archive-note{font-size:12px;line-height:1.6;color:#d7e2f1;background:#1a304a;border-left:3px solid #f6c761;margin:0 12px 12px;padding:12px;border-radius:7px}
+body[data-page="detail"] .scout-v229-archive-content{padding:0 clamp(10px,2vw,18px) 15px;display:grid;gap:11px;min-width:0}
+body[data-page="detail"] .scout-v229-archive-content>.topic,
+body[data-page="detail"] .scout-v229-archive-content>.scout-v218-advanced{margin:0!important;min-width:0;width:100%}
+body[data-page="detail"] #scout-v229-legacy-archive .topic-h h2{font-size:15px}
+body[data-page="detail"] #scout-v229-legacy-archive .v68-heading h2{font-size:16px}
+body[data-page="detail"] #scout-v229-legacy-archive .topic{padding:13px!important}
+body[data-page="detail"] .scout-v229-audit-state{display:inline-flex;align-items:center;gap:7px;margin:10px 0 2px;padding:5px 10px;background:rgba(64,100,151,.20);border:1px solid rgba(243,205,119,.52);border-radius:100px;color:#f5ebd3;font-size:11px;font-weight:800;letter-spacing:.01em}
+body[data-page="detail"] .scout-v229-audit-state::before{content:"✓";color:#ffc629;font-weight:900}
+body[data-page="detail"].scout-v229-unified #scout-v220-training{order:0}
+body[data-page="detail"].scout-v229-unified #scout-v220-recs{order:0}
+body[data-page="detail"].scout-v229-unified #scout-v220-technical{order:0}
+body[data-page="detail"].scout-v229-unified .scout-v220-technical-body #scout-v184-evidence{max-width:100%}
+@media(max-width:540px){body[data-page="detail"] #scout-v229-legacy-archive>summary{font-size:12px;padding:11px}body[data-page="detail"] .scout-v229-audit-state{font-size:10px}body[data-page="detail"] .scout-v229-archive-content{padding-inline:8px}}
+@media print{body[data-page="detail"].scout-v229-unified .profile-content>section.topic{display:none!important}body[data-page="detail"] #scout-v229-legacy-archive{display:none!important}}
+
+/* V242 — a ficha é uma só. Histórico e comparações são preservados,
+ * mas não pintam painéis extensos durante a rolagem normal. */
+body[data-page="detail"] #scout-v229-legacy-archive:not([open])>
+ :not(summary){display:none!important}
+body[data-page="detail"] #scout-v229-legacy-archive>summary{
+ min-height:48px;display:flex;align-items:center;gap:8px;
+ color:#f9e8bd!important;
+ background:linear-gradient(135deg,#223b5b,#13263e);
+ border-radius:13px;
+}
+body[data-page="detail"] #scout-v229-legacy-archive[open]>summary{
+ border-bottom:1px solid rgba(243,205,119,.4);
+ border-radius:13px 13px 0 0;
+}
+body[data-page="detail"] #scout-v229-legacy-archive .scout-v207-identity,
+body[data-page="detail"] #scout-v229-legacy-archive #scout-v215-evidence{
+ margin:8px 0!important;min-width:0;max-width:100%;
+ border-color:rgba(163,184,216,.35)!important;
+}
+body[data-page="detail"] #scout-v229-legacy-archive .scout-v207-identity{
+ background:linear-gradient(140deg,#172c47,#0b1c32)!important;
+}
+body[data-page="detail"] .scout-v220-headline h2{
+ letter-spacing:-.018em;
+}
+@media(max-width:720px){
+ body[data-page="detail"] #scout-v229-legacy-archive>summary{
+  font-size:12px;line-height:1.3;padding:12px!important;
+ }
+ body[data-page="detail"] #scout-v229-legacy-archive .scout-v229-archive-content{
+  padding:8px!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body[data-page="detail"] #scout-v229-legacy-archive *{scroll-behavior:auto!important}
+}
