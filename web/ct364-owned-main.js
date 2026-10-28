@@ -53,7 +53,9 @@ const equipmentSave=(card,value)=>{
 };
 window.addEventListener('craque:references-ready',()=>{
  for(const c of entries){const tag=document.querySelector('[data-owned-id="'+c.key+'"] .ct364-card-tag');
-  const value=confirmationOf(c,true);if(tag&&value.source==='public_reference')tag.textContent='Máximo de referência · conferir no jogo';}
+  const value=confirmationOf(c,true);if(tag&&value.source==='public_reference')tag.textContent=value.level?
+   'Máximo de referência · conferir no jogo':'Nível máximo / PP pendentes';}
+ refreshReview();
  if(active)renderDialog();
 });
 const numberOrNull=(v)=>Number.isInteger(v)&&v>0&&v<=120?v:null;
@@ -126,7 +128,7 @@ function refreshReview(){
  const known=entries.filter(c=>Boolean(confirmationOf(c).level));
  const idKnown=entries.filter(c=>Boolean(confirmationOf(c).cardId));
  summary.textContent='Conferir minhas 15 cartas · '+(entries.length-known.length)+
-  ' níveis máximos pendentes';
+  ' níveis máximos pendentes de confirmação no jogo';
  const count=$('#ct365-review-count');
  if(count)count.textContent=known.length+' de '+entries.length+' níveis máximos informados · '+
   idKnown.length+' Card IDs anotados (identidade ainda não homologada)';
@@ -150,6 +152,10 @@ function refreshReview(){
     'Nível máximo: PENDENTE · PP: PENDENTES'));
   left.append(mk('span','',conf.cardId?
     'Card ID anotado (edição ainda não validada)':'Card ID: PENDENTE'));
+  const publicValue=confirmationOf(c,true);
+  if(publicValue.source==='public_reference')left.append(mk('span','',publicValue.level?
+   'Referência pública da edição: máximo '+publicValue.level+' · '+2*(publicValue.level-1)+' PP. Confira seu treino no jogo.':
+   'Edição identificada; nível máximo público incompleto.'));
   const action=mk('button','ct365-review-open',conf.level?'Revisar dados':'Informar nível');
   action.type='button';action.setAttribute('aria-label','Conferir nível máximo e Card ID de '+c.name);
   action.onclick=()=>openCard(c,'confirm');

@@ -27,6 +27,10 @@ with sync_playwright() as pw:
    page.locator('.ct364-close').click()
    page.wait_for_function("()=>document.querySelectorAll('#cards .ct376-ovr').length===246",timeout=30000)
    page.wait_for_function("()=>document.querySelectorAll('#ct364-owned-grid .ct376-ovr').length===15",timeout=15000)
+   compact=page.locator('#ct364-owned-grid .ct376-ovr').first.evaluate("""e=>({
+    font:parseFloat(getComputedStyle(e.firstElementChild).fontSize),width:e.getBoundingClientRect().width,
+    position:getComputedStyle(e).position})""")
+   assert compact['font']<=18 and compact['width']>=28 and compact['position']=='absolute',(name,compact)
    assert page.locator('.ct376-error').count()==0
    assert page.evaluate('document.documentElement.scrollWidth-innerWidth')<=12
    assert page.evaluate("()=>localStorage.getItem('scoutpro:v376:current-training:cap:90')") is None

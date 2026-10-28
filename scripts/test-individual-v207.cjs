@@ -12,6 +12,8 @@ function inspectCap(i){
  const x=c(i);return inspect(cards,{...x,capture:i,role_used:role(x.posicao),attack_style:x.estilo_ataque,recommended_levels:x.niveis});
 }
 assert(inspectCap(1).peers.some(x=>x.numero===32),'Massaro/Batistuta registrados iguais');
+const normalizedFicha=JSON.parse(read('web/'+c(1).arquivo).match(/<script id="scout-v68-data"[^>]*>([\s\S]*?)<\/script>/)[1]);
+assert(inspect(cards,normalizedFicha).peers.some(x=>x.numero===32),'Rótulos PT-BR normalizados precisam manter a comparação com o catálogo histórico');
 assert(contrast(c(1),c(32)).boostDifferent,'ímpetos de Massaro e Batistuta diferem');
 for(const n of [99,102,216])assert(inspectCap(95).peers.some(x=>x.numero===n),'meias registrados iguais '+n);
 assert(inspectCap(144).peers.some(x=>x.numero===154),'zagueiros registrados iguais');

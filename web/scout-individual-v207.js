@@ -4,6 +4,14 @@
 'use strict';
 const GROUPS=['Chute','Passe','Drible','Destreza','Força das pernas','Jogo aéreo','Defesa','Goleiro 1','Goleiro 2','Goleiro 3'];
 const normalize=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+// The same documented labels used by normalize-ptbr-v75; compare styles,
+// not the historical spelling, without modifying the source catalog.
+const STYLE_ALIASES={'matador':'homem de area','oportunista':'artilheiro','arrastar defesa':'puxa marcacao',
+ 'criador de espacos':'infiltracao','construcao de jogo':'defensor criativo','jogador de infiltracao':'infiltracao',
+ 'classico nº 10':'classico 10','atacante pivo':'pivo','avancado pivo':'pivo','goleiro adiantado':'goleiro ofensivo',
+ 'gr ofensivo':'goleiro ofensivo','saida ofensiva':'goleiro ofensivo','o destruidor':'destruidor',
+ 'todo o terreno':'meia versatil','trinco':'primeiro volante','pressao elevada':'pressao no ataque','cobertura':'funcao de cobertura'};
+const styleToken=v=>STYLE_ALIASES[normalize(v)]||normalize(v);
 const aliases=Object.freeze({AC:'CA',DC:'ZG',ZC:'ZG',MC:'MLG',MDF:'VOL',GR:'GO',DD:'LD',DE:'LE',MO:'MAT'});
 const role=v=>aliases[String(v||'').toUpperCase()]||String(v||'').toUpperCase();
 const sameLevels=(a,b)=>Array.isArray(a)&&Array.isArray(b)&&a.length===10&&b.length===10&&a.every((n,i)=>n===b[i]);
@@ -13,10 +21,10 @@ function inspect(cards,card){
  if(!Array.isArray(vec)||vec.length!==10)return {peers:[],exactSameEdition:[],signature:false};
  const number=Number(card.capture??card.numero),pp=Number(card.pp);
  const position=role(card.role_used||card.shown_position||card.posicao);
- const style=normalize(card.attack_style||card.estilo_ataque);
+ const style=styleToken(card.attack_style||card.estilo_ataque);
  const peers=cards.filter(c=>
   Number(c.numero)!==number&&Number(c.pp)===pp&&
-  role(c.posicao)===position&&normalize(c.estilo_ataque)===style&&sameLevels(vec,c.niveis)
+  role(c.posicao)===position&&styleToken(c.estilo_ataque)===style&&sameLevels(vec,c.niveis)
  );
  const exactSameEdition=peers.filter(c=>normalize(c.name)===normalize(card.name)&&normalize(c.versao)===normalize(card.edition));
  return {peers,exactSameEdition,signature:true};
