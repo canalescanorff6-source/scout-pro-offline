@@ -2,6 +2,7 @@
 """Verificação V311 de troca posicional nos dois acervos."""
 import os,shutil
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 ROOT=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 with sync_playwright() as p:
  exe=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
@@ -151,6 +152,7 @@ with sync_playwright() as p:
     })"""), 'JS_ERRORS',errors)
     raise
    assert not main.locator('.ct326-deep-dive').evaluate('(e) => e.open')
+   reveal(main.locator('.ct326-deep-dive > summary'))
    main.locator('.ct326-deep-dive > summary').click()
    assert 'Posição original: CA' in main.locator('.ct311-origin').text_content()
    main.locator('.ct331-role-open').click()

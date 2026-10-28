@@ -4,6 +4,7 @@ Sem criar ou alterar builds de usuários. Valida seleção por edição e filtro
 """
 import os,shutil
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 
 BASE=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 with sync_playwright() as pw:
@@ -21,6 +22,8 @@ with sync_playwright() as pw:
    # Primeiro, selecionar técnico numa das 246 fichas pessoais originais.
    page.goto(BASE+'/fichas/001_Daniele_Massaro.html',
     wait_until='domcontentloaded',timeout=45000)
+   page.locator('#ct-manager-select').wait_for(state='attached',timeout=35000)
+   reveal(page.locator('#ct-manager-select'))
    page.locator('#ct-manager-search').wait_for(timeout=35000)
    select=page.locator('#ct-manager-select')
    search=page.locator('#ct-manager-search')
@@ -30,6 +33,7 @@ with sync_playwright() as pw:
       '#ct-manager-select option[value="CT-MGR-071"]')""",timeout=35000)
    assert scope.input_value()=='featured'
    assert select.locator('option[value^="CT-MGR-"]').count()==23
+   reveal(select)
    select.select_option('CT-MGR-071')
    assert select.input_value()=='CT-MGR-071'
    assert page.locator('#ct-manager-count').is_visible()

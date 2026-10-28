@@ -2,6 +2,7 @@
 """V342: validação ao vivo no Chromium real, Android/Windows e dois acervos."""
 import os,shutil
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 BASE=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 with sync_playwright() as pw:
  binary=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
@@ -27,6 +28,7 @@ with sync_playwright() as pw:
    page.locator('.friends-card .friends-analysis-action').first.click()
    root=page.locator('#friend-analysis-dialog .ct311-positional')
    root.wait_for(timeout=30000)
+   reveal(root.locator('.ct326-primary-action'))
    root.locator('.ct326-primary-action').click()
    page.wait_for_function("""() => !!document.querySelector(
      '#friend-manager-version option[value="CT-MGR-071"]')""",timeout=25000)
@@ -82,10 +84,15 @@ with sync_playwright() as pw:
    assert saved['after']==[],saved
    # Acervo pessoal: apresenta o mesmo diagnóstico e não importa histórico externo.
    page.goto(BASE+'/fichas/001_Daniele_Massaro.html',wait_until='domcontentloaded',timeout=40000)
+   page.locator('#ct-manager-select').wait_for(state='attached',timeout=35000)
+   reveal(page.locator('#ct-manager-select'))
    page.locator('#ct-manager-select').wait_for(timeout=40000)
+   page.locator('#ct-manager-select').wait_for(state='attached',timeout=35000)
+   reveal(page.locator('#ct-manager-select'))
    page.locator('#ct-manager-select').select_option('CT-MGR-071')
    own=page.locator('.ct311-main-slot .ct311-positional')
    own.wait_for(timeout=30000)
+   reveal(own.locator('.ct326-primary-action'))
    own.locator('.ct326-primary-action').click()
    own.locator('.ct324-profile .ct342-live-audit').wait_for(timeout=25000)
    assert own.locator('.ct342-live-audit').get_attribute('aria-live')=='polite'

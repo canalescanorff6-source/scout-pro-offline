@@ -2,6 +2,7 @@
 """V339 — Chromium real: Pareto V251 a partir do contexto V324 em 2 acervos."""
 import os,shutil
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 BASE=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 SNAP="""() => JSON.stringify(Object.keys(localStorage)
  .filter(k=>k.startsWith('scoutpro:v324:manager-profile:') ||
@@ -34,6 +35,7 @@ with sync_playwright() as pw:
    page.locator('#friend-manager-version').select_option('CT-MGR-071')
    ext=page.locator('#friend-analysis-dialog .ct311-positional')
    ext.wait_for(timeout=25000)
+   reveal(ext.locator('.ct326-primary-action'))
    ext.locator('.ct326-primary-action').click()
    panel=ext.locator('.ct339-frontier')
    assert panel.count()==1
@@ -53,12 +55,17 @@ with sync_playwright() as pw:
    assert page.evaluate(SNAP)==saved,'Comparação externa NÃO pode gravar PP'
    # Minhas Cartas: mesmo motor, sem herdar rascunho do acervo externo.
    page.goto(BASE+'/fichas/001_Daniele_Massaro.html',wait_until='domcontentloaded',timeout=40000)
+   page.locator('#ct-manager-select').wait_for(state='attached',timeout=35000)
+   reveal(page.locator('#ct-manager-select'))
    page.locator('#ct-manager-select').wait_for(timeout=35000)
    page.wait_for_function("""() => !!document.querySelector(
       '#ct-manager-select option[value="CT-MGR-071"]')""",timeout=35000)
+   page.locator('#ct-manager-select').wait_for(state='attached',timeout=35000)
+   reveal(page.locator('#ct-manager-select'))
    page.locator('#ct-manager-select').select_option('CT-MGR-071')
    personal=page.locator('.ct311-main-slot .ct311-positional')
    personal.wait_for(timeout=35000)
+   reveal(personal.locator('.ct326-primary-action'))
    personal.locator('.ct326-primary-action').click()
    own=personal.locator('.ct339-frontier')
    assert own.count()==1

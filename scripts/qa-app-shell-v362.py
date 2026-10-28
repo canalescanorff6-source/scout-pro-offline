@@ -5,6 +5,7 @@ Sem screenshot comparativo cego nem alteração de dados salvos.
 import os,shutil
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 BASE=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 ART=Path('artifacts/visual-qa/v362');ART.mkdir(parents=True,exist_ok=True)
 ROUTES=[
@@ -61,7 +62,7 @@ with sync_playwright() as p:
      assert color not in ('rgba(0, 0, 0, 0)','transparent'),(mode,label,'hero velho',color)
     if kind=='detail':
      page.locator('#ct361-player-glance').wait_for(state='attached',timeout=20000)
-     page.locator('#scout-v220-tabs button').first.wait_for(timeout=20000)
+     page.locator('#scout-v220-tabs button').first.wait_for(state='attached',timeout=20000)
      assert page.locator('.ct361-glance-name').inner_text()=='Daniele Massaro'
      assert page.locator('.ct361-glance-art img').get_attribute('src')==page.locator('.mobile-profile img').get_attribute('src')
      assert page.locator('#scout-v220-training').count()==1

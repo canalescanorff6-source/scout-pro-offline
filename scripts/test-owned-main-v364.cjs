@@ -251,7 +251,7 @@ assert.match(friendEngine,/balancedPortfolio\?\.candidates/,'V373 perdeu balance
 assert.match(friendEngine,/decisionEvidence\?\.candidates/,'V373 sem contexto do ímpeto');
 assert.match(js,/function renderProfessionalDossier/,'ficha principal sem PRO');
 assert.match(js,/renderProfessionalDossier\(result,results,kind\)/,'skills/ímpetos principais não integrados');
-assert.match(js,/renderProfessionalDossier\(result,area,'treino'\)/,'treino principal não integrado');
+assert.match(js,/renderProfessionalDossier\(result,legacyTools,'treino'\)/,'dossiê de treino deve continuar disponível nas opções avançadas');
 assert.match(friendView,/function professionalView/,'Outros Elencos sem dossiê');
 assert.match(friendView,/professionalView\(result,'skills'\)/,'Outros Elencos sem habilidades');
 assert.match(friendView,/professionalView\(result,'boost'\)/,'Outros Elencos sem ímpetos');

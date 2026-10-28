@@ -4,6 +4,7 @@ Duas resoluções, dois acervos. Mudança de PRÉVIA sem aplicar PP ou skills.
 """
 import os,shutil
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 BASE=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 with sync_playwright() as pw:
  exe=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
@@ -37,6 +38,7 @@ with sync_playwright() as pw:
    assert 'Por que esta ficha' in root.inner_text() or root.locator('.ct327-why').count()==1
    assert 'Proposta contextual para avaliar' in root.inner_text() or 'Ficha pendente' in root.inner_text()
    assert not root.locator('.ct327-style-panel').is_visible()
+   reveal(root.locator('.ct326-secondary-action'))
    root.locator('.ct326-secondary-action').click()
    five=root.locator('.ct327-style-row')
    assert five.count()==5, 'Cinco propostas de estilo devem existir'
@@ -74,10 +76,13 @@ with sync_playwright() as pw:
    original_reasons=personal.locator('.ct336-equipment-evidence')
    assert original_reasons.count()==1
    assert not original_reasons.evaluate('(node)=>node.open')
+   reveal(original_reasons.locator('summary'))
    original_reasons.locator('summary').click()
    assert 'Ímpeto adicional' in original_reasons.inner_text()
+   reveal(original_reasons.locator('summary'))
    original_reasons.locator('summary').click()
    assert personal.locator('.ct327-why').count()==1
+   reveal(personal.locator('.ct326-secondary-action'))
    personal.locator('.ct326-secondary-action').click()
    assert personal.locator('.ct327-style-row').count()==5
    assert 'PP utilizados' in personal.locator('.ct327-style-row').first.inner_text()

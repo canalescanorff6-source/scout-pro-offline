@@ -5,6 +5,7 @@ Cria contextos Playwright descartáveis e valida assets/filtragem/ficha e ediç�
 import os,shutil
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 BASE=os.environ.get("SCOUT_VISUAL_BASE","http://127.0.0.1:8765").rstrip("/")
 OUT=Path("artifacts/visual-qa/v364")
 OUT.mkdir(parents=True,exist_ok=True)
@@ -129,6 +130,7 @@ with sync_playwright() as pw:
    assert page.locator("#ct364-title").inner_text()=="K. Karetsas"
    assert "Minha carta 1 de 15" in page.locator("#ct364-card-index").inner_text()
    assert "PP" in page.locator("#ct364-panel").inner_text() or "PENDENTE" in page.locator("#ct364-panel").inner_text()
+   reveal(page.locator('#ct364-tabs [data-panel="skills"]'))
    page.locator('#ct364-tabs [data-panel="skills"]').click()
    assert page.locator(".ct364-skill-list span").count()==10
    # V366: recomendações do MESMO motor oficial, reagindo à tática.
@@ -155,13 +157,16 @@ with sync_playwright() as pw:
    page.locator(".ct364-save").click()
    assert "salvo" in page.locator(".ct364-feedback").inner_text()
    page.locator(".ct364-next").click()
+   reveal(page.locator('#ct364-tabs [data-panel="skills"]'))
    page.locator('#ct364-tabs [data-panel="skills"]').click()
    assert page.locator('[data-skill-slot="1"]').input_value()=="",(name,"equipamento vazou para Nwaneri")
    page.locator(".ct364-previous").click()
+   reveal(page.locator('#ct364-tabs [data-panel="skills"]'))
    page.locator('#ct364-tabs [data-panel="skills"]').click()
    assert page.locator('[data-skill-slot="1"]').input_value()=="Habilidade de QA descartável"
    assert page.locator('[data-skill-slot="2"]').input_value()==""
    assert page.locator('[data-skill-slot="3"]').input_value()=="Outra habilidade de QA descartável"
+   reveal(page.locator('#ct364-tabs [data-panel="boost"]'))
    page.locator('#ct364-tabs [data-panel="boost"]').click()
    assert page.locator("#ct366-advisory .ct364-modes button").count()==5
    page.wait_for_function("""() => document.querySelector('#ct366-advisory .ct366-results')?.textContent.includes('Gastar tokens')""",timeout=25000)
@@ -182,13 +187,17 @@ with sync_playwright() as pw:
     "Habilidade de QA descartável","","Outra habilidade de QA descartável","",""
    ],(name,"indices das cinco vagas foram compactados")
    assert "ct364-02" not in manual,(name,"skills foram compartilhadas entre cartas")
+   reveal(page.locator('#ct364-tabs [data-panel="boost"]'))
    page.locator('#ct364-tabs [data-panel="boost"]').click()
    assert "simulação" in page.locator("#ct364-panel").inner_text().lower()
+   reveal(page.locator('#ct364-tabs [data-panel="treino"]'))
    page.locator('#ct364-tabs [data-panel="treino"]').click()
    assert page.locator(".ct364-modes button").count()==5
    assert "PENDENTE" in page.locator("#ct364-panel").inner_text().upper()
    page.wait_for_function("""() => document.querySelector('#ct364-panel [data-pro-kind="treino"]')!==null""",timeout=25000)
+   reveal(page.locator('#ct364-panel [data-pro-kind="treino"]'))
    assert "Treino atual" in page.locator('#ct364-panel [data-pro-kind="treino"]').inner_text()
+   reveal(page.locator('#ct364-tabs [data-panel="confirm"]'))
    page.locator('#ct364-tabs [data-panel="confirm"]').click()
    page.locator("#ct364-max-level").fill("35")
    page.locator(".ct364-save").click()
@@ -203,6 +212,7 @@ with sync_playwright() as pw:
    assert recorded["card"]["maxLevel"]==35
    assert recorded["changedOriginal"] is None
    # V367: anotações reais associadas à carta, função e tática escolhidas.
+   reveal(page.locator('#ct364-tabs [data-panel="gameplay"]'))
    page.locator('#ct364-tabs [data-panel="gameplay"]').click()
    assert page.locator("#ct367-gameplay").is_visible()
    assert "PENDENTE" in page.locator("#ct367-gameplay").inner_text()
@@ -341,11 +351,13 @@ with sync_playwright() as pw:
    assert "PENDENTE" in page.locator("#ct367-comparison").inner_text()
    # Uma alteração posterior das habilidades invalida a prova daquela build,
    # mas conserva o registro (histórico) e não muda o jogador comparado.
+   reveal(page.locator('#ct364-tabs [data-panel="skills"]'))
    page.locator('#ct364-tabs [data-panel="skills"]').click()
    page.locator('[data-skill-slot="2"]').fill("Nova habilidade de QA após o teste")
    page.locator(".ct364-ack input").check()
    page.locator(".ct364-save").click()
    assert "salvo" in page.locator(".ct364-feedback").inner_text()
+   reveal(page.locator('#ct364-tabs [data-panel="gameplay"]'))
    page.locator('#ct364-tabs [data-panel="gameplay"]').click()
    assert "REGISTRO EXIGE RECONFERÊNCIA" in page.locator("#ct367-gameplay").inner_text()
    # V370: nova revisão depois de mudar uma habilidade da build.
@@ -387,11 +399,13 @@ with sync_playwright() as pw:
    page.locator("#ct369-owned-history summary").click()
    # V371: uma mudança entre duas habilidades JÁ INFORMADAS habilita um plano
    # contextual de reteste. Não alterar Card IDs ou treinos aprovados.
+   reveal(page.locator('#ct364-tabs [data-panel="skills"]'))
    page.locator('#ct364-tabs [data-panel="skills"]').click()
    page.locator('[data-skill-slot="2"]').fill("Habilidade diferente de QA para a mesma vaga")
    page.locator(".ct364-ack input").check()
    page.locator(".ct364-save").click()
    assert "salvo" in page.locator(".ct364-feedback").inner_text()
+   reveal(page.locator('#ct364-tabs [data-panel="gameplay"]'))
    page.locator('#ct364-tabs [data-panel="gameplay"]').click()
    page.locator("#ct367-notes").fill("Quarta revisão após troca de habilidade anotada na mesma vaga para comparação documental.")
    page.locator("#ct367-ack").check()
@@ -415,8 +429,9 @@ with sync_playwright() as pw:
    saved_row=page.locator('[data-review-card="ct364-01"]')
    assert "Máximo informado: 35 · 68 PP calculados" in saved_row.text_content()
    assert page.evaluate("() => window.__ct364BackupSignals")>=11,(name,"gameplay não notificou o backup completo")
+   reveal(page.locator('#ct364-tabs [data-panel="treino"]'))
    page.locator('#ct364-tabs [data-panel="treino"]').click()
-   page.locator('.ct364-modes button').filter(has_text='Contra-Ataque Normal').click()
+   page.locator('#ct378-owned-style').select_option('normal')
    assert page.locator('.ct364-modes button[aria-pressed="true"]').count()==1
    page.locator("#ct364-dialog-role").select_option("SA")
    assert page.locator("#ct364-dialog-role").input_value()=="SA"

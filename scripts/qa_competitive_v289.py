@@ -1,9 +1,11 @@
 """Interação de cenários V289; usa a sessão Chromium do QA existente."""
 import json
+from qa_navigation_v378 import reveal
 
 
 def run_competitive_qa(page, url, out, name):
     page.goto(url + '/fichas/191_Gabriel_Martinelli.html', wait_until='domcontentloaded')
+    reveal(page.locator('#ct253-integrated-review > summary'))
     page.locator('#ct253-integrated-review > summary').click()
     comparison = page.locator('#ct289-training-comparison')
     comparison.wait_for(state='visible', timeout=20000)
@@ -32,7 +34,7 @@ def run_competitive_qa(page, url, out, name):
     assert page.evaluate('document.documentElement.scrollWidth-innerWidth') <= 8
     comparison.screenshot(path=str(out / f'{name}_v289_comparison.png'), animations='disabled')
     # Outro estilo recria uma comparação independente, sem herdar o candidato.
-    page.locator('#scout-v220-tabs button[data-tactic="rapido"]').click()
+    page.locator('#ct378-style').select_option('rapido')
     page.wait_for_function("() => document.querySelector('#ct289-training-comparison')?.dataset.tactic === 'rapido'")
     fresh = page.locator('#ct289-training-comparison')
     assert not fresh.get_attribute('open'), 'Candidato de outra tática foi reaproveitado'
@@ -55,6 +57,7 @@ def run_competitive_qa(page, url, out, name):
         document.getElementById(id).open=true;
       document.querySelector('#v162-equipped').closest('details').open=true;
     }""")
+    reveal(page.locator('#v162-equipped'))
     page.locator('#v162-equipped').fill('Reposição baixa do GO')
     page.locator('#v254-confirm-equipped').check()
     page.locator('#v162-save').click()
