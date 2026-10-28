@@ -20,7 +20,8 @@ function resolve(ref,card,store,options={}){
  const owned=ref.capture===null;
  const ctx={cardKey:ref.key,cardId:ref.cardId||ref.candidateId||'',edition:ref.edition,
   position:options.position||ref.position,training:null,budget:ref.cataloguePP,manager:null,extraBooster:null};
- let source='Treino atual pendente',warning='',maxLevel=ref.registeredMaxLevel||ref.reference?.maxLevel||null;
+ let source='Treino atual pendente',warning='',maxLevel=ref.registeredMaxLevel||
+  (ref.identityUsable?ref.reference?.maxLevel:null)||null;
  try{
   if(owned){
    const manual=get(store,'scoutpro:v364:owned-confirmed')||{},m=R.ownedMetadata(card,manual[card.key],ref);

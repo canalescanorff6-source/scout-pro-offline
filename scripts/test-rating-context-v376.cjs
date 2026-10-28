@@ -40,6 +40,12 @@ memory.set('scoutpro:v248:level-review:90@'+card.id,JSON.stringify({schema:'CRAQ
 assert.equal(C.resolve(ref,card,store,{managers}).ctx.budget,64,'A conferência válida do usuário precisa entrar no orçamento atual');
 memory.clear();
 const owned=require('../web/ct364-owned-cards.json').cards[0],ownedRef=refs.find(c=>c.key===owned.key);
+for(const capture of [61,144,153,196]){
+ const shared=refs.find(c=>c.capture===capture),original=cards.find(c=>c.numero===capture);
+ const result=C.resolve(shared,original,store,{managers});
+ assert.equal(result.maxLevel,null,'ID compartilhado não pode fornecer nível de outra edição: '+capture);
+ assert.equal(result.ctx.budget,original.pp,'A pendência não pode apagar PP já existentes.');
+}
 x=C.resolve(ownedRef,owned,store,{managers});assert.equal(x.ctx.budget,60);assert.equal(x.ctx.training,null);
 assert.equal(R.evaluate(ownedRef,x.ctx,require('../web/ct376-rating-model.json')).overall,null);
 assert.equal(memory.size,0,'Ler não deve gravar treinos, simulações ou recibos.');
