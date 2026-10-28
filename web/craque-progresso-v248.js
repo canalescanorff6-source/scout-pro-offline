@@ -32,7 +32,7 @@ function state(card,saved){
  const verified=validate(card,saved);
  if(verified&&verified.pp!==card.pp)return 'divergente';
  if(verified)return 'confirmado_localmente';
- if(Number.isInteger(card.max_level)&&card.pp_origem)return 'registrado';
+ if(Number.isInteger(card.max_level)&&card.pp_origem&&!/^catalogo_publico_/.test(card.pp_origem))return 'registrado';
  return 'pendente';
 }
 function summary(cards,store){
@@ -85,7 +85,9 @@ function render(){
    'Existe uma conferência antiga ou incompatível, sem prova da edição atual. Ela foi preservada, mas é necessária reconfirmação no jogo.':
    s==='divergente'?
    'Sua confirmação indica '+saved.pp+' PP, mas o catálogo contém '+c.pp+' PP. Exporte o registro para revisão; a build original NÃO foi substituída.':
-   s==='pendente'?'O catálogo registra '+c.pp+' PP, mas ainda não há comprovação do nível máximo desta edição.':
+   s==='pendente'?(/^catalogo_publico_/.test(c.pp_origem||'')?
+    'Referência pública: nível máximo '+c.max_level+' e '+c.pp+' PP. Confira a edição e o nível no jogo; esta fonte não comprova sua conta.':
+    'O catálogo registra '+c.pp+' PP, mas ainda não há comprovação do nível máximo desta edição.'):
    s==='registrado'?'Nível/PP da fonte documentada; é possível conferir novamente na conta.':
    'Informação registrada por você neste dispositivo; a versão original segue preservada.';
   return '<article class="ct248-card" data-cap="'+c.numero+'">'+

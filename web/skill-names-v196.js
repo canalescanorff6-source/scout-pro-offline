@@ -27,6 +27,9 @@ const LABELS=Object.freeze([
  ['Passe de primeira',['One-touch Pass','One Touch Pass']],
  ['Passe em profundidade',['Through Passing','Passe a rasgar']],
  ['Passe na medida',['Weighted Pass','Passe ponderado']],
+ // Konami v3.6.0, versões EN/PT-BR: Phenomenal Pass / Passador nato.
+ // Nomenclatura de nativa especial; não é uma adicional selecionável.
+ ['Passador nato',['Phenomenal Pass','Passe fenomenal']],
  ['Cruzamento preciso',['Pinpoint Crossing']],
  ['Curva para fora',['Outside Curler']],
  ['Passe sem olhar',['No Look Pass']],

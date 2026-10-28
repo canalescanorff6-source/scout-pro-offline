@@ -12,7 +12,9 @@
     "extra_confirmed": 16,
     "level_user_entered": 85,
     "raridade_confirmada_pelo_usuario": 58,
-    "treinos_propostos_experimentais_v95": 84
+    "treinos_propostos_experimentais_v95": 84,
+    "level_public_reference": 154,
+    "level_total": 239
   },
   "cards": [
     {
@@ -53,7 +55,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/001_Daniele_Massaro.html"
+      "arquivo": "fichas/001_Daniele_Massaro.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/daniele-massaro-88040387251729",
+        "card_id": "88040387251729",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 2,
@@ -89,7 +99,15 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/002_Raul.html"
+      "arquivo": "fichas/002_Raul.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/raul-88036360649078",
+        "card_id": "88036360649078",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 3,
@@ -127,7 +145,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/003_Mikel_Merino.html"
+      "arquivo": "fichas/003_Mikel_Merino.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/mikel-merino-106785503548605",
+        "card_id": "106785503548605",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 4,
@@ -165,7 +191,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/004_David_Beckham.html"
+      "arquivo": "fichas/004_David_Beckham.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/david-beckham-88035555413425",
+        "card_id": "88035555413425",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 5,
@@ -204,7 +238,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/005_Steven_Gerrard.html"
+      "arquivo": "fichas/005_Steven_Gerrard.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/steven-gerrard-88044145348020",
+        "card_id": "88044145348020",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 6,
@@ -243,7 +285,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/006_Sandro_Tonali.html"
+      "arquivo": "fichas/006_Sandro_Tonali.html",
+      "max_level": 35,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/sandro-tonali-105781823393179",
+        "card_id": "105781823393179",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 7,
@@ -319,7 +369,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/008_Rio_Ferdinand.html"
+      "arquivo": "fichas/008_Rio_Ferdinand.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/rio-ferdinand-88044145214260",
+        "card_id": "88044145214260",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 9,
@@ -355,7 +413,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/009_Giorgio_Chiellini.html"
+      "arquivo": "fichas/009_Giorgio_Chiellini.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/giorgio-chiellini-88033407804051",
+        "card_id": "88033407804051",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 10,
@@ -392,7 +458,15 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/010_Paolo_Maldini.html"
+      "arquivo": "fichas/010_Paolo_Maldini.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/paolo-maldini-88039045074370",
+        "card_id": "88039045074370",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 11,
@@ -423,7 +497,15 @@
       "habilidades_nativas": "Visionary Pass; GK Directing Defense; One-touch Pass; Through Passing; Weighted Pass; Low Lofted Pass; GK Low Punt; GK Long Throw; GK Penalty Saver; Captaincy",
       "adicionais_candidatas": [],
       "pendencias": [],
-      "arquivo": "fichas/011_Manuel_Neuer.html"
+      "arquivo": "fichas/011_Manuel_Neuer.html",
+      "max_level": 28,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/manuel-neuer-106788187832737",
+        "card_id": "106788187832737",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 12,
@@ -500,7 +582,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/013_David_Villa.html"
+      "arquivo": "fichas/013_David_Villa.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/david-villa-88044145220884",
+        "card_id": "88044145220884",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 14,
@@ -536,7 +626,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/014_Dani_Olmo.html"
+      "arquivo": "fichas/014_Dani_Olmo.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/dani-olmo-106787651039542",
+        "card_id": "106787651039542",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 15,
@@ -575,7 +673,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/015_Paul_Scholes.html"
+      "arquivo": "fichas/015_Paul_Scholes.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/paul-scholes-88040387251634",
+        "card_id": "88040387251634",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 16,
@@ -651,7 +757,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/017_Jack_Wilshere.html"
+      "arquivo": "fichas/017_Jack_Wilshere.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/jack-wilshere-88029918172866",
+        "card_id": "88029918172866",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 18,
@@ -730,7 +844,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/019_Ilhan_Mansz.html"
+      "arquivo": "fichas/019_Ilhan_Mansz.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/ilhan-mansiz-88040655732170",
+        "card_id": "88040655732170",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 20,
@@ -772,6 +894,14 @@
         "url": "https://pesdb.net/efootball/players/rodri-105684112879839",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/rodri-105684112879839",
+        "card_id": "105684112879839",
+        "confirmed_in_game": false
       }
     },
     {
@@ -809,7 +939,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/021_Aaron_Wan_Bissaka.html"
+      "arquivo": "fichas/021_Aaron_Wan_Bissaka.html",
+      "max_level": 40,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/aaron-wan-bissaka-105807593193660",
+        "card_id": "105807593193660",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 22,
@@ -845,7 +983,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/022_Eric_Garcia.html"
+      "arquivo": "fichas/022_Eric_Garcia.html",
+      "max_level": 30,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/eric-garcia-105803298237825",
+        "card_id": "105803298237825",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 23,
@@ -884,7 +1030,15 @@
       ],
       "arquivo": "fichas/023_David_Alaba.html",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/david-alaba-106777718857892",
+        "card_id": "106777718857892",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 24,
@@ -921,7 +1075,15 @@
         "Finalização acrobática"
       ],
       "pendencias": [],
-      "arquivo": "fichas/024_Cristiano_Ronaldo.html"
+      "arquivo": "fichas/024_Cristiano_Ronaldo.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/cristiano-ronaldo-89138556572074",
+        "card_id": "89138556572074",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 25,
@@ -958,7 +1120,15 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/025_Marco_van_Basten.html"
+      "arquivo": "fichas/025_Marco_van_Basten.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/marco-van-basten-88033139494377",
+        "card_id": "88033139494377",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 26,
@@ -1033,7 +1203,15 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/027_Cristiano_Ronaldo.html"
+      "arquivo": "fichas/027_Cristiano_Ronaldo.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/cristiano-ronaldo-88044950524330",
+        "card_id": "88044950524330",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 28,
@@ -1073,7 +1251,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/028_Darwin_Nunez.html"
+      "arquivo": "fichas/028_Darwin_Nunez.html",
+      "max_level": 35,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/darwin-nunez-106777450514613",
+        "card_id": "106777450514613",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 29,
@@ -1113,7 +1299,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/029_P_E_Aubameyang.html"
+      "arquivo": "fichas/029_P_E_Aubameyang.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/p-e-aubameyang-88045755866499",
+        "card_id": "88045755866499",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 30,
@@ -1153,7 +1347,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/030_Tuncay_Sanl.html"
+      "arquivo": "fichas/030_Tuncay_Sanl.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/tuncay-sanli-88040655557091",
+        "card_id": "88040655557091",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 31,
@@ -1192,7 +1394,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/031_Filippo_Inzaghi.html"
+      "arquivo": "fichas/031_Filippo_Inzaghi.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/filippo-inzaghi-88039581945284",
+        "card_id": "88039581945284",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 32,
@@ -1232,7 +1442,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/032_Gabriel_Batistuta.html"
+      "arquivo": "fichas/032_Gabriel_Batistuta.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/gabriel-batistuta-88039045074390",
+        "card_id": "88039045074390",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 33,
@@ -1270,7 +1488,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/033_Dimitar_Berbatov.html"
+      "arquivo": "fichas/033_Dimitar_Berbatov.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/dimitar-berbatov-88039044941086",
+        "card_id": "88039044941086",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 34,
@@ -1309,7 +1535,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/034_Hristo_Stoichkov.html"
+      "arquivo": "fichas/034_Hristo_Stoichkov.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/hristo-stoichkov-88029649701165",
+        "card_id": "88029649701165",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 35,
@@ -1351,7 +1585,15 @@
       ],
       "arquivo": "fichas/035_Robert_Lewandowski.html",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/robert-lewandowski-106758391503938",
+        "card_id": "106758391503938",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 36,
@@ -1393,7 +1635,15 @@
       ],
       "arquivo": "fichas/036_Endrick.html",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/endrick-106735843043104",
+        "card_id": "106735843043104",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 37,
@@ -1433,7 +1683,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/037_Nihat_Kahveci.html"
+      "arquivo": "fichas/037_Nihat_Kahveci.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/nihat-kahveci-88042803217588",
+        "card_id": "88042803217588",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 38,
@@ -1473,7 +1731,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/038_El_Hadji_Diouf.html"
+      "arquivo": "fichas/038_El_Hadji_Diouf.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/el-hadji-diouf-88039934308531",
+        "card_id": "88039934308531",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 39,
@@ -1512,7 +1778,15 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/039_Andriy_Shevchenko.html"
+      "arquivo": "fichas/039_Andriy_Shevchenko.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/andriy-shevchenko-88036360723178",
+        "card_id": "88036360723178",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 40,
@@ -1551,7 +1825,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/040_Dwight_Yorke.html"
+      "arquivo": "fichas/040_Dwight_Yorke.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/dwight-yorke-88029918268889",
+        "card_id": "88029918268889",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 41,
@@ -1593,7 +1875,15 @@
       ],
       "arquivo": "fichas/041_Kai_Havertz.html",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 26,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/kai-havertz-105837389528906",
+        "card_id": "105837389528906",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 42,
@@ -1631,7 +1921,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/042_Ousmane_Dembele.html"
+      "arquivo": "fichas/042_Ousmane_Dembele.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/ousmane-dembele-105849469120546",
+        "card_id": "105849469120546",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 43,
@@ -1671,7 +1969,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/043_Burak_Ylmaz.html"
+      "arquivo": "fichas/043_Burak_Ylmaz.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/burak-yilmaz-88039044974638",
+        "card_id": "88039044974638",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 44,
@@ -1710,7 +2016,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/044_Kylian_Mbappe.html"
+      "arquivo": "fichas/044_Kylian_Mbappe.html",
+      "max_level": 19,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/kylian-mbappe-105795513593982",
+        "card_id": "105795513593982",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 45,
@@ -1750,7 +2064,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/045_Didier_Drogba.html"
+      "arquivo": "fichas/045_Didier_Drogba.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/didier-drogba-88032334188033",
+        "card_id": "88032334188033",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 46,
@@ -1790,7 +2112,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/046_Mikel_Oyarzabal.html"
+      "arquivo": "fichas/046_Mikel_Oyarzabal.html",
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/mikel-oyarzabal-106771544911876",
+        "card_id": "106771544911876",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 47,
@@ -1829,7 +2159,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/047_Neymar_Jr.html"
+      "arquivo": "fichas/047_Neymar_Jr.html",
+      "max_level": 36,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/neymar-jr-88029918174624",
+        "card_id": "88029918174624",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 48,
@@ -1868,7 +2206,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/048_Jan_Koller.html"
+      "arquivo": "fichas/048_Jan_Koller.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/jan-koller-88029649833482",
+        "card_id": "88029649833482",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 49,
@@ -1907,7 +2253,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/049_Kylian_Mbappe.html"
+      "arquivo": "fichas/049_Kylian_Mbappe.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/kylian-mbappe-105849469120638",
+        "card_id": "105849469120638",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 50,
@@ -1979,7 +2333,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/051_Diego_Maradona.html"
+      "arquivo": "fichas/051_Diego_Maradona.html",
+      "max_level": 30,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/diego-maradona-88029918268911",
+        "card_id": "88029918268911",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 52,
@@ -2019,7 +2381,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/052_Okazaki_Shinji.html"
+      "arquivo": "fichas/052_Okazaki_Shinji.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/okazaki-shinji-88031797197514",
+        "card_id": "88031797197514",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 53,
@@ -2056,7 +2426,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/053_Lionel_Messi.html"
+      "arquivo": "fichas/053_Lionel_Messi.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/lionel-messi-106779866307927",
+        "card_id": "106779866307927",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 54,
@@ -2100,6 +2478,14 @@
         "url": "https://pesdb.net/efootball/players/lamine-yamal-106757854755138",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/lamine-yamal-106757854755138",
+        "card_id": "106757854755138",
+        "confirmed_in_game": false
       }
     },
     {
@@ -2140,7 +2526,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/055_Dirk_Kuyt.html"
+      "arquivo": "fichas/055_Dirk_Kuyt.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/dirk-kuyt-88040655687168",
+        "card_id": "88040655687168",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 56,
@@ -2177,7 +2571,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/056_Desire_Doue.html"
+      "arquivo": "fichas/056_Desire_Doue.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/desire-doue-106765639374176",
+        "card_id": "106765639374176",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 57,
@@ -2221,6 +2623,14 @@
         "url": "https://pesdb.net/efootball/players/lionel-messi-106747654053207",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/lionel-messi-106747654053207",
+        "card_id": "106747654053207",
+        "confirmed_in_game": false
       }
     },
     {
@@ -2265,6 +2675,14 @@
         "url": "https://pesdb.net/efootball/players/lionel-messi-106731279490391",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 25,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/lionel-messi-106731279490391",
+        "card_id": "106731279490391",
+        "confirmed_in_game": false
       }
     },
     {
@@ -2301,7 +2719,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/059_Michael_Olise.html"
+      "arquivo": "fichas/059_Michael_Olise.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/michael-olise-105849469139289",
+        "card_id": "105849469139289",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 60,
@@ -2338,7 +2764,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/060_Luis_Garcia.html"
+      "arquivo": "fichas/060_Luis_Garcia.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/luis-garcia-88030455139856",
+        "card_id": "88030455139856",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 61,
@@ -2419,6 +2853,14 @@
         "url": "https://pesdb.net/efootball/players/doan-ritsu-105709345807873",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 35,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/doan-ritsu-105709345807873",
+        "card_id": "105709345807873",
+        "confirmed_in_game": false
       }
     },
     {
@@ -2457,7 +2899,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/063_Estevao.html"
+      "arquivo": "fichas/063_Estevao.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/estevao-105705587772671",
+        "card_id": "105705587772671",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 64,
@@ -2570,7 +3020,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/066_Pedro_Neto.html"
+      "arquivo": "fichas/066_Pedro_Neto.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/pedro-neto-105848932256095",
+        "card_id": "105848932256095",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 67,
@@ -2647,7 +3105,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/068_Ronaldinho_Gaucho.html"
+      "arquivo": "fichas/068_Ronaldinho_Gaucho.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/ronaldinho-gaucho-89067152870864",
+        "card_id": "89067152870864",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 69,
@@ -2684,7 +3150,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/069_Eden_Hazard.html"
+      "arquivo": "fichas/069_Eden_Hazard.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/eden-hazard-88045755863174",
+        "card_id": "88045755863174",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 70,
@@ -2723,7 +3197,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/070_Denilson.html"
+      "arquivo": "fichas/070_Denilson.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/denilson-88039045074440",
+        "card_id": "88039045074440",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 71,
@@ -2801,7 +3283,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/072_Atep.html"
+      "arquivo": "fichas/072_Atep.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/atep-88039045116846",
+        "card_id": "88039045116846",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 73,
@@ -2876,7 +3366,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/074_Joao_Felix.html"
+      "arquivo": "fichas/074_Joao_Felix.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/joao-felix-105848932265344",
+        "card_id": "105848932265344",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 75,
@@ -2923,6 +3421,14 @@
         "confirmacao_no_jogo": false,
         "raridade_confirmada_pelo_usuario": true,
         "data": "2026-10-14"
+      },
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/luis-diaz-106780671726691",
+        "card_id": "106780671726691",
+        "confirmed_in_game": false
       }
     },
     {
@@ -2961,7 +3467,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/076_K_Kvaratskhelia.html"
+      "arquivo": "fichas/076_K_Kvaratskhelia.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/k-kvaratskhelia-105880876086992",
+        "card_id": "105880876086992",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 77,
@@ -2999,7 +3513,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/077_Rivaldo.html"
+      "arquivo": "fichas/077_Rivaldo.html",
+      "max_level": 35,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/rivaldo-88035555413454",
+        "card_id": "88035555413454",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 78,
@@ -3034,7 +3556,15 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/078_Guti.html"
+      "arquivo": "fichas/078_Guti.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/guti-88029918268943",
+        "card_id": "88029918268943",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 79,
@@ -3077,7 +3607,15 @@
       ],
       "arquivo": "fichas/079_Neymar_Jr.html",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/neymar-jr-106770471099808",
+        "card_id": "106770471099808",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 80,
@@ -3117,7 +3655,15 @@
       ],
       "arquivo": "fichas/080_Xavi_Simons.html",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 30,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/xavi-simons-106766444664616",
+        "card_id": "106766444664616",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 81,
@@ -3156,7 +3702,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/081_Rivaldo.html"
+      "arquivo": "fichas/081_Rivaldo.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/rivaldo-89072253144526",
+        "card_id": "89072253144526",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 82,
@@ -3192,7 +3746,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/082_Cole_Palmer.html"
+      "arquivo": "fichas/082_Cole_Palmer.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/cole-palmer-105873896774572",
+        "card_id": "105873896774572",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 83,
@@ -3234,6 +3796,14 @@
         "url": "https://pesdb.net/efootball/players/rayan-cherki-105849469143573",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/rayan-cherki-105849469143573",
+        "card_id": "105849469143573",
+        "confirmed_in_game": false
       }
     },
     {
@@ -3273,7 +3843,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/084_Franck_Ribery.html"
+      "arquivo": "fichas/084_Franck_Ribery.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/franck-ribery-88036360594345",
+        "card_id": "88036360594345",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 85,
@@ -3316,6 +3894,14 @@
         "url": "https://pesdb.net/efootball/players/minanda-88043608522885",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 19,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/minanda-88043608522885",
+        "card_id": "88043608522885",
+        "confirmed_in_game": false
       }
     },
     {
@@ -3436,7 +4022,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/088_Vaclav_Cerny.html"
+      "arquivo": "fichas/088_Vaclav_Cerny.html",
+      "max_level": 35,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/vaclav-cerny-106779061103582",
+        "card_id": "106779061103582",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 89,
@@ -3474,7 +4068,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/089_Iliman_Ndiaye.html"
+      "arquivo": "fichas/089_Iliman_Ndiaye.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/iliman-ndiaye-105873896779262",
+        "card_id": "105873896779262",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 90,
@@ -3514,7 +4116,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/090_Neymar_Jr.html"
+      "arquivo": "fichas/090_Neymar_Jr.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/neymar-jr-88039044980128",
+        "card_id": "88039044980128",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 91,
@@ -3552,7 +4162,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/091_Serginho.html"
+      "arquivo": "fichas/091_Serginho.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/serginho-88035823874881",
+        "card_id": "88035823874881",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 92,
@@ -3592,7 +4210,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/092_Denilson.html"
+      "arquivo": "fichas/092_Denilson.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/denilson-88030723575304",
+        "card_id": "88030723575304",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 93,
@@ -3630,7 +4256,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/093_Matheus_Cunha.html"
+      "arquivo": "fichas/093_Matheus_Cunha.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/matheus-cunha-105873896755947",
+        "card_id": "105873896755947",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 94,
@@ -3665,7 +4299,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/094_Park_Ji_Sung.html"
+      "arquivo": "fichas/094_Park_Ji_Sung.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/park-ji-sung-88033407929774",
+        "card_id": "88033407929774",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 95,
@@ -3705,7 +4347,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/095_Frank_Lampard.html"
+      "arquivo": "fichas/095_Frank_Lampard.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/frank-lampard-88040387251676",
+        "card_id": "88040387251676",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 96,
@@ -3742,7 +4392,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/096_Vitinha.html"
+      "arquivo": "fichas/096_Vitinha.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/vitinha-105848932274075",
+        "card_id": "105848932274075",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 97,
@@ -3779,7 +4437,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/097_Sandro_Tonali.html"
+      "arquivo": "fichas/097_Sandro_Tonali.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/sandro-tonali-106764565597595",
+        "card_id": "106764565597595",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 98,
@@ -3818,7 +4484,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/098_Thiago_Alcantara.html"
+      "arquivo": "fichas/098_Thiago_Alcantara.html",
+      "max_level": 46,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/thiago-alcantara-88045755867302",
+        "card_id": "88045755867302",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 99,
@@ -3861,7 +4535,15 @@
       ],
       "arquivo": "fichas/099_Joelinton.html",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/joelinton-106761612796044",
+        "card_id": "106761612796044",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 100,
@@ -3902,7 +4584,15 @@
       ],
       "arquivo": "fichas/100_Orkun_Kokcu.html",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 36,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/orkun-kokcu-106747922604897",
+        "card_id": "106747922604897",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 101,
@@ -3973,7 +4663,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/102_Joao_Neves.html"
+      "arquivo": "fichas/102_Joao_Neves.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/joao-neves-105848932298328",
+        "card_id": "105848932298328",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 103,
@@ -4050,7 +4748,15 @@
       ],
       "arquivo": "fichas/104_Frank_Rijkaard.html",
       "raridade_confirmada": "SHOW TIME",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/frank-rijkaard-88036360719848",
+        "card_id": "88036360719848",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 105,
@@ -4089,7 +4795,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/105_Jordan_Henderson.html"
+      "arquivo": "fichas/105_Jordan_Henderson.html",
+      "max_level": 35,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/jordan-henderson-106762149600615",
+        "card_id": "106762149600615",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 106,
@@ -4126,7 +4840,15 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/106_Pep_Guardiola.html"
+      "arquivo": "fichas/106_Pep_Guardiola.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/pep-guardiola-88040387251639",
+        "card_id": "88040387251639",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 107,
@@ -4211,6 +4933,14 @@
         "url": "https://pesdb.net/efootball/players/n-golo-kante-105849469111254",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/n-golo-kante-105849469111254",
+        "card_id": "105849469111254",
+        "confirmed_in_game": false
       }
     },
     {
@@ -4289,7 +5019,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/110_Aurelien_Tchouameni.html"
+      "arquivo": "fichas/110_Aurelien_Tchouameni.html",
+      "max_level": 30,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/aurelien-tchouameni-105849469129702",
+        "card_id": "105849469129702",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 111,
@@ -4331,6 +5069,14 @@
         "url": "https://pesdb.net/efootball/players/n-golo-kante-105865038367702",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/n-golo-kante-105865038367702",
+        "card_id": "105865038367702",
+        "confirmed_in_game": false
       }
     },
     {
@@ -4412,6 +5158,14 @@
         "url": "https://pesdb.net/efootball/players/bruno-guimaraes-105806787889465",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/bruno-guimaraes-105806787889465",
+        "card_id": "105806787889465",
+        "confirmed_in_game": false
       }
     },
     {
@@ -4452,7 +5206,15 @@
       ],
       "arquivo": "fichas/114_Jorginho.html",
       "raridade_confirmada": "DISTINGUIDO",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 35,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/jorginho-105842221312066",
+        "card_id": "105842221312066",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 115,
@@ -4731,7 +5493,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/121_Belletti.html"
+      "arquivo": "fichas/121_Belletti.html",
+      "max_level": 37,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/belletti-88033407929867",
+        "card_id": "88033407929867",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 122,
@@ -4774,6 +5544,14 @@
         "url": "https://pesdb.net/efootball/players/cafu-88033407929805",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 37,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/cafu-88033407929805",
+        "card_id": "88033407929805",
+        "confirmed_in_game": false
       }
     },
     {
@@ -4814,7 +5592,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/123_Joao_Cancelo.html"
+      "arquivo": "fichas/123_Joao_Cancelo.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/joao-cancelo-105848932186795",
+        "card_id": "105848932186795",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 124,
@@ -4856,6 +5642,14 @@
         "url": "https://pesdb.net/efootball/players/dominik-szoboszlai-105828799610127",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/dominik-szoboszlai-105828799610127",
+        "card_id": "105828799610127",
+        "confirmed_in_game": false
       }
     },
     {
@@ -4891,7 +5685,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/125_Nordi_Mukiele.html"
+      "arquivo": "fichas/125_Nordi_Mukiele.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/nordi-mukiele-105873896745385",
+        "card_id": "105873896745385",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 126,
@@ -4970,7 +5772,15 @@
       ],
       "arquivo": "fichas/127_Jules_Kounde.html",
       "raridade_confirmada": "DISTINGUIDO",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/jules-kounde-105835242041536",
+        "card_id": "105835242041536",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 128,
@@ -5012,6 +5822,14 @@
         "url": "https://pesdb.net/efootball/players/matteo-darmian-105782628618516",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 45,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/matteo-darmian-105782628618516",
+        "card_id": "105782628618516",
+        "confirmed_in_game": false
       }
     },
     {
@@ -5049,7 +5867,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/129_Malo_Gusto.html"
+      "arquivo": "fichas/129_Malo_Gusto.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/malo-gusto-105849469150860",
+        "card_id": "105849469150860",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 130,
@@ -5088,7 +5914,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/130_Reece_James.html"
+      "arquivo": "fichas/130_Reece_James.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/reece-james-105866649005150",
+        "card_id": "105866649005150",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 131,
@@ -5124,7 +5958,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/131_Juan_Foyth.html"
+      "arquivo": "fichas/131_Juan_Foyth.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/juan-foyth-105864769945293",
+        "card_id": "105864769945293",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 132,
@@ -5161,7 +6003,15 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/132_Javier_Zanetti.html"
+      "arquivo": "fichas/132_Javier_Zanetti.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/javier-zanetti-88033139494357",
+        "card_id": "88033139494357",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 133,
@@ -5200,7 +6050,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/133_Nico_O_Reilly.html"
+      "arquivo": "fichas/133_Nico_O_Reilly.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/nico-o-reilly-106780940205246",
+        "card_id": "106780940205246",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 134,
@@ -5237,7 +6095,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/134_Mikael_Silvestre.html"
+      "arquivo": "fichas/134_Mikael_Silvestre.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/mikael-silvestre-88036360587096",
+        "card_id": "88036360587096",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 135,
@@ -5277,7 +6143,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/135_Nuno_Mendes.html"
+      "arquivo": "fichas/135_Nuno_Mendes.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/nuno-mendes-105848932271764",
+        "card_id": "105848932271764",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 136,
@@ -5310,7 +6184,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/136_Tyrick_Mitchell.html"
+      "arquivo": "fichas/136_Tyrick_Mitchell.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/tyrick-mitchell-105873896771214",
+        "card_id": "105873896771214",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 137,
@@ -5352,6 +6234,14 @@
         "url": "https://pesdb.net/efootball/players/marc-cucurella-105859132802911",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 35,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/marc-cucurella-105859132802911",
+        "card_id": "105859132802911",
+        "confirmed_in_game": false
       }
     },
     {
@@ -5390,7 +6280,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/138_Theo_Hernandez.html"
+      "arquivo": "fichas/138_Theo_Hernandez.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/theo-hernandez-105849469121172",
+        "card_id": "105849469121172",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 139,
@@ -5588,7 +6486,15 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/143_Franco_Baresi.html"
+      "arquivo": "fichas/143_Franco_Baresi.html",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/franco-baresi-88039581945329",
+        "card_id": "88039581945329",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 144,
@@ -5662,7 +6568,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/145_Franz_Beckenbauer.html"
+      "arquivo": "fichas/145_Franz_Beckenbauer.html",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/franz-beckenbauer-88039581945324",
+        "card_id": "88039581945324",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 146,
@@ -5704,6 +6618,14 @@
         "url": "https://pesdb.net/efootball/players/manuel-akanji-106780671715908",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/manuel-akanji-106780671715908",
+        "card_id": "106780671715908",
+        "confirmed_in_game": false
       }
     },
     {
@@ -5740,7 +6662,15 @@
       "pendencias": [
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/147_Tony_Adams.html"
+      "arquivo": "fichas/147_Tony_Adams.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/tony-adams-88032334054195",
+        "card_id": "88032334054195",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 148,
@@ -5783,6 +6713,14 @@
         "url": "https://pesdb.net/efootball/players/vitao-106735306130248",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/vitao-106735306130248",
+        "card_id": "106735306130248",
+        "confirmed_in_game": false
       }
     },
     {
@@ -5818,7 +6756,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/149_Jan_Paul_van_Hecke.html"
+      "arquivo": "fichas/149_Jan_Paul_van_Hecke.html",
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/jan-paul-van-hecke-105873896763633",
+        "card_id": "105873896763633",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 150,
@@ -5853,7 +6799,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/150_Ibrahima_Konate.html"
+      "arquivo": "fichas/150_Ibrahima_Konate.html",
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/ibrahima-konate-105873091445023",
+        "card_id": "105873091445023",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 151,
@@ -6014,6 +6968,14 @@
         "url": "https://pesdb.net/efootball/players/ibrahima-konate-105849469124895",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/ibrahima-konate-105849469124895",
+        "card_id": "105849469124895",
+        "confirmed_in_game": false
       }
     },
     {
@@ -6095,6 +7057,14 @@
         "url": "https://pesdb.net/efootball/players/ibrahima-konate-105708003639583",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 20,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/ibrahima-konate-105708003639583",
+        "card_id": "105708003639583",
+        "confirmed_in_game": false
       }
     },
     {
@@ -6129,7 +7099,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/157_Renato_Veiga.html"
+      "arquivo": "fichas/157_Renato_Veiga.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/renato-veiga-105848932292218",
+        "card_id": "105848932292218",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 158,
@@ -6166,7 +7144,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/158_Antonio_Silva.html"
+      "arquivo": "fichas/158_Antonio_Silva.html",
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/antonio-silva-105848932292145",
+        "card_id": "105848932292145",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 159,
@@ -6208,6 +7194,14 @@
         "url": "https://pesdb.net/efootball/players/pau-cubarsi-105854569449280",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/pau-cubarsi-105854569449280",
+        "card_id": "105854569449280",
+        "confirmed_in_game": false
       }
     },
     {
@@ -6244,7 +7238,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/160_Marc_Guehi.html"
+      "arquivo": "fichas/160_Marc_Guehi.html",
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/marc-guehi-105865843704022",
+        "card_id": "105865843704022",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 161,
@@ -6367,6 +7369,14 @@
         "url": "https://pesdb.net/efootball/players/jeremy-jacquet-105873091489528",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/jeremy-jacquet-105873091489528",
+        "card_id": "105873091489528",
+        "confirmed_in_game": false
       }
     },
     {
@@ -6446,6 +7456,14 @@
         "url": "https://pesdb.net/efootball/players/cristian-romero-106787919475376",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/cristian-romero-106787919475376",
+        "card_id": "106787919475376",
+        "confirmed_in_game": false
       }
     },
     {
@@ -6483,7 +7501,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/166_Maxence_Lacroix.html"
+      "arquivo": "fichas/166_Maxence_Lacroix.html",
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/maxence-lacroix-105880876084074",
+        "card_id": "105880876084074",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 167,
@@ -6602,7 +7628,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/169_Oliver_Kahn.html"
+      "arquivo": "fichas/169_Oliver_Kahn.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/oliver-kahn-88039045074375",
+        "card_id": "88039045074375",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 170,
@@ -6756,7 +7790,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/173_Mike_Maignan.html"
+      "arquivo": "fichas/173_Mike_Maignan.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/mike-maignan-105849469070367",
+        "card_id": "105849469070367",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 174,
@@ -6794,7 +7836,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/174_Rui_Silva.html"
+      "arquivo": "fichas/174_Rui_Silva.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/rui-silva-105848932186223",
+        "card_id": "105848932186223",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 175,
@@ -6836,6 +7886,14 @@
         "url": "https://pesdb.net/efootball/players/manuel-neuer-105723035943329",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 21,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/manuel-neuer-105723035943329",
+        "card_id": "105723035943329",
+        "confirmed_in_game": false
       }
     },
     {
@@ -6873,7 +7931,15 @@
       "pendencias": [
         "Atributos-base desta versão para cálculo de status finais"
       ],
-      "arquivo": "fichas/176_Caoimhin_Kelleher.html"
+      "arquivo": "fichas/176_Caoimhin_Kelleher.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/caoimhin-kelleher-105873896750438",
+        "card_id": "105873896750438",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 177,
@@ -6957,6 +8023,14 @@
         "url": "https://pesdb.net/efootball/players/romelu-lukaku-105727599353018",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/romelu-lukaku-105727599353018",
+        "card_id": "105727599353018",
+        "confirmed_in_game": false
       }
     },
     {
@@ -7038,6 +8112,14 @@
         "url": "https://pesdb.net/efootball/players/hugo-ekitike-105782897156511",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/hugo-ekitike-105782897156511",
+        "card_id": "105782897156511",
+        "confirmed_in_game": false
       }
     },
     {
@@ -7114,6 +8196,14 @@
         "url": "https://pesdb.net/efootball/players/marcus-thuram-105829336458789",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/marcus-thuram-105829336458789",
+        "card_id": "105829336458789",
+        "confirmed_in_game": false
       }
     },
     {
@@ -7195,6 +8285,14 @@
         "url": "https://pesdb.net/efootball/players/joao-pedro-105850811314987",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/joao-pedro-105850811314987",
+        "card_id": "105850811314987",
+        "confirmed_in_game": false
       }
     },
     {
@@ -7322,6 +8420,14 @@
         "url": "https://pesdb.net/efootball/players/gonzalo-plata-105816451581405",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/gonzalo-plata-105816451581405",
+        "card_id": "105816451581405",
+        "confirmed_in_game": false
       }
     },
     {
@@ -7360,7 +8466,15 @@
         "Segundo ímpeto realmente selecionado",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/188_Antoine_Semenyo.html"
+      "arquivo": "fichas/188_Antoine_Semenyo.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/antoine-semenyo-106763223426410",
+        "card_id": "106763223426410",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 189,
@@ -7446,6 +8560,14 @@
         "url": "https://pesdb.net/efootball/players/rafael-leao-105776186249585",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 26,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/rafael-leao-105776186249585",
+        "card_id": "105776186249585",
+        "confirmed_in_game": false
       }
     },
     {
@@ -7741,6 +8863,14 @@
         "url": "https://pesdb.net/efootball/players/leandro-trossard-105794439861140",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 28,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/leandro-trossard-105794439861140",
+        "card_id": "105794439861140",
+        "confirmed_in_game": false
       }
     },
     {
@@ -7788,6 +8918,14 @@
         "url": "https://pesdb.net/efootball/players/cody-gakpo-122012",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 34,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/cody-gakpo-122012",
+        "card_id": "122012",
+        "confirmed_in_game": false
       }
     },
     {
@@ -7872,7 +9010,15 @@
       ],
       "arquivo": "fichas/200_Sadio_Mane.html",
       "raridade_confirmada": "DISTINGUIDO",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 34,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/sadio-mane-89137029898200",
+        "card_id": "89137029898200",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 201,
@@ -7987,7 +9133,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/203_Raphinha.html"
+      "arquivo": "fichas/203_Raphinha.html",
+      "max_level": 25,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/raphinha-105821820268596",
+        "card_id": "105821820268596",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 204,
@@ -8113,6 +9267,14 @@
         "url": "https://pesdb.net/efootball/players/nicolo-zaniolo-105793902985437",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/nicolo-zaniolo-105793902985437",
+        "card_id": "105793902985437",
+        "confirmed_in_game": false
       }
     },
     {
@@ -8155,6 +9317,14 @@
         "url": "https://pesdb.net/efootball/players/james-rodriguez-105836047278701",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 36,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/james-rodriguez-105836047278701",
+        "card_id": "105836047278701",
+        "confirmed_in_game": false
       }
     },
     {
@@ -8194,7 +9364,15 @@
       ],
       "arquivo": "fichas/208_Michael_Olise.html",
       "raridade_confirmada": "DISTINGUIDO",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/michael-olise-106788724799833",
+        "card_id": "106788724799833",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 209,
@@ -8237,6 +9415,14 @@
         "url": "https://pesdb.net/efootball/players/jamal-musiala-105863159356176",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/jamal-musiala-105863159356176",
+        "card_id": "105863159356176",
+        "confirmed_in_game": false
       }
     },
     {
@@ -8400,7 +9586,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Proficiência se for usar em uma posição central"
       ],
-      "arquivo": "fichas/213_Ethan_Mbappe.html"
+      "arquivo": "fichas/213_Ethan_Mbappe.html",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/ethan-mbappe-105828799639282",
+        "card_id": "105828799639282",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 214,
@@ -8483,7 +9677,15 @@
       ],
       "arquivo": "fichas/215_Raphinha.html",
       "raridade_confirmada": "DISTINGUIDO",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 36,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/raphinha-106733963948084",
+        "card_id": "106733963948084",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 216,
@@ -8523,7 +9725,15 @@
       ],
       "arquivo": "fichas/216_Declan_Rice.html",
       "raridade_confirmada": "DISTINGUIDO",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/declan-rice-106763760282015",
+        "card_id": "106763760282015",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 217,
@@ -8563,7 +9773,15 @@
       ],
       "arquivo": "fichas/217_Vitinha.html",
       "raridade_confirmada": "DISTINGUIDO",
-      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11"
+      "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
+      "max_level": 35,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/vitinha-88040118816667",
+        "card_id": "88040118816667",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 218,
@@ -8640,7 +9858,15 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/219_Warren_Zaire_Emery.html"
+      "arquivo": "fichas/219_Warren_Zaire_Emery.html",
+      "max_level": 28,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/warren-zaire-emery-105795513640603",
+        "card_id": "105795513640603",
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 220,
@@ -8882,6 +10108,14 @@
         "verified_external_id": "105779675902175",
         "proof_in_game": false,
         "record": "web/SCOUT_V185_RODRI_225_EVIDENCE.json"
+      },
+      "max_level": 27,
+      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "nivel_referencia": {
+        "kind": "catalogo_publico",
+        "url": "https://pesdb.net/efootball/players/rodri-105779675902175",
+        "card_id": "105779675902175",
+        "confirmed_in_game": false
       }
     },
     {

@@ -16,12 +16,26 @@ for(const file of images){imageHash.update(file+'\0');imageHash.update(fs.readFi
 const corpusHash=imageHash.digest('hex');
 // Baseline oficial bd9c622/V288. Mudanças futuras de dados exigem conciliação
 // explícita desta trava, com a aprovação do mantenedor; não atualizar ao acaso.
-assert.equal(hash(raw),'143a8eb4a53857c8a7a1501b50c1d523aa6bd1475b0fe2b5eb17da7ef9f89d51');
+// V376: approved missing max-level references are reconciled field by field.
+// Removing ONLY these verified additions must reproduce the complete old hash.
+const preserved=JSON.parse(raw),references=require('../web/ct376-card-references.json').cards;
+let referencedLevels=0;
+for(const c of preserved.cards)if(/^catalogo_publico_/.test(c.pp_origem||'')){
+ const ref=references.find(r=>r.capture===c.numero);
+ assert(ref?.identityUsable&&ref.reference.levelValid);
+ assert.equal(c.max_level,ref.reference.maxLevel);assert.equal(c.pp,ref.reference.maxPP);
+ assert.deepEqual(c.nivel_referencia,{kind:'catalogo_publico',url:ref.reference.url,card_id:String(c.id),confirmed_in_game:false});
+ delete c.max_level;delete c.pp_origem;delete c.nivel_referencia;referencedLevels++;
+}
+assert.equal(referencedLevels,154);
+assert.equal(preserved.summary.level_public_reference,154);assert.equal(preserved.summary.level_total,239);
+delete preserved.summary.level_public_reference;delete preserved.summary.level_total;
+assert.equal(hash(JSON.stringify(preserved,null,2)+'\n'),'143a8eb4a53857c8a7a1501b50c1d523aa6bd1475b0fe2b5eb17da7ef9f89d51');
 assert.equal(corpusHash,'fd764548717caf9e929a3486a32adb6bcb3714a1c6addbc62a38343f94f6dbcd');
 assert.equal(hash(indexRaw),'1b430bf07be8dd332e145018bdf287ca0a4ab4023b3321c3ecc74d14e8210322');
 assert.equal(cards.length,246);assert.equal(images.length,246);
 assert.equal(new Set(cards.map(c=>c.numero+'@'+c.id+'@'+c.versao)).size,246);
-const summary={automaticallyAudited:246,gameplayIndividuallyValidated:0,canonicalDataChanged:0,
+const summary={automaticallyAudited:246,gameplayIndividuallyValidated:0,canonicalDataChanged:referencedLevels,
  identityPending:0,levelPending:0,nativesPending:0,htmlNativeDifferences:0,
  contextualFrontiers:0,identityBlockedFrontiers:0,levelBlockedFrontiers:0,
  feasibleCandidates:0,scenarios:0,unknownAccountSlots:0};

@@ -901,6 +901,13 @@ window.addEventListener('craque:backup-error',event=>{
  const e=document.getElementById('craque-backup-last');
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
 });
+// V376: contextual Overall, separate from the original artwork and proposals.
+if(['catalog','detail'].includes(document.body.dataset.page)){
+ const ratingCss=document.createElement('link');ratingCss.rel='stylesheet';
+ ratingCss.href=v189Root+'craque-rating-ui-v376.css';document.head.appendChild(ratingCss);
+ const ratingUi=document.createElement('script');ratingUi.src=v189Root+'craque-rating-ui-v376.js';
+ ratingUi.defer=true;document.head.appendChild(ratingUi);
+}
 const brand=document.querySelector('.brand-copy b');if(brand)brand.textContent='CRAQUE TÁTICO';
 document.title=document.title.replace(/SCOUT PRO|Scout PRO/g,'Craque Tático');
 document.querySelectorAll('.scout-rotation-footer,.footer').forEach(node=>{

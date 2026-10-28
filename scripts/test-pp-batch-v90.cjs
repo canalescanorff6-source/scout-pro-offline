@@ -13,10 +13,13 @@ assert.equal(audit.summary.processed,246);
 assert.equal(audit.summary.with_pp,246);
 assert.equal(audit.summary.no_pp,0);
 assert.equal(audit.summary.level_user_entered,85);
-assert.equal(audit.cards.filter(c=>c.max_level!==undefined&&c.numero!==191).length,84,'Os 84 níveis de lotes anteriores foram preservados');
+// V376 acrescenta referências públicas; a prova deste lote continua sendo
+// especificamente os níveis declarados pelo usuário, sem promovê-las a isso.
+const manualLevels=audit.cards.filter(c=>c.max_level!==undefined&&!/^catalogo_publico_/.test(String(c.pp_origem||'')));
+assert.equal(manualLevels.filter(c=>c.numero!==191).length,84,'Os 84 níveis de lotes anteriores foram preservados');
 assert.equal(audit.cards.filter(c=>c.pp!==null).length,246);
 assert.equal(audit.cards.filter(c=>c.pp===null).length,0);
-assert.equal(audit.cards.filter(c=>c.max_level!==undefined).length,85);
+assert.equal(manualLevels.length,85);
 const kubo=audit.cards.find(c=>c.numero===211);
 assert.equal(kubo.max_level,1);assert.equal(kubo.pp,0,'Zero PP confirmado não é dado ausente');
 let checked=0;
