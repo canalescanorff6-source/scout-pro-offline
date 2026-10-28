@@ -18,3 +18,5 @@ As CAP61/144 permanecem com os IDs anteriores corretos e passam a ter identidade
 Também incluídos: cálculo dos treinos GO com Jogo Aéreo já existentes no laboratório; máximos declarados de OVR106(Casillas),97(Pedro),103(Almada),103(Provedel) registrados separadamente de nível e treino atual. Ainda faltam os níveis máximos dessas quatro cartas; Overall máximo não determina nível, PP nem técnico.
 
 A revisão é documental/computacional, não validação de261 jogadores em partidas online. Não se afirma equivalência às builds de criadores sem uma fonte individual comprovada. Nenhum APK foi instalado pelo agente, nem configurações do Windows ou Android alteradas.
+
+CI revelou uma gravação automática no laboratório legado: evento de troca de estilo era persistido como edição pessoal. Corrigido listener para atualizar somente a prévia em eventos de troca; somente save explícito persiste. Teste executa o listener real, falha antes da correção e passa depois. O QA remoto também exige ausência dessa gravação automática.

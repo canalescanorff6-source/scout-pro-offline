@@ -231,6 +231,11 @@ window.addEventListener('scoutpro:training-edit-v218',e=>{
   render();return;
  }
  if(!previewValid(info.levels)||d.pp===null||total(info.levels)>d.pp)return;
+ // Trocar estilo/abrir ficha só atualiza a prévia. Não certificar uma
+ // proposta automática como treino pessoal editado pelo usuário.
+ if(info.mode!=='save'){
+  current=info.levels.slice();active='prévia de cenário';render();return;
+ }
  current=info.levels.slice();active='personalizado';
  persist();render();
 });

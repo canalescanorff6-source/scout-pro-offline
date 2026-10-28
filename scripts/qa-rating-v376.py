@@ -82,6 +82,7 @@ with sync_playwright() as pw:
     page.screenshot(path=str(OUT/(name+'-identity-failure.png')),full_page=False)
     raise
    page.wait_for_function("()=>document.querySelector('.ct377-history')?.textContent.includes('current-training')")
+   assert page.evaluate("()=>localStorage.getItem(CRAQUE_REFERENCES_V376.cards.find(c=>c.capture===153).labKey)") is None
    panel=page.locator('.ct376-panel');panel.locator('summary').first.click()
    panel.locator('.ct377-history > summary').click()
    assert 'current-training' in panel.locator('.ct377-history').inner_text()

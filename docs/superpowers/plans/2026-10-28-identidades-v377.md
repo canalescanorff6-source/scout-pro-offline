@@ -17,3 +17,5 @@ Também incluir as correções já testadas de Jogo Aéreo para goleiros e os qu
 - Preflight: referências, arquivos HTML e contexto compartilham a identidade; corrigir todos antes de regenerar. Não atualizar a branch local antiga nem tocar no índice Git compartilhado; branch remota nova via conector.
 
 - Execução: 280/280 verificações locais completas aprovadas. Revisão independente encontrou histórico de partidas V67 inacessível: corrigido leitor read-only das chaves exatas V67:test e V80:matches, com teste RED→GREEN nas duas CAPs e exclusão das cartas irmãs. Nova bateria completa em execução antes do commit.
+
+- CI: 280 checks e builds passaram, mas QA detectou gravação automática real pelo evento training-edit-v218 mode switch. Correção: listener apenas visualiza eventos diferentes de save; teste do listener real RED→GREEN. Nova bateria281 completa e QA de ausência de gravação. Diagnóstico publicado temporariamente em árvore incompleta do PR; corrigido sem mudar main, PR conferido de novo sem remoções.
