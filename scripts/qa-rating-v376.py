@@ -49,7 +49,16 @@ with sync_playwright() as pw:
    panel=page.locator('.ct376-panel');reveal(panel);panel.locator('summary').click()
    form=panel.locator('.ct376-training-form')
    for i in range(10):form.locator('input[type=number]').nth(i).fill('0')
-   form.locator('input[type=checkbox]').check();form.locator('button[type=submit]').click()
+   form.locator('input[type=checkbox]').check()
+   # Reproduzir edição imediata antes do frame agendado pela confirmação.
+   page.evaluate("""() => {
+    document.querySelector('.ct376-training-form button[type=submit]').click();
+    const observed=document.querySelectorAll('.ct376-panel form')[1];
+    observed.querySelector('input[type=number]').value='105';
+    observed.querySelector('input[type=checkbox]').checked=true;
+   }""")
+   page.evaluate('()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
+   assert panel.locator('form').nth(1).locator('input[type=number]').input_value()=='105','Atualização duplicada apagou edição iniciada após confirmar treino'
    page.wait_for_function("()=>JSON.parse(localStorage.getItem(window.CRAQUE_RATING_CONTEXT_V376.trainingKey(window.CRAQUE_REFERENCES_V376.cards.find(c=>c.capture===90)))).confirmedByOwner===true")
    observed=panel.locator('form').nth(1)
    observed.locator('input[type=number]').fill('105');observed.locator('input[type=checkbox]').check()

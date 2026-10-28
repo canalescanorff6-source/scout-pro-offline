@@ -53,7 +53,7 @@ async function boot(w){
  const cards=new Map([...original.cards.map(c=>['cap:'+c.numero,c]),...owned.cards.map(c=>[c.key,c])]);
  const refs=new Map(data.cards.map(c=>[c.key,c]));
  const images=new Map(data.cards.map(c=>[c.image.split('/').pop(),c]));
- const overrides=new Map();let queue=false,review=null,activeDetail=null;
+ const overrides=new Map();let queue=null,review=null,activeDetail=null;
  const mk=(tag,text)=>{const n=d.createElement(tag);if(text!==undefined)n.textContent=text;return n};
  function state(ref){
   const context=C.resolve(ref,cards.get(ref.key),w.localStorage,{managers:M,positional:P,progress:Progress,...overrides.get(ref.key)});
@@ -134,7 +134,7 @@ async function boot(w){
   panel.append(observedForm);
  }
  function refresh(){
-  queue=false;
+  if(queue!==null)w.cancelAnimationFrame(queue);queue=null;
   for(const img of d.querySelectorAll('.card-art img,.ct364-card-art img,.side-art img,.mobile-profile>img,.ct361-glance-art img,#ct364-dialog-art')){
    const ref=images.get(decodeURIComponent(img.src.split('/').pop().split('?')[0]));if(!ref)continue;
    const {context,result}=state(ref);paint(d,img.parentElement,ref,context,result);
@@ -145,7 +145,7 @@ async function boot(w){
   if(dialog?.open){const ref=refs.get(dialog.dataset.ct376Key);const target=d.getElementById('ct364-panel');if(ref&&target)showPanel(ref,target);}
   if(review?.open)renderReview();
  }
- const schedule=()=>{if(!queue){queue=true;w.requestAnimationFrame(refresh)}};
+ const schedule=()=>{if(queue===null)queue=w.requestAnimationFrame(()=>{queue=null;refresh()})};
  function renderReview(){
   const body=review.querySelector('.ct376-review-body');body.replaceChildren();
   for(const ref of data.cards){const row=mk('p'),{context,result}=state(ref),link=mk('a',ref.name+' · '+ref.position);

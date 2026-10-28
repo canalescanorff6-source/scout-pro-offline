@@ -721,7 +721,7 @@ def run():
                 # original (62/62), sem tratá-la como build recalculada ou homologada.
                 # O rascunho manual permanece isolado e persistente por estilo.
                 # A mesma carta deve guardar o rascunho de contra-ataque independentemente da Posse.
-                page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
+                page.locator('#ct378-style').select_option('rapido')
                 page.wait_for_function("""() =>
                     document.querySelector('#scout-v218-status')?.textContent.includes('HIPÓTESE') &&
                     document.querySelector('#scout-v208-training .scout-v208-total')?.textContent.trim()==='62 / 62' &&
@@ -739,7 +739,7 @@ def run():
                 rapido_boost=page.locator('#scout-v220-booster-name').inner_text()
                 if not rapido_boost or rapido_boost=='—':
                     problems.append(f"{name}: CA Rápido perdeu o ímpeto consultivo")
-                page.locator('#scout-v220-tabs [data-tactic="normal"]').click()
+                page.locator('#ct378-style').select_option('normal')
                 page.wait_for_function("""() =>
                     document.querySelector('#scout-v220-tabs [data-tactic="normal"]')?.getAttribute('aria-pressed')==='true'
                 """,timeout=10000)
@@ -749,7 +749,7 @@ def run():
                 """)
                 if normal_levels==rapido_levels:
                     problems.append(f"{name}: V303 CA Normal e CA Rápido exibem distribuição idêntica em Massaro")
-                page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
+                page.locator('#ct378-style').select_option('rapido')
                 page.locator('#scout-v218-edit').click()
                 # V303: o ponto inicial NÃO é mais a ficha de Posse. Reduzir
                 # uma categoria positiva e verificar o rascunho local por estilo,
@@ -765,12 +765,12 @@ def run():
                     [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v218-level')]
                      .map(x=>Number(x.textContent))
                 """)
-                page.locator('#scout-v220-tabs [data-tactic="posse"]').click()
+                page.locator('#ct378-style').select_option('posse')
                 page.wait_for_function("""() =>
                     document.querySelector('#scout-v208-training tbody tr .scout-v208-level')?.textContent.trim()==='10' &&
                     document.querySelector('#scout-v218-status')?.dataset.mode==='registered'
                 """,timeout=10000)
-                page.locator('#scout-v220-tabs [data-tactic="rapido"]').click()
+                page.locator('#ct378-style').select_option('rapido')
                 page.wait_for_function("""() =>
                     document.querySelector('#scout-v218-status')?.dataset.mode==='draft'
                 """,timeout=10000)
@@ -792,7 +792,7 @@ def run():
                     booster=page.locator('#scout-v220-booster-name').inner_text().strip()
                     if not booster or booster in ('—','Calculando…'):
                         problems.append(f"{name}: V220 ímpeto não recalculou em {tactic}")
-                page.locator('#scout-v220-tabs [data-tactic="posse"]').click()
+                page.locator('#ct378-style').select_option('posse')
                 page.wait_for_function("""() =>
                     document.querySelector('#scout-v208-training tbody tr .scout-v208-level')?.textContent.trim()==='10'
                 """,timeout=10000)
@@ -1902,7 +1902,7 @@ def run():
                         ?.textContent.includes('Rascunho individual V251')""",timeout=12000)
                     if '68 / 68 PP' not in pos.inner_text():
                         problems.append(f"{name}: V251 carregou PP diferente no editor")
-                    page.locator('#scout-v220-tabs button[data-tactic="rapido"]').click()
+                    page.locator('#ct378-style').select_option('rapido')
                     if 'Contra-Ataque Rápido' not in v251.inner_text():
                         problems.append(f"{name}: V251 não respeitou a tática selecionada")
                     # V253: justificativas dentro da mesma ficha, sem overflow.
@@ -2061,6 +2061,7 @@ def run():
                     page.goto(URL+'/fichas/040_Dwight_Yorke.html',
                               wait_until='domcontentloaded',timeout=35000)
                     skill_count=page.locator('#scout-v220-skill-count')
+                    reveal(skill_count)
                     skill_count.wait_for(state='visible',timeout=18000)
                     if 'Slots não conferidos' not in skill_count.inner_text():
                         problems.append(f"{name}: V254 inventou slots vagos antes da confirmação")
@@ -2084,10 +2085,10 @@ def run():
                     page.locator('#v254-confirm-equipped').wait_for(state='attached',timeout=15000)
                     if not page.locator('#v254-confirm-equipped').is_checked():
                         problems.append(f"{name}: V254 perdeu confirmação desta edição após reiniciar")
-                    page.locator('#scout-v220-tabs button[data-tactic="fora"]').click()
+                    page.locator('#ct378-style').select_option('fora')
                     page.wait_for_function("""() => document.querySelector('#scout-v220-booster-why')
                       ?.textContent.includes('em Por Fora')""",timeout=15000)
-                    page.locator('#scout-v220-tabs button[data-tactic="longo"]').click()
+                    page.locator('#ct378-style').select_option('longo')
                     page.wait_for_function("""() => document.querySelector('#scout-v220-booster-why')
                       ?.textContent.includes('em Passe Longo')""",timeout=15000)
                     # Alterar texto sem confirmar invalida prova anterior.
