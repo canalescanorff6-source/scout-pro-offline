@@ -33,6 +33,7 @@ with sync_playwright() as pw:
    page.screenshot(path=str(OUT/(name+'-catalog.png')))
    page.goto(BASE+'/fichas/090_Neymar_Jr.html',wait_until='domcontentloaded')
    page.locator('.ct376-panel').wait_for(state='attached',timeout=30000)
+   assert page.locator('#ct-manager-v302').count()==1,(name,'seletor de técnico duplicado durante carregamento concorrente')
    page.evaluate("""() => {
     const id='90@88039044980128';
     for(const k of ['scoutpro:v307:manager-selection:'+id,'craque:v302:manager-selection:'+id])localStorage.removeItem(k);

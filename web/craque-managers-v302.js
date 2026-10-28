@@ -3,6 +3,12 @@
  * Nenhum valor do técnico altera PP, builds ou atributos finais das 246 cartas.
  */
 (function(host,factory){'use strict';
+ // Multiple entry points may request this dependency concurrently. Reuse the
+ // running controller rather than resetting selection and mounting duplicate UI.
+ if(host?.CRAQUE_MANAGERS_V302){
+  if(typeof module==='object'&&module.exports)module.exports=host.CRAQUE_MANAGERS_V302;
+  return;
+ }
  const api=factory(host);
  if(typeof module==='object'&&module.exports)module.exports=api;
  if(host)host.CRAQUE_MANAGERS_V302=api;
