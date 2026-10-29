@@ -231,6 +231,8 @@ function render(){
   const friendsLink=el('a','scout-v360-dock-friends','Outros Elencos · 7$ e coleções');
   friendsLink.href=(inDetail?'../':'')+'outros-elencos-v227.html';
   body.appendChild(friendsLink);
+  const reviewLink=el('a','ct379-dock-review','Conferir minhas cartas');
+  reviewLink.href=(inDetail?'../':'')+'conferir-cartas.html';body.appendChild(reviewLink);
   body.appendChild(el('span','scout-v189-build','Versão '+String(root.SCOUT_VERSION||'local')+' · '+(root.scoutDesktop?'Windows':root.Capacitor?.isNativePlatform?.()?'Android':'Web')));
   summary.setAttribute('aria-label','Mais opções de navegação e backup');
   const label=doc.getElementById('scout-update-label');

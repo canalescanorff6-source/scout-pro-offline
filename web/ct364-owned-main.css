@@ -440,3 +440,5 @@ dialog.ct364-dialog::backdrop{background:#000c;backdrop-filter:blur(4px)}
 #catalogo .section-desc .ct379-review-link{display:inline;padding:0;margin:0;border:0;background:none;font-size:12px}
 
 #catalogo .eyebrow .ct379-review-link{display:inline;padding:0;margin:0 0 0 12px;border:0;background:none;font-size:11px;color:#abdfbf}
+
+@media(min-width:721px){body.ct362-design[data-page="catalog"] #catalogo .section-top .eyebrow{display:block!important;line-height:16px!important;margin:0!important}}

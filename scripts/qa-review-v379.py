@@ -13,6 +13,13 @@ with sync_playwright() as pw:
   page.goto(BASE+'/index.html',wait_until='domcontentloaded')
   page.wait_for_function('()=>window.CRAQUE_CATALOG_V379?.owned===true',timeout=25000)
   assert page.locator('#all-count').inner_text()=='261'
+  if width<=720:
+   page.locator('.scout-v189-dock-more > summary').click()
+   page.locator('.scout-v189-dock-options').get_by_role('link',name='Conferir minhas cartas',exact=True).click(timeout=3000)
+  else:page.locator('#catalogo .ct379-review-link').click(timeout=3000)
+  page.wait_for_function('()=>document.body.dataset.review379==="ready"')
+  page.goto(BASE+'/index.html',wait_until='domcontentloaded')
+  page.wait_for_function('()=>window.CRAQUE_CATALOG_V379?.owned===true')
   assert page.locator('#cards > [data-owned-id]').count()==15
   page.locator('#search').fill('diego forlan')
   assert page.locator('#cards > [data-owned-id="ct364-14"]').is_visible()
