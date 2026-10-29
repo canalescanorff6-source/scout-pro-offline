@@ -40,12 +40,13 @@ def run() -> int:
             page.goto(BASE + "/index.html", wait_until="domcontentloaded", timeout=35000)
             page.wait_for_function("""() =>
               document.querySelectorAll('#cards .player-card').length===246 &&
-              window.CRAQUE_MOTION_PAUSED_V360===true
+              window.CRAQUE_MOTION_PAUSED_V360===true && window.CRAQUE_CATALOG_V379?.owned===true
             """, timeout=28000)
             catalog = page.evaluate("""async () => {
               const grid=document.getElementById('cards');
-              const list=[...grid.querySelectorAll('.player-card')];
-              const visible=()=>[...grid.children].filter(n=>n.matches('.player-card')&&!n.hidden);
+              const list=[...grid.querySelectorAll('.player-card,.ct364-player-card')];
+              const originals=list.filter(n=>n.matches('.player-card'));
+              const visible=()=>[...grid.children].filter(n=>n.matches('.player-card,.ct364-player-card')&&!n.hidden);
               const frame=()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
               let moved=0;
               const observer=new MutationObserver(records=>{
@@ -73,6 +74,7 @@ def run() -> int:
               await frame();
               observer.disconnect();
               return {
+                originalCount:originals.length,originalIds:new Set(originals.map(n=>n.dataset.cap)).size,
                 total:list.length,uniqueIds:new Set(list.map(el=>el.dataset.cap)).size,
                 initialVisible:originally.length,stableMoves,repeatedSortMoves,
                 originalOrderKept:originally.join(',')===afterRepeat.join(','),
@@ -87,13 +89,13 @@ def run() -> int:
               };
             }""")
             report["catalog"] = catalog
-            assert_that(catalog["total"] == 246 and catalog["uniqueIds"] == 246,
+            assert_that(catalog["total"] == 261 and catalog["uniqueIds"] == 261 and catalog["originalCount"] == 246 and catalog["originalIds"] == 246,
                         "Catálogo perdeu/duplicou cartas originais")
             assert_that(catalog["initialVisible"] == 30 and catalog["finalVisible"] == 30,
                         "Paginação 30 cartas quebrada")
             assert_that(catalog["stableMoves"] == 0 and catalog["repeatedSortMoves"] == 0,
                         "Busca ou sort repetido continua movimentando cartas no DOM")
-            assert_that(catalog["originalOrderKept"] and catalog["reverseFirst"] == 246,
+            assert_that(catalog["originalOrderKept"] and catalog["reverseFirst"] == 261,
                         "Ordem do catálogo incorreta")
             assert_that(catalog["searchResults"] == ["Sergi Cardona"],
                         "Busca Cardona incorreta")
