@@ -21,6 +21,11 @@ with sync_playwright() as pw:
   page.goto(BASE+'/index.html',wait_until='domcontentloaded')
   page.wait_for_function('()=>window.CRAQUE_CATALOG_V379?.owned===true')
   assert page.locator('#cards > [data-owned-id]').count()==15
+  page.locator('#search').fill('Schlotterbeck')
+  defender=page.locator('#roles [data-value="ZG"]');reveal(defender);defender.click()
+  assert page.locator('[data-owned-id="ct364-04"]').is_visible(),'Nova carta de zagueiro deve aparecer no filtro ZG'
+  page.locator('#roles [data-value="TODOS"]').click()
+  page.locator('#search').fill('')
   page.locator('#search').fill('diego forlan')
   assert page.locator('#cards > [data-owned-id="ct364-14"]').is_visible()
   assert page.locator('#shown-count').inner_text()=='1'

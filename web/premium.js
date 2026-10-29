@@ -65,8 +65,9 @@ if(document.body.dataset.page==='catalog'){
    if(cards.includes(el))continue;
    const c=window.CRAQUE_OWNED_V364.cards.find(c=>c.key===el.dataset.ownedId);if(!c)continue;
    el.dataset.cap=String(247+window.CRAQUE_OWNED_V364.cards.indexOf(c));el.dataset.name=c.name;
-   el.dataset.role=c.position;el.dataset.position=c.position;el.dataset.rarity='PENDENTE';el.dataset.style=c.style;el.dataset.styleDefense=c.secondaryStyle||'';
-   el.dataset.search=[c.name,c.key==='ct364-14'?'Diego Forlán Diego Forlan':'',c.style,c.secondaryStyle,c.position].join(' ');
+   const position=c.position==='ZC'?'ZG':c.position;
+   el.dataset.role=position;el.dataset.position=position;el.dataset.rarity='PENDENTE';el.dataset.style=c.style;el.dataset.styleDefense=c.secondaryStyle||'';
+   el.dataset.search=[c.name,c.key==='ct364-14'?'Diego Forlán Diego Forlan':'',c.style,c.secondaryStyle,c.position,position].join(' ');
    cards.push(el);foldedSearch.set(el,fold(el.dataset.search));grid.append(el);
   }
   window.CRAQUE_CATALOG_V379.owned=true;
