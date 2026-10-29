@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - 'web/**'
+      - 'scripts/qa-review-v379.py'
+      - 'scripts/qa-all-cards-v379.py'
       - 'scripts/qa-main-sheet-v378.py'
       - 'scripts/qa_navigation_v378.py'
       - 'scripts/qa-visual-v195.py'
@@ -77,6 +79,8 @@ jobs:
           done
           # V315: testar primeiro o caso novo; falhar claramente em bloqueios de navegação.
           # Mantém todos os QA anteriores, sem afrouxar assertivas.
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-review-v379.py
+          timeout --signal=TERM --kill-after=10s 300s python -u scripts/qa-all-cards-v379.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-main-sheet-v378.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-rating-v376.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-owned-main-v364.py

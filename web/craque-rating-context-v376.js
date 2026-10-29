@@ -19,6 +19,10 @@ function saveTraining(ref,store,levels,budget,confirmed,resolvedCardId=ref.cardI
 function resolve(ref,card,store,options={}){
  const R=options.rating||host?.CRAQUE_RATING_V376||(typeof module==='object'?require('./craque-rating-v376.js'):null);
  const owned=ref.capture===null;
+ const Review=host?.CRAQUE_CARD_REVIEW_V379||(typeof module==='object'?require('./craque-card-review-v379.js'):null);
+ const descriptor=Review?.catalog(owned?[]:[card],owned?[card]:[])[0];
+ const reviewed=descriptor?Review.read(store,descriptor,true):null;
+ const identityChanged=Boolean(reviewed&&((reviewed.cardId&&reviewed.cardId!==descriptor.cardId)||(reviewed.edition&&reviewed.edition!==descriptor.edition)));
  const ctx={cardKey:ref.key,cardId:ref.cardId||ref.candidateId||'',edition:ref.edition,
   position:options.position||ref.position,training:null,budget:ref.cataloguePP,manager:null,extraBooster:null};
  let source='Treino atual pendente',warning='',maxLevel=ref.registeredMaxLevel||
@@ -41,6 +45,12 @@ function resolve(ref,card,store,options={}){
     if(m.boosterSlot==='ocupado'&&m.booster)ctx.extraBooster={name:m.booster,confirmed:true};
    }
   }
+  if(reviewed){
+   if(identityChanged){ctx.cardId=reviewed.cardId||'';ctx.edition=reviewed.edition||'';ctx.budget=null;maxLevel=null;ctx.extraBooster=null;}
+   if(reviewed.cardId)ctx.cardId=reviewed.cardId;if(reviewed.edition)ctx.edition=reviewed.edition;
+   if(reviewed.pp!==null)ctx.budget=reviewed.pp;if(reviewed.maxLevel!==null)maxLevel=reviewed.maxLevel;
+   if(reviewed.equipmentReviewed)ctx.extraBooster=reviewed.extraSlot==='ocupado'?{name:reviewed.extraBooster,confirmed:true}:null;
+  }
   const idKey=ref.cardKey,managerKeys=[
    ...(owned?['scoutpro:v378:owned-manager:'+ref.key]:[]),
    'scoutpro:v307:manager-selection:'+idKey,'craque:v302:manager-selection:'+idKey,
@@ -55,7 +65,11 @@ function resolve(ref,card,store,options={}){
     proficiency:options.managers.proficiency(row,style),boosters:row.boosters_EN||[]};
   }
   let current=get(store,trainingKey(ref,ctx.cardId));
-  if(!current){
+  if(identityChanged&&(!current?.updatedAt||current.updatedAt<=reviewed.updatedAt))current=null;
+  if(reviewed?.training&&(!current||reviewed.updatedAt>=current.updatedAt)){
+   ctx.training=reviewed.training.slice();source='Treino conferido por você na revisão da carta';current=null;
+  }
+  if(!current&&!ctx.training&&!identityChanged){
    const legacy=get(store,PREFIX+ref.key);
    if(legacy&&legacy.cardId===ctx.cardId)current=legacy;
    else if(legacy)warning='Treino da identidade anterior preservado no histórico; confira o treino desta edição.';
@@ -66,14 +80,14 @@ function resolve(ref,card,store,options={}){
     !valid(current.levels)||cost(current.levels)>ctx.budget)
     throw Error('Treino confirmado incompatível com a edição ou PP atuais; registro preservado.');
    ctx.training=current.levels.slice();source='Treino confirmado por você';
-  }else if(ref.labKey){
+  }else if(ref.labKey&&!ctx.training&&!identityChanged){
    const lab=get(store,ref.labKey);
    if(lab){
     if(!valid(lab.train)||cost(lab.train)>ctx.budget)throw Error('Treino pessoal ilegível ou acima dos PP; registro preservado.');
     if(lab.source){ctx.training=lab.train.slice();source='Treino pessoal salvo';warning='Confira se este treino já foi aplicado no jogo.';}
    }
   }
-  if(!ctx.training&&Array.isArray(ref.registeredLevels)){
+  if(!ctx.training&&!identityChanged&&Array.isArray(ref.registeredLevels)){
    ctx.training=ref.registeredLevels.slice();source='Treino cadastrado';
    warning='Distribuição do cadastro; confirme se corresponde ao treino atual no jogo.';
   }

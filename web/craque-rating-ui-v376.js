@@ -41,6 +41,7 @@ async function boot(w){
   load('craque-rating-context-v376.js','CRAQUE_RATING_CONTEXT_V376'),
   load('craque-managers-v302.js','CRAQUE_MANAGERS_V302')]);
  await M.load();
+ await load('craque-card-review-v379.js','CRAQUE_CARD_REVIEW_V379');
  // Receipts use the existing edition checks; no additional equipment is inferred.
  await load('skills-booster-v162.js','SCOUT_RECOMMENDATIONS_V162');
  const P=await load('craque-positional-v311.js','CRAQUE_POSITIONAL_V311');

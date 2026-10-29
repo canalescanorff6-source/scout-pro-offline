@@ -13,7 +13,8 @@ for(const filename of ['craque-app-shell-v362.js','craque-app-shell-v362.css']){
  assert.ok(entry.includes(filename),'bridge precisa carregar '+filename);
 }
 const pages=fs.readdirSync(web).filter(p=>p.endsWith('.html'));
-assert.equal(pages.length,14,'Conferir cobertura das 14 páginas de topo');
+assert.equal(pages.length,15,'Conferir cobertura das 15 páginas de topo, incluindo conferência V379');
+assert(pages.includes('conferir-cartas.html'));
 for(const name of pages){
  const html=source(name);
  const viaBridge=html.includes('src="app-bridge.js"');

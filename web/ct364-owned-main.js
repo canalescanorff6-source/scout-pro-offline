@@ -80,12 +80,24 @@ const confirmationOf=(card,allowReference=false)=>{
  return {level,cardId:id};
 };
 const cardAsEngine=(card,role)=>{const p=confirmationOf(card,true),manual=equipmentOf(card);
- return {localKey:card.key,originalPosition:card.position,
+ const reviewed=window.CRAQUE_CARD_REVIEW_V379?.owned(card,localStorage);
+ const result= {localKey:card.key,originalPosition:card.position,
   name:card.name,position:role||card.position,style:card.style,
   level:p.level,pp:null,cardId:p.cardId,edition:p.engineEdition||'',managerId:managerOf(card),
   // Anotações manuais NÃO provam slot livre, Card ID ou versão.
   skills:manual.skills.filter(Boolean).join('; '),nativeSkills:card.observed.nativeSkills.join('; '),
-  booster:manual.booster,fixedBooster:'',boosterSlot:manual.slot,trainingLevels:''};
+  booster:manual.booster,fixedBooster:'',boosterSlot:manual.slot,trainingLevels:'',defenceStyle:card.secondaryStyle||''};
+ if(reviewed){
+  const identityChanged=(reviewed.cardId&&reviewed.cardId!==String(card.cardId||''))||(reviewed.edition&&reviewed.edition!==card.edition);
+  if(identityChanged){result.level=null;result.pp=null;result.nativeSkills='';result.trainingLevels='';result.fixedBooster='';result.skills='';result.boosterSlot='pendente';result.booster='';}
+  if(reviewed.cardId)result.cardId=reviewed.cardId;if(reviewed.edition)result.edition=reviewed.edition;
+  if(reviewed.attackStyle)result.style=reviewed.attackStyle;if(reviewed.defenceStyle)result.defenceStyle=reviewed.defenceStyle;
+  if(reviewed.maxLevel!==null)result.level=reviewed.maxLevel;if(reviewed.pp!==null)result.pp=reviewed.pp;
+  if(reviewed.nativeSkills)result.nativeSkills=reviewed.nativeSkills;
+  if(reviewed.fixedBooster)result.fixedBooster=reviewed.fixedBooster;
+  if(reviewed.equipmentReviewed){result.skills=reviewed.skills.filter(Boolean).join('; ');result.boosterSlot=reviewed.extraSlot;result.booster=reviewed.extraBooster;}
+  if(reviewed.training)result.trainingLevels=reviewed.training.join(',');
+ }return result;
 };
 function section(title){const s=mk('section','ct364-area');s.append(mk('h3','',title));return s}
 function line(parent,label,value){const row=mk('div','ct364-data-row');row.append(mk('span','',label),mk('strong','',value??'Pendente'));parent.append(row)}
@@ -114,6 +126,7 @@ function currentFilter(c){
  return true;
 }
 function syncResults(){
+ if(window.CRAQUE_CATALOG_V379?.owned){window.CRAQUE_CATALOG_V379.refresh();return;}
  const panel=$('#ct364-owned-section');if(!panel)return;
  const filtered=entries.filter(currentFilter);
  const grid=$('#ct364-owned-grid');
@@ -1018,6 +1031,7 @@ function ensureEngine(){
  ['craque-role-intelligence-v233.js','CRAQUE_INTERPRETATION_V233'],
  ['craque-ficha-individual-v251.js','CRAQUE_FICHA_INDIVIDUAL_V251'],
  ['craque-pp-universal-v309.js','CRAQUE_PP_UNIVERSAL_V309'],
+ ['craque-card-review-v379.js','CRAQUE_CARD_REVIEW_V379'],
  ['craque-friends-training-v228.js','CRAQUE_FRIEND_TRAINING_V228'],
  ['craque-main-sheet-v378.js','CRAQUE_MAIN_SHEET_V378'],
  ['craque-managers-v302.js','CRAQUE_MANAGERS_V302'],
@@ -1536,6 +1550,7 @@ function prepare(data){
  syncResults();
  refreshReview();
  document.body.dataset.ct364Owned='ready';
+ window.dispatchEvent(new Event('craque:owned-cards-ready'));
 }
 const start=()=>{
  fetch(SOURCE,{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('JSON de cartas não encontrado');return r.json()})

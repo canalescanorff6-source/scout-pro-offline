@@ -14,8 +14,8 @@ with sync_playwright() as pw:
    held=[]
    page.route('**/ct376-card-references.json',lambda route:held.append(route))
    page.goto(BASE+'/index.html',wait_until='domcontentloaded')
-   page.locator('#ct364-owned-grid [data-owned-id="ct364-01"]').wait_for(state='attached',timeout=25000)
-   page.locator('#ct364-owned-section > summary').click()
+   page.locator('#cards [data-owned-id="ct364-01"]').wait_for(state='attached',timeout=25000)
+   page.locator('#search').fill('Karetsas')
    page.locator('[data-owned-id="ct364-01"]').click()
    page.locator('#ct364-dialog[open]').wait_for()
    for _ in range(20):
@@ -26,9 +26,9 @@ with sync_playwright() as pw:
    page.unroute('**/ct376-card-references.json')
    page.locator('#ct364-panel .ct376-panel').wait_for(state='attached',timeout=30000)
    page.locator('.ct364-close').click()
-   page.wait_for_function("()=>document.querySelectorAll('#cards .ct376-ovr').length===246",timeout=30000)
-   page.wait_for_function("()=>document.querySelectorAll('#ct364-owned-grid .ct376-ovr').length===15",timeout=15000)
-   compact=page.locator('#ct364-owned-grid .ct376-ovr').first.evaluate("""e=>({
+   page.wait_for_function("()=>document.querySelectorAll('#cards .player-card .ct376-ovr').length===246",timeout=30000)
+   page.wait_for_function("()=>document.querySelectorAll('#cards .ct364-player-card .ct376-ovr').length===15",timeout=15000)
+   compact=page.locator('#cards .ct364-player-card .ct376-ovr').first.evaluate("""e=>({
     font:parseFloat(getComputedStyle(e.firstElementChild).fontSize),width:e.getBoundingClientRect().width,
     position:getComputedStyle(e).position})""")
    assert compact['font']<=18 and compact['width']>=28 and compact['position']=='absolute',(name,compact)

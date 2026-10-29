@@ -59,7 +59,7 @@ const document={
  querySelectorAll:s=>s==='.player-card'?cards:[],
  createDocumentFragment(){const fragment=new Elem();fragment.isFragment=true;return fragment}
 };
-const window={SCOUT_POSITION_ORDER:{MLG:0,ZG:1}};
+const window={addEventListener(){},SCOUT_POSITION_ORDER:{MLG:0,ZG:1}};
 const originalIds=cards.map(c=>c.dataset.cap).join(',');
 const source=read('web/premium.js');
 new vm.Script(source);

@@ -59,6 +59,47 @@ if(document.body.dataset.page==='catalog'){
  styleSelect?.addEventListener('change',()=>{style=styleSelect.value;limit=30;apply()});
  search.addEventListener('input',()=>{limit=30;apply()}); sort.addEventListener('change',()=>{limit=30;apply()});
  more.addEventListener('click',()=>{limit+=30;apply()});
+ const registerOwned=()=>{
+  if(!window.CRAQUE_OWNED_V364)return;
+  for(const el of document.querySelectorAll('[data-owned-id]')){
+   if(cards.includes(el))continue;
+   const c=window.CRAQUE_OWNED_V364.cards.find(c=>c.key===el.dataset.ownedId);if(!c)continue;
+   el.dataset.cap=String(247+window.CRAQUE_OWNED_V364.cards.indexOf(c));el.dataset.name=c.name;
+   el.dataset.role=c.position;el.dataset.position=c.position;el.dataset.rarity='PENDENTE';el.dataset.style=c.style;el.dataset.styleDefense=c.secondaryStyle||'';
+   el.dataset.search=[c.name,c.key==='ct364-14'?'Diego Forlán Diego Forlan':'',c.style,c.secondaryStyle,c.position].join(' ');
+   cards.push(el);foldedSearch.set(el,fold(el.dataset.search));grid.append(el);
+  }
+  window.CRAQUE_CATALOG_V379.owned=true;
+  const old=document.getElementById('ct364-owned-section');if(old){old.hidden=true;old.dataset.integrated='true';}
+  const legacy=document.getElementById('ct365-review');if(legacy&&!document.getElementById('ct379-archive')){const archive=document.createElement('details');archive.id='ct379-archive';const summary=document.createElement('summary');summary.textContent='Conferência anterior das 15 cartas · histórico';archive.append(summary,legacy);document.getElementById('catalogo').append(archive);}
+  for(const root of [document.getElementById('roles'),document.getElementById('style-filter')]){
+   if(!root)continue;for(const node of root.children){const v=node.dataset.value||node.value;
+    if(root.id==='roles')node.textContent=(v==='TODOS'?'Todos':v)+' · '+cards.filter(c=>v==='TODOS'||c.dataset.role===v).length;
+    else node.textContent=(v==='TODOS'?'Todos os estilos':v)+' · '+cards.filter(c=>v==='TODOS'||c.dataset.style===v||c.dataset.styleDefense===v).length;
+   }
+  }
+  if(styleSelect)for(const value of new Set(cards.flatMap(c=>[c.dataset.style,c.dataset.styleDefense]).filter(Boolean))){
+   if(!Array.from(styleSelect.options).some(o=>o.value===value)){const o=document.createElement('option');o.value=value;o.textContent=value+' · '+cards.filter(c=>c.dataset.style===value||c.dataset.styleDefense===value).length;styleSelect.append(o);}
+  }
+  const rarities=document.getElementById('rarities');
+  if(rarities&&!rarities.querySelector('[data-value=\"PENDENTE\"]')){const b=document.createElement('button');b.type='button';b.className='filter rarity';b.dataset.value='PENDENTE';b.textContent='A conferir';b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>{rarity='PENDENTE';buttonState(rarities,rarity);limit=30;apply()});rarities.append(b);}
+  apply();
+ };
+ window.CRAQUE_CATALOG_V379={owned:false,refresh:apply,registerOwned};
+ const refreshReviewed=async()=>{
+  const R=window.CRAQUE_CARD_REVIEW_V379;if(!R)return;
+  try{const response=await fetch('SCOUT_V69_AUDITORIA.json');if(!response.ok)return;const data=await response.json();
+   const own=window.CRAQUE_OWNED_V364?.cards||[];const descriptors=new Map(R.catalog(data.cards,own).map(c=>[c.key,c]));
+   for(const el of cards){const key=el.dataset.ownedId||'cap:'+el.dataset.cap;const descriptor=descriptors.get(key);if(!descriptor)continue;
+    const row=R.read(localStorage,descriptor,true);if(!row)continue;
+    if(row.rarity)el.dataset.rarity=row.rarity;if(row.attackStyle)el.dataset.style=row.attackStyle;if(row.defenceStyle)el.dataset.styleDefense=row.defenceStyle;
+    foldedSearch.set(el,fold(el.dataset.search+' '+[row.rarity,row.attackStyle,row.defenceStyle,row.cardId,row.edition].join(' ')));
+   }apply();
+  }catch(_){/* Catálogo original permanece disponível se o registro local falhar. */}
+ };
+ window.addEventListener('craque:owned-cards-ready',refreshReviewed);refreshReviewed();
+ window.addEventListener('craque:owned-cards-ready',registerOwned);
+ registerOwned();
  const hash=new URLSearchParams(location.search);if(hash.has('q'))search.value=hash.get('q');
  if(styleSelect&&hash.has('style')&&Array.from(styleSelect.options).some(opt=>opt.value===hash.get('style'))){style=hash.get('style');styleSelect.value=style}
  if(hash.has('role') && $(`.filter[data-value="${hash.get('role')}"]`,$('#roles'))){role=hash.get('role');buttonState($('#roles'),role)}
