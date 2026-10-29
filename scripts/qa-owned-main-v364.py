@@ -24,14 +24,14 @@ with sync_playwright() as pw:
    page.on("pageerror",lambda x:error.append(str(x)))
    page.goto(BASE+"/index.html",wait_until="domcontentloaded",timeout=55000)
    page.locator("body[data-ct364-owned=ready]").wait_for(state="attached",timeout=25000)
-   page.locator("#ct364-owned-grid .ct364-player-card").first.wait_for(state="attached",timeout=14000)
+   page.locator("#cards .ct364-player-card").first.wait_for(state="attached",timeout=14000)
    external=page.locator("#ct-formacoes-premium-link")
    assert external.count()==1 and external.is_visible(),(name,"acesso às formações ausente ou duplicado")
    assert external.get_attribute("href")=="https://craque-tatico-formacoes-premium.vocalclock33.chatgpt.site/"
    assert external.get_attribute("target")=="_blank"
    assert page.locator("#cards .player-card").count()==246,(name,"246 originais mudadas")
-   assert page.locator("#ct364-owned-grid .ct364-player-card").count()==15,(name,"15 adicionais faltam")
-   assert page.locator("#ct364-owned-section").is_visible()
+   assert page.locator("#cards .ct364-player-card").count()==15,(name,"15 adicionais faltam")
+   assert page.locator("#ct364-owned-section").is_hidden()
    assert not page.locator("#ct364-owned-section").evaluate("(e)=>e.open"),(name,"novas cartas devem iniciar recolhidas")
    hint=page.locator("#catalogo .list-meta").get_by_text("Toque na carta para abrir a ficha",exact=False)
    assert hint.count()==1,(name,"instrução na DOM não localizada; revisar posicionamento mobile")
@@ -64,8 +64,8 @@ with sync_playwright() as pw:
     assert hint.is_visible(),(name,"dica deve continuar em telas mais amplas")
    # Expandir a seção intencionalmente para validar as 15 imagens; tela inicial
    # deve continuar com as 246 originais acessíveis na primeira dobra.
-   page.locator("#ct364-owned-section > summary").click()
-   assert page.locator("#ct364-owned-section").evaluate("(e)=>e.open")
+   reveal(page.locator("#ct379-archive > summary"))
+   page.locator("#ct379-archive > summary").click()
    # V365: auditoria das 15 cartas permanece fechada ao abrir o grupo,
    # com dados locais nunca copiados dos níveis simulados do eFHub.
    review=page.locator("#ct365-review")
@@ -88,26 +88,26 @@ with sync_playwright() as pw:
    page.locator(".ct364-close").click()
    page.locator("#ct365-review > summary").click()
    result=page.evaluate("""() => ({
-     count:document.querySelectorAll('#ct364-owned-grid img').length,
-     images:[...document.querySelectorAll('#ct364-owned-grid img')].map(i=>({src:i.getAttribute('src'),ok:i.complete&&i.naturalWidth>0})),
+     count:document.querySelectorAll('#cards .ct364-player-card img').length,
+     images:[...document.querySelectorAll('#cards .ct364-player-card img')].map(i=>({src:i.getAttribute('src'),ok:i.complete&&i.naturalWidth>0})),
      width:document.documentElement.scrollWidth-innerWidth,
      original:document.querySelectorAll('#cards .player-card').length
    })""")
    # As 15 artes são loading=lazy no aplicativo. O QA precisa forçar a
    # decodificação, pois imagens fora da viewport não são baixadas sozinhas.
-   page.locator("#ct364-owned-grid img").evaluate_all("(imgs)=>imgs.forEach(i=>i.loading='eager')")
-   page.wait_for_function("()=>[...document.querySelectorAll('#ct364-owned-grid img')].every(i=>i.complete&&i.naturalWidth>0)",timeout=24000)
+   page.locator("#cards .ct364-player-card img").evaluate_all("(imgs)=>imgs.forEach(i=>i.loading='eager')")
+   page.wait_for_function("()=>[...document.querySelectorAll('#cards .ct364-player-card img')].every(i=>i.complete&&i.naturalWidth>0)",timeout=24000)
    assert result["width"]<=12,(name,"rolagem horizontal",result)
    assert result["original"]==246
    page.screenshot(path=str(OUT/(name+"-catalogo-261.png")),full_page=False)
    # Distinção de versões: o Guirassy original #181 continua, novo abre na página principal.
    page.locator("#search").fill("Serhou Guirassy")
-   assert page.locator("#ct364-owned-grid .ct364-player-card").count()==1
+   assert page.locator("#cards .ct364-player-card:visible").count()==1
    assert page.locator('#cards .player-card[data-cap="181"]').count()==1
    page.locator("#search").fill("Karetsas")
-   assert page.locator("#ct364-owned-grid .ct364-player-card").count()==1
+   assert page.locator("#cards .ct364-player-card:visible").count()==1
    assert page.locator("#none").is_hidden(),(name,"novo card indevidamente marcado como nenhuma carta")
-   page.locator("#ct364-owned-grid .ct364-player-card").first.click()
+   page.locator("#cards .ct364-player-card:visible").first.click()
    dialog=page.locator("#ct364-dialog")
    assert dialog.is_visible(),(name,"ficha adicional não abre")
    assert page.locator("#ct364-title").inner_text()=="K. Karetsas"
@@ -444,7 +444,7 @@ with sync_playwright() as pw:
    assert page.locator("#ct365-review-rows .ct365-review-row").count()==14
    page.locator("#ct365-review > summary").click()
    page.locator("#search").fill("")
-   assert page.locator("#ct364-owned-grid .ct364-player-card").count()==15
+   assert page.locator("#cards .ct364-player-card").count()==15
    # Check scripts are not throwing even with lazy engines.
    assert not [e for e in error if "ct364" in e.lower()],(name,error)
    ctx.close()

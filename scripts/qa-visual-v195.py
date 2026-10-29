@@ -292,8 +292,8 @@ def run():
                 if page.evaluate("() => document.body.classList.contains('scout-motion-on') || document.querySelectorAll('.scout-motion-layer,.ct234-motion-prism').length > 0"):
                     problems.append(f"{name}: V360 manteve camadas de efeitos ativas")
                 initial_count=int(page.locator("#all-count").inner_text())
-                if initial_count!=246:
-                    problems.append(f"{name}: acervo inicial não tem 246 cartas: {initial_count}")
+                if initial_count!=261:
+                    problems.append(f"{name}: acervo inicial não tem 261 cartas: {initial_count}")
                 visible_cards=page.locator("#cards .player-card:visible")
                 first=visible_cards.first.bounding_box() if visible_cards.count() else None
                 first_y=first["y"] if first else 9999
@@ -305,13 +305,13 @@ def run():
                 if not panel.evaluate("(e)=>e.open"):
                     problems.append(f"{name}: filtros não abrem por toque/clique")
                 page.locator("#roles button[data-value='CA']").click()
-                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===44")
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===46")
                 if "CA" not in panel.locator(".scout-v203-filter-status").inner_text():
                     problems.append(f"{name}: resumo não atualiza ao escolher CA")
                 if page.locator("#cards .player-card:visible:not([data-role='CA'])").count():
                     problems.append(f"{name}: filtro CA não filtrou as cartas")
                 page.locator("#rarities button[data-value='ÉPICA']").click()
-                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)<44")
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)<46")
                 if "ÉPICA" not in panel.locator(".scout-v203-filter-status").inner_text():
                     problems.append(f"{name}: raridade ativa não aparece no resumo")
                 page.select_option("#sort","alpha")
@@ -324,14 +324,14 @@ def run():
                 page.locator("#roles button[data-value='TODOS']").click()
                 page.locator("#rarities button[data-value='TODAS']").click()
                 page.select_option("#sort","cap")
-                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===246")
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===261")
                 panel.locator("summary").click()
                 page.evaluate("window.scrollTo(0, 0)")
                 if panel.evaluate("(e)=>e.open"):
                     problems.append(f"{name}: filtros não fecham")
                 if "Todas as cartas" not in panel.locator(".scout-v203-filter-status").inner_text():
                     problems.append(f"{name}: resumo não volta ao padrão")
-                home["v203_filters_preserve_count"]=246
+                home["v203_filters_preserve_count"]=261
                 home["v203_filters_open_overflow"]=opened["horizontalOverflow"]
                 # V204: validar o acabamento real dos cartões (não só presença de CSS).
                 readability = page.evaluate("""() => {
@@ -391,7 +391,7 @@ def run():
                     problems.append(f"{name}: ação de limpar filtros não está visível")
                 # Com filtro ativo, o botão compacto precisa restaurar o motor original.
                 page.locator("#scout-v205-clear").click()
-                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===246")
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===261")
                 if page.locator("#search").input_value() or page.locator("#scout-v205-clear").is_visible():
                     problems.append(f"{name}: limpar filtros compacto não restaurou as 246 cartas")
                 page.locator("#search").fill("__SCOUT_NENHUMA_CARTA_V205__")
@@ -402,7 +402,7 @@ def run():
                     problems.append(f"{name}: busca sem resultado não mostra contagem zero")
                 page.screenshot(path=str(OUT / f"{name}_search_empty_v205.png"),full_page=False,animations="disabled")
                 page.locator("#scout-v205-empty-reset").click()
-                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===246")
+                page.wait_for_function("() => Number(document.getElementById('all-count').textContent)===261")
                 if page.locator("#search").input_value() or page.locator("#none").is_visible():
                     problems.append(f"{name}: limpar filtros não restaurou busca e catálogo")
                 if page.locator("#scout-v205-clear").is_visible():

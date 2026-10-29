@@ -33,6 +33,7 @@ const profileOf=card=>({
  capture:card.capture??null,id:String(card.cardId||''),edition:String(card.edition||''),
  posicao:card.position||'',shown_position:card.position||'',
  attack_style:card.style||'',estilo_ataque:card.style||'',
+ defence_style:card.defenceStyle||'',estilo_defesa:card.defenceStyle||'',
  native_skills:card.nativeSkills||'',habilidades_nativas:card.nativeSkills||'',
  impeto_fixo:card.fixedBooster||'',boost1:card.fixedBooster||'',
  // V321: status MANUAL de slot vazio não comprova que a edição tenha um
@@ -51,6 +52,7 @@ function sourceSignature(card){
  // Preservar assinaturas V228 de builds manuais existentes; apenas o PP derivado
  // precisa incluir o nível máximo para invalidar a hipótese se ele mudar.
  if(card.pp===null||card.pp===undefined)signatureParts.push(card.level);
+ if(card.defenceStyle)signatureParts.push('defenceStyle',card.defenceStyle);
  if(card.managerId)signatureParts.push('manager',String(card.managerId));
  const serialized=JSON.stringify(signatureParts);
  // Marca de atualização, NÃO assinatura de segurança (backup usa SHA-256).

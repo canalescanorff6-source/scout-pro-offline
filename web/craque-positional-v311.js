@@ -26,6 +26,9 @@ const hash=input=>{
 const json=x=>JSON.stringify(x);
 function fromPersonal(card,raw,store){
  if(!card||!Number.isInteger(Number(card.numero)))throw Error('Carta pessoal sem número comprovado');
+ const review=typeof window!=='undefined'?window.CRAQUE_CARD_REVIEW_V379:require('./craque-card-review-v379.js');
+ card=review?.personal(card,store)||card;
+ if(card.review379?.identityChanged)raw=null;
  const model={
   collection:'minhas-246',owner:'principal',cardKey:String(card.numero)+'@'+text(card.id),
   name:text(card.name),edition:text(card.versao),cardId:text(card.id),
@@ -35,7 +38,7 @@ function fromPersonal(card,raw,store){
   level:/^catalogo_publico_/.test(String(card.pp_origem||''))?null:card.max_level??null,
   publicMaxLevel:/^catalogo_publico_/.test(String(card.pp_origem||''))?card.max_level:null,
   pp:Number.isInteger(card.pp)?card.pp:null,
-  style:text(card.estilo_ataque),nativeSkills:text(card.habilidades_nativas||raw?.native_skills),
+  style:text(card.estilo_ataque),defenceStyle:text(card.estilo_defesa),nativeSkills:text(card.habilidades_nativas||raw?.native_skills),
   skills:'',fixedBooster:text(card.impeto_fixo||raw?.boost1),
   booster:'',boosterSlot:'pendente',
   trainingLevels:Array.isArray(card.niveis)?card.niveis.join(','):'',
@@ -58,6 +61,8 @@ function fromPersonal(card,raw,store){
    if(proof.valid){model.boosterSlot=proof.status;model.booster=proof.equipped||'';}
   }catch(_){}
  }
+ if(card.review379?.equipmentReviewed){model.skills=card.review379.skills.filter(Boolean).join('; ');model.boosterSlot=card.review379.extraSlot;model.booster=card.review379.extraBooster;model.review379=card.review379;}
+ if(card.review379)model.review379=card.review379;
  return model;
 }
 function fromExternal(card,owner){
@@ -78,7 +83,7 @@ function validate(model){
 }
 function baseSignature(m){return hash(json([
  m.collection,m.owner,m.cardKey,m.cardId,m.edition,m.position,m.level,m.pp,
- m.style,m.nativeSkills,m.skills,m.fixedBooster,m.booster,m.boosterSlot,m.trainingLevels
+ m.style,m.nativeSkills,m.skills,m.fixedBooster,m.booster,m.boosterSlot,m.trainingLevels,...(m.review379?[m.defenceStyle]:[])
  ]))}
 // Fingerprint da edição e do estado de equipamento: INDEPENDENTE do ID local
 // e do proprietário, para validar a migração sem certificar conteúdo diferente.
@@ -155,7 +160,7 @@ function compute(model,position='MAT',style='posse',manager='',provided){
   capture:m.evidenceCard?.numero??null,equipmentRecord:m.equipmentRecord||null,
   localKey:m.cardKey,originalPosition:m.position,positionEvidence,
   baseReference:m.evidenceCard?.base_stats_known===true,
-  position:id.position,style:m.style,level:m.level,pp:m.pp,cardId:m.cardId,edition:m.edition,
+  position:id.position,style:m.style,defenceStyle:m.defenceStyle,level:m.level,pp:m.pp,cardId:m.cardId,edition:m.edition,
   name:m.name,nativeSkills:m.nativeSkills,skills:m.skills,
   fixedBooster:m.fixedBooster,booster:m.booster,boosterSlot:m.boosterSlot,
   trainingLevels:m.trainingLevels

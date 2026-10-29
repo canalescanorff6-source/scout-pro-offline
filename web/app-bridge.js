@@ -409,11 +409,11 @@ if(inCard){
     ensure('craque-role-intelligence-v233.js','CRAQUE_INTERPRETATION_V233',()=>
      ensure('craque-ficha-individual-v251.js','CRAQUE_FICHA_INDIVIDUAL_V251',()=>
       load('craque-pp-universal-v309.js',()=>
-       load('craque-friends-training-v228.js',()=>
+       load('craque-card-review-v379.js',()=>load('craque-friends-training-v228.js',()=>
         load('craque-main-sheet-v378.js',()=>
         load('craque-positional-v311.js',()=>load('craque-formation-context-v314.js',()=>
          load('craque-ficha-decision-v327.js',()=>load('craque-frontier-context-v339.js',()=>
-          load('craque-positional-ui-v311.js')))))))))));
+          load('craque-positional-ui-v311.js'))))))))))));
    const css=document.createElement('link');css.rel='stylesheet';css.href='../craque-positional-v311.css';document.head.appendChild(css);
    const formationCss=document.createElement('link');formationCss.rel='stylesheet';
    formationCss.href='../craque-formation-context-v314.css';document.head.appendChild(formationCss);
@@ -919,6 +919,12 @@ document.querySelectorAll('.scout-rotation-footer,.footer').forEach(node=>{
 
 document.querySelectorAll('.brand-logo-img').forEach(img=>{img.src=v189Root+'assets/craque-tatico-icon.svg';img.alt='Craque Tático';});
 
+if(['catalog','detail'].includes(document.body.dataset.page)){
+ const root=document.body.dataset.page==='detail'?'../':'';const a=document.createElement('a');a.href=root+'conferir-cartas.html'+(document.body.dataset.page==='detail'?'#cap%3A'+JSON.parse(document.getElementById('scout-v68-data')?.textContent||'{}').capture:'');
+ a.textContent='Conferir minhas cartas · imagem e dados do jogo';a.className='ct379-review-link';
+ const target=document.body.dataset.page==='catalog'?document.querySelector('#catalogo .section-top .eyebrow'):document.querySelector('.profile-content');
+ if(target){if(document.body.dataset.page==='catalog'){target.textContent='SEU ELENCO';a.textContent='Conferir cartas →';target.append(a);}else target.append(a);}
+}
 // V378: apresentação única sobre os motores compartilhados existentes.
 const sheet378Css=document.createElement('link');sheet378Css.rel='stylesheet';sheet378Css.href=v189Root+'craque-main-sheet-v378.css';document.head.append(sheet378Css);
 const layout378=document.createElement('script');layout378.src=v189Root+'craque-main-layout-v378.js';document.head.append(layout378);

@@ -69,7 +69,7 @@ with sync_playwright() as pw:
    assert page.locator('#status').is_visible()
    # Duas cartas e dois técnicos não compartilham rascunhos implicitamente.
    page.goto(BASE+'/index.html',wait_until='domcontentloaded')
-   page.locator('#ct364-owned-section > summary').click()
+   page.locator('#search').fill('Karetsas')
    page.locator('[data-owned-id="ct364-01"]').click()
    page.locator('#ct364-panel .ct378-main-sheet').wait_for(timeout=25000)
    assert page.locator('#ct364-tabs [data-panel="treino"]').get_attribute('aria-pressed')=='true'

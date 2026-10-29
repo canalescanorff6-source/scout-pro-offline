@@ -37,7 +37,7 @@ const document={
  querySelector:selector=>roots[selector]||null,
  querySelectorAll:selector=>selector==='.player-card'?cards:[]
 };
-const window={SCOUT_POSITION_ORDER:{MLG:0,VOL:1,ZG:2,LE:3}};
+const window={addEventListener(){},SCOUT_POSITION_ORDER:{MLG:0,VOL:1,ZG:2,LE:3}};
 const src=fs.readFileSync(path.resolve(__dirname,'../web/premium.js'),'utf8');
 vm.runInNewContext(src,{document,window,URLSearchParams,location:{search:''}},{filename:'web/premium.js',timeout:2500});
 const shown=()=>cards.filter(x=>!x.hidden).map(x=>x.dataset.name);

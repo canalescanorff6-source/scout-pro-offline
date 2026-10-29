@@ -112,7 +112,9 @@
    tweak([1,2],6,'Armador: passe vertical e domínio sob pressão.');
   if(/artilheiro|matador|oportunista/.test(offense)&&['CA','SA'].includes(roleId))
    tweak([0,3],7,'Artilheiro: posição de finalização e desmarque curto.');
-  if(/homem de area|pivo|arrastar defesa|puxa marcacao/.test(offense)&&['CA','SA'].includes(roleId))
+  if(/atacante pivo|deep.lying forward/.test(offense)&&['CA','SA'].includes(roleId))
+   tweak([1,2],7,'Atacante pivô: recuar para conectar passes e receber entrelinhas; leitura de função, sem bônus numérico oficial.');
+  else if(/homem de area|pivo|arrastar defesa|puxa marcacao/.test(offense)&&['CA','SA'].includes(roleId))
    tweak([5,1],7,'Pivô/arrastar marcação: contato, recepção e tabelas.');
   if(/lateral defensivo/.test(offense+' '+defense)&&['LD','LE'].includes(roleId))
    tweak([6,5],7,'Lateral defensivo: cobertura e proteção do corredor.');

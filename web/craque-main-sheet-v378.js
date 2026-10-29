@@ -10,7 +10,7 @@ const dependencies=provided=>provided||{
  boosters:host?.SCOUT_BOOSTERS_V103,tactical:host?.SCOUT_TACTICS_V220};
 function cardFromModel(m,position){return {
  localKey:m.cardKey,capture:m.evidenceCard?.numero??null,name:m.name,cardId:m.cardId,edition:m.edition,
- position,originalPosition:m.position,style:m.style,level:m.level,pp:m.pp,nativeSkills:m.nativeSkills,
+ position,originalPosition:m.position,style:m.style,defenceStyle:m.defenceStyle,level:m.level,pp:m.pp,nativeSkills:m.nativeSkills,
  skills:m.skills||'',fixedBooster:m.fixedBooster,booster:m.booster,boosterSlot:m.boosterSlot,
  equipmentRecord:m.equipmentRecord||null,trainingLevels:m.trainingLevels,
  baseReference:m.evidenceCard?.base_stats_known===true};}
