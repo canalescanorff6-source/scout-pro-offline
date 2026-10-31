@@ -106,6 +106,18 @@ async function boot(w){
    if(key==='rarity')input.maxLength=80;else{input.min=String(min);input.max=String(max);input.step='1';input.inputMode='numeric';}
    label.append(input);form.append(label);fields[key]=input;
   }
+  // Uma única origem para o orçamento: nível máximo digitado pelo dono.
+  // PP é visualizado e armazenado automaticamente, nunca editado à parte.
+  fields.pp.readOnly=true;
+  fields.pp.setAttribute('aria-readonly','true');
+  fields.pp.title='PP calculados automaticamente pelo nível máximo';
+  const updatePP=()=>{
+   const level=Number(fields.maxLevel.value);
+   fields.pp.value=fields.maxLevel.value.trim()!==''&&Number.isInteger(level)&&level>=1&&level<=120?
+    String(2*(level-1)):'';
+  };
+  fields.maxLevel.addEventListener('input',updatePP);
+  updatePP();
   const feedback=mk('p');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
   const save=mk('button','Salvar alterações');save.type='submit';
   const restore=mk('button','Restaurar valores anteriores');restore.type='button';restore.disabled=!saved?.previous;
@@ -120,7 +132,7 @@ async function boot(w){
   }catch(e){feedback.textContent='Não foi possível salvar: '+e.message;}};
   restore.onclick=()=>{try{Review.restoreInfo(w.localStorage,descriptor);changed('Valores anteriores restaurados.');}
    catch(e){feedback.textContent='Não foi possível restaurar: '+e.message;}};
-  form.append(save,restore,mk('p','PP esperados: 2 × (nível máximo − 1). Os dados são locais e incluídos no backup do aplicativo.'));
+  form.append(save,restore,mk('p','PP calculados automaticamente: 2 × (nível máximo − 1). Os dados são locais e incluídos no backup do aplicativo.'));
   editor.append(open,form,feedback);
  }
  const overrides=new Map();let queue=null,review=null,activeDetail=null;
