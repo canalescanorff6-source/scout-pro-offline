@@ -33,5 +33,7 @@
 **Interfaces:** mesmos nomes/cache/fontes do bundle; workflow executa QA editorial adicional, testes de comportamento históricos preservados.
 - [x] Atualizar expectativas visuais substituídas pelo design aprovado, sem remover verificações funcionais.
 - [x] Executar QA novo, QA relevante histórico e `npm run check:sequential`; conferir diff e integridade dos dados/artes.
-- [ ] Atualizar cache/fingerprint pelo mecanismo existente, criar commit/PR e verificar CI disponível.
-- [ ] Registrar evidências, limitações físicas Android/Electron e próxima ação sem declarar release/instalação.
+- [x] Atualizar cache/fingerprint pelo mecanismo existente, criar commit/PR e verificar CI disponível.
+- [x] Registrar evidências, limitações físicas Android/Electron e próxima ação, declarando somente o que foi verificado.
+
+Autorização posterior: mantenedor aprovou integrar/publicar; PR #299 integrado e v1.1.1188 publicada. Windows instalado/reaberto com 57 registros preservados; Android assinado e validado como pacote/transição, sem aparelho conectado. Evidências em CLAUDE_PROGRESS; esta implementação está concluída.
