@@ -30,6 +30,10 @@ with sync_playwright() as pw:
    more.locator(':scope > summary').click()
    assert page.locator('#scout-v220-training').is_visible()
    assert page.locator('#scout-v220-recs').is_visible()
+   archive.locator(':scope > summary').click()
+   assert page.locator('#engenharia').is_visible()
+   assert page.locator('#pontos').is_visible()
+   archive.locator(':scope > summary').click()
    more.locator(':scope > summary').click()
    for style in ['rapido','normal','fora','longo','posse']:
     page.locator('#ct378-style').select_option(style)
