@@ -146,7 +146,7 @@
  }
  body.ct362-design .scout-v189-eyebrow{font-weight:400!important;color:var(--ct362-muted)!important}
 }
-html:has(body.ct362-design){background:#070c14!important;scroll-behavior:auto!important}
+html:has(body.ct362-design){background:var(--ct362-bg)!important;scroll-behavior:auto!important}
 body.ct362-design{
  color:var(--ct362-text)!important;
  background:radial-gradient(circle at 90% -10%,#213148 0%,transparent 37%),#070c14!important;
