@@ -20,9 +20,11 @@ with sync_playwright() as pw:
    assert editor.get_by_label('Pontos de Progresso (PP)',exact=True).input_value()=='62'
    assert editor.get_by_label('Raridade da carta',exact=True).input_value()
    original=page.evaluate('JSON.parse(document.getElementById("scout-v68-data").textContent)')
-   # Independent PP changes cannot silently retrain or increase an OVR target.
+   # PP é calculado automaticamente e não pode ser digitado separadamente.
+   pp_field=editor.get_by_label('Pontos de Progresso (PP)',exact=True)
+   assert pp_field.get_attribute('readonly') is not None
    editor.get_by_label('Nível máximo da carta',exact=True).fill('34')
-   editor.get_by_label('Pontos de Progresso (PP)',exact=True).fill('66')
+   assert pp_field.input_value()=='66'
    editor.get_by_label('Raridade da carta',exact=True).fill('BIG TIME')
    editor.get_by_label('Overall máximo da carta (informativo)',exact=True).fill('108')
    editor.get_by_role('button',name='Salvar alterações',exact=True).click()
@@ -47,10 +49,11 @@ with sync_playwright() as pw:
    editor.get_by_role('button',name='Restaurar valores anteriores',exact=True).click()
    assert '62 PP' in editor.inner_text()
    assert page.locator('#lab-budget').text_content().endswith(' / 62')
-   editor.get_by_label('Pontos de Progresso (PP)',exact=True).fill('1')
+   editor.get_by_label('Nível máximo da carta',exact=True).fill('31')
+   assert editor.get_by_label('Pontos de Progresso (PP)',exact=True).input_value()=='60'
    editor.get_by_role('button',name='Salvar alterações',exact=True).click()
-   assert page.locator('#lab-budget').text_content()=='Sem orçamento'
-   assert 'incompatíveis' in editor.inner_text()
+   assert page.locator('#lab-budget').text_content().endswith(' / 60')
+   assert 'incompatíveis' not in editor.inner_text()
    editor.get_by_role('button',name='Restaurar valores anteriores',exact=True).click()
    assert page.locator('#lab-budget').text_content().endswith(' / 62')
    # A real owned-card dialog must also expose the editor and refresh its sheet.
@@ -59,7 +62,7 @@ with sync_playwright() as pw:
    editor=page.locator('#ct364-dialog .ct-card-info-editor');editor.wait_for(timeout=30000)
    editor.get_by_role('button',name='EDITAR INFORMAÇÕES DA CARTA',exact=True).click()
    editor.get_by_label('Nível máximo da carta',exact=True).fill('31')
-   editor.get_by_label('Pontos de Progresso (PP)',exact=True).fill('60')
+   assert editor.get_by_label('Pontos de Progresso (PP)',exact=True).input_value()=='60'
    editor.get_by_label('Raridade da carta',exact=True).fill('DISTINGUIDO')
    editor.get_by_role('button',name='Salvar alterações',exact=True).click()
    page.wait_for_function('()=>document.querySelector("#ct364-dialog .ct378-main-sheet")?.textContent.includes("60")')
