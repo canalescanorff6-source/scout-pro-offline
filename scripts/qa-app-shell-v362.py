@@ -39,7 +39,7 @@ with sync_playwright() as p:
        overflow:document.documentElement.scrollWidth-innerWidth,
        nav:document.querySelectorAll('#ct362-appnav > a.ct362-navitem').length}
     }""")
-    assert surface['loaded']=='true' and 'V362' in surface['version'],(mode,label,surface)
+    assert surface['loaded']=='true' and surface['version']=='EDITORIAL',(mode,label,surface)
     assert surface['overflow']<=12,(mode,label,'overflow',surface)
     if kind in ('friends','team','manager-hub','rotation-lab'):
      assert surface['nav']==4,(mode,label,'navegação unificada ausente',surface)
@@ -57,7 +57,7 @@ with sync_playwright() as p:
      page.locator('.scout-v189-quick a').first.wait_for(timeout=20000)
      assert page.locator('#cards .player-card').count()==246
      assert page.locator('.scout-v189-quick a').count()==4
-     assert 'SEM COMPLICAÇÃO' in page.locator('.hero h1').inner_text()
+     assert page.locator('.hero h1').inner_text()=='Meu elenco.'
      color=page.locator('.hero').evaluate("(e)=>getComputedStyle(e).backgroundColor")
      assert color not in ('rgba(0, 0, 0, 0)','transparent'),(mode,label,'hero velho',color)
     if kind=='detail':
@@ -70,7 +70,7 @@ with sync_playwright() as p:
      assert page.locator('#scout-v220-hero .scout-v220-practice').count()==1
      coach=page.locator('details.ct-manager-v302')
      coach.wait_for(state='attached',timeout=15000)
-     assert coach.evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgb(19, 31, 48)',(mode,'seletor de técnico com visual antigo')
+     assert coach.evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgb(51, 50, 54)',(mode,'seletor de técnico fora do editorial')
      if mobile:
       assert page.locator('.scout-v220-head').evaluate("(e)=>getComputedStyle(e).display=='none'"),'Cabeçalho V220 antigo ainda duplicado'
     if label in ('home','friends','managers','detail'):

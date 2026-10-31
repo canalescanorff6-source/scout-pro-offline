@@ -48,12 +48,12 @@ with sync_playwright() as pw:
     return {overflow:document.documentElement.scrollWidth-innerWidth,
       bottom:br.bottom,top:br.top, dockTop:dr?.top??null,
       overlap:!!overlap,
-      buttonHeight:apply.height,background:getComputedStyle(banner).backgroundImage};
+      buttonHeight:apply.height,background:getComputedStyle(banner).backgroundImage,color:getComputedStyle(banner).backgroundColor};
    }""")
    assert data['overflow']<=3,(name,data)
    assert data['buttonHeight']>=43,(name,'botão pequeno',data)
    assert not data['overlap'],(name,'o aviso obstrui os controles reais',data)
-   assert 'rgb(22, 41, 66)' in data['background'],(name,'visual antigo',data)
+   assert data['background']=='none' and data['color']=='rgb(51, 50, 54)',(name,'visual fora do editorial',data)
    page.evaluate("""() => {
       const form=document.createElement('form');
       const input=document.createElement('input');input.name='card-level';

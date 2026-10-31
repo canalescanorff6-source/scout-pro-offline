@@ -42,7 +42,7 @@ with sync_playwright() as pw:
     assert got['alt']=='Craque Tático'
     assert got['count']==1
     assert got['staticCSS'],(name,file,'CSS de primeira pintura ausente')
-    assert got['background']=='rgb(7, 12, 20)',(name,file,'design V362 ausente',got)
+    assert got['background']=='rgb(40, 40, 44)',(name,file,'design editorial ausente',got)
     assert got['images']>=1 and got['cardSource'] and got['cardSource'].startswith('../cartas/'),(name,file,'arte não preservada',got)
     assert got['overflow']<=3,(name,file,'rolagem horizontal',got)
     assert page.locator('.side-nav').count()>=1
