@@ -1056,7 +1056,8 @@ function mainBoot(){
     panel.update({model:engine.fromPersonal(card,raw,storage())});
   });
   host.addEventListener('craque:data-changed',event=>{
-   if(String(event.detail?.key||'').startsWith('scoutpro:v103:booster:'))
+   if(String(event.detail?.key||'').startsWith('scoutpro:v103:booster:')||
+      event.detail?.key===host.CRAQUE_CARD_REVIEW_V379?.INFO_PREFIX+'cap:'+card.numero)
     panel.update({model:engine.fromPersonal(card,raw,storage())});
   });
   host.document.addEventListener('change',e=>{

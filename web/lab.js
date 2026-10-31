@@ -243,6 +243,23 @@ window.addEventListener('scoutpro:training-load-v160',e=>{
  if(e.detail?.cap!==cardCap||!previewValid(e.detail.levels)||previewCost(e.detail.levels)!==d.pp)return;
  current=e.detail.levels.slice();active='prévia de cenário';render();
 });
+// Metadata changes update only the available budget. The current vector and
+// saved/approved training remain intact even when they exceed the new PP.
+function refreshCardInfo(){
+ const review=window.CRAQUE_CARD_REVIEW_V379,raw=document.getElementById('scout-v68-data');
+ if(!review||!raw)return;
+ try{
+  const card=JSON.parse(raw.textContent),descriptor=review.catalog([{numero:card.capture,name:card.name,id:card.id,versao:card.edition}],[])[0];
+  const info=review.infoRead(localStorage,descriptor);if(!info)return;
+  d.pp=info.mathOk?info.pp:null;
+  box.querySelectorAll('input,button').forEach(input=>{input.disabled=d.pp===null;});
+  render();
+ }catch(_){/* Existing budget remains available if metadata cannot be read. */}
+}
+window.addEventListener('craque:references-ready',refreshCardInfo);
+window.addEventListener('craque:data-changed',e=>{
+ if(e.detail?.key==='scoutpro:v379:card-info:cap:'+cardCap)refreshCardInfo();
+});
 window.addEventListener('scoutpro:pp-updated',e=>{
  if(e.detail?.cap!==cardCap)return;
  if(Number.isInteger(e.detail.pp)){d.pp=e.detail.pp;if(previewEligible&&active==='prévia experimental')current=generate().vec.slice();}

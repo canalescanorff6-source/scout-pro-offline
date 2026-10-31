@@ -35,9 +35,9 @@ function fromPersonal(card,raw,store){
   position:normalize(card.posicao),
   // V376: a public reference is not a new owner declaration. Keeping the
   // previous level identity avoids hiding saved histories when PP is unchanged.
-  level:/^catalogo_publico_/.test(String(card.pp_origem||''))?null:card.max_level??null,
-  publicMaxLevel:/^catalogo_publico_/.test(String(card.pp_origem||''))?card.max_level:null,
-  pp:Number.isInteger(card.pp)?card.pp:null,
+  level:card.cardInfo&&!card.cardInfo.mathOk?null:/^catalogo_publico_/.test(String(card.pp_origem||''))?null:card.max_level??null,
+  publicMaxLevel:card.cardInfo&&!card.cardInfo.mathOk?null:/^catalogo_publico_/.test(String(card.pp_origem||''))?card.max_level:null,
+  pp:card.cardInfo&&!card.cardInfo.mathOk?null:Number.isInteger(card.pp)?card.pp:null,
   style:text(card.estilo_ataque),defenceStyle:text(card.estilo_defesa),nativeSkills:text(card.habilidades_nativas||raw?.native_skills),
   skills:'',fixedBooster:text(card.impeto_fixo||raw?.boost1),
   booster:'',boosterSlot:'pendente',
