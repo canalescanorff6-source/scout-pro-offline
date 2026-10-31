@@ -38,3 +38,9 @@
 - Limitação: captura/clique por coordenadas da automação Windows continuou indisponível; leitura dos controles e edição da busca funcionaram. Não afirmar validação de TODAS as ações nativas.
 - Android: nenhum aparelho conectado via ADB. APK publicado, assinatura/compatibilidade verificadas; instalação física permanece com o usuário pelo app/arquivo. Não desinstalar a instalação oficial anterior para atualizar.
 - Próxima ação exata: instalar/atualizar o APK no aparelho do mantenedor e verificar preservação dos dados, teclado, Voltar e backup nativo. Usar esta release como novo checkpoint; não refazer editor/auditoria nem iniciar pesquisa mundial sem novo lote definido.
+
+## 2026-10-31 · novo escopo solicitado para a próxima etapa
+- Requisitos e ordem proposta em `docs/CLAUDE_NEXT_PHASE.md`: renovação visual integral Android/Windows; revisão individual de fichas, habilidades adicionais e ímpetos com pesquisa internacional; melhorar formações e acrescentar 500 novas.
+- Regra explícita: Posse de Bola sem PTE/PTD/MLE/MLD; preferência por construção central, dois CA e um MAT. Aplicar aliases equivalentes e preservar outros estilos/escalações.
+- Preferência visual solicitada no chat; proposta inicial marfim/grafite/cobre. Próxima ação de desenvolvimento: prévia de catálogo, ficha e escalação, antes de aplicar novo tema global.
+- Apenas planejamento/requisitos nesta entrega; nenhum dado, ficha, formação ou interface foi alterado. Sem nova publicação. Verificação: diff restrito a Markdown e git diff --check.
