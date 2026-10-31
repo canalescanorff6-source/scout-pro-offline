@@ -18,6 +18,10 @@ with sync_playwright() as pw:
    assert page.locator('#scout-v220-training').is_hidden()
    assert page.locator('#scout-v220-recs').is_hidden()
    assert page.locator('.ct378-main-sheet:visible').count()==1
+   archive=page.locator('#ct378-source-archive')
+   assert archive.count()==1 and not archive.evaluate('(e)=>e.open')
+   for section in ['#engenharia','#foco','#pontos','#jogar']:
+    assert page.locator(section).is_hidden(),(name,section,'Bloco antigo ainda visível na ficha principal')
    assert primary.locator('.ct375-training').is_visible()
    assert primary.locator('.ct374-skill-reasons li').count()<=5
    assert primary.locator('.ct375-booster').count()<=1
