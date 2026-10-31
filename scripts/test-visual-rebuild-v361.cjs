@@ -21,6 +21,10 @@ assert.match(js,/ct361-glance-stats/);
 assert.match(js,/options\.insertBefore\(update,options\.firstChild\)/);
 assert.match(js,/max-width:720px/,'Menu mobile não pode remover opções do desktop');
 assert.match(css,/ct361-detail-ready/);
+assert.match(css,/ct361-detail-ready\[data-ct378-stage="ready"\] \.profile-sidebar/,'A lateral antiga só desaparece com a ficha nova pronta');
+assert.match(css,/min-width:721px[\s\S]*\.ct361-player-glance\{display:grid!important\}/,
+ 'A ficha editorial deve estar visível no Windows');
+assert.match(js,/Card ID /,'O novo cabeçalho precisa preservar o ID da edição');
 assert.match(css,/ct361-home-ready/);
 assert.match(css,/ct361-dock-ready/);
 assert.doesNotMatch(js,/(localStorage\.setItem|\.PP\s*=|card_id\s*=|training\.push)/,'UI não pode modificar progresso e builds');
