@@ -31,3 +31,10 @@ Isso não é homologação física dos aplicativos nem prova de todas as combina
 - Windows: gerar e instalar versão com estas mudanças, testar atualização/reinício e diálogos nativos de backup com perfil de teste.
 - Revalidar CI após enviar este complemento ao PR #297. Sem merge, release ou APK/EXE novo publicado nesta etapa.
 - Conferir manualmente as ações não exercitadas de cada ferramenta e, em etapa separada, dados de cartas/evidências competitivas pendentes. Não transformar ausência de evidência de gameplay em erro de programação.
+
+## Encerramento da publicação — 30/10/2026
+- O mantenedor autorizou integrar/publicar e aplicar a atualização. PR #297 integrado; release **v1.1.1184** disponível para Android/Windows. Build/publicação conjunta e QA visual main aprovados.
+- Verificadores V236/V239 e manifesto Windows passaram sobre os cinco arquivos reais baixados. APK mantém pacote/certificado oficial, aumenta versionCode de 1181 para 1184 e contém commit 833616b/fingerprint 26909c94d750d2061b22.
+- Windows atualizado e reaberto neste PC; versão 1.1.1184 confirmada no executável e na interface. Catálogo nativo anuncia 261 cartas; pesquisa por Michael Olise retornou as duas edições corretas. Backups privados e armazenamento preservados; pesquisa limpa ao terminar.
+- Captura/clique nativo continuam limitados pela ferramenta. Instalação física Android não executada por ausência de aparelho conectado. Estes limites permanecem explícitos; a publicação não equivale a examinar cada combinação possível de ações.
+- Release: https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1184
