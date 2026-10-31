@@ -50,3 +50,4 @@
 - Prévia interativa entregue no chat: catálogo com quatro imagens reais; ficha com níveis/PP/treino cadastrados e abas; desenho de Posse 4–3–1–2, sem PTE/PTD/MLE/MLD. Modos Windows/celular e opções de espaçamento/tipografia.
 - Verificação da prévia: três telas × cinco larguras, imagens carregadas, busca e seleção de carta, abas e seleção de função PASS; zero erros JavaScript ou transbordamento horizontal. Capturas de desktop/celular inspecionadas. Isso não substitui homologação Android/Electron.
 - Próxima ação: incorporar feedback visual e definir a aplicação por módulos. Nenhum tema do produto, dado ou instalador alterado; sem nova release e sem pesquisa competitiva extensa nesta etapa.
+- Feedback seguinte: branco excessivo. Prévia revista para grafite suave/vinho, com tons carvão e grafite azulado disponíveis; manter a decisão final aberta. Alteração restrita à prévia e aos requisitos.

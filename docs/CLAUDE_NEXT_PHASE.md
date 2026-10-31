@@ -5,6 +5,7 @@ Pedido registrado em 31/10/2026. Base publicada: v1.1.1184. Este documento regis
 ## 1. Renovação visual integral
 - Insatisfação abrange a interface inteira, cores e aparência, em Android e Windows; não limitar a reforma à tela inicial.
 - Preferência escolhida pelo mantenedor em 31/10/2026: **editorial minimalista — branco, preto e vinho**. Substitui a proposta inicial de marfim/grafite/cobre. Tipografia editorial, superfícies limpas, espaçamento generoso e navegação clara; vinho reservado aos destaques.
+- Feedback posterior: a prévia ficou branca demais; pediu uma direção mais escura. Nova prévia em **grafite suave e vinho**, com comparação de carvão/grafite azulado e contraste ajustável. Manter o caráter editorial; tonalidade final ainda em avaliação.
 - Prévia inicial deve mostrar catálogo, ficha individual e escalação, em celular e desktop. Depois definir tokens/componentes e aplicar a todas as páginas, incluindo diálogos, filtros, equipamentos, backup e atualização.
 - Respeitar leitura, foco, contraste, toque e funcionamento offline. Preservar imagens reais, identidade das cartas, persistência e controladores existentes. Investigar consolidação das camadas visuais em vez de acrescentar indefinidamente folhas de estilo sobrepostas.
 
