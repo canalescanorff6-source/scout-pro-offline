@@ -4,7 +4,7 @@ Pedido registrado em 31/10/2026. Base publicada: v1.1.1184. Este documento regis
 
 ## 1. Renovação visual integral
 - Insatisfação abrange a interface inteira, cores e aparência, em Android e Windows; não limitar a reforma à tela inicial.
-- Proposta inicial: marfim, grafite e cobre discreto, tipografia elegante e legível, superfícies limpas, espaçamento generoso e navegação clara. Preferência visual foi solicitada no chat; confirmar a resposta antes de fechar a direção.
+- Preferência escolhida pelo mantenedor em 31/10/2026: **editorial minimalista — branco, preto e vinho**. Substitui a proposta inicial de marfim/grafite/cobre. Tipografia editorial, superfícies limpas, espaçamento generoso e navegação clara; vinho reservado aos destaques.
 - Prévia inicial deve mostrar catálogo, ficha individual e escalação, em celular e desktop. Depois definir tokens/componentes e aplicar a todas as páginas, incluindo diálogos, filtros, equipamentos, backup e atualização.
 - Respeitar leitura, foco, contraste, toque e funcionamento offline. Preservar imagens reais, identidade das cartas, persistência e controladores existentes. Investigar consolidação das camadas visuais em vez de acrescentar indefinidamente folhas de estilo sobrepostas.
 
@@ -26,9 +26,11 @@ Pedido registrado em 31/10/2026. Base publicada: v1.1.1184. Este documento regis
 - Preservar escalações aprovadas e perfis independentes. Validar 11 titulares, posições permitidas, unicidade, orçamento/familiaridade quando aplicável, favoritos, desempenho e persistência Android/Windows.
 
 ## Ordem proposta e próxima ação
-1. Definir a direção visual a partir da preferência solicitada e produzir uma prévia revisável de catálogo/ficha/escalação.
+1. Prévia interativa de catálogo/ficha/escalação produzida no chat em branco/preto/vinho, com modos Windows/celular e quatro cartas reais. Recolher feedback sobre a composição antes de aplicar o sistema visual ao produto.
 2. Implementar o novo sistema visual por módulos, preservando a lógica e os dados.
 3. Inventariar e expandir formações por lotes verificáveis, aplicando a regra de Posse sem pontas desde o primeiro lote.
 4. Revisar cartas em lotes com pesquisa internacional focalizada, evidências e propostas individuais.
 
-Nenhuma nova release, auditoria mundial extensa ou alteração de carta/escalação foi realizada ao registrar estes requisitos. O próximo executor deve ler este arquivo, a resposta de preferência do chat, CLAUDE_PROGRESS e o Git antes de trabalhar.
+Prévia conceitual: desenhos por função sem atribuir jogadores não validados; treino cadastrado apresentado como tal, sem novas recomendações. Conferidas três telas em cinco larguras de visualização, carregamento das imagens, busca, seleção de carta, abas e seleção de posição. Sem erros de execução ou transbordamento horizontal; revisão visual de desktop e celular realizada.
+
+Nenhuma nova release, auditoria mundial extensa ou alteração de carta/escalação foi realizada ao registrar estes requisitos ou produzir a prévia. Tema de produção permanece na v1.1.1184. O próximo executor deve ler este arquivo, o feedback do chat, CLAUDE_PROGRESS e o Git antes de trabalhar.

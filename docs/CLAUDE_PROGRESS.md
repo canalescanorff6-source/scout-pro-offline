@@ -44,3 +44,9 @@
 - Regra explícita: Posse de Bola sem PTE/PTD/MLE/MLD; preferência por construção central, dois CA e um MAT. Aplicar aliases equivalentes e preservar outros estilos/escalações.
 - Preferência visual solicitada no chat; proposta inicial marfim/grafite/cobre. Próxima ação de desenvolvimento: prévia de catálogo, ficha e escalação, antes de aplicar novo tema global.
 - Apenas planejamento/requisitos nesta entrega; nenhum dado, ficha, formação ou interface foi alterado. Sem nova publicação. Verificação: diff restrito a Markdown e git diff --check.
+
+## 2026-10-31 · direção visual escolhida e prévia editorial
+- Mantenedor escolheu **editorial minimalista: branco, preto e vinho**. Substitui a proposta inicial de marfim/grafite/cobre.
+- Prévia interativa entregue no chat: catálogo com quatro imagens reais; ficha com níveis/PP/treino cadastrados e abas; desenho de Posse 4–3–1–2, sem PTE/PTD/MLE/MLD. Modos Windows/celular e opções de espaçamento/tipografia.
+- Verificação da prévia: três telas × cinco larguras, imagens carregadas, busca e seleção de carta, abas e seleção de função PASS; zero erros JavaScript ou transbordamento horizontal. Capturas de desktop/celular inspecionadas. Isso não substitui homologação Android/Electron.
+- Próxima ação: incorporar feedback visual e definir a aplicação por módulos. Nenhum tema do produto, dado ou instalador alterado; sem nova release e sem pesquisa competitiva extensa nesta etapa.
