@@ -32,6 +32,15 @@ for(const id of ['catalog','detail','friends','team','rotation-lab','manager-hub
  assert.ok(shell.includes(id),'Página sem rota no shell V362: '+id);
 }
 assert.ok(shell.includes('ct362-design-proof')&&shell.includes('ct362-appnav'));
+assert.ok(shell.includes('CRAQUE_UI_RELEASES')&&shell.includes('activateCurrentRelease()'),
+ 'Somente a geração ativa pode montar elementos visuais');
+assert.ok(shell.includes('next.ready!==true')&&shell.includes('version<this.current'),
+ 'Substituir uma UI só depois que a próxima estiver pronta e jamais por uma antiga');
+assert.ok(shell.includes("link[data-craque-ui-theme]"),
+ 'A geração anterior deve retirar sua folha oficial na próxima troca');
+assert.ok(css.includes('var(--ct362-wine)')&&css.includes('var(--ct362-bg)'),
+ 'As superfícies devem usar tokens oficiais, não novos temas acumulados');
+assert.doesNotMatch(css,/background-color:#070c14/,'Cor de fundo azul antiga não deve vencer o tema grafite');
 assert.ok(css.includes('.scout-v220-shell')&&css.includes('.scout-v189-tile')&&css.includes('.friends-card')&&css.includes('.hub-card'));
 const layout=source('craque-main-layout-v378.js');
 for(const id of ['engenharia','foco','pontos','jogar']){
