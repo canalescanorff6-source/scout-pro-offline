@@ -18,9 +18,13 @@ function send(type, message) { if (win && !win.isDestroyed()) win.webContents.se
 function openTrustedExternal(raw) {
   try {
     const u = new URL(raw);
+    if(u.protocol!=='https:'||u.username||u.password||u.port)return Promise.resolve();
     const formacoes = u.origin === 'https://craque-tatico-formacoes-premium.vocalclock33.chatgpt.site' &&
       u.pathname === '/' && !u.search && !u.username && !u.password;
-    if (u.protocol === 'https:' && (formacoes || ['github.com','api.github.com','pesdb.net','efhub.com','www.efootball.com'].includes(u.hostname))) return shell.openExternal(raw);
+    // Exact hosts already used by the catalogue's documentary references.
+    const sources=['github.com','api.github.com','pesdb.net','www.pesdb.net','efhub.com','www.efootball.com',
+      'www.konami.com','www.pesmaster.com','efootbase.com','ef-labo.com','efootball-world.com','efootballmeta.com'];
+    if (formacoes || sources.includes(u.hostname)) return shell.openExternal(raw);
   }
   catch (_e) {} return Promise.resolve();
 }

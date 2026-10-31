@@ -93,16 +93,26 @@ for(const item of records){
   // Regrava atributos em novas compilações sem criar duplicatas.
   tag=tag.replace(/ data-style(?:-defense)?="[^"]*"/g,'');
   const safe=v=>v.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  const prependSearch=prefix=>{
+   tag=tag.replace(/data-search="([^"]*)"/,(_,value)=>{
+    while(value.startsWith(prefix))value=value.slice(prefix.length);
+    return 'data-search="'+prefix+value+'"';
+   });
+  };
   tag=tag.replace(' data-cap=',' data-style="'+safe(item.playingStyle)+'" data-style-defense="'+safe(item.dual?item.defense:'')+'" data-cap=');
   if(displayed)content=replace(content,'Básico',displayed);
   if(item.dual){
-   tag=tag.replace('data-search="','data-search="'+safe(item.attack+' ataque '+item.defense+' defesa ') );
+   prependSearch(safe(item.attack+' ataque '+item.defense+' defesa '));
    content=content.replace(/(<span class="player-role">)([^<]*)(<\/span>)/,(_,a,b,c)=>
     a+b.replace(/\s*·.*$/,'')+' · '+item.attack+' (ataque) / '+item.defense+' (defesa)'+c);
   }else if(item.conflict){
    const warning='Estilos conflitantes: '+item.attack+' / '+item.defense+' (conferir)';
-   tag=tag.replace('data-search="','data-search="'+warning+' ');
-   content=content.replace(/(<span class="player-role">)([^<]*)(<\/span>)/,(_,a,b,c)=>a+b+' / '+item.defense+' (conferir)'+c);
+   prependSearch(safe(warning+' '));
+   content=content.replace(/(<span class="player-role">)([^<]*)(<\/span>)/,(_,a,b,c)=>{
+    const suffix=' / '+item.defense+' (conferir)';
+    while(b.endsWith(suffix))b=b.slice(0,-suffix.length);
+    return a+b+suffix+c;
+   });
   }
   return tag+content+end;
  });
