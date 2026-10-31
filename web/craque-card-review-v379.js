@@ -88,7 +88,13 @@ function infoValues(store,card,baseline={}){
  return custom?infoFields(custom):values;
 }
 function saveInfo(store,card,values,baseline={}){
- const value=checkInfo(values),previous=infoValues(store,card,baseline);
+ // Nível máximo é a entrada: PP nunca devem ser digitados separadamente.
+ // Registros antigos incoerentes continuam legíveis para revisão, mas um
+ // novo salvamento usa necessariamente a fórmula oficial desta edição.
+ const level=Number(values?.maxLevel);
+ if(!Number.isInteger(level)||level<1||level>120)
+  throw Error('Nível máximo: informe um inteiro entre 1 e 120.');
+ const value=checkInfo({...values,pp:2*(level-1)}),previous=infoValues(store,card,baseline);
  const record={...value,schema:'craque-card-info-v1',identity:infoIdentity(store,card),previous,
   mathOk:value.pp===2*(value.maxLevel-1),updatedAt:new Date().toISOString()};
  store.setItem(INFO_PREFIX+card.key,JSON.stringify(record));return record;
