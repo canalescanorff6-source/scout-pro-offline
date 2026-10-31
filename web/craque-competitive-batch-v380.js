@@ -56,6 +56,8 @@ function decorate(review,e,card,S,B){
   .filter(([name])=>name!==fixed&&name!==equipped&&B.CRAFTABLE.includes(name))
   .map(([name,reason])=>({name:labels?.label(name)||B.displayName(name),technicalName:name,
    attributes:B.BOOSTERS[name].map(k=>B.BASE_STAT_LABELS[k]),reason,applyAuthorized:false})):[];
+ // Suporte da edição é evidência pública; estado da vaga da conta é separado.
+ review.boosterSlotSupported=e.publicSelectable;
  review.competitiveReview={batch:DATA.batch,status:'ESTIMADO',ppStatus:'CALCULADO',gameplayValidated:false,
   title:'REVISÃO CENTRAL · LOTE 01',strategy:e.strategy,tradeoff:e.tradeoff,job:e.job,
   publicSelectable:e.publicSelectable,slotNote:e.publicSelectable?

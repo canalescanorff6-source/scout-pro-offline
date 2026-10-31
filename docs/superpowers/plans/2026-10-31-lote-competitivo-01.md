@@ -31,7 +31,7 @@
 - [x] Escrever teste comportamental e observar falha: 13 propostas exatas, preservação de contexto, filtros e exportação.
 - [x] Implementar registro e resolução; integrar à ficha e ao cache offline; mostrar motivo, origem e limitação.
 - [x] Exportar relatório das 13 fichas com comparação estimada sem técnico/extra, fontes e lacunas de pesquisa.
-- [ ] Rodar testes focados, `npm run check` e conferência visual móvel/Windows; corrigir regressões.
+- [x] Rodar testes focados, `npm run check` e conferência visual móvel/Windows; corrigir regressões. Windows usa o executor sequencial existente: 287 comandos PASS; QA V380/V378 PASS. Após revisão independente, repetir testes afetados e dois QA (PASS).
 - [ ] Revisar alterações, registrar IDs concluídos e abrir PR sem publicar.
 
 ## Decisões

@@ -212,7 +212,7 @@ function create(target,model,opts={}){
  };
  formationSelect?.addEventListener('change',updateRoleOverview);
  target.append(node);
- let active=null,style=opts.style||'posse',manager=opts.manager||'',alive=true,compareCompetitive=false;
+ let active=null,style=opts.style||'posse',manager=opts.manager||'',alive=true,compareCompetitive=false,competitiveContext='';
  let advancedOpen=false; // Preferência temporária do painel; não altera dados, builds ou armazenamento.
  let alternativesOpen=false; // Cinco estilos consultivos; nenhuma gravação.
  // Uma revisão selecionada é somente leitura e isolada por chave de cenário.
@@ -787,9 +787,12 @@ function create(target,model,opts={}){
     const input={...reviewCard,equipmentRecord:model.equipmentRecord};
     const proposalSelection={source:'proposal',reference:publicReference,managerLabel:coaching};
     const alternative=savedProfile||recorded?mainEngine.resolve(input,outcome,proposalSelection):null;
+    const comparisonContext=JSON.stringify([scenario.id,scenario.contentSignature,
+     savedProfile?'profile':'revision',savedProfile?.revision??recorded?.revision??null]);
+    if(competitiveContext!==comparisonContext)compareCompetitive=false;
     if(!alternative?.review.competitiveReview)compareCompetitive=false;
     if(alternative?.review.competitiveReview)competitiveToggle=makeBtn(compareCompetitive?'Voltar à ficha salva':'Comparar proposta revista para Posse',()=>{
-     compareCompetitive=!compareCompetitive;draw();
+     compareCompetitive=!compareCompetitive;competitiveContext=compareCompetitive?comparisonContext:'';draw();
     });
     mainSheet=compareCompetitive?alternative:mainEngine.resolve(input,outcome,selection);
    }
@@ -810,7 +813,7 @@ function create(target,model,opts={}){
        native:model.nativeSkills||'',equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
        boosterSlot:model.boosterSlot||'pendente',informedBooster:model.booster||''});
      }else engine.save(storage(),mainSheet?{...scenario,outcome:mainSheet.result}:scenario);
-     compareCompetitive=false;draw();return 'Proposta adotada em nova revisão independente.';
+     compareCompetitive=false;competitiveContext='';draw();return 'Proposta adotada em nova revisão independente.';
     }
    });if(competitiveToggle)mainBlock.insertBefore(competitiveToggle,mainBlock.children[1]||null);
    hero.append(mainBlock);

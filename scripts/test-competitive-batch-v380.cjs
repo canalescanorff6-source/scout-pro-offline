@@ -25,6 +25,7 @@ for(const [cap,levels] of expected){
  assert(r.skills.every(s=>s.applyAuthorized===false));
  assert(!r.boosters.some(b=>B.boosterName(b.technicalName)===B.boosterName(card.fixedBooster)));
  assert(r.boosters.every(b=>b.applyAuthorized===false&&B.CRAFTABLE.includes(b.technicalName)));
+ assert.equal(r.boosterSlotSupported,ref.reference.extraSlotInPublicEdition,'Suporte público não é confirmação de vaga na conta');
  if(!ref.reference.extraSlotInPublicEdition)assert.equal(r.boosters.length,0,'Não propor novo ímpeto sem suporte documentado');
  assert.equal(JSON.stringify({card,out,ref}),before,'Consulta pura');
  const saved=Main.resolve(card,out,{reference:ref,source:'profile',levels:Array(10).fill(0),skills:[],booster:''},deps).review;
