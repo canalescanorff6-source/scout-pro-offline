@@ -41,10 +41,10 @@ with sync_playwright() as pw:
       overflow:document.documentElement.scrollWidth-innerWidth};
     }""")
     assert result['page']==identity,(platform,label,result)
-    assert result['bg']=='rgb(7, 12, 20)',(platform,label,'shell V362 não venceu',result)
+    assert result['bg']=='rgb(40, 40, 44)',(platform,label,'shell editorial não venceu',result)
     assert result['newIndex']>result['at'],(platform,label,'CSS V362 não é o último',result)
     assert result['loaded']==1,(platform,label,'CSS duplicado',result)
-    assert result['color']=='rgb(246, 242, 232)',(platform,label,'cor V362',result)
+    assert result['color']=='rgb(242, 237, 237)',(platform,label,'cor editorial',result)
     assert result['overflow']<=3,(platform,label,'overflow',result)
     if result['legacy']>=0:
      assert result['at']>result['legacy'],(platform,label,'CSS antigo venceu',result)

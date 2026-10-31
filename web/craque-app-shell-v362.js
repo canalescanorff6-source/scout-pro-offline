@@ -32,9 +32,9 @@ function shell(){
  d.body.classList.add('ct362-design');
  d.body.dataset.ct362Ui='true';
  const oldHead=d.querySelector('.topbar,.friends-head,.hub-header,main .head,body>header');
- const proof=create('span','ct362-proof','NOVO DESIGN · V362');
+ const proof=create('span','ct362-proof','EDITORIAL');
  proof.id='ct362-design-proof';
- proof.setAttribute('aria-label','Novo design Craque Tático V362 ativo');
+ proof.setAttribute('aria-label','Craque Tático, visual editorial');
  if(oldHead){
   oldHead.classList.add('ct362-existing-head');
   oldHead.appendChild(proof);
@@ -88,19 +88,19 @@ function shell(){
 function catalog(){
  if(at()!=='catalog')return;
  const previous=d.getElementById('ct361-home-mark');
- if(previous)previous.textContent='CENTRAL · V362';
+ if(previous)previous.textContent='ACERVO PESSOAL';
  if(d.body.dataset.ct362Catalog==='true')return;
  const hero=d.querySelector('.hero .hero-text');
  const heading=hero?.querySelector('h1');
  const tiles=hero?.querySelector('.scout-v189-quick');
  if(!heading||!tiles)return;
- heading.innerHTML='<span>O SEU FUTEBOL.</span><em>SEM COMPLICAÇÃO.</em>';
+ heading.textContent='Meu elenco.';
  const indicator=hero.querySelector('.scout-v189-eyebrow');
- if(indicator)indicator.textContent='FICHAS · TREINOS · ESCALAÇÕES · ANÁLISE REAL';
+ if(indicator)indicator.textContent='SUAS CARTAS. SEU JEITO DE JOGAR.';
  tiles.querySelectorAll('.scout-v189-tile .scout-v189-mark').forEach((mark,i)=>{mark.textContent=String(i+1).padStart(2,'0')});
  const section=d.querySelector('#catalogo .section-title');
- if(section)section.textContent='Biblioteca de jogadores';
- const existing=d.getElementById('ct361-home-mark');if(existing)existing.textContent='CENTRAL · V362';
+ if(section)section.textContent='Cartas do acervo';
+ const existing=d.getElementById('ct361-home-mark');if(existing)existing.textContent='ACERVO PESSOAL';
  d.body.dataset.ct362Catalog='true';
 }
 function detail(){
@@ -110,7 +110,7 @@ function detail(){
  if(!glance||!shell)return;
  glance.querySelector('.ct361-glance-kicker')?.replaceChildren(d.createTextNode('MINHA CARTA · DADOS REAIS'));
  const proof=glance.querySelector('.ct361-release-proof');
- if(proof)proof.textContent='V362';
+ if(proof)proof.textContent='MINHA CARTA';
  const title=shell.querySelector('.scout-v220-headline h2');
  if(title)title.textContent='Plano de desenvolvimento';
  const training=d.getElementById('scout-v220-training');
@@ -126,7 +126,7 @@ function detail(){
 function friends(){
  if(at()!=='friends')return;
  const previous=d.getElementById('ct361-friends-mark');
- if(previous)previous.textContent='ACERVOS INDEPENDENTES · V362';
+ if(previous)previous.textContent='ACERVOS INDEPENDENTES';
  if(d.body.dataset.ct362Friends==='true')return;
  const heading=d.querySelector('.friends-hero h1');if(!heading)return;
  heading.textContent='Outros Elencos';
@@ -138,7 +138,7 @@ function friends(){
    // O seletor tem prioridade visual; a coleção especial continua disponível logo abaixo.
    featured.parentNode.insertBefore(jump,featured);
  }
- const existing=d.getElementById('ct361-friends-mark');if(existing)existing.textContent='ACERVOS INDEPENDENTES · V362';
+ const existing=d.getElementById('ct361-friends-mark');if(existing)existing.textContent='ACERVOS INDEPENDENTES';
  d.body.dataset.ct362Friends='true';
 }
 function generic(){

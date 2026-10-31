@@ -23,10 +23,13 @@ with sync_playwright() as pw:
    early=page.evaluate("""() => ({
     boot:document.documentElement.classList.contains('ct-v351-boot'),
     visible:getComputedStyle(document.getElementById('ct-v351-boot-cover')).display,
-    inner:(document.getElementById('ct-v351-boot-cover').innerText||'')
+    inner:(document.getElementById('ct-v351-boot-cover').innerText||''),
+    background:getComputedStyle(document.getElementById('ct-v351-boot-cover')).backgroundColor,
+    image:getComputedStyle(document.getElementById('ct-v351-boot-cover')).backgroundImage
    })""")
    assert early['boot'],early
    assert early['visible']=='flex',early
+   assert early['background']=='rgb(40, 40, 44)' and early['image']=='none',('Abertura fora do editorial',early)
    assert 'Preparando sua interface Premium' in early['inner'],early
    page.wait_for_function("""() =>
     document.body?.dataset.ctUiBoot === 'premium'""",timeout=30000)

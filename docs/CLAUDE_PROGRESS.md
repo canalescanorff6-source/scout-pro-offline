@@ -38,3 +38,25 @@
 - Limitação: captura/clique por coordenadas da automação Windows continuou indisponível; leitura dos controles e edição da busca funcionaram. Não afirmar validação de TODAS as ações nativas.
 - Android: nenhum aparelho conectado via ADB. APK publicado, assinatura/compatibilidade verificadas; instalação física permanece com o usuário pelo app/arquivo. Não desinstalar a instalação oficial anterior para atualizar.
 - Próxima ação exata: instalar/atualizar o APK no aparelho do mantenedor e verificar preservação dos dados, teclado, Voltar e backup nativo. Usar esta release como novo checkpoint; não refazer editor/auditoria nem iniciar pesquisa mundial sem novo lote definido.
+
+## 2026-10-31 · novo escopo solicitado para a próxima etapa
+- Requisitos e ordem proposta em `docs/CLAUDE_NEXT_PHASE.md`: renovação visual integral Android/Windows; revisão individual de fichas, habilidades adicionais e ímpetos com pesquisa internacional; melhorar formações e acrescentar 500 novas.
+- Regra explícita: Posse de Bola sem PTE/PTD/MLE/MLD; preferência por construção central, dois CA e um MAT. Aplicar aliases equivalentes e preservar outros estilos/escalações.
+- Preferência visual solicitada no chat; proposta inicial marfim/grafite/cobre. Próxima ação de desenvolvimento: prévia de catálogo, ficha e escalação, antes de aplicar novo tema global.
+- Apenas planejamento/requisitos nesta entrega; nenhum dado, ficha, formação ou interface foi alterado. Sem nova publicação. Verificação: diff restrito a Markdown e git diff --check.
+
+## 2026-10-31 · direção visual escolhida e prévia editorial
+- Mantenedor escolheu **editorial minimalista: branco, preto e vinho**. Substitui a proposta inicial de marfim/grafite/cobre.
+- Prévia interativa entregue no chat: catálogo com quatro imagens reais; ficha com níveis/PP/treino cadastrados e abas; desenho de Posse 4–3–1–2, sem PTE/PTD/MLE/MLD. Modos Windows/celular e opções de espaçamento/tipografia.
+- Verificação da prévia: três telas × cinco larguras, imagens carregadas, busca e seleção de carta, abas e seleção de função PASS; zero erros JavaScript ou transbordamento horizontal. Capturas de desktop/celular inspecionadas. Isso não substitui homologação Android/Electron.
+- Próxima ação: incorporar feedback visual e definir a aplicação por módulos. Nenhum tema do produto, dado ou instalador alterado; sem nova release e sem pesquisa competitiva extensa nesta etapa.
+- Feedback seguinte: branco excessivo. Prévia revista para grafite suave/vinho, com tons carvão e grafite azulado disponíveis; manter a decisão final aberta. Alteração restrita à prévia e aos requisitos.
+
+## 2026-10-31 · implementação do editorial grafite e vinho aprovado
+- Aprovação explícita da prévia: “melhrou, ta aprovado”. Branch `feat/editorial-grafite-wine-20261031`; plano em `docs/superpowers/plans/2026-10-31-editorial-grafite.md`.
+- Tema consolidado na folha global **existente** `craque-app-shell-v362.css`: grafite suave, vinho, títulos editoriais, superfícies lisas, foco e ações; cobre ficha principal, cartas próprias, conferência, ferramentas e diálogos carregados depois. `@layer` com `:where` controla a cascata de pintura sem reescrever grids/handlers. Texto de apresentação atualizado no shell; logo oficial e artes preservadas.
+- QA novo observado RED no tema anterior e em ações/fichas dinâmicas sem a paleta; GREEN após correções. **51 aberturas** (17 rotas × 320/390/1366 px), contraste ≥4,5 nos painéis, busca, carta própria, vinho da ação principal, imagens e ausência de overflow PASS. Capturas inspecionadas.
+- `npm run check:sequential` PASS **286 comandos**, baseline e alteração. Onze QA históricos PASS: V361, V362, V352, V353, V354, V355, editor, backup/offline, V378, V364 e V379. Backup restaurou o editor e catálogo offline com 261 cartas em perfil descartável. Validações de fingerprint, shell e PWA repetidas após atualizar somente a revisão do cache.
+- Nenhum JSON canônico, imagem, ficha/treino, formação, assinatura, armazenamento ou controle de atualização modificado. Mesmas 177 fontes web compartilhadas. Revisão final/CI/PR em preparação; sem nova release ou instalação física Android/Electron nesta etapa.
+- PR **#299**: https://github.com/canalescanorff6-source/scout-pro-offline/pull/299 . Commit inicial `58b76b8`; integridade e Player ID no GitHub GREEN, QA visual em execução nesse commit.
+- Revisão independente identificou P2 no link de conferência de ímpetos: texto vinho claro sobre verde antigo (1,55:1). Reproduzido com QA real, corrigido para ação vinho/texto claro e teste RED→GREEN. A observação sobre splash legado também foi tratada: `app-bridge.css` aplica o tema na primeira pintura/fallback sem alterar o boot. QA V351 observado RED na cor antiga e GREEN após ajuste; 51 aberturas editoriais repetidas GREEN. Repetição final da suíte e QA de oito larguras em execução.

@@ -1,12 +1,150 @@
-/* CRAQUE TÁTICO V362 — SISTEMA VISUAL ÚNICO
- * Reset do legado para 14 workspaces + 246 fichas.
- * Cores: carvão, azul ardósia, dourado. ZERO animação pesada.
+/* CRAQUE TÁTICO — EDITORIAL GRAFITE E VINHO, aprovado em 31/10/2026.
+ * A apresentação compartilhada fica na folha global existente.
+ * A camada de pintura vence o legado sem aumentar especificidade nem mudar layout.
+ * Regras geométricas abaixo continuam compatíveis com as fichas e seus motores.
  * Preserva todos os nós DOM funcionais e os handlers já existentes.
  */
 :root {
- --ct362-bg:#070c14;--ct362-surface:#111a29;--ct362-surface2:#182436;
- --ct362-border:#3c4d65;--ct362-muted:#aabbd0;--ct362-text:#f6f2e8;
- --ct362-accent:#f1c775;--ct362-faint:#28384e;--ct362-radius:18px;
+ --ct362-bg:#28282c;--ct362-surface:#333236;--ct362-surface2:#3b383e;
+ --ct362-border:#57515b;--ct362-muted:#c0b8be;--ct362-text:#f2eded;
+ --ct362-accent:#dfa6b5;--ct362-faint:#464148;--ct362-radius:8px;
+ --ct362-chrome:#222225;--ct362-wine:#78394b;--ct362-on-wine:#fff4f6;
+ --ct362-success:#a8dbb8;--ct362-warning:#efca8c;--ct362-danger:#f2a7a0;
+ --ct362-editorial:Georgia,'Times New Roman',serif;
+}
+/* !important em uma camada nomeada tem precedência sobre os antigos estilos
+ * sem camada, inclusive os diálogos injetados depois do shell. Só pintura e
+ * tipografia entram aqui; grid, visibilidade, posição e handlers não entram. */
+@layer craque-editorial {
+ html:has(body.ct362-design),body.ct362-design {
+  background:var(--ct362-bg)!important;color:var(--ct362-text)!important;
+  font-family:'Segoe UI',system-ui,sans-serif!important;color-scheme:dark!important;
+  accent-color:var(--ct362-accent)!important;
+ }
+ body.ct362-design main{background:var(--ct362-bg)!important;color:var(--ct362-text)!important}
+ body.ct362-design :where(h1,h2,h3,h4,legend,strong,b,label){color:var(--ct362-text)!important}
+ body.ct362-design :where(strong,b){font-weight:600!important}
+ body.ct362-design :where(h1,.ct361-glance-name,.detail-header h1,.hub-hero h1,.friends-hero h1){
+  font-family:var(--ct362-editorial)!important;font-weight:400!important;
+  letter-spacing:-.035em!important;text-transform:none!important;text-shadow:none!important;
+ }
+ body.ct362-design h1 em{font-style:normal!important;color:var(--ct362-accent)!important}
+ body.ct362-design :where(p,small,.small,.sub,.minor,.note,.hint,.muted,.player-version,.player-role,
+  .ct361-glance-edition,.ct361-glance-kicker,.ct375-training dt,.ct378-manager-note,
+  .friends-card-info small,.hub-card p,.ct364-card-info small,.review-history li){color:var(--ct362-muted)!important}
+ body.ct362-design :where(a,summary,.eyebrow,.friends-eyebrow,.hub-eyebrow,.ct364-eyebrow,
+  .ct364-card-tag,.ct-v230-tactic-label,.scout-v220-eyebrow){color:var(--ct362-accent)!important}
+ body.ct362-design :where(.topbar,.friends-head,.hub-header,.scout-rotation-top,.review-top,main>.head,
+  .ct364-dialog-head,.friends-dialog-head,.friends-dialog-actions,.friend-analysis-sections,
+  .ct364-dialog-foot,.friend-analysis-cta,#scout-app-bar,#ct362-appnav){
+  background:var(--ct362-chrome)!important;border-color:var(--ct362-faint)!important;box-shadow:none!important;
+ }
+ body.ct362-design :where(.panel,.card,.block,.notice,.metric,.hero,.topic,
+  .friends-panel,.friends-hero,.friends-jump,.friends-safe,.friends-card,.friends-modal,
+  .hub-card,.hub-panel,.hub-hero,.hub-notice,.scout-rotation-panel,.scout-rotation-hero,
+  .scout-rotation-team,.scout-rotation-trust,.scout-rotation-diagnostics,.scout-rotation-picker,
+  .ct248-checker,.ct248-hero,.ct250-transfer,.scout-v220-shell>section,.scout-v220-technical,
+  .ct361-player-glance,.ct360-card-quick,.ct360-card-extra,.ct378-main-sheet,
+  .ct378-sheet-options,.ct374-native-inventory,.ct374-pp-comparison,.ct375-booster,
+  .ct364-owned-section,.ct364-player-card,.ct364-owned-count,.ct364-area,.ct376-panel,.ct-card-info-editor,
+  .review-card,.review-confirm,fieldset,dialog,#scout-backup-modal,#scout-android-update-modal,
+  #scout-card-navigator,.scout-search-panel,.scout-v189-about,
+  .ct-manager-v302,.ct-manager-v329-tools,.scout-v203-filter-panel,.ct362-tools-popup,.ct330-focus,
+  .ct363-readiness,.friends-fichas-bar,
+  #ct355-update-ready){
+  background:var(--ct362-surface)!important;color:var(--ct362-text)!important;
+  border-color:var(--ct362-border)!important;border-radius:var(--ct362-radius)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design :where(.scout-v189-home,.hero-text,.profile-content,.friends-layout,.hub-main,
+  .scout-v220-shell,.ct364-owned-inner,.review-shell){background:transparent!important;box-shadow:none!important}
+ body.ct362-design :where(.scout-v189-tile,.ct361-glance-stat,.scout-v220-focus,
+  .scout-v220-recs-grid article,.scout-v220-practice-grid>*,.ct375-training>div,
+  .ct374-skill-reasons>li,.ct374-pp-comparison>div,.ct311-level,.ct311-budget,
+  .ct326-focus,.ct331-role-overview,.ct378-owned-manager,.scout-backup-summary,
+  .scout-v189-dock-options,.ct364-tabs,.ct364-section,.ct364-box,.friend-analysis-tabs,
+  .friend-analysis-content,.ct379-review-link,#review-feedback,.ct330-stat,.hero .badges span,
+  .ct364-skill-list span,#ct364-card-navigator,
+  .scout-v189-extra>summary,.scout-v189-extra a,.ct-manager-v302>summary,#ct356-boot-proof){
+  background:var(--ct362-chrome)!important;color:var(--ct362-text)!important;
+  border-color:var(--ct362-faint)!important;border-radius:6px!important;box-shadow:none!important;
+ }
+ body.ct362-design :where(.hero:before,.scout-v220-hero:before){background:var(--ct362-wine)!important}
+ body.ct362-design :where(.ct361-home-mark,.ct361-friends-mark,.ct362-proof,.ct361-release-proof,
+  .scout-v189-mark,.ct364-card-tag,.ct364-owned-toggle,.ct-formacoes-premium-link,
+  .ct-formacoes-premium-status,.ct376-ovr){
+  background:var(--ct362-chrome)!important;color:var(--ct362-accent)!important;
+  border-color:var(--ct362-border)!important;box-shadow:none!important;text-shadow:none!important;
+ }
+ body.ct362-design :where(.player-card,.player-card .player-main){
+  background:var(--ct362-bg)!important;color:var(--ct362-text)!important;
+  border-color:var(--ct362-faint)!important;border-radius:5px!important;box-shadow:none!important;
+ }
+ body.ct362-design :where(.card-art,.side-art,.ct361-glance-art,.ct364-card-art,.scout-v220-pp){
+  background:var(--ct362-surface)!important;border-color:var(--ct362-faint)!important;
+  border-radius:4px!important;box-shadow:none!important;
+ }
+ body.ct362-design :where(.player-name,.ct361-glance-stat strong,.ct375-training dd,.scout-v220-pp strong){color:var(--ct362-text)!important}
+ body.ct362-design :where(button,.btn,.button,.home,.reset,.action,.nav-cta,.hub-btn,.hub-button,
+  .friends-primary,.friends-back,.formation-button,.scout-rotation-btn,.ct360-card-quick a,
+  .ct361-glance-link,.ct362-tools-popup>a,.scout-v220-tab,.ct362-navitem,
+  .scout-v189-dock-more>summary,.scout-rotation-page-shortcuts a,#scout-app-bar a,
+  .scout-v189-more-link,.scout-v189-about,.friends-jump a,.scout-rotation-shortcut,.v200-review-link){
+  background:var(--ct362-surface)!important;color:var(--ct362-text)!important;
+  border-color:var(--ct362-border)!important;border-radius:6px!important;
+  box-shadow:none!important;text-shadow:none!important;font-weight:500!important;
+ }
+ body.ct362-design :where(button:hover,.btn:hover,.hub-btn:hover,.player-card:hover,.ct364-player-card:hover){
+  background-color:var(--ct362-surface2)!important;border-color:var(--ct362-accent)!important;
+ }
+ body.ct362-design :where(.primary,.friends-primary,.hub-button.primary,.hub-btn.primary,
+  .scout-rotation-btn.main,.scout-rotation-btn.selected,.formation-button.active,
+  button[aria-pressed=true],.scout-v220-tab[aria-pressed=true],.ct362-navitem[aria-current=page],
+  .ct362-navmore[aria-expanded=true],button[type=submit],#friend-dialog-save,#scout-update,
+  .scout-v189-dock-more>summary,.ct-card-info-editor>button,.ct-card-info-editor form button,.ct364-save,.v200-review-link){
+  background:var(--ct362-wine)!important;color:var(--ct362-on-wine)!important;
+  border-color:var(--ct362-accent)!important;
+ }
+ body.ct362-design :where(.ct362-navitem[aria-current=page],button[aria-pressed=true]) :where(span,strong,small){color:var(--ct362-on-wine)!important}
+ body.ct362-design :where(input,select,textarea){
+  background:var(--ct362-chrome)!important;color:var(--ct362-text)!important;
+  border-color:var(--ct362-border)!important;border-radius:6px!important;box-shadow:none!important;
+  caret-color:var(--ct362-accent)!important;
+ }
+ body.ct362-design :where(input,textarea)::placeholder{color:var(--ct362-muted)!important;opacity:1!important}
+ body.ct362-design :where(a,button,input,select,textarea,summary):focus-visible{
+  outline:2px solid var(--ct362-accent)!important;outline-offset:3px!important;
+ }
+ body.ct362-design :where(.scout-v192-search-shell,.scout-v192-search-shell input){
+  background:var(--ct362-chrome)!important;border-color:var(--ct362-muted)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design :where(.pitch,.scout-rotation-field,.ct-v230-field){
+  background:#2c2c30!important;border-color:#69626b!important;box-shadow:none!important;
+ }
+ body.ct362-design :where(.ct378-pending,.warn,.warning,.status.wait,.fact.warn,.ct376-error){
+  color:var(--ct362-warning)!important;border-color:var(--ct362-warning)!important;background:var(--ct362-chrome)!important;
+ }
+ body.ct362-design :where(.good,.success,.fact.good,.status.ok){color:var(--ct362-success)!important}
+ body.ct362-design :where(.error,.danger,[role=alert],#review-feedback[data-error=true]){
+  color:var(--ct362-danger)!important;border-color:var(--ct362-danger)!important;
+ }
+ body.ct362-design dialog::backdrop{background:#111014cc!important;backdrop-filter:none!important}
+ body.ct362-design .brand-logo-img{filter:none!important}
+ body.ct362-design :where(.hero,.scout-v189-home)::after{background:none!important;box-shadow:none!important}
+ body.ct362-design[data-page=catalog] .hero::before{background:var(--ct362-wine)!important}
+ body.ct362-design:not([data-page=catalog]) .hero::before{content:none!important}
+ body.ct362-design :where(.ct361-home-mark,.ct361-friends-mark,.ct362-proof){
+  font-weight:500!important;letter-spacing:.08em!important;
+ }
+ body.ct362-design[data-page=catalog] .hero h1{
+  font-size:clamp(30px,5vw,42px)!important;line-height:1.1!important;margin:8px 0 14px!important;
+ }
+ body.ct362-design[data-page=catalog] .hero{border-top-color:var(--ct362-faint)!important}
+ body.ct362-design :where(.ct361-home-mark,.ct361-friends-mark){
+  border:0!important;background:transparent!important;padding:0!important;
+ }
+ body.ct362-design .scout-v189-eyebrow{font-weight:400!important;color:var(--ct362-muted)!important}
 }
 html:has(body.ct362-design){background:#070c14!important;scroll-behavior:auto!important}
 body.ct362-design{

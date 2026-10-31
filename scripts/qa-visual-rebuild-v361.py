@@ -18,8 +18,8 @@ with sync_playwright() as pw:
             page=context.new_page()
             page.goto(BASE+"/index.html",wait_until="domcontentloaded",timeout=45000)
             page.locator("#ct361-home-mark").wait_for(state="visible",timeout=20000)
-            page.wait_for_function("document.querySelector('#ct361-home-mark')?.textContent?.includes('V362')",timeout=10000)
-            assert "V362" in page.locator("#ct361-home-mark").inner_text(), "Marcador visual V362 não substituiu o V361"
+            page.wait_for_function("document.querySelector('#ct361-home-mark')?.textContent==='ACERVO PESSOAL'",timeout=10000)
+            assert page.locator("#ct361-home-mark").inner_text()=='ACERVO PESSOAL', 'Identidade editorial ausente'
             assert page.locator("#cards .player-card").count()==246
             assert page.evaluate("document.documentElement.scrollWidth-innerWidth")<=8
             page.screenshot(path=str(ART/(device+"-home.png")),full_page=False)

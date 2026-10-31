@@ -32,7 +32,7 @@ with sync_playwright() as pw:
      radius:getComputedStyle(e).borderRadius
     })""")
     assert page.locator('body.ct362-design').count()==1,kind+': visual global V362 não foi carregado'
-    expected={'friends':'rgb(16, 27, 42)','team':'rgb(17, 28, 43)','manager-hub':'rgb(17, 28, 43)'}[kind]
+    expected='rgb(51, 50, 54)' # superfície editorial compartilhada aprovada
     assert style['color']==expected,kind+': design V362 não prevaleceu '+str(style)
     assert style['border']!='rgb(0, 0, 0)',kind+': borda perdida '+str(style)
     assert page.locator(button).count()>0,kind+': ação perdida'
@@ -52,7 +52,7 @@ with sync_playwright() as pw:
      modal=page.locator('#friend-card-dialog')
      assert modal.is_visible()
      modal_bg=modal.evaluate('e=>getComputedStyle(e).backgroundColor')
-     assert modal_bg=='rgb(19, 30, 46)',(platform,'modal fora do V362',modal_bg)
+     assert modal_bg=='rgb(51, 50, 54)',(platform,'modal fora do editorial',modal_bg)
      page.locator('#friend-dialog-cancel').click()
      assert not modal.is_visible()
      assert page.locator('#friend-people').count()==1
