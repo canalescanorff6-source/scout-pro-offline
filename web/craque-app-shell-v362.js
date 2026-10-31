@@ -32,6 +32,14 @@ function shell(){
  d.body.classList.add('ct362-design');
  d.body.dataset.ct362Ui='true';
  const oldHead=d.querySelector('.topbar,.friends-head,.hub-header,main .head,body>header');
+ // Os 246 HTMLs históricos carregam rótulos de versão V72, não a versão
+ // executada. Não exibir um número antigo como se fosse o aplicativo atual.
+ if(page==='detail'){
+  const edition=d.querySelector('.topbar .edition');
+  if(edition&&/\bV\d+\b/i.test(edition.textContent||'')){
+   edition.textContent='eFOOTBALL 2027 · CRAQUE TÁTICO';
+  }
+ }
  const proof=create('span','ct362-proof','EDITORIAL');
  proof.id='ct362-design-proof';
  proof.setAttribute('aria-label','Craque Tático, visual editorial');
