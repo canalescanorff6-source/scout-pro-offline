@@ -33,5 +33,14 @@ for(const id of ['catalog','detail','friends','team','rotation-lab','manager-hub
 }
 assert.ok(shell.includes('ct362-design-proof')&&shell.includes('ct362-appnav'));
 assert.ok(css.includes('.scout-v220-shell')&&css.includes('.scout-v189-tile')&&css.includes('.friends-card')&&css.includes('.hub-card'));
+const layout=source('craque-main-layout-v378.js');
+for(const id of ['engenharia','foco','pontos','jogar']){
+ assert.ok(layout.includes("'"+id+"'"),'Bloco histórico não preservado: '+id);
+}
+assert.ok(layout.includes('ct378-source-archive')&&layout.includes('archive.append(node)'),
+ 'Blocos antigos devem ficar em consulta recolhível, não duplicar a ficha principal');
+assert.ok(shell.includes("edition.textContent='eFOOTBALL 2027 · CRAQUE TÁTICO'"),
+ 'Rótulo V72 não deve continuar na interface moderna');
+assert.ok(css.includes('.ct378-source-archive'),'Arquivo histórico deve herdar o visual editorial');
 assert.doesNotMatch(shell,/(localStorage\.setItem|card\.pp\s*=|card\.training\s*=|fetch\([^)]+method\s*:\s*['"]POST)/,'Redesign não altera dados');
 console.log('V362 PASS: 14 telas e 246 fichas cobertas, CSS/JS offline, identidade global, nenhum motor reescrito.');
