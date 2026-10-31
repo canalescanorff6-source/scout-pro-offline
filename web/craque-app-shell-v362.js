@@ -12,6 +12,46 @@ const names={
  'rarity-audit':'Raridades','batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas'
 };
 const at=()=>d.body?.dataset.page||'';
+const ACTIVE_RELEASE=362;
+// O visual aprovado é uma versão ATIVA, não mais uma camada cumulativa.
+// A futura UI deve montar seus controles e chamar
+// CRAQUE_UI_RELEASES.activate({version:N,ready:true,themeElement,dispose})
+// SOMENTE quando estiver pronta. A anterior é aposentada sem apagar dados.
+const uiReleases=host.CRAQUE_UI_RELEASES||(host.CRAQUE_UI_RELEASES={
+ current:0,dispose:null,
+ activate(next){
+  if(!next||!Number.isInteger(next.version)||next.version<1||
+   next.ready!==true||next.version<this.current)return false;
+  if(next.version===this.current)return true;
+  const previous=this.dispose;
+  // Só retire uma interface depois que a substituta declarar montagem pronta.
+  if(typeof previous==='function')previous();
+  for(const node of d.querySelectorAll('[data-craque-ui-release]')){
+   const version=Number(node.dataset.craqueUiRelease);
+   if(Number.isInteger(version)&&version<next.version)node.remove();
+  }
+  for(const style of d.querySelectorAll('link[data-craque-ui-theme]')){
+   const version=Number(style.dataset.craqueUiTheme);
+   if(Number.isInteger(version)&&version<next.version){style.disabled=true;style.remove();}
+  }
+  if(next.themeElement)next.themeElement.dataset.craqueUiTheme=String(next.version);
+  this.current=next.version;this.dispose=typeof next.dispose==='function'?next.dispose:null;
+  if(d.body)d.body.dataset.craqueUiActive='v'+next.version;
+  return true;
+ }
+});
+function activateCurrentRelease(){
+ const theme=d.querySelector('link[data-ct362-design="true"],link[href$="craque-app-shell-v362.css"]');
+ return uiReleases.activate({
+  version:ACTIVE_RELEASE,ready:!!d.body,themeElement:theme,
+  dispose:()=>{
+   d.getElementById('ct362-design-proof')?.remove();
+   d.getElementById('ct362-appnav')?.remove();
+   d.body?.classList.remove('ct362-design','ct362-options-open');
+   d.body?.removeAttribute('data-ct362-ui');
+  }
+ });
+}
 function create(tag,klass,label){
  const node=d.createElement(tag);if(klass)node.className=klass;
  if(label!==undefined)node.textContent=String(label);
@@ -42,6 +82,7 @@ function shell(){
  }
  const proof=create('span','ct362-proof','EDITORIAL');
  proof.id='ct362-design-proof';
+ proof.dataset.craqueUiRelease=String(ACTIVE_RELEASE);
  proof.setAttribute('aria-label','Craque Tático, visual editorial');
  if(oldHead){
   oldHead.classList.add('ct362-existing-head');
@@ -54,6 +95,7 @@ function shell(){
  // No catálogo/ficha, preservar todos os handlers originais, sobretudo Atualizar.
  if(!['catalog','detail'].includes(page)){
   const nav=create('nav','ct362-appnav');nav.id='ct362-appnav';
+  nav.dataset.craqueUiRelease=String(ACTIVE_RELEASE);
   nav.setAttribute('aria-label','Navegação principal do Craque Tático');
   for(const item of navItems(page)){
    const a=create('a','ct362-navitem');
@@ -179,7 +221,10 @@ function externalFormacoes(){
  if(proof?.parentNode){proof.parentNode.insertBefore(wrap,proof);wrap.append(proof,link,status);}
  else{wrap.append(link,status);quick.after(wrap);}
 }
-function boot(){shell();catalog();detail();friends();generic();externalFormacoes();}
+function boot(){
+ if(!activateCurrentRelease())return; // uma geração mais nova já assumiu a interface
+ shell();catalog();detail();friends();generic();externalFormacoes();
+}
 if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 d.addEventListener('scoutpro:profile-ready',boot);
 d.addEventListener('scoutpro:ui-ready',boot);
