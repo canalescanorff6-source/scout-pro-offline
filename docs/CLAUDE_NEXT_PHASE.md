@@ -1,6 +1,6 @@
 # Próxima etapa — renovação premium e Posse central
 
-Pedido registrado em 31/10/2026. Base publicada: v1.1.1184. Este documento registra requisitos e uma ordem proposta; não representa recursos já implementados ou builds competitivas aprovadas.
+Pedido registrado em 31/10/2026 a partir da v1.1.1184. Entrega visual aprovada e publicada na **v1.1.1188**; Windows atualizado. A revisão competitiva e as 500 formações abaixo continuam como requisitos futuros, sem builds competitivas aprovadas nesta etapa.
 
 ## 1. Renovação visual integral
 - Insatisfação abrange a interface inteira, cores e aparência, em Android e Windows; não limitar a reforma à tela inicial.
@@ -27,11 +27,11 @@ Pedido registrado em 31/10/2026. Base publicada: v1.1.1184. Este documento regis
 - Preservar escalações aprovadas e perfis independentes. Validar 11 titulares, posições permitidas, unicidade, orçamento/familiaridade quando aplicável, favoritos, desempenho e persistência Android/Windows.
 
 ## Ordem proposta e próxima ação
-1. Prévia interativa produzida e revisada; grafite suave/vinho aprovado. Implementação global na folha compartilhada V362 em branch própria; consultar CLAUDE_PROGRESS para verificação e PR.
-2. Implementar o novo sistema visual por módulos, preservando a lógica e os dados.
+1. Concluído: prévia revisada, grafite suave/vinho aprovado e tema compartilhado publicado na v1.1.1188; consultar CLAUDE_PROGRESS para evidências e limites.
+2. Próxima verificação de dispositivo: instalar o APK oficial no Android do mantenedor e conferir preservação dos dados, teclado, Voltar e backup. Nenhum aparelho estava conectado durante a publicação.
 3. Inventariar e expandir formações por lotes verificáveis, aplicando a regra de Posse sem pontas desde o primeiro lote.
 4. Revisar cartas em lotes com pesquisa internacional focalizada, evidências e propostas individuais.
 
 Prévia conceitual: desenhos por função sem atribuir jogadores não validados; treino cadastrado apresentado como tal, sem novas recomendações. Conferidas três telas em cinco larguras de visualização, carregamento das imagens, busca, seleção de carta, abas e seleção de posição. Sem erros de execução ou transbordamento horizontal; revisão visual de desktop e celular realizada.
 
-Nenhuma auditoria mundial extensa ou alteração de carta/escalação nesta etapa visual. A v1.1.1184 continua sendo o checkpoint instalado até publicação posterior do tema aprovado. O próximo executor deve ler este arquivo, o feedback do chat, CLAUDE_PROGRESS e o Git antes de trabalhar.
+Nenhuma auditoria mundial extensa ou alteração de carta/escalação nesta etapa visual. O checkpoint publicado é **v1.1.1188**; Windows instalado/reaberto e registros preservados, Android com pacote/assinatura/transição verificados, sem instalação física. O próximo executor deve ler este arquivo, CLAUDE_PROGRESS e o Git; não refazer o tema, a revisão ou a publicação concluídos.

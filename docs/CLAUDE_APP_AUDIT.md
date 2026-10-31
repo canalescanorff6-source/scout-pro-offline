@@ -38,3 +38,10 @@ Isso não é homologação física dos aplicativos nem prova de todas as combina
 - Windows atualizado e reaberto neste PC; versão 1.1.1184 confirmada no executável e na interface. Catálogo nativo anuncia 261 cartas; pesquisa por Michael Olise retornou as duas edições corretas. Backups privados e armazenamento preservados; pesquisa limpa ao terminar.
 - Captura/clique nativo continuam limitados pela ferramenta. Instalação física Android não executada por ausência de aparelho conectado. Estes limites permanecem explícitos; a publicação não equivale a examinar cada combinação possível de ações.
 - Release: https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1184
+
+## Entrega visual e atualização — 31/10/2026
+- Visual editorial grafite/vinho aprovado, PR #299 integrado e **v1.1.1188 publicada**. Correção de contraste de link e tema da abertura incluídos; código/dados, oito larguras e QA do PR aprovados, além de 51 aberturas editoriais.
+- Pacotes oficiais Android/Windows verificados por hashes, identidade/certificado, aumento de versão e comparação das fontes embarcadas. Ambos contêm commit d5abeb3 e fingerprint 760a65c94e1a9c757a45.
+- Windows deste PC atualizado/reaberto em 1.1.1188: catálogo nativo com 261 cartas e busca por Olise funcionando. Nove arquivos preservados na instalação e 57 registros anteriores sem perda/alteração após abrir. Backup privado conferido.
+- Android sem aparelho conectado; instalação física permanece pendente. A atualização visual não declara revisão competitiva de fichas nem criação das 500 formações futuras.
+- Release: https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1188

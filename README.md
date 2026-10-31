@@ -1,9 +1,9 @@
 # Craque Tático — Android e Windows
 
-**Atualização de 30/10/2026: [v1.1.1184 publicada e verificada](https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1184).** Inclui editor individual de nível/PP/raridade/Overall máximo e correções verificadas de navegação Windows, cache offline e layout móvel.
+**Atualização de 31/10/2026: [v1.1.1188 publicada e verificada](https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1188).** Novo visual editorial em grafite suave e vinho, com fichas, catálogo, ferramentas e abertura consistentes. Preserva o editor individual e as correções de navegação/cache da v1.1.1184. Windows atualizado e reaberto neste PC, com os registros locais preservados; instalação física Android permanece pendente.
 
-- [APK Android oficial](https://github.com/canalescanorff6-source/scout-pro-offline/releases/download/v1.1.1184/ScoutPRO-Android.apk) — atualizar por cima da instalação oficial anterior, preservando dados.
-- [Instalador Windows 1.1.1184](https://github.com/canalescanorff6-source/scout-pro-offline/releases/download/v1.1.1184/ScoutPRO-Setup-1.1.1184.exe).
+- [APK Android oficial](https://github.com/canalescanorff6-source/scout-pro-offline/releases/download/v1.1.1188/ScoutPRO-Android.apk) — atualizar por cima da instalação oficial anterior, preservando dados.
+- [Instalador Windows 1.1.1188](https://github.com/canalescanorff6-source/scout-pro-offline/releases/download/v1.1.1188/ScoutPRO-Setup-1.1.1188.exe).
 - [Última release disponível](https://github.com/canalescanorff6-source/scout-pro-offline/releases/latest) · [checkpoint](docs/CLAUDE_PROGRESS.md) · [revisão e limites](docs/CLAUDE_APP_AUDIT.md).
 
 ## Histórico da base V72
