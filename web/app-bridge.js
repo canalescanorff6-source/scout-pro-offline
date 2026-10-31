@@ -405,12 +405,13 @@ if(inCard){
     }
     load(file,next);
    };
+   const loadMainSheet=next=>load('craque-competitive-batch-v380.js',()=>load('craque-main-sheet-v378.js',next));
    ensure('scout-multitactic-engine-v220.js','SCOUT_TACTICS_V220',()=>
     ensure('craque-role-intelligence-v233.js','CRAQUE_INTERPRETATION_V233',()=>
      ensure('craque-ficha-individual-v251.js','CRAQUE_FICHA_INDIVIDUAL_V251',()=>
       load('craque-pp-universal-v309.js',()=>
        load('craque-card-review-v379.js',()=>load('craque-friends-training-v228.js',()=>
-        load('craque-main-sheet-v378.js',()=>
+        loadMainSheet(()=>
         load('craque-positional-v311.js',()=>load('craque-formation-context-v314.js',()=>
          load('craque-ficha-decision-v327.js',()=>load('craque-frontier-context-v339.js',()=>
           load('craque-positional-ui-v311.js'))))))))))));

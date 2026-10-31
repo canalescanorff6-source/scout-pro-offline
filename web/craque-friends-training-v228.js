@@ -292,6 +292,9 @@ function functionSheetText(review){
  review.boosters.forEach((b,i)=>out.push((i?'Alternativa '+i:'Principal')+': '+b.name,
   'Atributos relacionados: '+b.attributes.join(', '),b.reason));
  if(!review.boosters.length)out.push('Ímpeto candidato pendente.');
+ if(review.competitiveReview){const r=review.competitiveReview;out.push('',r.title,
+  'Proposta ESTIMADA · orçamento CALCULADO · desempenho em partidas PENDENTE',r.strategy,r.tradeoff,r.slotNote,r.researchNote,
+  ...r.sources.map(s=>s.title+': '+s.url));}
  out.push('','OBSERVAR EM PARTIDAS ONLINE',...review.tests.map(x=>'• '+x),'',review.baseReference,
   'Proposta calculada, sem validação em partidas online. Não comprova atributos finais, familiaridade ou ativação de estilo.',
   'Não equipa habilidades/ímpetos nem altera a carta ou o treino aprovado.');

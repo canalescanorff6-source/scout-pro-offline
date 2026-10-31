@@ -25,9 +25,12 @@ function resolve(input,outcome,selection={},provided){
  if(nativeSource==='pending'&&exactReference&&reference.reference.nativeSkills?.length){
   card.nativeSkills=reference.reference.nativeSkills.join('; ');nativeSource='public';
  }
+ const batch=host?.CRAQUE_COMPETITIVE_BATCH_V380||
+  (typeof module==='object'?require('./craque-competitive-batch-v380.js'):null);
+ const editorial=exactReference?batch?.find(card,outcome,selection,S,T):null;
  const role=outcome.plan.role,allowed=role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6];
  const budget=outcome.plan.pp??outcome.progress.pp;
- const levels=own(selection,'levels')?selection.levels:outcome.plan.levels;
+ const levels=own(selection,'levels')?selection.levels:editorial?.levels||outcome.plan.levels;
  const valid=v=>Number.isInteger(budget)&&T.valid(v)&&T.total(v)<=budget&&
   v.every((n,i)=>n===0||allowed.includes(i));
  if(own(selection,'levels')&&!valid(levels))throw Error('PP ou categorias da ficha salva incompatíveis com esta função');
@@ -81,11 +84,12 @@ function resolve(input,outcome,selection={},provided){
   }
  }
  if(card.boosterSlot==='ausente')review.boosters=[];
+ if(editorial)batch.decorate(review,editorial,card,S,B);
  // O contrato de gravação recebe exatamente as escolhas mostradas, inclusive vazias.
  result.suggestedSkills=review.skills.map(s=>({name:s.name}));
  result.booster={...result.booster,primary:review.boosters[0]?{nome:review.boosters[0].technicalName}:null};
  if(exactReference&&reference.reference.baseStats)review.baseReference='Base da edição disponível em referência pública; treino e atributos finais da conta a conferir';
- review.sourceLabel={profile:'Treino salvo neste técnico',revision:'Revisão salva deste contexto',proposal:'Treino recomendado para esta função'}[review.sourceKind];
+ if(!editorial)review.sourceLabel={profile:'Treino salvo neste técnico',revision:'Revisão salva deste contexto',proposal:'Treino recomendado para esta função'}[review.sourceKind];
  if(issues.length)review.canSave=false;
  review.pending=[...(!outcome.identityFormatValid?['edição']:[]),
   ...(nativeSource==='pending'?['habilidades nativas']:[]),
