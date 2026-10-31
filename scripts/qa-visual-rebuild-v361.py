@@ -47,6 +47,7 @@ with sync_playwright() as pw:
                 };
             }""")
             assert state["on"]=="ready" and state["name"]==state["oldName"],(device,state)
+            assert 'V72' not in page.locator('.topbar .edition').inner_text(),(device,'Cabeçalho antigo')
             assert state["image"]==state["oldImage"] and "cartas/" in state["image"],(device,state)
             assert len(state["kpis"])==3 and state["kpis"]==state["oldKpis"],(device,state)
             assert state["quick"]==5 and state["overflow"]<=8,(device,state)
