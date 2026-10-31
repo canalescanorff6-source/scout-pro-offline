@@ -26,11 +26,11 @@ const uiReleases=host.CRAQUE_UI_RELEASES||(host.CRAQUE_UI_RELEASES={
   const previous=this.dispose;
   // Só retire uma interface depois que a substituta declarar montagem pronta.
   if(typeof previous==='function')previous();
-  for(const node of d.querySelectorAll('[data-craque-ui-release]')){
+  for(const node of (d.querySelectorAll?.('[data-craque-ui-release]')||[])){
    const version=Number(node.dataset.craqueUiRelease);
    if(Number.isInteger(version)&&version<next.version)node.remove();
   }
-  for(const style of d.querySelectorAll('link[data-craque-ui-theme]')){
+  for(const style of (d.querySelectorAll?.('link[data-craque-ui-theme]')||[])){
    const version=Number(style.dataset.craqueUiTheme);
    if(Number.isInteger(version)&&version<next.version){style.disabled=true;style.remove();}
   }
