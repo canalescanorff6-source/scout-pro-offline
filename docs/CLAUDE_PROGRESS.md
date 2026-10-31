@@ -4,7 +4,7 @@
 - Base: `ef0dc5d` (`origin/main`); branch `feat/individual-card-info-editor`.
 - Commit da implementação: `333c4ab`. PR da branch: https://github.com/canalescanorff6-source/scout-pro-offline/pull/297
 - Catálogo consultado: 246 originais + 15 próprias = 261 cartas.
-- Checkout antigo `C:/Users/Marques/Projetos/scout-pro-offline`, branch `melhorias-claude`, preservado com três arquivos não rastreados; nenhum commit local exclusivo da main.
+- Checkout local original, branch `melhorias-claude`, preservado com três arquivos não rastreados; nenhum commit local exclusivo da main.
 - Objetivo: botão **EDITAR INFORMAÇÕES DA CARTA** ao final de cada ficha, quatro campos preenchidos, persistência local, restauração e atualização das fichas.
 - Decisão: estender módulo de conferência V379 com registro local separado por identidade; manter conferências, rascunhos, equipamentos e treinos aprovados intactos. Usar eventos existentes para atualizar as telas. Overall máximo permanece informativo e separado do calculado.
 - Implementado: formulário ao fim da ficha original e do diálogo das próprias; nível/PP/raridade/Overall máximo, restauração persistente, catálogo, ficha principal e laboratório atualizados por evento. Novos registros são vinculados à identidade exata e entram no backup V226 já existente.
@@ -26,3 +26,15 @@
 - Integridade: JSONs canônicos, imagens, IDs, edições, treinos e assinatura/atualizadores nativos intactos. Normalização reduz textos de busca repetidos dos três IDs sem alterar outro conteúdo do índice.
 - Windows instalado: versão 1.1.1181 localizada; controles básicos acessíveis, captura falhou duas vezes. Sem afirmar inspeção visual completa. Não confundir Chromium responsivo com APK/Electron homologados.
 - Próxima ação: verificar CI do novo complemento no PR #297; após revisão/aprovação, preparar instaladores e testar atualização/reinício/backup nos dois sistemas com dados descartáveis. Sem merge ou publicação de release nesta etapa. Não iniciar pesquisa mundial de cartas.
+
+## 2026-10-30 · publicação e atualização autorizadas e concluídas
+- O mantenedor autorizou "fazer tudo para receber a atualização". PR #297 integrado após CI completo GREEN em `151c192`. Merge/commit de origem: `833616babc232ac22d60aa8de4b96bc1fefaa829`; árvores idênticas.
+- Release oficial conjunta **v1.1.1184** publicada: https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1184
+- Build/publicação `41160993873` GREEN; Windows NSIS, Android com assinatura permanente e publicação conjunta GREEN. QA visual main `41160993877` também GREEN.
+- Cinco assets publicados e baixados: APK + SHA256, instalador Windows + blockmap + latest.yml. `verify-published-assets-v236.py`, `verify-upgrade-path-v239.py` (1181→1184) e `verify-windows-update-manifest.cjs` PASS nos arquivos REAIS.
+- APK: pacote br.com.scoutpro.offline preservado, certificado oficial V99 igual ao anterior, versionCode 1181→1184. Metadata embarcada confirma versão 1.1.1184, commit 833616b, fingerprint `26909c94d750d2061b22`, 177 fontes compartilhadas; editor e correção offline presentes.
+- Windows deste PC atualizado de 1.1.1181 para **1.1.1184** pelo instalador oficial e reaberto. FileVersion e interface nativa confirmam a versão; boot Premium identifica commit 833616b e 261 cartas. Busca nativa por Michael Olise encontrou suas duas edições e foi limpa ao terminar.
+- Dados: três snapshots estruturados e cinco arquivos do armazenamento local copiados/conferidos em área privada antes de instalar. Armazenamento e três snapshots continuam presentes após instalar. Nenhum valor de carta/build foi editado durante a verificação.
+- Limitação: captura/clique por coordenadas da automação Windows continuou indisponível; leitura dos controles e edição da busca funcionaram. Não afirmar validação de TODAS as ações nativas.
+- Android: nenhum aparelho conectado via ADB. APK publicado, assinatura/compatibilidade verificadas; instalação física permanece com o usuário pelo app/arquivo. Não desinstalar a instalação oficial anterior para atualizar.
+- Próxima ação exata: instalar/atualizar o APK no aparelho do mantenedor e verificar preservação dos dados, teclado, Voltar e backup nativo. Usar esta release como novo checkpoint; não refazer editor/auditoria nem iniciar pesquisa mundial sem novo lote definido.

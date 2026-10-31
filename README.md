@@ -1,4 +1,12 @@
-# SCOUT PRO V72 — 246 cartas offline, Windows + Android
+# Craque Tático — Android e Windows
+
+**Atualização de 30/10/2026: [v1.1.1184 publicada e verificada](https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1184).** Inclui editor individual de nível/PP/raridade/Overall máximo e correções verificadas de navegação Windows, cache offline e layout móvel.
+
+- [APK Android oficial](https://github.com/canalescanorff6-source/scout-pro-offline/releases/download/v1.1.1184/ScoutPRO-Android.apk) — atualizar por cima da instalação oficial anterior, preservando dados.
+- [Instalador Windows 1.1.1184](https://github.com/canalescanorff6-source/scout-pro-offline/releases/download/v1.1.1184/ScoutPRO-Setup-1.1.1184.exe).
+- [Última release disponível](https://github.com/canalescanorff6-source/scout-pro-offline/releases/latest) · [checkpoint](docs/CLAUDE_PROGRESS.md) · [revisão e limites](docs/CLAUDE_APP_AUDIT.md).
+
+## Histórico da base V72
 
 **O que existe neste pacote:** código-fonte para Windows (Electron/NSIS) e Android (Capacitor 8), catálogo completo de 246 cartas e suas imagens, verificações automáticas, laboratório de PP e rotina de atualização usando GitHub Releases. O projeto **não contém um EXE ou APK já compilado**: estes serão gerados no GitHub Actions após envio dos arquivos.
 
