@@ -47,7 +47,9 @@
    cell.append(mk('small','',title),mk('strong','',value));
    strip.append(cell);
   }
-  if(card)info.append(mk('span','ct361-glance-cardno','Carta '+card));
+  const cardId=clean(d.querySelector('.profile-sidebar .side-info-row .mono')?.textContent);
+  if(card||cardId)info.append(mk('span','ct361-glance-cardno',
+   (card?'Carta '+card:'')+(card&&cardId?' · ':'')+(cardId?'Card ID '+cardId:'')));
   body.append(artwork,info);
   const actions=mk('nav','ct361-glance-actions');
   actions.setAttribute('aria-label','Atalhos principais da carta');
