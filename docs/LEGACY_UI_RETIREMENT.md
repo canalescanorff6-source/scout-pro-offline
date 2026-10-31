@@ -3,6 +3,14 @@
 ## Objetivo
 Nenhuma tela ativa do Android ou Windows deve mostrar simultaneamente as interfaces legadas Scout PRO V68/V72 e a ficha Premium aprovada em **grafite suave e vinho**. A transição não autoriza apagar cartas, imagens, Card IDs, treinos, habilidades, ímpetos, histórico, backup ou atualizadores.
 
+## Regra permanente — UMA interface ativa por versão
+- O ponto de entrada da apresentação é o App Shell, não uma pilha de páginas visuais. A versão oficial deste pacote é `V362`, com cores definidas pelos tokens de `web/craque-app-shell-v362.css`.
+- O registro em `web/craque-app-shell-v362.js` expõe `window.CRAQUE_UI_RELEASES.activate({version,ready,themeElement,dispose})` e `current`.
+- Ao desenvolver e validar uma próxima versão da UI, monte seus novos controles e sua nova folha oficial. **Somente depois de confirmar que a montagem funcionou**, registre a próxima versão como `ready:true`. O gerenciador remove os elementos marcados `data-craque-ui-release` e as folhas marcadas `data-craque-ui-theme` de versões anteriores. Com `ready:false`, a interface anterior permanece como fallback.
+- Nunca carregue duas folhas oficiais de tema em paralelo. As CSS históricas que contêm geometria/funcionalidade só podem ser retiradas quando seus estilos estruturais forem migrados e os testes aprovados. Aposentar **o visual** não significa deletar scripts de cálculo, funções de navegação ou dados.
+- Em toda versão aprovada: atualizar o ponto de entrada, fingerprint/caches offline do PWA e os empacotamentos Android/Windows; rodar QA de catálogo, fichas, diálogos e atualizadores. Não é possível apagar automaticamente código-fonte morto com segurança sem análise e testes de dependência.
+- Regra de evolução: nova release substitui a anterior; sem novos menus, modais, cabeçalhos ou CSS visuais empilhados. Acessibilidade, offline e reversão têm prioridade.
+
 ## Fase 1 — PR da ficha individual
 - **246 fichas HTML originais mantidas**: os arquivos históricos ainda são fontes offline e preservam IDs e evidências.
 - O cabeçalho Premium `ct361-player-glance` também aparece no desktop; a sidebar antiga só sai quando a ficha moderna e seu layout V378 estiverem prontos.
