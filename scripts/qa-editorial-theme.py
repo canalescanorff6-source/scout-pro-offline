@@ -2,6 +2,7 @@
 import json, os, shutil
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
+from qa_navigation_v378 import reveal
 
 BASE = os.getenv('SCOUT_VISUAL_BASE', 'http://127.0.0.1:8765').rstrip('/')
 ART = Path(os.getenv('SCOUT_EDITORIAL_ART', 'artifacts/visual-qa/editorial'))
@@ -66,6 +67,11 @@ with sync_playwright() as pw:
                 assert data['overflow']<=3,(width,name,'rolagem horizontal',data)
                 assert data['artwork'] and not data['filtered'],(width,name,'arte alterada ou indisponível',data)
                 assert not errors,(width,name,errors)
+                if name=='detail':
+                    review=page.locator('.v200-review-link').first
+                    reveal(review)
+                    link_style=review.evaluate('(e)=>({ink:getComputedStyle(e).color,bg:getComputedStyle(e).backgroundColor})')
+                    assert contrast(link_style['ink'],link_style['bg'])>=4.5,(width,'ação de conferir ímpetos sem contraste',link_style)
                 if name=='catalog':
                     assert data['cards']==246
                     assert page.locator('.scout-v189-dock-more>summary').evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(120, 57, 75)', 'A ação principal precisa se distinguir em vinho'

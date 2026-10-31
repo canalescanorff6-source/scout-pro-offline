@@ -286,3 +286,23 @@ html body[data-page="detail"] :is(.nav-cta,.btn.primary){
  #ct355-update-ready button{flex:1 1 125px}
 }
 @media print{#ct355-update-ready{visibility:hidden}}
+/* Editorial aprovado: primeira pintura e fallback antes do shell dinâmico.
+   Mantém o cover e seus eventos; altera somente apresentação. */
+@layer craque-first-paint {
+ html.ct-v351-boot #ct-v351-boot-cover{
+  background:#28282c!important;color:#f2eded!important;
+  font-family:'Segoe UI',system-ui,sans-serif!important;
+ }
+ #ct-v351-boot-cover span{color:#c0b8be!important}
+ #ct-v351-boot-cover .ct-v351-pulse{
+  border-color:#57515b!important;border-top-color:#dfa6b5!important;
+ }
+ #ct356-static-shell a{
+  background:#333236!important;color:#f2eded!important;
+  border-color:#57515b!important;border-radius:8px!important;
+ }
+ #ct356-static-shell a strong{color:#dfa6b5!important}
+ #ct356-static-shell a span{color:#c0b8be!important}
+ #ct356-static-shell a:focus-visible{outline-color:#dfa6b5!important}
+ #ct356-boot-proof{background:#222225!important;color:#f2eded!important;border-color:#57515b!important}
+}

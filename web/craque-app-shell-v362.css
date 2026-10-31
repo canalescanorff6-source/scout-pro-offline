@@ -89,7 +89,7 @@
   .friends-primary,.friends-back,.formation-button,.scout-rotation-btn,.ct360-card-quick a,
   .ct361-glance-link,.ct362-tools-popup>a,.scout-v220-tab,.ct362-navitem,
   .scout-v189-dock-more>summary,.scout-rotation-page-shortcuts a,#scout-app-bar a,
-  .scout-v189-more-link,.scout-v189-about,.friends-jump a,.scout-rotation-shortcut){
+  .scout-v189-more-link,.scout-v189-about,.friends-jump a,.scout-rotation-shortcut,.v200-review-link){
   background:var(--ct362-surface)!important;color:var(--ct362-text)!important;
   border-color:var(--ct362-border)!important;border-radius:6px!important;
   box-shadow:none!important;text-shadow:none!important;font-weight:500!important;
@@ -101,7 +101,7 @@
   .scout-rotation-btn.main,.scout-rotation-btn.selected,.formation-button.active,
   button[aria-pressed=true],.scout-v220-tab[aria-pressed=true],.ct362-navitem[aria-current=page],
   .ct362-navmore[aria-expanded=true],button[type=submit],#friend-dialog-save,#scout-update,
-  .scout-v189-dock-more>summary,.ct-card-info-editor>button,.ct-card-info-editor form button,.ct364-save){
+  .scout-v189-dock-more>summary,.ct-card-info-editor>button,.ct-card-info-editor form button,.ct364-save,.v200-review-link){
   background:var(--ct362-wine)!important;color:var(--ct362-on-wine)!important;
   border-color:var(--ct362-accent)!important;
  }
