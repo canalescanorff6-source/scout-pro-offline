@@ -51,6 +51,11 @@ function resolve(ref,card,store,options={}){
    if(reviewed.pp!==null)ctx.budget=reviewed.pp;if(reviewed.maxLevel!==null)maxLevel=reviewed.maxLevel;
    if(reviewed.equipmentReviewed)ctx.extraBooster=reviewed.extraSlot==='ocupado'?{name:reviewed.extraBooster,confirmed:true}:null;
   }
+  const info=descriptor?Review?.infoRead(store,descriptor):null;
+  if(info){
+   ctx.budget=info.pp;maxLevel=info.maxLevel;
+   if(!info.mathOk){ctx.budget=null;throw Error('Nível máximo e PP incompatíveis; corrija as informações da carta. Treino preservado.');}
+  }
   const idKey=ref.cardKey,managerKeys=[
    ...(owned?['scoutpro:v378:owned-manager:'+ref.key]:[]),
    'scoutpro:v307:manager-selection:'+idKey,'craque:v302:manager-selection:'+idKey,
@@ -76,7 +81,7 @@ function resolve(ref,card,store,options={}){
   }
   if(current){
    if(current.schema!=='CRAQUE_CURRENT_TRAINING_V376'||current.cardKey!==ref.key||
-    current.cardId!==ctx.cardId||current.budget!==ctx.budget||!current.confirmedByOwner||
+    current.cardId!==ctx.cardId||(!info&&current.budget!==ctx.budget)||!current.confirmedByOwner||
     !valid(current.levels)||cost(current.levels)>ctx.budget)
     throw Error('Treino confirmado incompatível com a edição ou PP atuais; registro preservado.');
    ctx.training=current.levels.slice();source='Treino confirmado por você';

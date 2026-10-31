@@ -59,7 +59,55 @@ function apply(card,record,descriptor){
  if(c.id!==card.id||c.versao!==card.versao){c.base_stats_known=false;delete c.nivel_referencia;}
  c.review379={...r,identityChanged:c.id!==card.id||c.versao!==card.versao,history:undefined};return c;
 }
-function personal(card,store){const d=catalog([card],[])[0],r=read(store,d,true);return apply(card,r,d);}
-function owned(card,store){const d=catalog([],[card])[0],r=read(store,d,true);if(!r)return null;return r;}
-return Object.freeze({PREFIX,SCHEMA,catalog,matches,fingerprint,validate,read,save,apply,personal,owned,cost});
+// Metadata is separate from the review: editing four fields never replaces a
+// draft, approved training, equipment or documentary evidence.
+const INFO_PREFIX='scoutpro:v379:card-info:';
+const infoFields=v=>Object.fromEntries(['maxLevel','pp','rarity','maxOverall'].map(k=>[k,v?.[k]??(k==='rarity'?'':null)]));
+function infoIdentity(store,card){const r=read(store,card,true);return JSON.stringify([fingerprint(card),r?.cardId||card.cardId,r?.edition||card.edition]);}
+function checkInfo(values,partial=false){
+ const v=infoFields(values);
+ for(const [k,min,max] of [['maxLevel',1,120],['pp',0,1000],['maxOverall',1,150]]){
+  if(v[k]===null||v[k]===''){if(k==='maxOverall'||partial){v[k]=null;continue;}throw Error('Informe '+(k==='pp'?'os PP':'o nível máximo')+'.');}
+  if(typeof v[k]==='boolean'||!Number.isInteger(Number(v[k]))||Number(v[k])<min||Number(v[k])>max)throw Error('Valor inválido: '+k+'.');
+  v[k]=Number(v[k]);
+ }
+ v.rarity=String(v.rarity).trim().slice(0,80);
+ if(!v.rarity&&!partial)throw Error('Informe a raridade.');
+ return v;
+}
+function infoRead(store,card){try{
+ const r=JSON.parse(store?.getItem(INFO_PREFIX+card.key)||'null');
+ if(r?.schema!=='craque-card-info-v1'||r.identity!==infoIdentity(store,card))return null;
+ const value=checkInfo(r,true);
+ return {...r,...value,mathOk:value.maxLevel!==null&&value.pp===2*(value.maxLevel-1)};
+}catch(_){return null;}}
+function infoValues(store,card,baseline={}){
+ const values=infoFields(baseline),r=read(store,card,true);
+ if(r)for(const k of Object.keys(values))if(r[k]!==null&&r[k]!=='')values[k]=r[k];
+ const custom=infoRead(store,card);
+ return custom?infoFields(custom):values;
+}
+function saveInfo(store,card,values,baseline={}){
+ const value=checkInfo(values),previous=infoValues(store,card,baseline);
+ const record={...value,schema:'craque-card-info-v1',identity:infoIdentity(store,card),previous,
+  mathOk:value.pp===2*(value.maxLevel-1),updatedAt:new Date().toISOString()};
+ store.setItem(INFO_PREFIX+card.key,JSON.stringify(record));return record;
+}
+function restoreInfo(store,card){
+ const old=infoRead(store,card);if(!old?.previous)throw Error('Não há valores anteriores para restaurar.');
+ const value=checkInfo(old.previous,true),record={...old,...value,previous:infoFields(old),updatedAt:new Date().toISOString(),
+  mathOk:value.maxLevel!==null&&value.pp===2*(value.maxLevel-1)};
+ store.setItem(INFO_PREFIX+card.key,JSON.stringify(record));return record;
+}
+function personal(card,store){
+ const d=catalog([card],[])[0],r=read(store,d,true),base=apply(card,r,d),info=infoRead(store,d);
+ return info?{...base,max_level:info.maxLevel,pp:info.pp,rarity:info.rarity,max_overall:info.maxOverall,cardInfo:info}:base;
+}
+function owned(card,store){
+ const d=catalog([],[card])[0],r=read(store,d,true),info=infoRead(store,d);
+ if(!info)return r;
+ return {...(r||validate(d,{},true)),...infoFields(info),cardInfo:info};
+}
+return Object.freeze({PREFIX,SCHEMA,INFO_PREFIX,catalog,matches,fingerprint,validate,read,save,apply,personal,owned,cost,
+ infoRead,infoValues,saveInfo,restoreInfo});
 });

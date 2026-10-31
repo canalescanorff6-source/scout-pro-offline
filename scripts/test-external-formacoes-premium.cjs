@@ -68,6 +68,25 @@ async function run(){
     URL_FORMACOES.replace('https://','https://user:pass@'),URL_FORMACOES.replace('.site/','.site.evil.test/'),
     URL_FORMACOES.replace('vocalclock33','other'),URL_FORMACOES.replace('.site/','.site:8443/'),'javascript:alert(1)'])await context.openTrustedExternal(url);
   assert.equal(opened.length,2,'Não ampliar a permissão para outros destinos, credenciais, portas ou rotas');
+  const references=[
+    'https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00',
+    'https://www.pesmaster.com/sergi-cardona/efootball-2022/player/105803298257275/',
+    'https://www.pesdb.net/efootball/players/k-kvaratskhelia-105880876086992',
+    'https://efootbase.com/players/134580/88044145348020',
+    'https://ef-labo.com/efootball/rodri-national-team-selection-spain-5-sep-24/',
+    'https://efootball-world.com/player/105842221312066',
+    'https://efootballmeta.com/players/88045755827028'
+  ];
+  for(const url of references){
+    const before=opened.length;await context.openTrustedExternal(url);
+    assert.equal(opened.length,before+1,'Fonte cadastrada deve abrir no Windows: '+url);
+    assert.equal(opened.at(-1),url);
+  }
+  const count=opened.length;
+  for(const url of ['https://www.konami.com.evil.test/path','https://evil.test/path',
+    'https://user:pass@www.konami.com/path','https://www.pesmaster.com:8443/path',
+    'http://efootbase.com/players/1','file:///C:/Windows/notepad.exe'])await context.openTrustedExternal(url);
+  assert.equal(opened.length,count,'Novas fontes não permitem domínios falsos, credenciais, portas ou protocolos arbitrários');
   console.log('PASS: acesso externo idempotente, navegador Android e destino Windows restrito.');
 }
 run().catch(error=>{console.error(error);process.exitCode=1});

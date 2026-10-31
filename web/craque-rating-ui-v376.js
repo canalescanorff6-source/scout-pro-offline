@@ -54,6 +54,75 @@ async function boot(w){
  const cards=new Map([...original.cards.map(c=>['cap:'+c.numero,c]),...owned.cards.map(c=>[c.key,c])]);
  const refs=new Map(data.cards.map(c=>[c.key,c]));
  const images=new Map(data.cards.map(c=>[c.image.split('/').pop(),c]));
+ const Review=w.CRAQUE_CARD_REVIEW_V379;
+ const descriptors=new Map(Review.catalog(original.cards,owned.cards).map(c=>[c.key,c]));
+ const infoBases=new Map();
+ function paintInfoCatalog(){
+  let changed=false;
+  for(const tile of d.querySelectorAll('.player-card[data-cap],.ct364-player-card[data-owned-id]')){
+   const key=tile.dataset.ownedId||'cap:'+Number(tile.dataset.cap),descriptor=descriptors.get(key);
+   if(!descriptor)continue;
+   const info=Review.infoRead(w.localStorage,descriptor);if(!info)continue;
+   const pp=tile.querySelector('.pp');if(pp)pp.textContent=(info.pp??'—')+' PP';
+   const tag=tile.querySelector('.ct364-card-tag');if(tag)tag.textContent='Nível máx. '+(info.maxLevel??'pendente')+' · '+(info.pp??'—')+' PP';
+   const rarity=tile.querySelector('.mini-rarity');
+   if(rarity){rarity.textContent=info.rarity;rarity.className='mini-rarity'+({'SHOW TIME':' show','BIG TIME':' big','DISTINGUIDO':' hl'}[info.rarity]||'');}
+   if(tile.dataset.rarity!==info.rarity){tile.dataset.rarity=info.rarity;changed=true;}
+  }
+  if(changed)d.getElementById('search')?.dispatchEvent(new w.Event('input'));
+ }
+ function showInfo(ref,parent){
+  const descriptor=descriptors.get(ref.key);if(!descriptor)return;
+  if(!infoBases.has(ref.key)){
+   const context=state(ref).context,card=cards.get(ref.key);
+   const types={Epic:'ÉPICA','Big Time':'BIG TIME','Show Time':'SHOW TIME',Highlight:'DISTINGUIDO',Standard:'NORMAL'};
+   infoBases.set(ref.key,{maxLevel:context.maxLevel,pp:context.ctx.budget,
+    rarity:card.rarity||types[ref.reference?.type]||
+     (ref.capture!==null?d.querySelector('.detail-overline .tiny-chip.gold')?.textContent.trim():'')||'',
+    maxOverall:ref.ownerMaximumOverall?.value??card.max_overall??null});
+  }
+  const base=infoBases.get(ref.key),values=Review.infoValues(w.localStorage,descriptor,base);
+  const saved=Review.infoRead(w.localStorage,descriptor),stamp=JSON.stringify([ref.key,values,saved?.updatedAt]);
+  let editor=parent.querySelector('.ct-card-info-editor');
+  if(!editor){editor=mk('section');editor.className='ct-card-info-editor';parent.append(editor);}
+  if(editor.dataset.stamp===stamp)return;
+  const wasOpen=editor.dataset.card===ref.key&&editor.querySelector('form')?.hidden===false;
+  editor.dataset.card=ref.key;editor.dataset.stamp=stamp;editor.replaceChildren();
+  editor.append(mk('h2','Informações da carta'));
+  editor.append(mk('p','Nível máximo: '+(values.maxLevel??'pendente')+' · '+(values.pp??'pendente')+
+   ' PP · '+(values.rarity||'Raridade pendente')+' · Overall máximo: '+(values.maxOverall??'não informado')));
+  editor.append(mk('p','Overall máximo é informativo e separado do Overall da ficha. Os treinos aprovados são preservados.'));
+  if(saved&&!saved.mathOk)editor.append(mk('p','Nível e PP incompatíveis: cálculos pendentes até corrigir os dados.'));
+  const open=mk('button','EDITAR INFORMAÇÕES DA CARTA');open.type='button';
+  const form=mk('form');form.hidden=!wasOpen;form.id='ct-card-info-'+ref.key.replace(/[^a-z0-9-]/gi,'-');
+  open.setAttribute('aria-controls',form.id);open.setAttribute('aria-expanded',String(wasOpen));
+  open.onclick=()=>{form.hidden=!form.hidden;open.setAttribute('aria-expanded',String(!form.hidden));};
+  const fields={};
+  for(const [key,title,min,max] of [['maxLevel','Nível máximo da carta',1,120],['pp','Pontos de Progresso (PP)',0,1000],
+   ['rarity','Raridade da carta'],['maxOverall','Overall máximo da carta (informativo)',1,150]]){
+   const label=mk('label',title),input=mk('input');input.name=key;
+   input.value=values[key]??'';input.type=key==='rarity'?'text':'number';
+   input.required=key!=='maxOverall';
+   if(key==='rarity')input.maxLength=80;else{input.min=String(min);input.max=String(max);input.step='1';input.inputMode='numeric';}
+   label.append(input);form.append(label);fields[key]=input;
+  }
+  const feedback=mk('p');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
+  const save=mk('button','Salvar alterações');save.type='submit';
+  const restore=mk('button','Restaurar valores anteriores');restore.type='button';restore.disabled=!saved?.previous;
+  const changed=message=>{
+   w.dispatchEvent(new w.CustomEvent('craque:data-changed',{detail:{key:Review.INFO_PREFIX+ref.key}}));
+   showInfo(ref,parent);parent.querySelector('.ct-card-info-editor [role="status"]').textContent=message;
+  };
+  form.onsubmit=e=>{e.preventDefault();try{
+   const record=Review.saveInfo(w.localStorage,descriptor,Object.fromEntries(Object.entries(fields).map(([k,input])=>[k,input.value])),base);
+   changed(record.mathOk?'Alterações salvas neste dispositivo. Fichas atualizadas; treino preservado.':
+    'Alterações salvas. Nível e PP incompatíveis; cálculos pendentes. Treino preservado.');
+  }catch(e){feedback.textContent='Não foi possível salvar: '+e.message;}};
+  restore.onclick=()=>{try{Review.restoreInfo(w.localStorage,descriptor);changed('Valores anteriores restaurados.');}
+   catch(e){feedback.textContent='Não foi possível restaurar: '+e.message;}};
+  form.append(save,restore,mk('p','PP esperados: 2 × (nível máximo − 1). Os dados são locais e incluídos no backup do aplicativo.'));
+  editor.append(open,form,feedback);
+ }
  const overrides=new Map();let queue=null,review=null,activeDetail=null;
  const mk=(tag,text)=>{const n=d.createElement(tag);if(text!==undefined)n.textContent=text;return n};
  function state(ref){
@@ -82,7 +151,8 @@ async function boot(w){
    ' · Orçamento: '+(ctx.budget??'pendente')+' PP'+
    (C.valid(ctx.training)?' · Distribuídos: '+C.cost(ctx.training)+' · Saldo: '+(ctx.budget-C.cost(ctx.training)):'')));
   panel.append(mk('p',context.source+'. '+context.warning));
-  if(ref.ownerMaximumOverall)panel.append(mk('p','Máximo informado por você: '+ref.ownerMaximumOverall.value+
+  const maximum=Review.infoValues(w.localStorage,descriptors.get(ref.key),{maxOverall:ref.ownerMaximumOverall?.value??null}).maxOverall;
+  if(maximum!==null)panel.append(mk('p','Máximo informado por você: '+maximum+
    ' OVR. Técnico e distribuição desse máximo ainda não foram vinculados; esta referência não altera o cálculo do treino atual.'));
   panel.append(mk('p','O cálculo é uma estimativa independente. O número máximo do banco não substitui seu treino. Bônus extras entram apenas com equipamento confirmado.'));
   for(const text of result.warnings||[])panel.append(mk('p',text));
@@ -136,14 +206,20 @@ async function boot(w){
  }
  function refresh(){
   if(queue!==null)w.cancelAnimationFrame(queue);queue=null;
+  paintInfoCatalog();
   for(const img of d.querySelectorAll('.card-art img,.ct364-card-art img,.side-art img,.mobile-profile>img,.ct361-glance-art img,#ct364-dialog-art')){
    const ref=images.get(decodeURIComponent(img.src.split('/').pop().split('?')[0]));if(!ref)continue;
    const {context,result}=state(ref);paint(d,img.parentElement,ref,context,result);
    if(d.body.dataset.page==='detail')activeDetail=ref;
   }
-  if(activeDetail){const target=d.querySelector('.profile-content')||d.querySelector('main');if(target)showPanel(activeDetail,target);}
+  if(activeDetail){const target=d.querySelector('.profile-content')||d.querySelector('main');if(target){showPanel(activeDetail,target);showInfo(activeDetail,target);
+   const v=Review.infoValues(w.localStorage,descriptors.get(activeDetail.key),infoBases.get(activeDetail.key));
+   const pp=d.querySelector('.hero-kpi strong');if(pp)pp.textContent=(v.pp??'—')+' PP';
+   const rarity=d.querySelector('.detail-overline .tiny-chip.gold');if(rarity&&v.rarity)rarity.textContent=v.rarity;
+   const mobileRarity=d.querySelector('.mobile-profile div > div[style]');if(mobileRarity&&v.rarity)mobileRarity.textContent=v.rarity;
+  }}
   const dialog=d.getElementById('ct364-dialog');
-  if(dialog?.open){const ref=refs.get(dialog.dataset.ct376Key);const target=d.getElementById('ct364-panel');if(ref&&target)showPanel(ref,target);}
+  if(dialog?.open){const ref=refs.get(dialog.dataset.ct376Key);const target=d.getElementById('ct364-panel');if(ref&&target){showPanel(ref,target);showInfo(ref,target);}}
   if(review?.open)renderReview();
  }
  const schedule=()=>{if(queue===null)queue=w.requestAnimationFrame(()=>{queue=null;refresh()})};

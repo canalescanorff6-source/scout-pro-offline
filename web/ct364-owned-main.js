@@ -97,7 +97,9 @@ const cardAsEngine=(card,role)=>{const p=confirmationOf(card,true),manual=equipm
   if(reviewed.fixedBooster)result.fixedBooster=reviewed.fixedBooster;
   if(reviewed.equipmentReviewed){result.skills=reviewed.skills.filter(Boolean).join('; ');result.boosterSlot=reviewed.extraSlot;result.booster=reviewed.extraBooster;}
   if(reviewed.training)result.trainingLevels=reviewed.training.join(',');
- }return result;
+ }
+ if(reviewed?.cardInfo&&!reviewed.cardInfo.mathOk){result.level=null;result.pp=null;}
+ return result;
 };
 function section(title){const s=mk('section','ct364-area');s.append(mk('h3','',title));return s}
 function line(parent,label,value){const row=mk('div','ct364-data-row');row.append(mk('span','',label),mk('strong','',value??'Pendente'));parent.append(row)}
@@ -1439,6 +1441,9 @@ function renderDialog(){
  window.dispatchEvent(new CustomEvent('craque:owned-context-changed',{
   detail:{key:c.key,position:activeRole||c.position,style:activeStyle}}));
 }
+window.addEventListener('craque:data-changed',e=>{
+ if(active&&e.detail?.key===window.CRAQUE_CARD_REVIEW_V379?.INFO_PREFIX+active.key){refreshReview();renderDialog();}
+});
 function switchOwnedCard(c){
  if(!c||!entries.some(item=>item.key===c.key))return;
  // Muda somente o contexto consultivo; nunca copia PP, equipamento ou

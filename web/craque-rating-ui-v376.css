@@ -1,3 +1,16 @@
+.ct-card-info-editor{margin:20px 0;padding:18px;border:1px solid #496580;border-radius:14px;background:#102437;color:#e5f0fa;overflow-wrap:anywhere}
+.ct-card-info-editor h2{font-size:20px;margin:0 0 12px}
+.ct-card-info-editor p{font-size:13px;line-height:1.5}
+.ct-card-info-editor form:not([hidden]){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.ct-card-info-editor form[hidden]{display:none!important}
+.ct-card-info-editor label{display:grid;gap:6px;font-size:13px;min-width:0}
+.ct-card-info-editor input{box-sizing:border-box;width:100%;min-width:0;min-height:44px;padding:10px;border:1px solid #71889c;border-radius:8px;background:#081827;color:#fff;font-size:16px}
+.ct-card-info-editor button{min-height:44px;padding:10px 14px;border-radius:8px;border:1px solid #68d8bd;background:#68d8bd;color:#08251e;font-weight:700;cursor:pointer;white-space:normal}
+.ct-card-info-editor button:disabled{opacity:.5;cursor:default}
+.ct-card-info-editor :focus-visible{outline:3px solid #ffda89;outline-offset:2px}
+.ct-card-info-editor [role=status]{min-height:20px}
+.ct-card-info-editor form p{grid-column:1/-1}
+@media(max-width:720px){.ct-card-info-editor form:not([hidden]){grid-template-columns:1fr}.ct-card-info-editor>button{width:100%}}
 .ct376-art{position:relative!important}
 .ct376-ovr{position:absolute;left:2%;top:2%;width:35%;min-height:23%;box-sizing:border-box;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3px 1px;border-radius:8px;background:linear-gradient(145deg,#071b30 5%,#183a55 100%);color:#fff;border:1px solid #65d8fa;box-shadow:0 2px 9px #0009;pointer-events:none;line-height:1.05;font-family:system-ui,sans-serif}
 .ct376-ovr>span:first-child{font-size:clamp(16px,2vw,26px);font-weight:900;font-variant-numeric:tabular-nums}

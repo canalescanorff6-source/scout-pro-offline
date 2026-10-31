@@ -708,4 +708,9 @@ html:has(body.ct362-design) body.ct362-design[data-page]{
 .ct-formacoes-premium-link:hover,.ct-formacoes-premium-link:focus-visible{background:#d8b87716;outline:2px solid #d8b877;outline-offset:3px}
 .ct-formacoes-premium-status{grid-column:1/-1;display:block;color:#e6c88e;font-size:11px;margin-top:7px}.ct-formacoes-premium-status[hidden]{display:none}
 @media(max-width:720px){.ct-formacoes-premium-link span{display:none}.ct-formacoes-premium-access{gap:0 5px}}
+@media(max-width:480px){
+ body.ct362-design[data-page="tactical-review"] .metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.ct362-design[data-page="tactical-review"] .metrics .metric{min-width:0}
+ body.ct362-design[data-page="tactical-review"] .metrics .metric small{white-space:normal;overflow-wrap:anywhere}
+}
 

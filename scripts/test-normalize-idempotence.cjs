@@ -1,0 +1,25 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const {spawnSync}=require('node:child_process');
+const root=path.resolve(__dirname,'..'),temp=fs.mkdtempSync(path.join(os.tmpdir(),'craque-normalize-'));
+const fichas=path.join(temp,'web/fichas');fs.mkdirSync(fichas,{recursive:true});fs.mkdirSync(path.join(temp,'scripts'));
+const source=path.join(root,'scripts/normalize-ptbr-v75.cjs'),script=path.join(temp,'scripts/normalize-ptbr-v75.cjs');
+fs.copyFileSync(source,script);
+const index=fs.readFileSync(path.join(root,'web/index.html'),'utf8');
+const files=fs.readdirSync(path.join(root,'web/fichas')).filter(f=>f.endsWith('.html'));
+for(const filename of files)fs.copyFileSync(path.join(root,'web/fichas',filename),path.join(fichas,filename));
+// A deliberately conflicting TEST card exercises the pending-label path too.
+const conflict={capture:1,name:'Carta de teste',id:'123',attack_style:'Artilheiro',defence_style:'Destruidor'};
+fs.writeFileSync(path.join(fichas,files.find(f=>f.startsWith('001_'))),'<span>Artilheiro / Destruidor</span><script id="scout-v68-data">'+JSON.stringify(conflict)+'</script><script id="lab-data">{}</script>');
+const indexPath=path.join(temp,'web/index.html');
+fs.writeFileSync(indexPath,index.replace(/<a\b[^>]*\bclass="player-card"[^>]*\bdata-cap="1"[^>]*>[\s\S]*?<\/a>/,'<a class="player-card" data-cap="1" data-search="Carta de teste"><span class="player-role">CA</span></a>'));
+const run=()=>{const r=spawnSync(process.execPath,[script],{encoding:'utf8'});assert.equal(r.status,0,r.stderr);};
+run();const once=fs.readFileSync(indexPath,'utf8');run();const twice=fs.readFileSync(indexPath,'utf8');
+assert.ok(twice===once,'Rodar verificação novamente não pode acrescentar estilos ou avisos ao catálogo');
+const dualTag=twice.match(/<a\b[^>]*\bdata-cap="149"[^>]*>/)[0];
+assert.equal(dualTag.split('Defensor criativo ataque Destruidor defesa').length-1,1,'Prefixo já acumulado deve ser normalizado uma única vez');
+assert.equal((twice.match(/\/ Destruidor \(conferir\)/g)||[]).length,2,'Um aviso na busca e um no papel de uso, sem repetição');
+assert.equal(path.dirname(temp),path.resolve(os.tmpdir()));
+assert.ok(path.basename(temp).startsWith('craque-normalize-'));
+fs.rmSync(temp,{recursive:true,force:true});
+console.log('Normalizador PASS: estilos duais e conflitos idempotentes em cópia descartável, catálogo original intacto.');
