@@ -10,9 +10,9 @@ const revision=(process.env.GITHUB_SHA||process.env.SCOUT_GIT_REVISION||'local')
 const swPath=path.join(web,'sw.js');
 const swContent=fs.readFileSync(swPath,'utf8');
 const cacheName='craque-tatico-'+version+'-'+revision.slice(0,12).replace(/[^a-zA-Z0-9_-]/g,'');
-const cacheDeclaration=/^const CACHE='[^']+';/m;
+const cacheDeclaration=/^const CRAQUE_RELEASE_CACHE='[^']+';/m;
 if(!cacheDeclaration.test(swContent))throw Error('Declaração CACHE ausente no Service Worker');
-const swUpdated=swContent.replace(cacheDeclaration,"const CACHE='"+cacheName+"';");
+const swUpdated=swContent.replace(cacheDeclaration,"const CRAQUE_RELEASE_CACHE='"+cacheName+"';");
 if(swUpdated!==swContent)fs.writeFileSync(swPath,swUpdated);
 
 const paths=['conferir-cartas.html','craque-card-review-v379.js','craque-card-review-ui-v379.js','craque-card-review-v379.css','craque-main-sheet-v378.js','craque-main-layout-v378.js','craque-main-sheet-v378.css','craque-identity-archive-v377.js','ct377-identity-corrections.json',
