@@ -11,7 +11,7 @@
     "android:init": "npx cap add android",
     "android:sync": "npx cap sync android",
     "android:build:debug": "npx cap sync android && cd android && ./gradlew assembleDebug",
-    "styles:ptbr": "node scripts/normalize-ptbr-v75.cjs",
+    "styles:ptbr": "node scripts/normalize-ptbr-v75.cjs && node scripts/retire-legacy-ui-v381.cjs",
     "brand:build": "node scripts/build-brand-v75.cjs",
     "bundle:stamp": "node scripts/stamp-bundle-v189.cjs",
     "fichas:export": "node scripts/export-function-sheets-v375.cjs",
