@@ -90,6 +90,10 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
    (review.boosterSlotSupported?' · suporte documentado da edição.':' · suporte da edição não comprovado.')+
    ' A recomendação não equipa o ímpeto.'));block.append(section);
  }
+ // V381: fontes mundiais no MESMO painel de treino, habilidades e ímpetos.
+ // Não altera o objeto de revisão, a ficha salva nem os recibos de equipamento.
+ const proRadar=host.CRAQUE_PRO_SCOUT_V381?.panel?.(review,host.document);
+ if(proRadar)block.append(proRadar);
  if(main&&!review.boosters.length)block.append(el('h4','','Ímpeto adicional'),el('p','ct311-note',
   review.boosterSlot==='ausente'?'Esta carta está cadastrada sem slot adicional.':
    review.sourceKind==='profile'?'Nenhum ímpeto selecionado nesta ficha salva.':'Indicação pendente de dados da edição.'));
