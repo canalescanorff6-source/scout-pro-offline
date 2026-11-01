@@ -113,6 +113,6 @@ with sync_playwright() as p:
      assert release['newNavKept'] and release['newThemeKept'],release
      assert release['active']=='v363',release
    ctx.close()
-  print('V362 VISUAL PASS: 10 rotas x 2 resoluções, 246 cartas, menu, ficha e estilos globais ativos.')
+  print('V362 VISUAL PASS: 16 rotas x 2 resoluções, 246 cartas, menu, ficha e tema único ativos.')
  finally:
   browser.close()
