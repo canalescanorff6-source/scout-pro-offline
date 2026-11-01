@@ -1,10 +1,12 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V298: a mesma divergência de PP que bloqueia treino também deve
  * impedir que parecer/ímpetos pareçam validados. Nunca alterar cartas. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const before=fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8');
+const before=historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8');
 const cards=JSON.parse(before).cards;
 const F=require('../web/craque-ficha-individual-v251.js');
 const T=require('../web/scout-multitactic-engine-v220.js');
@@ -54,7 +56,7 @@ for(const c of cards){
 assert.equal(examined,1230);assert.equal(conflicts,1230);assert.equal(normal,1230);
 const martin=cards.find(c=>c.numero===191);
 assert(martin&&martin.max_level===26&&martin.pp===50);
-assert.equal(fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'),before);
+assert.equal(historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'),before);
 fs.mkdirSync(path.join(root,'build'),{recursive:true});
 fs.writeFileSync(path.join(root,'build/v298-pp-conflict-gate-246x5.json'),JSON.stringify({
  schema:'CRAQUE_V298_PP_CONFLICT_GATE',cards:246,styles:5,conflictBlocked:1230,

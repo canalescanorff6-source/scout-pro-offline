@@ -405,7 +405,7 @@ if(inCard){
     }
     load(file,next);
    };
-   const loadMainSheet=next=>load('craque-competitive-batch-v380.js',()=>load('craque-main-sheet-v378.js',next));
+   const loadMainSheet=next=>load('craque-level-review-v381.js',()=>load('craque-competitive-batch-v380.js',()=>load('craque-main-sheet-v378.js',next)));
    ensure('scout-multitactic-engine-v220.js','SCOUT_TACTICS_V220',()=>
     ensure('craque-role-intelligence-v233.js','CRAQUE_INTERPRETATION_V233',()=>
      ensure('craque-ficha-individual-v251.js','CRAQUE_FICHA_INDIVIDUAL_V251',()=>

@@ -1,8 +1,10 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
-const web=path.resolve(__dirname,'../web'),audit=JSON.parse(fs.readFileSync(path.join(web,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const web=path.resolve(__dirname,'../web'),audit=JSON.parse(historicalRead(path.join(web,'SCOUT_V69_AUDITORIA.json'),'utf8'));
 const expected=new Map([[7,[35,68]],[12,[31,60]],[16,[27,52]],[18,[32,62]],[26,[31,60]],[50,[29,56]],[64,[19,36]],[65,[29,56]],[67,[31,60]],[71,[35,68]]]);
-const index=fs.readFileSync(path.join(web,'index.html'),'utf8'),folder=path.join(web,'fichas');
+const index=historicalRead(path.join(web,'index.html'),'utf8'),folder=path.join(web,'fichas');
 const filenames=fs.readdirSync(folder).filter(x=>/^\d{3}_.*\.html$/.test(x));
 let count=0;
 for(const c of audit.cards){
@@ -15,7 +17,7 @@ for(const c of audit.cards){
  assert(!m[0].includes('Aguardando PP'));
  const filename=filenames.find(x=>x.startsWith(String(c.numero).padStart(3,'0')+'_'));
  assert(filename,'Ficha faltando: '+c.name);
- const html=fs.readFileSync(path.join(folder,filename),'utf8');
+ const html=historicalRead(path.join(folder,filename),'utf8');
  const data=JSON.parse(html.match(/<script[^>]*id="scout-v68-data"[^>]*>([\s\S]*?)<\/script>/i)[1]);
  const lab=JSON.parse(html.match(/<script[^>]*id="lab-data"[^>]*>([\s\S]*?)<\/script>/i)[1]);
  assert.equal(data.name,c.name);assert.equal(data.max_level,level);assert.equal(data.pp,pp);

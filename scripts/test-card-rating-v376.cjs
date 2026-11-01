@@ -24,7 +24,7 @@ for(const key of ['ct364-11','ct364-12','ct364-13','ct364-14']){
  assert.equal(card.identityStatus,'declared_edition_match','Respeitar a confirmação específica das quatro versões externas');
  assert.equal(card.identityUsable,true);
 }
-assert.equal(data.cards.find(c=>c.key==='ct364-12').reference.maxLevel,null,'Confirmação da edição não inventa o nível ausente do Provedel');
+assert.equal(data.cards.find(c=>c.key==='ct364-12').reference.maxLevel,29,'Nível de Provedel documentado na revisão eFHUB V381');
 for(const capture of [169,171,173,174,175,176]){
  const card=data.cards.find(c=>c.capture===capture);
  const result=R.evaluate(card,{cardKey:card.key,cardId:card.cardId,edition:card.edition,
@@ -74,7 +74,7 @@ assert.equal(meta.source,'public_reference');assert.equal(meta.confirmedInGame,f
 const provedel=require('../web/ct364-owned-cards.json').cards.find(c=>c.key==='ct364-12');
 const provedelRef=data.cards.find(c=>c.key===provedel.key);
 assert.equal(R.ownedMetadata(provedel,{},provedelRef).cardId,provedelRef.reference.cardId);
-assert.equal(R.ownedMetadata(provedel,{},provedelRef).level,null);
+assert.equal(R.ownedMetadata(provedel,{},provedelRef).level,29);
 const manual=R.ownedMetadata(owned,{maxLevel:29,cardId:'999991111'},ownedRef);
 assert.equal(manual.level,29);assert.equal(manual.cardId,'999991111');assert.equal(manual.engineEdition,'');
 assert.equal(R.ownedMetadata(owned,{},data.cards.find(c=>c.key==='ct364-13')).level,null);

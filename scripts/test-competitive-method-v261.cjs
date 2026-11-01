@@ -1,10 +1,12 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V261 — critérios competitivos auditáveis, sem autoria inventada.
  * Nenhum dado das 246 cartas é modificado. Cinco estilos por edição.
  */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.resolve(__dirname,'..',p),'utf8');
 const V=require('../web/craque-ficha-individual-v251.js');
 const S=require('../web/skills-booster-v162.js');
 const B=require('../web/booster-engine-v103.js');

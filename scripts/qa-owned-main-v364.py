@@ -72,11 +72,11 @@ with sync_playwright() as pw:
    assert review.is_visible() and not review.evaluate("(e)=>e.open")
    page.locator("#ct365-review > summary").click()
    assert page.locator("#ct365-review-rows .ct365-review-row").count()==15
-   assert "15 níveis máximos pendentes" in page.locator("#ct365-review-summary").inner_text()
+   assert "15 sem confirmação manual na conta" in page.locator("#ct365-review-summary").inner_text()
    assert "0 de 15 níveis máximos informados" in page.locator("#ct365-review-count").inner_text()
    row=page.locator('[data-review-card="ct364-01"]')
    assert "31 (simulação, não máximo)" in row.inner_text()
-   assert "PP: PENDENTES" in row.inner_text()
+   assert "Máximo de referência: 31 · 60 PP" in row.inner_text()
    page.locator("#ct365-review-filter").select_option("missing-id")
    assert page.locator("#ct365-review-rows .ct365-review-row").count()==15
    page.locator("#ct365-review-filter").select_option("with-level")
@@ -425,7 +425,7 @@ with sync_playwright() as pw:
    assert still["ct364-01|MAT|posse"]["matches"]==2,(name,"histórico da build anterior foi perdido")
    assert len(still["ct364-01|MAT|posse"]["history"])==3,(name,"V371 apagou revisões após reteste documental")
    # O diálogo modal ainda está aberto: conferir a DOM sem clicar sob backdrop.
-   assert "14 níveis máximos pendentes" in page.locator("#ct365-review-summary").text_content()
+   assert "14 sem confirmação manual na conta" in page.locator("#ct365-review-summary").text_content()
    saved_row=page.locator('[data-review-card="ct364-01"]')
    assert "Máximo informado: 35 · 68 PP calculados" in saved_row.text_content()
    assert page.evaluate("() => window.__ct364BackupSignals")>=11,(name,"gameplay não notificou o backup completo")

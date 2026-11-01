@@ -1,8 +1,10 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const cards=JSON.parse(fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8')).cards;
+const cards=JSON.parse(historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8')).cards;
 const V=require('../web/craque-ficha-individual-v251.js');
 const B=require('../web/booster-engine-v103.js');
 assert.equal(cards.length,246);
@@ -31,7 +33,7 @@ const method=V.methodologyGate(m,checks,'posse',null,{});
 assert.equal(method.booster.documentaryConfidence,'BAIXA_SEM_BUILD_CONFERIDA');
 assert.equal(method.booster.budgetOriginConfirmed,true);
 assert.equal(JSON.stringify(cards),before);
-const ui=fs.readFileSync(path.join(root,'web/craque-ficha-individual-v251.js'),'utf8');
+const ui=historicalRead(path.join(root,'web/craque-ficha-individual-v251.js'),'utf8');
 assert(ui.includes("documentaryConfidence:ppConflict?'PENDENTE_PP_DIVERGENTES':boost?.primary?.estado_confianca"),
  'Conflito documentado deve bloquear confiança; caso normal mantém o motor V292');
 assert(ui.includes("max_level:card.max_level,pp_origem:card.pp_origem"));

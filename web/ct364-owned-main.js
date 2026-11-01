@@ -152,7 +152,7 @@ function refreshReview(){
  const known=entries.filter(c=>Boolean(confirmationOf(c).level));
  const idKnown=entries.filter(c=>Boolean(confirmationOf(c).cardId));
  summary.textContent='Conferir minhas 15 cartas · '+(entries.length-known.length)+
-  ' níveis máximos pendentes de confirmação no jogo';
+  ' sem confirmação manual na conta';
  const count=$('#ct365-review-count');
  if(count)count.textContent=known.length+' de '+entries.length+' níveis máximos informados · '+
   idKnown.length+' Card IDs anotados (identidade ainda não homologada)';
@@ -165,7 +165,7 @@ function refreshReview(){
  });
  const frag=document.createDocumentFragment();
  for(const c of shown){
-  const conf=confirmationOf(c);
+  const conf=confirmationOf(c),publicValue=confirmationOf(c,true);
   const item=mk('div','ct365-review-row');
   item.dataset.reviewCard=c.key;
   const left=mk('div','ct365-review-info');
@@ -173,10 +173,10 @@ function refreshReview(){
   left.append(mk('span','','eFHub: nível '+c.observed.shownLevel+' (simulação, não máximo)'));
   left.append(mk('span','',conf.level?
     'Máximo informado: '+conf.level+' · '+(2*(conf.level-1))+' PP calculados, não homologados':
+    publicValue.level?'Máximo de referência: '+publicValue.level+' · '+2*(publicValue.level-1)+' PP; conferir aplicação na conta':
     'Nível máximo: PENDENTE · PP: PENDENTES'));
   left.append(mk('span','',conf.cardId?
     'Card ID anotado (edição ainda não validada)':'Card ID: PENDENTE'));
-  const publicValue=confirmationOf(c,true);
   if(publicValue.source==='public_reference')left.append(mk('span','',publicValue.level?
    'Referência pública da edição: máximo '+publicValue.level+' · '+2*(publicValue.level-1)+' PP. Confira seu treino no jogo.':
    'Edição identificada; nível máximo público incompleto.'));
@@ -194,7 +194,7 @@ function createReview(){
  toggle.id='ct365-review-summary';review.append(toggle);
  const content=mk('div','ct365-review-body');
  const description=mk('p','ct365-review-explainer',
-  'Aqui você confere todas as 15 cartas de Minhas Cartas. Nível observado no eFHub não é nível máximo. PP só aparecem como cálculo após sua confirmação no jogo. Não preenche dados automaticamente.');
+  'Aqui você confere as 15 cartas próprias. A referência pública revisada informa nível máximo e PP; sua confirmação de progressão e equipamento na conta é separada. Nível de simulação não é comprovação do treino aplicado.');
  description.id='ct365-review-description';
  content.append(description);
  const count=mk('p','ct365-review-count');count.id='ct365-review-count';
@@ -203,7 +203,7 @@ function createReview(){
  const filter=mk('select','ct365-review-filter');filter.id='ct365-review-filter';
  for(const [value,desc] of [
   ['all','Todas as 15'],
-  ['missing-level','Sem nível máximo informado'],
+  ['missing-level','Sem confirmação manual de nível na conta'],
   ['missing-id','Sem Card ID anotado'],
   ['with-level','Com nível máximo informado']
  ]){

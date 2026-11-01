@@ -1,9 +1,11 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V258 — auditoria de repetição por edição exata e diferenças documentais.
  * Sem sobrescrever builds, editar cartas ou fingir prova de gameplay. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.resolve(__dirname,'..',p),'utf8');
 const raw=read('web/SCOUT_V69_AUDITORIA.json');
 const cards=JSON.parse(raw).cards;
 const E=require('../web/craque-ficha-individual-v251.js');

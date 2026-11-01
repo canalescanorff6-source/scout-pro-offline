@@ -1,8 +1,10 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V276: 246 cartas x cinco táticas; portfolios e overlap não autorizam uso de tokens. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const root=path.resolve(__dirname,'..'),read=p=>historicalRead(path.join(root,p),'utf8');
 const original=read('web/SCOUT_V69_AUDITORIA.json'),cards=JSON.parse(original).cards;
 const S=require('../web/skills-booster-v162.js'),B=require('../web/booster-engine-v103.js');
 const initial=JSON.stringify(cards),tactics=B.tactics;

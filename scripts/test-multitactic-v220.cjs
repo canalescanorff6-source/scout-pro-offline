@@ -1,8 +1,10 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V220: 246 cartas, cinco estilos, custo PP exato, recomendações sem dupla habilidade/ímpeto. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const root=path.resolve(__dirname,'..'),read=p=>historicalRead(path.join(root,p),'utf8');
 const cards=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
 const T=require('../web/scout-multitactic-engine-v220.js');
 const R=require('../web/skills-booster-v162.js');

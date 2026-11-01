@@ -1,10 +1,12 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V251 — auditoria FORENSE das 246 cartas, cinco estilos, dados por edição.
  * Não é validação de gameplay ou atribuição automática de meta.
  */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const root=path.resolve(__dirname,'..'),read=p=>historicalRead(path.join(root,p),'utf8');
 const V=require('../web/craque-ficha-individual-v251.js');
 const T=require('../web/scout-multitactic-engine-v220.js');
 const R=require('../web/craque-role-intelligence-v233.js');

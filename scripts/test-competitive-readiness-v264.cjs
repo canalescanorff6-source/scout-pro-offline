@@ -1,3 +1,5 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V264: auditoria de 246 edições × cinco estilos com rastreabilidade.
  * Não modifica build, não homologa jogador por Overall nem usa IA para
@@ -5,7 +7,7 @@
  */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.resolve(__dirname,'..',p),'utf8');
 const V=require('../web/craque-ficha-individual-v251.js');
 const C=require('../web/craque-competitive-readiness-v264.js');
 const snapshot=read('web/SCOUT_V69_AUDITORIA.json');

@@ -1,9 +1,11 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V248: 161 níveis sem comprovação e revisão local por edição exata.
  * O teste não cria informação para nenhuma das 246 cartas originais.
  */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.resolve(__dirname,'..',p),'utf8');
 const before=read('web/SCOUT_V69_AUDITORIA.json');
 const cards=JSON.parse(before).cards;
 const A=require('../web/craque-progresso-v248.js');

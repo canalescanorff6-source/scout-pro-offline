@@ -43,6 +43,8 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
   for(const source of r.sources){const p=el('p'),a=el('a','',source.title);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';p.append(a);info.append(p);}
   block.append(info);
  }
+ if(review.levelRevision){const r=review.levelRevision;block.append(el('p','ct381-level-note',
+  'PP revisados: '+r.beforePP+' → '+r.afterPP+'. Esta proposta usa o orçamento corrigido. O histórico anterior permanece preservado.'));}
  if(review.proposed){
   block.append(el('p','ct311-budget',main?review.spent+' / '+review.pp+' PP · saldo '+(review.remaining??review.pp-review.spent):review.spent+' / '+review.pp+' PP na proposta'+
    (review.current?' · '+review.redistributedPP+' PP realocados'+
@@ -72,7 +74,7 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
   el('p','ct311-note',(review.nativeSkillLabels||review.nativeSkills).join(' · ')||'Lista pendente'));
  block.append(inventory);
  if(review.equippedSkills?.length)block.append(el('p','ct311-note','Adicionais já informadas: '+(review.equippedSkillLabels||review.equippedSkills).join(' · ')));
- block.append(el('p','ct311-note',review.freeSkillSlots===null?
+ block.append(el('p','ct311-note',review.fixedProgression?'Edição Trending com progressão fixa; sem novas habilidades ou ímpeto selecionável.':review.freeSkillSlots===null?
   'Vagas adicionais: não comprovadas; sugestões são alternativas para conferir.':
   'Vagas adicionais conferidas nesta edição: '+review.freeSkillSlots+' · recibo da lista atual.'));
  if(review.skills.length){
@@ -775,7 +777,7 @@ function create(target,model,opts={}){
     cardId:model.cardId,edition:model.edition,nativeSkills:model.nativeSkills,skills:model.skills,
     fixedBooster:model.fixedBooster,booster:model.booster,boosterSlot:model.boosterSlot,
     trainingLevels:model.trainingLevels,positionEvidence:scenario.compatibility,
-    baseReference:model.evidenceCard?.base_stats_known===true};
+    baseReference:model.evidenceCard?.base_stats_known===true,progressReview:model.evidenceCard?.nivel_referencia||null};
    const reference=savedProfile?.train||recorded?.levels;
    const publicReference=host.CRAQUE_REFERENCES_V376?.cards.find(c=>c.cardKey===model.cardKey);
    const selection={source:savedProfile?'profile':recorded?'revision':'proposal',reference:publicReference,

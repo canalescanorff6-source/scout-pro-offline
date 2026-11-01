@@ -1,9 +1,11 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* SCOUT V218: uma ficha principal ajustável por carta; originais sempre preservados. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const read=x=>fs.readFileSync(path.join(root,x),'utf8');
+const read=x=>historicalRead(path.join(root,x),'utf8');
 const UI=require('../web/scout-training-unified-v218.js');
 const ref=require('../web/scout-training-reference-v208.js');
 const cards=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;

@@ -1,10 +1,12 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V292: precisão do ESTADO DE PROVA dos ímpetos, sem mudar scores,
  * inventar slot/equipamento ou promover números a gameplay verificado. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const read=p=>historicalRead(path.join(root,p),'utf8');
 const B=require('../web/booster-engine-v103.js');
 const S=require('../web/skills-booster-v162.js');
 const raw=read('web/SCOUT_V69_AUDITORIA.json'),cards=JSON.parse(raw).cards;

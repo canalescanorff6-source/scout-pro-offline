@@ -1,9 +1,11 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'../web');
-const audit=JSON.parse(fs.readFileSync(path.join(root,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const audit=JSON.parse(historicalRead(path.join(root,'SCOUT_V69_AUDITORIA.json'),'utf8'));
 const expected=new Map([[243,["Anthony Gordon",31,60]],[244,["Edmond Tapsoba",27,52]],[245,["Justin Kluivert",33,64]],[246,["Eric Cantona",31,60]]]);
-const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const index=historicalRead(path.join(root,'index.html'),'utf8');
 const dir=path.join(root,'fichas'),names=fs.readdirSync(dir).filter(n=>/^\d{3}_.+\.html$/.test(n));
 const originals=fs.readdirSync(path.join(root,'cartas')).filter(n=>/^CAP_\d{3}_.*\.png$/i.test(n));
 assert.equal(names.length,246,'Todas as fichas precisam permanecer');
@@ -33,7 +35,7 @@ for(const c of audit.cards){
  assert(!c.pendencias.includes('PP disponível e nível máximo'));
  const fn=names.find(s=>s.startsWith(String(c.numero).padStart(3,'0')+'_'));
  assert(fn,'Ficha desapareceu: '+name);
- const html=fs.readFileSync(path.join(dir,fn),'utf8');
+ const html=historicalRead(path.join(dir,fn),'utf8');
  const parse=id=>{const m=html.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>','i'));assert(m,'JSON ausente '+id+' '+name);return JSON.parse(m[1]);};
  const d=parse('scout-v68-data'),lab=parse('lab-data');
  assert.equal(d.name,name);assert.equal(d.capture,c.numero);

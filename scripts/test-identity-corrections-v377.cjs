@@ -1,7 +1,8 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs');
-const cards=require('../web/SCOUT_V69_AUDITORIA.json').cards;
-const refs=require('../web/ct376-card-references.json').cards;
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
+const cards=JSON.parse(historicalRead(require.resolve('../web/SCOUT_V69_AUDITORIA.json'),'utf8')).cards;
+const refs=JSON.parse(historicalRead(require.resolve('../web/ct376-card-references.json'),'utf8')).cards;
 const C=require('../web/craque-rating-context-v376.js');
 const expected={153:['105780749692770',25,48],196:['105754711432614',42,82]};
 for(const [capture,[id,level,pp]] of Object.entries(expected)){
@@ -14,7 +15,7 @@ for(const [capture,[id,level,pp]] of Object.entries(expected)){
  assert.notEqual(archive.beforeCanonical.id,id);assert(Array.isArray(archive.beforeCanonical.niveis));
  assert.equal(archive.afterCanonical.id,id);assert.deepEqual(archive.afterCanonical,card);
  assert.equal(ref.previousIdentity.cardId,archive.beforeCanonical.id);
- const html=fs.readFileSync('web/'+card.arquivo,'utf8');
+ const html=historicalRead('web/'+card.arquivo,'utf8');
  const raw=JSON.parse(html.match(/<script id="scout-v68-data"[^>]*>([\s\S]*?)<\/script>/)[1]);
  const lab=JSON.parse(html.match(/<script id="lab-data"[^>]*>([\s\S]*?)<\/script>/)[1]);
  assert.equal(raw.id,id);assert.equal(raw.edition,card.versao);assert.equal(raw.recommended_levels,null);

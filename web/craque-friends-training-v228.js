@@ -282,6 +282,7 @@ function functionSheetText(review){
    'Vagas livres não comprovadas. Conferir a lista no jogo antes de gastar tokens.':
    'Vagas livres conferidas: '+review.freeSkillSlots);
  if(!review.skills.length)out.push('Sem nova candidata disponível; conferir inventário e equipamentos.');
+ if(review.fixedProgression)out.push('EDIÇÃO TRENDING COM PROGRESSÃO FIXA · sem distribuição de PP, novas habilidades ou ímpeto selecionável.');
  review.skills.forEach((s,i)=>out.push((i+1)+'. '+s.name+' — '+s.reason,
   '   Situação: '+s.situation,'   Complemento às nativas: '+s.nativeRelation,
   '   Relação com o treino: '+s.trainingRelation));
@@ -292,6 +293,7 @@ function functionSheetText(review){
  review.boosters.forEach((b,i)=>out.push((i?'Alternativa '+i:'Principal')+': '+b.name,
   'Atributos relacionados: '+b.attributes.join(', '),b.reason));
  if(!review.boosters.length)out.push('Ímpeto candidato pendente.');
+ if(review.levelRevision){const r=review.levelRevision;out.push('','PP REVISADOS',r.beforePP+' → '+r.afterPP+' PP · proposta recalculada, sem confirmar aplicação no jogo.',r.url);}
  if(review.competitiveReview){const r=review.competitiveReview;out.push('',r.title,
   'Proposta ESTIMADA · orçamento CALCULADO · desempenho em partidas PENDENTE',r.strategy,r.tradeoff,r.slotNote,r.researchNote,
   ...r.sources.map(s=>s.title+': '+s.url));}

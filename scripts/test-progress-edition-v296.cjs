@@ -1,10 +1,12 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V296 — exigir vínculo explícito da edição em toda confirmação de PP.
  * Provas antigas ficam no armazenamento para reconfirmação, nunca migração implícita. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const catalog=fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8');
+const catalog=historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8');
 const cards=JSON.parse(catalog).cards;
 const A=require('../web/craque-progresso-v248.js');
 const C=require('../web/craque-progress-consistency-v249.js');
@@ -83,8 +85,8 @@ assert.equal(A.readSaved(martin,store),null);
 // Guardar registro antigo não o autoriza nem o apaga.
 assert.equal(JSON.parse(map.get(A.key(martin))).confirmed_in_game,true);
 assert.equal(JSON.stringify(cards),snapshot);
-assert.equal(fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'),catalog);
-assert(fs.readFileSync(path.join(root,'package.json'),'utf8').includes('test-progress-edition-v296.cjs'));
+assert.equal(historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'),catalog);
+assert(historicalRead(path.join(root,'package.json'),'utf8').includes('test-progress-edition-v296.cjs'));
 fs.mkdirSync(path.join(root,'build'),{recursive:true});
 fs.writeFileSync(path.join(root,'build/v296-progress-proof-246.json'),
  JSON.stringify({schema:'CRAQUE_V296_PROGRESS_EDITION_PROOF',

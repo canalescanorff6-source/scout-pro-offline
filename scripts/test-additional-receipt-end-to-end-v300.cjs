@@ -1,12 +1,14 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V300 — o mesmo comprovante V254 deve chegar ao motor e ao checklist,
  * sem copiar slots, inventar equipamentos ou alterar qualquer carta. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const catalogText=fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8');
+const catalogText=historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8');
 const cards=JSON.parse(catalogText).cards;
-const indexText=fs.readFileSync(path.join(root,'web/SCOUT_V221_EVIDENCE_INDEX.json'),'utf8');
+const indexText=historicalRead(path.join(root,'web/SCOUT_V221_EVIDENCE_INDEX.json'),'utf8');
 const index=new Map(JSON.parse(indexText).cards.map(x=>[Number(x.numero),x]));
 const F=require('../web/craque-ficha-individual-v251.js');
 const S=require('../web/skills-booster-v162.js');
@@ -70,8 +72,8 @@ assert.equal(signedCheck.documented,true);
 const wrong=F.proofChecklist(martin,index.get(191),null,store(martin,single,proof(martin,'')))
  .checks.find(x=>x.id==='additional');
 assert.equal(wrong.documented,false);
-assert.equal(fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'),catalogText);
-assert.equal(fs.readFileSync(path.join(root,'web/SCOUT_V221_EVIDENCE_INDEX.json'),'utf8'),indexText);
+assert.equal(historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'),catalogText);
+assert.equal(historicalRead(path.join(root,'web/SCOUT_V221_EVIDENCE_INDEX.json'),'utf8'),indexText);
 fs.mkdirSync(path.join(root,'build'),{recursive:true});
 const audit={schema:'CRAQUE_V300_ADDITIONAL_RECEIPT_E2E',cardsChecked,
  tacticChecks,documentaryEligible:confirmed,documentaryPending:pending,

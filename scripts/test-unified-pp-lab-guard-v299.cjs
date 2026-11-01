@@ -1,11 +1,13 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V299 — all nested advisory labs must honor a valid PP conflict.
  * Independently documented additional equipment remains a record, not advice. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const original=fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8');
+const original=historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8');
 const cards=JSON.parse(original).cards;
-const evidenceRows=JSON.parse(fs.readFileSync(path.join(root,'web/SCOUT_V221_EVIDENCE_INDEX.json'),'utf8')).cards;
+const evidenceRows=JSON.parse(historicalRead(path.join(root,'web/SCOUT_V221_EVIDENCE_INDEX.json'),'utf8')).cards;
 const evidenceByCap=new Map(evidenceRows.map(row=>[Number(row.numero),row]));
 const F=require('../web/craque-ficha-individual-v251.js');
 const T=require('../web/scout-multitactic-engine-v220.js');
@@ -75,12 +77,12 @@ assert.equal(userProof.skills.status,'lista_conferida_localmente');
 assert.equal(userProof.skills.trainingConflict,true);
 assert.equal(userProof.skills.slots,5);
 assert.equal(userProof.booster.name,null);
-const ui=fs.readFileSync(path.join(root,'web/craque-ficha-individual-v251.js'),'utf8');
+const ui=historicalRead(path.join(root,'web/craque-ficha-individual-v251.js'),'utf8');
 assert(ui.includes("if(method.progressConflict){"),'UI must guard secondary advisory labs');
 assert(ui.includes("} // V299 — encerra os laboratórios condicionados à reconciliação de PP."));
 assert(ui.includes("ct299-pp-gate"),'Visible notice on conflicting budget');
 assert(ui.includes("PP DIVERGENTES: o inventário de habilidades previamente conferidas"));
-assert.equal(fs.readFileSync(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'),original);
+assert.equal(historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'),original);
 fs.mkdirSync(path.join(root,'build'),{recursive:true});
 fs.writeFileSync(path.join(root,'build/v299-unified-pp-lab-guard.json'),JSON.stringify({
  schema:'CRAQUE_V299_UNIFIED_PP_LAB_GUARD',cards:246,tactics:5,

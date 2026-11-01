@@ -1,3 +1,5 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V263: função efetiva só após V246 por CAP/Card ID, sincronizada em
  * PP (V251), habilidades/ímpetos (V162) e painel principal (V220).
@@ -5,7 +7,7 @@
  */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.resolve(__dirname,'..',p),'utf8');
 const source=read('web/SCOUT_V69_AUDITORIA.json');
 const cards=JSON.parse(source).cards;
 const V=require('../web/craque-ficha-individual-v251.js');

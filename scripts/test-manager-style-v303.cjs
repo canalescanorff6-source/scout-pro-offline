@@ -1,9 +1,11 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V303: cinco fichas PP por edição + tática; nunca treino automaticamente homologado. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const read=p=>historicalRead(path.join(root,p),'utf8');
 const T=require('../web/scout-multitactic-engine-v220.js');
 const P=require('../web/craque-style-planner-v303.js');
 const R=require('../web/skills-booster-v162.js'),B=require('../web/booster-engine-v103.js');

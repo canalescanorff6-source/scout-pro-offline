@@ -1,11 +1,12 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 const core=require('../web/performance-core-v80.js');
 const web=path.join(__dirname,'../web'),files=fs.readdirSync(path.join(web,'fichas')).filter(x=>/^\d{3}_.*\.html$/.test(x));
 assert.equal(files.length,246);
 let withPP=0,withoutPP=0,hasBase=0,candidate=0,insufficient=0,duplicate=0;
 for(const file of files){
- const s=fs.readFileSync(path.join(web,'fichas',file),'utf8');
+ const s=historicalRead(path.join(web,'fichas',file),'utf8');
  const get=id=>JSON.parse(s.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>','i'))?.[1]||'null');
  const d=get('scout-v68-data'),l=get('lab-data');assert(d&&l&&d.capture===Number(file.slice(0,3)),file);
  const v=core.review(d,l,[],null);

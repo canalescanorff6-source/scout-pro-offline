@@ -12,7 +12,7 @@ function cardFromModel(m,position){return {
  localKey:m.cardKey,capture:m.evidenceCard?.numero??null,name:m.name,cardId:m.cardId,edition:m.edition,
  position,originalPosition:m.position,style:m.style,defenceStyle:m.defenceStyle,level:m.level,pp:m.pp,nativeSkills:m.nativeSkills,
  skills:m.skills||'',fixedBooster:m.fixedBooster,booster:m.booster,boosterSlot:m.boosterSlot,
- equipmentRecord:m.equipmentRecord||null,trainingLevels:m.trainingLevels,
+ equipmentRecord:m.equipmentRecord||null,trainingLevels:m.trainingLevels,progressReview:m.evidenceCard?.nivel_referencia||null,
  baseReference:m.evidenceCard?.base_stats_known===true};}
 function resolve(input,outcome,selection={},provided){
  const d=dependencies(provided),F=d.training,S=d.skills,B=d.boosters,T=d.tactical;
@@ -85,6 +85,16 @@ function resolve(input,outcome,selection={},provided){
  }
  if(card.boosterSlot==='ausente')review.boosters=[];
  if(editorial)batch.decorate(review,editorial,card,S,B);
+ const fixedProgression=exactReference&&reference.reference.type==='Trending'&&
+  reference.reference.maxLevel===1&&reference.reference.maxPP===0;
+ if(fixedProgression){
+  review.fixedProgression=true;review.canSave=false;
+  review.note='Edição Trending com progressão fixa: sem distribuição de PP, novas habilidades ou ímpeto selecionável. Histórico preservado.';
+  if((selection.skills?.length||selection.booster)||budget!==0)
+   issues.push({kind:'eligibility',name:'Progressão fixa',reason:'As escolhas salvas ou PP informados não são aplicáveis a esta edição Trending'});
+  if(!own(selection,'skills'))review.skills=[];
+  if(!own(selection,'booster'))review.boosters=[];
+ }
  // O contrato de gravação recebe exatamente as escolhas mostradas, inclusive vazias.
  result.suggestedSkills=review.skills.map(s=>({name:s.name}));
  result.booster={...result.booster,primary:review.boosters[0]?{nome:review.boosters[0].technicalName}:null};
@@ -97,6 +107,9 @@ function resolve(input,outcome,selection={},provided){
   ...(!review.eligibleForLineup?['familiaridade da posição']:[]),
   ...(issues.length?['escolhas salvas']:[])];
  review.nativeSource=nativeSource;review.issues=issues;review.managerLabel=selection.managerLabel||'';
+ const p=card.progressReview;
+ if(p?.kind==='revisao_nivel_v381'&&Number.isInteger(p.previous_pp)&&p.previous_pp!==budget)
+  review.levelRevision={beforePP:p.previous_pp,afterPP:budget,url:p.url,sourceKind:p.source_kind,confirmedInGame:false};
  return {review,source:review.sourceKind,nativeSource,issues,result};
 }
 function text(review){

@@ -1,9 +1,11 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const web=path.resolve(__dirname,'../web');
-const audit=JSON.parse(fs.readFileSync(path.join(web,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const audit=JSON.parse(historicalRead(path.join(web,'SCOUT_V69_AUDITORIA.json'),'utf8'));
 const expected=new Map([[222,["Gerson",32,62]],[223,["Frenkie de Jong",28,54]],[224,["Manu Koné",33,64]],[226,["José María Giménez",27,52]],[227,["Kenan Yıldız",31,60]],[228,["Murilo",29,56]],[229,["Zeki Çelik",31,60]],[230,["Pape Matar Sarr",32,62]],[231,["Guglielmo Vicario",30,58]],[232,["Aymeric Laporte",31,60]]]);
-const index=fs.readFileSync(path.join(web,'index.html'),'utf8');
+const index=historicalRead(path.join(web,'index.html'),'utf8');
 const dir=path.join(web,'fichas'),files=fs.readdirSync(dir).filter(f=>/^\d{3}_.+\.html$/.test(f));
 let verified=0;
 for(const card of audit.cards){
@@ -17,7 +19,7 @@ for(const card of audit.cards){
  assert(!entry[0].includes('Aguardando PP'),name+' ainda com aviso incorreto');
  const filename=files.find(f=>f.startsWith(String(card.numero).padStart(3,'0')+'_'));
  assert(filename,'Ficha ausente: '+name);
- const html=fs.readFileSync(path.join(dir,filename),'utf8');
+ const html=historicalRead(path.join(dir,filename),'utf8');
  const parse=id=>JSON.parse(html.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>','i'))[1]);
  const d=parse('scout-v68-data'),lab=parse('lab-data');
  assert.equal(d.capture,card.numero);assert.equal(d.name,name);

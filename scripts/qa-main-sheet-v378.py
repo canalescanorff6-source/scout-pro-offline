@@ -103,8 +103,8 @@ with sync_playwright() as pw:
    assert snapshot['pp']==12 and not snapshot['skills'] and not snapshot['booster'] and len(snapshot['history'])==1
    page.locator('#ct364-jump').select_option('ct364-12')
    page.locator('#ct364-panel .ct378-main-sheet').wait_for(timeout=25000)
-   assert page.locator('#ct364-panel .ct375-training').count()==0
-   assert 'PP pendentes' in page.locator('#ct364-panel .ct378-main-sheet').inner_text()
+   assert page.locator('#ct364-panel .ct375-training').count()==1
+   assert '56 / 56 PP' in page.locator('#ct364-panel .ct378-main-sheet').inner_text()
    # Familiaridade de SA continua explicita; a navegação não altera a carta nativa.
    page.goto(BASE+'/fichas/090_Neymar_Jr.html',wait_until='domcontentloaded')
    page.locator('.ct378-main-sheet').wait_for(timeout=25000)

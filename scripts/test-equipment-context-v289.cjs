@@ -1,3 +1,5 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const assert=require('node:assert/strict');
 const S=require('../web/skills-booster-v162.js');
@@ -89,7 +91,7 @@ run('ficha principal usa a mesma prova para habilidades e ímpetos',()=>{
   SCOUT_TACTICS_V220:require('../web/scout-multitactic-engine-v220.js'),
   localStorage:{getItem:key=>memory.get(key)||null}};
  const exported={exports:{}};
- vm.runInNewContext(fs.readFileSync(require.resolve('../web/scout-card-unified-v220.js'),'utf8'),{window,module:exported});
+ vm.runInNewContext(historicalRead(require.resolve('../web/scout-card-unified-v220.js'),'utf8'),{window,module:exported});
  const actual=exported.exports.nativeDetails(d,'posse');
  assert.equal(actual.skills.equippedConfirmed,true);
  assert.equal(actual.booster.primary.evidencias.adicionais_conferidas,true);
@@ -119,7 +121,7 @@ run('aliases confirmados da mesma skill produzem exatamente o mesmo ranking de �
  const rank=manual=>B.rank(d,'posse',{manualEquipped:manual,equipmentRecord:proof(d,manual)});
  for(const manual of aliases)assert.deepEqual(rank(manual),rank(aliases[0]));
 });
-const martinelli=require('../web/SCOUT_V69_AUDITORIA.json').cards.find(c=>c.numero===191);
+const martinelli=JSON.parse(historicalRead(require.resolve('../web/SCOUT_V69_AUDITORIA.json'),'utf8')).cards.find(c=>c.numero===191);
 const scenarioCard={capture:martinelli.numero,id:martinelli.id,edition:martinelli.versao,
  shown_position:martinelli.posicao,attack_style:martinelli.estilo_ataque,
  native_skills:martinelli.habilidades_nativas,boost1:martinelli.impeto_fixo,

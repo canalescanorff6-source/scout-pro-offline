@@ -1,8 +1,10 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V287 — 246 fichas, 5 estilos, provas exatas e fila operacional de fontes. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'..'),load=p=>fs.readFileSync(path.join(root,p),'utf8');
+const root=path.resolve(__dirname,'..'),load=p=>historicalRead(path.join(root,p),'utf8');
 const corpus=load('web/SCOUT_V69_AUDITORIA.json');
 const source=load('web/SCOUT_V221_EVIDENCE_INDEX.json');
 const cards=JSON.parse(corpus).cards,index=JSON.parse(source).cards;
