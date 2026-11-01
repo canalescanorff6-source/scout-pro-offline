@@ -112,15 +112,19 @@ async function restore(checked){
   checksum:checked.checksum,created_at:checked.createdAt};
  if(checked.format===FORMAT&& !checked.checksum)throw Error('Assinatura SHA-256 não preservada na prévia.');
  await validate(input);
+ const accounts=host.CRAQUE_ACCOUNTS_V382;
+ if(accounts&&Object.hasOwn(checked.items,accounts.KEY))accounts.validate(JSON.parse(checked.items[accounts.KEY]));
  const before=await create();
  await nativeSnapshot(before,'pre-restore'); // Falha de proteção interrompe restauração.
  const original=new Map();
  for(const [k] of checked.entries)original.set(k,localStorage.getItem(k));
+ if(accounts&&!original.has(accounts.KEY))original.set(accounts.KEY,localStorage.getItem(accounts.KEY));
  try{
   for(const [k,v] of checked.entries){
    localStorage.setItem(k,v);
    if(localStorage.getItem(k)!==v)throw Error('Verificação de gravação falhou para '+k);
   }
+  accounts?.afterRestore(localStorage,{legacy:!Object.hasOwn(checked.items,accounts.KEY)});
  }catch(error){
   try{
    for(const [k,v] of original){
@@ -130,6 +134,7 @@ async function restore(checked){
   throw Error('Restauração desfeita sem apagar dados anteriores: '+String(error.message||error));
  }
  queue('after-restore');
+ host.dispatchEvent(new CustomEvent('craque:accounts-restored-v382'));
  return {status:'restored',count:checked.entries.length};
 }
 async function inspect(payload){

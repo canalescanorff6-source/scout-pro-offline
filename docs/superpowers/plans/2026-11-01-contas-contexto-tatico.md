@@ -27,7 +27,7 @@
 - GO1 com benefício físico e ímpetos de mesmo nome em slots documentados: não rejeitar pelo rótulo; rejeitar prova de outra edição/slot.
 - Formações espelhadas e quase iguais, ou estilo sem regra: não inflar contagem nem cair silenciosamente em outro estilo.
 
-### Task1 — armazenamento e importação de contas
+### Task 1 — armazenamento e importação de contas
 
 **Files:** criar web/craque-accounts-v382.js, scripts/test-accounts-v382.cjs; modificar backup V226 somente no evento de restauração.
 
@@ -38,7 +38,7 @@
 - [ ] Testar restauração antiga e backup novo com memória descartável, incluindo dados ocultos por seleção corrente.
 - [ ] Rodar node scripts/test-accounts-v382.cjs e registrar commit.
 
-### Task2 — regras físicas, slots e contexto
+### Task 2 — regras físicas, slots e contexto
 
 **Files:** criar web/craque-team-context-v382.js e scripts/test-team-context-v382.cjs; alterações focadas em V228/V378/V311/V376 apenas onde regra antiga impossibilita preservar treino válido.
 
@@ -49,7 +49,7 @@
 - [ ] Acrescentar seis estilos e regras versionadas, sem mapear Sobreposição para Por Fora.
 - [ ] Rodar testes novos e regressões focadas V378/V380/V376; commit.
 
-### Task3 — catálogo e 500 desenhos
+### Task 3 — catálogo e 500 desenhos
 
 **Files:** criar web/craque-formations-v382.js, web/ct382-formations.json, scripts/build-formations-v382.cjs e scripts/test-formations-v382.cjs.
 
@@ -60,7 +60,7 @@
 - [ ] Gerar500assinaturas adicionais com funções/riscos explícitos; não preencher por renomeação. Mostrar contagem de desenhos separada dos planos/escalações.
 - [ ] Rodar teste e geração determinística/check; commit.
 
-### Task4 — cálculo conjunto e exportação
+### Task 4 — cálculo conjunto e exportação
 
 **Files:** expandir contexto V382; criar scripts/test-team-recommendations-v382.cjs.
 
@@ -71,7 +71,7 @@
 - [ ] Preservar treinos observados, capacidade real das skills e restrições de edição; comparar com proposta, sem aplicação automática.
 - [ ] Testar cinco estilos existentes mais Sobreposição, ausência de dados e chamadas sem técnico; commit.
 
-### Task5 — experiência integrada de duas contas e plano
+### Task 5 — experiência integrada de duas contas e plano
 
 **Files:** criar web/craque-account-ui-v382.js, web/craque-team-plan-v382.js, web/craque-team-plan-v382.css, web/plano-do-time-v382.html; integrar app-bridge/shell, sw.js e stamp-bundle-v189.cjs.
 
@@ -82,7 +82,7 @@
 - [ ] Integrar todos os arquivos em offline/bundle e atualizar cache; routes antigas da Principal continuam disponíveis. Fora do workspace, não exibir estado da Principal sob rótulo de Secundária.
 - [ ] Rodar QA e regressões de shell/ficha/backup; commit.
 
-### Task6 — dados privados, revisão e entrega
+### Task 6 — dados privados, revisão e entrega
 
 **Files:** artefatos fora do repo em outputs/Analise-Conta-Secundaria; script QA; package/check/workflow; docscheckpoint.
 
