@@ -200,10 +200,47 @@ function friends(){
  const existing=d.getElementById('ct361-friends-mark');if(existing)existing.textContent='ACERVOS INDEPENDENTES';
  d.body.dataset.ct362Friends='true';
 }
+/* V380: uma abertura única para as ferramentas históricas.
+ * A estrutura antiga continua operante, mas NÃO é mais a tela de entrada.
+ * Não clona formulários, não move listeners e não altera estado das cartas.
+ */
+const workspaces={
+ team:['Minha escalação','Organize titulares, reservas e técnico em um só espaço.'],
+ 'rotation-lab':['Laboratório','Teste alternativas táticas e preserve as configurações aprovadas.'],
+ 'manager-hub':['Central de técnicos','Encontre o técnico adequado para suas fichas e formações.'],
+ 'progress-audit':['Níveis e PP','Revise o nível real e o progresso de cada carta.'],
+ boosters:['Habilidades e ímpetos','Consulte evidências e recomendações sem equipar automaticamente.'],
+ 'tactical-review':['Análise tática','Compare suas cartas e os estilos disponíveis.'],
+ 'video-evidence':['Vídeos e evidências','Consulte os registros de gameplay e suas fontes.'],
+ 'player-model':['Modelo corporal','Confira medidas e dados documentados das cartas.'],
+ 'rarity-audit':['Revisão de raridades','Corrija os rótulos mediante conferência visual.'],
+ review379:['Conferir cartas','Revise imagens, edições e dados registrados.'],
+ 'batch-8':['Conferência de cartas','Revise cada cadastro sem alterar suas fichas originais.'],
+ 'batch-9':['Cadastro de cartas','Registre edições e informações verificadas.']
+};
 function generic(){
- const page=at();if(['catalog','detail','friends'].includes(page))return;
- const h=d.querySelector('main h1,.hub-hero h1');
- if(h&&page==='manager-hub')h.innerHTML='Escolha seu <em>técnico</em>';
+ const page=at();
+ if(['catalog','detail','friends'].includes(page)||d.getElementById('ct362-workspace-head'))return;
+ const main=d.querySelector('main');
+ const info=workspaces[page];if(!main||!info)return;
+ const original=main.querySelector('h1');
+ const header=create('section','ct362-workspace-head');header.id='ct362-workspace-head';
+ header.setAttribute('aria-label','Área atual do Craque Tático');
+ const identity=create('div','ct362-workspace-copy');
+ identity.append(create('span','ct362-workspace-eyebrow','CRAQUE TÁTICO  /  MINHAS FERRAMENTAS'),
+  create('h1','ct362-workspace-title',info[0]),
+  create('p','ct362-workspace-description',info[1]));
+ const link=create('a','ct362-workspace-home','Minhas cartas');
+ link.href='index.html';
+ header.append(identity,link);
+ main.insertBefore(header,main.firstChild);
+ // A antiga manchete repetida perde apenas sua função visual; seus botões,
+ // contadores, filtros e event listeners ficam nos mesmos nós do DOM.
+ if(original&&original!==header.querySelector('h1')){
+  original.classList.add('ct362-redundant-heading');
+  original.setAttribute('data-ct362-replaced','true');
+ }
+ d.body.dataset.ct362Workspace='ready';
 }
 // Caderno separado: o acervo e os planos offline continuam no aplicativo.
 function externalFormacoes(){

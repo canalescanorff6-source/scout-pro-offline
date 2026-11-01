@@ -34,7 +34,10 @@ async function scoutSaveJson(data,fileName){
 window.SCOUT_FILE_EXPORT=Object.freeze({saveJson:scoutSaveJson});
 // V360: visual estático por padrão; não ativar observadores nem shaders de cartas.
 window.CRAQUE_MOTION_PAUSED_V360=true;
-if(document.getElementById('scout-app-bar'))return;
+// V380: ativar a identidade única ANTES das injeções de módulos legados.
+ // O shell tardio ainda controla a navegação e prova a montagem completa.
+ if(document.body?.dataset?.page)document.body.classList.add('ct362-design');
+ if(document.getElementById('scout-app-bar'))return;
 const repo=String(window.SCOUT_GITHUB_REPO||'').trim();
 const scoutNativeAndroid=Boolean(window.Capacitor?.isNativePlatform?.() && window.Capacitor?.getPlatform?.()==='android');
 if(scoutNativeAndroid)document.body.classList.add('scout-native-android');
