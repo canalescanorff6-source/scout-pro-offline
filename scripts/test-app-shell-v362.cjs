@@ -43,11 +43,15 @@ assert.ok(css.includes('var(--ct362-wine)')&&css.includes('var(--ct362-bg)'),
 assert.doesNotMatch(css,/background-color:#070c14/,'Cor de fundo azul antiga não deve vencer o tema grafite');
 assert.ok(css.includes('.scout-v220-shell')&&css.includes('.scout-v189-tile')&&css.includes('.friends-card')&&css.includes('.hub-card'));
 const layout=source('craque-main-layout-v378.js');
+const curator=source('scout-card-curation-v229.js');
 for(const id of ['engenharia','foco','pontos','jogar']){
- assert.ok(layout.includes("'"+id+"'"),'Bloco histórico não preservado: '+id);
+ assert.ok(curator.includes("'"+id+"'"),'Bloco histórico não preservado na curadoria V229: '+id);
 }
-assert.ok(layout.includes('ct378-source-archive')&&layout.includes('archive.append(node)'),
- 'Blocos antigos devem ficar em consulta recolhível, não duplicar a ficha principal');
+assert.ok(layout.includes("'#scout-v220-technical'")&&
+ curator.includes("archive.id='scout-v229-legacy-archive'"),
+ 'Blocos antigos devem continuar no arquivo V229 dentro da ferramenta técnica');
+assert.ok(!layout.includes("archive.append(node)")&&!layout.includes("ct378-source-archive"),
+ 'Proibido criar um segundo arquivo da carta e retirar seções do painel técnico');
 assert.ok(shell.includes("edition.textContent='eFOOTBALL 2027 · CRAQUE TÁTICO'"),
  'Rótulo V72 não deve continuar na interface moderna');
 assert.ok(css.includes('.ct378-source-archive'),'Arquivo histórico deve herdar o visual editorial');
