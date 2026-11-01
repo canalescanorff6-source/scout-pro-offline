@@ -28,7 +28,8 @@ function resolve(input,outcome,selection={},provided){
  const batch=host?.CRAQUE_COMPETITIVE_BATCH_V380||
   (typeof module==='object'?require('./craque-competitive-batch-v380.js'):null);
  const editorial=exactReference?batch?.find(card,outcome,selection,S,T):null;
- const role=outcome.plan.role,allowed=role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6];
+ const rules=host?.CRAQUE_FUNCTIONAL_RULES_V382||(typeof module==='object'?require('./craque-functional-rules-v382.js'):null);
+ const role=outcome.plan.role,allowed=rules?.allowed(role,card)||(role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6]);
  const budget=outcome.plan.pp??outcome.progress.pp;
  const levels=own(selection,'levels')?selection.levels:editorial?.levels||outcome.plan.levels;
  const valid=v=>Number.isInteger(budget)&&T.valid(v)&&T.total(v)<=budget&&
@@ -71,11 +72,12 @@ function resolve(input,outcome,selection={},provided){
  }
  const boostKey=value=>B.boosterName(value)||String(value||'').toLowerCase().trim();
  const fixed=boostKey(card.fixedBooster),equipped=boostKey(card.booster);
- review.boosters=review.boosters.filter(b=>boostKey(b.technicalName)!==fixed&&boostKey(b.technicalName)!==equipped);
+ const stackAllowed=name=>rules?.stackingAllowed(card,name,boostKey)===true;
+ review.boosters=review.boosters.filter(b=>(boostKey(b.technicalName)!==fixed||stackAllowed(b.technicalName))&&boostKey(b.technicalName)!==equipped);
  if(own(selection,'booster')){
   const name=selection.booster,key=boostKey(name);
   if(!name)review.boosters=[];
-  else if(card.boosterSlot==='ausente'||key===fixed||key===equipped){
+  else if(card.boosterSlot==='ausente'||(key===fixed&&!stackAllowed(name))||key===equipped){
    issues.push({kind:'booster',name,reason:card.boosterSlot==='ausente'?'sem slot adicional':key===fixed?'mesmo ímpeto fixo':'já informado como equipado'});review.boosters=[];
   }else{
    const detail=review.boosters.find(b=>boostKey(b.technicalName)===key);

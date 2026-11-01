@@ -94,7 +94,8 @@ function roster(account,sources,store){
   nativeVerified:!!(m?.nativeSkills||c.habilidades_nativas),skillsVerified:!!m?.equipmentRecord,
   fixedBoosters:[{name:m?.fixedBooster||c.impeto_fixo||'',value:1,verified:false}],extraBooster:m?.booster?{name:m.booster,value:1,verified:false}:null,
   boosterSlot:m?.boosterSlot||'pendente',boosterSlotSupported:false,identityVerified:false,
-  trainingLevels:m?.trainingLevels?str(m.trainingLevels,300).split(/[,;\s]+/).filter(Boolean).map(Number):c.niveis||null,image:c.imagem||'',legacy:c};});
+  trainingLevels:m?.trainingLevels?str(m.trainingLevels,300).split(/[,;\s]+/).filter(Boolean).map(Number):c.niveis||null,image:c.imagem||'',
+  reference:(sources.references||[]).find(r=>r.capture===c.numero)||null,legacy:c};});
  const owned=(sources.owned||[]).map(c=>({id:c.key,instanceId:c.key,accountId:account,source:'owned',name:c.name,cardId:c.cardId||'',edition:c.edition||'',
   position:position(c.position),positions:[position(c.position)],maxLevel:c.maxLevel??null,pp:c.pp??null,offenseStyle:c.style||'',defenceStyle:'',
   nativeSkills:list(c.observed?.nativeSkills),skills:[],fixedBoosters:[],extraBooster:null,boosterSlot:'pendente',trainingLevels:null,image:c.image||'',legacy:c}));

@@ -116,11 +116,11 @@ const allocationCache=new Map();
  * custo progressivo e função convexamente penalizada. Não simula status final.
  * Não introduz diferenças por nome, número da carta ou Card ID.
  */
-function allocate(weights,role,pp,baseline){
+function allocate(weights,role,pp,baseline,options={}){
  if(!T||!Number.isInteger(pp)||pp<0||pp>300||!Array.isArray(weights)||weights.length!==10)return null;
- const cacheKey=JSON.stringify([weights,role,pp,T.valid(baseline)?baseline:null]);
+ const cacheKey=JSON.stringify([weights,role,pp,T.valid(baseline)?baseline:null,...(options.physicalGroups===true?['functional-v382']:[])]);
  if(allocationCache.has(cacheKey))return allocationCache.get(cacheKey)?.slice()||null;
- const allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ const allowed=options.physicalGroups===true?(role==='GO'?[1,2,3,4,5,7,8,9]:[0,1,2,3,4,5,6,7]):role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
  let dp=Array(pp+1).fill(null);dp[0]={utility:0,levels:Array(10).fill(0)};
  for(const i of allowed){
   const next=Array(pp+1).fill(null);
