@@ -1,0 +1,33 @@
+/* V381 • Radar mundial: uma seção fechada na ficha individual.
+ * Sem widgets flutuantes, animações ou mudanças na hierarquia da ficha.
+ */
+.ct381-pro-radar{
+ background:var(--ct362-surface,#333236);
+ border:1px solid var(--ct362-border,#57515b);
+ border-radius:8px;margin:12px 0;color:var(--ct362-text,#f2eded);min-width:0
+}
+.ct381-pro-radar>summary{
+ font:700 12px/1.5 system-ui,sans-serif;
+ color:var(--ct362-text,#f2eded);padding:12px 13px;
+ min-height:44px;cursor:pointer
+}
+.ct381-pro-radar>summary:focus-visible,
+.ct381-pro-radar a:focus-visible{outline:2px solid var(--ct362-accent,#dfa6b5);outline-offset:2px}
+.ct381-pro-radar[open]>summary{border-bottom:1px solid var(--ct362-border,#57515b)}
+.ct381-pro-body{padding:12px 13px;font:400 12px/1.55 system-ui,sans-serif}
+.ct381-pro-body p{margin:6px 0;color:var(--ct362-muted,#c0b8be)}
+.ct381-pro-body .ct381-pro-context{font-size:11px;overflow-wrap:anywhere}
+.ct381-pro-body .ct381-pro-focus{color:var(--ct362-text,#f2eded);font-weight:600}
+.ct381-pro-body .ct381-pro-checks{display:grid;gap:5px;margin:10px 0}
+.ct381-pro-checks>p{margin:0;padding:8px 10px;background:var(--ct362-surface2,#3b383e);border:1px solid var(--ct362-border,#57515b);border-radius:6px}
+.ct381-pro-body .ct381-pro-evidence{border-left:3px solid var(--ct362-accent,#dfa6b5)}
+.ct381-pro-body .ct381-pro-rule{padding:9px;border-left:2px solid var(--ct362-wine,#78394b)}
+.ct381-pro-sources,.ct381-pro-roster{margin-top:9px;border-top:1px solid var(--ct362-border,#57515b);padding-top:9px}
+.ct381-pro-sources>summary,.ct381-pro-roster>summary{color:var(--ct362-text,#f2eded);font-size:12px;font-weight:700;min-height:36px;cursor:pointer}
+.ct381-pro-links{padding:0;margin:6px 0;list-style:none}
+.ct381-pro-links>li{padding:9px 0;border-bottom:1px solid var(--ct362-border,#57515b)}
+.ct381-pro-links a{color:var(--ct362-accent,#dfa6b5);font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.ct381-pro-links small{display:block;margin-top:5px;color:var(--ct362-muted,#c0b8be);font-size:11px}
+.ct381-pro-roster p{overflow-wrap:anywhere;line-height:1.65}
+@media(max-width:390px){.ct381-pro-body{padding:10px}.ct381-pro-radar>summary{padding:11px}}
+@media(prefers-reduced-motion:reduce){.ct381-pro-radar *{transition:none!important;animation:none!important}}
