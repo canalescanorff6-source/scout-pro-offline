@@ -18,6 +18,12 @@ ROUTES=[
  ('rarities','raridade-cadastro-v91.html','rarity-audit'),
  ('batch8','lote-8-conferencia.html','batch-8'),
  ('batch9','lote-9-cadastro.html','batch-9'),
+ ('cards-review','conferir-cartas.html','review379'),
+ ('posse','meu-time-posse-4312.html','team'),
+ ('videos','pesquisa-videos-v106.html','video-evidence'),
+ ('player-model','player-model-v101.html','player-model'),
+ ('boosters','revisao-impetos-v103.html','boosters'),
+ ('tactical','revisao-tatica-v98.html','tactical-review'),
  ('detail','fichas/001_Daniele_Massaro.html','detail')
 ]
 with sync_playwright() as p:
@@ -39,7 +45,12 @@ with sync_playwright() as p:
        overflow:document.documentElement.scrollWidth-innerWidth,
        nav:document.querySelectorAll('#ct362-appnav > a.ct362-navitem').length}
     }""")
-    assert surface['loaded']=='true' and surface['version']=='EDITORIAL',(mode,label,surface)
+    assert surface['loaded']=='true' and (surface['version']=='CRAQUE TÁTICO' or surface['version'].startswith('v1.1.')),(mode,label,surface)
+    old_header=page.locator('body>header,.topbar,.friends-head,.hub-header,.review-top,.scout-rotation-top').first
+    if old_header.count():
+     assert 'SCOUT PRO' not in old_header.inner_text().upper(),(mode,label,'Marca antiga no cabeçalho')
+     assert 'BUILD ENGINE' not in old_header.inner_text().upper(),(mode,label,'Título antigo no cabeçalho')
+    assert 'SCOUT PRO' not in page.title().upper(),(mode,label,'Título antigo')
     assert surface['overflow']<=12,(mode,label,'overflow',surface)
     if kind in ('friends','team','manager-hub','rotation-lab'):
      assert surface['nav']==4,(mode,label,'navegação unificada ausente',surface)
@@ -71,6 +82,8 @@ with sync_playwright() as p:
      coach=page.locator('details.ct-manager-v302')
      coach.wait_for(state='attached',timeout=15000)
      assert coach.evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgb(51, 50, 54)',(mode,'seletor de técnico fora do editorial')
+     page.wait_for_function('()=>document.body.dataset.ct378Stage==="ready"',timeout=24000)
+     assert page.locator('.profile-sidebar').is_hidden(),(mode,'Lateral V68 antiga ainda visível')
      if mobile:
       assert page.locator('.scout-v220-head').evaluate("(e)=>getComputedStyle(e).display=='none'"),'Cabeçalho V220 antigo ainda duplicado'
     if label in ('home','friends','managers','detail'):
@@ -106,6 +119,6 @@ with sync_playwright() as p:
      assert release['newNavKept'] and release['newThemeKept'],release
      assert release['active']=='v363',release
    ctx.close()
-  print('V362 VISUAL PASS: 10 rotas x 2 resoluções, 246 cartas, menu, ficha e estilos globais ativos.')
+  print('V381 VISUAL PASS: 16 rotas x 2 resoluções, 246 cartas, cabeçalhos unificados, sem lateral antiga, identidade e dados preservados.')
  finally:
   browser.close()
