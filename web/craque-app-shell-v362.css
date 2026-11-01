@@ -929,3 +929,37 @@ body.ct362-design[data-ct362-workspace="ready"] :is(
  body.ct362-design .ct362-workspace-head{margin:4px 0 12px;padding:13px;gap:10px}
  body.ct362-design .ct362-workspace-home{min-height:34px;font-size:11px}
 }
+
+/* V380: painéis documentais herdados passam a seguir o tema único quando
+   abertos em análises avançadas. Sem ocultar skills, PP ou formulários. */
+body.ct362-design #scout-v162{
+ background:var(--ct362-surface)!important;background-image:none!important;
+ border:1px solid var(--ct362-border)!important;border-radius:8px!important;
+ box-shadow:none!important;color:var(--ct362-text)!important;
+}
+body.ct362-design #scout-v162 :is(
+ .v162-panel,.v162-list li,.v276-portfolio,.v276-portfolio li,
+ .v272-proofline,.v272-booster-compare,.v254-confirm-line,
+ #v273-dossier,.v273-tactic,.v274-audit){
+ background:var(--ct362-surface2)!important;background-image:none!important;
+ border-color:var(--ct362-border)!important;box-shadow:none!important;
+ color:var(--ct362-text)!important;border-radius:8px!important;
+}
+body.ct362-design #scout-v162 :is(
+ .v162-meta,.v276-portfolio h3,.v272-score,.v272-booster-compare summary,
+ #v273-dossier summary,#v273-dossier h4,.v272-criteria summary){
+ color:var(--ct362-accent)!important;
+}
+body.ct362-design #scout-v162 :is(
+ .v162-list li p,.v276-portfolio small,.v272-skill-reason,
+ .v272-criteria,.v162-foot,.v162-note){
+ color:var(--ct362-muted)!important;
+}
+body.ct362-design #scout-v162 button[aria-pressed=true]{
+ background:var(--ct362-wine)!important;background-image:none!important;
+ color:var(--ct362-on-wine)!important;border-color:var(--ct362-wine)!important;
+}
+body.ct362-design #scout-v162 button:not([aria-pressed=true]){
+ background:var(--ct362-surface2)!important;color:var(--ct362-text)!important;
+ border-color:var(--ct362-border)!important;
+}
