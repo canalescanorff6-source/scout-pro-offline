@@ -91,9 +91,20 @@ with sync_playwright() as p:
      assert 'SCOUT PRO · FICHA FUNCIONAL V160' not in comparison.inner_text(),(mode,'Título antigo permanece')
      css=page.evaluate('''() => ({surface:getComputedStyle(document.querySelector(".v160-sheet")).backgroundColor, primary:getComputedStyle(document.querySelector(".v160-sheet")).color})''')
      assert css['surface']!='rgb(13, 43, 58)',(mode,'Tema azul V160 permanece',css)
-     comparison.evaluate('(e)=>e.open=true')
+     history=page.locator('#ct380-performance-disclosure')
+     history.wait_for(state='attached',timeout=20000)
+     assert history.evaluate('(e)=>!!e.closest("#scout-v220-technical .scout-v220-technical-body")'),(mode,'V80 ainda aparece como tela independente')
+     assert not history.evaluate('(e)=>e.open'),(mode,'Histórico V80 está aberto como outra página')
+     assert history.locator('#scout-performance-v80').count()==1,(mode,'Perda dos registros V80')
+     comparison.evaluate('''(e)=>{
+       for(let parent=e.parentElement;parent;parent=parent.parentElement)
+        if(parent.tagName==='DETAILS')parent.open=true;
+       e.open=true;
+     }''')
      assert comparison.locator('[data-v160-plan="A"]').is_visible(),(mode,'Treino A inacessível após expansão')
      comparison.evaluate('(e)=>e.open=false')
+     history.evaluate('(e)=>e.open=true')
+     assert history.locator('#scout-performance-v80').is_visible(),(mode,'Histórico V80 inacessível na ficha')
     if label in ('home','friends','managers','detail','functional'):
      page.screenshot(path=str(ART/(mode+'-'+label+'.png')),full_page=False)
     # Simula uma versão futura no workspace descartável: a tela antiga
