@@ -78,7 +78,7 @@ with sync_playwright() as p:
      assert radar.evaluate('(e)=>e.tagName')=='DETAILS',(mode,'Radar PRO precisa ser um detalhe recolhido')
      assert not radar.evaluate('(e)=>e.open'),(mode,'Radar PRO não pode abrir outra ficha')
      assert radar.locator('.ct381-pro-sources a').count()==5,(mode,'Fontes internacionais ausentes')
-     assert 'Nenhuma build exata atribuída' in radar.inner_text(),(mode,'Fonte de torneio confundida com treino comprovado')
+     assert 'Nenhuma build exata atribuída' in radar.text_content(),(mode,'Fonte de torneio confundida com treino comprovado')
      assert radar.locator('a[href*="youtube.com/watch?v=fwCFo0mONck"]').count()==1,(mode,'Blackjhon ausente')
      assert page.locator('#scout-v220-training').count()==1
      assert page.locator('#scout-v220-recs').count()==1
