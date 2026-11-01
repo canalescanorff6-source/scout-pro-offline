@@ -29,7 +29,7 @@ function openTrustedExternal(raw) {
   catch (_e) {} return Promise.resolve();
 }
 function makeWindow(){
-  win = new BrowserWindow({width:1300,height:850,minWidth:370,minHeight:620,backgroundColor:'#071d24',
+  win = new BrowserWindow({width:1300,height:850,minWidth:370,minHeight:620,backgroundColor:'#28282c',
     autoHideMenuBar:true,webPreferences:{preload:path.join(__dirname,'preload.cjs'),nodeIntegration:false,contextIsolation:true,sandbox:true,webSecurity:true}});
   win.webContents.setWindowOpenHandler(({url}) => {openTrustedExternal(url);return {action:'deny'};});
   win.webContents.on('will-navigate',(event,url) => {
