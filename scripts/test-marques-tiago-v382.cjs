@@ -34,7 +34,9 @@ assert.equal(doc.cards.length,3);
 assert.equal(doc.cards.filter(c=>c.ownerId===bruno.id).length,1);
 assert.equal(doc.cards.filter(c=>c.ownerId===sete.id).length,1);
 assert.equal(T.resolveBudget(own).pp,62,'Nível 32 deve gerar 62 PP');
-const analysis=T.generate(own);
+const deps={tactical:require('../web/scout-multitactic-engine-v220.js'),
+ skills:require('../web/skills-booster-v162.js'),boosters:require('../web/booster-engine-v103.js')};
+const analysis=T.generate(own,deps);
 assert(analysis&&typeof analysis==='object','Mesmo motor de cinco fichas deve ser usado');
 const exported=F.exportOwner(doc,F.MARQUES_OWNER_ID);
 assert.equal(exported.cards.length,1);
