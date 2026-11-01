@@ -309,8 +309,10 @@
   if(!doc?.body)return false;
   if(doc.body.classList.contains('ct330-ready'))return true;
   if(doc.body.dataset.page==='rotation-lab')return mountLaboratory(doc);
+  // A identificação da formação não pode depender de rótulos de versão
+  // visíveis (V176 etc.): o design novo os retira sem alterar a função.
   if(doc.body.dataset.page==='team')return mountLineup(doc,
-   Boolean(doc.querySelector('.hero .kicker')?.textContent?.includes('V176')));
+   /(?:^|\/)meu-time-posse-4312\.html$/i.test(host?.location?.pathname||''));
   return false;
  }
  if(host?.document){
