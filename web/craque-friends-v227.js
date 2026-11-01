@@ -100,6 +100,18 @@ function addOwner(data,name){
  if(!clean)throw Error('Informe o nome da pessoa.');
  return {...doc,owners:[...doc.owners,{id:uid(),name:clean,createdAt:new Date().toISOString()}]};
 }
+// V382 — SEGUNDA CONTA PRÓPRIA: álbum "Cartas do Marques Tiago".
+ // Mesmo motor seguro de coleções privadas, mas proprietário identificável por ID
+ // fixo e com atalho próprio. NÃO migra nem clona cartas de outros elencos.
+const MARQUES_OWNER_ID='craque:marques-tiago:conta-propria:v382';
+const MARQUES_OWNER_NAME='Cartas do Marques Tiago';
+function ensureMarquesCollection(data){
+ const doc=validate(data);
+ if(doc.owners.some(owner=>owner.id===MARQUES_OWNER_ID))
+  return {data:doc,changed:false};
+ const owner={id:MARQUES_OWNER_ID,name:MARQUES_OWNER_NAME,createdAt:new Date().toISOString()};
+ return {data:validate({...doc,owners:[...doc.owners,owner]}),changed:true};
+}
 // V309: novo espaço para cartas próprias SEM alterar as 246 cartas originais.
 const PERSONAL_OWNER_ID='craque:minhas-cartas-adicionadas:v309';
 const PERSONAL_OWNER_NAME='Minhas Cartas Adicionadas';
@@ -151,5 +163,5 @@ function importOwner(data,file){
  const cards=file.cards.map(raw=>normalCard({...raw,id:uid(),ownerId:owner.id}));
  return validate({...doc,owners:[...doc.owners,owner],cards:[...doc.cards,...cards]});
 }
-return Object.freeze({KEY,SCHEMA,EXPORT,MAX_STORAGE,MAX_IMAGE,PERSONAL_OWNER_ID,PERSONAL_OWNER_NAME,ensurePersonalCollection,empty,validate,read,write,addOwner,renameOwner,removeOwner,saveCard,removeCard,exportOwner,importOwner,normalCard,bytes});
+return Object.freeze({KEY,SCHEMA,EXPORT,MAX_STORAGE,MAX_IMAGE,MARQUES_OWNER_ID,MARQUES_OWNER_NAME,ensureMarquesCollection,PERSONAL_OWNER_ID,PERSONAL_OWNER_NAME,ensurePersonalCollection,empty,validate,read,write,addOwner,renameOwner,removeOwner,saveCard,removeCard,exportOwner,importOwner,normalCard,bytes});
 });
