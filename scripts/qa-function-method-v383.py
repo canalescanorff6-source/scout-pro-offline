@@ -30,6 +30,7 @@ with sync_playwright() as pw:
    p.locator('#match-form [name="support"]').select_option('better');p.locator('#match-form [name="coverage"]').select_option('worse')
    p.locator('#match-form [name="note"]').fill('Melhor apoio, mas deixou espaço ao perder. Mesma formação e técnico.')
    p.locator('#match-form button').click();p.wait_for_function("document.querySelectorAll('.match-observation').length===1")
+   assert p.locator('#match-form [name="memberId"]').input_value()==draft['cards'][6]['id'],'Preservar o jogador ao salvar o relato'
    assert p.locator('#match-list').inner_text().count('Melhor apoio')==1
    with p.expect_download() as dl:p.locator('#export-json').click()
    path=OUT/f'plan-{width}.json';dl.value.save_as(path);plan=json.loads(path.read_text(encoding='utf8'))
@@ -49,6 +50,10 @@ with sync_playwright() as pw:
    p.locator('#backup-import').set_input_files(str(backup));p.wait_for_selector('#backup-confirm:not([hidden])');p.locator('#backup-confirm').click()
    p.locator('#history button').last.click();assert p.locator('.match-observation').count()==1
    if width==1366:
+    p.locator('#primary').click();p.locator('#style').select_option('posse');p.locator('#family').select_option('4-3-1-2');p.locator('#auto').click();p.locator('#calculate').click()
+    assert p.locator('.result-card').count()==11 and p.locator('.activation-status').count()==22
+    p.locator('#save-plan').click();p.wait_for_function("document.querySelector('#feedback').textContent.includes('Nova revisão')")
+    p.locator('#secondary').click();assert p.locator('#history button').count()==2
     p.evaluate("navigator.serviceWorker.register('./sw.js')");p.wait_for_function('navigator.serviceWorker.controller!==null',timeout=60000)
     ctx.set_offline(True);p.reload();p.wait_for_selector('body[data-team382="ready"]',timeout=30000);p.locator('#history button').last.click()
     assert p.locator('.match-observation').count()==1 and p.locator('.activation-status').count()==22

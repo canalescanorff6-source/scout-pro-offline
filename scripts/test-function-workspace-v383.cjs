@@ -9,6 +9,7 @@ const input={mode:'online',games:3,memberId:'c6',support:'better',runs:'better',
 const row=C.observe(store,'secondary',saved.id,input,ctx.signature);
 a.equal(row.observations.length,1);a.equal(row.observations[0].memberId,'c6');a.equal(row.gameplayValidated,false);
 a.match(C.exportText(row),/Observações de partida/);a.match(C.exportText(row),/Chegou na área/);
+a(C.exportText(row).includes(saved.id));a(C.exportText(row).includes(ctx.signature));a(C.exportText(row).includes(saved.savedAt));
 a.equal(JSON.parse(C.exportJSON(row)).observations[0].games,3);
 const duplicate=C.adopt(store,row,ctx.signature);a.equal(duplicate.observations.length,0,'Relatos não podem ser transferidos para nova revisão');
 const before=store.getItem(A.KEY);

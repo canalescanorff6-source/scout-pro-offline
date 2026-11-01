@@ -7,7 +7,7 @@ const A=window.CRAQUE_ACCOUNTS_V382,C=window.CRAQUE_TEAM_CONTEXT_V382,P=window.C
  interpretation:window.CRAQUE_INTERPRETATION_V233,skills:window.SCOUT_RECOMMENDATIONS_V162,boosters:window.SCOUT_BOOSTERS_V103,rating:window.CRAQUE_RATING_V376};
 const load=async path=>{const r=await fetch(path);if(!r.ok)throw Error('Arquivo indisponível: '+path);return r.json();};
 const Method=window.CRAQUE_FUNCTION_METHOD_V383;
-let account='primary',cards=[],managers=[],formation=null,lineup={},instructions=[],functions={},locks={},plan=null,sources=null,forms=[],editing=null,editingManager=null;
+let account='primary',cards=[],managers=[],formation=null,lineup={},instructions=[],functions={},locks={},plan=null,sources=null,forms=[],editing=null,editingManager=null,observationRevision=null;
 const split=s=>String(s||'').split(/[;\n]+/).map(x=>x.trim()).filter(Boolean),num=s=>s===''?null:Number(s),clone=x=>JSON.parse(JSON.stringify(x));
 function options(select,items,value){select.replaceChildren();for(const [v,label]of items){const o=mk('option',label);o.value=v;select.append(o);}if(items.some(x=>x[0]===value))select.value=value;}
 function clearPlan(){plan=null;$('plan-section').hidden=true;}
@@ -106,8 +106,10 @@ function paintResults(){const root=$('results');root.replaceChildren();$('plan-s
   else details.append(mk('p','Atributos finais dependem da base exata da edição e dos bônus documentados. Nenhum número final foi inventado.'));box.append(details);root.append(box);
  }paintObservations();}
 function paintObservations(){const ready=!!plan?.id&&!plan.historicalReadOnly&&plan.cards.every(c=>c.review.functionPlan?.version===Method.VERSION);
+ const revisionKey=plan.accountId+'|'+(plan.id||''),same=!!plan.id&&observationRevision===revisionKey,member=same?$('match-member').value:'';
+ if(!same){$('match-form').reset();for(const select of document.querySelectorAll('#match-form [data-match-signal]'))select.value='unobserved';}observationRevision=revisionKey;
  $('match-section').hidden=false;$('match-form').hidden=!ready;$('match-note').textContent=ready?'Registre o que você percebeu usando esta revisão. Compare adversários e condições semelhantes.':'Salve uma revisão atual para registrar observações. O histórico mantém os relatos da revisão original.';
- options($('match-member'),[['','Time completo'],...plan.cards.map(c=>[c.memberId,c.review.identity.name])]);const list=$('match-list');list.replaceChildren();
+ options($('match-member'),[['','Time completo'],...plan.cards.map(c=>[c.memberId,c.review.identity.name])],member);const list=$('match-list');list.replaceChildren();
  for(const o of plan.observations||[]){const box=mk('article');box.className='match-observation';box.append(mk('b',(o.memberId?plan.cards.find(c=>c.memberId===o.memberId)?.review.identity.name:'Time completo')+' · '+A.MATCH_MODES[o.mode]+' · '+o.games+' partida(s)'),mk('p',new Date(o.recordedAt).toLocaleString('pt-BR')),
   mk('p',[['support','Apoio'],['runs','Infiltração'],['recovery','Recomposição'],['coverage','Cobertura']].map(([k,l])=>l+': '+A.MATCH_SIGNALS[o[k]]).join(' · ')),mk('p',o.note));list.append(box);}
  if(!plan.observations?.length)list.append(mk('p','Ainda sem observações de partida nesta revisão.'));

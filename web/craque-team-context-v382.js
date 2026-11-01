@@ -171,6 +171,8 @@ function recommend(context,deps){
 }
 function exportJSON(plan){if(plan?.schema!=='CRAQUE_TEAM_PLAN_V382')throw Error('Plano inválido.');return JSON.stringify(plan,null,2);}
 function exportText(plan){exportJSON(plan);const out=['CRAQUE TÁTICO · PLANO DO TIME',plan.accountId==='secondary'?'Conta: Secundária':'Conta: Principal',
+ 'Revisão: '+(plan.id||'proposta ainda não salva'),'Salva em: '+(plan.savedAt||'ainda não salva'),'Contexto: '+plan.contextSignature,
+ 'Método: '+(plan.cards[0]?.review.functionPlan?.version||'histórico anterior às funções V383'),
  ...(plan.historicalReadOnly?['Histórico: dados da revisão original; recalcule antes de salvar como plano atual.']:[]),
  'Técnico: '+(plan.context.manager?.name||'Pendente'),'Estilo: '+MODES[plan.style], 'Formação: '+plan.context.formation.family+' · '+plan.context.formation.id,
  'Instruções: '+(plan.context.instructions.map(i=>INSTRUCTIONS[i.type].label+' — '+(plan.cards.find(c=>c.memberId===i.instanceId)?.review.identity.name||i.instanceId)+(i.target?' → '+i.target:'')).join('; ')||'nenhuma'),
