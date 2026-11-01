@@ -15,7 +15,7 @@ Os dados privados do vídeo, miniaturas e 23 cartas importáveis ficam fora do G
 
 ## Verificação executada
 
-- `npm run check:sequential`: **296 comandos PASS**. Mesmo conteúdo do `npm run check`, executado separadamente para evitar o limite de linha do Windows.
+- `npm run check:sequential`: **297 comandos PASS**. Mesmo conteúdo do `npm run check`, executado separadamente para evitar o limite de linha do Windows.
 - Testes V382: contas/rollback/restauração antiga, contexto e regras físicas, 500 geometrias e geração determinística, plano/exportação, contrato de UI, seis regressões da revisão independente.
 - Playwright 320/390/1366: importação 23, escalação/instruções, troca de geometria e estilo mantendo escolhas compatíveis, salvar/reabrir, histórico obsoleto consultável, exportação, backup/restauração, isolamento e offline.
 - Regressões visuais: V378 ficha principal (três telas); V362/V380 shell (17 rotas em dois tamanhos); backup offline com catálogo 261.
@@ -47,3 +47,7 @@ Também foi reproduzida e corrigida a troca de conta que podia ser revertida por
 CI e validação de Player ID passaram. A QA visual encontrou uma faixa de contas que retirava a primeira carta da abertura em 320px. A medição confirmou cerca de 75px extras; o acesso foi incorporado ao menu existente. O teste novo de entrada das contas falhou antes da correção e passou depois, nos três tamanhos; V364 também passou com 246+15 cartas, busca e edição. A nova rodada do GitHub acompanha a PR 311.
 
 A segunda rodada passou pela entrada das contas, V364 e todos os fluxos novos. A QA ampla encontrou o filtro inicial de níveis vazio após a revisão pública. A abertura agora mostra todas as cartas; fontes, relatos e confirmações continuam separados. O teste de abertura V381 foi reproduzido RED→GREEN. A QA antiga de oito telas passou a comparar contagens com a auditoria atual, mantendo a exigência de zero confirmações inventadas no dispositivo.
+
+## Fechamento da verificação local
+
+297 comandos PASS e QA ampla em oito resoluções com zero problemas. As verificações antigas de Martinelli agora usam o nível/PP atual da edição e registram uma confirmação explícita somente no perfil descartável. O comparador V289 reconhece essa conferência local sem modificar a fonte pública; uma prova de outra edição, orçamento divergente ou referência pública sem confirmação continuam bloqueados (teste RED→GREEN). Nenhum dado da instalação pessoal foi usado.

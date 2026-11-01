@@ -1,0 +1,14 @@
+'use strict';
+const a=require('node:assert/strict'),I=require('../web/craque-ficha-individual-v251.js'),S=require('../web/skills-booster-v162.js'),B=require('../web/booster-engine-v103.js');
+const cards=require('../web/SCOUT_V69_AUDITORIA.json').cards,c=cards.find(c=>c.numero===191),raw={capture:c.numero,id:c.id,name:c.name,edition:c.versao,pp:c.pp};
+const map=new Map(),store={getItem:k=>map.get(k)??null,setItem:(k,v)=>map.set(k,v)},key='scoutpro:v248:level-review:'+c.numero+'@'+c.id;
+const source=I.sourceFor(c,raw),snapshot=JSON.stringify(source),empty=I.buildReview(c,raw,{},cards,'posse',{store});
+a.equal(S.trainingScenario(I.comparisonSource(empty,source),'posse',Array(10).fill(0),B).status,'PENDENTE');
+const record={schema:'CRAQUE_PROGRESS_REVIEW_V248',numero:c.numero,card_id:String(c.id),name:c.name,edition:c.versao,level:c.max_level,pp:c.pp,confirmed_in_game:true};
+store.setItem(key,JSON.stringify(record));const check=I.buildReview(c,raw,{},cards,'posse',{store}),adapted=I.comparisonSource(check,source);
+a.equal(check.evidenceLevel,'conferencia_local_usuario');a.equal(S.trainingScenario(adapted,'posse',check.proposal.levels,B).status,'ESTIMADO');
+a.equal(JSON.stringify(source),snapshot);a.equal(JSON.parse(store.getItem(key)).pp,c.pp);
+a.deepEqual(I.comparisonSource({...check,edition:'Outra edição'},source),source);
+store.setItem(key,JSON.stringify({...record,level:27,pp:52}));const conflict=I.buildReview(c,raw,{},cards,'posse',{store});
+a.equal(conflict.canDraft,false);a.deepEqual(I.comparisonSource(conflict,source),source);
+console.log('V382 LOCAL COMPARISON PASS: conferência exata permite cenário; fonte pública sozinha, edição errada e PP divergente não autorizam.');

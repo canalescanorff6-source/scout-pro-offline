@@ -5,6 +5,16 @@ from qa_navigation_v378 import reveal
 
 def run_competitive_qa(page, url, out, name):
     page.goto(url + '/fichas/191_Gabriel_Martinelli.html', wait_until='domcontentloaded')
+    # Perfil descartável: registrar uma conferência fictícia EXPLÍCITA do orçamento
+    # atual para exercitar a ferramenta antiga, que exige prova local do usuário.
+    budget=page.evaluate("""async () => {
+      const c=(await (await fetch('../SCOUT_V69_AUDITORIA.json')).json()).cards.find(c=>c.numero===191);
+      localStorage.setItem('scoutpro:v248:level-review:'+c.numero+'@'+c.id,JSON.stringify({
+        schema:'CRAQUE_PROGRESS_REVIEW_V248',numero:c.numero,card_id:String(c.id),name:c.name,
+        edition:c.versao,level:c.max_level,pp:c.pp,confirmed_in_game:true,source:'QA descartável'}));
+      return c.pp;
+    }""")
+    page.reload(wait_until='domcontentloaded')
     reveal(page.locator('#ct253-integrated-review > summary'))
     page.locator('#ct253-integrated-review > summary').click()
     comparison = page.locator('#ct289-training-comparison')
@@ -23,7 +33,7 @@ def run_competitive_qa(page, url, out, name):
     candidate_count = options.count()
     assert candidate_count >= 3, 'Faltam alternativas viáveis'
     select.select_option(options.last.get_attribute('value'))
-    assert '50 / 50 PP' in comparison.locator('.ct289-comparison-summary').inner_text()
+    assert f'{budget} / {budget} PP' in comparison.locator('.ct289-comparison-summary').inner_text()
     assert comparison.locator('tbody tr').count() == 7
     assert comparison.locator('tbody tr').evaluate_all(
         '(rows) => rows.reduce((n,row) => n+Number(row.dataset.deltaPp),0)') == 0
@@ -40,12 +50,12 @@ def run_competitive_qa(page, url, out, name):
     assert not fresh.get_attribute('open'), 'Candidato de outra tática foi reaproveitado'
     fresh.locator('summary').click()
     page.wait_for_function("() => document.querySelector('#ct289-training-comparison')?.dataset.ready === 'true'")
-    assert '50 / 50 PP' in fresh.inner_text()
+    assert f'{budget} / {budget} PP' in fresh.inner_text()
     # A simulação só precisa dos módulos e fontes já carregados.
     page.context.set_offline(True)
     try:
         fresh.locator('select').select_option(index=0)
-        assert '50 / 50 PP' in fresh.inner_text()
+        assert f'{budget} / {budget} PP' in fresh.inner_text()
         assert 'Complementos neste cenário experimental' in fresh.inner_text()
     finally:
         page.context.set_offline(False)
@@ -75,6 +85,6 @@ def run_competitive_qa(page, url, out, name):
     assert json.loads(evidence['proof'])['confirmed'] is True
     page.reload(wait_until='domcontentloaded')
     page.wait_for_function("() => document.querySelector('#scout-v220-skill-count')?.textContent.includes('4 vaga(s)')")
-    return {'exact_budget': 50, 'alternatives': candidate_count,
+    return {'exact_budget': budget, 'alternatives': candidate_count,
             'readonly': True, 'offline': True, 'tactic_reset': True,
             'incompatible_skill_blocked': True, 'confirmation_persisted': True}
