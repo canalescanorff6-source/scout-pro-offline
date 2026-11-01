@@ -1,1 +1,61 @@
-.v160-sheet{margin:16px 0 20px;padding:clamp(14px,2vw,22px);background:linear-gradient(135deg,#0d2b3a,#0b1c2c);border:1px solid #436b77;border-radius:16px;font-size:13px;line-height:1.6;color:#e2f0f6}.v160-sheet *{box-sizing:border-box}.v160-sheet small{font-size:10px;font-weight:850;color:#e7cd91}.v160-sheet h2{font-size:clamp(20px,3vw,24px);margin:4px 0 8px}.v160-sheet h3{font-size:15px;color:#f1d79f;margin:0 0 8px}.v160-sheet p,.v160-inline p{color:#bed7e4;margin:7px 0 12px}.v160-badge{display:inline-block;background:#133c3e;border:1px solid #65afa6;border-radius:8px;color:#b1f3dd;padding:5px 10px}.v160-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.v160-metrics>div{display:grid;gap:3px;border:1px solid #365974;border-radius:10px;padding:10px;background:#0b2234}.v160-metrics strong{font-size:17px}.v160-sheet article{border:1px solid #2c5065;background:#0a2031;border-radius:11px;padding:13px;margin-bottom:10px}.v160-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.v160-columns article{min-width:0}.v160-overflow{overflow-x:auto}.v160-overflow table{border-collapse:collapse;width:100%;font-size:12px}.v160-overflow th,.v160-overflow td{padding:5px;border-bottom:1px solid #2a4b5d;text-align:left}.v160-overflow th:nth-child(n+2),.v160-overflow td:nth-child(n+2){text-align:right}.v160-overflow tfoot th{color:#b5edcb}.v160-note{font-size:11px}.v160-sheet button{border:1px solid #65af9d;background:#63d9b9;color:#05251d;border-radius:9px;padding:10px;font-weight:800;cursor:pointer}.v160-sheet button:focus-visible{outline:3px solid #f1d596;outline-offset:2px}.v160-proof{margin-top:4px}.v160-proof ul{padding-left:17px}.v160-proof a{color:#91e9d4;font-weight:800}.v160-inline{border:1px solid #30546b;background:#102c3b;border-radius:10px;padding:12px;margin:9px 0}@media(max-width:680px){.v160-columns{grid-template-columns:1fr}}
+/* CRAQUE TÁTICO V380 — comparações V160 são conteúdo técnico da ficha única.
+ * Sem página azul própria, sem animar cards; mantém os botões e tabelas funcionais.
+ */
+.v160-sheet,.v160-inline{
+ --v160-bg:var(--ct362-surface,#333236);
+ --v160-inner:var(--ct362-surface2,#3b383e);
+ --v160-border:var(--ct362-border,#57515b);
+ --v160-ink:var(--ct362-text,#f2eded);
+ --v160-muted:var(--ct362-muted,#c0b8be);
+ --v160-accent:var(--ct362-accent,#dfa6b5);
+ --v160-wine:var(--ct362-wine,#78394b);
+ color:var(--v160-ink);font:400 13px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
+ box-sizing:border-box
+}
+.v160-sheet *,.v160-inline *{box-sizing:border-box}
+.v160-sheet{
+ display:block;min-width:0;margin:10px 0;
+ border:1px solid var(--v160-border);border-radius:8px;
+ background:var(--v160-bg);box-shadow:none
+}
+.v160-sheet>summary{
+ display:flex;gap:10px;align-items:center;justify-content:space-between;
+ padding:12px 14px;cursor:pointer;color:var(--v160-ink);
+ list-style:none;background:transparent;min-height:50px;
+}
+.v160-sheet>summary::-webkit-details-marker{display:none}
+.v160-summary-copy{display:grid;gap:2px;min-width:0}
+.v160-summary-copy>strong{font-size:13px;font-weight:700;color:var(--v160-ink)}
+.v160-summary-copy>small{font-size:11px;font-weight:450;color:var(--v160-muted)}
+.v160-chevron{color:var(--v160-accent);font-size:21px;line-height:1}
+.v160-sheet[open] .v160-chevron{transform:rotate(180deg)}
+.v160-sheet>summary:focus-visible,.v160-sheet a:focus-visible,
+.v160-sheet button:focus-visible{outline:2px solid var(--v160-accent);outline-offset:2px}
+.v160-content{border-top:1px solid var(--v160-border);padding:12px}
+.v160-sheet h3{margin:0 0 7px;font-size:14px;font-weight:700;color:var(--v160-ink)}
+.v160-sheet p,.v160-inline p{margin:7px 0 12px;color:var(--v160-muted)}
+.v160-note{font-size:11px}
+.v160-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0}
+.v160-metrics>div{display:grid;gap:3px;min-width:0;padding:9px;border:1px solid var(--v160-border);border-radius:7px;background:var(--v160-inner)}
+.v160-metrics small{font-size:10px;color:var(--v160-muted)}
+.v160-metrics strong{font-size:16px;font-weight:700;color:var(--v160-ink)}
+.v160-sheet article{min-width:0;padding:11px;margin:0 0 9px;border:1px solid var(--v160-border);border-radius:7px;background:var(--v160-inner)}
+.v160-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.v160-columns article{min-width:0}
+.v160-overflow{min-width:0;overflow-x:auto}
+.v160-overflow table{width:100%;border-collapse:collapse;font-size:12px;color:var(--v160-ink)}
+.v160-overflow th,.v160-overflow td{padding:7px 5px;border-bottom:1px solid var(--v160-border);text-align:left}
+.v160-overflow th:nth-child(n+2),.v160-overflow td:nth-child(n+2){text-align:right}
+.v160-overflow tfoot th{color:var(--v160-accent)}
+.v160-sheet button{
+ display:inline-flex;justify-content:center;align-items:center;min-height:38px;
+ padding:8px 12px;border:1px solid var(--v160-wine);border-radius:7px;
+ background:var(--v160-wine);color:var(--ct362-on-wine,#fff4f6);
+ font:700 12px/1.3 inherit;cursor:pointer
+}
+.v160-sheet a{color:var(--v160-accent);font-weight:700}
+.v160-proof ul{padding-left:18px;color:var(--v160-muted)}
+.v160-inline{margin:8px 0;padding:10px;border:1px solid var(--v160-border);border-radius:7px;background:var(--v160-inner)}
+@media(max-width:680px){.v160-columns{grid-template-columns:1fr}}
+@media(max-width:370px){.v160-content{padding:8px}.v160-sheet article{padding:8px}.v160-metrics>div{padding:7px}.v160-summary-copy>small{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.v160-sheet *{animation:none!important;transition:none!important}}
