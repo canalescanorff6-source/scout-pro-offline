@@ -30,10 +30,15 @@ with sync_playwright() as pw:
    more.locator(':scope > summary').click()
    assert page.locator('#scout-v220-training').is_visible()
    assert page.locator('#scout-v220-recs').is_visible()
+   technical=page.locator('#scout-v220-technical')
+   assert technical.locator('#scout-v229-legacy-archive').count()==1, 'Arquivo original precisa estar dentro do painel técnico'
+   technical.locator(':scope > summary').click()
+   assert technical.evaluate('(e)=>e.open')
    archive.locator(':scope > summary').click()
    assert page.locator('#engenharia').is_visible()
    assert page.locator('#pontos').is_visible()
    archive.locator(':scope > summary').click()
+   technical.locator(':scope > summary').click()
    more.locator(':scope > summary').click()
    for style in ['rapido','normal','fora','longo','posse']:
     page.locator('#ct378-style').select_option(style)
