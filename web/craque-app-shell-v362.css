@@ -36,7 +36,7 @@
   .ct364-card-tag,.ct-v230-tactic-label,.scout-v220-eyebrow){color:var(--ct362-accent)!important}
  body.ct362-design :where(.topbar,.friends-head,.hub-header,.scout-rotation-top,.review-top,main>.head,
   .ct364-dialog-head,.friends-dialog-head,.friends-dialog-actions,.friend-analysis-sections,
-  .ct364-dialog-foot,.friend-analysis-cta,#scout-app-bar,#ct362-appnav){
+  .ct364-dialog-foot,.friend-analysis-cta,#scout-app-bar,#ct362-appnav,body>header){
   background:var(--ct362-chrome)!important;border-color:var(--ct362-faint)!important;box-shadow:none!important;
  }
  body.ct362-design :where(.panel,.card,.block,.notice,.metric,.hero,.topic,
@@ -47,10 +47,10 @@
   .ct361-player-glance,.ct360-card-quick,.ct360-card-extra,.ct378-main-sheet,
   .ct378-sheet-options,.ct374-native-inventory,.ct374-pp-comparison,.ct375-booster,
   .ct364-owned-section,.ct364-player-card,.ct364-owned-count,.ct364-area,.ct376-panel,.ct-card-info-editor,
-  .review-card,.review-confirm,fieldset,dialog,#scout-backup-modal,#scout-android-update-modal,
+  .review-card,.review-confirm,.review-intro,.review-controls,.review-actions,.review-navigation,.review-export,fieldset,dialog,#scout-backup-modal,#scout-android-update-modal,
   #scout-card-navigator,.scout-search-panel,.scout-v189-about,
   .ct-manager-v302,.ct-manager-v329-tools,.scout-v203-filter-panel,.ct362-tools-popup,.ct330-focus,
-  .ct363-readiness,.friends-fichas-bar,
+  .ct363-readiness,.friends-fichas-bar,.fields,.records,.art-wrap,.layout,.review-fields,.review-history,.scout-v229-legacy-archive,
   #ct355-update-ready){
   background:var(--ct362-surface)!important;color:var(--ct362-text)!important;
   border-color:var(--ct362-border)!important;border-radius:var(--ct362-radius)!important;
@@ -119,6 +119,28 @@
   background:var(--ct362-chrome)!important;border-color:var(--ct362-muted)!important;
   box-shadow:none!important;
  }
+ /* Rotas históricas com HTML próprio: mesma identidade visual do catálogo.
+    Mantém grades, campos, contadores, navegação e handlers funcionais. */
+ body.ct362-design[data-page="batch-8"] :where(.art,.fields),
+ body.ct362-design[data-page="batch-9"] :where(.art-wrap,.records,.help,.count),
+ body.ct362-design[data-page="rarity-audit"] :where(.figure,.controls,.pills,.counter),
+ body.ct362-design[data-page="review379"] :where(.review-fields,.review-history,.review-card),
+ body.ct362-design[data-page="tactical-review"] :where(.details,.filters,.actions),
+ body.ct362-design[data-page="boosters"] :where(.tools,.tactics,.facts,.visual){
+  background:var(--ct362-surface)!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-text)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design :where(.ct362-unified-head,header.ct362-unified-head){
+  background:var(--ct362-chrome)!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-text)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design :where(.ct362-unified-head .brand-copy small,.ct362-unified-head .edition){
+  color:var(--ct362-muted)!important;
+ }
  body.ct362-design :where(.pitch,.scout-rotation-field,.ct-v230-field){
   background:#2c2c30!important;border-color:#69626b!important;box-shadow:none!important;
  }
@@ -149,7 +171,7 @@
 html:has(body.ct362-design){background:var(--ct362-bg)!important;scroll-behavior:auto!important}
 body.ct362-design{
  color:var(--ct362-text)!important;
- background:radial-gradient(circle at 90% -10%,#213148 0%,transparent 37%),#070c14!important;
+ background:var(--ct362-bg)!important;
  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
  font-synthesis:none;
 }
@@ -185,7 +207,7 @@ body.ct362-design :is(.topbar .brand,.friends-brand,.hub-brand){
  color:#fff9ee!important;text-decoration:none!important
 }
 body.ct362-design :is(.topbar .edition,.friends-head small,.hub-brand small){
- color:#b4bfd1!important
+ color:var(--ct362-muted)!important
 }
 body.ct362-design .ct362-appnav{
  display:flex;gap:4px;justify-content:space-around;
@@ -193,7 +215,7 @@ body.ct362-design .ct362-appnav{
  left:50%;transform:translateX(-50%);width:min(calc(100% - 16px),540px);
  z-index:30000;box-sizing:border-box;
  padding:5px;border-radius:17px;border:1px solid var(--ct362-border);
- background:#121b29f5;box-shadow:0 16px 32px #000a
+ background:var(--ct362-chrome);box-shadow:none
 }
 body.ct362-design .ct362-appnav .ct362-navitem{
  display:flex;flex:1;min-width:0;min-height:52px;
@@ -851,7 +873,7 @@ html:has(body.ct362-design) body.ct362-design[data-page]{
 /* Acesso ao caderno online; independente dos quatro atalhos do acervo. */
 .ct-formacoes-premium-access{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 8px;min-width:0}
 .ct-formacoes-premium-access #ct356-boot-proof{min-width:0;justify-self:start}
-.ct-formacoes-premium-link{grid-column:2;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:28px;padding:4px 8px;border:1px solid #d8b87759;border-radius:7px;color:var(--ct362-accent);background:#d8b87709;text-decoration:none;font-size:10px;white-space:nowrap}
+.ct-formacoes-premium-link{grid-column:2;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:28px;padding:4px 8px;border:1px solid var(--ct362-border);border-radius:7px;color:var(--ct362-accent);background:var(--ct362-surface);text-decoration:none;font-size:10px;white-space:nowrap}
 .ct-formacoes-premium-link strong{font-weight:750}.ct-formacoes-premium-link span{font-size:9px;color:var(--ct362-muted)}
 .ct-formacoes-premium-link:hover,.ct-formacoes-premium-link:focus-visible{background:#d8b87716;outline:2px solid #d8b877;outline-offset:3px}
 .ct-formacoes-premium-status{grid-column:1/-1;display:block;color:var(--ct362-accent);font-size:11px;margin-top:7px}.ct-formacoes-premium-status[hidden]{display:none}
