@@ -36,9 +36,18 @@ with sync_playwright() as pw:
    assert technical.evaluate('(e)=>e.open')
    archive.locator(':scope > summary').click()
    assert page.locator('#engenharia').is_visible()
-   assert page.locator('#pontos').is_visible()
-   archive.locator(':scope > summary').click()
-   technical.locator(':scope > summary').click()
+   # A secao #pontos possui um <details> proprio dentro do arquivo V229.
+   # Testar o caminho real do deep link, que expande todos os ancestrais
+   # sem tornar a documentacao antiga visivel na ficha principal.
+   page.evaluate("""() => {
+    window.location.hash='#pontos';
+    window.dispatchEvent(new Event('hashchange'));
+   }""")
+   assert page.locator('#pontos').is_visible(),(name,'Deep link #pontos nao abriu a secao historica')
+   assert archive.evaluate('(e)=>e.open') and technical.evaluate('(e)=>e.open')
+   page.evaluate('() => { history.replaceState(null,"",location.pathname); }')
+   for selector in ['#scout-v229-legacy-archive','#scout-v220-technical']:
+    page.locator(selector).evaluate('(e)=>{e.open=false;}')
    more.locator(':scope > summary').click()
    for style in ['rapido','normal','fora','longo','posse']:
     page.locator('#ct378-style').select_option(style)
