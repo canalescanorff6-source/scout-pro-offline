@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Scout PRO · Raridades confirmadas V92</title>
+<title>Craque Tático · Raridades confirmadas</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#07090d;color:#f3f6fa}
 *{box-sizing:border-box}body{margin:0;padding:17px}main{max-width:840px;margin:auto;border:1px solid #343b48;border-radius:18px;padding:18px;background:#07090c}
@@ -38,7 +38,7 @@ button:disabled{opacity:.4;cursor:not-allowed}.pager{display:flex;justify-conten
 <section class="layout"><div class="figure">
 <img id="art" alt="Arte original da carta" src="" width="210" height="296" loading="eager"/>
 <small id="caption"></small>
-<div id="imageError" class="status" hidden>Imagem não carregada. Verifique se este arquivo está sendo aberto na pasta web do Scout PRO.</div>
+<div id="imageError" class="status" hidden>Imagem não carregada. Verifique se este arquivo está sendo aberto na pasta web do Craque Tático.</div>
 </div><div>
 <h2 id="heading"></h2><div class="meta">
 <div>Raridade atual: <b id="rarityOld"></b></div>
@@ -131,7 +131,7 @@ $("form").onsubmit=e=>{
 $("submit").onclick=async()=>{
  const records=candidates.filter(c=>saved[c.numero]?.raridade&&saved[c.numero].raridade!==c.raridade_confirmada);
  if(!records.length)return;
- const text="Confirmei visualmente estas raridades no cadastro V91 do Scout PRO. Corrija apenas os rótulos de raridade (índice, fichas e filtros), sem modificar nenhuma das 246 artes, Card IDs, níveis, PP, habilidades, ímpetos ou builds. Faça commit e valide CI Windows/Android.\n"+records.map(c=>"#"+c.numero+" "+c.nome+": raridade confirmada "+saved[c.numero].raridade+" (atual "+c.raridade_atual+")").join("\n");
+ const text="Confirmei visualmente estas raridades no cadastro V91 do Craque Tático. Corrija apenas os rótulos de raridade (índice, fichas e filtros), sem modificar nenhuma das 246 artes, Card IDs, níveis, PP, habilidades, ímpetos ou builds. Faça commit e valide CI Windows/Android.\n"+records.map(c=>"#"+c.numero+" "+c.nome+": raridade confirmada "+saved[c.numero].raridade+" (atual "+c.raridade_atual+")").join("\n");
  try{await navigator.clipboard.writeText(text);$("footer").textContent="Registros copiados! Cole a mensagem na conversa para iniciar o commit."}
  catch(_e){const field=document.createElement("textarea");field.value=text;document.body.appendChild(field);field.focus();field.select();try{document.execCommand("copy");$("footer").textContent="Registros copiados! Cole no chat."}catch(_ex){$("footer").textContent=text}field.remove()}
 };
