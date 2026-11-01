@@ -141,6 +141,32 @@
  body.ct362-design :where(.ct362-unified-head .brand-copy small,.ct362-unified-head .edition){
   color:var(--ct362-muted)!important;
  }
+ /* A ficha nova assume também superfícies que os motores V68–V220
+    continuam criando. O conteúdo histórico é preservado no arquivo V229,
+    mas não mantém outra identidade de cores dentro da interface. */
+ body.ct362-design[data-page="detail"] :where(
+   .side-card,.side-info,.side-info-row,.soft-panel,.v68-brief,.v68-info,
+   .v68-callout,.v68-alert,.v68-build,.v68-gameplay,.performance-lab,
+   .lab-evidence,.lab-advice,.lab-stats,.gameplay-tip,.focus-banner,
+   .scout-v220-training,.scout-v220-recs,.scout-v220-practice,
+   .scout-v220-technical-body,.scout-v218-advanced,.scout-v229-archive-content){
+  background:var(--ct362-surface)!important;
+  background-image:none!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-text)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design[data-page="detail"] :where(.point-row,.point-track,
+  .v68-progress-row,.build-plan,.build-head,.lab-controls,.lab-actions,
+  .scout-v220-recs-grid article){
+  background-color:var(--ct362-chrome)!important;
+  border-color:var(--ct362-faint)!important;
+  color:var(--ct362-text)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design[data-page="detail"] :where(.side-info-row label,.v68-kicker,.lab-note-label){
+  color:var(--ct362-muted)!important;
+ }
  body.ct362-design :where(.pitch,.scout-rotation-field,.ct-v230-field){
   background:#2c2c30!important;border-color:#69626b!important;box-shadow:none!important;
  }
@@ -870,6 +896,18 @@ html:has(body.ct362-design) body.ct362-design[data-page]{
  }
 }
 
+/* A lateral V68 é apenas um contêiner antigo. Assim que a ficha única
+   e o resumo da carta existem, nenhuma segunda coluna deve aparecer em
+   qualquer tamanho de janela do Electron ou do Android. */
+body.ct362-design[data-page="detail"][data-ct378-stage="ready"]:has(#ct361-player-glance) .profile-sidebar{
+ display:none!important;
+}
+body.ct362-design[data-page="detail"][data-ct378-stage="ready"]:has(#ct361-player-glance) .profile{
+ grid-template-columns:minmax(0,1fr)!important;
+}
+body.ct362-design[data-page="detail"][data-ct378-stage="ready"]:has(#ct361-player-glance) .profile-content{
+ width:100%!important;max-width:100%!important;min-width:0!important;
+}
 /* Acesso ao caderno online; independente dos quatro atalhos do acervo. */
 .ct-formacoes-premium-access{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 8px;min-width:0}
 .ct-formacoes-premium-access #ct356-boot-proof{min-width:0;justify-self:start}
