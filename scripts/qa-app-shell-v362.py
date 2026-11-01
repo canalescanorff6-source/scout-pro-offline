@@ -18,7 +18,13 @@ ROUTES=[
  ('rarities','raridade-cadastro-v91.html','rarity-audit'),
  ('batch8','lote-8-conferencia.html','batch-8'),
  ('batch9','lote-9-cadastro.html','batch-9'),
- ('detail','fichas/001_Daniele_Massaro.html','detail')
+ ('detail','fichas/001_Daniele_Massaro.html','detail'),
+ ('review','conferir-cartas.html','review379'),
+ ('team-4312','meu-time-posse-4312.html','team'),
+ ('videos','pesquisa-videos-v106.html','video-evidence'),
+ ('model','player-model-v101.html','player-model'),
+ ('boosters','revisao-impetos-v103.html','boosters'),
+ ('tactics','revisao-tatica-v98.html','tactical-review')
 ]
 with sync_playwright() as p:
  exe=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
