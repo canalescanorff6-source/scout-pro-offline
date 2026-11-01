@@ -149,19 +149,19 @@
 html:has(body.ct362-design){background:var(--ct362-bg)!important;scroll-behavior:auto!important}
 body.ct362-design{
  color:var(--ct362-text)!important;
- background:radial-gradient(circle at 90% -10%,#213148 0%,transparent 37%),#070c14!important;
+ background:var(--ct362-bg)!important;
  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
  font-synthesis:none;
 }
 body.ct362-design :is(button,a,input,select,textarea){-webkit-tap-highlight-color:transparent}
-body.ct362-design :is(button,a):focus-visible{outline:3px solid #f1c775!important;outline-offset:3px}
+body.ct362-design :is(button,a):focus-visible{outline:3px solid var(--ct362-accent)!important;outline-offset:3px}
 body.ct362-design :is(input,select,textarea){
  font:inherit;max-width:100%;box-sizing:border-box;color:#f8f5eb!important;
- background:#0d1725!important;border:1px solid #54657e!important;
+ background:var(--ct362-surface)!important;border:1px solid var(--ct362-border)!important;
  border-radius:11px!important;box-shadow:none!important
 }
 body.ct362-design :is(input,select,textarea):focus-visible{
- outline:2px solid #f1c775!important;outline-offset:1px
+ outline:2px solid var(--ct362-accent)!important;outline-offset:1px
 }
 body.ct362-design :is(.tiny-chip,.scout-v220-chips span,.ct-v230-tactic-tabs button,.friends-eyebrow,.hub-eyebrow){
  letter-spacing:.015em!important
@@ -169,8 +169,8 @@ body.ct362-design :is(.tiny-chip,.scout-v220-chips span,.ct-v230-tactic-tabs but
 body.ct362-design .ct362-proof{
  position:absolute;right:9px;top:7px;display:inline-flex;
  padding:3px 7px;align-items:center;font-weight:900;font-size:9px;letter-spacing:.045em;
- white-space:nowrap;color:#101724;background:#f3cd77;
- border:1px solid #ffe8a7;border-radius:6px;z-index:2;pointer-events:none;
+ white-space:nowrap;color:var(--ct362-bg);background:var(--ct362-accent);
+ border:1px solid var(--ct362-accent);border-radius:6px;z-index:2;pointer-events:none;
  box-shadow:0 3px 10px #0003
 }
 body.ct362-design .ct362-existing-head{position:relative;isolation:isolate}
@@ -178,14 +178,14 @@ body.ct362-design .ct362-standalone-proof{
  position:fixed;right:10px;top:6px;z-index:9999;
 }
 body.ct362-design :is(.topbar,.friends-head,.hub-header){
- border-bottom:1px solid #3f4f63!important;
- background:#0d1521f5!important;box-shadow:none!important;
+ border-bottom:1px solid var(--ct362-border)!important;
+ background:var(--ct362-chrome)!important;box-shadow:none!important;
 }
 body.ct362-design :is(.topbar .brand,.friends-brand,.hub-brand){
  color:#fff9ee!important;text-decoration:none!important
 }
 body.ct362-design :is(.topbar .edition,.friends-head small,.hub-brand small){
- color:#b4bfd1!important
+ color:var(--ct362-muted)!important
 }
 body.ct362-design .ct362-appnav{
  display:flex;gap:4px;justify-content:space-around;
@@ -193,7 +193,7 @@ body.ct362-design .ct362-appnav{
  left:50%;transform:translateX(-50%);width:min(calc(100% - 16px),540px);
  z-index:30000;box-sizing:border-box;
  padding:5px;border-radius:17px;border:1px solid var(--ct362-border);
- background:#121b29f5;box-shadow:0 16px 32px #000a
+ background:var(--ct362-chrome);box-shadow:0 16px 32px #000a
 }
 body.ct362-design .ct362-appnav .ct362-navitem{
  display:flex;flex:1;min-width:0;min-height:52px;
@@ -208,7 +208,7 @@ body.ct362-design .ct362-appnav .ct362-navicon{
  display:block;font-weight:900;font-size:18px;line-height:1.15
 }
 body.ct362-design #scout-app-bar{
- border:1px solid var(--ct362-border)!important;background:#121b29f5!important;
+ border:1px solid var(--ct362-border)!important;background:var(--ct362-chrome)!important;
  border-radius:16px!important;box-shadow:0 13px 28px #0008!important
 }
 body.ct362-design #scout-app-bar :is(button,a){
@@ -871,3 +871,61 @@ html:has(body.ct362-design) body.ct362-design[data-page]{
  body.ct362-design[data-page="tactical-review"] .metrics .metric small{white-space:normal;overflow-wrap:anywhere}
 }
 
+
+/* V380: a mesma superfície editorial serve TODAS as áreas, inclusive
+ * ferramentas que nasceram antes do redesenho. Sem apagar formulários. */
+body.ct362-design:has(.scout-v189-quick) #ct356-static-shell{
+ display:none!important;
+}
+body.ct362-design .ct362-workspace-head{
+ display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;
+ gap:14px;margin:8px 0 18px;padding:clamp(16px,3vw,26px);
+ background:var(--ct362-surface);color:var(--ct362-text);
+ border:1px solid var(--ct362-border);border-left:4px solid var(--ct362-wine);
+ border-radius:var(--ct362-radius);
+ box-shadow:none;
+}
+body.ct362-design .ct362-workspace-copy{min-width:0;flex:1 1 230px}
+body.ct362-design .ct362-workspace-eyebrow{
+ display:block;margin-bottom:7px;color:var(--ct362-accent);
+ font-size:10px;font-weight:750;letter-spacing:.09em;
+}
+body.ct362-design .ct362-workspace-title{
+ margin:0!important;font:600 clamp(22px,3.4vw,34px)/1.1 var(--ct362-editorial)!important;
+ letter-spacing:-.015em!important;color:var(--ct362-text)!important;
+}
+body.ct362-design .ct362-workspace-description{
+ margin:9px 0 0!important;font:400 13px/1.5 system-ui,sans-serif!important;
+ color:var(--ct362-muted)!important;max-width:56ch;
+}
+body.ct362-design .ct362-workspace-home{
+ display:inline-flex;justify-content:center;align-items:center;
+ min-height:38px;padding:8px 13px;border:1px solid var(--ct362-border);
+ border-radius:var(--ct362-radius);background:var(--ct362-surface2);
+ color:var(--ct362-text)!important;font-size:12px;font-weight:700;
+ text-decoration:none;white-space:nowrap;
+}
+body.ct362-design .ct362-redundant-heading{display:none!important}
+body.ct362-design[data-ct362-workspace="ready"] main > :is(header,.head,.scout-rotation-header){
+ background:transparent!important;box-shadow:none!important;
+ border-color:var(--ct362-border)!important;
+}
+body.ct362-design[data-ct362-workspace="ready"] main :is(
+ .panel,.card,.block,.metric,.scout-rotation-panel,.scout-review-panel,
+ .scout-evidence-panel,.rarity-panel,.review-panel){
+ border-color:var(--ct362-border)!important;
+ background-color:var(--ct362-surface)!important;
+ box-shadow:none!important;
+}
+body.ct362-design[data-ct362-workspace="ready"] :is(
+ .hint,.sub,.muted,.subtitle,small,.small){
+ color:var(--ct362-muted)!important;
+}
+body.ct362-design[data-ct362-workspace="ready"] :is(
+ a,button,summary,select,input,textarea){
+ -webkit-tap-highlight-color:transparent;
+}
+@media(max-width:600px){
+ body.ct362-design .ct362-workspace-head{margin:4px 0 12px;padding:13px;gap:10px}
+ body.ct362-design .ct362-workspace-home{min-height:34px;font-size:11px}
+}
