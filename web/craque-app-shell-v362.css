@@ -1007,3 +1007,10 @@ body[data-page="friends"] .ct382-owned-owner{border-left:3px solid var(--ct362-w
  body[data-page="catalog"] .ct382-owned-entry,
  body[data-page="friends"] .ct382-owned-featured{animation:none!important;transition:none!important}
 }
+
+/* A primeira carta deve continuar visível no primeiro viewport de 320px.
+   Nessa largura, o álbum próprio permanece acessível pelo atalho Outros
+   Elencos da navegação principal; não inserir uma quinta peça na hero. */
+@media(max-width:355px){
+ body[data-page="catalog"] .ct382-owned-entry{display:none!important}
+}
