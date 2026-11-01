@@ -17,6 +17,7 @@ assert.equal(pages.length,15,'Conferir cobertura das 15 páginas de topo, inclui
 assert(pages.includes('conferir-cartas.html'));
 for(const name of pages){
  const html=source(name);
+ assert.doesNotMatch(html,/SCOUT PRO/i,name+' ainda contém a marca antiga no HTML ativo');
  const viaBridge=html.includes('src="app-bridge.js"');
  const direct=html.includes('src="craque-app-shell-v362.js"');
  assert.ok(viaBridge||direct, name+' sem o novo shell');
