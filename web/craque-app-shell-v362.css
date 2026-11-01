@@ -432,20 +432,15 @@ body[data-page="detail"].ct362-design details.ct360-card-extra{
 body[data-page="detail"].ct362-design .topic{
  border-color:var(--ct362-border)!important;border-radius:12px!important
 }
-/* Os documentos V68/V72 continuam no DOM para evidência, mas ficam sob
-   consulta avançada em vez de repetir a ficha competitiva principal. */
-body.ct362-design[data-page="detail"] .ct378-source-archive{
+/* O V229 mantém a documentação original no painel técnico, sem repetição. */
+body.ct362-design[data-page="detail"] .scout-v229-legacy-archive{
  background:var(--ct362-surface)!important;
- border:1px solid var(--ct362-border)!important;
- border-radius:var(--ct362-radius);margin:12px 0;
+ border-color:var(--ct362-border)!important;
+ color:var(--ct362-text)!important;
 }
-body.ct362-design[data-page="detail"] .ct378-source-archive>summary{
- color:var(--ct362-muted)!important;
+body.ct362-design[data-page="detail"] .scout-v229-legacy-archive>summary{
  background:var(--ct362-chrome)!important;
- padding:12px 14px;cursor:pointer;font-weight:600;
-}
-body.ct362-design[data-page="detail"] .ct378-source-archive[open]>.topic{
- margin:10px 0!important;max-width:100%;
+ color:var(--ct362-muted)!important;
 }
 /* COLEÇÕES DE CLIENTES — escolha e cadastro primeiro, painel editorial mínimo */
 body[data-page="friends"].ct362-design .friends-layout{
