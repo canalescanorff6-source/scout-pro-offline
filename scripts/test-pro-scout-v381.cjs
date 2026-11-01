@@ -10,7 +10,7 @@ assert(M.WORLD_FINALS_2026.mobile.includes('Rentao'));
 assert(M.WORLD_FINALS_2026.console.includes('FUTEASY_10'));
 assert(M.SOURCES.some(x=>x.id==='dm7-blackjhon-2026'&&x.kind==='public_gameplay'));
 assert(M.SOURCES.some(x=>x.kind==='official_rules'));
-assert(M.SOURCES.every(s=>/^https:\/\//.test(s.url)&&s.proves.includes('não')));
+assert(M.SOURCES.every(s=>/^https:\/\//.test(s.url)&&s.proves.toLowerCase().includes('não')));
 assert.equal(M.PROVEN_BUILDS.length,0,'Fontes do Mundial não são builds exatas.');
 assert.deepEqual(M.MODES,['posse','normal','rapido','fora','longo']);
 const vector=[8,4,4,4,4,4,0,0,0,0];
