@@ -14,21 +14,10 @@ function arrange(){
  if(!bucket){bucket=d.createElement('div');bucket.id='ct378-legacy-tools';
   const title=d.createElement('h3');title.textContent='Análises complementares';bucket.append(title);}
  if(bucket.parentElement!==more)more.append(bucket);
- // O HTML histórico V68/V72 ainda fornece evidências e âncoras às 246 cartas.
- // Retirá-lo do fluxo principal evita quatro fichas antigas repetindo a ficha
- // nova; nenhum nó, ID, dado ou handler é apagado.
- let archive=d.getElementById('ct378-source-archive');
- if(!archive){
-  archive=d.createElement('details');archive.id='ct378-source-archive';
-  archive.className='ct378-source-archive';
-  const label=d.createElement('summary');
-  label.textContent='Documentação original da carta · consulta';
-  archive.append(label);bucket.append(archive);
- }
- for(const id of ['engenharia','foco','pontos','jogar']){
-  const node=d.getElementById(id);
-  if(node&&!archive.contains(node))archive.append(node);
- }
+ // O curador V229 já recolhe integralmente seis seções históricas dentro
+ // de #scout-v220-technical. Não movê-las para outro acordeão: isso faria
+ // parecer uma segunda ficha e quebraria a curadoria/âncoras existentes.
+ // A ferramenta V220 é deslocada como bloco inteiro para o agrupamento V378.
  const shell=d.getElementById('scout-v220-hero'),slot=d.querySelector('.ct311-main-slot');
  let context=d.getElementById('ct378-context');
  if(!context){context=d.createElement('div');context.id='ct378-context';shell.insertBefore(context,slot);
