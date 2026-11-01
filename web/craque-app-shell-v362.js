@@ -94,17 +94,17 @@ function unifyHeader(){
   const link=head.querySelector(selector);
   if(!link)continue;
   for(const node of link.childNodes||[]){
-   if(node.nodeType===3 && /SCOUT\\s+PRO/i.test(node.textContent||''))node.textContent=node.textContent.replace(/SCOUT\\s+PRO/gi,'CRAQUE TÁTICO');
+   if(node.nodeType===3 && /SCOUT\s+PRO/i.test(node.textContent||''))node.textContent=node.textContent.replace(/SCOUT\s+PRO/gi,'CRAQUE TÁTICO');
   }
  }
  const small=head.querySelector('.brand-copy small');
  if(small)small.textContent='LABORATÓRIO DE FUTEBOL';
  const edition=head.querySelector('.topbar .edition');
- if(edition&&/\\bV\\d+\\b|SCOUT\\s+PRO/i.test(edition.textContent||''))
+ if(edition&&/\bV\d+\b|SCOUT\s+PRO/i.test(edition.textContent||''))
   edition.textContent=page==='detail'?'eFOOTBALL 2027 · CRAQUE TÁTICO':(names[page]||'CRAQUE TÁTICO').toUpperCase();
  const title=d.title||'';
- if(/SCOUT\\s+PRO|\\bV\\d+\\b/i.test(title))
-  d.title=title.replace(/SCOUT\\s+PRO/gi,'Craque Tático').replace(/\\bV\\d+\\b/gi,'').replace(/\\s{2,}/g,' ').trim();
+ if(/SCOUT\s+PRO|\bV\d+\b/i.test(title))
+  d.title=title.replace(/SCOUT\s+PRO/gi,'Craque Tático').replace(/\bV\d+\b/gi,'').replace(/\s{2,}/g,' ').trim();
 }
 let buildVersionRequested=false;
 function showInstalledVersion(proof){
@@ -115,7 +115,7 @@ function showInstalledVersion(proof){
  host.fetch(root+'scout-build-info.json',{cache:'no-store'})
   .then(r=>r.ok?r.json():null).then(info=>{
    const v=String(info?.version||'');
-   if(!/^\\d+\\.\\d+\\.\\d+$/.test(v))return;
+   if(!/^\d+\.\d+\.\d+$/.test(v))return;
    proof.textContent='v'+v;
    proof.title='Revisão '+String(info.git_revision||'local').slice(0,12);
    d.body.dataset.craqueInstalledVersion=v;
