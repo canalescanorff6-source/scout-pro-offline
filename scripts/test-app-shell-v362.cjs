@@ -54,6 +54,6 @@ assert.ok(!layout.includes("archive.append(node)")&&!layout.includes("ct378-sour
  'Proibido criar um segundo arquivo da carta e retirar seções do painel técnico');
 assert.ok(shell.includes("edition.textContent='eFOOTBALL 2027 · CRAQUE TÁTICO'"),
  'Rótulo V72 não deve continuar na interface moderna');
-assert.ok(css.includes('.ct378-source-archive'),'Arquivo histórico deve herdar o visual editorial');
+assert.ok(css.includes('.scout-v229-legacy-archive'),'Arquivo histórico V229 deve herdar o visual editorial');
 assert.doesNotMatch(shell,/(localStorage\.setItem|card\.pp\s*=|card\.training\s*=|fetch\([^)]+method\s*:\s*['"]POST)/,'Redesign não altera dados');
 console.log('V362 PASS: 14 telas e 246 fichas cobertas, CSS/JS offline, identidade global, nenhum motor reescrito.');
