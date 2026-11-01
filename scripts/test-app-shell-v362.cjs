@@ -68,4 +68,21 @@ assert.ok(shell.includes("edition.textContent='eFOOTBALL 2027 · CRAQUE TÁTICO'
  'Rótulo V72 não deve continuar na interface moderna');
 assert.ok(css.includes('.scout-v229-legacy-archive'),'Arquivo histórico V229 deve herdar o visual editorial');
 assert.doesNotMatch(shell,/(localStorage\.setItem|card\.pp\s*=|card\.training\s*=|fetch\([^)]+method\s*:\s*['"]POST)/,'Redesign não altera dados');
+// V380: nenhum fluxo deve abrir com cabeçalho legado como tela principal.
+assert.ok(shell.includes('ct362-workspace-head')&&shell.includes('ct362-redundant-heading'),
+ 'A apresentação única deve substituir manchetes antigas nos workspaces');
+for(const page of ['team','rotation-lab','manager-hub','progress-audit','boosters',
+ 'tactical-review','video-evidence','player-model','rarity-audit','review379',
+ 'batch-8','batch-9']){
+ assert.ok(shell.includes(page+':')||shell.includes("'"+page+"':"),
+  'Workspace sem cabeçalho único: '+page);
+}
+assert.ok(entry.includes("document.body.classList.add('ct362-design')"),
+ 'O tema deve ligar antes dos módulos legados na home, Windows e Android');
+assert.ok(css.includes('body.ct362-design .ct362-workspace-head'),
+ 'Novo workspace deve usar a mesma folha de estilo global');
+assert.ok(css.includes('body.ct362-design .ct362-redundant-heading'),
+ 'Manchetes antigas não podem competir visualmente com a interface atual');
+assert.ok(!css.includes('background:radial-gradient(circle at 90% -10%'),
+ 'Fundo azul histórico não pode reaparecer fora da camada editorial');
 console.log('V362 PASS: 14 telas e 246 fichas cobertas, CSS/JS offline, identidade global, nenhum motor reescrito.');
