@@ -922,3 +922,48 @@ body.ct362-design[data-page="detail"][data-ct378-stage="ready"]:has(#ct361-playe
  body.ct362-design[data-page="tactical-review"] .metrics .metric small{white-space:normal;overflow-wrap:anywhere}
 }
 
+
+/* V381 — a conferência de nível/PP não deve surgir como um bloco azul
+   dentro da ficha Premium. A documentação e os formulários seguem intactos. */
+@layer craque-editorial {
+ body.ct362-design[data-page="detail"] .ct249-alert,
+ body.ct362-design[data-page="detail"] .ct249-alert[data-status="divergente"],
+ body.ct362-design[data-page="progress-audit"] :where(
+  .ct248-hero,.ct248-card,.ct248-art,.ct248-details,.ct250-transfer,
+  .ct250-preview,.ct248-status,.ct248-checker,.ct248-details>summary){
+  background:var(--ct362-surface)!important;
+  background-image:none!important;
+  color:var(--ct362-text)!important;
+  border-color:var(--ct362-border)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design[data-page="detail"] :where(
+  .ct249-alert-title,.ct249-alert-text,.ct249-alert-actions small){
+  color:var(--ct362-text)!important;
+ }
+ body.ct362-design[data-page="detail"] .ct249-review-link,
+ body.ct362-design[data-page="progress-audit"] :where(
+  .ct248-hero-actions button,.ct248-hero-actions a,.ct250-heading button,
+  .ct250-actions button,.ct248-details button,#v248-more,.ct248-undo){
+  background:var(--ct362-wine)!important;
+  background-image:none!important;
+  border-color:var(--ct362-accent)!important;
+  color:var(--ct362-on-wine)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design[data-page="catalog"] .ct249-local-tag{
+  background:var(--ct362-surface)!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-muted)!important;
+ }
+ body.ct362-design[data-page="progress-audit"] :where(
+   .ct248-filters input,.ct248-filters select,.ct248-details input,
+   .ct248-status,.ct248-details summary,.ct250-disclaimer,.ct250-notice){
+  background-color:var(--ct362-chrome)!important;
+  color:var(--ct362-text)!important;
+  border-color:var(--ct362-border)!important;
+ }
+ body.ct362-design :where(.ct248-kicker,.ct248-number,.ct250-heading h2){
+  color:var(--ct362-accent)!important;
+ }
+}
