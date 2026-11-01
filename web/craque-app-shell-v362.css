@@ -679,6 +679,15 @@ body.ct362-design .ct362-appnav .ct362-tools-popup{
  padding:8px;box-shadow:0 12px 28px #0009
 }
 body.ct362-design .ct362-appnav .ct362-tools-popup[hidden]{display:none!important}
+/* As rotas antigas ainda têm atalhos flutuantes de navegação V177/V219.
+   A interface atual fornece os mesmos destinos no dock e em Mais. */
+body.ct362-design:has(#ct362-appnav) .scout-rotation-shortcut,
+body.ct362-design:has(#ct362-appnav) .scout-rotation-page-shortcuts{
+ display:none!important;
+}
+body.ct362-design .ct362-appnav .ct362-tools-popup{
+ max-height:min(65vh,520px);overflow-y:auto;overscroll-behavior:contain;
+}
 body.ct362-design .ct362-appnav .ct362-tools-popup>a{
  display:block;color:var(--ct362-accent)!important;text-decoration:none;
  background:var(--ct362-surface2);border-radius:9px;padding:11px;
