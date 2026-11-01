@@ -18,6 +18,10 @@ with sync_playwright() as pw:
    assert page.locator('#scout-v220-training').is_hidden()
    assert page.locator('#scout-v220-recs').is_hidden()
    assert page.locator('.ct378-main-sheet:visible').count()==1
+   archive=page.locator('#scout-v229-legacy-archive')
+   assert archive.count()==1 and not archive.evaluate('(e)=>e.open')
+   for section in ['#engenharia','#foco','#pontos','#jogar']:
+    assert page.locator(section).is_hidden(),(name,section,'Bloco antigo ainda visível na ficha principal')
    assert primary.locator('.ct375-training').is_visible()
    assert primary.locator('.ct374-skill-reasons li').count()<=5
    assert primary.locator('.ct375-booster').count()<=1
@@ -26,6 +30,24 @@ with sync_playwright() as pw:
    more.locator(':scope > summary').click()
    assert page.locator('#scout-v220-training').is_visible()
    assert page.locator('#scout-v220-recs').is_visible()
+   technical=page.locator('#scout-v220-technical')
+   assert technical.locator('#scout-v229-legacy-archive').count()==1, 'Arquivo original precisa estar dentro do painel técnico'
+   technical.locator(':scope > summary').click()
+   assert technical.evaluate('(e)=>e.open')
+   archive.locator(':scope > summary').click()
+   assert page.locator('#engenharia').is_visible()
+   # A secao #pontos possui um <details> proprio dentro do arquivo V229.
+   # Testar o caminho real do deep link, que expande todos os ancestrais
+   # sem tornar a documentacao antiga visivel na ficha principal.
+   page.evaluate("""() => {
+    window.location.hash='#pontos';
+    window.dispatchEvent(new Event('hashchange'));
+   }""")
+   assert page.locator('#pontos').is_visible(),(name,'Deep link #pontos nao abriu a secao historica')
+   assert archive.evaluate('(e)=>e.open') and technical.evaluate('(e)=>e.open')
+   page.evaluate('() => { history.replaceState(null,"",location.pathname); }')
+   for selector in ['#scout-v229-legacy-archive','#scout-v220-technical']:
+    page.locator(selector).evaluate('(e)=>{e.open=false;}')
    more.locator(':scope > summary').click()
    for style in ['rapido','normal','fora','longo','posse']:
     page.locator('#ct378-style').select_option(style)

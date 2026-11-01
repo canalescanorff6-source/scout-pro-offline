@@ -12,8 +12,12 @@ function arrange(){
  const more=d.querySelector('.ct311-main-slot .ct378-sheet-options');
  if(!sheet||!more)return;
  if(!bucket){bucket=d.createElement('div');bucket.id='ct378-legacy-tools';
-  const title=d.createElement('h3');title.textContent='Treino cadastrado e ferramentas avançadas';bucket.append(title);}
+  const title=d.createElement('h3');title.textContent='Análises complementares';bucket.append(title);}
  if(bucket.parentElement!==more)more.append(bucket);
+ // O curador V229 já recolhe integralmente seis seções históricas dentro
+ // de #scout-v220-technical. Não movê-las para outro acordeão: isso faria
+ // parecer uma segunda ficha e quebraria a curadoria/âncoras existentes.
+ // A ferramenta V220 é deslocada como bloco inteiro para o agrupamento V378.
  const shell=d.getElementById('scout-v220-hero'),slot=d.querySelector('.ct311-main-slot');
  let context=d.getElementById('ct378-context');
  if(!context){context=d.createElement('div');context.id='ct378-context';shell.insertBefore(context,slot);

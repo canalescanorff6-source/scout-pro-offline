@@ -32,6 +32,28 @@ for(const id of ['catalog','detail','friends','team','rotation-lab','manager-hub
  assert.ok(shell.includes(id),'Página sem rota no shell V362: '+id);
 }
 assert.ok(shell.includes('ct362-design-proof')&&shell.includes('ct362-appnav'));
+assert.ok(shell.includes('CRAQUE_UI_RELEASES')&&shell.includes('activateCurrentRelease()'),
+ 'Somente a geração ativa pode montar elementos visuais');
+assert.ok(shell.includes('next.ready!==true')&&shell.includes('version<this.current'),
+ 'Substituir uma UI só depois que a próxima estiver pronta e jamais por uma antiga');
+assert.ok(shell.includes("link[data-craque-ui-theme]"),
+ 'A geração anterior deve retirar sua folha oficial na próxima troca');
+assert.ok(css.includes('var(--ct362-wine)')&&css.includes('var(--ct362-bg)'),
+ 'As superfícies devem usar tokens oficiais, não novos temas acumulados');
+assert.doesNotMatch(css,/background-color:#070c14/,'Cor de fundo azul antiga não deve vencer o tema grafite');
 assert.ok(css.includes('.scout-v220-shell')&&css.includes('.scout-v189-tile')&&css.includes('.friends-card')&&css.includes('.hub-card'));
+const layout=source('craque-main-layout-v378.js');
+const curator=source('scout-card-curation-v229.js');
+for(const id of ['engenharia','foco','pontos','jogar']){
+ assert.ok(curator.includes("'"+id+"'"),'Bloco histórico não preservado na curadoria V229: '+id);
+}
+assert.ok(layout.includes("'#scout-v220-technical'")&&
+ curator.includes("archive.id='scout-v229-legacy-archive'"),
+ 'Blocos antigos devem continuar no arquivo V229 dentro da ferramenta técnica');
+assert.ok(!layout.includes("archive.append(node)")&&!layout.includes("ct378-source-archive"),
+ 'Proibido criar um segundo arquivo da carta e retirar seções do painel técnico');
+assert.ok(shell.includes("edition.textContent='eFOOTBALL 2027 · CRAQUE TÁTICO'"),
+ 'Rótulo V72 não deve continuar na interface moderna');
+assert.ok(css.includes('.scout-v229-legacy-archive'),'Arquivo histórico V229 deve herdar o visual editorial');
 assert.doesNotMatch(shell,/(localStorage\.setItem|card\.pp\s*=|card\.training\s*=|fetch\([^)]+method\s*:\s*['"]POST)/,'Redesign não altera dados');
 console.log('V362 PASS: 14 telas e 246 fichas cobertas, CSS/JS offline, identidade global, nenhum motor reescrito.');

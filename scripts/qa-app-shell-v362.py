@@ -75,6 +75,36 @@ with sync_playwright() as p:
       assert page.locator('.scout-v220-head').evaluate("(e)=>getComputedStyle(e).display=='none'"),'Cabeçalho V220 antigo ainda duplicado'
     if label in ('home','friends','managers','detail'):
      page.screenshot(path=str(ART/(mode+'-'+label+'.png')),full_page=False)
+    # Simula uma versão futura no workspace descartável: a tela antiga
+    # só pode desaparecer APÓS a nova confirmar que está montada.
+    if label=='friends' and mode=='windows':
+     release=page.evaluate("""() => {
+      const reg=window.CRAQUE_UI_RELEASES;
+      const oldTheme=document.querySelector('link[data-craque-ui-theme="362"]');
+      const oldNav=document.querySelector('#ct362-appnav');
+      if(!reg||reg.current!==362||!oldTheme||!oldNav) return {ready:false};
+      const refused=reg.activate({version:363,ready:false})===false;
+      const oldStayed=!!document.querySelector('#ct362-appnav') &&
+       !!document.querySelector('link[data-craque-ui-theme="362"]');
+      const theme=document.createElement('link');
+      theme.rel='stylesheet';theme.href='data:text/css,body%7Boutline-color%3A%2378394b%7D';
+      document.head.append(theme);
+      const nextNav=document.createElement('nav');nextNav.id='next-release-nav';
+      nextNav.dataset.craqueUiRelease='363';document.body.append(nextNav);
+      const activated=reg.activate({version:363,ready:true,themeElement:theme});
+      document.dispatchEvent(new Event('scoutpro:ui-ready'));
+      return {ready:true,refused,oldStayed,activated,current:reg.current,
+       oldNavGone:!document.querySelector('#ct362-appnav'),
+       oldThemeGone:!document.querySelector('link[data-craque-ui-theme="362"]'),
+       newNavKept:!!document.querySelector('#next-release-nav'),
+       newThemeKept:theme.dataset.craqueUiTheme==='363',
+       active:document.body.dataset.craqueUiActive};
+     }""")
+     assert release['ready'] and release['refused'] and release['oldStayed'],release
+     assert release['activated'] and release['current']==363,release
+     assert release['oldNavGone'] and release['oldThemeGone'],release
+     assert release['newNavKept'] and release['newThemeKept'],release
+     assert release['active']=='v363',release
    ctx.close()
   print('V362 VISUAL PASS: 10 rotas x 2 resoluções, 246 cartas, menu, ficha e estilos globais ativos.')
  finally:
