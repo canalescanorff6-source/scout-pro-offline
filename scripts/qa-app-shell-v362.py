@@ -84,6 +84,10 @@ with sync_playwright() as p:
      assert coach.evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgb(51, 50, 54)',(mode,'seletor de técnico fora do editorial')
      page.wait_for_function('()=>document.body.dataset.ct378Stage==="ready"',timeout=24000)
      assert page.locator('.profile-sidebar').is_hidden(),(mode,'Lateral V68 antiga ainda visível')
+     notice=page.locator('.ct249-alert').first
+     if notice.count():
+      bg=notice.evaluate('(e)=>getComputedStyle(e).backgroundColor')
+      assert bg=='rgb(51, 50, 54)',(mode,'Bloco de PP ainda tem fundo azul antigo',bg)
      if mobile:
       assert page.locator('.scout-v220-head').evaluate("(e)=>getComputedStyle(e).display=='none'"),'Cabeçalho V220 antigo ainda duplicado'
     if label in ('home','friends','managers','detail'):
