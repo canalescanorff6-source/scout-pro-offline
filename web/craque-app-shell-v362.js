@@ -114,8 +114,13 @@ function shell(){
   const prefix=page==='detail'?'../':'';
   for(const [label,href] of [
    ['Conferir níveis e PP','conferir-progresso-v248.html'],
+   ['Conferir cartas','conferir-cartas.html'],
    ['Habilidades e ímpetos','revisao-impetos-v103.html'],
-   ['Laboratório','meu-time-testes-v219.html']]){
+   ['Análise tática','revisao-tatica-v98.html'],
+   ['Laboratório','meu-time-testes-v219.html'],
+   ['Vídeos e evidências','pesquisa-videos-v106.html'],
+   ['Modelo corporal','player-model-v101.html'],
+   ['Raridades','raridade-cadastro-v91.html']]){
    const a=create('a','',label);a.href=prefix+href;tools.append(a);
   }
   const toggle=()=>{
