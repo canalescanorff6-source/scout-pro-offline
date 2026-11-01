@@ -967,3 +967,35 @@ body.ct362-design[data-page="detail"][data-ct378-stage="ready"]:has(#ct361-playe
   color:var(--ct362-accent)!important;
  }
 }
+
+/* V381 — A Central de Técnicos não mantém cartões azuis de versões antigas. */
+@layer craque-editorial {
+ body.ct362-design[data-page="manager-hub"] :where(
+  .hub-metrics>div,.hub-metrics div,.hub-panel,.hub-compare,.hub-compare-grid>div,
+  .hub-card,.hub-chip,.hub-photo,.hub-v329-primary-score,.hub-v329-other-scores,
+  .hub-notice,.hub-score,.hub-score-body){
+  background:var(--ct362-surface)!important;
+  background-image:none!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-text)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design[data-page="manager-hub"] :where(
+  .hub-filters input[type=search],.hub-filters select,.hub-bar){
+  background:var(--ct362-chrome)!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-text)!important;
+ }
+ body.ct362-design[data-page="manager-hub"] :where(
+  .hub-metrics strong,.hub-score-name,.hub-v329-kicker){
+  color:var(--ct362-accent)!important;
+ }
+ body.ct362-design[data-page="manager-hub"] :where(
+  .hub-chip,.hub-score-num,.hub-bar-fill,.hub-btn.primary,
+  .hub-score[data-grade=elite90] .hub-score-num,
+  .hub-score[data-grade=elite90] .hub-bar-fill){
+  background:var(--ct362-wine)!important;
+  border-color:var(--ct362-accent)!important;
+  color:var(--ct362-on-wine)!important;
+ }
+}
