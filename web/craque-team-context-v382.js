@@ -92,5 +92,82 @@ function evaluateCard(context,slotId,deps){
 }
 function trainingAllowed(position,index,proof){return Rules().allowed(position,{...proof?.card,functionalTrainingProof:proof}).includes(index);}
 function boosterCompatible(card,name){return Rules().stackingAllowed(card,name);}
-return Object.freeze({MODES,INSTRUCTIONS,signature,compile,evaluateCard,physicalProof,boosterProof,engineCard,weightsFor,trainingAllowed,boosterCompatible});
+function suggestLineup(formation,cards,{locks={}}={}){
+ const candidates=s=>cards.filter(c=>(c.positions||[c.position]).includes(s.position)&&
+  (c.positions||[c.position]).includes((formation.offBallSlots||[]).find(x=>x.id===s.id)?.position||s.position));
+ const order=formation.slots.slice().sort((a,b)=>Number(!locks[a.id])-Number(!locks[b.id])||candidates(a).length-candidates(b).length);
+ let beam=[{lineup:{},people:[],score:0}];
+ for(const slot of order){const pool=locks[slot.id]?candidates(slot).filter(c=>c.id===locks[slot.id]):candidates(slot);
+  const next=[];for(const state of beam)for(const c of pool){const person=c.personKey||norm(c.name);if(state.people.includes(person))continue;
+   const score=(c.position===slot.position?10:8)+(c.nativeVerified?1:0)+(c.trainingLevels?0.5:0);
+   next.push({lineup:{...state.lineup,[slot.id]:c.id},people:[...state.people,person],score:state.score+score});}
+  if(!next.length)continue;beam=next.sort((a,b)=>b.score-a.score).slice(0,96);
+ }
+ const best=beam.sort((a,b)=>Object.keys(b.lineup).length-Object.keys(a.lineup).length||b.score-a.score)[0];
+ return {lineup:best?.lineup||{},warnings:formation.slots.filter(s=>!best?.lineup[s.id]).map(s=>'Sem jogador com familiaridade cadastrada: '+s.position+' ('+s.id+')'),method:'Busca limitada a96 combinações por vaga; familiaridade, dados conhecidos e escolhas fixadas. Sem nota de rendimento online.'};
+}
+function recommend(context,deps){
+ const cards=context.members.map(member=>{
+  const row=evaluateCard(context,member.slot.id,deps),r=row.review,c=member.card,S=deps.skills;
+  const excluded=new Set([...(c.nativeSkills||[]),...(c.skills||[])].map(x=>S.keyFor(x)||norm(x)));
+  const defensive=['ZG','LD','LE','VOL'].includes(member.slot.position),goal=member.slot.position==='GO';
+  if(context.style==='overload'){
+   const keys=goal?['gklow','gklong','gkhigh','gkpenalty']:defensive?['intercept','blocker','onepass','aerial','mark']:['onepass','through','sole','double','firstshot'];
+   r.skills=keys.map(k=>S.SKILLS[k]).filter(Boolean).map(s=>({name:s.name,reason:s.why,applyAuthorized:false,eligibility:'Conferir edição e vagas'}));
+   r.job='Oferecer apoio próximo e proteger a recuperação na Sobreposição';
+   const names=goal?['Goalkeeping','Saving']:defensive?['Defending','Duelling']:['Passing','Technique'];
+   r.boosters=c.boosterSlot==='ausente'?[]:names.map(name=>({technicalName:name,name:deps.boosters.displayName(name),attributes:[],reason:'Apoio e recuperação na Sobreposição; comparar os atributos da edição.',applyAuthorized:false}));
+  }
+  r.skills=r.skills.filter(s=>!excluded.has(S.keyFor(s.name)||norm(s.name)));
+  r.freeSkillSlots=c.skillsVerified&&Number.isInteger(c.skillCapacity)?Math.max(0,c.skillCapacity-(c.skills||[]).length):null;
+  r.skills=r.skills.slice(0,r.freeSkillSlots??5).map(s=>({...s,applyAuthorized:false}));
+  r.pending=[...new Set([...(r.pending||[]),...(!c.nativeVerified?['habilidades nativas']:[]),...(r.freeSkillSlots===null?['vagas adicionais']:[]),...(!c.identityVerified?['edição exata']:[]),...(!c.boosterSlotSupported?['slot do ímpeto']:[])])];
+  if(r.fixedProgression){r.skills=[];r.boosters=[];}
+  r.fixedBoosters=(c.fixedBoosters||[]).map(x=>({...x}));r.extraBooster=c.extraBooster?{...c.extraBooster}:null;
+  r.boosters=(r.boosters||[]).map(b=>({...b,applyAuthorized:false}));
+  r.attributeEstimate=null;
+  // Only exact public bases and an explicitly documented coach permit a numeric estimate.
+  if(r.proposed&&c.reference?.identityUsable&&context.manager?.bonusesVerified&&Number.isInteger(context.proficiency)){
+   const ref=c.reference;
+   r.attributeEstimate=deps.rating?.evaluate(ref,{cardKey:ref.key,position:member.slot.position,training:r.proposed,budget:r.pp,
+    manager:{...context.manager,proficiency:context.proficiency,boosters:context.manager.bonuses},extraBooster:c.extraBooster?.verified?{name:c.extraBooster.name,confirmed:true}:null,functionalTrainingProof:physicalProof(c),accountId:c.accountId,localKey:localKey(c),cardId:c.cardId,edition:c.edition},deps.ratingModel)||null;
+  }
+  return {slotId:member.slot.id,memberId:c.id,review:r};
+ });
+ const destroyers=context.members.filter(m=>norm(m.defenceStyle).includes('destruidor'));
+ const balance={coverage:context.members.filter(m=>['ZG','VOL'].includes(m.slot.position)||m.instructions.some(i=>i.type==='defensive')).map(m=>m.card.name),
+  support:context.members.filter(m=>['MLG','MAT','SA'].includes(m.slot.position)).map(m=>m.card.name),
+  depth:context.members.filter(m=>['CA','SA'].includes(m.slot.position)).map(m=>m.card.name),
+  warnings:[...context.warnings,...(destroyers.length>1?['Vários Destruidores: testar a cobertura quando um sai para pressionar.']:[]),...(!context.instructions.some(i=>i.type==='defensive')?['Sem instrução Defensivo: conferir quem protege os avanços.']:[])]};
+ const options={accountId:context.accountId,style:context.style,manager:context.manager,formation:context.formation,lineup:context.lineup,instructions:context.instructions};
+ return {schema:'CRAQUE_TEAM_PLAN_V382',accountId:context.accountId,style:context.style,contextSignature:context.signature,context:options,cards,balance,
+  pending:cards.flatMap(x=>x.review.pending.map(p=>x.review.identity.name+': '+p)),alternatives:[],
+  search:{method:'Distribuição inteira de PP por prioridades de função; avaliação editorial do conjunto, sem simulação de partidas.',lineup:'Busca limitada a96 combinações por vaga'},
+  appliedInGame:false,gameplayValidated:false};
+}
+function exportJSON(plan){if(plan?.schema!=='CRAQUE_TEAM_PLAN_V382')throw Error('Plano inválido.');return JSON.stringify(plan,null,2);}
+function exportText(plan){exportJSON(plan);const out=['CRAQUE TÁTICO · PLANO DO TIME',plan.accountId==='secondary'?'Conta: Secundária':'Conta: Principal',
+ 'Técnico: '+(plan.context.manager?.name||'Pendente'),'Estilo: '+MODES[plan.style], 'Formação: '+plan.context.formation.family+' · '+plan.context.formation.id,
+ 'Instruções: '+(plan.context.instructions.map(i=>INSTRUCTIONS[i.type].label+' — '+(plan.cards.find(c=>c.memberId===i.instanceId)?.review.identity.name||i.instanceId)+(i.target?' → '+i.target:'')).join('; ')||'nenhuma'),
+ 'Proposta para testar online. Não aplicada no jogo.'];
+ for(const {review:r} of plan.cards){out.push('',r.identity.name+' · '+r.position,r.identity.edition||'Edição pendente',r.contextRole.attack,r.contextRole.defence,
+  r.proposed?'Treino: '+r.trainingGroups.map(g=>g.category+' '+g.proposed).join(' / ')+' · '+r.spent+'/'+r.pp+' PP':'Treino pendente: conferir nível/PP',
+  'Adicionais candidatas: '+(r.skills.map(s=>s.name).join(', ')||'nenhuma'), 'Adicionais cadastradas: '+(r.equippedSkills.join(', ')||'não informadas'),
+  'Ímpeto fixo: '+(r.fixedBoosters.map(b=>b.name+(b.verified?' +'+b.value:' (valor a conferir)')).join(', ')||'pendente'),
+  'Ímpeto adicional cadastrado: '+(r.extraBooster?r.extraBooster.name+(r.extraBooster.verified?' +'+r.extraBooster.value:' (valor a conferir)'):'pendente'),
+  'Ímpetos candidatos: '+(r.boosters.map(b=>b.name).join(', ')||'pendente'), 'Conferir: '+r.pending.join(', '));}
+ return out.concat('',plan.balance.warnings.join('\n'),plan.search.method).join('\n');
+}
+function adopt(store,plan,expectedSignature){
+ exportJSON(plan);if(expectedSignature!==plan.contextSignature)throw Error('O contexto mudou; recalcule antes de salvar.');
+ const doc=A().read(store);
+ if(plan.accountId==='secondary'){
+  const fresh={...plan.context,manager:doc.secondary.managers.find(m=>m.id===plan.context.manager?.id)||null};
+  if(compile(fresh,A().roster('secondary',{},store)).signature!==expectedSignature)throw Error('As cartas ou técnico mudaram; recalcule o contexto.');
+ }
+ const id='plan-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8);
+ const revision={...JSON.parse(exportJSON(plan)),id,savedAt:new Date().toISOString(),stale:false};
+ doc.plans[plan.accountId][id]=revision;A().save(store,doc);return revision;
+}
+return Object.freeze({MODES,INSTRUCTIONS,signature,compile,evaluateCard,physicalProof,boosterProof,engineCard,weightsFor,trainingAllowed,boosterCompatible,suggestLineup,recommend,exportJSON,exportText,adopt});
 });

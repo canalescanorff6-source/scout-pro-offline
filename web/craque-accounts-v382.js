@@ -25,6 +25,7 @@ function normalCard(raw){
   positions:[...new Set([position(raw.position),...(raw.positions||[]).map(position).filter(p=>POS.includes(p))])],maxLevel,pp,
   offenseStyle:str(raw.offenseStyle||raw.style,110),defenceStyle:str(raw.defenceStyle,110),nativeSkills:list(raw.nativeSkills),skills:list(raw.skills),
   nativeVerified:raw.nativeVerified===true,skillsVerified:raw.skillsVerified===true,
+  skillCapacity:Number.isInteger(raw.skillCapacity)&&raw.skillCapacity>=0&&raw.skillCapacity<=5?raw.skillCapacity:null,
   fixedBoosters:(raw.fixedBoosters||[]).slice(0,2).map(booster),extraBooster:booster(raw.extraBooster),
   boosterSlot:['vazio','ocupado','ausente','pendente'].includes(raw.boosterSlot)?raw.boosterSlot:'pendente',
   boosterSlotSupported:raw.boosterSlotSupported===true,identityVerified:raw.identityVerified===true,
@@ -36,7 +37,7 @@ function normalManager(m){
  const proficiency={};for(const s of ['posse','rapido','normal','fora','longo','overload']){const n=number(m.proficiency?.[s]);
   if(n!==null&&(!Number.isInteger(n)||n<0||n>100))throw Error('Proficiência inválida.');proficiency[s]=n;}
  return {id:str(m.id,100),name:str(m.name,100),edition:str(m.edition),proficiency,
-  bonuses:Array.isArray(m.bonuses)?copy(m.bonuses):[],source:str(m.source,300),confirmedOwned:m.confirmedOwned===true};
+  bonuses:Array.isArray(m.bonuses)?copy(m.bonuses):[],bonusesVerified:m.bonusesVerified===true,source:str(m.source,300),confirmedOwned:m.confirmedOwned===true};
 }
 function validate(data){
  if(!isObj(data)||data.schema!==SCHEMA||!['primary','secondary'].includes(data.active)||!isObj(data.secondary)||!isObj(data.plans))throw Error('Formato de contas inválido; registros preservados.');
