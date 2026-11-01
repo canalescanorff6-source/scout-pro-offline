@@ -23,6 +23,11 @@ for(const name of pages){
  assert.ok(!viaBridge||entry.includes('craque-app-shell-v362.js'),name+' perdeu bridge');
  const stylesheet=html.includes('href="craque-app-shell-v362.css"');
  assert.ok(stylesheet||viaBridge,name+' sem folhas de estilo');
+ // Desde V1205 a regra é UMA interface: página independente não pode
+ // depender da injeção tardia ou ficar com apenas V73/V353 visível.
+ assert.ok(stylesheet,name+' não carrega o tema atual explicitamente');
+ assert.ok(direct||name==='index.html'||name==='outros-elencos-v227.html',
+  name+' não inicializa o shell diretamente');
 }
 for(const name of originals.slice(0,1).concat(originals.slice(-1))){
  assert.ok(source('fichas/'+name).includes('../app-bridge.js'),'Ficha não inclui bridge: '+name);
