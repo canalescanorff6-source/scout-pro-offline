@@ -18,7 +18,14 @@ ROUTES=[
  ('rarities','raridade-cadastro-v91.html','rarity-audit'),
  ('batch8','lote-8-conferencia.html','batch-8'),
  ('batch9','lote-9-cadastro.html','batch-9'),
- ('detail','fichas/001_Daniele_Massaro.html','detail')
+ ('detail','fichas/001_Daniele_Massaro.html','detail'),
+ ('functional','fichas/012_Ruud_van_Nistelrooij.html','functional-detail'),
+ ('review','conferir-cartas.html','review379'),
+ ('team-4312','meu-time-posse-4312.html','team'),
+ ('videos','pesquisa-videos-v106.html','video-evidence'),
+ ('model','player-model-v101.html','player-model'),
+ ('boosters','revisao-impetos-v103.html','boosters'),
+ ('tactics','revisao-tatica-v98.html','tactical-review')
 ]
 with sync_playwright() as p:
  exe=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
@@ -41,7 +48,8 @@ with sync_playwright() as p:
     }""")
     assert surface['loaded']=='true' and surface['version']=='EDITORIAL',(mode,label,surface)
     assert surface['overflow']<=12,(mode,label,'overflow',surface)
-    if kind in ('friends','team','manager-hub','rotation-lab'):
+    assert surface['background']=='rgb(40, 40, 44)',(mode,label,'paleta antiga ainda ativa',surface)
+    if kind not in ('catalog','detail','functional-detail'):
      assert surface['nav']==4,(mode,label,'navegação unificada ausente',surface)
     if kind=='friends':
      legacy=page.locator('#scout-app-bar')
@@ -65,6 +73,13 @@ with sync_playwright() as p:
      page.locator('#scout-v220-tabs button').first.wait_for(state='attached',timeout=20000)
      assert page.locator('.ct361-glance-name').inner_text()=='Daniele Massaro'
      assert page.locator('.ct361-glance-art img').get_attribute('src')==page.locator('.mobile-profile img').get_attribute('src')
+     radar=page.locator('.ct378-main-sheet .ct381-pro-radar').first
+     radar.wait_for(state='attached',timeout=20000)
+     assert radar.evaluate('(e)=>e.tagName')=='DETAILS',(mode,'Radar PRO precisa ser um detalhe recolhido')
+     assert not radar.evaluate('(e)=>e.open'),(mode,'Radar PRO não pode abrir outra ficha')
+     assert radar.locator('.ct381-pro-sources a').count()==5,(mode,'Fontes internacionais ausentes')
+     assert 'Nenhuma build exata atribuída' in radar.text_content(),(mode,'Fonte de torneio confundida com treino comprovado')
+     assert radar.locator('a[href*="youtube.com/watch?v=fwCFo0mONck"]').count()==1,(mode,'Blackjhon ausente')
      assert page.locator('#scout-v220-training').count()==1
      assert page.locator('#scout-v220-recs').count()==1
      assert page.locator('#scout-v220-hero .scout-v220-practice').count()==1
@@ -73,9 +88,63 @@ with sync_playwright() as p:
      assert coach.evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgb(51, 50, 54)',(mode,'seletor de técnico fora do editorial')
      if mobile:
       assert page.locator('.scout-v220-head').evaluate("(e)=>getComputedStyle(e).display=='none'"),'Cabeçalho V220 antigo ainda duplicado'
-    if label in ('home','friends','managers','detail'):
+    if kind=='functional-detail':
+     comparison=page.locator('#scout-training-v160')
+     comparison.wait_for(state='attached',timeout=20000)
+     assert comparison.evaluate('(e)=>e.tagName')=='DETAILS',(mode,'V160 ainda é tela independente')
+     assert comparison.evaluate('(e)=>!!e.closest("#scout-v220-technical .scout-v220-technical-body")'),(mode,'V160 fora das análises avançadas')
+     assert not comparison.evaluate('(e)=>e.open'),(mode,'V160 abre segunda ficha sem ação da pessoa')
+     assert comparison.locator('[data-v160-plan="A"]').count()==1,(mode,'Perda do botão de treino A')
+     assert 'SCOUT PRO · FICHA FUNCIONAL V160' not in comparison.inner_text(),(mode,'Título antigo permanece')
+     css=page.evaluate('''() => ({surface:getComputedStyle(document.querySelector(".v160-sheet")).backgroundColor, primary:getComputedStyle(document.querySelector(".v160-sheet")).color})''')
+     assert css['surface']!='rgb(13, 43, 58)',(mode,'Tema azul V160 permanece',css)
+     history=page.locator('#ct380-performance-disclosure')
+     history.wait_for(state='attached',timeout=20000)
+     assert history.evaluate('(e)=>!!e.closest("#scout-v220-technical .scout-v220-technical-body")'),(mode,'V80 ainda aparece como tela independente')
+     assert not history.evaluate('(e)=>e.open'),(mode,'Histórico V80 está aberto como outra página')
+     assert history.locator('#scout-performance-v80').count()==1,(mode,'Perda dos registros V80')
+     comparison.evaluate('''(e)=>{
+       for(let parent=e.parentElement;parent;parent=parent.parentElement)
+        if(parent.tagName==='DETAILS')parent.open=true;
+       e.open=true;
+     }''')
+     assert comparison.locator('[data-v160-plan="A"]').is_visible(),(mode,'Treino A inacessível após expansão')
+     comparison.evaluate('(e)=>e.open=false')
+     history.evaluate('(e)=>e.open=true')
+     assert history.locator('#scout-performance-v80').is_visible(),(mode,'Histórico V80 inacessível na ficha')
+    if label in ('home','friends','managers','detail','functional'):
      page.screenshot(path=str(ART/(mode+'-'+label+'.png')),full_page=False)
+    # Simula uma versão futura no workspace descartável: a tela antiga
+    # só pode desaparecer APÓS a nova confirmar que está montada.
+    if label=='friends' and mode=='windows':
+     release=page.evaluate("""() => {
+      const reg=window.CRAQUE_UI_RELEASES;
+      const oldTheme=document.querySelector('link[data-craque-ui-theme="362"]');
+      const oldNav=document.querySelector('#ct362-appnav');
+      if(!reg||reg.current!==362||!oldTheme||!oldNav) return {ready:false};
+      const refused=reg.activate({version:363,ready:false})===false;
+      const oldStayed=!!document.querySelector('#ct362-appnav') &&
+       !!document.querySelector('link[data-craque-ui-theme="362"]');
+      const theme=document.createElement('link');
+      theme.rel='stylesheet';theme.href='data:text/css,body%7Boutline-color%3A%2378394b%7D';
+      document.head.append(theme);
+      const nextNav=document.createElement('nav');nextNav.id='next-release-nav';
+      nextNav.dataset.craqueUiRelease='363';document.body.append(nextNav);
+      const activated=reg.activate({version:363,ready:true,themeElement:theme});
+      document.dispatchEvent(new Event('scoutpro:ui-ready'));
+      return {ready:true,refused,oldStayed,activated,current:reg.current,
+       oldNavGone:!document.querySelector('#ct362-appnav'),
+       oldThemeGone:!document.querySelector('link[data-craque-ui-theme="362"]'),
+       newNavKept:!!document.querySelector('#next-release-nav'),
+       newThemeKept:theme.dataset.craqueUiTheme==='363',
+       active:document.body.dataset.craqueUiActive};
+     }""")
+     assert release['ready'] and release['refused'] and release['oldStayed'],release
+     assert release['activated'] and release['current']==363,release
+     assert release['oldNavGone'] and release['oldThemeGone'],release
+     assert release['newNavKept'] and release['newThemeKept'],release
+     assert release['active']=='v363',release
    ctx.close()
-  print('V362 VISUAL PASS: 10 rotas x 2 resoluções, 246 cartas, menu, ficha e estilos globais ativos.')
+  print('V362/V380 VISUAL PASS: 17 rotas x 2 resoluções, 246 cartas, menu, ficha e tema único ativos.')
  finally:
   browser.close()

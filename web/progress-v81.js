@@ -51,13 +51,30 @@ function mountDetail(){
  if(!script||!parent)return;
  let d;try{d=JSON.parse(script.textContent)}catch(e){return}
  if(d.pp!==null)return;
+ // V380: manter editor de PP, mas não gerar segunda tela do Scout PRO.
  const host=document.createElement('section');host.id='scout-progress-v81';host.className='v81-progress';
- (parent.querySelector('.detail-header')||parent).insertAdjacentElement('afterend',host);
+ const disclosure=document.createElement('details');
+ disclosure.id='ct380-progress-disclosure';disclosure.className='ct380-progress-disclosure';
+ const summary=document.createElement('summary');summary.textContent='Completar nível e PP · conferência no jogo';
+ disclosure.append(summary,host);
+ function mountInsidePremium(){
+  const advanced=document.querySelector('#scout-v220-technical .scout-v220-technical-body');
+  if(!advanced)return false;
+  if(disclosure.parentElement!==advanced)advanced.appendChild(disclosure);
+  return true;
+ }
+ if(!mountInsidePremium()){
+  const observer=typeof MutationObserver==='function'?new MutationObserver(()=>{
+   if(mountInsidePremium())observer.disconnect();
+  }):null;
+  observer?.observe(document.body,{childList:true,subtree:true});
+  root.setTimeout(()=>{observer?.disconnect();if(!disclosure.isConnected)parent.appendChild(disclosure)},10000);
+ }
  const html=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  let info='';
  function render(){
   const saved=getSaved(d),known=/^\d{8,16}$/.test(String(d.id||''));
-  host.innerHTML='<small>SCOUT PRO V81 · PROGRESSÃO POR EDIÇÃO</small><h2>Completar os níveis e os PP de '+html(d.name)+'</h2>'+
+  host.innerHTML='<small>CRAQUE TÁTICO · PROGRESSÃO DA CARTA</small><h2>Completar os níveis e os PP de '+html(d.name)+'</h2>'+
   '<p>A imagem mostra o <b>Overall</b>, não o nível máximo. Abra essa mesma carta no eFootball e confira o nível máximo na tela de progressão.</p>'+
   '<div class="v81-result">'+(saved?'<b>Nível máximo '+saved.level+' · '+saved.pp+' PP</b> — dados informados por você, salvos neste dispositivo.':'<b>PP pendente:</b> nível máximo ainda não registrado.')+'</div>'+
   '<form id="v81-form"><label>Nível máximo da carta (não Overall)<input type="number" name="level" min="1" max="120" step="1" required placeholder="Ex.: 33" value="'+(saved?.level||'')+'"></label>'+

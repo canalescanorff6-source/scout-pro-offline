@@ -9,9 +9,50 @@ const names={
  team:'Minha escalação','rotation-lab':'Laboratório','manager-hub':'Central de técnicos',
  'progress-audit':'Níveis e PP',boosters:'Ímpetos','tactical-review':'Análise tática',
  'video-evidence':'Vídeos e evidências','player-model':'Modelo corporal',
- 'rarity-audit':'Raridades','batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas'
+ 'rarity-audit':'Raridades',review379:'Conferir cartas',
+ 'batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas'
 };
 const at=()=>d.body?.dataset.page||'';
+const ACTIVE_RELEASE=362;
+// O visual aprovado é uma versão ATIVA, não mais uma camada cumulativa.
+// A futura UI deve montar seus controles e chamar
+// CRAQUE_UI_RELEASES.activate({version:N,ready:true,themeElement,dispose})
+// SOMENTE quando estiver pronta. A anterior é aposentada sem apagar dados.
+const uiReleases=host.CRAQUE_UI_RELEASES||(host.CRAQUE_UI_RELEASES={
+ current:0,dispose:null,
+ activate(next){
+  if(!next||!Number.isInteger(next.version)||next.version<1||
+   next.ready!==true||next.version<this.current)return false;
+  if(next.version===this.current)return true;
+  const previous=this.dispose;
+  // Só retire uma interface depois que a substituta declarar montagem pronta.
+  if(typeof previous==='function')previous();
+  for(const node of (d.querySelectorAll?.('[data-craque-ui-release]')||[])){
+   const version=Number(node.dataset.craqueUiRelease);
+   if(Number.isInteger(version)&&version<next.version)node.remove();
+  }
+  for(const style of (d.querySelectorAll?.('link[data-craque-ui-theme]')||[])){
+   const version=Number(style.dataset.craqueUiTheme);
+   if(Number.isInteger(version)&&version<next.version){style.disabled=true;style.remove();}
+  }
+  if(next.themeElement)next.themeElement.dataset.craqueUiTheme=String(next.version);
+  this.current=next.version;this.dispose=typeof next.dispose==='function'?next.dispose:null;
+  if(d.body)d.body.dataset.craqueUiActive='v'+next.version;
+  return true;
+ }
+});
+function activateCurrentRelease(){
+ const theme=d.querySelector('link[data-ct362-design="true"],link[href$="craque-app-shell-v362.css"]');
+ return uiReleases.activate({
+  version:ACTIVE_RELEASE,ready:!!d.body,themeElement:theme,
+  dispose:()=>{
+   d.getElementById('ct362-design-proof')?.remove();
+   d.getElementById('ct362-appnav')?.remove();
+   d.body?.classList.remove('ct362-design','ct362-options-open');
+   d.body?.removeAttribute('data-ct362-ui');
+  }
+ });
+}
 function create(tag,klass,label){
  const node=d.createElement(tag);if(klass)node.className=klass;
  if(label!==undefined)node.textContent=String(label);
@@ -31,9 +72,21 @@ function shell(){
  if(!page||d.getElementById('ct362-design-proof'))return;
  d.body.classList.add('ct362-design');
  d.body.dataset.ct362Ui='true';
+ // Android, PWA e Electron não devem exibir barra do sistema azul da UI antiga.
+ const themeMeta=d.querySelector('meta[name="theme-color"]');
+ if(themeMeta)themeMeta.setAttribute('content','#28282c');
  const oldHead=d.querySelector('.topbar,.friends-head,.hub-header,main .head,body>header');
+ // Os 246 HTMLs históricos carregam rótulos de versão V72, não a versão
+ // executada. Não exibir um número antigo como se fosse o aplicativo atual.
+ if(page==='detail'){
+  const edition=d.querySelector('.topbar .edition');
+  if(edition&&/\bV\d+\b/i.test(edition.textContent||'')){
+   edition.textContent='eFOOTBALL 2027 · CRAQUE TÁTICO';
+  }
+ }
  const proof=create('span','ct362-proof','EDITORIAL');
  proof.id='ct362-design-proof';
+ proof.dataset.craqueUiRelease=String(ACTIVE_RELEASE);
  proof.setAttribute('aria-label','Craque Tático, visual editorial');
  if(oldHead){
   oldHead.classList.add('ct362-existing-head');
@@ -46,6 +99,7 @@ function shell(){
  // No catálogo/ficha, preservar todos os handlers originais, sobretudo Atualizar.
  if(!['catalog','detail'].includes(page)){
   const nav=create('nav','ct362-appnav');nav.id='ct362-appnav';
+  nav.dataset.craqueUiRelease=String(ACTIVE_RELEASE);
   nav.setAttribute('aria-label','Navegação principal do Craque Tático');
   for(const item of navItems(page)){
    const a=create('a','ct362-navitem');
@@ -63,8 +117,13 @@ function shell(){
   const prefix=page==='detail'?'../':'';
   for(const [label,href] of [
    ['Conferir níveis e PP','conferir-progresso-v248.html'],
+   ['Conferir cartas','conferir-cartas.html'],
    ['Habilidades e ímpetos','revisao-impetos-v103.html'],
-   ['Laboratório','meu-time-testes-v219.html']]){
+   ['Análise tática','revisao-tatica-v98.html'],
+   ['Laboratório','meu-time-testes-v219.html'],
+   ['Vídeos e evidências','pesquisa-videos-v106.html'],
+   ['Modelo corporal','player-model-v101.html'],
+   ['Raridades','raridade-cadastro-v91.html']]){
    const a=create('a','',label);a.href=prefix+href;tools.append(a);
   }
   const toggle=()=>{
@@ -141,10 +200,47 @@ function friends(){
  const existing=d.getElementById('ct361-friends-mark');if(existing)existing.textContent='ACERVOS INDEPENDENTES';
  d.body.dataset.ct362Friends='true';
 }
+/* V380: uma abertura única para as ferramentas históricas.
+ * A estrutura antiga continua operante, mas NÃO é mais a tela de entrada.
+ * Não clona formulários, não move listeners e não altera estado das cartas.
+ */
+const workspaces={
+ team:['Minha escalação','Organize titulares, reservas e técnico em um só espaço.'],
+ 'rotation-lab':['Laboratório','Teste alternativas táticas e preserve as configurações aprovadas.'],
+ 'manager-hub':['Central de técnicos','Encontre o técnico adequado para suas fichas e formações.'],
+ 'progress-audit':['Níveis e PP','Revise o nível real e o progresso de cada carta.'],
+ boosters:['Habilidades e ímpetos','Consulte evidências e recomendações sem equipar automaticamente.'],
+ 'tactical-review':['Análise tática','Compare suas cartas e os estilos disponíveis.'],
+ 'video-evidence':['Vídeos e evidências','Consulte os registros de gameplay e suas fontes.'],
+ 'player-model':['Modelo corporal','Confira medidas e dados documentados das cartas.'],
+ 'rarity-audit':['Revisão de raridades','Corrija os rótulos mediante conferência visual.'],
+ review379:['Conferir cartas','Revise imagens, edições e dados registrados.'],
+ 'batch-8':['Conferência de cartas','Revise cada cadastro sem alterar suas fichas originais.'],
+ 'batch-9':['Cadastro de cartas','Registre edições e informações verificadas.']
+};
 function generic(){
- const page=at();if(['catalog','detail','friends'].includes(page))return;
- const h=d.querySelector('main h1,.hub-hero h1');
- if(h&&page==='manager-hub')h.innerHTML='Escolha seu <em>técnico</em>';
+ const page=at();
+ if(['catalog','detail','friends'].includes(page)||d.getElementById('ct362-workspace-head'))return;
+ const main=d.querySelector('main');
+ const info=workspaces[page];if(!main||!info)return;
+ const original=main.querySelector('h1');
+ const header=create('section','ct362-workspace-head');header.id='ct362-workspace-head';
+ header.setAttribute('aria-label','Área atual do Craque Tático');
+ const identity=create('div','ct362-workspace-copy');
+ identity.append(create('span','ct362-workspace-eyebrow','CRAQUE TÁTICO  /  MINHAS FERRAMENTAS'),
+  create('h1','ct362-workspace-title',info[0]),
+  create('p','ct362-workspace-description',info[1]));
+ const link=create('a','ct362-workspace-home','Minhas cartas');
+ link.href='index.html';
+ header.append(identity,link);
+ main.insertBefore(header,main.firstChild);
+ // A antiga manchete repetida perde apenas sua função visual; seus botões,
+ // contadores, filtros e event listeners ficam nos mesmos nós do DOM.
+ if(original&&original!==header.querySelector('h1')){
+  original.classList.add('ct362-redundant-heading');
+  original.setAttribute('data-ct362-replaced','true');
+ }
+ d.body.dataset.ct362Workspace='ready';
 }
 // Caderno separado: o acervo e os planos offline continuam no aplicativo.
 function externalFormacoes(){
@@ -171,7 +267,10 @@ function externalFormacoes(){
  if(proof?.parentNode){proof.parentNode.insertBefore(wrap,proof);wrap.append(proof,link,status);}
  else{wrap.append(link,status);quick.after(wrap);}
 }
-function boot(){shell();catalog();detail();friends();generic();externalFormacoes();}
+function boot(){
+ if(!activateCurrentRelease())return; // uma geração mais nova já assumiu a interface
+ shell();catalog();detail();friends();generic();externalFormacoes();
+}
 if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 d.addEventListener('scoutpro:profile-ready',boot);
 d.addEventListener('scoutpro:ui-ready',boot);

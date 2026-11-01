@@ -199,8 +199,23 @@ body.ct361-dock-ready #scout-app-bar .scout-v189-dock-options #scout-update{
  body[data-page="detail"] .ct361-glance-stat strong{font-size:12px}
  body[data-page="detail"] .ct361-glance-actions .ct361-glance-link{min-height:36px}
 }
+/* Também no Windows usar a ficha editorial única. O layout antigo só sai
+   depois de a ficha nova e a organização V378 estarem prontas. */
 @media(min-width:721px){
- body[data-page="detail"] .ct361-player-glance{display:none!important}
+ body[data-page="detail"].ct361-detail-ready .ct361-player-glance{display:grid!important}
+}
+body[data-page="detail"].ct361-detail-ready[data-ct378-stage="ready"] .profile{
+ display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+ max-width:100%!important;gap:0!important;
+}
+body[data-page="detail"].ct361-detail-ready[data-ct378-stage="ready"] .profile-sidebar{
+ display:none!important;
+}
+body[data-page="detail"].ct361-detail-ready[data-ct378-stage="ready"] .profile-content{
+ width:100%!important;max-width:100%!important;min-width:0;
+}
+body[data-page="detail"].ct361-detail-ready[data-ct378-stage="ready"] .profile-content>.mobile-profile{
+ display:none!important;
 }
 @media(prefers-reduced-motion:reduce){
  body[data-page] .ct361-player-glance *,body[data-page] .ct361-home-mark{

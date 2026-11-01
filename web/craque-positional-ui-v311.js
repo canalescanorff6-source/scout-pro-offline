@@ -45,6 +45,10 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
  }
  if(review.levelRevision){const r=review.levelRevision;block.append(el('p','ct381-level-note',
   'PP revisados: '+r.beforePP+' → '+r.afterPP+'. Esta proposta usa o orçamento corrigido. O histórico anterior permanece preservado.'));}
+ // V381: fontes mundiais no MESMO painel de treino, habilidades e ímpetos.
+ // Não altera o objeto de revisão, a ficha salva nem os recibos de equipamento.
+ const proRadar=host.CRAQUE_PRO_SCOUT_V381?.panel?.(review,host.document);
+ if(proRadar)block.append(proRadar);
  if(review.proposed){
   block.append(el('p','ct311-budget',main?review.spent+' / '+review.pp+' PP · saldo '+(review.remaining??review.pp-review.spent):review.spent+' / '+review.pp+' PP na proposta'+
    (review.current?' · '+review.redistributedPP+' PP realocados'+

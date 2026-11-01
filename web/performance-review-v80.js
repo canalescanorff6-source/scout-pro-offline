@@ -24,16 +24,33 @@
  const custom=()=>{try{const saved=JSON.parse(localStorage.getItem(customKey)||'null');return core.valid(saved?.train)?saved.train:null}catch(e){return null}};
  const load=()=>{try{const raw=JSON.parse(localStorage.getItem(storageKey)||'[]');return Array.isArray(raw)?raw:[]}catch(e){return []}};
  let history=load(),lastMessage='';
+ // V380: relatórios de partidas não constituem uma segunda tela independente.
+ // O DOM funcional e os listeners de salvamento permanecem no mesmo nó.
  const area=document.createElement('section');area.className='v80-review';area.id='scout-performance-v80';
- const head=parent.querySelector('.detail-header');
- if(head)head.insertAdjacentElement('afterend',area);else parent.prepend(area);
+ const disclosure=document.createElement('details');
+ disclosure.id='ct380-performance-disclosure';disclosure.className='ct380-performance-disclosure';
+ const summary=document.createElement('summary');summary.textContent='Histórico de partidas e desempenho';
+ disclosure.append(summary,area);
+ function mountInsidePremium(){
+  const technical=document.querySelector('#scout-v220-technical .scout-v220-technical-body');
+  if(!technical)return false;
+  if(disclosure.parentElement!==technical)technical.appendChild(disclosure);
+  return true;
+ }
+ if(!mountInsidePremium()){
+  const observer=typeof MutationObserver==='function'?new MutationObserver(()=>{
+   if(mountInsidePremium())observer.disconnect();
+  }):null;
+  observer?.observe(document.body,{childList:true,subtree:true});
+  window.setTimeout(()=>{observer?.disconnect();if(!disclosure.isConnected)parent.appendChild(disclosure)},10000);
+ }
  const [metricA,metricB]=core.metrics(d);
  const opts=()=>core.variants(d,l,custom());
  function render(){
   const state=core.review(d,l,history,custom()),builds=opts();
   const metricLabels=[metricA,metricB];
   const complete=state.observed.length>0;
-  area.innerHTML='<header><span class="v80-overline">SCOUT PRO V80 · AUDITORIA COMPETITIVA</span><h2>Rendimento em campo · '+esc(d.name)+'</h2>'+
+  area.innerHTML='<header><span class="v80-overline">CRAQUE TÁTICO · REGISTROS DE PARTIDAS</span><h2>Rendimento em campo · '+esc(d.name)+'</h2>'+
    '<div class="v80-status">'+esc(state.status)+'</div><p>Não confundir PP conferidos com melhor build. A classificação depende dos dados desta edição e dos registros de partidas feitos por você.</p></header>'+
    '<div class="v80-facts"><div><small>Progressão</small><strong>'+(state.hasPP?d.pp+' PP conferidos no cadastro':'PP pendente')+'</strong></div>'+
    '<div><small>Atributos-base disponíveis</small><strong>'+state.baseStats+' registrados</strong></div>'+

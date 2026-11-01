@@ -17,12 +17,22 @@ assert.equal(pages.length,15,'Conferir cobertura das 15 páginas de topo, inclui
 assert(pages.includes('conferir-cartas.html'));
 for(const name of pages){
  const html=source(name);
+ assert.doesNotMatch(html,/SCOUT PRO/i,name+' ainda contém a marca antiga no HTML ativo');
  const viaBridge=html.includes('src="app-bridge.js"');
  const direct=html.includes('src="craque-app-shell-v362.js"');
  assert.ok(viaBridge||direct, name+' sem o novo shell');
  assert.ok(!viaBridge||entry.includes('craque-app-shell-v362.js'),name+' perdeu bridge');
  const stylesheet=html.includes('href="craque-app-shell-v362.css"');
  assert.ok(stylesheet||viaBridge,name+' sem folhas de estilo');
+ // Desde V1205 a regra é UMA interface: página independente não pode
+ // depender da injeção tardia ou ficar com apenas V73/V353 visível.
+ assert.ok(stylesheet,name+' não carrega o tema atual explicitamente');
+ assert.ok(direct||name==='index.html'||name==='outros-elencos-v227.html',
+  name+' não inicializa o shell diretamente');
+ if(direct&&viaBridge){
+  assert.ok(html.includes('src="craque-app-shell-v362.js" data-ct362-design="true"'),
+   name+' precisa identificar a inicialização direta para impedir shell duplo');
+ }
 }
 for(const name of originals.slice(0,1).concat(originals.slice(-1))){
  assert.ok(source('fichas/'+name).includes('../app-bridge.js'),'Ficha não inclui bridge: '+name);
@@ -32,6 +42,47 @@ for(const id of ['catalog','detail','friends','team','rotation-lab','manager-hub
  assert.ok(shell.includes(id),'Página sem rota no shell V362: '+id);
 }
 assert.ok(shell.includes('ct362-design-proof')&&shell.includes('ct362-appnav'));
+assert.ok(shell.includes("themeMeta.setAttribute('content','#28282c')"),
+ 'Barra de sistema deve acompanhar o tema Premium atual');
+assert.ok(shell.includes('CRAQUE_UI_RELEASES')&&shell.includes('activateCurrentRelease()'),
+ 'Somente a geração ativa pode montar elementos visuais');
+assert.ok(shell.includes('next.ready!==true')&&shell.includes('version<this.current'),
+ 'Substituir uma UI só depois que a próxima estiver pronta e jamais por uma antiga');
+assert.ok(shell.includes("link[data-craque-ui-theme]"),
+ 'A geração anterior deve retirar sua folha oficial na próxima troca');
+assert.ok(css.includes('var(--ct362-wine)')&&css.includes('var(--ct362-bg)'),
+ 'As superfícies devem usar tokens oficiais, não novos temas acumulados');
+assert.doesNotMatch(css,/background-color:#070c14/,'Cor de fundo azul antiga não deve vencer o tema grafite');
 assert.ok(css.includes('.scout-v220-shell')&&css.includes('.scout-v189-tile')&&css.includes('.friends-card')&&css.includes('.hub-card'));
+const layout=source('craque-main-layout-v378.js');
+const curator=source('scout-card-curation-v229.js');
+for(const id of ['engenharia','foco','pontos','jogar']){
+ assert.ok(curator.includes("'"+id+"'"),'Bloco histórico não preservado na curadoria V229: '+id);
+}
+assert.ok(layout.includes("'#scout-v220-technical'")&&
+ curator.includes("archive.id='scout-v229-legacy-archive'"),
+ 'Blocos antigos devem continuar no arquivo V229 dentro da ferramenta técnica');
+assert.ok(!layout.includes("archive.append(node)")&&!layout.includes("ct378-source-archive"),
+ 'Proibido criar um segundo arquivo da carta e retirar seções do painel técnico');
+assert.ok(shell.includes("edition.textContent='eFOOTBALL 2027 · CRAQUE TÁTICO'"),
+ 'Rótulo V72 não deve continuar na interface moderna');
+assert.ok(css.includes('.scout-v229-legacy-archive'),'Arquivo histórico V229 deve herdar o visual editorial');
 assert.doesNotMatch(shell,/(localStorage\.setItem|card\.pp\s*=|card\.training\s*=|fetch\([^)]+method\s*:\s*['"]POST)/,'Redesign não altera dados');
+// V380: nenhum fluxo deve abrir com cabeçalho legado como tela principal.
+assert.ok(shell.includes('ct362-workspace-head')&&shell.includes('ct362-redundant-heading'),
+ 'A apresentação única deve substituir manchetes antigas nos workspaces');
+for(const page of ['team','rotation-lab','manager-hub','progress-audit','boosters',
+ 'tactical-review','video-evidence','player-model','rarity-audit','review379',
+ 'batch-8','batch-9']){
+ assert.ok(shell.includes(page+':')||shell.includes("'"+page+"':"),
+  'Workspace sem cabeçalho único: '+page);
+}
+assert.ok(entry.includes("document.body.classList.add('ct362-design')"),
+ 'O tema deve ligar antes dos módulos legados na home, Windows e Android');
+assert.ok(css.includes('body.ct362-design .ct362-workspace-head'),
+ 'Novo workspace deve usar a mesma folha de estilo global');
+assert.ok(css.includes('body.ct362-design .ct362-redundant-heading'),
+ 'Manchetes antigas não podem competir visualmente com a interface atual');
+assert.ok(!css.includes('background:radial-gradient(circle at 90% -10%'),
+ 'Fundo azul histórico não pode reaparecer fora da camada editorial');
 console.log('V362 PASS: 14 telas e 246 fichas cobertas, CSS/JS offline, identidade global, nenhum motor reescrito.');

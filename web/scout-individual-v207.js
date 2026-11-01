@@ -63,7 +63,7 @@ function render(doc){
  let lab={};try{lab=JSON.parse(model?.textContent||'{}')}catch(e){}
  const section=block(doc,'section','scout-v207-identity');section.id='scout-v207-identity';
  section.setAttribute('aria-label','Auditoria individual da ficha');
- const eyebrow=block(doc,'div','scout-v207-eyebrow','SCOUT PRO · COMPARAÇÃO INDIVIDUAL');
+ const eyebrow=block(doc,'div','scout-v207-eyebrow','CRAQUE TÁTICO · COMPARAÇÃO INDIVIDUAL');
  const heading=block(doc,'h3','','O que diferencia esta carta?');
  const summary=block(doc,'p','scout-v207-copy','Analisamos habilidades nativas e o ímpeto fixo documentado, sem inventar atributos ocultos.');
  const status=block(doc,'div','scout-v207-status');

@@ -27,7 +27,7 @@
 - [x] Gerar relatório das 261 cartas e correções rastreáveis; 261 níveis com referência (três relatos); identidade exata de Messi050 ainda pendente. Aplicar 34 originais/15 próprias e arquivar treinos do orçamento anterior.
 - [x] Recalcular/exportar 1.305 contextos dos cinco estilos com orçamento efetivo; cinco contextos do Messi com aviso de identidade pendente.
 - [x] Testar integridade e regressões (289/289), UI original/próprias, histórico com orçamento alterado, laboratório e conferência; revisão independente com os dois achados corrigidos.
-- [ ] Abrir PR revisável e consultar CI; nenhuma publicação automática.
+- [x] Abrir PR #310; compatibilizar main312992d com290/290 checks e QA V381/V378/V380 PASS. Consultar CI do HEAD final; nenhuma publicação automática.
 
 ## Foco da revisão
 

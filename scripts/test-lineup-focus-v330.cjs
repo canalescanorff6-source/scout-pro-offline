@@ -45,6 +45,14 @@ const js=read('web/craque-lineup-focus-v330.js'),css=read('web/craque-lineup-foc
 const formation=read('web/meu-time-duas-formacoes-v177.html');
 const experiment=read('web/meu-time-posse-4312.html');
 const lab=read('web/meu-time-testes-v219.html');
+assert(experiment.includes('data-ct330-scenario="experimental"'),
+ 'Formação experimental deve ter identidade funcional própria');
+assert(!formation.includes('data-ct330-scenario="experimental"'),
+ 'Formação aprovada não pode receber o cenário experimental');
+assert(js.includes("doc.body.dataset.ct330Scenario==='experimental'"),
+ 'A classificação não pode depender de textos de versões antigas');
+assert(!js.includes("includes('V176')"),
+ 'Não use rótulos visuais históricos como lógica de negócio');
 for(const [name,text] of [['duas',formation],['experimental',experiment],['laboratório',lab]]){
  assert(text.includes('src="craque-lineup-focus-v330.js"'),name+' não carrega UI de foco');
  assert(text.includes('href="craque-lineup-focus-v330.css"'),name+' não carrega estilo');

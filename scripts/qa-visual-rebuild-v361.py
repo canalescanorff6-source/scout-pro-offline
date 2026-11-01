@@ -26,6 +26,7 @@ with sync_playwright() as pw:
             page.goto(BASE+"/fichas/001_Daniele_Massaro.html",wait_until="domcontentloaded",timeout=45000)
             page.locator("#ct361-player-glance").wait_for(state="attached",timeout=20000)
             page.locator("#scout-v188-principal").wait_for(state="attached",timeout=20000)
+            page.wait_for_function('document.body.dataset.ct378Stage==="ready"',timeout=25000)
             state=page.evaluate("""() => {
                 const q=s=>document.querySelector(s),v=s=>q(s)?.innerText?.trim()||'';
                 const board=q('#ct361-player-glance'),img=q('.profile-content>.mobile-profile img');
@@ -46,6 +47,7 @@ with sync_playwright() as pw:
                 };
             }""")
             assert state["on"]=="ready" and state["name"]==state["oldName"],(device,state)
+            assert 'V72' not in page.locator('.topbar .edition').inner_text(),(device,'Cabeçalho antigo')
             assert state["image"]==state["oldImage"] and "cartas/" in state["image"],(device,state)
             assert len(state["kpis"])==3 and state["kpis"]==state["oldKpis"],(device,state)
             assert state["quick"]==5 and state["overflow"]<=8,(device,state)
@@ -57,7 +59,8 @@ with sync_playwright() as pw:
                 assert page.locator("#scout-update").is_visible(),(device,"Atualizador sumiu no Mais")
                 page.locator("#scout-app-bar .scout-v189-dock-more > summary").click()
             else:
-                assert state["glance"]=="none" and page.locator(".profile-sidebar .side-art img").is_visible(),(device,state)
+                assert state["glance"]!="none" and page.locator(".profile-sidebar").is_hidden(),(device,state)
+                assert 'Card ID' in page.locator(".ct361-glance-cardno").inner_text(),(device,'Identidade preservada')
             page.screenshot(path=str(ART/(device+"-ficha.png")),full_page=False)
             page.goto(BASE+"/outros-elencos-v227.html",wait_until="domcontentloaded",timeout=45000)
             page.locator("#ct361-friends-mark").wait_for(state="visible",timeout=15000)

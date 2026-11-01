@@ -2034,7 +2034,7 @@ css.textContent+=
  '#scout-v162 .v254-confirm-line input:focus-visible{outline:3px solid #f0cc82;outline-offset:3px}';
 document.head.appendChild(css);
 const section=document.createElement('section');section.id='scout-v162';section.setAttribute('aria-label','Recomendações de habilidades e ímpetos por carta');
-section.innerHTML='<div class="v162-meta">SCOUT PRO · OTIMIZAÇÃO COMPETITIVA V162</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
+section.innerHTML='<div class="v162-meta">CRAQUE TÁTICO · HABILIDADES E ÍMPETOS</div><h2>Habilidades adicionais e melhor ímpeto</h2><p>Recomendações por edição, função, estilo e tática. A prioridade é o desempenho em campo, não o Overall.</p>'+
 '<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button><button type="button" data-tactic="fora" aria-pressed="false">Por Fora</button><button type="button" data-tactic="longo" aria-pressed="false">Passe Longo</button></div>'+
 '<p id="v272-proofline" class="v272-proofline" aria-live="polite"></p>'+
 '<section id="v276-portfolio" class="v276-portfolio" aria-label="Portfólio complementar de habilidades"></section>'+
