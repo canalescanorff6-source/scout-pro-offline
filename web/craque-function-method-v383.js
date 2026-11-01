@@ -61,10 +61,11 @@ function contract(member,requested){const active=activation(member),pos=member.s
  if(!requested&&active.attack.status==='active'&&norm(member.offenseStyle)==='jogador de infiltracao')key='infiltrate';
  if(!FUNCTIONS[key]?.positions.includes(pos))throw Error('Função incompatível com esta posição.');
  const f=FUNCTIONS[key],defensive=member.instructions.some(i=>i.type==='defensive');
- return {version:VERSION,key,label:f.label,attack:defensive?'Manter apoio de segurança e limitar avanço':f.attack,defence:f.defence,
+ const off=member.offBall.position,phaseDefence=off===pos?f.defence:off==='GO'?FUNCTIONS.keeper.defence:off==='ZG'?FUNCTIONS.cover.defence:['LD','LE'].includes(off)?FUNCTIONS.secure.defence:off==='VOL'?FUNCTIONS.anchor.defence:FUNCTIONS.connect.defence;
+ return {version:VERSION,key,label:f.label,attack:defensive?'Manter apoio de segurança e limitar avanço':f.attack,defence:phaseDefence,
   priorities:Object.entries(f.delta).map(([index,weight])=>({index:Number(index),weight})),skillKeys:defensive?['intercept','blocker','onepass','mark','through']:f.skills.slice(),
   boosterNames:defensive?['Defending','Passing']:f.boosters.slice(),test:f.test,
-  constraints:[...(defensive?['Defensivo limita os avanços desta função.']:[]),...(member.instructions.some(i=>i.type==='anchoring')?['Ancoragem contém o deslocamento lateral; não bloqueia por si a infiltração.']:[]),
+  constraints:[...(defensive?['Defensivo limita os avanços desta função.']:[]),...(active.defence.status==='active'&&/destruidor/.test(norm(member.defenceStyle))?['Destruidor ativo na defesa: prever cobertura quando sair para confrontar o portador.']:[]),...(off!==pos?['Desenho fluido: recomposição orientada pela posição '+off+'.']:[]),...(member.instructions.some(i=>i.type==='anchoring')?['Ancoragem contém o deslocamento lateral; não bloqueia por si a infiltração.']:[]),
    ...(!active.familiarity?['Familiaridade nas duas fases ainda não comprovada.']:[]),...(active.attack.status==='pending'||active.defence.status==='pending'?['Estilo sem regra documentada: avaliar sem presumir sua ativação.']:[])],
   evidence:'Prioridade editorial por tarefa; proposta para comparar no jogo, sem nota de rendimento.'};
 }

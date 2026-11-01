@@ -9,6 +9,7 @@ m=member('Ala produtivo','Básico','MAT');a.equal(F.activation(m).attack.status,
 a(F.activation(m).attack.source.url.startsWith('https://'));a.match(F.activation(m).attack.explanation,/movimentação geral/i);
 a.equal(F.activation(member('Ala produtivo','O destruidor','PTE','LD')).defence.position,'LD');
 a.equal(F.activation(member('Ala produtivo','O destruidor','PTE','LD')).defence.status,'active');
+a.match(F.contract(member('Básico','Básico','MLG','LD')).defence,/corredor/);
 a.equal(F.activation(member('Estilo inventado','Cobertura','MAT')).attack.status,'pending');
 a.equal(F.activation(member('Matador','Básico','CA')).attack.status,'pending','Não adivinhar equivalência antiga');
 a.throws(()=>F.contract(member('Básico','Básico','GO'),'infiltrate'),/função/i);
@@ -28,4 +29,5 @@ a.notDeepEqual(p.cards[6].review.proposed,p2.cards[6].review.proposed,'Função 
 a(p.cards[6].review.functionPlan.priorities.length);a(p.cards[6].review.stylePair.activationPair.attack.source.url);
 a.deepEqual(p.context.functions,{});a.match(C.exportText(p),/Infiltrar/);
 for(const r of p.cards.map(c=>c.review)){if(r.proposed)a.equal(deps.tactical.total(r.proposed),60);a.equal(r.finalAttributesVerified,false);}
+const all=C.recommend(C.compile({...opts,instructions:[{instanceId:'c4',phase:'attack',type:'defensive'}]},cards),deps);a(all.cards[4].review.functionPlan.constraints.some(s=>/Destruidor/.test(s)));
 console.log('V383 FUNCTION PASS: fases independentes, função antes do rótulo, PP e explicação rastreáveis.');

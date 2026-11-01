@@ -44,6 +44,16 @@ function normalManager(m){
  return {id:str(m.id,100),name:str(m.name,100),edition:str(m.edition),proficiency,
   bonuses:Array.isArray(m.bonuses)?copy(m.bonuses):[],bonusesVerified:m.bonusesVerified===true,source:str(m.source,300),confirmedOwned:m.confirmedOwned===true};
 }
+const MATCH_MODES=Object.freeze({online:'Online contra pessoas',friends:'Contra amigos',ai:'Contra a IA'});
+const MATCH_SIGNALS=Object.freeze({better:'Melhor',same:'Sem mudança percebida',worse:'Pior',unobserved:'Não observei'});
+function normalObservation(o,p){
+ if(!isObj(o)||!id(o.id)||o.accountId!==p.accountId||o.planId!==p.id||o.contextSignature!==p.contextSignature||o.methodVersion!=='function-383-20261101'||
+  !Object.hasOwn(MATCH_MODES,o.mode)||!Number.isInteger(o.games)||o.games<1||o.games>100||
+  (o.memberId!==null&&!p.cards?.some(c=>c.memberId===o.memberId))||typeof o.note!=='string'||o.note.length>1200||
+  typeof o.recordedAt!=='string'||!Number.isFinite(Date.parse(o.recordedAt))||
+  ['support','runs','recovery','coverage'].some(k=>!Object.hasOwn(MATCH_SIGNALS,o[k])))throw Error('Observação de partida inválida ou vinculada a outra conta/revisão.');
+ return Object.fromEntries(['id','accountId','planId','contextSignature','methodVersion','mode','games','memberId','support','runs','recovery','coverage','note','recordedAt'].map(k=>[k,o[k]]));
+}
 function validate(data){
  if(!isObj(data)||data.schema!==SCHEMA||!['primary','secondary'].includes(data.active)||!isObj(data.secondary)||!isObj(data.plans))throw Error('Formato de contas inválido; registros preservados.');
  if(!Array.isArray(data.secondary.cards)||data.secondary.cards.length>1200||!Array.isArray(data.secondary.managers)||data.secondary.managers.length>100)throw Error('Acervo de conta inválido.');
@@ -54,6 +64,9 @@ function validate(data){
   for(const [key,p] of Object.entries(data.plans[account])){
    if(!id(key)||!isObj(p)||p.accountId!==account||p.id!==key)throw Error('Plano pertence a outra conta ou identificação inválida.');
    plans[account][key]=copy(p);
+   if(p.observations!==undefined){if(!Array.isArray(p.observations)||p.observations.length>100)throw Error('Limite de observações da revisão excedido.');
+    plans[account][key].observations=p.observations.map(o=>normalObservation(o,p));
+    if(new Set(p.observations.map(o=>o.id)).size!==p.observations.length)throw Error('Observação repetida.');}
   }
  }
  const out={schema:SCHEMA,active:data.active,secondary:{name:str(data.secondary.name,80)||'Secundária',cards,managers,evidence:copy(data.secondary.evidence??null)},plans,
@@ -108,5 +121,5 @@ function roster(account,sources,store){
  const extras=(sources.extras||[]).map(c=>({...c,id:'extra:'+c.id,instanceId:'extra:'+c.id,accountId:account,source:'extra'}));
  return [...original,...owned,...extras];
 }
-return Object.freeze({KEY,SCHEMA,DRAFT,MAX_BYTES,POS,position,cost,empty,validate,normalCard,normalManager,read,save,select,importDraft,afterRestore,roster,evidenceIdentity});
+return Object.freeze({KEY,SCHEMA,DRAFT,MAX_BYTES,POS,position,cost,empty,validate,normalCard,normalManager,normalObservation,MATCH_MODES,MATCH_SIGNALS,read,save,select,importDraft,afterRestore,roster,evidenceIdentity});
 });

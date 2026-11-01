@@ -71,6 +71,8 @@ function weightsFor(member,context,deps){
  for(const priority of functionPlan.priorities)weights[priority.index]+=priority.weight;
  if(member.instructions.some(i=>i.type==='defensive')){weights[6]+=10;weights[4]+=4;weights[0]=Math.max(0,weights[0]-4);reasons.push('Defensivo: prioridade de cobertura e recuperação, preservando saída.');}
  if(member.instructions.some(i=>i.type==='anchoring')){weights[1]+=4;weights[2]+=3;reasons.push('Ancoragem: referência de passe e domínio pelo centro.');}
+ if(member.instructions.some(i=>i.type==='counter_target')){weights[6]=Math.max(0,weights[6]-8);weights[3]+=4;reasons.push('Alvo de contra-ataque: reduzir prioridade de recomposição desta carta e preservar saída à frente; compensar no time.');}
+ if(member.instructions.some(i=>['man_marking','tight_marking'].includes(i.type))){weights[6]+=5;weights[4]+=3;reasons.push('Marcação: priorizar acompanhamento e recuperação; observar o espaço deixado.');}
  const aggressive=context.members.filter(m=>m.activation.defence.status==='active'&&norm(m.defenceStyle).includes('destruidor'));
  if(['LD','LE','ZG','VOL'].includes(role)&&aggressive.length>=2){weights[6]+=3;weights[4]+=2;reasons.push('Mais de um Destruidor: observar cobertura e recuperação no conjunto.');}
  if(role==='GO'){weights[1]=Math.max(weights[1],3);weights[4]=Math.max(weights[4],3);weights[5]=Math.max(weights[5],3);}
@@ -180,7 +182,24 @@ function exportText(plan){exportJSON(plan);const out=['CRAQUE TÁTICO · PLANO D
   'Ímpeto fixo: '+(r.fixedBoosters.map(b=>b.name+(b.verified?' +'+b.value:' (valor a conferir)')).join(', ')||'pendente'),
   'Ímpeto adicional cadastrado: '+(r.extraBooster?r.extraBooster.name+(r.extraBooster.verified?' +'+r.extraBooster.value:' (valor a conferir)'):'pendente'),
   'Ímpetos candidatos: '+(r.boosters.map(b=>b.name).join(', ')||'pendente'), 'Conferir: '+r.pending.join(', '));}
+ for(const o of plan.observations||[])out.push('','Observações de partida · relato manual · '+o.recordedAt,
+  (o.memberId?plan.cards.find(c=>c.memberId===o.memberId)?.review.identity.name:'Time completo')+' · '+A().MATCH_MODES[o.mode]+' · '+o.games+' partida(s)',
+  ['support','runs','recovery','coverage'].map((k,i)=>['Apoio','Infiltração','Recomposição','Cobertura'][i]+': '+A().MATCH_SIGNALS[o[k]]).join(' / '),o.note,
+  'Relato do usuário; não demonstra causa nem valida rendimento automaticamente.');
  return out.concat('',plan.balance.warnings.join('\n'),plan.search.method).join('\n');
+}
+function observe(store,accountId,planId,input,expectedSignature){
+ if(!['primary','secondary'].includes(accountId))throw Error('Conta inválida.');
+ const doc=A().read(store),plan=doc.plans[accountId][planId];
+ if(!plan||!plan.cards?.every(c=>c.review.functionPlan?.version===Method().VERSION))throw Error('Salve uma revisão atual com funções antes de registrar a observação.');
+ if(plan.stale||plan.contextSignature!==expectedSignature)throw Error('O contexto mudou; recalcule e salve uma revisão atual.');
+ if(accountId==='secondary'){
+  const fresh={...plan.context,manager:doc.secondary.managers.find(m=>m.id===plan.context.manager?.id)||null};
+  if(compile(fresh,A().roster(accountId,{},store)).signature!==expectedSignature)throw Error('As cartas ou técnico mudaram; recalcule o contexto.');
+ }
+ const o=A().normalObservation({...input,id:'match-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),accountId,planId,
+  contextSignature:expectedSignature,methodVersion:Method().VERSION,memberId:input.memberId||null,note:String(input.note??'').trim(),recordedAt:new Date().toISOString()},plan);
+ plan.observations=[...(plan.observations||[]),o];A().save(store,doc);return JSON.parse(JSON.stringify(plan));
 }
 function adopt(store,plan,expectedSignature){
  exportJSON(plan);if(plan.historicalReadOnly||plan.stale||expectedSignature!==plan.contextSignature)throw Error('O contexto mudou; recalcule antes de salvar.');
@@ -190,7 +209,7 @@ function adopt(store,plan,expectedSignature){
   if(compile(fresh,A().roster('secondary',{},store)).signature!==expectedSignature)throw Error('As cartas ou técnico mudaram; recalcule o contexto.');
  }
  const id='plan-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8);
- const revision={...JSON.parse(exportJSON(plan)),id,savedAt:new Date().toISOString(),stale:false};
+ const revision={...JSON.parse(exportJSON(plan)),id,savedAt:new Date().toISOString(),stale:false,observations:[]};
  doc.plans[plan.accountId][id]=revision;A().save(store,doc);return revision;
 }
 function transitionFormation(previous,formation,cards){
@@ -200,8 +219,9 @@ function transitionFormation(previous,formation,cards){
  for(const s of formation.slots){const c=cards.find(c=>c.id===previous.lineup?.[s.id]);if(compatible(c,s)&&!used.has(c.id))assign(s,c);}
  for(const id of Object.values(previous.lineup||{})){if(used.has(id))continue;const c=cards.find(c=>c.id===id),slot=formation.slots.find(s=>!lineup[s.id]&&compatible(c,s));
   if(slot)assign(slot,c);else warnings.push((c?.name||id)+': sem vaga compatível neste desenho; seleção anterior permanece nas revisões salvas.');}
- return {lineup,locks,instructions:(previous.instructions||[]).filter(i=>used.has(i.instanceId)).map(i=>({...i})),warnings};
+ const functions={};for(const [id,key]of Object.entries(previous.functions||{})){const slot=formation.slots.find(s=>lineup[s.id]===id);if(slot&&Method().choices(slot.position).some(f=>f.key===key))functions[id]=key;else warnings.push('Função anterior de '+id+' não se aplica à nova posição; revise a proposta.');}
+ return {lineup,locks,instructions:(previous.instructions||[]).filter(i=>used.has(i.instanceId)).map(i=>({...i})),functions,warnings};
 }
 function historyState(plan,current){return {readOnly:plan.stale===true||!current||current.signature!==plan.contextSignature,canExport:true};}
-return Object.freeze({MODES,INSTRUCTIONS,signature,compile,evaluateCard,physicalProof,boosterProof,engineCard,weightsFor,trainingAllowed,boosterCompatible,suggestLineup,recommend,exportJSON,exportText,adopt,transitionFormation,historyState});
+return Object.freeze({MODES,INSTRUCTIONS,signature,compile,evaluateCard,physicalProof,boosterProof,engineCard,weightsFor,trainingAllowed,boosterCompatible,suggestLineup,recommend,exportJSON,exportText,adopt,observe,transitionFormation,historyState});
 });

@@ -6,13 +6,14 @@ const A=window.CRAQUE_ACCOUNTS_V382,C=window.CRAQUE_TEAM_CONTEXT_V382,P=window.C
  deps={tactical:window.SCOUT_TACTICS_V220,training:window.CRAQUE_FRIEND_TRAINING_V228,individual:window.CRAQUE_FICHA_INDIVIDUAL_V251,
  interpretation:window.CRAQUE_INTERPRETATION_V233,skills:window.SCOUT_RECOMMENDATIONS_V162,boosters:window.SCOUT_BOOSTERS_V103,rating:window.CRAQUE_RATING_V376};
 const load=async path=>{const r=await fetch(path);if(!r.ok)throw Error('Arquivo indisponível: '+path);return r.json();};
-let account='primary',cards=[],managers=[],formation=null,lineup={},instructions=[],locks={},plan=null,sources=null,forms=[],editing=null,editingManager=null;
+const Method=window.CRAQUE_FUNCTION_METHOD_V383;
+let account='primary',cards=[],managers=[],formation=null,lineup={},instructions=[],functions={},locks={},plan=null,sources=null,forms=[],editing=null,editingManager=null;
 const split=s=>String(s||'').split(/[;\n]+/).map(x=>x.trim()).filter(Boolean),num=s=>s===''?null:Number(s),clone=x=>JSON.parse(JSON.stringify(x));
 function options(select,items,value){select.replaceChildren();for(const [v,label]of items){const o=mk('option',label);o.value=v;select.append(o);}if(items.some(x=>x[0]===value))select.value=value;}
 function clearPlan(){plan=null;$('plan-section').hidden=true;}
 function formationNow(){return forms.find(f=>f.id===$('formation').value);}
 function managerNow(){return managers.find(m=>m.id===$('manager').value)||null;}
-function context(){return C.compile({accountId:account,manager:managerNow(),style:$('style').value,formation,lineup,instructions},roster());}
+function context(){return C.compile({accountId:account,manager:managerNow(),style:$('style').value,formation,lineup,instructions,functions},roster());}
 function roster(){
  const result=A.roster(account,sources,localStorage);
  if(account==='primary')for(const c of result){
@@ -34,7 +35,7 @@ function roster(){
 }
 function changed(){clearPlan();paintPitch();}
 function setAccount(id,persist=true){
- if(persist){A.select(localStorage,id);const url=new URL(location.href);url.searchParams.set('account',id);history.replaceState(null,'',url);}account=id;cards=roster();lineup={};locks={};instructions=[];clearPlan();
+ if(persist){A.select(localStorage,id);const url=new URL(location.href);url.searchParams.set('account',id);history.replaceState(null,'',url);}account=id;cards=roster();lineup={};locks={};instructions=[];functions={};clearPlan();
  $('account').value=id;for(const k of ['primary','secondary'])$(k).setAttribute('aria-pressed',String(k===id));
  managers=id==='secondary'?A.read(localStorage).secondary.managers:sources.managers;
  options($('manager'),[['','Escolha o técnico e a edição'],...managers.map(m=>[m.id,m.name+' · '+(m.edition||'edição a conferir')])]);
@@ -50,7 +51,7 @@ function paintForms(){const family=$('family').value,old=$('formation').value;
  options($('formation'),visible.map(f=>[f.id,f.label]),old);applyFormation(formationNow());
  $('formation-note').textContent=formation?formation.rationale+' '+formation.risks.join(' '):'Sem desenho compatível.';
 }
-function applyFormation(next){const out=C.transitionFormation({lineup,locks,instructions},next,cards);formation=next;lineup=out.lineup;locks=out.locks;instructions=out.instructions;paintLineup();changed();if(out.warnings.length)say(out.warnings.join(' '));}
+function applyFormation(next){const out=C.transitionFormation({lineup,locks,instructions,functions},next,cards);formation=next;lineup=out.lineup;locks=out.locks;instructions=out.instructions;functions=out.functions;paintLineup();changed();if(out.warnings.length)say(out.warnings.join(' '));}
 function managerNote(){$('edit-manager').hidden=account!=='secondary'||!managerNow();const m=managerNow(),p=m?.proficiency[$('style').value];$('manager-note').textContent=m?
  'Proficiência: '+(p??'a conferir')+' · '+(m.bonusesVerified?'Bônus numéricos documentados.':'Bônus e combinações ainda precisam de conferência nesta conta.'):'Selecione o técnico. Nenhum bônus é presumido.';}
 function paintPitch(){const e=$('pitch');e.replaceChildren();if(!formation)return;
@@ -62,8 +63,11 @@ function paintLineup(){const e=$('lineup');e.replaceChildren();if(!formation)ret
   const select=mk('select');select.setAttribute('aria-label','Jogador '+s.id);
   const eligible=cards.filter(c=>(c.position==='GO')===(s.position==='GO'));
   options(select,[['','Escolha o jogador'],...eligible.map(c=>[c.id,c.name+' · '+c.edition+((c.positions||[c.position]).includes(s.position)?'':' · posição a conferir')])],lineup[s.id]);
-  select.onchange=()=>{const previous=lineup[s.id];if(select.value)lineup[s.id]=select.value;else delete lineup[s.id];delete locks[s.id];instructions=instructions.filter(i=>i.instanceId!==previous);paintLineup();changed();};head.append(select);
+  select.onchange=()=>{const previous=lineup[s.id];if(select.value)lineup[s.id]=select.value;else delete lineup[s.id];delete locks[s.id];delete functions[previous];instructions=instructions.filter(i=>i.instanceId!==previous);paintLineup();changed();};head.append(select);
   const label=mk('label','Fixar');label.className='lock';const check=mk('input');check.type='checkbox';check.checked=!!locks[s.id];check.disabled=!lineup[s.id];check.onchange=()=>{if(check.checked)locks[s.id]=lineup[s.id];else delete locks[s.id];};label.prepend(check);head.append(label);row.append(head);
+  const task=mk('label','Função desejada'),choice=mk('select');choice.setAttribute('aria-label','Função '+s.id);
+  options(choice,[['','Sugerir pela posição e estilo ativo'],...Method.choices(s.position).map(f=>[f.key,f.label])],functions[lineup[s.id]]);choice.disabled=!lineup[s.id];
+  choice.onchange=()=>{if(choice.value)functions[lineup[s.id]]=choice.value;else delete functions[lineup[s.id]];changed();};task.append(choice);row.append(task);
   const controls=mk('div');controls.className='slot-instructions';
   for(const phase of ['attack','defence']){const l=mk('label',phase==='attack'?'Com a bola':'Sem a bola'),ins=mk('select');ins.setAttribute('aria-label',(phase==='attack'?'Ataque ':'Defesa ')+s.id);
    const current=instructions.find(i=>i.instanceId===lineup[s.id]&&i.phase===phase);
@@ -79,6 +83,13 @@ function paintResults(){const root=$('results');root.replaceChildren();$('plan-s
  for(const row of plan.cards){const r=row.review,c=cards.find(c=>c.id===row.memberId),box=mk('article');box.className='result-card';box.dataset.memberId=row.memberId;
   const top=mk('div');top.className='result-top';if(c?.image&&(!plan.historicalReadOnly||(c.edition===r.identity.edition&&String(c.cardId||'')===r.identity.cardId))){const img=mk('img');img.className='card-art';img.src=c.image;img.alt='Carta de '+r.identity.name;img.loading='lazy';top.append(img);}const title=mk('div');title.append(mk('span',r.position+' · '+r.tacticLabel),mk('h3',r.identity.name),mk('span',r.identity.edition||'Edição a conferir'));top.append(title);box.append(top);
   box.append(mk('p',r.contextRole.attack+'. '+r.contextRole.defence+'.'),mk('p','Estilos cadastrados: '+r.stylePair.offense+' / '+r.stylePair.defence));
+  if(r.functionPlan){box.append(mk('h4',r.functionPlan.label),mk('p','Prioridades do treino: '+r.functionPlan.priorities.map(p=>p.category).join(' · ')),mk('p','Observar na partida: '+r.functionPlan.test+'.'));
+   const pair=r.stylePair.activationPair,phaseNames={attack:'Com a bola',defence:'Sem a bola'};
+   for(const phase of ['attack','defence']){const a=pair[phase],line=mk('p',phaseNames[phase]+' · '+a.position+' · '+a.style+': '+a.label);line.className='activation-status';line.dataset.activation=a.status;box.append(line);}
+   box.append(mk('p','Familiaridade nas duas fases: '+(pair.familiarity?'cadastrada nesta conta':'a conferir; simulação')),
+    mk('p','Apoios próximos no desenho: '+(r.functionPlan.partners.map(p=>p.name+' ('+p.position+')').join(', ')||'a conferir')),
+    mk('p','Referências de proteção: '+(r.functionPlan.coverage.join(', ')||'sem referência definida; rever o conjunto')));
+   for(const constraint of r.functionPlan.constraints)box.append(mk('p',constraint));}
   if(r.proposed){const grid=mk('div');grid.className='training';for(const g of r.trainingGroups){const cell=mk('div',g.category);cell.append(mk('strong',String(g.proposed)),mk('small','Cadastrado: '+(g.current??'pendente')+' · '+g.cost+' PP'));grid.append(cell);}box.append(grid,mk('b',r.spent+' / '+r.pp+' PP · níveis de categoria'));}
   else box.append(mk('p','Treino pendente: confira nível máximo e PP desta edição.'));
   const compare=mk('div');compare.className='comparison';const current=mk('div'),proposed=mk('div');
@@ -87,11 +98,20 @@ function paintResults(){const root=$('results');root.replaceChildren();$('plan-s
    mk('p','Ímpeto adicional: '+(r.extraBooster?r.extraBooster.name+(r.extraBooster.verified?' +'+r.extraBooster.value:' (valor a conferir)'):'não informado')));
   proposed.append(mk('h4','CANDIDATAS PARA ESTA FUNÇÃO'));const list=mk('ul');for(const skill of r.skills)list.append(mk('li',skill.name+' — '+skill.reason));proposed.append(list,
    mk('p','Vagas livres: '+(r.freeSkillSlots??'a conferir')+'.'),mk('p','Ímpetos a comparar: '+(r.boosters.map(b=>b.name).join(' / ')||'a conferir')+'.'));
+  for(const b of r.boosters)proposed.append(mk('small',b.name+' — '+b.reason));
   compare.append(current,proposed);box.append(compare);const pending=mk('p','Conferir antes de investir: '+(r.pending.join(', ')||'nenhuma pendência de cadastro identificada')+'.');pending.className='pending';box.append(pending);
   const details=mk('details');details.append(mk('summary','Por que esta ficha?'),mk('p',r.searchMethod),mk('p',r.contextReasons.join(' ')||r.job),mk('p',r.stylePair.activation));
+  if(r.stylePair.activationPair)for(const [phase,label]of [['attack','Ataque'],['defence','Defesa']]){const a=r.stylePair.activationPair[phase];details.append(mk('p',label+': '+a.explanation));if(a.source){const link=mk('a','Referência de '+label.toLowerCase()+' ↗');link.href=a.source.url;link.target='_blank';link.rel='noopener noreferrer';details.append(link,mk('p',a.source.kind+' · consultado em '+a.source.checked));}}
   if(r.attributeEstimate?.status==='estimated')details.append(mk('p','OVR estimado desta proposta: '+r.attributeEstimate.overall+'; fórmula independente, sem confirmação no jogo.'),mk('pre',JSON.stringify(r.attributeEstimate.stats,null,2)));
   else details.append(mk('p','Atributos finais dependem da base exata da edição e dos bônus documentados. Nenhum número final foi inventado.'));box.append(details);root.append(box);
- }}
+ }paintObservations();}
+function paintObservations(){const ready=!!plan?.id&&!plan.historicalReadOnly&&plan.cards.every(c=>c.review.functionPlan?.version===Method.VERSION);
+ $('match-section').hidden=false;$('match-form').hidden=!ready;$('match-note').textContent=ready?'Registre o que você percebeu usando esta revisão. Compare adversários e condições semelhantes.':'Salve uma revisão atual para registrar observações. O histórico mantém os relatos da revisão original.';
+ options($('match-member'),[['','Time completo'],...plan.cards.map(c=>[c.memberId,c.review.identity.name])]);const list=$('match-list');list.replaceChildren();
+ for(const o of plan.observations||[]){const box=mk('article');box.className='match-observation';box.append(mk('b',(o.memberId?plan.cards.find(c=>c.memberId===o.memberId)?.review.identity.name:'Time completo')+' · '+A.MATCH_MODES[o.mode]+' · '+o.games+' partida(s)'),mk('p',new Date(o.recordedAt).toLocaleString('pt-BR')),
+  mk('p',[['support','Apoio'],['runs','Infiltração'],['recovery','Recomposição'],['coverage','Cobertura']].map(([k,l])=>l+': '+A.MATCH_SIGNALS[o[k]]).join(' · ')),mk('p',o.note));list.append(box);}
+ if(!plan.observations?.length)list.append(mk('p','Ainda sem observações de partida nesta revisão.'));
+}
 function paintRoster(){const e=$('roster'),q=$('search').value.toLocaleLowerCase();e.replaceChildren();for(const c of cards.filter(c=>(c.name+' '+c.edition).toLocaleLowerCase().includes(q))){
  const row=mk('article');row.className='library-card';if(c.image){const img=mk('img');img.src=c.image;img.alt='';img.className='card-art';img.loading='lazy';row.append(img);}const d=mk('div');d.append(mk('b',c.name),mk('p',c.edition||'Edição a conferir'),mk('p',c.position+' · Nível '+(c.maxLevel??'pendente')+' · '+(c.pp??'?')+' PP'));
  if(account==='secondary'){const edit=mk('button','Conferir dados');edit.onclick=()=>editCard(c);d.append(edit);}else{const a=mk('a','Conferir carta ↗');a.href='conferir-cartas.html#'+encodeURIComponent(c.id);d.append(a);}row.append(d);e.append(row);
@@ -113,7 +133,7 @@ function editCard(card=null){editing=card?.id||'sec-'+Date.now().toString(36);co
 function paintHistory(){const e=$('history');e.replaceChildren();const saved=Object.values(A.read(localStorage).plans[account]).reverse();if(!saved.length)e.append(mk('p','Nenhuma revisão salva nesta conta.'));
  for(const p of saved){const b=mk('button',new Date(p.savedAt).toLocaleString('pt-BR')+' · '+C.MODES[p.style]+(p.stale?' · recalcular':''));b.onclick=()=>{try{
   $('style').value=p.style;$('family').value=p.context.formation.family;paintForms();$('formation').value=p.context.formation.id;formation=formationNow();
-  $('manager').value=p.context.manager?.id||'';lineup={...p.context.lineup};instructions=clone(p.context.instructions);cards=roster();paintLineup();managerNote();
+  $('manager').value=p.context.manager?.id||'';lineup={...p.context.lineup};instructions=clone(p.context.instructions);functions=clone(p.context.functions||{});cards=roster();paintLineup();managerNote();
   let current=null;try{current=context();}catch(_){}const state=C.historyState(p,current);
   plan={...clone(p),historicalReadOnly:state.readOnly};paintResults();say(state.readOnly?'Histórico aberto com os dados originais. Você pode exportá-lo; recalcule antes de salvar uma revisão atual.':'Revisão reaberta; equipamento preservado.');
  }catch(err){say(err.message,true);}};e.append(b);}}
@@ -130,9 +150,11 @@ try{
  $('account').onchange=()=>setAccount($('account').value);$('family').onchange=paintForms;$('style').onchange=()=>{paintForms();managerNote();};
  $('formation').onchange=()=>{applyFormation(formationNow());$('formation-note').textContent=formation.rationale+' '+formation.risks.join(' ');};
  $('manager').onchange=()=>{managerNote();changed();};$('phase').onchange=paintPitch;$('search').oninput=paintRoster;
- $('auto').onclick=()=>{try{const out=C.suggestLineup(formation,cards,{locks});lineup=out.lineup;instructions=instructions.filter(i=>Object.values(lineup).includes(i.instanceId));paintLineup();changed();say(out.warnings.join(' ')||'Onze sugerido. Revise os nomes e as instruções antes de montar o plano.');}catch(e){say(e.message,true);}};
+ $('auto').onclick=()=>{try{const out=C.suggestLineup(formation,cards,{locks});const retained=C.transitionFormation({lineup:out.lineup,functions,instructions},formation,cards);lineup=retained.lineup;functions=retained.functions;instructions=retained.instructions;paintLineup();changed();say(out.warnings.join(' ')||'Onze sugerido. Revise os nomes e as instruções antes de montar o plano.');}catch(e){say(e.message,true);}};
  $('calculate').onclick=()=>{try{const ctx=context();if(!ctx.ready)throw Error('Escolha os onze jogadores antes de montar o plano.');plan=C.recommend(ctx,deps);paintResults();say('Plano montado para os onze. Confira as pendências de cada carta antes de investir.');$('plan-section').scrollIntoView({behavior:'smooth'});}catch(e){say(e.message,true);}};
- $('save-plan').onclick=()=>{try{if(!plan)throw Error('Monte o plano primeiro.');const revision=C.adopt(localStorage,plan,context().signature);paintHistory();window.dispatchEvent(new Event('craque:data-changed'));say('Nova revisão salva nesta conta: '+new Date(revision.savedAt).toLocaleTimeString('pt-BR'));}catch(e){say(e.message,true);}};
+ $('save-plan').onclick=()=>{try{if(!plan)throw Error('Monte o plano primeiro.');const revision=C.adopt(localStorage,plan,context().signature);plan=revision;paintObservations();paintHistory();window.dispatchEvent(new Event('craque:data-changed'));say('Nova revisão salva nesta conta: '+new Date(revision.savedAt).toLocaleTimeString('pt-BR'));}catch(e){say(e.message,true);}};
+ for(const select of document.querySelectorAll('#match-form [data-match-signal]'))options(select,Object.entries(A.MATCH_SIGNALS),'unobserved');
+ $('match-form').onsubmit=e=>{e.preventDefault();try{if(!plan?.id||plan.historicalReadOnly)throw Error('Salve uma revisão atual primeiro.');const input=Object.fromEntries(new FormData(e.target));input.games=Number(input.games);plan=C.observe(localStorage,account,plan.id,input,context().signature);paintObservations();paintHistory();window.dispatchEvent(new Event('craque:data-changed'));say('Observação salva nesta revisão. Ela não valida rendimento nem altera a ficha automaticamente.');}catch(err){say(err.message,true);}};
  $('export-text').onclick=async()=>{try{if(!plan)throw Error('Monte o plano primeiro.');const native=window.scoutDesktop||window.Capacitor?.isNativePlatform?.(); if(native)await window.SCOUT_FILE_EXPORT.saveJson({format:'craque-fichas-v382',text:C.exportText(plan)},'craque-fichas-'+account+'.json');else download(C.exportText(plan),'craque-fichas-'+account+'.txt','text/plain;charset=utf-8');say('Exportação solicitada com o mesmo treino e escolhas exibidos. Confira o arquivo salvo.');}catch(e){say(e.message,true);}};
  $('export-json').onclick=async()=>{try{await window.SCOUT_FILE_EXPORT.saveJson(JSON.parse(C.exportJSON(plan)),'craque-plano-'+account+'.json');}catch(e){say(e.message,true);}};
  $('import-account').onchange=async e=>{try{const f=e.target.files[0];if(!f)return;if(f.size>A.MAX_BYTES)throw Error('Arquivo excede3MB.');const imported=A.importDraft(localStorage,JSON.parse(await f.text()));setAccount('secondary');window.dispatchEvent(new Event('craque:data-changed'));say(imported.added+' cartas importadas; '+imported.total+' na Secundária.');}catch(err){say(err.message,true);}finally{e.target.value='';}};
