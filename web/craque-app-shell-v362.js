@@ -9,7 +9,8 @@ const names={
  team:'Minha escalação','rotation-lab':'Laboratório','manager-hub':'Central de técnicos',
  'progress-audit':'Níveis e PP',boosters:'Ímpetos','tactical-review':'Análise tática',
  'video-evidence':'Vídeos e evidências','player-model':'Modelo corporal',
- 'rarity-audit':'Raridades','batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas'
+ 'rarity-audit':'Raridades',review379:'Conferir cartas',
+ 'batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas'
 };
 const at=()=>d.body?.dataset.page||'';
 const ACTIVE_RELEASE=362;
