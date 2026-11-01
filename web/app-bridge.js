@@ -76,7 +76,12 @@ craqueBackupScript.src=v189Root+'craque-backup-v226.js';
 craqueBackupScript.onload=()=>{
  const ui=document.createElement('script');ui.src=v189Root+'craque-backup-ui-v226.js';document.head.appendChild(ui);
 };
-document.head.appendChild(craqueBackupScript);
+// Carregar contas antes do backup para que restaurações antigas invalidem o contexto correto.
+const accounts382=document.createElement('script');accounts382.src=v189Root+'craque-accounts-v382.js';
+accounts382.onload=()=>document.head.appendChild(craqueBackupScript);
+accounts382.onerror=()=>document.head.appendChild(craqueBackupScript);
+document.head.appendChild(accounts382);
+const accountUi382=document.createElement('script');accountUi382.src=v189Root+'craque-account-ui-v382.js';document.head.appendChild(accountUi382);
 
 // V356: a home tem CSS/JS Premium declarativos no HTML (APK incluso).
 // Nenhuma segunda cópia assíncrona pode competir com esse script de entrada.

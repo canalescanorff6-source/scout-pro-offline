@@ -19,11 +19,13 @@ function normalCard(raw){
  if(v&&(!Array.isArray(v)||v.length!==10||v.some(n=>!Number.isInteger(n)||n<0||n>20)||pp===null||cost(v)!==pp))throw Error('Treino não fecha o orçamento de PP.');
  const image=str(raw.image,85001);if(image&&(image.length>85000||!/^data:image\/(?:png|jpeg|webp);base64,[a-zA-Z0-9+/]+=*$/.test(image)))throw Error('Imagem inválida; use miniatura local de até85KB.');
  const cardId=str(raw.cardId,90);if(cardId&&!/^\d{5,20}$/.test(cardId))throw Error('Card ID inválido; deixe pendente se não foi identificado.');
- const booster=x=>{if(!x)return null;if(!isObj(x)||!str(x.name)||!Number.isInteger(x.value)||x.value<1||x.value>5)throw Error('Ímpeto inválido.');
-  return {name:str(x.name,100),value:x.value,verified:x.verified===true,source:str(x.source,300)};};
+ const booster=x=>{if(!x)return null;const value=number(x.value);if(!isObj(x)||!str(x.name)||
+  (value===null?x.verified===true:!Number.isInteger(value)||value<1||value>5))throw Error('Ímpeto inválido; confirme o valor ou deixe pendente.');
+  return {name:str(x.name,100),value,verified:x.verified===true,source:str(x.source,300)};};
+ const additional=list(raw.skills);if(additional.length>5||(Number.isInteger(raw.skillCapacity)&&additional.length>raw.skillCapacity))throw Error('Adicionais acima da capacidade cadastrada.');
  return {id:str(raw.id,100),name:str(raw.name,80),cardId,edition:str(raw.edition),position:position(raw.position),
   positions:[...new Set([position(raw.position),...(raw.positions||[]).map(position).filter(p=>POS.includes(p))])],maxLevel,pp,
-  offenseStyle:str(raw.offenseStyle||raw.style,110),defenceStyle:str(raw.defenceStyle,110),nativeSkills:list(raw.nativeSkills),skills:list(raw.skills),
+  offenseStyle:str(raw.offenseStyle||raw.style,110),defenceStyle:str(raw.defenceStyle,110),nativeSkills:list(raw.nativeSkills),skills:additional,
   nativeVerified:raw.nativeVerified===true,skillsVerified:raw.skillsVerified===true,
   skillCapacity:Number.isInteger(raw.skillCapacity)&&raw.skillCapacity>=0&&raw.skillCapacity<=5?raw.skillCapacity:null,
   fixedBoosters:(raw.fixedBoosters||[]).slice(0,2).map(booster),extraBooster:booster(raw.extraBooster),
@@ -93,7 +95,7 @@ function roster(account,sources,store){
   position:position(m?.position||c.posicao),positions:[position(m?.position||c.posicao)],maxLevel:m?.level??c.max_level??null,pp:m?.pp??c.pp,
   offenseStyle:m?.style||c.estilo_ataque||'',defenceStyle:m?.defenceStyle||c.estilo_defesa||'',nativeSkills:list(m?.nativeSkills||c.habilidades_nativas),skills:list(m?.skills||''),
   nativeVerified:!!(m?.nativeSkills||c.habilidades_nativas),skillsVerified:!!m?.equipmentRecord,
-  fixedBoosters:[{name:m?.fixedBooster||c.impeto_fixo||'',value:1,verified:false}],extraBooster:m?.booster?{name:m.booster,value:1,verified:false}:null,
+  fixedBoosters:(m?.fixedBooster||c.impeto_fixo)?[{name:m?.fixedBooster||c.impeto_fixo,value:null,verified:false}]:[],extraBooster:m?.booster?{name:m.booster,value:null,verified:false}:null,
   boosterSlot:m?.boosterSlot||'pendente',boosterSlotSupported:false,identityVerified:false,
   trainingLevels:m?.trainingLevels?str(m.trainingLevels,300).split(/[,;\s]+/).filter(Boolean).map(Number):c.niveis||null,image:c.imagem||'',
   reference:(sources.references||[]).find(r=>r.capture===c.numero)||null,legacy:c};});
