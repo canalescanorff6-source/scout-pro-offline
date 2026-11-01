@@ -47,7 +47,8 @@ with sync_playwright() as p:
     }""")
     assert surface['loaded']=='true' and surface['version']=='EDITORIAL',(mode,label,surface)
     assert surface['overflow']<=12,(mode,label,'overflow',surface)
-    if kind in ('friends','team','manager-hub','rotation-lab'):
+    assert surface['background']=='rgb(40, 40, 44)',(mode,label,'paleta antiga ainda ativa',surface)
+    if kind not in ('catalog','detail'):
      assert surface['nav']==4,(mode,label,'navegação unificada ausente',surface)
     if kind=='friends':
      legacy=page.locator('#scout-app-bar')
