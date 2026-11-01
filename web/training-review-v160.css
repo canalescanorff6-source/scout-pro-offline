@@ -51,7 +51,7 @@
  display:inline-flex;justify-content:center;align-items:center;min-height:38px;
  padding:8px 12px;border:1px solid var(--v160-wine);border-radius:7px;
  background:var(--v160-wine);color:var(--ct362-on-wine,#fff4f6);
- font:700 12px/1.3 inherit;cursor:pointer
+ font-size:12px;font-weight:700;line-height:1.3;font-family:inherit;cursor:pointer
 }
 .v160-sheet a{color:var(--v160-accent);font-weight:700}
 .v160-proof ul{padding-left:18px;color:var(--v160-muted)}
