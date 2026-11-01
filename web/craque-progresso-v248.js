@@ -49,7 +49,7 @@ const doc=host.document;
 const $=id=>doc.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>
  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let cards=[],images=new Map(),filter='pendente',query='',limit=24,focusCap=null;
+let cards=[],images=new Map(),filter='all',query='',limit=24,focusCap=null;
 const storage=()=>host.localStorage;
 function note(message,problem=false){
  const e=$('v248-feedback');

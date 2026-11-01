@@ -1621,8 +1621,17 @@ def run():
                         wait_until='domcontentloaded',timeout=35000)
                     page.locator('#v248-cards .ct248-card').first.wait_for(timeout=25000)
                     counts=page.locator('#v248-stats').inner_text()
-                    if '85 níveis documentados' not in counts or '161 sem nível comprovado' not in counts:
-                        problems.append(f"{name}: auditoria V248 não separa os 85 níveis conhecidos dos 161 pendentes: {counts}")
+                    reviewed=page.evaluate("""() => {
+                      const rows=CRAQUE_LEVEL_AUDIT_V381.cards.filter(r=>Number.isInteger(r.capture));
+                      return {public:rows.filter(r=>r.decision.status==='reviewed'&&r.decision.sourceKind!=='owner_efhub_report').length,
+                        owner:rows.filter(r=>r.decision.status==='reviewed'&&r.decision.sourceKind==='owner_efhub_report').length,
+                        pending:rows.filter(r=>r.decision.status!=='reviewed').length};
+                    }""")
+                    if (f"{reviewed['public']} originais revisados na fonte" not in counts or
+                        f"{reviewed['owner']} níveis informados por você" not in counts or
+                        f"{reviewed['pending']} sem nível comprovado" not in counts or
+                        '0 conferidos neste dispositivo' not in counts):
+                        problems.append(f"{name}: auditoria V248 misturou referência, relato e conferência no jogo: {counts}")
                     first=page.locator('#v248-cards .ct248-card').first
                     first_cap=int(first.get_attribute('data-cap'))
                     first.scroll_into_view_if_needed()

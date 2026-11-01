@@ -14,6 +14,11 @@ with sync_playwright() as pw:
   for width,height in [(320,700),(390,844),(1366,768)]:
    ctx=browser.new_context(viewport={'width':width,'height':height});page=ctx.new_page();errors=[]
    page.on('pageerror',lambda e:errors.append(str(e)))
+   page.goto(BASE+'/conferir-progresso-v248.html',wait_until='domcontentloaded')
+   page.wait_for_function("document.querySelector('#v248-feedback').textContent.includes('261')")
+   assert page.locator('#v248-filter').input_value()=='all','A conferência deve abrir o acervo, mesmo sem fontes pendentes.'
+   assert page.locator('#v248-cards .ct248-card').count()==24
+   assert page.evaluate("Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:v248:level-review:')).length")==0
    page.goto(BASE+'/conferir-progresso-v248.html?cap=41',wait_until='domcontentloaded')
    row=page.locator('.ct248-card[data-cap="41"]');row.wait_for(timeout=25000)
    assert '62 PP' in row.locator('.ct248-budget').inner_text()
