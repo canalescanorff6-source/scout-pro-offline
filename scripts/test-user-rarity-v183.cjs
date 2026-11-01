@@ -21,7 +21,7 @@ for(const [cap,rarity] of expected){
  const hit=index.match(new RegExp('<a class="player-card"[^>]*data-cap="'+cap+'"[^>]*>[\\s\\S]*?<\\/a>'));
  assert.equal(card.raridade_confirmada,rarity,'Raridade da carta #'+cap);
  assert.match(card.raridade_confirmacao_origem,/usuario/);
- assert(html.includes('— '+rarity+' | SCOUT PRO'),'Etiqueta visual #'+cap);
+ assert(html.includes('— '+rarity+' | CRAQUE TÁTICO'),'Etiqueta visual atual #'+cap);
  assert(hit && hit[0].includes('data-rarity="'+rarity+'"'),'Raridade do catálogo #'+cap);
  if(editions.has(cap)){
   const label=editions.get(cap),record=research.records.find(x=>x.cap===cap);

@@ -36,7 +36,7 @@
   .ct364-card-tag,.ct-v230-tactic-label,.scout-v220-eyebrow){color:var(--ct362-accent)!important}
  body.ct362-design :where(.topbar,.friends-head,.hub-header,.scout-rotation-top,.review-top,main>.head,
   .ct364-dialog-head,.friends-dialog-head,.friends-dialog-actions,.friend-analysis-sections,
-  .ct364-dialog-foot,.friend-analysis-cta,#scout-app-bar,#ct362-appnav){
+  .ct364-dialog-foot,.friend-analysis-cta,#scout-app-bar,#ct362-appnav,body>header){
   background:var(--ct362-chrome)!important;border-color:var(--ct362-faint)!important;box-shadow:none!important;
  }
  body.ct362-design :where(.panel,.card,.block,.notice,.metric,.hero,.topic,
@@ -47,10 +47,10 @@
   .ct361-player-glance,.ct360-card-quick,.ct360-card-extra,.ct378-main-sheet,
   .ct378-sheet-options,.ct374-native-inventory,.ct374-pp-comparison,.ct375-booster,
   .ct364-owned-section,.ct364-player-card,.ct364-owned-count,.ct364-area,.ct376-panel,.ct-card-info-editor,
-  .review-card,.review-confirm,fieldset,dialog,#scout-backup-modal,#scout-android-update-modal,
+  .review-card,.review-confirm,.review-intro,.review-controls,.review-actions,.review-navigation,.review-export,fieldset,dialog,#scout-backup-modal,#scout-android-update-modal,
   #scout-card-navigator,.scout-search-panel,.scout-v189-about,
   .ct-manager-v302,.ct-manager-v329-tools,.scout-v203-filter-panel,.ct362-tools-popup,.ct330-focus,
-  .ct363-readiness,.friends-fichas-bar,
+  .ct363-readiness,.friends-fichas-bar,.fields,.records,.art-wrap,.layout,.review-fields,.review-history,.scout-v229-legacy-archive,
   #ct355-update-ready){
   background:var(--ct362-surface)!important;color:var(--ct362-text)!important;
   border-color:var(--ct362-border)!important;border-radius:var(--ct362-radius)!important;
@@ -119,6 +119,54 @@
   background:var(--ct362-chrome)!important;border-color:var(--ct362-muted)!important;
   box-shadow:none!important;
  }
+ /* Rotas históricas com HTML próprio: mesma identidade visual do catálogo.
+    Mantém grades, campos, contadores, navegação e handlers funcionais. */
+ body.ct362-design[data-page="batch-8"] :where(.art,.fields),
+ body.ct362-design[data-page="batch-9"] :where(.art-wrap,.records,.help,.count),
+ body.ct362-design[data-page="rarity-audit"] :where(.figure,.controls,.pills,.counter),
+ body.ct362-design[data-page="review379"] :where(.review-fields,.review-history,.review-card),
+ body.ct362-design[data-page="tactical-review"] :where(.details,.filters,.actions),
+ body.ct362-design[data-page="boosters"] :where(.tools,.tactics,.facts,.visual){
+  background:var(--ct362-surface)!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-text)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design :where(.ct362-unified-head,header.ct362-unified-head){
+  background:var(--ct362-chrome)!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-text)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design :where(.ct362-unified-head .brand-copy small,.ct362-unified-head .edition){
+  color:var(--ct362-muted)!important;
+ }
+ /* A ficha nova assume também superfícies que os motores V68–V220
+    continuam criando. O conteúdo histórico é preservado no arquivo V229,
+    mas não mantém outra identidade de cores dentro da interface. */
+ body.ct362-design[data-page="detail"] :where(
+   .side-card,.side-info,.side-info-row,.soft-panel,.v68-brief,.v68-info,
+   .v68-callout,.v68-alert,.v68-build,.v68-gameplay,.performance-lab,
+   .lab-evidence,.lab-advice,.lab-stats,.gameplay-tip,.focus-banner,
+   .scout-v220-training,.scout-v220-recs,.scout-v220-practice,
+   .scout-v220-technical-body,.scout-v218-advanced,.scout-v229-archive-content){
+  background:var(--ct362-surface)!important;
+  background-image:none!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-text)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design[data-page="detail"] :where(.point-row,.point-track,
+  .v68-progress-row,.build-plan,.build-head,.lab-controls,.lab-actions,
+  .scout-v220-recs-grid article){
+  background-color:var(--ct362-chrome)!important;
+  border-color:var(--ct362-faint)!important;
+  color:var(--ct362-text)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design[data-page="detail"] :where(.side-info-row label,.v68-kicker,.lab-note-label){
+  color:var(--ct362-muted)!important;
+ }
  body.ct362-design :where(.pitch,.scout-rotation-field,.ct-v230-field){
   background:#2c2c30!important;border-color:#69626b!important;box-shadow:none!important;
  }
@@ -149,7 +197,7 @@
 html:has(body.ct362-design){background:var(--ct362-bg)!important;scroll-behavior:auto!important}
 body.ct362-design{
  color:var(--ct362-text)!important;
- background:radial-gradient(circle at 90% -10%,#213148 0%,transparent 37%),#070c14!important;
+ background:var(--ct362-bg)!important;
  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
  font-synthesis:none;
 }
@@ -185,7 +233,7 @@ body.ct362-design :is(.topbar .brand,.friends-brand,.hub-brand){
  color:#fff9ee!important;text-decoration:none!important
 }
 body.ct362-design :is(.topbar .edition,.friends-head small,.hub-brand small){
- color:#b4bfd1!important
+ color:var(--ct362-muted)!important
 }
 body.ct362-design .ct362-appnav{
  display:flex;gap:4px;justify-content:space-around;
@@ -193,7 +241,7 @@ body.ct362-design .ct362-appnav{
  left:50%;transform:translateX(-50%);width:min(calc(100% - 16px),540px);
  z-index:30000;box-sizing:border-box;
  padding:5px;border-radius:17px;border:1px solid var(--ct362-border);
- background:#121b29f5;box-shadow:0 16px 32px #000a
+ background:var(--ct362-chrome);box-shadow:none
 }
 body.ct362-design .ct362-appnav .ct362-navitem{
  display:flex;flex:1;min-width:0;min-height:52px;
@@ -848,10 +896,22 @@ html:has(body.ct362-design) body.ct362-design[data-page]{
  }
 }
 
+/* A lateral V68 é apenas um contêiner antigo. Assim que a ficha única
+   e o resumo da carta existem, nenhuma segunda coluna deve aparecer em
+   qualquer tamanho de janela do Electron ou do Android. */
+body.ct362-design[data-page="detail"][data-ct378-stage="ready"]:has(#ct361-player-glance) .profile-sidebar{
+ display:none!important;
+}
+body.ct362-design[data-page="detail"][data-ct378-stage="ready"]:has(#ct361-player-glance) .profile{
+ grid-template-columns:minmax(0,1fr)!important;
+}
+body.ct362-design[data-page="detail"][data-ct378-stage="ready"]:has(#ct361-player-glance) .profile-content{
+ width:100%!important;max-width:100%!important;min-width:0!important;
+}
 /* Acesso ao caderno online; independente dos quatro atalhos do acervo. */
 .ct-formacoes-premium-access{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 8px;min-width:0}
 .ct-formacoes-premium-access #ct356-boot-proof{min-width:0;justify-self:start}
-.ct-formacoes-premium-link{grid-column:2;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:28px;padding:4px 8px;border:1px solid #d8b87759;border-radius:7px;color:var(--ct362-accent);background:#d8b87709;text-decoration:none;font-size:10px;white-space:nowrap}
+.ct-formacoes-premium-link{grid-column:2;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:28px;padding:4px 8px;border:1px solid var(--ct362-border);border-radius:7px;color:var(--ct362-accent);background:var(--ct362-surface);text-decoration:none;font-size:10px;white-space:nowrap}
 .ct-formacoes-premium-link strong{font-weight:750}.ct-formacoes-premium-link span{font-size:9px;color:var(--ct362-muted)}
 .ct-formacoes-premium-link:hover,.ct-formacoes-premium-link:focus-visible{background:#d8b87716;outline:2px solid #d8b877;outline-offset:3px}
 .ct-formacoes-premium-status{grid-column:1/-1;display:block;color:var(--ct362-accent);font-size:11px;margin-top:7px}.ct-formacoes-premium-status[hidden]{display:none}
@@ -862,3 +922,80 @@ html:has(body.ct362-design) body.ct362-design[data-page]{
  body.ct362-design[data-page="tactical-review"] .metrics .metric small{white-space:normal;overflow-wrap:anywhere}
 }
 
+
+/* V381 — a conferência de nível/PP não deve surgir como um bloco azul
+   dentro da ficha Premium. A documentação e os formulários seguem intactos. */
+@layer craque-editorial {
+ body.ct362-design[data-page="detail"] .ct249-alert,
+ body.ct362-design[data-page="detail"] .ct249-alert[data-status="divergente"],
+ body.ct362-design[data-page="progress-audit"] :where(
+  .ct248-hero,.ct248-card,.ct248-art,.ct248-details,.ct250-transfer,
+  .ct250-preview,.ct248-status,.ct248-checker,.ct248-details>summary){
+  background:var(--ct362-surface)!important;
+  background-image:none!important;
+  color:var(--ct362-text)!important;
+  border-color:var(--ct362-border)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design[data-page="detail"] :where(
+  .ct249-alert-title,.ct249-alert-text,.ct249-alert-actions small){
+  color:var(--ct362-text)!important;
+ }
+ body.ct362-design[data-page="detail"] .ct249-review-link,
+ body.ct362-design[data-page="progress-audit"] :where(
+  .ct248-hero-actions button,.ct248-hero-actions a,.ct250-heading button,
+  .ct250-actions button,.ct248-details button,#v248-more,.ct248-undo){
+  background:var(--ct362-wine)!important;
+  background-image:none!important;
+  border-color:var(--ct362-accent)!important;
+  color:var(--ct362-on-wine)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design[data-page="catalog"] .ct249-local-tag{
+  background:var(--ct362-surface)!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-muted)!important;
+ }
+ body.ct362-design[data-page="progress-audit"] :where(
+   .ct248-filters input,.ct248-filters select,.ct248-details input,
+   .ct248-status,.ct248-details summary,.ct250-disclaimer,.ct250-notice){
+  background-color:var(--ct362-chrome)!important;
+  color:var(--ct362-text)!important;
+  border-color:var(--ct362-border)!important;
+ }
+ body.ct362-design :where(.ct248-kicker,.ct248-number,.ct250-heading h2){
+  color:var(--ct362-accent)!important;
+ }
+}
+
+/* V381 — A Central de Técnicos não mantém cartões azuis de versões antigas. */
+@layer craque-editorial {
+ body.ct362-design[data-page="manager-hub"] :where(
+  .hub-metrics>div,.hub-metrics div,.hub-panel,.hub-compare,.hub-compare-grid>div,
+  .hub-card,.hub-chip,.hub-photo,.hub-v329-primary-score,.hub-v329-other-scores,
+  .hub-notice,.hub-score,.hub-score-body){
+  background:var(--ct362-surface)!important;
+  background-image:none!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-text)!important;
+  box-shadow:none!important;
+ }
+ body.ct362-design[data-page="manager-hub"] :where(
+  .hub-filters input[type=search],.hub-filters select,.hub-bar){
+  background:var(--ct362-chrome)!important;
+  border-color:var(--ct362-border)!important;
+  color:var(--ct362-text)!important;
+ }
+ body.ct362-design[data-page="manager-hub"] :where(
+  .hub-metrics strong,.hub-score-name,.hub-v329-kicker){
+  color:var(--ct362-accent)!important;
+ }
+ body.ct362-design[data-page="manager-hub"] :where(
+  .hub-chip,.hub-score-num,.hub-bar-fill,.hub-btn.primary,
+  .hub-score[data-grade=elite90] .hub-score-num,
+  .hub-score[data-grade=elite90] .hub-bar-fill){
+  background:var(--ct362-wine)!important;
+  border-color:var(--ct362-accent)!important;
+  color:var(--ct362-on-wine)!important;
+ }
+}

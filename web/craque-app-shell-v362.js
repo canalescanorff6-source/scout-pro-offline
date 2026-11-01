@@ -8,7 +8,7 @@ const names={
  catalog:'Minhas cartas',detail:'Ficha de jogador',friends:'Outros elencos',
  team:'Minha escalação','rotation-lab':'Laboratório','manager-hub':'Central de técnicos',
  'progress-audit':'Níveis e PP',boosters:'Ímpetos','tactical-review':'Análise tática',
- 'video-evidence':'Vídeos e evidências','player-model':'Modelo corporal',
+ 'video-evidence':'Vídeos e evidências','player-model':'Modelo corporal','review379':'Conferência de cartas',
  'rarity-audit':'Raridades','batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas'
 };
 const at=()=>d.body?.dataset.page||'';
@@ -66,9 +66,66 @@ function navItems(page){
   {label:'Técnicos',url:prefix+'tecnicos-v307.html',mark:'◎',page:'manager-hub'}
  ];
 }
+// A fonte antiga tinha 15 cabeçalhos distintos. A identidade é sempre a
+// mesma: atualizamos o HTML real, inclusive nas rotas sem app-bridge.
+function unifyHeader(){
+ const page=at(),head=d.querySelector('.topbar,.friends-head,.hub-header,.scout-rotation-top,.review-top,main .head,body>header');
+ if(!head||typeof head.querySelector!=='function')return;
+ head.classList?.add('ct362-unified-head');
+ const prefix=page==='detail'?'../':'';
+ for(const img of (head.querySelectorAll?.('img')||[])){
+  const src=img.getAttribute('src')||'';
+  if(/scout-pro-icon/i.test(src)){
+   img.setAttribute('src',prefix+'assets/craque-tatico-icon.svg');
+   img.setAttribute('alt','Craque Tático');
+  }
+ }
+ const oldLogo=head.querySelector('.brand-logo');
+ if(oldLogo&&oldLogo.textContent.trim()==='S'){
+  const image=create('img','brand-logo-img');
+  image.src=prefix+'assets/craque-tatico-icon.svg';
+  image.alt='Craque Tático';oldLogo.replaceWith(image);
+ }
+ for(const selector of ['.brand-copy b','.friends-brand b','.hub-brand strong','.review-top>span']){
+  const label=head.querySelector(selector);
+  if(label)label.textContent='CRAQUE TÁTICO';
+ }
+ for(const selector of ['.brandmark','.scout-rotation-top>a']){
+  const link=head.querySelector(selector);
+  if(!link)continue;
+  for(const node of link.childNodes||[]){
+   if(node.nodeType===3 && /SCOUT\s+PRO/i.test(node.textContent||''))node.textContent=node.textContent.replace(/SCOUT\s+PRO/gi,'CRAQUE TÁTICO');
+  }
+ }
+ const small=head.querySelector('.brand-copy small');
+ if(small)small.textContent='LABORATÓRIO DE FUTEBOL';
+ const edition=head.querySelector('.topbar .edition');
+ if(edition&&/\bV\d+\b|SCOUT\s+PRO/i.test(edition.textContent||''))
+  edition.textContent=page==='detail'?'eFOOTBALL 2027 · CRAQUE TÁTICO':(names[page]||'CRAQUE TÁTICO').toUpperCase();
+ const title=d.title||'';
+ if(/SCOUT\s+PRO|\bV\d+\b/i.test(title))
+  d.title=title.replace(/SCOUT\s+PRO/gi,'Craque Tático').replace(/\bV\d+\b/gi,'').replace(/\s{2,}/g,' ').trim();
+}
+let buildVersionRequested=false;
+function showInstalledVersion(proof){
+ if(buildVersionRequested||typeof host.fetch!=='function')return;
+ buildVersionRequested=true;
+ const root=at()==='detail'?'../':'';
+ // Mesmo JSON empacotado no Electron e no APK: prova do bundle instalado.
+ Promise.resolve().then(()=>host.fetch(root+'scout-build-info.json',{cache:'no-store'}))
+  .then(r=>r.ok?r.json():null).then(info=>{
+   const v=String(info?.version||'');
+   if(!/^\d+\.\d+\.\d+$/.test(v))return;
+   proof.textContent='v'+v;
+   proof.title='Revisão '+String(info.git_revision||'local').slice(0,12);
+   d.body.dataset.craqueInstalledVersion=v;
+  }).catch(()=>{});
+}
 function shell(){
  const page=at();
- if(!page||d.getElementById('ct362-design-proof'))return;
+ if(!page)return;
+ unifyHeader();
+ if(d.getElementById('ct362-design-proof'))return;
  d.body.classList.add('ct362-design');
  d.body.dataset.ct362Ui='true';
  const oldHead=d.querySelector('.topbar,.friends-head,.hub-header,main .head,body>header');
@@ -80,10 +137,11 @@ function shell(){
    edition.textContent='eFOOTBALL 2027 · CRAQUE TÁTICO';
   }
  }
- const proof=create('span','ct362-proof','EDITORIAL');
+ const proof=create('span','ct362-proof','CRAQUE TÁTICO');
  proof.id='ct362-design-proof';
  proof.dataset.craqueUiRelease=String(ACTIVE_RELEASE);
- proof.setAttribute('aria-label','Craque Tático, visual editorial');
+ proof.setAttribute('aria-label','Craque Tático, versão realmente instalada');
+ showInstalledVersion(proof);
  if(oldHead){
   oldHead.classList.add('ct362-existing-head');
   oldHead.appendChild(proof);
