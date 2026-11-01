@@ -70,10 +70,10 @@ function navItems(page){
 // mesma: atualizamos o HTML real, inclusive nas rotas sem app-bridge.
 function unifyHeader(){
  const page=at(),head=d.querySelector('.topbar,.friends-head,.hub-header,.scout-rotation-top,.review-top,main .head,body>header');
- if(!head)return;
- head.classList.add('ct362-unified-head');
+ if(!head||typeof head.querySelector!=='function')return;
+ head.classList?.add('ct362-unified-head');
  const prefix=page==='detail'?'../':'';
- for(const img of head.querySelectorAll('img')){
+ for(const img of (head.querySelectorAll?.('img')||[])){
   const src=img.getAttribute('src')||'';
   if(/scout-pro-icon/i.test(src)){
    img.setAttribute('src',prefix+'assets/craque-tatico-icon.svg');
@@ -112,7 +112,7 @@ function showInstalledVersion(proof){
  buildVersionRequested=true;
  const root=at()==='detail'?'../':'';
  // Mesmo JSON empacotado no Electron e no APK: prova do bundle instalado.
- host.fetch(root+'scout-build-info.json',{cache:'no-store'})
+ Promise.resolve().then(()=>host.fetch(root+'scout-build-info.json',{cache:'no-store'}))
   .then(r=>r.ok?r.json():null).then(info=>{
    const v=String(info?.version||'');
    if(!/^\d+\.\d+\.\d+$/.test(v))return;
