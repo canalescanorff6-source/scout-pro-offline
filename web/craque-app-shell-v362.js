@@ -72,6 +72,9 @@ function shell(){
  if(!page||d.getElementById('ct362-design-proof'))return;
  d.body.classList.add('ct362-design');
  d.body.dataset.ct362Ui='true';
+ // Android, PWA e Electron não devem exibir barra do sistema azul da UI antiga.
+ const themeMeta=d.querySelector('meta[name="theme-color"]');
+ if(themeMeta)themeMeta.setAttribute('content','#28282c');
  const oldHead=d.querySelector('.topbar,.friends-head,.hub-header,main .head,body>header');
  // Os 246 HTMLs históricos carregam rótulos de versão V72, não a versão
  // executada. Não exibir um número antigo como se fosse o aplicativo atual.
