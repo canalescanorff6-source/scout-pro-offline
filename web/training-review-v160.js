@@ -66,18 +66,41 @@ const table=plan=>{
    '</tbody><tfoot><tr><th>Total</th><th>—</th><th>'+cost(plan.levels)+' / '+r.pp+'</th></tr></tfoot></table></div>'+
    '<p class="v160-note">'+safe(plan.origin)+' · custo conferido, rendimento ainda não comprovado.</p>';
 };
-const section=document.createElement('section');section.id='scout-training-v160';section.className='v160-sheet';
-section.innerHTML='<header><small>SCOUT PRO · FICHA FUNCIONAL V160</small><h2>Treino por função · '+safe(r.name)+'</h2>'+
- '<b class="v160-badge">'+safe(r.status)+'</b><p>Orçamento matematicamente correto não equivale à melhor build em partidas. Nenhum atributo final foi calculado a partir do Overall.</p></header>'+
- '<div class="v160-metrics"><div><small>PP disponíveis</small><strong>'+r.pp+'</strong></div><div><small>Função</small><strong>'+safe(r.role)+'</strong></div><div><small>Distribuições</small><strong>'+(r.b?2:1)+'</strong></div></div>'+
- '<article><h3>Como jogar em Posse de Bola</h3><p>'+safe(r.purpose)+'</p><p><b>Estilo:</b> '+safe(r.style)+'. <b>Ímpeto documentado:</b> '+safe(r.boost)+'.</p><p><b>Habilidades nativas:</b> '+safe(r.skillConfirmed?r.native.join(' · '):'pendentes, não inferidas')+'.</p></article>'+
+// V380: somente o cálculo V160 permanece; a segunda tela V160 está aposentada.
+// A comparação é uma ferramenta recolhida dentro da ficha Premium V220/V378.
+const section=document.createElement('details');
+section.id='scout-training-v160';
+section.className='v160-sheet ct380-functional';
+section.setAttribute('aria-label','Comparar duas distribuições de PP por função');
+section.innerHTML='<summary class="v160-summary"><span class="v160-summary-copy"><strong>Comparar distribuições de PP</strong><small>Treino por função · '+safe(r.pp)+' PP · '+(r.b?'2 opções':'1 opção')+'</small></span><span class="v160-chevron" aria-hidden="true">⌄</span></summary>'+
+ '<div class="v160-content"><p class="v160-note">Distribuições matematicamente válidas, sem promessa de rendimento em partidas ou cálculo pelo Overall.</p>'+
+ '<div class="v160-metrics"><div><small>PP disponíveis</small><strong>'+r.pp+'</strong></div><div><small>Função</small><strong>'+safe(r.role)+'</strong></div><div><small>Opções</small><strong>'+(r.b?2:1)+'</strong></div></div>'+
+ '<article><h3>Aplicação na Posse de Bola</h3><p>'+safe(r.purpose)+'</p><p><b>Estilo:</b> '+safe(r.style)+'. <b>Ímpeto documentado:</b> '+safe(r.boost)+'.</p><p><b>Habilidades nativas:</b> '+safe(r.skillConfirmed?r.native.join(' · '):'pendentes, não inferidas')+'.</p></article>'+
  '<div class="v160-columns"><article><h3>'+safe(r.a.name)+'</h3>'+table(r.a)+(r.pp?'<button type="button" data-v160-plan="A">Carregar A no Laboratório</button>':'<p>Esta edição não possui PP para distribuir.</p>')+'</article>'+
  '<article><h3>'+(r.b?safe(r.b.name):'Cenário B')+'</h3>'+table(r.b)+(r.b?'<button type="button" data-v160-plan="B">Carregar B no Laboratório</button>':'')+'</article></div>'+
- '<article class="v160-proof"><h3>Validação competitiva ainda necessária</h3><p>Confira atributos-base, habilidades/ímpetos equipados, posição ativa do estilo e comportamento em campo. Compare no mínimo cinco partidas por treino com técnico, formação e adversários equivalentes.</p>'+
- (r.unresolved.length?'<ul>'+r.unresolved.map(s=>'<li>'+safe(s)+'</li>').join('')+'</ul>':'<p>O cadastro dispõe dos dados principais, mas não comprova rendimento sem testes.</p>')+
- '<a href="#performance">Acessar o Laboratório PRO ↓</a></article>';
-const head=target.querySelector('.detail-header');
-if(head)head.insertAdjacentElement('afterend',section);else target.prepend(section);
+ '<article class="v160-proof"><h3>Validação competitiva necessária</h3><p>Verifique atributos-base, habilidades e ímpetos equipados, posição ativa do estilo e rendimento em campo. Compare partidas em condições semelhantes.</p>'+
+ (r.unresolved.length?'<ul>'+r.unresolved.map(s=>'<li>'+safe(s)+'</li>').join('')+'</ul>':'<p>O cadastro não comprova rendimento sem testes de gameplay.</p>')+
+ '<a href="#performance">Consultar os registros do Laboratório</a></article></div>';
+// O painel histórico não pode ser inserido após a manchete, onde aparecia como
+// uma segunda ficha antes do layout Premium no Android e no Windows.
+function mountInsidePremium(){
+ const advanced=document.querySelector('#scout-v220-technical .scout-v220-technical-body');
+ if(!advanced)return false;
+ if(section.parentElement!==advanced)advanced.appendChild(section);
+ return true;
+}
+if(!mountInsidePremium()){
+ const observer=typeof MutationObserver==='function'?new MutationObserver(()=>{
+  if(mountInsidePremium())observer.disconnect();
+ }):null;
+ if(observer)observer.observe(document.body,{childList:true,subtree:true});
+ host.setTimeout(()=>{
+  observer?.disconnect();
+  // Sem shell Premium: manter os treinos acessíveis em modo de compatibilidade,
+  // mas SEM abrir uma tela inteira nem duplicar o cabeçalho da carta.
+  if(!section.isConnected)target.appendChild(section);
+ },10000);
+}
 for(const b of section.querySelectorAll('[data-v160-plan]'))b.addEventListener('click',()=>{
  const plan=b.dataset.v160Plan==='A'?r.a:r.b;
  if(!plan||cost(plan.levels)!==r.pp)return;

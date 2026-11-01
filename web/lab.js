@@ -205,7 +205,7 @@ $('lab-restore').addEventListener('click',()=>{
  current=(d.A||Array(10).fill(0)).slice();persist();render()
 });
 $('lab-export').addEventListener('click',()=>{
- const lines=['SCOUT PRO V68 — '+d.name,'Card ID: '+d.id,'Posição: '+d.role,'Cenário: '+active,'PP: '+total(current)+' / '+(d.pp??'pendente'),...cat.map((c,i)=>c+': '+current[i]+' níveis ('+pps(current[i])+' PP)'), 'Subtotais não equivalem ao valor final em campo.'];
+ const lines=['CRAQUE TÁTICO — '+d.name,'Card ID: '+d.id,'Posição: '+d.role,'Cenário: '+active,'PP: '+total(current)+' / '+(d.pp??'pendente'),...cat.map((c,i)=>c+': '+current[i]+' níveis ('+pps(current[i])+' PP)'), 'Subtotais não equivalem ao valor final em campo.'];
  const a=document.createElement('a'),u=URL.createObjectURL(new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'}));a.href=u;a.download='Scout_'+d.id+'_treino.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)
 });
 const historyKey='scoutpro:v67:test:'+d.id+':'+d.card;

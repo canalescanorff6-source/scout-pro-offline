@@ -30,4 +30,13 @@ assert(bridge.includes('training-review-v160.js')&&bridge.includes('tactical-eng
 const lab=fs.readFileSync(path.join(root,'lab.js'),'utf8');
 assert(lab.includes('scoutpro:training-load-v160'));
 assert(!index.includes('Treino proposto · não validado'));
+const reviewUi=fs.readFileSync(path.join(root,'training-review-v160.js'),'utf8');
+const reviewStyle=fs.readFileSync(path.join(root,'training-review-v160.css'),'utf8');
+assert(reviewUi.includes("const section=document.createElement('details')"),'V160 não pode gerar uma segunda página independente');
+assert(reviewUi.includes("querySelector('#scout-v220-technical .scout-v220-technical-body')"),'Comparação V160 precisa integrar a ficha Premium');
+assert(reviewUi.includes("mountInsidePremium()"),'O carregamento dinâmico V160 deve aguardar o cockpit moderno');
+assert(!reviewUi.includes('SCOUT PRO · FICHA FUNCIONAL V160'),'Marca Scout PRO V160 ainda visível');
+assert(reviewUi.includes("data-v160-plan="),'A/B continuam acessíveis pelo Laboratório');
+assert(reviewStyle.includes('--ct362-surface')&&reviewStyle.includes('--ct362-wine'),'Comparação fora do tema editorial atual');
+assert(!reviewStyle.includes('#0d2b3a')&&!reviewStyle.includes('#0a2031'),'CSS azul legado V160 ainda presente');
 console.log('V160 OK: '+older+' anteriores preservados, '+newer+' fichas funcionais, '+distinct+' cenários B, zero PP respeitado, sem Overall ou testes fabricados.');

@@ -90,7 +90,7 @@ assert(src.includes('print não mostra Card ID verificável')||src.includes('O p
 assert(!src.includes('localStorage.setItem')&&!src.includes('updateBuild('),'Nunca sobrescrever treino');
 assert(css.includes('min-height:48px')&&css.includes('@media(max-width:480px)'),'Painel responsivo e alvos de toque');
 assert(sw.includes('v215-skill-evidence-v216-candidates-v217-live-context'),'Cache V217 renovado para usuários Android/Windows');
-assert(src.includes('SCOUT PRO · Verificação individual V217'),'Título V217 apresentado na ficha');
+assert(src.includes('Craque Tático · Verificação individual'),'Título atualizado sem perder o painel V217');
 assert(src.includes('scoutpro:skills-updated'),'Painel precisa reagir ao salvamento sem recarregar');
 assert(read('web/skills-booster-v162.js').includes("new CustomEvent('scoutpro:skills-updated'"),'Salvar deve notificar laudo V217');
 assert(stamp.includes("'sw.js'"),'Atualização de cache no fingerprint');
