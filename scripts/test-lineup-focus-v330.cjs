@@ -49,6 +49,8 @@ for(const [name,text] of [['duas',formation],['experimental',experiment],['labor
  assert(text.includes('src="craque-lineup-focus-v330.js"'),name+' não carrega UI de foco');
  assert(text.includes('href="craque-lineup-focus-v330.css"'),name+' não carrega estilo');
 }
+assert(js.includes('meu-time-posse-4312\\.html')&&!js.includes("textContent?.includes('V176')"),
+ 'A formação experimental deve usar rota estável, não o texto/versão legada');
 assert(js.includes("choice.insertAdjacentElement('afterend',layout)"),'Campo logo após formação');
 assert(js.includes("benchPanel.insertAdjacentElement('afterend',tactic)"),'Estilo após titulares e banco');
 assert(js.includes("hero.insertAdjacentElement('afterend',series)"),'No laboratório, séries aparecem primeiro');
