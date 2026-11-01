@@ -42,6 +42,8 @@ for(const id of ['catalog','detail','friends','team','rotation-lab','manager-hub
  assert.ok(shell.includes(id),'Página sem rota no shell V362: '+id);
 }
 assert.ok(shell.includes('ct362-design-proof')&&shell.includes('ct362-appnav'));
+assert.ok(shell.includes("themeMeta.setAttribute('content','#28282c')"),
+ 'Barra de sistema deve acompanhar o tema Premium atual');
 assert.ok(shell.includes('CRAQUE_UI_RELEASES')&&shell.includes('activateCurrentRelease()'),
  'Somente a geração ativa pode montar elementos visuais');
 assert.ok(shell.includes('next.ready!==true')&&shell.includes('version<this.current'),
