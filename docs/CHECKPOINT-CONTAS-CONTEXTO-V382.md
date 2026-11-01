@@ -41,3 +41,7 @@ Também foi reproduzida e corrigida a troca de conta que podia ser revertida por
 - A precisão do inventário privado foi conferida separadamente nas capturas e no importador; campos sem prova ficam pendentes. Custo de um erro: conferir novamente a edição/valor antes de investir.
 - Instalação/publicação nativa fica para uma etapa autorizada de distribuição; testes web não comprovam comportamento físico em todos os aparelhos. Custo: defeitos específicos podem aparecer somente nessa validação posterior.
 - Menor adiada: desenhos diferentes podem compartilhar o rótulo curto da lista. O campo e o identificador exportado distinguem o desenho; descrições mais específicas facilitariam encontrá-lo novamente.
+
+## Ajuste após a primeira rodada do GitHub
+
+CI e validação de Player ID passaram. A QA visual encontrou uma faixa de contas que retirava a primeira carta da abertura em 320px. A medição confirmou cerca de 75px extras; o acesso foi incorporado ao menu existente. O teste novo de entrada das contas falhou antes da correção e passou depois, nos três tamanhos; V364 também passou com 246+15 cartas, busca e edição. A nova rodada do GitHub acompanha a PR 311.
