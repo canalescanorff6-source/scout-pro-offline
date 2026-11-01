@@ -48,6 +48,22 @@ if(!locked&&personalRequested){
   if(personal.changed)data=api.write(localStorage,personal.data);
  }catch(e){locked=true;status('Não foi possível criar a coleção particular: '+e.message)}
 }
+// V382: a coleção Marques Tiago pertence à pessoa usuária; fica vazia
+// até os prints e fichas individuais serem cadastrados, sem copiar do catálogo.
+const marquesRequested=(()=>{
+ try{return new URLSearchParams(location.search).get('colecao')==='marques-tiago'}
+ catch(_){return false}
+})();
+if(!locked&&marquesRequested){
+ try{
+  const own=api.ensureMarquesCollection(data);
+  if(own.changed)data=api.write(localStorage,own.data);
+ }catch(e){
+  locked=true;status('Não foi possível abrir as Cartas do Marques Tiago: '+e.message+
+   '. Os dados já armazenados continuam preservados.');
+ }
+}
+const marquesOwner=()=>data.owners.find(x=>x.id===api.MARQUES_OWNER_ID);
 const getOwner=()=>data.owners.find(x=>x.id===selected);
 const brunoOwner=()=>data.owners.find(x=>bruno?.normalize(x.name)===bruno.normalize(bruno.NAME));
 const personCards=id=>data.cards.filter(x=>x.ownerId===id);
@@ -58,6 +74,7 @@ function restoreSelection(){
   const target=new URLSearchParams(location.search).get('colecao');
   if(target==='bruno-santos-cd'&&brunoOwner())selected=brunoOwner().id;
   if(target==='7-dollar'&&sete){const sevenOwner=data.owners.find(o=>sete.normalize(o.name)===sete.normalize(sete.NAME));if(sevenOwner)selected=sevenOwner.id;}
+  if(target==='marques-tiago'&&marquesOwner())selected=api.MARQUES_OWNER_ID;
   if(target==='minhas-cartas-adicionadas'&&data.owners.some(x=>x.id===api.PERSONAL_OWNER_ID))
    selected=api.PERSONAL_OWNER_ID;
  }catch(_e){}
@@ -83,6 +100,20 @@ function save(next,message){
 function button(text,cls,onClick){
  const b=el('button',cls,text);b.type='button';b.onclick=onClick;return b;
 }
+function renderMarques(){
+ const owner=marquesOwner(),panel=$('marques-featured'),count=$('marques-featured-count');
+ if(panel)panel.hidden=!owner&&!marquesRequested;
+ if(count)count.textContent=owner?personCards(owner.id).length+' carta(s) cadastrada(s)':'0 cartas cadastradas';
+ const button=$('marques-open-collection');
+ if(button){
+  button.disabled=locked;
+  button.onclick=()=>{
+   if(locked)return;
+   if(owner){selectOwner(owner.id);$('friend-selected')?.scrollIntoView({block:'start',behavior:'auto'});}
+   else location.href='outros-elencos-v227.html?colecao=marques-tiago';
+  };
+ }
+}
 function renderBruno(){
  const owner=brunoOwner(),button=$('bruno-open-collection'),counter=$('bruno-featured-count');
  const cover=$('bruno-featured-card-art');
@@ -105,7 +136,7 @@ function renderPeople(){
  if(quick){
   quick.replaceChildren();
   for(const owner of data.owners){
-   const option=el('option','',owner.name+' · '+personCards(owner.id).length+' carta(s)');
+   const option=el('option','',owner.name+(owner.id===api.MARQUES_OWNER_ID?' · MINHA CONTA':'')+' · '+personCards(owner.id).length+' carta(s)');
    option.value=owner.id;quick.append(option);
   }
   quick.value=selected||'';
@@ -115,10 +146,12 @@ function renderPeople(){
  $('friend-people-empty').hidden=data.owners.length!==0;
  for(const owner of data.owners){
   const count=personCards(owner.id).length,b=button('','friends-person',()=>selectOwner(owner.id));
+  if(owner.id===api.MARQUES_OWNER_ID){b.classList.add('ct382-owned-owner');b.dataset.collection='minha-conta';}
   b.setAttribute('aria-pressed',String(owner.id===selected));
   b.title='Abrir somente as cartas de '+owner.name;
   const avatar=el('span','friends-avatar',owner.name.slice(0,1).toUpperCase());
   const text=el('span');text.append(el('strong','',owner.name),el('small','',count+' carta'+(count===1?'':'s')));
+  if(owner.id===api.MARQUES_OWNER_ID)text.append(el('small','ct382-my-label','MINHA SEGUNDA CONTA · NÃO É ELENCO DE AMIGO'));
   b.append(avatar,text);root.append(b);
  }
 }
@@ -179,7 +212,8 @@ function renderCards(){
  if(!hasOwner){const counter=$('ct363-filter-count');if(counter)counter.textContent='Escolha uma coleção para consultar as cartas.';return;}
  const owner=getOwner(),current=personCards(owner.id);
  $('friend-current-name').textContent=owner.name;
- $('friend-current-meta').textContent=current.length+' carta'+(current.length===1?'':'s')+' cadastrada'+(current.length===1?'':'s')+' · coleção independente';
+ $('friend-current-meta').textContent=current.length+' carta'+(current.length===1?'':'s')+' cadastrada'+(current.length===1?'':'s')+
+  (owner.id===api.MARQUES_OWNER_ID?' · MINHA SEGUNDA CONTA · acervo separado':' · coleção independente');
  const done=current.filter(c=>Number.isInteger(budgets.resolveBudget(c).pp)&&c.position).length;
  $('friend-fichas-count').textContent=done+'/'+current.length+' com PP e posição · 5 estilos por carta';
  const search=$('friend-search').value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
@@ -201,7 +235,7 @@ function renderCards(){
  $('friend-cards-empty').textContent=current.length?'Nenhuma carta encontrada neste filtro.':'Ainda não há cartas nesta coleção. Toque em “Nova carta” para cadastrar a primeira.';
 }
 function render(){
- renderBruno();renderPeople();renderCards();
+ renderMarques();renderBruno();renderPeople();renderCards();
  const disabled=locked;for(const id of ['friend-person-name','friend-new-card','friend-rename','friend-export','friend-delete','friend-import']){
   const control=$(id);if(control)control.disabled=disabled;
  }

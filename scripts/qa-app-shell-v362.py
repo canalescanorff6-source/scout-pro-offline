@@ -11,6 +11,7 @@ ART=Path('artifacts/visual-qa/v362');ART.mkdir(parents=True,exist_ok=True)
 ROUTES=[
  ('home','index.html','catalog'),
  ('friends','outros-elencos-v227.html','friends'),
+ ('marques','outros-elencos-v227.html?colecao=marques-tiago','friends-own'),
  ('team','meu-time-duas-formacoes-v177.html','team'),
  ('lab','meu-time-testes-v219.html','rotation-lab'),
  ('managers','tecnicos-v307.html','manager-hub'),
@@ -61,6 +62,15 @@ with sync_playwright() as p:
      if mobile:assert legacy.is_visible(),(mode,'controles antigos ficaram inacessíveis no Mais')
      more.click()
      assert not legacy.is_visible()
+    if kind=='friends-own':
+     featured=page.locator('#marques-featured')
+     featured.wait_for(state='visible',timeout=15000)
+     assert page.locator('#marques-title').inner_text()=='Cartas do Marques Tiago',(mode,'Título da coleção própria')
+     assert page.locator('#friend-current-name').inner_text()=='Cartas do Marques Tiago',(mode,'Coleção errada selecionada')
+     assert page.locator('#friend-owner-jump').input_value()=='craque:marques-tiago:conta-propria:v382',(mode,'Seleção não pertence à conta')
+     assert page.locator('#friend-cards .friends-card').count()==0,(mode,'Coleção nova precisa começar vazia')
+     assert page.locator('button.ct382-owned-owner[data-collection="minha-conta"]').count()==1,(mode,'Contas próprias sem distinção')
+     assert page.locator('#marques-open-collection').is_enabled(),(mode,'Atalho da coleção bloqueado')
     if kind=='catalog':
      page.locator('.scout-v189-quick a').first.wait_for(timeout=20000)
      assert page.locator('#cards .player-card').count()==246
@@ -112,7 +122,7 @@ with sync_playwright() as p:
      comparison.evaluate('(e)=>e.open=false')
      history.evaluate('(e)=>e.open=true')
      assert history.locator('#scout-performance-v80').is_visible(),(mode,'Histórico V80 inacessível na ficha')
-    if label in ('home','friends','managers','detail','functional'):
+    if label in ('home','friends','marques','managers','detail','functional'):
      page.screenshot(path=str(ART/(mode+'-'+label+'.png')),full_page=False)
     # Simula uma versão futura no workspace descartável: a tela antiga
     # só pode desaparecer APÓS a nova confirmar que está montada.
@@ -145,6 +155,6 @@ with sync_playwright() as p:
      assert release['newNavKept'] and release['newThemeKept'],release
      assert release['active']=='v363',release
    ctx.close()
-  print('V362/V380 VISUAL PASS: 17 rotas x 2 resoluções, 246 cartas, menu, ficha e tema único ativos.')
+  print('V362/V380 VISUAL PASS: 18 rotas x 2 resoluções, 246 cartas, menu, ficha e tema único ativos.')
  finally:
   browser.close()
