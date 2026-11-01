@@ -17,12 +17,22 @@ assert.equal(pages.length,15,'Conferir cobertura das 15 páginas de topo, inclui
 assert(pages.includes('conferir-cartas.html'));
 for(const name of pages){
  const html=source(name);
+ assert.doesNotMatch(html,/SCOUT PRO/i,name+' ainda contém a marca antiga no HTML ativo');
  const viaBridge=html.includes('src="app-bridge.js"');
  const direct=html.includes('src="craque-app-shell-v362.js"');
  assert.ok(viaBridge||direct, name+' sem o novo shell');
  assert.ok(!viaBridge||entry.includes('craque-app-shell-v362.js'),name+' perdeu bridge');
  const stylesheet=html.includes('href="craque-app-shell-v362.css"');
  assert.ok(stylesheet||viaBridge,name+' sem folhas de estilo');
+ // Desde V1205 a regra é UMA interface: página independente não pode
+ // depender da injeção tardia ou ficar com apenas V73/V353 visível.
+ assert.ok(stylesheet,name+' não carrega o tema atual explicitamente');
+ assert.ok(direct||name==='index.html'||name==='outros-elencos-v227.html',
+  name+' não inicializa o shell diretamente');
+ if(direct&&viaBridge){
+  assert.ok(html.includes('src="craque-app-shell-v362.js" data-ct362-design="true"'),
+   name+' precisa identificar a inicialização direta para impedir shell duplo');
+ }
 }
 for(const name of originals.slice(0,1).concat(originals.slice(-1))){
  assert.ok(source('fichas/'+name).includes('../app-bridge.js'),'Ficha não inclui bridge: '+name);
@@ -32,6 +42,8 @@ for(const id of ['catalog','detail','friends','team','rotation-lab','manager-hub
  assert.ok(shell.includes(id),'Página sem rota no shell V362: '+id);
 }
 assert.ok(shell.includes('ct362-design-proof')&&shell.includes('ct362-appnav'));
+assert.ok(shell.includes("themeMeta.setAttribute('content','#28282c')"),
+ 'Barra de sistema deve acompanhar o tema Premium atual');
 assert.ok(shell.includes('CRAQUE_UI_RELEASES')&&shell.includes('activateCurrentRelease()'),
  'Somente a geração ativa pode montar elementos visuais');
 assert.ok(shell.includes('next.ready!==true')&&shell.includes('version<this.current'),

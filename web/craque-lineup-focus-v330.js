@@ -310,7 +310,7 @@
   if(doc.body.classList.contains('ct330-ready'))return true;
   if(doc.body.dataset.page==='rotation-lab')return mountLaboratory(doc);
   if(doc.body.dataset.page==='team')return mountLineup(doc,
-   Boolean(doc.querySelector('.hero .kicker')?.textContent?.includes('V176')));
+   doc.body.dataset.ct330Scenario==='experimental');
   return false;
  }
  if(host?.document){

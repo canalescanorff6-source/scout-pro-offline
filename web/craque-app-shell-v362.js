@@ -9,7 +9,8 @@ const names={
  team:'Minha escalação','rotation-lab':'Laboratório','manager-hub':'Central de técnicos',
  'progress-audit':'Níveis e PP',boosters:'Ímpetos','tactical-review':'Análise tática',
  'video-evidence':'Vídeos e evidências','player-model':'Modelo corporal',
- 'rarity-audit':'Raridades','batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas'
+ 'rarity-audit':'Raridades',review379:'Conferir cartas',
+ 'batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas'
 };
 const at=()=>d.body?.dataset.page||'';
 const ACTIVE_RELEASE=362;
@@ -71,6 +72,9 @@ function shell(){
  if(!page||d.getElementById('ct362-design-proof'))return;
  d.body.classList.add('ct362-design');
  d.body.dataset.ct362Ui='true';
+ // Android, PWA e Electron não devem exibir barra do sistema azul da UI antiga.
+ const themeMeta=d.querySelector('meta[name="theme-color"]');
+ if(themeMeta)themeMeta.setAttribute('content','#28282c');
  const oldHead=d.querySelector('.topbar,.friends-head,.hub-header,main .head,body>header');
  // Os 246 HTMLs históricos carregam rótulos de versão V72, não a versão
  // executada. Não exibir um número antigo como se fosse o aplicativo atual.
@@ -113,8 +117,13 @@ function shell(){
   const prefix=page==='detail'?'../':'';
   for(const [label,href] of [
    ['Conferir níveis e PP','conferir-progresso-v248.html'],
+   ['Conferir cartas','conferir-cartas.html'],
    ['Habilidades e ímpetos','revisao-impetos-v103.html'],
-   ['Laboratório','meu-time-testes-v219.html']]){
+   ['Análise tática','revisao-tatica-v98.html'],
+   ['Laboratório','meu-time-testes-v219.html'],
+   ['Vídeos e evidências','pesquisa-videos-v106.html'],
+   ['Modelo corporal','player-model-v101.html'],
+   ['Raridades','raridade-cadastro-v91.html']]){
    const a=create('a','',label);a.href=prefix+href;tools.append(a);
   }
   const toggle=()=>{

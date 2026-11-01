@@ -4,8 +4,8 @@
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#060d18",
-  "theme_color": "#0c172a",
+  "background_color": "#28282c",
+  "theme_color": "#28282c",
   "description": "246 cartas do seu acervo; laboratório tático offline e backups restauráveis",
   "icons": [
     {

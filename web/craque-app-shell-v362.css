@@ -679,6 +679,15 @@ body.ct362-design .ct362-appnav .ct362-tools-popup{
  padding:8px;box-shadow:0 12px 28px #0009
 }
 body.ct362-design .ct362-appnav .ct362-tools-popup[hidden]{display:none!important}
+/* Ocultar apenas atalhos flutuantes globais duplicados da V177.
+   A navegação INTERNA do laboratório (#black-heading, #series-heading,
+   #video-heading e backup) continua disponível e não pode ser ocultada. */
+body.ct362-design:has(#ct362-appnav) .scout-rotation-shortcut{
+ display:none!important;
+}
+body.ct362-design .ct362-appnav .ct362-tools-popup{
+ max-height:min(65vh,520px);overflow-y:auto;overscroll-behavior:contain;
+}
 body.ct362-design .ct362-appnav .ct362-tools-popup>a{
  display:block;color:var(--ct362-accent)!important;text-decoration:none;
  background:var(--ct362-surface2);border-radius:9px;padding:11px;

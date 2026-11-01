@@ -1,6 +1,6 @@
 <!doctype html><html lang="pt-BR"><head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><meta name="theme-color" content="#07111e"/>
-<title>Meu Time · Posse 4-3-1-2 | Scout PRO</title>
+<title>Meu Time · Posse 4-3-1-2 | Craque Tático</title>
 <link rel="stylesheet" href="premium.css"/><link rel="stylesheet" href="scout-position-training-v246.css"/><link rel="stylesheet" href="scout-premium-v73.css"/><link rel="stylesheet" href="app-bridge.css"/>
 <link rel="manifest" href="manifest.webmanifest"/>
 <script defer src="scout-config.js"></script><script defer src="app-bridge.js"></script><script defer src="scout-player-identity-v245.js"></script>
@@ -88,10 +88,14 @@ dialog::backdrop{background:#020713d9;backdrop-filter:blur(4px)}
 <link rel="stylesheet" href="craque-lineup-focus-v330.css"/>
 <script defer src="craque-lineup-focus-v330.js"></script>
 <link rel="stylesheet" href="craque-premium-interiors-v352.css" data-ct352-final="true"/>
-</head><body data-page="team">
+
+<!-- Tema único do Craque Tático. CSS antigo abaixo é apenas suporte funcional. -->
+<link rel="stylesheet" href="craque-app-shell-v362.css" data-ct362-design="true"/>
+<script defer src="craque-app-shell-v362.js" data-ct362-design="true"></script>
+</head><body data-page="team" data-ct330-scenario="experimental">
 <main>
-<header class="head"><a href="index.html" class="brandmark"><img src="assets/scout-pro-icon-premium-original.png" alt="Scout PRO"/> SCOUT PRO · MEU TIME</a><a href="index.html" class="home">← Voltar ao elenco</a></header>
-<section class="hero"><div class="kicker">eFOOTBALL 2027 · SCOUT PRO V176 · POSSE CENTRAL</div><h1>Seu 4-3-1-2.<br/>Passes curtos. Jogo central.</h1><p>11 titulares recomendados entre as 246 cartas, banco tático com 12 opções e liberdade de trocar jogadores. A escolha busca complementaridade competitiva, não maximizar Overall. Suas cartas, habilidades, imagens e distribuições de PP permanecem intocadas.</p>
+<header class="head"><a href="index.html" class="brandmark"><img src="assets/craque-tatico-icon.svg" alt="Craque Tático"/> Craque Tático · MEU TIME</a><a href="index.html" class="home">← Voltar ao elenco</a></header>
+<section class="hero"><div class="kicker">eFOOTBALL 2027 · CRAQUE TÁTICO · POSSE CENTRAL</div><h1>Seu 4-3-1-2.<br/>Passes curtos. Jogo central.</h1><p>11 titulares recomendados entre as 246 cartas, banco tático com 12 opções e liberdade de trocar jogadores. A escolha busca complementaridade competitiva, não maximizar Overall. Suas cartas, habilidades, imagens e distribuições de PP permanecem intocadas.</p>
 <div class="badges"><span id="catalog-count">Carregando cartas...</span><span id="custom-badge">11 titulares recomendados</span><span>Proposta para testes · não homologada</span></div></section>
 <section class="panel" style="margin:18px 0;border-color:#64a88d"><h2>Suas duas formações oficiais do planejamento</h2><p class="hint">Esta tela é a proposta experimental da V176. Para abrir as duas formações que você escolheu anteriormente e verificar os requisitos do Link-Up de R. Rodríguez, use a nova tela.</p><a class="home" href="meu-time-duas-formacoes-v177.html">Abrir minhas 2 formações · Link-Up ↗</a></section>
 <div class="layout">
@@ -102,7 +106,7 @@ dialog::backdrop{background:#020713d9;backdrop-filter:blur(4px)}
 <div><section class="panel" id="strategy"><h2>Plano de jogo</h2><p>Carregando plano...</p></section><section class="panel" style="margin-top:16px" id="analysis"><h2>Funções e evidências</h2><p>Carregando...</p></section></div>
 </div>
 <section class="panel"><div class="panel-head"><div><h2>Banco · 12 alternativas funcionais</h2><p class="minor">Use o menu de cada reserva para colocá-lo diretamente em uma posição. Também é possível selecionar outras cartas do elenco tocando no campo.</p></div><a class="home" href="revisao-tatica-v98.html">Auditar cartas ↗</a></div><div class="bench-grid" id="bench">Carregando banco...</div></section>
-<footer class="foot">Scout PRO · Proposta V176. Identidades do catálogo V69; atributos-base completos, bônus efetivos e desempenho competitivo continuam parcialmente pendentes. Trocas são salvas apenas neste dispositivo. Nenhum slot de ímpeto ou habilidade adicional é presumido como instalado.</footer>
+<footer class="foot">Craque Tático · Proposta de treino. Identidades do catálogo V69; atributos-base completos, bônus efetivos e desempenho competitivo continuam parcialmente pendentes. Trocas são salvas apenas neste dispositivo. Nenhum slot de ímpeto ou habilidade adicional é presumido como instalado.</footer>
 </main>
 <dialog id="picker"><div class="modal-top"><h2 id="picker-title">Selecionar carta</h2><button class="reset" type="button" id="picker-close" aria-label="Fechar">Fechar ×</button></div>
 <p class="hint">A lista prioriza a posição original. Ative “Todas as posições” para escolher manualmente fora da posição — sem presumir ativação de estilo.</p><p class="hint">Treinamento de posição: selecione <b>Todas as posições</b>, procure a edição exata da carta e toque em <b>Confirmar treino aplicado</b> SOMENTE se já treinou aquela posição no eFootball. Índice alto no eFHUB não basta. Pode desfazer depois.</p><div class="picker-tools"><input type="search" id="player-search" placeholder="Nome, #carta, estilo, ID…" aria-label="Buscar entre as 246 cartas"/><label><input id="show-all" type="checkbox"/> Todas as posições</label></div><p class="minor" id="player-count">Carregando</p><div id="player-options" role="list">Carregando...</div></dialog>

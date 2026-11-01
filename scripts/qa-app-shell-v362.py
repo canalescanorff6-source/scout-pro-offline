@@ -18,7 +18,13 @@ ROUTES=[
  ('rarities','raridade-cadastro-v91.html','rarity-audit'),
  ('batch8','lote-8-conferencia.html','batch-8'),
  ('batch9','lote-9-cadastro.html','batch-9'),
- ('detail','fichas/001_Daniele_Massaro.html','detail')
+ ('detail','fichas/001_Daniele_Massaro.html','detail'),
+ ('review','conferir-cartas.html','review379'),
+ ('team-4312','meu-time-posse-4312.html','team'),
+ ('videos','pesquisa-videos-v106.html','video-evidence'),
+ ('model','player-model-v101.html','player-model'),
+ ('boosters','revisao-impetos-v103.html','boosters'),
+ ('tactics','revisao-tatica-v98.html','tactical-review')
 ]
 with sync_playwright() as p:
  exe=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
@@ -41,7 +47,8 @@ with sync_playwright() as p:
     }""")
     assert surface['loaded']=='true' and surface['version']=='EDITORIAL',(mode,label,surface)
     assert surface['overflow']<=12,(mode,label,'overflow',surface)
-    if kind in ('friends','team','manager-hub','rotation-lab'):
+    assert surface['background']=='rgb(40, 40, 44)',(mode,label,'paleta antiga ainda ativa',surface)
+    if kind not in ('catalog','detail'):
      assert surface['nav']==4,(mode,label,'navegação unificada ausente',surface)
     if kind=='friends':
      legacy=page.locator('#scout-app-bar')
@@ -106,6 +113,6 @@ with sync_playwright() as p:
      assert release['newNavKept'] and release['newThemeKept'],release
      assert release['active']=='v363',release
    ctx.close()
-  print('V362 VISUAL PASS: 10 rotas x 2 resoluções, 246 cartas, menu, ficha e estilos globais ativos.')
+  print('V362 VISUAL PASS: 16 rotas x 2 resoluções, 246 cartas, menu, ficha e tema único ativos.')
  finally:
   browser.close()
