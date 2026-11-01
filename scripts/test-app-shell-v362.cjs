@@ -28,6 +28,10 @@ for(const name of pages){
  assert.ok(stylesheet,name+' não carrega o tema atual explicitamente');
  assert.ok(direct||name==='index.html'||name==='outros-elencos-v227.html',
   name+' não inicializa o shell diretamente');
+ if(direct&&viaBridge){
+  assert.ok(html.includes('src="craque-app-shell-v362.js" data-ct362-design="true"'),
+   name+' precisa identificar a inicialização direta para impedir shell duplo');
+ }
 }
 for(const name of originals.slice(0,1).concat(originals.slice(-1))){
  assert.ok(source('fichas/'+name).includes('../app-bridge.js'),'Ficha não inclui bridge: '+name);
