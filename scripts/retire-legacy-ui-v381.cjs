@@ -27,8 +27,8 @@ function rewrite(source,card=false){
   return '<!--CRAQUE_MASK_'+idx+'_END-->';
  });
  // O cromo do Android/PWA deve ter a mesma cor do shell Premium.
- html=html.replace(/<meta\\b[^>]*>/gi,tag=>/\\bname=["']theme-color["']/i.test(tag)?
-  tag.replace(/\\bcontent=(["'])#[\\da-f]{6}\\1/i,'content=$1#222225$1'):tag);
+ html=html.replace(/<meta\b[^>]*>/gi,tag=>/\bname=["']theme-color["']/i.test(tag)?
+  tag.replace(/\bcontent=(["'])#[\da-f]{6}\1/i,'content=$1#222225$1'):tag);
  // O título e os cabeçalhos não devem anunciar uma versão histórica do app.
  html=html.replace(/(<title\b[^>]*>)([\s\S]*?)(<\/title>)/gi,
   (_,a,t,z)=>a+cleanVisibleText(t)+z);
