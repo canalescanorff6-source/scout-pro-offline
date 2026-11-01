@@ -9,6 +9,7 @@ const cost=v=>v.reduce((sum,n)=>sum+n+Math.max(0,n-4)+Math.max(0,n-8)+Math.max(0
 const list=x=>Array.isArray(x)?x.map(s=>str(s,100)).filter(Boolean).slice(0,60):str(x,1600).split(/[;\n]/).map(s=>s.trim()).filter(Boolean);
 const bytes=x=>new TextEncoder().encode(typeof x==='string'?x:JSON.stringify(x)).length;
 const empty=()=>({schema:SCHEMA,active:'primary',secondary:{name:'Secundária',cards:[],managers:[],evidence:null},plans:{primary:{},secondary:{}},primaryRestoreEpoch:0});
+const evidenceIdentity=c=>JSON.stringify([str(c.id,100),str(c.cardId,90),str(c.edition)]);
 function normalCard(raw){
  if(!isObj(raw)||!id(raw.id)||!str(raw.name)||!POS.includes(position(raw.position)))throw Error('Carta inválida: identificação, nome ou posição ausentes.');
  const maxLevel=number(raw.maxLevel??raw.level),pp=number(raw.pp);
@@ -23,14 +24,16 @@ function normalCard(raw){
   (value===null?x.verified===true:!Number.isInteger(value)||value<1||value>5))throw Error('Ímpeto inválido; confirme o valor ou deixe pendente.');
   return {name:str(x.name,100),value,verified:x.verified===true,source:str(x.source,300)};};
  const additional=list(raw.skills);if(additional.length>5||(Number.isInteger(raw.skillCapacity)&&additional.length>raw.skillCapacity))throw Error('Adicionais acima da capacidade cadastrada.');
+ const binding=evidenceIdentity(raw),identityChanged=!!raw.evidenceIdentity&&raw.evidenceIdentity!==binding;
+ const checkedBoost=x=>{const b=booster(x);return b&&identityChanged?{...b,verified:false}:b;};
  return {id:str(raw.id,100),name:str(raw.name,80),cardId,edition:str(raw.edition),position:position(raw.position),
   positions:[...new Set([position(raw.position),...(raw.positions||[]).map(position).filter(p=>POS.includes(p))])],maxLevel,pp,
   offenseStyle:str(raw.offenseStyle||raw.style,110),defenceStyle:str(raw.defenceStyle,110),nativeSkills:list(raw.nativeSkills),skills:additional,
-  nativeVerified:raw.nativeVerified===true,skillsVerified:raw.skillsVerified===true,
+  nativeVerified:!identityChanged&&raw.nativeVerified===true,skillsVerified:!identityChanged&&raw.skillsVerified===true,evidenceIdentity:binding,
   skillCapacity:Number.isInteger(raw.skillCapacity)&&raw.skillCapacity>=0&&raw.skillCapacity<=5?raw.skillCapacity:null,
-  fixedBoosters:(raw.fixedBoosters||[]).slice(0,2).map(booster),extraBooster:booster(raw.extraBooster),
+  fixedBoosters:(raw.fixedBoosters||[]).slice(0,2).map(checkedBoost),extraBooster:checkedBoost(raw.extraBooster),
   boosterSlot:['vazio','ocupado','ausente','pendente'].includes(raw.boosterSlot)?raw.boosterSlot:'pendente',
-  boosterSlotSupported:raw.boosterSlotSupported===true,identityVerified:raw.identityVerified===true,
+  boosterSlotSupported:!identityChanged&&raw.boosterSlotSupported===true,identityVerified:!identityChanged&&raw.identityVerified===true,
   trainingLevels:v?Array.from(v):null,image,notes:str(raw.notes,1500),
   evidence:isObj(raw.evidence)?copy(raw.evidence):null};
 }
@@ -105,5 +108,5 @@ function roster(account,sources,store){
  const extras=(sources.extras||[]).map(c=>({...c,id:'extra:'+c.id,instanceId:'extra:'+c.id,accountId:account,source:'extra'}));
  return [...original,...owned,...extras];
 }
-return Object.freeze({KEY,SCHEMA,DRAFT,MAX_BYTES,POS,position,cost,empty,validate,normalCard,normalManager,read,save,select,importDraft,afterRestore,roster});
+return Object.freeze({KEY,SCHEMA,DRAFT,MAX_BYTES,POS,position,cost,empty,validate,normalCard,normalManager,read,save,select,importDraft,afterRestore,roster,evidenceIdentity});
 });

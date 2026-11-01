@@ -34,7 +34,7 @@ function roster(){
 }
 function changed(){clearPlan();paintPitch();}
 function setAccount(id,persist=true){
- if(persist)A.select(localStorage,id);account=id;cards=roster();lineup={};locks={};instructions=[];clearPlan();
+ if(persist){A.select(localStorage,id);const url=new URL(location.href);url.searchParams.set('account',id);history.replaceState(null,'',url);}account=id;cards=roster();lineup={};locks={};instructions=[];clearPlan();
  $('account').value=id;for(const k of ['primary','secondary'])$(k).setAttribute('aria-pressed',String(k===id));
  managers=id==='secondary'?A.read(localStorage).secondary.managers:sources.managers;
  options($('manager'),[['','Escolha o técnico e a edição'],...managers.map(m=>[m.id,m.name+' · '+(m.edition||'edição a conferir')])]);
@@ -47,9 +47,10 @@ function setAccount(id,persist=true){
 }
 function paintForms(){const family=$('family').value,old=$('formation').value;
  const visible=forms.filter(f=>(!family||f.family===family)&&window.CRAQUE_FORMATIONS_V382.eligible(f,$('style').value));
- options($('formation'),visible.map(f=>[f.id,f.label]),old);formation=formationNow();lineup={};locks={};instructions=[];paintLineup();changed();
+ options($('formation'),visible.map(f=>[f.id,f.label]),old);applyFormation(formationNow());
  $('formation-note').textContent=formation?formation.rationale+' '+formation.risks.join(' '):'Sem desenho compatível.';
 }
+function applyFormation(next){const out=C.transitionFormation({lineup,locks,instructions},next,cards);formation=next;lineup=out.lineup;locks=out.locks;instructions=out.instructions;paintLineup();changed();if(out.warnings.length)say(out.warnings.join(' '));}
 function managerNote(){$('edit-manager').hidden=account!=='secondary'||!managerNow();const m=managerNow(),p=m?.proficiency[$('style').value];$('manager-note').textContent=m?
  'Proficiência: '+(p??'a conferir')+' · '+(m.bonusesVerified?'Bônus numéricos documentados.':'Bônus e combinações ainda precisam de conferência nesta conta.'):'Selecione o técnico. Nenhum bônus é presumido.';}
 function paintPitch(){const e=$('pitch');e.replaceChildren();if(!formation)return;
@@ -72,16 +73,16 @@ function paintLineup(){const e=$('lineup');e.replaceChildren();if(!formation)ret
   }row.append(controls);e.append(row);
  }paintPitch();}
 function paintResults(){const root=$('results');root.replaceChildren();$('plan-section').hidden=false;
- $('plan-state').textContent=(account==='primary'?'Principal':'Secundária')+' · '+C.MODES[plan.style]+' · '+(plan.context.manager?.name||'Técnico pendente')+' · revisão para testar online; não aplicada no jogo.';
+ $('save-plan').disabled=plan.historicalReadOnly===true; $('plan-state').textContent=(plan.historicalReadOnly?'Histórico · somente consulta e exportação. Recalcule para uma revisão atual. ':'')+(account==='primary'?'Principal':'Secundária')+' · '+C.MODES[plan.style]+' · '+(plan.context.manager?.name||'Técnico pendente')+' · revisão para testar online; não aplicada no jogo.';
  const balance=$('balance');balance.replaceChildren();for(const [k,label]of [['coverage','Proteção'],['support','Apoio'],['depth','Profundidade']])balance.append(mk('p',label+': '+(plan.balance[k].join(', ')||'rever no conjunto')));
  for(const warning of plan.balance.warnings)balance.append(mk('p',warning));
  for(const row of plan.cards){const r=row.review,c=cards.find(c=>c.id===row.memberId),box=mk('article');box.className='result-card';box.dataset.memberId=row.memberId;
-  const top=mk('div');top.className='result-top';if(c?.image){const img=mk('img');img.className='card-art';img.src=c.image;img.alt='Carta de '+r.identity.name;img.loading='lazy';top.append(img);}const title=mk('div');title.append(mk('span',r.position+' · '+r.tacticLabel),mk('h3',r.identity.name),mk('span',r.identity.edition||'Edição a conferir'));top.append(title);box.append(top);
+  const top=mk('div');top.className='result-top';if(c?.image&&(!plan.historicalReadOnly||(c.edition===r.identity.edition&&String(c.cardId||'')===r.identity.cardId))){const img=mk('img');img.className='card-art';img.src=c.image;img.alt='Carta de '+r.identity.name;img.loading='lazy';top.append(img);}const title=mk('div');title.append(mk('span',r.position+' · '+r.tacticLabel),mk('h3',r.identity.name),mk('span',r.identity.edition||'Edição a conferir'));top.append(title);box.append(top);
   box.append(mk('p',r.contextRole.attack+'. '+r.contextRole.defence+'.'),mk('p','Estilos cadastrados: '+r.stylePair.offense+' / '+r.stylePair.defence));
   if(r.proposed){const grid=mk('div');grid.className='training';for(const g of r.trainingGroups){const cell=mk('div',g.category);cell.append(mk('strong',String(g.proposed)),mk('small','Cadastrado: '+(g.current??'pendente')+' · '+g.cost+' PP'));grid.append(cell);}box.append(grid,mk('b',r.spent+' / '+r.pp+' PP · níveis de categoria'));}
   else box.append(mk('p','Treino pendente: confira nível máximo e PP desta edição.'));
   const compare=mk('div');compare.className='comparison';const current=mk('div'),proposed=mk('div');
-  current.append(mk('h4','CADASTRADO NESTA CONTA'),mk('p','Adicionais: '+(r.equippedSkillLabels.join(', ')||'não informadas')),
+  current.append(mk('h4',plan.historicalReadOnly?'CADASTRADO NA REVISÃO':'CADASTRADO NESTA CONTA'),mk('p','Adicionais: '+(r.equippedSkillLabels.join(', ')||'não informadas')),
    mk('p','Ímpeto fixo: '+(r.fixedBoosters.map(b=>b.name+(b.verified?' +'+b.value:' (valor a conferir)')).join(', ')||'pendente')),
    mk('p','Ímpeto adicional: '+(r.extraBooster?r.extraBooster.name+(r.extraBooster.verified?' +'+r.extraBooster.value:' (valor a conferir)'):'não informado')));
   proposed.append(mk('h4','CANDIDATAS PARA ESTA FUNÇÃO'));const list=mk('ul');for(const skill of r.skills)list.append(mk('li',skill.name+' — '+skill.reason));proposed.append(list,
@@ -99,7 +100,7 @@ function field(container,name,label,value='',{type='text',choices=null}={}){cons
  if(choices)options(e,choices,value);else{if(type!=='textarea')e.type=type;if(type==='checkbox'){e.checked=!!value;l.className='check';}else e.value=value??'';}l.append(e);container.append(l);return e;}
 function editCard(card=null){editing=card?.id||'sec-'+Date.now().toString(36);const c=card||{},e=$('editor-fields');e.replaceChildren();
  for(const [k,label] of [['name','Nome'],['edition','Edição / pacote'],['cardId','Card ID (deixe vazio se desconhecido)'],['offenseStyle','Estilo ofensivo'],['defenceStyle','Estilo defensivo']])field(e,k,label,c[k]);
- field(e,'position','Posição original',c.position||'CA',{choices:A.POS.map(p=>[p,p])});field(e,'positions','Outras posições comprovadas (separadas por ;)',(c.positions||[]).join('; '));
+ field(e,'position','Posição de referência cadastrada',c.position||'CA',{choices:A.POS.map(p=>[p,p])});field(e,'positions','Outras posições comprovadas (separadas por ;)',(c.positions||[]).join('; '));
  for(const [k,l]of [['maxLevel','Nível máximo'],['pp','PP disponíveis'],['skillCapacity','Capacidade de adicionais (0 a 5, se conferida)']])field(e,k,l,c[k],{type:'number'});
  field(e,'training','Treino cadastrado: dez categorias separadas por ;',(c.trainingLevels||[]).join('; '));
  for(const [k,l] of [['nativeSkills','Habilidades nativas (separadas por ;)'],['skills','Adicionais já equipadas (separadas por ;)']])field(e,k,l,(c[k]||[]).join('; '),{type:'textarea'});
@@ -107,15 +108,14 @@ function editCard(card=null){editing=card?.id||'sec-'+Date.now().toString(36);co
  field(e,'boosterSlot','Slot adicional',c.boosterSlot||'pendente',{choices:[['pendente','A conferir'],['ausente','Não existe'],['vazio','Existe e está vazio'],['ocupado','Existe e está ocupado']]});
  for(const [prefix,b,label]of [['fixed',c.fixedBoosters?.[0],'Ímpeto fixo'],['extra',c.extraBooster,'Ímpeto adicional']]){
   field(e,prefix+'Name',label+' · nome',b?.name);field(e,prefix+'Value',label+' · valor (se conhecido)',b?.value,{type:'number'});field(e,prefix+'Verified',label+' · conferi nome e valor',b?.verified,{type:'checkbox'});}
- field(e,'notes','Observações',c.notes,{type:'textarea'});$('editor-section').hidden=false;$('editor-section').scrollIntoView({behavior:'smooth'});
+ field(e,'notes','Observações',c.notes,{type:'textarea'});for(const key of ['edition','cardId'])$('card-editor').elements[key].addEventListener('input',()=>{for(const k of ['fixedVerified','extraVerified','nativeVerified','skillsVerified','identityVerified'])$('card-editor').elements[k].checked=false;});$('editor-section').hidden=false;$('editor-section').scrollIntoView({behavior:'smooth'});
 }
 function paintHistory(){const e=$('history');e.replaceChildren();const saved=Object.values(A.read(localStorage).plans[account]).reverse();if(!saved.length)e.append(mk('p','Nenhuma revisão salva nesta conta.'));
  for(const p of saved){const b=mk('button',new Date(p.savedAt).toLocaleString('pt-BR')+' · '+C.MODES[p.style]+(p.stale?' · recalcular':''));b.onclick=()=>{try{
-  if(p.stale)throw Error('Dados restaurados desde esta revisão; monte um plano novo.');
   $('style').value=p.style;$('family').value=p.context.formation.family;paintForms();$('formation').value=p.context.formation.id;formation=formationNow();
   $('manager').value=p.context.manager?.id||'';lineup={...p.context.lineup};instructions=clone(p.context.instructions);cards=roster();paintLineup();managerNote();
-  const current=context();if(current.signature!==p.contextSignature){clearPlan();throw Error('Cartas, regras ou técnico mudaram. A escalação foi recuperada; recalcule para uma nova revisão.');}
-  plan=clone(p);paintResults();say('Revisão reaberta; equipamento preservado.');
+  let current=null;try{current=context();}catch(_){}const state=C.historyState(p,current);
+  plan={...clone(p),historicalReadOnly:state.readOnly};paintResults();say(state.readOnly?'Histórico aberto com os dados originais. Você pode exportá-lo; recalcule antes de salvar uma revisão atual.':'Revisão reaberta; equipamento preservado.');
  }catch(err){say(err.message,true);}};e.append(b);}}
 function download(content,name,type){const url=URL.createObjectURL(new Blob([content],{type})),a=mk('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
 try{
@@ -128,7 +128,7 @@ try{
  const requested=new URLSearchParams(location.search).get('account');setAccount(['primary','secondary'].includes(requested)?requested:A.read(localStorage).active,false);
  for(const k of ['primary','secondary'])$(k).onclick=()=>{try{setAccount(k);}catch(e){say(e.message,true);}};
  $('account').onchange=()=>setAccount($('account').value);$('family').onchange=paintForms;$('style').onchange=()=>{paintForms();managerNote();};
- $('formation').onchange=()=>{formation=formationNow();lineup={};instructions=[];locks={};paintLineup();changed();$('formation-note').textContent=formation.rationale+' '+formation.risks.join(' ');};
+ $('formation').onchange=()=>{applyFormation(formationNow());$('formation-note').textContent=formation.rationale+' '+formation.risks.join(' ');};
  $('manager').onchange=()=>{managerNote();changed();};$('phase').onchange=paintPitch;$('search').oninput=paintRoster;
  $('auto').onclick=()=>{try{const out=C.suggestLineup(formation,cards,{locks});lineup=out.lineup;instructions=instructions.filter(i=>Object.values(lineup).includes(i.instanceId));paintLineup();changed();say(out.warnings.join(' ')||'Onze sugerido. Revise os nomes e as instruções antes de montar o plano.');}catch(e){say(e.message,true);}};
  $('calculate').onclick=()=>{try{const ctx=context();if(!ctx.ready)throw Error('Escolha os onze jogadores antes de montar o plano.');plan=C.recommend(ctx,deps);paintResults();say('Plano montado para os onze. Confira as pendências de cada carta antes de investir.');$('plan-section').scrollIntoView({behavior:'smooth'});}catch(e){say(e.message,true);}};
@@ -147,7 +147,7 @@ try{
    nativeVerified:form.elements.nativeVerified.checked,skillsVerified:form.elements.skillsVerified.checked,identityVerified:form.elements.identityVerified.checked,
    fixedBoosters:fixed?[fixed]:[],extraBooster:extra,boosterSlotSupported:['vazio','ocupado'].includes(slot)});
   if(c.skills.length>(c.skillCapacity??5))throw Error('Adicionais acima da capacidade informada.');
-  const at=doc.secondary.cards.findIndex(x=>x.id===editing);if(at<0)doc.secondary.cards.push(c);else doc.secondary.cards[at]=c;A.save(localStorage,doc);cards=roster();clearPlan();paintRoster();paintLineup();$('roster-count').textContent=cards.length+' cartas · Secundária';$('editor-section').hidden=true;window.dispatchEvent(new Event('craque:data-changed'));say('Dados salvos na Secundária. Revisões anteriores preservadas; recalcule o plano.');
+  const at=doc.secondary.cards.findIndex(x=>x.id===editing);if(at<0)doc.secondary.cards.push(c);else doc.secondary.cards[at]=c;A.save(localStorage,doc);cards=roster();clearPlan();paintRoster();paintLineup();$('roster-count').textContent=cards.length+' cartas · Secundária';$('editor-section').hidden=true;window.dispatchEvent(new Event('craque:data-changed'));say('Dados salvos na Secundária. Se mudou a identidade, confira novamente as habilidades e os ímpetos. Revisões anteriores preservadas; recalcule o plano.');
  }catch(err){say(err.message,true);}};
  function editManager(m=null){editingManager=m?.id||'mgr-'+Date.now().toString(36);const e=$('manager-fields');e.replaceChildren();field(e,'name','Nome',m?.name);field(e,'edition','Edição',m?.edition);for(const [k,l]of Object.entries(C.MODES))field(e,k,'Proficiência · '+l,m?.proficiency[k],{type:'number'});field(e,'bonuses','Bônus numéricos documentados (nome original +valor; separados por ;)',(m?.bonuses||[]).join('; '));field(e,'bonusesVerified','Conferi todos os bônus ativos desta edição',m?.bonusesVerified,{type:'checkbox'});$('manager-section').hidden=false;$('manager-section').scrollIntoView({behavior:'smooth'});} $('new-manager').onclick=()=>editManager();$('edit-manager').onclick=()=>editManager(managerNow());
  $('close-manager').onclick=()=>{$('manager-section').hidden=true;};$('manager-editor').onsubmit=e=>{e.preventDefault();try{if(account!=='secondary')throw Error('Técnico pertence à Secundária.');const v=Object.fromEntries(new FormData(e.target)),doc=A.read(localStorage);const value=A.normalManager({id:editingManager,name:v.name,edition:v.edition,proficiency:Object.fromEntries(Object.keys(C.MODES).map(k=>[k,num(v[k])])),bonuses:split(v.bonuses),bonusesVerified:e.target.elements.bonusesVerified.checked,confirmedOwned:true,source:'Cadastro do proprietário'});const at=doc.secondary.managers.findIndex(m=>m.id===editingManager);if(at<0)doc.secondary.managers.push(value);else doc.secondary.managers[at]=value;A.save(localStorage,doc);setAccount('secondary');window.dispatchEvent(new Event('craque:data-changed'));say('Técnico cadastrado na Secundária.');}catch(err){say(err.message,true);}};

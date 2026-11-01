@@ -19,7 +19,9 @@ with sync_playwright() as pw:
   for width,height in [(320,700),(390,844),(1366,900)]:
    ctx=browser.new_context(viewport={'width':width,'height':height},accept_downloads=True);page=ctx.new_page();errors=[]
    page.on('pageerror',lambda e:errors.append(str(e)))
-   page.goto(BASE+'/plano-do-time-v382.html');page.wait_for_selector('body[data-team382="ready"]',timeout=30000)
+   page.goto(BASE+'/plano-do-time-v382.html?account=secondary');page.wait_for_selector('body[data-team382="ready"]',timeout=30000)
+   page.locator('#primary').click();page.reload();page.wait_for_selector('body[data-team382="ready"]',timeout=30000)
+   assert page.locator('#primary').get_attribute('aria-pressed')=='true'
    assert page.locator('#roster .library-card').count()==261
    page.evaluate("localStorage.setItem('scoutpro:test-preserved','principal')")
    before=page.evaluate("JSON.stringify(Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.startsWith('scoutpro:')&&k!=='scoutpro:v382:accounts')))")
@@ -30,9 +32,23 @@ with sync_playwright() as pw:
    page.locator('#auto').click()
    page.locator('[aria-label="Ataque ld"]').select_option('defensive')
    page.locator('[aria-label="Ataque mlg1"]').select_option('anchoring')
+   original=page.locator('#lineup select[aria-label^="Jogador"]').evaluate_all('(nodes)=>nodes.map(n=>n.value)')
+   page.locator('.slot-row').nth(4).locator('input[type="checkbox"]').check()
+   next_id=page.locator('#formation option').nth(1).get_attribute('value');page.locator('#formation').select_option(next_id)
+   assert page.locator('#lineup select[aria-label^="Jogador"]').evaluate_all('(nodes)=>nodes.map(n=>n.value)')==original
+   assert page.locator('.slot-row').nth(4).locator('input[type="checkbox"]').is_checked()
+   page.locator('#style').select_option('normal');page.locator('#style').select_option('rapido')
+   assert page.locator('#lineup select[aria-label^="Jogador"]').evaluate_all('(nodes)=>nodes.map(n=>n.value)')==original
    page.locator('#calculate').click();page.wait_for_selector('.result-card',timeout=15000)
    assert page.locator('.result-card').count()==11
    page.locator('#save-plan').click();page.wait_for_function("document.querySelector('#feedback').textContent.includes('Nova revisão')")
+   # Uma revisão antiga continua legível após mudança de dados, sem permitir adoção obsoleta.
+   page.evaluate("""()=>{const A=CRAQUE_ACCOUNTS_V382,d=A.read(localStorage);d.secondary.cards[0].identityVerified=!d.secondary.cards[0].identityVerified;A.save(localStorage,d)}""")
+   page.locator('#history button').first.click();assert page.locator('#save-plan').is_disabled();assert 'Histórico' in page.locator('#plan-state').inner_text()
+   with page.expect_download() as dl:page.locator('#export-text').click()
+   historical=OUT/f'history-{width}.txt';dl.value.save_as(historical);assert 'Histórico' in historical.read_text(encoding='utf8')
+   page.evaluate("""()=>{const A=CRAQUE_ACCOUNTS_V382,d=A.read(localStorage);d.secondary.cards[0].identityVerified=!d.secondary.cards[0].identityVerified;A.save(localStorage,d)}""")
+   page.locator('#history button').first.click();assert not page.locator('#save-plan').is_disabled()
    with page.expect_download() as dl:page.locator('#export-json').click()
    file=OUT/f'plan-{width}.json';dl.value.save_as(file);plan=json.loads(file.read_text(encoding='utf8'))
    assert plan['accountId']=='secondary' and len(plan['context']['instructions'])==2 and len(plan['cards'])==11
