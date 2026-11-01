@@ -2,6 +2,7 @@
 (function(w,f){const a=f(w);if(typeof module==='object'&&module.exports)module.exports=a;if(w)w.CRAQUE_TEAM_CONTEXT_V382=a;})(typeof window!=='undefined'?window:null,function(host){'use strict';
 const get=(name,file)=>host?.[name]||(typeof module==='object'?require(file):null);
 const A=()=>get('CRAQUE_ACCOUNTS_V382','./craque-accounts-v382.js'),Rules=()=>get('CRAQUE_FUNCTIONAL_RULES_V382','./craque-functional-rules-v382.js');
+const Method=()=>get('CRAQUE_FUNCTION_METHOD_V383','./craque-function-method-v383.js');
 const MODES=Object.freeze({posse:'Posse de Bola',normal:'Contra-Ataque',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa',overload:'Sobreposição'});
 const INSTRUCTIONS=Object.freeze({defensive:{label:'Defensivo',phase:'attack'},anchoring:{label:'Ancoragem',phase:'attack'},
  counter_target:{label:'Alvo de contra-ataque',phase:'defence'},man_marking:{label:'Marcação individual',phase:'defence',target:true},tight_marking:{label:'Marcação apertada',phase:'defence',target:true}});
@@ -20,7 +21,8 @@ function compile(options,cards){
  if(formation.slots.filter(s=>s.position==='GO').length!==1)throw Error('Formação precisa de um goleiro.');
  if(style==='posse'&&formation.slots.some(s=>['PTE','PTD','MLE','MLD'].includes(s.position)))throw Error('Sua Posse utiliza desenho central, sem pontas.');
  const source=new Map(cards.map(c=>[c.instanceId||c.id,c]));if(cards.some(c=>c.accountId!==accountId))throw Error('Carta de outra conta não pode entrar neste plano.');
- const lineup=options.lineup||{},instructions=options.instructions||[],warnings=[],members=[],picked=new Set(),people=new Set();
+ const lineup=options.lineup||{},instructions=options.instructions||[],functions=options.functions||{},warnings=[],members=[],picked=new Set(),people=new Set();
+ if(!functions||typeof functions!=='object'||Array.isArray(functions)||Object.keys(functions).some(id=>!Object.values(lineup).includes(id)))throw Error('Função pertence a jogador fora deste time.');
  if(Object.keys(lineup).some(key=>!formation.slots.some(s=>s.id===key)))throw Error('Vaga não pertence à formação.');
  for(const ins of instructions){const rule=INSTRUCTIONS[ins.type];if(!rule||rule.phase!==ins.phase)throw Error('Instrução indisponível nesta fase/versão.');
   if(!Object.values(lineup).includes(ins.instanceId))throw Error('Instrução pertence a jogador fora deste time.');
@@ -40,8 +42,11 @@ function compile(options,cards){
   const defence=counter?'Permanecer à frente como alvo de contra-ataque; compensar a menor recomposição com os companheiros':
    marking?INSTRUCTIONS[marking.type].label+': acompanhar '+marking.target+'; coordenar a cobertura ao deixar sua zona':
    norm(card.defenceStyle).includes('destruidor')?'Confrontar o portador com cobertura próxima; observar o espaço abandonado':'Recompor e proteger a zona da função';
-  members.push({slot:{...slot},offBall:{...offBall},card,eligible,offenseStyle:card.offenseStyle||'Não informado',defenceStyle:card.defenceStyle||'Não informado',instructions:individual,
-   role:{attack,defence},styleActivation:'Estilo registrado; ativação nesta posição depende da regra documentada da edição'});
+  const member={slot:{...slot},offBall:{...offBall},card,eligible,offenseStyle:card.offenseStyle||'Não informado',defenceStyle:card.defenceStyle||'Não informado',instructions:individual};
+  member.activation=Method().activation(member);member.functionPlan=Method().contract(member,functions[card.id]);
+  member.role={attack:member.functionPlan.attack,defence:counter||marking?defence:member.functionPlan.defence};
+  member.styleActivation=member.activation.attack.label+' ('+slot.position+'); '+member.activation.defence.label+' ('+offBall.position+').';
+  members.push(member);
   if(!eligible)warnings.push(card.name+': familiaridade ainda não comprovada nas duas fases; simulação.');
  }
  const manager=options.manager||null,proficiency=manager?.proficiency?.[style]??null;
@@ -50,22 +55,23 @@ function compile(options,cards){
  else if(proficiency<85)warnings.push(manager.name+': proficiência '+proficiency+' neste estilo; comparar outra edição/tática.');
  const ids=formation.slots.map(s=>({id:s.id,position:s.position,x:s.x,y:s.y}));
  const snapshot=members.map(m=>({slot:m.slot.id,card:Object.fromEntries(['id','name','personKey','cardId','edition','position','maxLevel','pp','positions','offenseStyle','defenceStyle','trainingLevels','nativeSkills','nativeVerified','skills','skillsVerified','skillCapacity','identityVerified','evidenceIdentity','reference','fixedBoosters','extraBooster','boosterSlot','boosterSlotSupported'].map(k=>[k,m.card[k]??null]))}));
- const key=signature({accountId,style,formation:{id:formation.id,slots:ids,offBall:formation.offBallSlots||ids},manager,lineup,instructions,snapshot,rules:382});
- return {schema:'CRAQUE_TEAM_CONTEXT_V382',accountId,style,formation,manager,proficiency,lineup:{...lineup},instructions:instructions.map(x=>({...x})),members,warnings,signature:key,ready:members.length===11};
+ const key=signature({accountId,style,formation:{id:formation.id,slots:ids,offBall:formation.offBallSlots||ids},manager,lineup,instructions,functions,snapshot,rules:Method().VERSION});
+ return {schema:'CRAQUE_TEAM_CONTEXT_V382',accountId,style,formation,manager,proficiency,lineup:{...lineup},instructions:instructions.map(x=>({...x})),functions:{...functions},members,warnings,signature:key,ready:members.length===11};
 }
 function engineCard(member,context){const c=member.card;return {accountId:context.accountId,localKey:localKey(c),cardId:String(c.cardId||''),edition:c.edition||'',name:c.name,
  position:member.slot.position,originalPosition:c.position,positionEvidence:{eligible:member.eligible,text:member.eligible?'Posições cadastradas nesta conta':'Familiaridade a conferir; simulação'},
- style:c.offenseStyle||'',defenceStyle:c.defenceStyle||'',level:c.maxLevel,pp:c.pp,nativeSkills:(c.nativeSkills||[]).join('; '),skills:(c.skills||[]).join('; '),
+ style:member.activation?.attack.status==='active'?c.offenseStyle:'',defenceStyle:member.activation?.defence.status==='active'?c.defenceStyle:'',level:c.maxLevel,pp:c.pp,nativeSkills:c.nativeVerified?(c.nativeSkills||[]).join('; '):'',skills:(c.skills||[]).join('; '),
  fixedBooster:c.fixedBoosters?.[0]?.name||'',booster:c.extraBooster?.name||'',boosterSlot:c.boosterSlot||'pendente',
  trainingLevels:Array.isArray(c.trainingLevels)?c.trainingLevels.join(' '):'',functionalTrainingProof:physicalProof(c),boosterSlotsProof:boosterProof(c)};}
 function weightsFor(member,context,deps){
  const card=engineCard(member,context),role=deps.tactical.roleOf({shown_position:card.position}),overload=context.style==='overload';
  let weights;if(!overload){const analysis=deps.interpretation.interpret(deps.training.profileOf(card),context.style,null);weights=analysis?.weights?.slice();}
  if(!weights)weights=(deps.tactical.BASE[role]||deps.tactical.BASE.ALA).map((n,i)=>n+(overload&&[1,2,4,6].includes(i)?6:0));
- const reasons=[];
+ const functionPlan=member.functionPlan,reasons=[functionPlan.label+': '+functionPlan.evidence];
+ for(const priority of functionPlan.priorities)weights[priority.index]+=priority.weight;
  if(member.instructions.some(i=>i.type==='defensive')){weights[6]+=10;weights[4]+=4;weights[0]=Math.max(0,weights[0]-4);reasons.push('Defensivo: prioridade de cobertura e recuperação, preservando saída.');}
  if(member.instructions.some(i=>i.type==='anchoring')){weights[1]+=4;weights[2]+=3;reasons.push('Ancoragem: referência de passe e domínio pelo centro.');}
- const aggressive=context.members.filter(m=>norm(m.defenceStyle).includes('destruidor'));
+ const aggressive=context.members.filter(m=>m.activation.defence.status==='active'&&norm(m.defenceStyle).includes('destruidor'));
  if(['LD','LE','ZG','VOL'].includes(role)&&aggressive.length>=2){weights[6]+=3;weights[4]+=2;reasons.push('Mais de um Destruidor: observar cobertura e recuperação no conjunto.');}
  if(role==='GO'){weights[1]=Math.max(weights[1],3);weights[4]=Math.max(weights[4],3);weights[5]=Math.max(weights[5],3);}
  else weights[7]=Math.max(0,weights[5]*0.35);
@@ -88,7 +94,10 @@ function evaluateCard(context,slotId,deps){
  }
  review.accountId=context.accountId;review.contextSignature=context.signature;review.memberId=member.card.id;review.slotId=slotId;
  review.contextRole=member.role;review.contextInstructions=member.instructions;review.contextReasons=axes.reasons;review.searchMethod=axes.method;
- review.contextWarnings=context.warnings;review.stylePair={offense:member.offenseStyle,defence:member.defenceStyle,activation:member.styleActivation};
+ review.functionPlan={...member.functionPlan,priorities:member.functionPlan.priorities.map(p=>({...p,category:deps.tactical.CATEGORIES[p.index]})),
+  partners:context.members.filter(m=>m.card.id!==member.card.id).slice().sort((a,b)=>Math.hypot(a.slot.x-member.slot.x,a.slot.y-member.slot.y)-Math.hypot(b.slot.x-member.slot.x,b.slot.y-member.slot.y)).slice(0,3).map(m=>({id:m.card.id,name:m.card.name,position:m.slot.position,function:m.functionPlan.label})),
+  coverage:context.members.filter(m=>m.card.id!==member.card.id&&!m.instructions.some(i=>i.type==='counter_target')&&['cover','anchor','secure'].includes(m.functionPlan.key)).map(m=>m.card.name)};
+ review.contextWarnings=context.warnings;review.stylePair={offense:member.offenseStyle,defence:member.defenceStyle,activation:member.styleActivation,activationPair:member.activation};
  review.tacticLabel=MODES[context.style];review.canSave=Boolean(levels&&member.eligible&&!review.fixedProgression&&!(review.issues?.length));review.finalAttributesVerified=false;
  const ref=member.card.reference;
  if(ref?.identityUsable&&String(card.cardId)===String(ref.reference?.cardId)&&[ref.edition,ref.reference?.edition].includes(card.edition)&&
@@ -127,10 +136,12 @@ function recommend(context,deps){
    const names=goal?['Goalkeeping','Saving']:defensive?['Defending','Duelling']:['Passing','Technique'];
    r.boosters=c.boosterSlot==='ausente'?[]:names.map(name=>({technicalName:name,name:deps.boosters.displayName(name),attributes:[],reason:'Apoio e recuperação na Sobreposição; comparar os atributos da edição.',applyAuthorized:false}));
   }
-  r.skills=r.skills.filter(s=>!excluded.has(S.keyFor(s.name)||norm(s.name)));
+  r.skills=member.functionPlan.skillKeys.map(k=>S.SKILLS[k]).filter(Boolean).map(s=>({name:s.name,reason:member.functionPlan.label+': '+s.why,applyAuthorized:false,eligibility:'Conferir edição, nativas e vagas'})).filter(s=>!excluded.has(S.keyFor(s.name)||norm(s.name)));
+  r.boosters=c.boosterSlot==='ausente'?[]:member.functionPlan.boosterNames.map(name=>({technicalName:name,name:deps.boosters.displayName(name),attributes:[],reason:member.functionPlan.label+'; comparar com os atributos e os ímpetos já presentes nesta edição.',applyAuthorized:false}));
   r.freeSkillSlots=c.skillsVerified&&Number.isInteger(c.skillCapacity)?Math.max(0,c.skillCapacity-(c.skills||[]).length):null;
   r.skills=r.skills.slice(0,r.freeSkillSlots??5).map(s=>({...s,applyAuthorized:false}));
   r.pending=[...new Set([...(r.pending||[]),...(!c.nativeVerified?['habilidades nativas']:[]),...(r.freeSkillSlots===null?['vagas adicionais']:[]),...(!c.identityVerified?['edição exata']:[]),...(!c.boosterSlotSupported?['slot do ímpeto']:[])])];
+  for(const phase of ['attack','defence'])if(member.activation[phase].status==='pending')r.pending.push('regra do estilo '+(phase==='attack'?'ofensivo':'defensivo'));
   if(r.fixedProgression){r.skills=[];r.boosters=[];}
   r.fixedBoosters=(c.fixedBoosters||[]).map(x=>({...x}));r.extraBooster=c.extraBooster?{...c.extraBooster}:null;
   r.boosters=(r.boosters||[]).map(b=>({...b,applyAuthorized:false}));
@@ -143,14 +154,14 @@ function recommend(context,deps){
   }
   return {slotId:member.slot.id,memberId:c.id,review:r};
  });
- const destroyers=context.members.filter(m=>norm(m.defenceStyle).includes('destruidor'));
+ const destroyers=context.members.filter(m=>m.activation.defence.status==='active'&&norm(m.defenceStyle).includes('destruidor'));
  const balance={coverage:context.members.filter(m=>!m.instructions.some(i=>i.type==='counter_target')&&(['ZG','VOL'].includes(m.slot.position)||m.instructions.some(i=>i.type==='defensive'))).map(m=>m.card.name),
   support:context.members.filter(m=>['MLG','MAT','SA'].includes(m.slot.position)).map(m=>m.card.name),
   depth:context.members.filter(m=>['CA','SA'].includes(m.slot.position)).map(m=>m.card.name),
   warnings:[...context.warnings,...context.members.filter(m=>m.instructions.some(i=>i.type==='counter_target')).map(m=>m.card.name+' como alvo de contra-ataque: os demais precisam compensar sua recomposição.'),
    ...context.members.filter(m=>m.instructions.some(i=>['man_marking','tight_marking'].includes(i.type))).map(m=>m.card.name+': prever cobertura quando acompanhar o adversário marcado.'),
    ...(destroyers.length>1?['Vários Destruidores: testar a cobertura quando um sai para pressionar.']:[]),...(!context.instructions.some(i=>i.type==='defensive')?['Sem instrução Defensivo: conferir quem protege os avanços.']:[])]};
- const options={accountId:context.accountId,style:context.style,manager:context.manager,formation:context.formation,lineup:context.lineup,instructions:context.instructions};
+ const options={accountId:context.accountId,style:context.style,manager:context.manager,formation:context.formation,lineup:context.lineup,instructions:context.instructions,functions:context.functions};
  return {schema:'CRAQUE_TEAM_PLAN_V382',accountId:context.accountId,style:context.style,contextSignature:context.signature,context:options,cards,balance,
   pending:cards.flatMap(x=>x.review.pending.map(p=>x.review.identity.name+': '+p)),alternatives:[],
   search:{method:'Distribuição inteira de PP por prioridades de função; avaliação editorial do conjunto, sem simulação de partidas.',lineup:'Busca limitada a96 combinações por vaga'},
@@ -163,6 +174,7 @@ function exportText(plan){exportJSON(plan);const out=['CRAQUE TÁTICO · PLANO D
  'Instruções: '+(plan.context.instructions.map(i=>INSTRUCTIONS[i.type].label+' — '+(plan.cards.find(c=>c.memberId===i.instanceId)?.review.identity.name||i.instanceId)+(i.target?' → '+i.target:'')).join('; ')||'nenhuma'),
  'Proposta para testar online. Não aplicada no jogo.'];
  for(const {review:r} of plan.cards){out.push('',r.identity.name+' · '+r.position,r.identity.edition||'Edição pendente',r.contextRole.attack,r.contextRole.defence,
+  ...(r.functionPlan?['Função: '+r.functionPlan.label,'Prioridades: '+r.functionPlan.priorities.map(p=>p.category).join(', '),'Observar: '+r.functionPlan.test,'Estilos: '+r.stylePair.activation]:[]),
   r.proposed?'Treino: '+r.trainingGroups.map(g=>g.category+' '+g.proposed).join(' / ')+' · '+r.spent+'/'+r.pp+' PP':'Treino pendente: conferir nível/PP',
   'Adicionais candidatas: '+(r.skills.map(s=>s.name).join(', ')||'nenhuma'), 'Adicionais cadastradas: '+(r.equippedSkills.join(', ')||'não informadas'),
   'Ímpeto fixo: '+(r.fixedBoosters.map(b=>b.name+(b.verified?' +'+b.value:' (valor a conferir)')).join(', ')||'pendente'),
