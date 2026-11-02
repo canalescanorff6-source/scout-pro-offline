@@ -22,6 +22,8 @@ with sync_playwright() as pw:
    assert p.locator('#ct385-account-secondary').get_attribute('aria-current')=='page'
    assert p.locator('#ct385-empty').is_visible()
    assert p.locator('#ct364-owned-section').count()==0
+   assert p.locator('#ct361-home-mark').is_visible()
+   if width<520:assert p.locator('#catalogo').bounding_box()['y']<=(545 if width<=340 else 525)
    p.locator('#ct382-accounts').wait_for(state='attached')
    assert 'account=primary' in p.locator('#ct382-accounts a').filter(has_text='Conta Principal →').get_attribute('href')
    payload={'schema':'CRAQUE_ACCOUNT_CARD_IMPORT_V385','accountId':'secondary','cards':[card]}
