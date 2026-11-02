@@ -8,7 +8,7 @@ const position=x=>({ZC:'ZG',MC:'MLG',CMF:'MLG',DMF:'VOL',AMF:'MAT',CB:'ZG',GK:'G
 const cost=v=>v.reduce((sum,n)=>sum+n+Math.max(0,n-4)+Math.max(0,n-8)+Math.max(0,n-12)+Math.max(0,n-16),0);
 const list=x=>Array.isArray(x)?x.map(s=>str(s,100)).filter(Boolean).slice(0,60):str(x,1600).split(/[;\n]/).map(s=>s.trim()).filter(Boolean);
 const bytes=x=>new TextEncoder().encode(typeof x==='string'?x:JSON.stringify(x)).length;
-const empty=()=>({schema:SCHEMA,active:'primary',secondary:{name:'Secundária',cards:[],managers:[],evidence:null},plans:{primary:{},secondary:{}},primaryRestoreEpoch:0});
+const empty=()=>({schema:SCHEMA,active:'primary',primary:{cards:[],managers:[]},secondary:{name:'Secundária',cards:[],managers:[],evidence:null},plans:{primary:{},secondary:{}},primaryRestoreEpoch:0});
 const evidenceIdentity=c=>JSON.stringify([str(c.id,100),str(c.cardId,90),str(c.edition)]);
 function normalCard(raw){
  if(!isObj(raw)||!id(raw.id)||!str(raw.name)||!POS.includes(position(raw.position)))throw Error('Carta inválida: identificação, nome ou posição ausentes.');
@@ -34,7 +34,7 @@ function normalCard(raw){
   fixedBoosters:(raw.fixedBoosters||[]).slice(0,2).map(checkedBoost),extraBooster:checkedBoost(raw.extraBooster),
   boosterSlot:['vazio','ocupado','ausente','pendente'].includes(raw.boosterSlot)?raw.boosterSlot:'pendente',
   boosterSlotSupported:!identityChanged&&raw.boosterSlotSupported===true,identityVerified:!identityChanged&&raw.identityVerified===true,
-  trainingLevels:v?Array.from(v):null,image,notes:str(raw.notes,1500),
+  trainingLevels:v?Array.from(v):null,image,rarity:str(raw.rarity,80),notes:str(raw.notes,1500),
   evidence:isObj(raw.evidence)?copy(raw.evidence):null};
 }
 function normalManager(m){
@@ -69,7 +69,11 @@ function validate(data){
     if(new Set(p.observations.map(o=>o.id)).size!==p.observations.length)throw Error('Observação repetida.');}
   }
  }
- const out={schema:SCHEMA,active:data.active,secondary:{name:str(data.secondary.name,80)||'Secundária',cards,managers,evidence:copy(data.secondary.evidence??null)},plans,
+ const primaryRaw=data.primary===undefined?{cards:[],managers:[]}:data.primary;
+ if(!isObj(primaryRaw)||!Array.isArray(primaryRaw.cards)||primaryRaw.cards.length>1200||!Array.isArray(primaryRaw.managers)||primaryRaw.managers.length>100)throw Error('Acervo da Principal inválido.');
+ const primary={cards:primaryRaw.cards.map(normalCard),managers:primaryRaw.managers.map(normalManager)};
+ if(primary.cards.some(c=>/^(?:cap:|ct364-)/.test(c.id))||new Set(primary.cards.map(c=>c.id)).size!==primary.cards.length||new Set(primary.managers.map(m=>m.id)).size!==primary.managers.length)throw Error('Identificador reservado ou duplicado na Principal.');
+ const out={schema:SCHEMA,active:data.active,primary,secondary:{name:str(data.secondary.name,80)||'Secundária',cards,managers,evidence:copy(data.secondary.evidence??null)},plans,
   primaryRestoreEpoch:Number.isSafeInteger(data.primaryRestoreEpoch)&&data.primaryRestoreEpoch>=0?data.primaryRestoreEpoch:0};
  if(bytes(out)>MAX_BYTES)throw Error('Dados das contas excedem3MB; exporte um backup antes de acrescentar conteúdo.');return out;
 }
@@ -119,7 +123,8 @@ function roster(account,sources,store){
   position:position(c.position),positions:[position(c.position)],maxLevel:c.maxLevel??null,pp:c.pp??null,offenseStyle:c.style||'',defenceStyle:'',
   nativeSkills:list(c.observed?.nativeSkills),skills:[],fixedBoosters:[],extraBooster:null,boosterSlot:'pendente',trainingLevels:null,image:c.image||'',legacy:c}));
  const extras=(sources.extras||[]).map(c=>({...c,id:'extra:'+c.id,instanceId:'extra:'+c.id,accountId:account,source:'extra'}));
- return [...original,...owned,...extras];
+ const privateCards=read(store).primary.cards.map(c=>({...c,instanceId:c.id,accountId:account,source:'private'}));
+ return [...original,...owned,...extras,...privateCards];
 }
 return Object.freeze({KEY,SCHEMA,DRAFT,MAX_BYTES,POS,position,cost,empty,validate,normalCard,normalManager,normalObservation,MATCH_MODES,MATCH_SIGNALS,read,save,select,importDraft,afterRestore,roster,evidenceIdentity});
 });

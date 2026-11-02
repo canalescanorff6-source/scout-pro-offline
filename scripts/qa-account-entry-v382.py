@@ -13,9 +13,9 @@ with sync_playwright() as pw:
    if width==320:assert page.locator('#cards .player-card').first.bounding_box()['y']<height-38
    menu=page.locator('#scout-app-bar .scout-v189-dock-more > summary');reveal(menu);menu.click()
    assert entry.is_visible();assert 'Principal' in entry.inner_text()
-   entry.get_by_role('link',name='Conta Secundária →').click();page.wait_for_selector('body[data-team382="ready"]')
-   assert page.locator('#secondary').get_attribute('aria-pressed')=='true'
-   assert page.locator('#roster .library-card').count()==0
+   entry.get_by_role('link',name='Conta Secundária →').click();page.wait_for_selector('body[data-ct385-catalog="ready"]')
+   assert page.locator('#ct385-account-secondary').get_attribute('aria-current')=='page'
+   assert page.locator('#cards .player-card').count()==0
    ctx.close()
  finally:b.close()
 print('V382 ACCOUNT ENTRY PASS: três telas, acesso pelo menu e primeira carta preservada em320px.')

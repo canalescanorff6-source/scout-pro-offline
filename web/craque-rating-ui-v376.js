@@ -26,7 +26,7 @@ function paint(doc,parent,entry,context,result){
  b.title=text;b.setAttribute('aria-label',text);return b;
 }
 async function boot(w){
- const d=w.document;if(!['catalog','detail'].includes(d.body.dataset.page))return;
+ const d=w.document;if(!['catalog','detail'].includes(d.body.dataset.page)||w.CRAQUE_CATALOG_ACCOUNT_V385?.account==='secondary')return;
  const root=d.body.dataset.page==='detail'?'../':'';
  const load=(file,key)=>new Promise((resolve,reject)=>{
   if(w[key])return resolve(w[key]);

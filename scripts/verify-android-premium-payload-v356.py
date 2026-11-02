@@ -15,6 +15,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CRITICAL = (
+    "craque-account-library-v385.js",
+    "craque-account-catalog-v385.js",
+    "craque-account-catalog-v385.css",
+    "craque-account-editor-v385.js",
+    "craque-account-sheet-v385.js",
+    "ficha-da-conta-v385.html",
+
     "manual-2027/index.html",
     "manual-2027/content.js",
     "manual-2027/feints.js",

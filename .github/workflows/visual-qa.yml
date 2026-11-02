@@ -97,6 +97,9 @@ jobs:
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-function-method-v383.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-manual-in-app-v384.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-account-entry-v382.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-account-catalog-v385.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-account-editor-v385.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-account-planner-navigation-v385.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-rating-v376.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-owned-main-v364.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-friends-focus-v363.py

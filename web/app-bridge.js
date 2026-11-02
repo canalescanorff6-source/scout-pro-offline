@@ -454,7 +454,7 @@ if(!document.querySelector('link[href$="scout-premium-v73.css"]')){
 }
 const originalBrand=document.querySelector('.brand .brand-logo');
 if(originalBrand){const logo=document.createElement('img');logo.className='brand-logo-img';logo.alt='Logotipo Scout PRO';logo.src=(inCard?'../':'')+'assets/scout-pro-icon-premium-original.png';originalBrand.replaceWith(logo)}
-const home=(inCard?'../index.html':'index.html');
+const home=(inCard?'../index.html':'index.html')+(new URLSearchParams(location.search).get('account')==='secondary'?'?account=secondary':'');
 const homeBtn=bar.querySelector('#scout-home'),backBtn=bar.querySelector('#scout-back');
 homeBtn.href=home+'#catalogo';
 const oldOrigin=()=>{try{return new URL(document.referrer).origin===location.origin}catch{return false}};

@@ -9,4 +9,5 @@
 - Git Windows: em push, selecionar a conta do repositório com `git -c credential.username=canalescanorff6-source -c credential.interactive=false push`; não ler/expor credenciais. Isso evita espera no seletor de contas.
 - Não duplicar auditorias/evidências existentes. Uma entrega completa por sessão, checkpoint curto, sem pesquisas mundiais nesta etapa.
 
-- V384: pedido explícito atual autoriza integrar PR311, publicar ambos sistemas e atualizar Windows com backup. Manual completo agora embarcado; pacote nativo e aparelho devem ser verificados antes de alegar instalação.
+- V384 publicada como v1.1.1278: PR311 integrada, Android/Windows oficiais verificados e Windows físico atualizado com139registros preservados. Manual completo embarcado. Android físico e importação privada das23cartas daSecundária pendentes; ver checkpoint de02/11 em docs/CLAUDE_PROGRESS.md. Não repetir publicação nem instalação doWindows.
+- V385 em entrega: mesmo Meu elenco para as duas contas, novas cartas privadas na Principal e ficha comum por conta. Branchfeat/unified-account-roster-v385;304checks e QA3telas PASS, revisão independente corrigida. Publicação/instalação desta nova entrega ainda a concluir; seguir checkpointV385 e não repetir implementação.

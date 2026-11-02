@@ -26,6 +26,10 @@ with sync_playwright() as pw:
    page.evaluate("localStorage.setItem('scoutpro:test-preserved','principal')")
    before=page.evaluate("JSON.stringify(Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.startsWith('scoutpro:')&&k!=='scoutpro:v382:accounts')))")
    page.locator('#import-account').set_input_files({'name':'conta.json','mimeType':'application/json','buffer':json.dumps(draft,ensure_ascii=False).encode()})
+   assert 'pertence à conta Secundária' in page.locator('#feedback').inner_text()
+   assert page.locator('#roster .library-card').count()==261
+   page.locator('#secondary').click()
+   page.locator('#import-account').set_input_files({'name':'conta.json','mimeType':'application/json','buffer':json.dumps(draft,ensure_ascii=False).encode()})
    page.wait_for_function("document.querySelector('#roster-count').textContent.startsWith('23')")
    assert page.locator('#secondary').get_attribute('aria-pressed')=='true'
    page.locator('#manager').select_option(draft['managers'][0]['id']);page.locator('#style').select_option('rapido');page.locator('#family').select_option('4-3-1-2')
@@ -64,7 +68,7 @@ with sync_playwright() as pw:
    page.locator('#primary').click();assert page.locator('#roster .library-card').count()==261;assert page.locator('#history button').count()==0
    page.locator('#secondary').click();assert page.locator('#roster .library-card').count()==23;assert page.locator('#history button').count()==1
    # Cadastro pela interface, incluindo PP e slot, permanece só na Secundária.
-   page.locator('#new-card').click();page.locator('[name="name"]').fill('Carta QA');page.locator('[name="edition"]').fill('Edição QA');page.locator('[name="maxLevel"]').fill('31');page.locator('[name="pp"]').fill('60');page.locator('#card-editor button[type="submit"]').click()
+   page.locator('#new-card').click();page.locator('[name="name"]').fill('Carta QA');page.locator('[name="edition"]').fill('Edição QA');page.locator('[name="maxLevel"]').fill('31');page.locator('[name="pp"]').fill('60');page.locator('.ct385-editor button[type="submit"]').click()
    assert page.locator('#roster .library-card').count()==24
    page.locator('#backup-import').set_input_files(str(backup));page.wait_for_selector('#backup-confirm:not([hidden])');page.locator('#backup-confirm').click()
    page.wait_for_function("document.querySelector('#roster-count').textContent.startsWith('23')")

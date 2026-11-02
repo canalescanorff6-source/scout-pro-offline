@@ -35,6 +35,9 @@ if(document.body.dataset.page==='catalog'){
  const grid=$('#cards'), foldedSearch=new Map(cards.map(el=>[el,fold(el.dataset.search)]));
  let role='TODOS', rarity='TODAS', style='TODOS', limit=30, filtered=[];
  const buttonState=(root,value)=>{Array.from(root.querySelectorAll('.filter')).forEach(btn=>{const on=btn.dataset.value===value;btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false')})};
+ // V385: incluir raridades de cartas privadas no mesmo filtro do acervo.
+ for(const value of new Set(cards.filter(c=>c.dataset.accountCard).map(c=>c.dataset.rarity).filter(Boolean))){const root=$('#rarities');if(!root||Array.from(root.querySelectorAll('.filter')).some(b=>b.dataset.value===value))continue;
+  const b=document.createElement('button');b.type='button';b.className='filter rarity';b.dataset.value=value;b.textContent=value;b.setAttribute('aria-pressed','false');root.append(b);}
  const apply=()=>{
   const q=fold(search.value.trim());
   filtered=cards.filter(el=>(role==='TODOS'||el.dataset.role===role)&&(rarity==='TODAS'||el.dataset.rarity===rarity)&&(style==='TODOS'||el.dataset.style===style||el.dataset.styleDefense===style)&&foldedSearch.get(el).includes(q));

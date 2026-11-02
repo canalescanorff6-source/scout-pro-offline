@@ -94,7 +94,7 @@
   const bar=d.getElementById('scout-app-bar');
   if(bar&&!bar.querySelector('.ct361-home-dock')){
    const a=mk('a','ct361-home-dock','Início');
-   a.href=(d.body.dataset.page==='detail'?'../':'')+'index.html';
+   a.href=(d.body.dataset.page==='detail'?'../':'')+'index.html'+(new URLSearchParams(location.search).get('account')==='secondary'?'?account=secondary':'');
    bar.insertBefore(a,more);
   }
   more.dataset.ct361Dock='1';
