@@ -32,7 +32,7 @@ try{const cards=A.read(localStorage)[account].cards;empty.hidden=!secondary||car
  document.body.dataset.ct385Catalog='ready';
 }catch(e){status.textContent=e.message;status.dataset.error='true';add.disabled=true;input.disabled=true;empty.hidden=true;document.body.dataset.ct385Catalog='error';}
 const setText=(el,s)=>{if(el&&el.textContent!==s)el.textContent=s;},setHref=(el,s)=>{if(el&&el.getAttribute('href')!==s)el.setAttribute('href',s);};
-function sync(){setHref(document.querySelector('.topbar .brand'),'index.html?account='+account);const mark=document.getElementById('ct361-home-mark');if(mark)mark.hidden=true;
+function sync(){setHref(document.querySelector('.topbar .brand'),'index.html?account='+account);
  if(secondary){const quick=[...document.querySelectorAll('.scout-v189-quick>a')];for(const [i,href,title]of [[1,'index.html?account=primary','Conta Principal'],[2,'plano-do-time-v382.html?account=secondary','Escalação'],[3,'plano-do-time-v382.html?account=secondary','Laboratório']]){setHref(quick[i],href);setText(quick[i]?.querySelector('strong'),title);}
   for(const a of document.querySelectorAll('a[href="conferir-cartas.html"]')){setHref(a,'index.html?account=secondary#catalogo');setText(a,'Conferir acervo →');}
   const tools=document.querySelector('.scout-v189-extra-links');if(tools){for(const a of tools.querySelectorAll('a')){const href=a.getAttribute('href')||'';if(href.includes('tecnicos-v307')){setHref(a,'plano-do-time-v382.html?account=secondary#manager');setText(a,'Técnicos da Secundária →');}else if(/outros-elencos|fichas\/|revisao|progresso|raridade|player-model|pesquisa/.test(href))a.remove();}}
