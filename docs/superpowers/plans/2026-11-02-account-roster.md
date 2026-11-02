@@ -45,6 +45,6 @@ Base26386d6; workspace isolado existente, branchfeat/unified-account-roster-v385
 
 - Task1: complete. Biblioteca/legado/importação/PP/revisões/quota RED→GREEN.
 - Task2: complete. Catálogo/editor/plano/fichas em ambas as contas; QA5larguras e regressões V382/V383/V384. Revisão independente corrigida, incluindo fixo2/fontes e navegação Time.
-- Task3: CI em andamento naPR312.304checks PASS; builds Android/Windows e fluidez PASS. Nenhuma publicaçãoV385 ainda.
+- Task3: código/publicação concluídos. PR312 integrada56c2bca, release1.1.1284 verificada, Windows instalado e139registros preservados.304checks/QA/CI/visual PASS. Android recusou instalação pelo computador; APK+JSON23cartas copiados para Downloads do aparelho como entrega para confirmação manual. Ver checkpoint final.
 - Ruling: o marcador editorial deve permanecer visível; margens pontuais não estabilizaram a primeira dobra em todos os ambientes. Agrupar título e selo numa linha flex, movendo os nós existentes, libera uma linha e mantém os controles. Hipótese de rótulo de versão longo não reproduziu sozinha a diferença; QA agora cobre também essa variante explicitamente. Sem relaxar o limite525px da primeira dobra.
 - CI: corrigida espera assíncrona da rejeição de arquivo para outra conta, reproduzida com40msde leitura. Casos novos passam primeiro no workflow para identificar regressões cedo; todos os QA anteriores mantidos.
