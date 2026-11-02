@@ -96,3 +96,15 @@
 - Revisor independente comparou reconstrução de catálogo/own/references/index e 246 HTML com HEAD. Achados: chave antiga do cache PWA e aviso vigente de Savinho 42/82. Corrigidos com cache v381-level-pp e aviso 34/66 + histórico recolhido; revisor revalidou sem novos achados.
 - Sem merge/release/instalação. PR/CI em preparação. Continuar com os vídeos quando anexados. Revisão competitiva aprofundada das 248 cartas fora do lote V380 ainda não concluída.
 - Entrega em [PR #310](https://github.com/canalescanorff6-source/scout-pro-offline/pull/310), commit inicial9b1de1b. Main avançou a312992d durante a sessão (PRs305–308); compatibilizada no ramo de trabalho, preservando UI consolidada, painéis legados aposentados e Radar PRO. Conflitos em cinco arquivos resolvidos e revisados independentemente, sem achados. Rodada combinada290/290PASS, QA V381/V378/V380 novamentePASS;183fontes compartilhadas. CI do HEAD combinado a consultar antes de produção.
+
+
+## 2026-11-01 · V384 — atualização integrada autorizada
+- Pedido explícito atual: atualizar o app porque as mudanças não chegaram à instalação. Integração em main, release conjunta oficial e atualização Windows com backup autorizadas; não pedir nova aprovação para a mesma ação.
+- Baseline: PR311/adf6723, main312992d, release pública1267; Windows físico encontrado1205. Níveis/PP, contas,500formações e fichas por função permaneciam somente na PR311.
+- Manual do Site incorporado ao pacote comum `web/manual-2027`:18capítulos,13fichas de fintas,6cenas ePDF97p. Menu ativo Mais recebe Como jogar/Fintas; retorno local. Sem dependência do Site privado ou de internet para leitura.
+- Exportação JSON reutiliza V225; PDF usa diálogo Windows/SAF Android, somente recurso fixo do pacote. Assinatura, identificador e atualizadores preservados. Referências externas novas limitadas a quatro URLs exatas.
+- Cache único do app/fingerprint incluem todo o manual; manifest guarda origem9d8214d e hashes portáteis. Verificador do APK compara bytes de todos os arquivos do manual; self-test ajustado para subdiretórios/binário e Windows.
+- Testes:301comandos completos PASS; V384manual/exportação e guarda deURLs RED→GREEN; self-test APK PASS. QA3telas/manual/fintas/PDF/JSON/retorno/offline, entrada das contas eV383função/relatos/backup PASS. Revisão independente somente leitura: nenhum problema confirmado; compilação real/nativos ainda a verificar no CI.
+- QA identificou acesso colocado inicialmente no shell aposentado; movido para o menu ativo V189 compartilhado com as contas. No localhost o workerHTTPS é registrado explicitamente só no teste, conforme QA anterior.
+- Nenhum dado privado incorporado ao Git. Restam importar23cartas daSecundária localmente apósinstalar;53nãoforammostradas. IdentidadeMessi050 e auditoria competitiva individual além13edições continuam com os limites documentados; não há prova de rendimento online.
+- Próxima ação: publicar HEAD daPR311, aguardar CI/main/release, verificar5artefatos/assinatura/paridade e atualizarWindows combackup; Androidfísico depende de aparelho conectado.

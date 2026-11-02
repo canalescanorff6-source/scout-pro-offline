@@ -24,7 +24,13 @@ function openTrustedExternal(raw) {
     // Exact hosts already used by the catalogue's documentary references.
     const sources=['github.com','api.github.com','pesdb.net','www.pesdb.net','efhub.com','www.efootball.com',
       'www.konami.com','www.pesmaster.com','efootbase.com','ef-labo.com','efootball-world.com','efootballmeta.com'];
-    if (formacoes || sources.includes(u.hostname)) return shell.openExternal(raw);
+    const guideSources=new Set([
+      'https://game8.jp/efootball/576587',
+      'https://pbs.twimg.com/media/HFcHqM7WEAA6fXz.jpg',
+      'https://boooost.jp/wp-content/uploads/2026/07/efootball-control-trap-2.jpg',
+      'https://www.reddit.com/r/pesmobile/comments/1vampqm/new_tap_trick_skill/'
+    ]);
+    if (formacoes || guideSources.has(u.href) || sources.includes(u.hostname)) return shell.openExternal(raw);
   }
   catch (_e) {} return Promise.resolve();
 }
@@ -140,6 +146,18 @@ ipcMain.handle('scout:save-json',async (event,payload)=>{
   if(selection.canceled||!selection.filePath)return {status:'cancelled'};
   await fs.writeFile(selection.filePath,content,{encoding:'utf8'});
   return {status:'saved',bytes:Buffer.byteLength(content,'utf8')};
+});
+
+// V384: exporta apenas o PDF embarcado; nenhum caminho é fornecido pelo renderer.
+ipcMain.handle('scout:save-guide-pdf',async event=>{
+  if(!event.sender||event.sender!==win?.webContents)throw Error('Origem de exportação não permitida');
+  const source=path.join(allowedSite,'manual-2027','manual-2027.pdf');
+  const info=await fs.stat(source);
+  if(!info.isFile()||info.size<=0||info.size>8*1024*1024)throw Error('E-book indisponível ou acima de 8 MB');
+  const selection=await dialog.showSaveDialog(win,{title:'Salvar e-book do Craque Tático',defaultPath:'Craque-Tatico-Manual-2027.pdf',buttonLabel:'Salvar PDF',filters:[{name:'E-book PDF',extensions:['pdf']}]});
+  if(selection.canceled||!selection.filePath)return {status:'cancelled'};
+  await fs.copyFile(source,selection.filePath);
+  return {status:'saved',bytes:info.size};
 });
 
 // V226: backups automáticos privados e importação com diálogo nativo.

@@ -15,6 +15,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CRITICAL = (
+    "manual-2027/index.html",
+    "manual-2027/content.js",
+    "manual-2027/feints.js",
+    "manual-2027/native-guide-v384.js",
+    "manual-2027/manual-2027.pdf",
+    "plano-do-time-v382.html",
+    "craque-function-method-v383.js",
+    "ct382-formations.json",
     "index.html",
     "app-bridge.js",
     "craque-ui-bootstrap-v351.js",
@@ -135,11 +143,21 @@ def verify(apk_path: Path, web_dir: Path) -> dict:
             original = source_path.read_bytes()
             if packaged != original:
                 raise ValueError("APK CONTÉM ARQUIVO DIFERENTE do build: " + name)
-            decoded = packaged.decode("utf-8-sig")
+            if name.endswith(".pdf") and not packaged.startswith(b"%PDF-"):
+                raise ValueError("PDF embarcado inválido")
+            decoded = packaged.decode("utf-8-sig") if REQUIRED_MARKERS.get(name) else ""
             for marker in REQUIRED_MARKERS.get(name, ()):
                 if marker not in decoded:
                     raise ValueError("Entrada Premium V356 ausente em " + name + ": " + marker)
             compared[name] = hashlib.sha256(packaged).hexdigest()
+        # V384: o manual inteiro deve estar no APK, incluindo as seis cenas e PDF binário.
+        for source_path in (web_dir / "manual-2027").rglob("*"):
+            if not source_path.is_file(): continue
+            name = source_path.relative_to(web_dir).as_posix()
+            zip_name = "assets/public/" + name
+            if zip_name not in names or apk.read(zip_name) != source_path.read_bytes():
+                raise ValueError("Manual embarcado divergente ou ausente: " + name)
+            compared[name] = hashlib.sha256(apk.read(zip_name)).hexdigest()
         # V364: validar os 15 WebP REAIS individualmente, não só HTML/JS.
         manifest = json.loads(apk.read("assets/public/ct364-owned-cards.json"))
         if manifest.get("schema") != "craque-owned-cards-v364" or len(manifest.get("cards", [])) != 15:
@@ -194,7 +212,9 @@ def self_test() -> None:
                           for i in range(1, 16)]
             }, ensure_ascii=False, indent=2) if name == "ct364-owned-cards.json"
             else "\n".join(REQUIRED_MARKERS.get(name, ("arquivo presente",))))
-            (web / name).write_text(content, encoding="utf-8")
+            if name.endswith(".pdf"): content = "%PDF-1.7\nfixture binary"
+            (web / name).parent.mkdir(parents=True, exist_ok=True)
+            (web / name).write_bytes(content.encode("utf-8"))
             entries["assets/public/" + name] = content.encode()
         for i in range(1, 16):
             path = "cartas/novas/ct364_Test" + str(i) + ".webp"
