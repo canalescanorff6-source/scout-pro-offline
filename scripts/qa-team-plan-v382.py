@@ -17,7 +17,10 @@ with sync_playwright() as pw:
  browser=pw.chromium.launch(headless=True,executable_path=shutil.which('google-chrome') or shutil.which('chromium'))
  try:
   for width,height in [(320,700),(390,844),(1366,900)]:
-   ctx=browser.new_context(viewport={'width':width,'height':height},accept_downloads=True);page=ctx.new_page();errors=[]
+   ctx=browser.new_context(viewport={'width':width,'height':height},accept_downloads=True)
+   # Leitura de arquivos é assíncrona também em aparelhos lentos/CI.
+   ctx.add_init_script("const originalText=File.prototype.text;File.prototype.text=function(){return new Promise(resolve=>setTimeout(resolve,40)).then(()=>originalText.call(this));};")
+   page=ctx.new_page();errors=[]
    page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(BASE+'/plano-do-time-v382.html?account=secondary');page.wait_for_selector('body[data-team382="ready"]',timeout=30000)
    page.locator('#primary').click();page.reload();page.wait_for_selector('body[data-team382="ready"]',timeout=30000)
@@ -26,6 +29,7 @@ with sync_playwright() as pw:
    page.evaluate("localStorage.setItem('scoutpro:test-preserved','principal')")
    before=page.evaluate("JSON.stringify(Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.startsWith('scoutpro:')&&k!=='scoutpro:v382:accounts')))")
    page.locator('#import-account').set_input_files({'name':'conta.json','mimeType':'application/json','buffer':json.dumps(draft,ensure_ascii=False).encode()})
+   page.wait_for_function("document.querySelector('#feedback').textContent.includes('pertence à conta Secundária')")
    assert 'pertence à conta Secundária' in page.locator('#feedback').inner_text()
    assert page.locator('#roster .library-card').count()==261
    page.locator('#secondary').click()
