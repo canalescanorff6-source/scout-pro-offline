@@ -12,9 +12,9 @@
 
 - [x] Reproduzir falha com as 15 cartas próprias atrasadas, busca/reset e acervos secundários vazio/preenchido. Criar QA de contagem assíncrona e área segura Android de 28/48px em 320–412px.
 - [x] Corrigir `scout-finish-v205.js`: atualizar resumo quando `#all-count` mudar; texto de limpar sem quantidade fixa. Corrigir `craque-account-catalog-v385.css`: remover deslocamento duplicado da topbar apenas no catálogo Android.
-- [ ] Executar QA focado, catálogo/editor/navegação existentes, oito viewports e todos os checks. Confirmar cliques dos controles, isolamento e preservação dos 246 originais.
-- [ ] Revisão independente do diff; PR, CI de Android/Windows/visual; merge e publicação autorizados. Verificar arquivos oficiais, assinaturas e paridade.
-- [ ] Backup e atualização Windows; entregar Android no aparelho disponível, respeitando eventual confirmação/restrição do sistema. Não remover instalação ou dados para contornar restrição.
+- [x] Executar QA focado, catálogo/editor/navegação existentes, oito viewports e todos os checks. Confirmar cliques dos controles, isolamento e preservação dos 246 originais.
+- [x] Revisão independente do diff; PR, CI de Android/Windows/visual; merge e publicação autorizados. Verificar arquivos oficiais, assinaturas e paridade.
+- [x] Backup e atualização Windows; entregar Android no aparelho disponível, respeitando eventual confirmação/restrição do sistema. Não remover instalação ou dados para contornar restrição.
 
 ## Evidências / decisões
 
@@ -26,3 +26,6 @@
 - RED: resumo permaneceu em 246 após total 261; depois de corrigir a contagem, falha geométrica em 320px confirmou cabeçalho terminando em 116px e contas começando em 112px. GREEN: ambos os casos passaram, incluindo 28/48px de área segura, duas contas, cadastro real e reset.
 - Verificação: 304/304 checks PASS; catálogo V385 em cinco larguras, editor e navegação em três larguras PASS. Matriz ampliada de oito viewports em andamento antes da publicação.
 - Revisão independente de toda a correção concluída sem achados: observer sem ciclo/duplicação, reset e isolamento preservados; CSS restrito ao Android/catálogo. Nenhum dado privado ou arte original alterado.
+- Entrega: PR313 integrada em d598b4d; release oficial 1.1.1286 / run41510172890 PASS. PR visual41507889059, integridade41507888857 e nativo41507888776 PASS. 224 fontes e 716 arquivos iguais entre APK e Windows, cinco SHA256 oficiais, V236/V239/manifesto PASS. Fingerprint 8006100f574b7ec8b6d1.
+- Windows instalado, FileVersion1.1.1286; 10 arquivos de armazenamento byte a byte preservados pelo instalador. Três snapshots anteriores válidos, 139 registros, zero removidos/alterados. Snapshots têm data anterior ao relançamento: não tratá-los como captura nova de localStorage. Leitura nativa após abrir comprovou versão 1286, controles das contas e resumo 261 igual ao total 261.
+- Android recusou a tentativa autorizada com INSTALL_FAILED_USER_RESTRICTED. APK e JSON privado das 23 cartas copiados para Downloads/CraqueTatico-1.1.1286; hash do APK conferido no aparelho. Instalação manual ainda pendente; não alterar segurança ou repetir a tentativa sem nova orientação. Cartas privadas não importadas.
