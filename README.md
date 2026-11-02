@@ -1,11 +1,11 @@
 # Craque Tático — Android e Windows
 
-**Em revisão na [PR 311](https://github.com/canalescanorff6-source/scout-pro-offline/pull/311):** contas independentes, plano do time e fichas por função, com ativação dos estilos por fase e observações manuais de partidas. Acesso pelo menu Mais → Plano da Principal / Conta Secundária. [Como funciona e o que foi testado](docs/CHECKPOINT-FICHAS-FUNCAO-V383.md). Esta mudança ainda não foi publicada nos instaladores abaixo.
+**V385 em preparação:** o mesmo **Meu elenco** para Principal e Secundária, com busca, filtros, imagens e fichas de cartas cadastradas. A conta aparece no catálogo, cadastro, importação e ficha; os acervos e revisões são independentes. [Desenho e limites](docs/superpowers/specs/2026-11-02-account-roster-design.md). A publicação desta entrega deve ser conferida no checkpoint antes de afirmar que está nos instaladores.
 
-**Atualização de 31/10/2026: [v1.1.1188 publicada e verificada](https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1188).** Novo visual editorial em grafite suave e vinho, com fichas, catálogo, ferramentas e abertura consistentes. Preserva o editor individual e as correções de navegação/cache da v1.1.1184. Windows atualizado e reaberto neste PC, com os registros locais preservados; instalação física Android permanece pendente.
+**Publicada e verificada: [v1.1.1278](https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1278).** Tema grafite/vinho, correções de níveis/PP, contas independentes, plano por função,500formações e manual offline com fintas. Windows atualizado neste PC com139registros preservados; instalação física Android permanece pendente.
 
-- [APK Android oficial](https://github.com/canalescanorff6-source/scout-pro-offline/releases/download/v1.1.1188/ScoutPRO-Android.apk) — atualizar por cima da instalação oficial anterior, preservando dados.
-- [Instalador Windows 1.1.1188](https://github.com/canalescanorff6-source/scout-pro-offline/releases/download/v1.1.1188/ScoutPRO-Setup-1.1.1188.exe).
+- [APK Android oficial](https://github.com/canalescanorff6-source/scout-pro-offline/releases/latest/download/ScoutPRO-Android.apk) — atualizar por cima da instalação oficial anterior, preservando dados.
+- [Instalador Windows oficial](https://github.com/canalescanorff6-source/scout-pro-offline/releases/latest).
 - [Última release disponível](https://github.com/canalescanorff6-source/scout-pro-offline/releases/latest) · [checkpoint](docs/CLAUDE_PROGRESS.md) · [revisão e limites](docs/CLAUDE_APP_AUDIT.md).
 
 ## Histórico da base V72

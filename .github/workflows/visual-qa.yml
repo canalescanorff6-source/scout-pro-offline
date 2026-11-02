@@ -84,6 +84,9 @@ jobs:
           done
           # V315: testar primeiro o caso novo; falhar claramente em bloqueios de navegação.
           # Mantém todos os QA anteriores, sem afrouxar assertivas.
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-account-catalog-v385.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-account-editor-v385.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-account-planner-navigation-v385.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-editorial-theme.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-card-info-editor.py
           timeout --signal=TERM --kill-after=10s 60s python -u scripts/qa-tactical-mobile.py

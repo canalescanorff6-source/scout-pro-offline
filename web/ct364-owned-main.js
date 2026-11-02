@@ -1,7 +1,7 @@
 /* Craque Tático V364 — 15 cartas próprias NO catálogo principal, sem tocar nas 246.
    Evidências eFHub são simulações, não Card ID, PP, treinos ou boosters equipados. */
 (()=>{'use strict';
-if(document.body?.dataset.page!=='catalog')return;
+if(document.body?.dataset.page!=='catalog'||window.CRAQUE_CATALOG_ACCOUNT_V385?.account==='secondary')return;
 const SOURCE='ct364-owned-cards.json',STORAGE='scoutpro:v364:owned-confirmed';
 const EQUIP_STORAGE='scoutpro:v364:owned-equipment';
 const MANAGER_STORAGE='scoutpro:v378:owned-manager:';

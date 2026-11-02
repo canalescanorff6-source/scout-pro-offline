@@ -13,7 +13,8 @@ for(const filename of ['craque-app-shell-v362.js','craque-app-shell-v362.css']){
  assert.ok(entry.includes(filename),'bridge precisa carregar '+filename);
 }
 const pages=fs.readdirSync(web).filter(p=>p.endsWith('.html'));
-assert.equal(pages.length,16,'Conferir cobertura das 16 páginas de topo, incluindo plano do time V382');
+assert.equal(pages.length,17,'Conferir cobertura das17páginas de topo, incluindo a ficha privada V385');
+assert(pages.includes('ficha-da-conta-v385.html'));
 assert(pages.includes('plano-do-time-v382.html'));
 assert(pages.includes('conferir-cartas.html'));
 for(const name of pages){
@@ -86,4 +87,4 @@ assert.ok(css.includes('body.ct362-design .ct362-redundant-heading'),
  'Manchetes antigas não podem competir visualmente com a interface atual');
 assert.ok(!css.includes('background:radial-gradient(circle at 90% -10%'),
  'Fundo azul histórico não pode reaparecer fora da camada editorial');
-console.log('V362 PASS: 16 telas e 246 fichas cobertas, CSS/JS offline, identidade global, nenhum motor reescrito.');
+console.log('V362 PASS:17telas e246fichas cobertas, CSS/JS offline e identidade global.');

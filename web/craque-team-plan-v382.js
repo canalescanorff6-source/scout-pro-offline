@@ -35,16 +35,16 @@ function roster(){
 }
 function changed(){clearPlan();paintPitch();}
 function setAccount(id,persist=true){
- if(persist){A.select(localStorage,id);const url=new URL(location.href);url.searchParams.set('account',id);history.replaceState(null,'',url);}account=id;cards=roster();lineup={};locks={};instructions=[];functions={};clearPlan();
+ if(persist)A.select(localStorage,id);const url=new URL(location.href);url.searchParams.set('account',id);history.replaceState(null,'',url);account=id;cards=roster();lineup={};locks={};instructions=[];functions={};clearPlan();
  $('account').value=id;for(const k of ['primary','secondary'])$(k).setAttribute('aria-pressed',String(k===id));
- managers=id==='secondary'?A.read(localStorage).secondary.managers:sources.managers;
+ managers=id==='secondary'?A.read(localStorage).secondary.managers:[...sources.managers,...A.read(localStorage).primary.managers];$('import-account-label').textContent='Importar cartas na '+(id==='primary'?'Principal':'Secundária');
  options($('manager'),[['','Escolha o técnico e a edição'],...managers.map(m=>[m.id,m.name+' · '+(m.edition||'edição a conferir')])]);
- $('new-card').disabled=id!=='secondary';$('new-manager').disabled=id!=='secondary';$('editor-section').hidden=true;$('manager-section').hidden=true;
+ $('new-card').disabled=false;$('new-card').textContent='Cadastrar carta na '+(id==='primary'?'Principal':'Secundária');$('account-library').href='index.html?account='+id;$('account-library').textContent='Meu elenco · '+(id==='primary'?'Principal':'Secundária')+' ↗';$('new-manager').disabled=id!=='secondary';$('editor-section').hidden=true;$('manager-section').hidden=true;
  $('roster-count').textContent=cards.length+' cartas · '+(id==='primary'?'Principal':'Secundária');
  const evidence=A.read(localStorage).secondary.evidence;
- $('inventory-note').textContent=id==='primary'?'Biblioteca principal preservada. Para corrigir cartas, use a conferência da carta original.':
+ $('inventory-note').textContent=id==='primary'?'Acervo da Principal: cartas originais preservadas e novas cartas cadastradas nesta conta.':
   cards.length+' cartas cadastradas.'+(evidence?.inventoryTotal?' O vídeo mostra '+evidence.inventoryTotal+' na conta; apenas '+cards.length+' foram cadastradas.':' Importe o arquivo privado ou cadastre suas cartas.');
- paintForms();paintRoster();paintHistory();managerNote();say(id==='primary'?'Principal selecionada.':'Secundária selecionada. Dados independentes da Principal.');
+ paintForms();paintRoster();paintHistory();managerNote();say(id==='primary'?'Principal selecionada.':'Secundária selecionada. Dados independentes da Principal.');window.dispatchEvent(new Event('craque:account-selected'));
 }
 function paintForms(){const family=$('family').value,old=$('formation').value;
  const visible=forms.filter(f=>(!family||f.family===family)&&window.CRAQUE_FORMATIONS_V382.eligible(f,$('style').value));
@@ -116,7 +116,7 @@ function paintObservations(){const ready=!!plan?.id&&!plan.historicalReadOnly&&p
 }
 function paintRoster(){const e=$('roster'),q=$('search').value.toLocaleLowerCase();e.replaceChildren();for(const c of cards.filter(c=>(c.name+' '+c.edition).toLocaleLowerCase().includes(q))){
  const row=mk('article');row.className='library-card';if(c.image){const img=mk('img');img.src=c.image;img.alt='';img.className='card-art';img.loading='lazy';row.append(img);}const d=mk('div');d.append(mk('b',c.name),mk('p',c.edition||'Edição a conferir'),mk('p',c.position+' · Nível '+(c.maxLevel??'pendente')+' · '+(c.pp??'?')+' PP'));
- if(account==='secondary'){const edit=mk('button','Conferir dados');edit.onclick=()=>editCard(c);d.append(edit);}else{const a=mk('a','Conferir carta ↗');a.href='conferir-cartas.html#'+encodeURIComponent(c.id);d.append(a);}row.append(d);e.append(row);
+ if(account==='secondary'||c.source==='private'){const edit=mk('button','Abrir ficha');edit.onclick=()=>{location.href='ficha-da-conta-v385.html?account='+account+'&id='+encodeURIComponent(c.id);};d.append(edit);}else{const a=mk('a','Conferir carta ↗');a.href='conferir-cartas.html#'+encodeURIComponent(c.id);d.append(a);}row.append(d);e.append(row);
  }}
 function field(container,name,label,value='',{type='text',choices=null}={}){const l=mk('label',label),e=mk(choices?'select':type==='textarea'?'textarea':'input');e.name=name;
  if(choices)options(e,choices,value);else{if(type!=='textarea')e.type=type;if(type==='checkbox'){e.checked=!!value;l.className='check';}else e.value=value??'';}l.append(e);container.append(l);return e;}
@@ -159,8 +159,8 @@ try{
  $('match-form').onsubmit=e=>{e.preventDefault();try{if(!plan?.id||plan.historicalReadOnly)throw Error('Salve uma revisão atual primeiro.');const input=Object.fromEntries(new FormData(e.target));input.games=Number(input.games);plan=C.observe(localStorage,account,plan.id,input,context().signature);paintObservations();paintHistory();window.dispatchEvent(new Event('craque:data-changed'));say('Observação salva nesta revisão. Ela não valida rendimento nem altera a ficha automaticamente.');}catch(err){say(err.message,true);}};
  $('export-text').onclick=async()=>{try{if(!plan)throw Error('Monte o plano primeiro.');const native=window.scoutDesktop||window.Capacitor?.isNativePlatform?.(); if(native)await window.SCOUT_FILE_EXPORT.saveJson({format:'craque-fichas-v382',text:C.exportText(plan)},'craque-fichas-'+account+'.json');else download(C.exportText(plan),'craque-fichas-'+account+'.txt','text/plain;charset=utf-8');say('Exportação solicitada com o mesmo treino e escolhas exibidos. Confira o arquivo salvo.');}catch(e){say(e.message,true);}};
  $('export-json').onclick=async()=>{try{await window.SCOUT_FILE_EXPORT.saveJson(JSON.parse(C.exportJSON(plan)),'craque-plano-'+account+'.json');}catch(e){say(e.message,true);}};
- $('import-account').onchange=async e=>{try{const f=e.target.files[0];if(!f)return;if(f.size>A.MAX_BYTES)throw Error('Arquivo excede3MB.');const imported=A.importDraft(localStorage,JSON.parse(await f.text()));setAccount('secondary');window.dispatchEvent(new Event('craque:data-changed'));say(imported.added+' cartas importadas; '+imported.total+' na Secundária.');}catch(err){say(err.message,true);}finally{e.target.value='';}};
- $('new-card').onclick=()=>editCard();$('close-editor').onclick=()=>{$('editor-section').hidden=true;};
+ $('import-account').onchange=async e=>{try{const f=e.target.files[0];if(!f)return;if(f.size>A.MAX_BYTES)throw Error('Arquivo excede3MB.');const imported=window.CRAQUE_ACCOUNT_LIBRARY_V385.importCards(localStorage,account,JSON.parse(await f.text()));setAccount(account);window.dispatchEvent(new Event('craque:data-changed'));say(imported.added+' cartas importadas na '+(account==='primary'?'Principal':'Secundária')+'.');}catch(err){say(err.message,true);}finally{e.target.value='';}};
+ $('new-card').onclick=()=>window.CRAQUE_ACCOUNT_EDITOR_V385.open({accountId:account,onSaved:id=>{setAccount(id);window.dispatchEvent(new Event('craque:data-changed'));say('Carta cadastrada na conta '+(id==='primary'?'Principal':'Secundária')+'.');}});$('close-editor').onclick=()=>{$('editor-section').hidden=true;};
  $('card-editor').onsubmit=e=>{e.preventDefault();try{
   if(account!=='secondary')throw Error('Este editor pertence à Secundária.');const form=e.target,v=Object.fromEntries(new FormData(form)),doc=A.read(localStorage),old=doc.secondary.cards.find(c=>c.id===editing)||{};
   const boost=p=>v[p+'Name']?{name:v[p+'Name'],value:num(v[p+'Value']),verified:form.elements[p+'Verified'].checked,source:'Cadastro do proprietário'}:null;

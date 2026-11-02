@@ -17,7 +17,10 @@ with sync_playwright() as pw:
  browser=pw.chromium.launch(headless=True,executable_path=shutil.which('google-chrome') or shutil.which('chromium'))
  try:
   for width,height in [(320,700),(390,844),(1366,900)]:
-   ctx=browser.new_context(viewport={'width':width,'height':height},accept_downloads=True);page=ctx.new_page();errors=[]
+   ctx=browser.new_context(viewport={'width':width,'height':height},accept_downloads=True)
+   # Leitura de arquivos é assíncrona também em aparelhos lentos/CI.
+   ctx.add_init_script("const originalText=File.prototype.text;File.prototype.text=function(){return new Promise(resolve=>setTimeout(resolve,40)).then(()=>originalText.call(this));};")
+   page=ctx.new_page();errors=[]
    page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(BASE+'/plano-do-time-v382.html?account=secondary');page.wait_for_selector('body[data-team382="ready"]',timeout=30000)
    page.locator('#primary').click();page.reload();page.wait_for_selector('body[data-team382="ready"]',timeout=30000)
@@ -25,6 +28,11 @@ with sync_playwright() as pw:
    assert page.locator('#roster .library-card').count()==261
    page.evaluate("localStorage.setItem('scoutpro:test-preserved','principal')")
    before=page.evaluate("JSON.stringify(Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.startsWith('scoutpro:')&&k!=='scoutpro:v382:accounts')))")
+   page.locator('#import-account').set_input_files({'name':'conta.json','mimeType':'application/json','buffer':json.dumps(draft,ensure_ascii=False).encode()})
+   page.wait_for_function("document.querySelector('#feedback').textContent.includes('pertence à conta Secundária')")
+   assert 'pertence à conta Secundária' in page.locator('#feedback').inner_text()
+   assert page.locator('#roster .library-card').count()==261
+   page.locator('#secondary').click()
    page.locator('#import-account').set_input_files({'name':'conta.json','mimeType':'application/json','buffer':json.dumps(draft,ensure_ascii=False).encode()})
    page.wait_for_function("document.querySelector('#roster-count').textContent.startsWith('23')")
    assert page.locator('#secondary').get_attribute('aria-pressed')=='true'
@@ -64,7 +72,7 @@ with sync_playwright() as pw:
    page.locator('#primary').click();assert page.locator('#roster .library-card').count()==261;assert page.locator('#history button').count()==0
    page.locator('#secondary').click();assert page.locator('#roster .library-card').count()==23;assert page.locator('#history button').count()==1
    # Cadastro pela interface, incluindo PP e slot, permanece só na Secundária.
-   page.locator('#new-card').click();page.locator('[name="name"]').fill('Carta QA');page.locator('[name="edition"]').fill('Edição QA');page.locator('[name="maxLevel"]').fill('31');page.locator('[name="pp"]').fill('60');page.locator('#card-editor button[type="submit"]').click()
+   page.locator('#new-card').click();page.locator('[name="name"]').fill('Carta QA');page.locator('[name="edition"]').fill('Edição QA');page.locator('[name="maxLevel"]').fill('31');page.locator('[name="pp"]').fill('60');page.locator('.ct385-editor button[type="submit"]').click()
    assert page.locator('#roster .library-card').count()==24
    page.locator('#backup-import').set_input_files(str(backup));page.wait_for_selector('#backup-confirm:not([hidden])');page.locator('#backup-confirm').click()
    page.wait_for_function("document.querySelector('#roster-count').textContent.startsWith('23')")
