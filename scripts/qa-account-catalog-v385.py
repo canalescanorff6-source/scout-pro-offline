@@ -3,6 +3,7 @@ import json,os,shutil
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 BASE=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
+BUILD=json.loads((Path(__file__).resolve().parents[1]/'web/scout-build-info.json').read_text(encoding='utf8'));BUILD.update(version='1.1.99999',git_revision='a'*40)
 OUT=Path(os.getenv('SCOUT_QA_OUT','artifacts/visual-qa/v385'));OUT.mkdir(parents=True,exist_ok=True)
 card={'id':'local-qa','name':'Jogador QA','edition':'Edição de teste','cardId':'123456789','position':'MLG','positions':['MLG','MAT'],'maxLevel':32,'pp':62,'offenseStyle':'Jogador de infiltração','defenceStyle':'Básico','nativeSkills':['Passe de primeira'],'nativeVerified':True,'skills':[],'skillsVerified':True,'skillCapacity':5,'identityVerified':True,'boosterSlot':'vazio'}
 def upload(page,account,data):
@@ -15,14 +16,19 @@ def upload(page,account,data):
 with sync_playwright() as pw:
  b=pw.chromium.launch(headless=True,executable_path=shutil.which('google-chrome') or shutil.which('chromium'))
  try:
-  for width,height in [(320,700),(390,844),(1366,900)]:
+  for width,height in [(320,700),(360,800),(390,844),(412,915),(1366,900)]:
    ctx=b.new_context(viewport={'width':width,'height':height},accept_downloads=True);p=ctx.new_page();errors=[];p.on('pageerror',lambda e:errors.append(str(e)))
+   p.route('**/scout-build-info.json',lambda route:route.fulfill(json=BUILD))
    p.goto(BASE+'/index.html?account=secondary');p.wait_for_selector('body[data-ct385-catalog="ready"]',timeout=12000)
+   p.wait_for_function("document.querySelector('.topbar .edition').textContent.includes('1.1.99999')")
    assert p.locator('#cards .player-card').count()==0
    assert p.locator('#ct385-account-secondary').get_attribute('aria-current')=='page'
    assert p.locator('#ct385-empty').is_visible()
    assert p.locator('#ct364-owned-section').count()==0
    assert p.locator('#ct361-home-mark').is_visible()
+   p.locator('.ct385-heading-row').wait_for(state='visible')
+   heading=p.locator('.hero h1').bounding_box();mark=p.locator('#ct361-home-mark').bounding_box()
+   assert abs((heading['y']+heading['height']/2)-(mark['y']+mark['height']/2))<=4,(width,heading,mark,'Título e selo devem compartilhar a mesma linha')
    if width<520:assert p.locator('#catalogo').bounding_box()['y']<=(545 if width<=340 else 525)
    p.locator('#ct382-accounts').wait_for(state='attached')
    assert 'account=primary' in p.locator('#ct382-accounts a').filter(has_text='Conta Principal →').get_attribute('href')
@@ -71,4 +77,4 @@ with sync_playwright() as pw:
    assert not errors,errors
    ctx.close()
  finally:b.close()
-print('V385 CATALOG PASS: três telas, mesmas cartas visuais, importação por conta e fichas/revisões isoladas.')
+print('V385 CATALOG PASS: cinco telas e versão longa, título/selo alinhados, importação por conta e fichas/revisões isoladas.')

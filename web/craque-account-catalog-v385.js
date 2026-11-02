@@ -33,6 +33,8 @@ try{const cards=A.read(localStorage)[account].cards;empty.hidden=!secondary||car
 }catch(e){status.textContent=e.message;status.dataset.error='true';add.disabled=true;input.disabled=true;empty.hidden=true;document.body.dataset.ct385Catalog='error';}
 const setText=(el,s)=>{if(el&&el.textContent!==s)el.textContent=s;},setHref=(el,s)=>{if(el&&el.getAttribute('href')!==s)el.setAttribute('href',s);};
 function sync(){setHref(document.querySelector('.topbar .brand'),'index.html?account='+account);
+ const heading=document.querySelector('.hero h1'),mark=document.getElementById('ct361-home-mark');
+ if(heading&&mark&&!heading.closest('.ct385-heading-row')){const row=mk('div','ct385-heading-row');heading.before(row);row.append(heading,mark);}
  if(secondary){const quick=[...document.querySelectorAll('.scout-v189-quick>a')];for(const [i,href,title]of [[1,'index.html?account=primary','Conta Principal'],[2,'plano-do-time-v382.html?account=secondary','Escalação'],[3,'plano-do-time-v382.html?account=secondary','Laboratório']]){setHref(quick[i],href);setText(quick[i]?.querySelector('strong'),title);}
   for(const a of document.querySelectorAll('a[href="conferir-cartas.html"]')){setHref(a,'index.html?account=secondary#catalogo');setText(a,'Conferir acervo →');}
   const tools=document.querySelector('.scout-v189-extra-links');if(tools){for(const a of tools.querySelectorAll('a')){const href=a.getAttribute('href')||'';if(href.includes('tecnicos-v307')){setHref(a,'plano-do-time-v382.html?account=secondary#manager');setText(a,'Técnicos da Secundária →');}else if(/outros-elencos|fichas\/|revisao|progresso|raridade|player-model|pesquisa/.test(href))a.remove();}}
@@ -42,6 +44,6 @@ function sync(){setHref(document.querySelector('.topbar .brand'),'index.html?acc
  const clear=document.getElementById('scout-v205-clear');if(clear&&secondary)clear.setAttribute('aria-label','Limpar filtros da Secundária');
 }
 document.addEventListener('DOMContentLoaded',()=>{sync();window.CRAQUE_CATALOG_V379?.refresh();});window.addEventListener('load',sync);window.addEventListener('craque:owned-cards-ready',sync);
-let scheduled=false;const observer=new MutationObserver(()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;sync();if(document.querySelector('.scout-v189-home')&&document.getElementById('ct382-accounts'))observer.disconnect();});});observer.observe(document.body,{childList:true,subtree:true});
+let scheduled=false;const observer=new MutationObserver(()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;sync();if(document.querySelector('.ct385-heading-row')&&document.getElementById('ct382-accounts'))observer.disconnect();});});observer.observe(document.body,{childList:true,subtree:true});
 setTimeout(()=>observer.disconnect(),12000);
 })();
