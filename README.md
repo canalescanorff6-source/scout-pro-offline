@@ -1,8 +1,8 @@
 # Craque Tático — Android e Windows
 
-**V385 em preparação:** o mesmo **Meu elenco** para Principal e Secundária, com busca, filtros, imagens e fichas de cartas cadastradas. A conta aparece no catálogo, cadastro, importação e ficha; os acervos e revisões são independentes. [Desenho e limites](docs/superpowers/specs/2026-11-02-account-roster-design.md). A publicação desta entrega deve ser conferida no checkpoint antes de afirmar que está nos instaladores.
+**V385 publicada na [v1.1.1284](https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1284):** o mesmo **Meu elenco** para Principal e Secundária, com busca, filtros, imagens e fichas de cartas cadastradas. A conta aparece no catálogo, cadastro, importação e ficha; os acervos e revisões são independentes. [Desenho e limites](docs/superpowers/specs/2026-11-02-account-roster-design.md).
 
-**Publicada e verificada: [v1.1.1278](https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1278).** Tema grafite/vinho, correções de níveis/PP, contas independentes, plano por função,500formações e manual offline com fintas. Windows atualizado neste PC com139registros preservados; instalação física Android permanece pendente.
+**Windows atualizado e verificado na1.1.1284:**261cartas legadas e139registros preservados. Mantém tema grafite/vinho, níveis/PP, plano por função,500formações e manual offline com fintas. APK oficial verificado; o aparelho recusou a instalação pelo computador e depende de confirmação manual. [Resultado da entrega](docs/CLAUDE_PROGRESS.md).
 
 - [APK Android oficial](https://github.com/canalescanorff6-source/scout-pro-offline/releases/latest/download/ScoutPRO-Android.apk) — atualizar por cima da instalação oficial anterior, preservando dados.
 - [Instalador Windows oficial](https://github.com/canalescanorff6-source/scout-pro-offline/releases/latest).

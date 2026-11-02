@@ -59,7 +59,7 @@
   const emptyClear=doc.createElement('button');
   emptyClear.id='scout-v205-empty-reset';emptyClear.type='button';
   emptyClear.className='scout-v205-reset scout-v205-empty-reset';
-  emptyClear.textContent='Mostrar todas as 246 cartas';
+  emptyClear.textContent='Mostrar todas as cartas';
   empty.append(doc.createTextNode(' '),emptyClear);
   const current=(group)=>group.querySelector('button[aria-pressed="true"]')||group.querySelector('button.active');
   function refresh(){
@@ -103,6 +103,12 @@
   sort.addEventListener('change',refresh);
   doc.getElementById('style-filter')?.addEventListener('change',refresh);
   doc.getElementById('more')?.addEventListener('click',refresh);
+  // O motor pode atualizar o total depois da montagem (cartas próprias/revisões).
+  // Observar apenas seu contador mantém um único cálculo e evita vigiar o catálogo.
+  if(host.MutationObserver){
+   const countObserver=new host.MutationObserver(refresh);
+   countObserver.observe(count,{childList:true,characterData:true,subtree:true});
+  }
   refresh();
   doc.body.classList.add('scout-v205-ready');
   return true;

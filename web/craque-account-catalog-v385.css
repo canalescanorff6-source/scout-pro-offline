@@ -1,4 +1,7 @@
 /* Mesmos cartões e cores do catálogo, com identificação local da conta. */
+/* O cabeçalho do catálogo é relativo; o corpo Android já reserva a área segura.
+   O antigo deslocamento de cabeçalho sticky cobria os botões das contas. */
+body.scout-native-android[data-page="catalog"][data-ct385-account] .topbar{top:0!important}
 .ct385-account-bar{display:flex!important;align-items:center;gap:7px;position:relative;z-index:12;margin:0 0 9px;font:600 12px/1.3 system-ui,sans-serif}
 .ct385-account-tab,.ct385-manage>summary{display:block;padding:9px 12px;border:1px solid #5d5159;border-radius:8px;color:#d4c7ca;background:#2b292e;text-decoration:none;cursor:pointer;min-height:36px;white-space:nowrap}
 .ct385-account-tab[aria-current=page]{background:#713448;color:#fff1f1;border-color:#bb8394}
