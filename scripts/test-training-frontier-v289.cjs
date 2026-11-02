@@ -1,3 +1,5 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
@@ -59,7 +61,7 @@ const cached=V.allocate(weights,'CA',50,baseline);cached[0]=20;
 assert.deepEqual(V.allocate(weights,'CA',50,baseline),r.candidates.find(x=>x.id===r.primaryId).levels);
 // A matriz cobre as 246 edições; só 85 podem gerar hipóteses de PP. Não
 // confundir processamento automático com validação individual de gameplay.
-const raw=fs.readFileSync(require.resolve('../web/SCOUT_V69_AUDITORIA.json'),'utf8');
+const raw=historicalRead(require.resolve('../web/SCOUT_V69_AUDITORIA.json'),'utf8');
 const cards=JSON.parse(raw).cards;
 let tested=0,pending=0,candidates=0,tradeoffs=0;
 for(const c of cards){
@@ -84,7 +86,7 @@ for(const c of cards){
  assert.equal(JSON.stringify(c),before);
 }
 assert.equal(tested,425);assert.equal(pending,805);assert(candidates>tested);
-assert.equal(fs.readFileSync(require.resolve('../web/SCOUT_V69_AUDITORIA.json'),'utf8'),raw);
+assert.equal(historicalRead(require.resolve('../web/SCOUT_V69_AUDITORIA.json'),'utf8'),raw);
 assert.equal(typeof S.trainingScenario,'function','Cenário precisa recalcular habilidades e ímpetos sem gravar treino');
 const c=cards.find(x=>x.numero===191);
 const d={capture:c.numero,id:c.id,edition:c.versao,pp:c.pp,shown_position:c.posicao,

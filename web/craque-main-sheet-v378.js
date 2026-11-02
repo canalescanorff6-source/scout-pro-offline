@@ -12,7 +12,7 @@ function cardFromModel(m,position){return {
  localKey:m.cardKey,capture:m.evidenceCard?.numero??null,name:m.name,cardId:m.cardId,edition:m.edition,
  position,originalPosition:m.position,style:m.style,defenceStyle:m.defenceStyle,level:m.level,pp:m.pp,nativeSkills:m.nativeSkills,
  skills:m.skills||'',fixedBooster:m.fixedBooster,booster:m.booster,boosterSlot:m.boosterSlot,
- equipmentRecord:m.equipmentRecord||null,trainingLevels:m.trainingLevels,
+ equipmentRecord:m.equipmentRecord||null,trainingLevels:m.trainingLevels,progressReview:m.evidenceCard?.nivel_referencia||null,
  baseReference:m.evidenceCard?.base_stats_known===true};}
 function resolve(input,outcome,selection={},provided){
  const d=dependencies(provided),F=d.training,S=d.skills,B=d.boosters,T=d.tactical;
@@ -25,9 +25,13 @@ function resolve(input,outcome,selection={},provided){
  if(nativeSource==='pending'&&exactReference&&reference.reference.nativeSkills?.length){
   card.nativeSkills=reference.reference.nativeSkills.join('; ');nativeSource='public';
  }
- const role=outcome.plan.role,allowed=role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6];
+ const batch=host?.CRAQUE_COMPETITIVE_BATCH_V380||
+  (typeof module==='object'?require('./craque-competitive-batch-v380.js'):null);
+ const editorial=exactReference?batch?.find(card,outcome,selection,S,T):null;
+ const rules=host?.CRAQUE_FUNCTIONAL_RULES_V382||(typeof module==='object'?require('./craque-functional-rules-v382.js'):null);
+ const role=outcome.plan.role,allowed=rules?.allowed(role,card)||(role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6]);
  const budget=outcome.plan.pp??outcome.progress.pp;
- const levels=own(selection,'levels')?selection.levels:outcome.plan.levels;
+ const levels=own(selection,'levels')?selection.levels:editorial?.levels||outcome.plan.levels;
  const valid=v=>Number.isInteger(budget)&&T.valid(v)&&T.total(v)<=budget&&
   v.every((n,i)=>n===0||allowed.includes(i));
  if(own(selection,'levels')&&!valid(levels))throw Error('PP ou categorias da ficha salva incompatíveis com esta função');
@@ -68,11 +72,12 @@ function resolve(input,outcome,selection={},provided){
  }
  const boostKey=value=>B.boosterName(value)||String(value||'').toLowerCase().trim();
  const fixed=boostKey(card.fixedBooster),equipped=boostKey(card.booster);
- review.boosters=review.boosters.filter(b=>boostKey(b.technicalName)!==fixed&&boostKey(b.technicalName)!==equipped);
+ const stackAllowed=name=>rules?.stackingAllowed(card,name,boostKey)===true;
+ review.boosters=review.boosters.filter(b=>(boostKey(b.technicalName)!==fixed||stackAllowed(b.technicalName))&&boostKey(b.technicalName)!==equipped);
  if(own(selection,'booster')){
   const name=selection.booster,key=boostKey(name);
   if(!name)review.boosters=[];
-  else if(card.boosterSlot==='ausente'||key===fixed||key===equipped){
+  else if(card.boosterSlot==='ausente'||(key===fixed&&!stackAllowed(name))||key===equipped){
    issues.push({kind:'booster',name,reason:card.boosterSlot==='ausente'?'sem slot adicional':key===fixed?'mesmo ímpeto fixo':'já informado como equipado'});review.boosters=[];
   }else{
    const detail=review.boosters.find(b=>boostKey(b.technicalName)===key);
@@ -81,11 +86,22 @@ function resolve(input,outcome,selection={},provided){
   }
  }
  if(card.boosterSlot==='ausente')review.boosters=[];
+ if(editorial)batch.decorate(review,editorial,card,S,B);
+ const fixedProgression=exactReference&&reference.reference.type==='Trending'&&
+  reference.reference.maxLevel===1&&reference.reference.maxPP===0;
+ if(fixedProgression){
+  review.fixedProgression=true;review.canSave=false;
+  review.note='Edição Trending com progressão fixa: sem distribuição de PP, novas habilidades ou ímpeto selecionável. Histórico preservado.';
+  if((selection.skills?.length||selection.booster)||budget!==0)
+   issues.push({kind:'eligibility',name:'Progressão fixa',reason:'As escolhas salvas ou PP informados não são aplicáveis a esta edição Trending'});
+  if(!own(selection,'skills'))review.skills=[];
+  if(!own(selection,'booster'))review.boosters=[];
+ }
  // O contrato de gravação recebe exatamente as escolhas mostradas, inclusive vazias.
  result.suggestedSkills=review.skills.map(s=>({name:s.name}));
  result.booster={...result.booster,primary:review.boosters[0]?{nome:review.boosters[0].technicalName}:null};
  if(exactReference&&reference.reference.baseStats)review.baseReference='Base da edição disponível em referência pública; treino e atributos finais da conta a conferir';
- review.sourceLabel={profile:'Treino salvo neste técnico',revision:'Revisão salva deste contexto',proposal:'Treino recomendado para esta função'}[review.sourceKind];
+ if(!editorial)review.sourceLabel={profile:'Treino salvo neste técnico',revision:'Revisão salva deste contexto',proposal:'Treino recomendado para esta função'}[review.sourceKind];
  if(issues.length)review.canSave=false;
  review.pending=[...(!outcome.identityFormatValid?['edição']:[]),
   ...(nativeSource==='pending'?['habilidades nativas']:[]),
@@ -93,6 +109,9 @@ function resolve(input,outcome,selection={},provided){
   ...(!review.eligibleForLineup?['familiaridade da posição']:[]),
   ...(issues.length?['escolhas salvas']:[])];
  review.nativeSource=nativeSource;review.issues=issues;review.managerLabel=selection.managerLabel||'';
+ const p=card.progressReview;
+ if(p?.kind==='revisao_nivel_v381'&&Number.isInteger(p.previous_pp)&&p.previous_pp!==budget)
+  review.levelRevision={beforePP:p.previous_pp,afterPP:budget,url:p.url,sourceKind:p.source_kind,confirmedInGame:false};
  return {review,source:review.sourceKind,nativeSource,issues,result};
 }
 function text(review){

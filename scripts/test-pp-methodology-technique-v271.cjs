@@ -1,3 +1,5 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V271 — PP chega à ficha competitiva apenas com prova de orçamento da
  * mesma edição. Técnica é auditada, não penalizada artificialmente.
@@ -5,7 +7,7 @@
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const read=p=>historicalRead(path.join(root,p),'utf8');
 const catalogText=read('web/SCOUT_V69_AUDITORIA.json');
 const cards=JSON.parse(catalogText).cards;
 const evidenceRows=JSON.parse(read('web/SCOUT_V221_EVIDENCE_INDEX.json')).cards;

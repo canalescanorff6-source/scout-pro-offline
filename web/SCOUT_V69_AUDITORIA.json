@@ -10,11 +10,11 @@
     "no_pp": 0,
     "adapt_alert": 55,
     "extra_confirmed": 16,
-    "level_user_entered": 85,
+    "level_user_entered": 60,
     "raridade_confirmada_pelo_usuario": 58,
     "treinos_propostos_experimentais_v95": 84,
-    "level_public_reference": 158,
-    "level_total": 243
+    "level_public_reference": 186,
+    "level_total": 246
   },
   "cards": [
     {
@@ -691,7 +691,7 @@
       "posicao": "DC",
       "estilo_ataque": "Básico",
       "estilo_defesa": "O Destruidor",
-      "pp": 52,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -705,8 +705,8 @@
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/016_Dayot_Upamecano.html",
-      "max_level": 27,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
@@ -720,6 +720,14 @@
         "url": "https://pesdb.net/efootball/players/dayot-upamecano-105802492921775",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105802492921775",
+        "card_id": "105802492921775",
+        "previous_pp": 52,
+        "confirmed_in_game": false
       }
     },
     {
@@ -775,7 +783,7 @@
       "posicao": "AC",
       "estilo_ataque": "Matador",
       "estilo_defesa": "Básico",
-      "pp": 62,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -789,8 +797,8 @@
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/018_Safee_Sali.html",
-      "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
@@ -804,6 +812,14 @@
         "url": "https://pesdb.net/efootball/players/safee-sali-88030455171360",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/88030455171360",
+        "card_id": "88030455171360",
+        "previous_pp": 62,
+        "confirmed_in_game": false
       }
     },
     {
@@ -1843,22 +1859,11 @@
       "posicao": "CA",
       "estilo_ataque": "Atacante pivô",
       "estilo_defesa": "Básico",
-      "pp": 50,
+      "pp": 62,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": "P",
-      "niveis": [
-        8,
-        6,
-        4,
-        8,
-        5,
-        6,
-        0,
-        0,
-        0,
-        0
-      ],
+      "niveis": null,
       "impeto_fixo": "NENHUM BOOSTER NATIVO EXPOSTO PELA FONTE",
       "impeto_extra": "—",
       "habilidades_nativas": "Chop Turn; Cut Behind Turn; Long-range Curler; Rising Shot; Long-range Shooting; Acrobatic Finishing; Heel Trick; Through Passing; Penalty Specialist; Aerial Superiority",
@@ -1876,13 +1881,19 @@
       "arquivo": "fichas/041_Kai_Havertz.html",
       "raridade_confirmada": "SHOW TIME",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
-      "max_level": 26,
-      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "nivel_referencia": {
-        "kind": "catalogo_publico",
-        "url": "https://pesdb.net/efootball/players/kai-havertz-105837389528906",
+        "kind": "revisao_nivel_v381",
+        "source_kind": "owner_efhub_capture",
+        "url": "https://efhub.com/players/105837389528906",
         "card_id": "105837389528906",
-        "confirmed_in_game": false
+        "previous_pp": 50,
+        "confirmed_in_game": false,
+        "owner_source": "Captura eFHUB e resposta explícita do proprietário em 31/10/2026",
+        "public_level": 26,
+        "owner_capture_level": 32,
+        "conflict": true
       }
     },
     {
@@ -2289,12 +2300,22 @@
       ],
       "arquivo": "fichas/050_Lionel_Messi.html",
       "max_level": 29,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "pp_origem": "informado_pelo_usuario_efhub_2026-11-01",
       "treino_proposta_v95": {
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/050_Lionel_Messi.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "owner_efhub_report",
+        "url": null,
+        "card_id": "PENDENTE - associação anterior invalidada pelo usuário",
+        "previous_pp": 56,
+        "confirmed_in_game": false,
+        "owner_source": "Resposta explícita do proprietário em 01/11/2026 sobre o nível e PP exibidos no eFHUB; sem confirmação no jogo.",
+        "identity_pending": true
       }
     },
     {
@@ -4610,7 +4631,7 @@
       "posicao": "MLG",
       "estilo_ataque": "Básico",
       "estilo_defesa": "O destruidor",
-      "pp": 66,
+      "pp": 64,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -4628,13 +4649,21 @@
         "Segundo ímpeto realmente selecionado"
       ],
       "arquivo": "fichas/101_Darren_Fletcher.html",
-      "max_level": 34,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 66,
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/101_Darren_Fletcher.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/88039044945180",
+        "card_id": "88039044945180",
+        "previous_pp": 66,
+        "confirmed_in_game": false
       }
     },
     {
@@ -4959,7 +4988,7 @@
       "posicao": "VOL",
       "estilo_ataque": "Orquestrador",
       "estilo_defesa": "Básico",
-      "pp": 60,
+      "pp": 64,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -4974,8 +5003,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/109_Ruben_Neves.html",
-      "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "SHOW TIME",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -4991,6 +5020,14 @@
         "url": "https://pesdb.net/efootball/players/ruben-neves-105858864355084",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105858864355084",
+        "card_id": "105858864355084",
+        "previous_pp": 60,
+        "confirmed_in_game": false
       }
     },
     {
@@ -5095,7 +5132,7 @@
       "posicao": "VOL",
       "estilo_ataque": "Primeiro volante",
       "estilo_defesa": "Primeiro volante",
-      "pp": 56,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5109,8 +5146,8 @@
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/112_Amadou_Onana.html",
-      "max_level": 29,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 56,
         "status": "experimental — aguarda aprovação do usuário",
@@ -5124,6 +5161,14 @@
         "url": "https://pesdb.net/efootball/players/amadou-onana-105802492952578",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105802492952578",
+        "card_id": "105802492952578",
+        "previous_pp": 56,
+        "confirmed_in_game": false
       }
     },
     {
@@ -5232,7 +5277,7 @@
       "posicao": "VOL",
       "estilo_ataque": "Primeiro volante",
       "estilo_defesa": "Primeiro volante",
-      "pp": 54,
+      "pp": 58,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5246,8 +5291,8 @@
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/115_Casemiro.html",
-      "max_level": 28,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 30,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 54,
         "status": "experimental — aguarda aprovação do usuário",
@@ -5261,6 +5306,14 @@
         "url": "https://pesdb.net/efootball/players/casemiro-105804908766893",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105804908766893",
+        "card_id": "105804908766893",
+        "previous_pp": 54,
+        "confirmed_in_game": false
       }
     },
     {
@@ -5349,7 +5402,7 @@
       "posicao": "VOL",
       "estilo_ataque": "Meia versátil",
       "estilo_defesa": "Meia versátil",
-      "pp": 68,
+      "pp": 64,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5363,8 +5416,8 @@
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/118_Sandro_Tonali.html",
-      "max_level": 35,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 68,
         "status": "experimental — aguarda aprovação do usuário",
@@ -5378,6 +5431,14 @@
         "url": "https://pesdb.net/efootball/players/sandro-tonali-105750148009371",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105750148009371",
+        "card_id": "105750148009371",
+        "previous_pp": 68,
+        "confirmed_in_game": false
       }
     },
     {
@@ -5388,7 +5449,7 @@
       "posicao": "VOL",
       "estilo_ataque": "Meia versátil",
       "estilo_defesa": "Meia versátil",
-      "pp": 68,
+      "pp": 76,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5404,8 +5465,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/119_Tyler_Adams.html",
-      "max_level": 35,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 39,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -5421,6 +5482,14 @@
         "url": "https://pesdb.net/efootball/players/tyler-adams-123303",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/123303",
+        "card_id": "123303",
+        "previous_pp": 68,
+        "confirmed_in_game": false
       }
     },
     {
@@ -5431,7 +5500,7 @@
       "posicao": "VOL",
       "estilo_ataque": "Orquestrador",
       "estilo_defesa": "Básico",
-      "pp": 68,
+      "pp": 64,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5447,8 +5516,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/120_Rodrigo_Bentancur.html",
-      "max_level": 35,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -5464,6 +5533,14 @@
         "url": "https://pesdb.net/efootball/players/rodrigo-bentancur-105297",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105297",
+        "card_id": "105297",
+        "previous_pp": 68,
+        "confirmed_in_game": false
       }
     },
     {
@@ -5711,7 +5788,7 @@
       "posicao": "LD",
       "estilo_ataque": "Lateral atacante",
       "estilo_defesa": "Básico",
-      "pp": 68,
+      "pp": 0,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -5726,8 +5803,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/126_Daniel_Munoz.html",
-      "max_level": 35,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 1,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -5743,6 +5820,14 @@
         "url": "https://pesdb.net/efootball/players/daniel-munoz-52868363179440",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/52868363179440",
+        "card_id": "52868363179440",
+        "previous_pp": 68,
+        "confirmed_in_game": false
       }
     },
     {
@@ -6385,7 +6470,7 @@
       "posicao": "LE",
       "estilo_ataque": "Lateral ofensivo",
       "estilo_defesa": "Básico",
-      "pp": 76,
+      "pp": 80,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6401,8 +6486,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/141_Ian_Maatsen.html",
-      "max_level": 39,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 41,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -6418,6 +6503,14 @@
         "url": "https://pesdb.net/efootball/players/ian-maatsen-132386",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/132386",
+        "card_id": "132386",
+        "previous_pp": 76,
+        "confirmed_in_game": false
       }
     },
     {
@@ -6833,7 +6926,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Básico",
       "estilo_defesa": "O destruidor",
-      "pp": 52,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6848,8 +6941,8 @@
         "Segundo ímpeto realmente selecionado"
       ],
       "arquivo": "fichas/151_Willian_Pacho.html",
-      "max_level": 27,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
@@ -6857,7 +6950,15 @@
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       },
       "raridade_confirmada": "DISTINGUIDO",
-      "raridade_confirmacao_origem": "usuario_confirmacao_textual_2026-10-14"
+      "raridade_confirmacao_origem": "usuario_confirmacao_textual_2026-10-14",
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/106776376791946",
+        "card_id": "106776376791946",
+        "previous_pp": 52,
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 152,
@@ -6867,7 +6968,7 @@
       "posicao": "ZC",
       "estilo_ataque": "Defensor criativo",
       "estilo_defesa": "Básico",
-      "pp": 52,
+      "pp": 56,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -6881,8 +6982,8 @@
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/152_Pierre_Kalulu.html",
-      "max_level": 27,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 52,
         "status": "experimental — aguarda aprovação do usuário",
@@ -6896,6 +6997,14 @@
         "url": "https://pesdb.net/efootball/players/pierre-kalulu-105810814439757",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105810814439757",
+        "card_id": "105810814439757",
+        "previous_pp": 52,
+        "confirmed_in_game": false
       }
     },
     {
@@ -7745,7 +7854,17 @@
         "Atributos-base desta versão para cálculo de status finais",
         "Segundo ímpeto realmente selecionado"
       ],
-      "arquivo": "fichas/171_Iker_Casillas.html"
+      "arquivo": "fichas/171_Iker_Casillas.html",
+      "max_level": 29,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/88045755827028",
+        "card_id": "88045755827028",
+        "previous_pp": 56,
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 172,
@@ -7979,7 +8098,7 @@
       "posicao": "GO",
       "estilo_ataque": "Básico",
       "estilo_defesa": "Goleiro ofensivo",
-      "pp": 56,
+      "pp": 46,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -7994,8 +8113,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/177_Dean_Henderson.html",
-      "max_level": 29,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 24,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -8011,6 +8130,14 @@
         "url": "https://pesdb.net/efootball/players/dean-henderson-111450",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/111450",
+        "card_id": "111450",
+        "previous_pp": 56,
+        "confirmed_in_game": false
       }
     },
     {
@@ -8160,7 +8287,7 @@
       "posicao": "CA",
       "estilo_ataque": "Artilheiro",
       "estilo_defesa": "Básico",
-      "pp": 60,
+      "pp": 62,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -8175,8 +8302,8 @@
         "Segundo ímpeto realmente selecionado"
       ],
       "arquivo": "fichas/181_Serhou_Guirassy.html",
-      "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
@@ -8184,7 +8311,15 @@
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
       },
       "raridade_confirmada": "DISTINGUIDO",
-      "raridade_confirmacao_origem": "usuario_confirmacao_textual_2026-10-14"
+      "raridade_confirmacao_origem": "usuario_confirmacao_textual_2026-10-14",
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/106769397419872",
+        "card_id": "106769397419872",
+        "previous_pp": 60,
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 182,
@@ -8259,7 +8394,7 @@
       ],
       "arquivo": "fichas/183_P_E_Aubameyang.html",
       "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "pp_origem": "informado_pelo_usuario_efhub_2026-11-01",
       "treino_proposta_v95": {
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
@@ -8273,6 +8408,15 @@
         "url": "https://pesdb.net/efootball/players/p-e-aubameyang-105812156521859",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "owner_efhub_report",
+        "url": null,
+        "card_id": "105812156521859",
+        "previous_pp": 62,
+        "confirmed_in_game": false,
+        "owner_source": "Resposta explícita do proprietário em 01/11/2026 sobre o nível e PP exibidos no eFHUB; sem confirmação no jogo."
       }
     },
     {
@@ -8333,22 +8477,11 @@
       "posicao": "CA",
       "estilo_ataque": "Homem de área",
       "estilo_defesa": "Básico",
-      "pp": 76,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": "P",
-      "niveis": [
-        12,
-        6,
-        8,
-        8,
-        8,
-        6,
-        0,
-        0,
-        0,
-        0
-      ],
+      "niveis": null,
       "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
       "impeto_extra": "NENHUM BOOSTER NATIVO CONFIRMADO",
       "habilidades_nativas": "Chop Turn; Sole Control; Heading; Acrobatic Finishing; First-time Shot; Penalty Specialist; Gamesmanship",
@@ -8368,6 +8501,16 @@
         "url": "https://pesdb.net/efootball/players/pedro-111408",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/111408",
+        "card_id": "111408",
+        "previous_pp": 76,
+        "confirmed_in_game": false
       }
     },
     {
@@ -8514,7 +8657,7 @@
       "posicao": "PTD",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": 60,
+      "pp": 62,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -8530,8 +8673,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/189_Donyell_Malen.html",
-      "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -8547,6 +8690,14 @@
         "url": "https://pesdb.net/efootball/players/donyell-malen-117932",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/117932",
+        "card_id": "117932",
+        "previous_pp": 60,
+        "confirmed_in_game": false
       }
     },
     {
@@ -8608,22 +8759,11 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": 50,
+      "pp": 66,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": "A",
-      "niveis": [
-        4,
-        4,
-        8,
-        10,
-        8,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
+      "niveis": null,
       "impeto_fixo": "NENHUM BOOSTER NATIVO CONFIRMADO",
       "impeto_extra": "NENHUM BOOSTER NATIVO CONFIRMADO",
       "habilidades_nativas": "Marseille Turn; Cut Behind & Turn; Heading; Long-range Curler; Chip Shot Control; Heel Trick; First-time Shot; Outside Curler; Gamesmanship; Track Back",
@@ -8643,9 +8783,17 @@
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
       },
-      "max_level": 26,
-      "pp_origem": "informado_pelo_usuario_2026-10-18",
-      "treino_proposto_nao_validado": true
+      "max_level": 34,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
+      "treino_proposto_nao_validado": false,
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105850811319718",
+        "card_id": "105850811319718",
+        "previous_pp": 50,
+        "confirmed_in_game": false
+      }
     },
     {
       "numero": 192,
@@ -8655,7 +8803,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": 60,
+      "pp": 66,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -8670,8 +8818,8 @@
         "Proficiência se for usar em uma posição central"
       ],
       "arquivo": "fichas/192_Jeremy_Doku.html",
-      "max_level": 31,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 34,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 60,
         "status": "experimental — aguarda aprovação do usuário",
@@ -8685,6 +8833,14 @@
         "url": "https://pesdb.net/efootball/players/jeremy-doku-105800613884444",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105800613884444",
+        "card_id": "105800613884444",
+        "previous_pp": 60,
+        "confirmed_in_game": false
       }
     },
     {
@@ -8817,8 +8973,8 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": 82,
-      "pp_estimado": true,
+      "pp": 66,
+      "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
       "niveis": null,
@@ -8839,15 +8995,18 @@
         "confirmacao_no_jogo": false,
         "data": "2026-10-28"
       },
-      "max_level": 42,
-      "pp_origem": "catalogo_publico_correcao_edicao_2026-10-28",
+      "max_level": 34,
+      "pp_origem": "informado_pelo_usuario_efhub_2026-11-01",
       "nivel_referencia": {
-        "kind": "catalogo_publico",
-        "url": "https://efootballedge.com/en/cards/105754711432614-savinho",
+        "kind": "revisao_nivel_v381",
+        "source_kind": "owner_efhub_report",
+        "url": null,
         "card_id": "105754711432614",
-        "confirmed_in_game": false
+        "previous_pp": 82,
+        "confirmed_in_game": false,
+        "owner_source": "Resposta explícita do proprietário em 01/11/2026 sobre o nível e PP exibidos no eFHUB; sem confirmação no jogo."
       },
-      "treino_proposto_nao_validado": true,
+      "treino_proposto_nao_validado": false,
       "identidade_correcao_v377": 196,
       "treino_proposta_v377": {
         "status": "proposta experimental não aprovada",
@@ -8926,22 +9085,11 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": 66,
+      "pp": 62,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": "A",
-      "niveis": [
-        4,
-        6,
-        10,
-        12,
-        8,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
+      "niveis": null,
       "impeto_fixo": "PENDENTE",
       "impeto_extra": "PENDENTE",
       "habilidades_nativas": "Scissors Feint; Double Touch; Marseille Turn; Cut Behind & Turn; Sole Control; Long-range Curler; Long-range Shooting; Through Passing; Pinpoint Crossing; Penalty Specialist",
@@ -8964,12 +9112,14 @@
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
       },
-      "max_level": 34,
-      "pp_origem": "catalogo_publico_pesdb_2026-10-27",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "nivel_referencia": {
-        "kind": "catalogo_publico",
-        "url": "https://pesdb.net/efootball/players/cody-gakpo-122012",
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/122012",
         "card_id": "122012",
+        "previous_pp": 66,
         "confirmed_in_game": false
       }
     },
@@ -8981,7 +9131,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Armador criativo",
       "estilo_defesa": "Básico",
-      "pp": 62,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -8997,8 +9147,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/199_Joao_Felix.html",
-      "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -9014,6 +9164,14 @@
         "url": "https://pesdb.net/efootball/players/joao-felix-126336",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/126336",
+        "card_id": "126336",
+        "previous_pp": 62,
+        "confirmed_in_game": false
       }
     },
     {
@@ -9073,7 +9231,7 @@
       "posicao": "PTE",
       "estilo_ataque": "Ala produtivo",
       "estilo_defesa": "Básico",
-      "pp": 62,
+      "pp": 72,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -9090,8 +9248,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/201_Yan_Diomande.html",
-      "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 37,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -9099,6 +9257,14 @@
         "status": "experimental — aguarda aprovação do usuário",
         "fonte": "web/fichas/201_Yan_Diomande.html → lab-data.draftA",
         "metodo": "posição e estilo da ficha individual; nenhum atributo-base foi inventado"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/176104",
+        "card_id": "176104",
+        "previous_pp": 62,
+        "confirmed_in_game": false
       }
     },
     {
@@ -9109,7 +9275,7 @@
       "posicao": "MAT",
       "estilo_ataque": "Armador criativo",
       "estilo_defesa": "Básico",
-      "pp": 62,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -9123,8 +9289,8 @@
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/202_Cole_Palmer.html",
-      "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
@@ -9138,6 +9304,14 @@
         "url": "https://pesdb.net/efootball/players/cole-palmer-105849200712620",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105849200712620",
+        "card_id": "105849200712620",
+        "previous_pp": 62,
+        "confirmed_in_game": false
       }
     },
     {
@@ -9196,7 +9370,7 @@
       "posicao": "MAT",
       "estilo_ataque": "Jogador de infiltração",
       "estilo_defesa": "Básico",
-      "pp": 44,
+      "pp": 0,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -9211,8 +9385,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/204_Xavi_Simons.html",
-      "max_level": 23,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 1,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -9228,6 +9402,14 @@
         "url": "https://pesdb.net/efootball/players/xavi-simons-52882858710824",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/52882858710824",
+        "card_id": "52882858710824",
+        "previous_pp": 44,
+        "confirmed_in_game": false
       }
     },
     {
@@ -9270,6 +9452,16 @@
         "url": "https://pesdb.net/efootball/players/thiago-almada-105831752396173",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "max_level": 28,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105831752396173",
+        "card_id": "105831752396173",
+        "previous_pp": 54,
+        "confirmed_in_game": false
       }
     },
     {
@@ -9478,7 +9670,7 @@
       "posicao": "MAT",
       "estilo_ataque": "Armador criativo",
       "estilo_defesa": "Básico",
-      "pp": 62,
+      "pp": 64,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -9494,8 +9686,8 @@
         "Descrição histórica da edição diverge da raridade confirmada; conferir o histórico sem alterar o Card ID"
       ],
       "arquivo": "fichas/210_Jamal_Musiala.html",
-      "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 33,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "raridade_confirmada": "DISTINGUIDO",
       "raridade_confirmacao_origem": "usuario_inspecao_visual_2026-10-11",
       "treino_proposta_v95": {
@@ -9511,6 +9703,14 @@
         "url": "https://pesdb.net/efootball/players/jamal-musiala-106773155552016",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/106773155552016",
+        "card_id": "106773155552016",
+        "previous_pp": 62,
+        "confirmed_in_game": false
       }
     },
     {
@@ -9836,7 +10036,7 @@
       "posicao": "MLG",
       "estilo_ataque": "Meia versátil",
       "estilo_defesa": "Meia versátil",
-      "pp": 62,
+      "pp": 68,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -9850,8 +10050,8 @@
         "Atributos-base desta versão para cálculo de status finais"
       ],
       "arquivo": "fichas/218_Nicolo_Barella.html",
-      "max_level": 32,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 35,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 62,
         "status": "experimental — aguarda aprovação do usuário",
@@ -9865,6 +10065,14 @@
         "url": "https://pesdb.net/efootball/players/nicolo-barella-105856716870918",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105856716870918",
+        "card_id": "105856716870918",
+        "previous_pp": 62,
+        "confirmed_in_game": false
       }
     },
     {
@@ -10032,7 +10240,7 @@
       "posicao": "MLG",
       "estilo_ataque": "Orquestrador",
       "estilo_defesa": "Básico",
-      "pp": 54,
+      "pp": 60,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -10047,8 +10255,8 @@
         "Segundo ímpeto realmente selecionado"
       ],
       "arquivo": "fichas/223_Frenkie_de_Jong.html",
-      "max_level": 28,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 31,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 54,
         "status": "experimental — aguarda aprovação do usuário",
@@ -10062,6 +10270,14 @@
         "url": "https://pesdb.net/efootball/players/frenkie-de-jong-105835242039414",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105835242039414",
+        "card_id": "105835242039414",
+        "previous_pp": 54,
+        "confirmed_in_game": false
       }
     },
     {
@@ -10072,7 +10288,7 @@
       "posicao": "MLG",
       "estilo_ataque": "Meia versátil",
       "estilo_defesa": "Meia versátil",
-      "pp": 64,
+      "pp": 62,
       "pp_estimado": false,
       "base_stats_known": false,
       "recomendacao": null,
@@ -10087,8 +10303,8 @@
         "Segundo ímpeto realmente selecionado"
       ],
       "arquivo": "fichas/224_Manu_Kone.html",
-      "max_level": 33,
-      "pp_origem": "informado_pelo_usuario_2026-10-11",
+      "max_level": 32,
+      "pp_origem": "catalogo_publico_efhub_2026-10-31",
       "treino_proposta_v95": {
         "pp": 64,
         "status": "experimental — aguarda aprovação do usuário",
@@ -10102,6 +10318,14 @@
         "url": "https://pesdb.net/efootball/players/manu-kone-105858595943762",
         "confirmacao_no_jogo": false,
         "data": "2026-10-14"
+      },
+      "nivel_referencia": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105858595943762",
+        "card_id": "105858595943762",
+        "previous_pp": 64,
+        "confirmed_in_game": false
       }
     },
     {

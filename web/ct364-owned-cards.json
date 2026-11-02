@@ -53,8 +53,8 @@
       "sourceImage": "1000752014.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 31,
+      "pp": 60,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 31,
@@ -102,6 +102,14 @@
           88
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105891076665540",
+        "card_id": "105891076665540",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -114,8 +122,8 @@
       "sourceImage": "1000752015.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 35,
+      "pp": 68,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 35,
@@ -175,6 +183,14 @@
           87
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105891076664168",
+        "card_id": "105891076664168",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -187,8 +203,8 @@
       "sourceImage": "1000752016.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 33,
+      "pp": 64,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 33,
@@ -236,6 +252,14 @@
           91
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105891076652937",
+        "card_id": "105891076652937",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -248,8 +272,8 @@
       "sourceImage": "1000752017.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 29,
+      "pp": 56,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 29,
@@ -309,6 +333,14 @@
           84
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105891076647837",
+        "card_id": "105891076647837",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -321,8 +353,8 @@
       "sourceImage": "1000752018.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 35,
+      "pp": 68,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 35,
@@ -382,6 +414,14 @@
           93
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105891076647836",
+        "card_id": "105891076647836",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -394,8 +434,8 @@
       "sourceImage": "1000752019.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 29,
+      "pp": 56,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 29,
@@ -455,6 +495,14 @@
           82
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105891076647663",
+        "card_id": "105891076647663",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -467,8 +515,8 @@
       "sourceImage": "1000752020.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 29,
+      "pp": 56,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 29,
@@ -523,6 +571,14 @@
           62
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105891076647661",
+        "card_id": "105891076647661",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -535,8 +591,8 @@
       "sourceImage": "1000752021.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 33,
+      "pp": 64,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 33,
@@ -596,6 +652,14 @@
           94
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105891076644042",
+        "card_id": "105891076644042",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -608,8 +672,8 @@
       "sourceImage": "1000752022.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 31,
+      "pp": 60,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 31,
@@ -669,6 +733,14 @@
           87
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105891076607840",
+        "card_id": "105891076607840",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -681,8 +753,8 @@
       "sourceImage": "1000752023.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 32,
+      "pp": 62,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 32,
@@ -742,6 +814,14 @@
           90
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/106802146570881",
+        "card_id": "106802146570881",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -754,8 +834,8 @@
       "sourceImage": "1000752024.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 43,
+      "pp": 84,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 43,
@@ -815,6 +895,14 @@
           92
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105895908484113",
+        "card_id": "105895908484113",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -827,8 +915,8 @@
       "sourceImage": "1000752025.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 29,
+      "pp": 56,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 29,
@@ -881,6 +969,14 @@
           56
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/106795972530896",
+        "card_id": "106795972530896",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -893,8 +989,8 @@
       "sourceImage": "1000752026.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 33,
+      "pp": 64,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 33,
@@ -951,6 +1047,14 @@
           89
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "public_supplement",
+        "url": "https://pesdb.net/efootball/players/aleksandar-pavlovic-105863964686707",
+        "card_id": "105863964686707",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -963,8 +1067,8 @@
       "sourceImage": "1000752027.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 32,
+      "pp": 62,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 32,
@@ -1024,6 +1128,14 @@
           85
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/88045755960823",
+        "card_id": "88045755960823",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     },
     {
@@ -1036,8 +1148,8 @@
       "sourceImage": "1000752028.jpg",
       "cardId": null,
       "edition": "Edição exata pendente de Card ID",
-      "maxLevel": null,
-      "pp": null,
+      "maxLevel": 29,
+      "pp": 56,
       "observed": {
         "kind": "eFHub · captura simulada",
         "shownLevel": 29,
@@ -1097,6 +1209,14 @@
           81
         ],
         "note": "Valores exibidos no eFHub com técnico/treino/ímpetos da simulação; não representam atributos-base comprovados, PP oficiais nem equipamento da conta."
+      },
+      "progressReview": {
+        "kind": "revisao_nivel_v381",
+        "source_kind": "efhub_public",
+        "url": "https://efhub.com/players/105891076673336",
+        "card_id": "105891076673336",
+        "previous_pp": null,
+        "confirmed_in_game": false
       }
     }
   ]

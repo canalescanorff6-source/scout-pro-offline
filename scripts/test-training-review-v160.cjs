@@ -1,14 +1,16 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../web');
 const engine=require('../web/training-review-v160.js');
 const tactic=require('../web/tactical-engine-v98.js');
 const perf=require('../web/performance-core-v80.js');
-const audit=JSON.parse(fs.readFileSync(path.join(root,'SCOUT_V69_AUDITORIA.json'),'utf8'));
-const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const audit=JSON.parse(historicalRead(path.join(root,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const index=historicalRead(path.join(root,'index.html'),'utf8');
 let older=0,newer=0,distinct=0,zero=0;
 for(const card of audit.cards){
- const html=fs.readFileSync(path.join(root,card.arquivo),'utf8');
+ const html=historicalRead(path.join(root,card.arquivo),'utf8');
  const get=id=>JSON.parse(html.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>','i'))[1]);
  const d=get('scout-v68-data'),lab=get('lab-data');
  const report=engine.evaluate(d,lab,tactic);
@@ -25,9 +27,9 @@ for(const card of audit.cards){
 }
 assert.equal(older,160);assert.equal(newer,86);assert.equal(zero,1);assert(distinct>=70,'Poucos planos B alternativos');
 assert.equal(fs.readdirSync(path.join(root,'cartas')).filter(x=>/^CAP_\d{3}_.+\.png$/.test(x)).length,246);
-const bridge=fs.readFileSync(path.join(root,'app-bridge.js'),'utf8');
+const bridge=historicalRead(path.join(root,'app-bridge.js'),'utf8');
 assert(bridge.includes('training-review-v160.js')&&bridge.includes('tactical-engine-v98.js'));
-const lab=fs.readFileSync(path.join(root,'lab.js'),'utf8');
+const lab=historicalRead(path.join(root,'lab.js'),'utf8');
 assert(lab.includes('scoutpro:training-load-v160'));
 assert(!index.includes('Treino proposto · não validado'));
 const reviewUi=fs.readFileSync(path.join(root,'training-review-v160.js'),'utf8');

@@ -12,6 +12,7 @@
  <link rel="stylesheet" href="craque-progress-transfer-v250.css">
  <script defer src="scout-config.js"></script>
  <script defer src="app-bridge.js"></script>
+ <script defer src="craque-level-review-v381.js"></script>
  <script defer src="craque-progresso-v248.js"></script>
  <script defer src="craque-progress-transfer-v250.js"></script>
 <link rel="stylesheet" href="craque-premium-workspaces-v353.css" data-ct353-final="true"/>
@@ -32,7 +33,7 @@
   <section class="ct248-hero">
    <p class="ct248-kicker">EFOOTBALL 2027 · CONFERÊNCIA POR EDIÇÃO EXATA</p>
    <h1>Seu nível real. <em>Seus PP corretos.</em></h1>
-   <p>Os PP de todas as 246 cartas já estão cadastrados, mas nem todas possuem nível máximo comprovado. Confira as cartas diretamente no jogo para identificar possíveis divergências, inclusive como ocorreu com Martinelli #191.</p>
+   <p>Revisão das 261 cartas por edição: níveis e PP conferidos nas fontes e fichas recalculadas. Esta tela reúne as 246 originais; as 15 próprias estão no catálogo. Pendências de fonte e confirmações da sua conta aparecem separadas.</p>
    <p><strong>Segurança:</strong> nenhum nível será inventado, nenhuma ficha será reescrita sem evidências e as builds originais permanecerão intactas. Suas confirmações ficam salvas apenas neste dispositivo e podem ser incluídas no backup.</p>
    <div class="ct248-hero-actions">
     <a href="index.html">← Elenco</a>
@@ -75,9 +76,11 @@
      <select id="v248-filter">
       <option value="pendente">Nível ainda não confirmado / divergente</option>
       <option value="divergente">PP divergentes após sua conferência</option>
+      <option value="revisado_publicamente">Referências revisadas na fonte</option>
+      <option value="revisado_por_relato">Níveis informados por você no eFHUB</option>
       <option value="confirmado_localmente">Confirmados neste dispositivo</option>
       <option value="registrado">Com nível documentado no projeto</option>
-      <option value="all">Todas as 246 cartas</option>
+      <option value="all" selected>Todas as 246 cartas</option>
      </select>
     </label>
    </div>

@@ -1,12 +1,14 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V364: prova das 15 fichas principais sem substituir qualquer original. */
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..'),web=path.join(root,'web');
-const read=name=>fs.readFileSync(path.join(web,name),'utf8');
+const read=name=>historicalRead(path.join(web,name),'utf8');
 const index=read('index.html'),orig=JSON.parse(read('SCOUT_V69_AUDITORIA.json'));
 const c=JSON.parse(read('ct364-owned-cards.json'));
 const js=read('ct364-owned-main.js'),css=read('ct364-owned-main.css');
-const sw=read('sw.js'),fingerprint=fs.readFileSync(path.join(root,'scripts/stamp-bundle-v189.cjs'),'utf8');
+const sw=read('sw.js'),fingerprint=historicalRead(path.join(root,'scripts/stamp-bundle-v189.cjs'),'utf8');
 assert.equal(c.schema,'craque-owned-cards-v364');
 assert.equal(c.destination,'minhas-cartas-principais');
 assert.equal(c.originalsPreserved,246);

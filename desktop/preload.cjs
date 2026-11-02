@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('scoutDesktop',Object.freeze({
   updateStatus:()=>ipcRenderer.invoke('scout:update-status'),
   installDownloadedUpdate:()=>ipcRenderer.invoke('scout:install-downloaded'),
   saveJson:(fileName,content)=>ipcRenderer.invoke('scout:save-json',{fileName,content}),
+  saveGuidePdf:()=>ipcRenderer.invoke('scout:save-guide-pdf'),
   openJson:()=>ipcRenderer.invoke('craque:open-json'),
   storeBackup:(content,reason)=>ipcRenderer.invoke('craque:store-backup',{content,reason}),
   backupInfo:()=>ipcRenderer.invoke('craque:backup-info'),

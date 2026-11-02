@@ -1,9 +1,11 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const web=path.resolve(__dirname,'../web');
-const read=f=>JSON.parse(fs.readFileSync(path.join(web,f),'utf8'));
+const read=f=>JSON.parse(historicalRead(path.join(web,f),'utf8'));
 const v=read('SCOUT_V184_EFHUB_SCREENSHOT_EVIDENCE.json');
 const complete=read('SCOUT_V184_EFHUB_241_COMPLETE.json');
 const roster=read('SCOUT_V69_AUDITORIA.json');
@@ -46,8 +48,8 @@ const rodri=roster.cards.find(x=>x.numero===225);
 assert.equal(rodri.id,'105779675902175','Corrigir ID Rodri por cotejo fonte/print, sem reivindicar leitura no jogo');
 assert.equal(v.observations.find(x=>x.cap===225).player,'Rodri');
 assert.notDeepEqual(v.observations.find(x=>x.cap===20).skills,v.observations.find(x=>x.cap===225).skills);
-const sw=fs.readFileSync(path.join(web,'sw.js'),'utf8');
-const app=fs.readFileSync(path.join(web,'app-bridge.js'),'utf8');
+const sw=historicalRead(path.join(web,'sw.js'),'utf8');
+const app=historicalRead(path.join(web,'app-bridge.js'),'utf8');
 assert(sw.includes('SCOUT_V184_EFHUB_SCREENSHOT_EVIDENCE.json'));
 assert(sw.includes('SCOUT_V184_EFHUB_241_COMPLETE.json'));
 assert(sw.includes('v183-v184'));

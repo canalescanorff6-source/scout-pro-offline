@@ -1621,8 +1621,17 @@ def run():
                         wait_until='domcontentloaded',timeout=35000)
                     page.locator('#v248-cards .ct248-card').first.wait_for(timeout=25000)
                     counts=page.locator('#v248-stats').inner_text()
-                    if '85 níveis documentados' not in counts or '161 sem nível comprovado' not in counts:
-                        problems.append(f"{name}: auditoria V248 não separa os 85 níveis conhecidos dos 161 pendentes: {counts}")
+                    reviewed=page.evaluate("""() => {
+                      const rows=CRAQUE_LEVEL_AUDIT_V381.cards.filter(r=>Number.isInteger(r.capture));
+                      return {public:rows.filter(r=>r.decision.status==='reviewed'&&r.decision.sourceKind!=='owner_efhub_report').length,
+                        owner:rows.filter(r=>r.decision.status==='reviewed'&&r.decision.sourceKind==='owner_efhub_report').length,
+                        pending:rows.filter(r=>r.decision.status!=='reviewed').length};
+                    }""")
+                    if (f"{reviewed['public']} originais revisados na fonte" not in counts or
+                        f"{reviewed['owner']} níveis informados por você" not in counts or
+                        f"{reviewed['pending']} sem nível comprovado" not in counts or
+                        '0 conferidos neste dispositivo' not in counts):
+                        problems.append(f"{name}: auditoria V248 misturou referência, relato e conferência no jogo: {counts}")
                     first=page.locator('#v248-cards .ct248-card').first
                     first_cap=int(first.get_attribute('data-cap'))
                     first.scroll_into_view_if_needed()
@@ -1963,21 +1972,31 @@ def run():
                     # somente após CAP + Card ID + edição exata.
                     page.goto(URL+'/fichas/191_Gabriel_Martinelli.html',
                               wait_until='domcontentloaded',timeout=35000)
+                    martinelli_level_record=page.evaluate("""async () => {
+                      const c=(await (await fetch('../SCOUT_V69_AUDITORIA.json')).json()).cards.find(c=>c.numero===191);
+                      const record={schema:'CRAQUE_PROGRESS_REVIEW_V248',numero:c.numero,card_id:String(c.id),
+                        name:c.name,edition:c.versao,level:c.max_level,pp:c.pp,confirmed_in_game:true,source:'QA descartável'};
+                      localStorage.setItem('scoutpro:v248:level-review:'+c.numero+'@'+c.id,JSON.stringify(record));
+                      return {...record,expectedStatus:Array.isArray(c.niveis)?'complete':'no_build'};
+                    }""")
+                    page.reload(wait_until='domcontentloaded')
                     reveal(page.locator('#ct253-integrated-review > summary'))
                     page.locator('#ct253-integrated-review > summary').click()
                     martinelli_v251=page.locator('#ct251-individual-ficha')
                     martinelli_v251.wait_for(state='visible',timeout=22000)
-                    if (martinelli_v251.get_attribute('data-review')!='complete' or
-                        'Nível 26' not in martinelli_v251.inner_text()):
-                        problems.append(f"{name}: V251 não leu o nível 26 de Martinelli")
+                    if (martinelli_v251.get_attribute('data-review')!=martinelli_level_record['expectedStatus'] or
+                        f"Nível {martinelli_level_record['level']}" not in martinelli_v251.inner_text()):
+                        problems.append(f"{name}: V251 não leu a conferência do nível atual de Martinelli")
                     if '10 habilidades nativas' not in martinelli_v251.inner_text():
                         problems.append(f"{name}: V251 não reconciliou nativas do Martinelli")
                     martinelliProof256=page.evaluate("""async () => {
                       const c=(await (await fetch('../SCOUT_V69_AUDITORIA.json')).json()).cards.find(c=>c.numero===191);
-                      return window.CRAQUE_INTERPRETATION_V233.levelDocumented(c);
+                      return {declared:window.CRAQUE_INTERPRETATION_V233.levelDocumented(c),
+                        expectedDeclared:/^informado_pelo_usuario_/.test(c.pp_origem||''),
+                        local:!!window.CRAQUE_FICHA_INDIVIDUAL_V251.localLevelReview(c,localStorage)};
                     }""")
-                    if martinelliProof256 is not True:
-                        problems.append(f"{name}: V256 rejeitou indevidamente Martinelli 26/50 PP")
+                    if (martinelliProof256['declared']!=martinelliProof256['expectedDeclared'] or not martinelliProof256['local']):
+                        problems.append(f"{name}: V256 misturou referência pública e prova local de Martinelli")
                     page.wait_for_function("""() =>
                       document.querySelector('#v162-skills-status')
                         ?.textContent.includes('Nativas catalogadas: 10')""",timeout=15000)
@@ -2038,16 +2057,16 @@ def run():
                             problems.append(f"{name}: V299 exibiu {gated} apesar dos PP divergentes")
                     page.screenshot(path=str(OUT/f"{name}_v252_pp_divergentes.png"),
                       full_page=False,animations="disabled")
-                    page.evaluate("""() => {
+                    page.evaluate("""record => {
                       const c=JSON.parse(document.querySelector('#scout-v68-data').textContent);
-                      localStorage.removeItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id);
-                    }""")
+                      localStorage.setItem('scoutpro:v248:level-review:'+c.capture+'@'+c.id,JSON.stringify(record));
+                    }""",martinelli_level_record)
                     page.reload(wait_until='domcontentloaded')
                     reveal(page.locator('#ct253-integrated-review > summary'))
                     page.locator('#ct253-integrated-review > summary').click()
                     page.locator('#ct251-individual-ficha').wait_for(state='visible',timeout=22000)
                     if (page.locator('#scout-v218-status').get_attribute('data-mode')=='blocked' or
-                        page.locator('#ct251-individual-ficha').get_attribute('data-review')!='complete'):
+                        page.locator('#ct251-individual-ficha').get_attribute('data-review')!=martinelli_level_record['expectedStatus']):
                         problems.append(f"{name}: V252 não recuperou o treino após desfazer PP divergente")
                     if page.locator('#ct251-individual-ficha .ct299-pp-gate').count():
                         problems.append(f"{name}: V299 não removeu o aviso após desfazer conflito de PP")
@@ -2058,7 +2077,7 @@ def run():
                     if not page.locator('#ct251-individual-ficha .ct284-decision-lab').count():
                         problems.append(f"{name}: V299 não reativou os laboratórios após reconciliação dos PP")
                     result['ficha_individual_v251']={'tested':True,'levels':68,
-                       'pending_blocked':True,'martinelli_26_50':True,
+                       'pending_blocked':True,'martinelli_budget':martinelli_level_record['pp'],
                        'v252_proof_matrix':True,'v252_budget_guard':True}
                     # V254: NÃO presumir cinco slots vazios. A confirmação
                     # fica no Card ID da edição e é invalidada quando a

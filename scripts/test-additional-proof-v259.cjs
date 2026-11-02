@@ -1,10 +1,12 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V259 — prova local V254 deve ser consistente com a matriz V251/V252.
  * Nenhum registro escrito isoladamente comprova slots nem habilidades usadas.
  */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.resolve(__dirname,'..',p),'utf8');
 const V=require('../web/craque-ficha-individual-v251.js');
 const S=require('../web/skills-booster-v162.js');
 const source=read('web/SCOUT_V69_AUDITORIA.json');

@@ -37,6 +37,14 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
   if(review.pending?.length)block.append(el('p','ct378-pending','Conferir: '+review.pending.join(' · ')));
   for(const issue of review.issues||[])about.append(el('p','ct311-alert',issue.name+' · '+issue.reason+' · registro histórico preservado.'));
  }
+ if(review.competitiveReview){const r=review.competitiveReview,info=el('details','ct380-evidence');
+  block.append(el('p','ct311-confirm','Revisão central · lote 01 · proposta estimada'),el('p','',r.strategy));
+  info.append(el('summary','','Motivo, fontes e limites desta revisão'),el('p','',r.tradeoff),el('p','',r.slotNote),el('p','ct311-note',r.researchNote));
+  for(const source of r.sources){const p=el('p'),a=el('a','',source.title);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';p.append(a);info.append(p);}
+  block.append(info);
+ }
+ if(review.levelRevision){const r=review.levelRevision;block.append(el('p','ct381-level-note',
+  'PP revisados: '+r.beforePP+' → '+r.afterPP+'. Esta proposta usa o orçamento corrigido. O histórico anterior permanece preservado.'));}
  // V381: fontes mundiais no MESMO painel de treino, habilidades e ímpetos.
  // Não altera o objeto de revisão, a ficha salva nem os recibos de equipamento.
  const proRadar=host.CRAQUE_PRO_SCOUT_V381?.panel?.(review,host.document);
@@ -70,7 +78,7 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
   el('p','ct311-note',(review.nativeSkillLabels||review.nativeSkills).join(' · ')||'Lista pendente'));
  block.append(inventory);
  if(review.equippedSkills?.length)block.append(el('p','ct311-note','Adicionais já informadas: '+(review.equippedSkillLabels||review.equippedSkills).join(' · ')));
- block.append(el('p','ct311-note',review.freeSkillSlots===null?
+ block.append(el('p','ct311-note',review.fixedProgression?'Edição Trending com progressão fixa; sem novas habilidades ou ímpeto selecionável.':review.freeSkillSlots===null?
   'Vagas adicionais: não comprovadas; sugestões são alternativas para conferir.':
   'Vagas adicionais conferidas nesta edição: '+review.freeSkillSlots+' · recibo da lista atual.'));
  if(review.skills.length){
@@ -95,8 +103,8 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
    ' A recomendação não equipa o ímpeto.'));block.append(section);
  }
  if(main&&!review.boosters.length)block.append(el('h4','','Ímpeto adicional'),el('p','ct311-note',
-  review.boosterSlot==='ausente'?'Esta carta está cadastrada sem slot adicional.':
-   review.sourceKind==='profile'?'Nenhum ímpeto selecionado nesta ficha salva.':'Indicação pendente de dados da edição.'));
+  review.competitiveReview?.slotNote||(review.boosterSlot==='ausente'?'Esta carta está cadastrada sem slot adicional.':
+   review.sourceKind==='profile'?'Nenhum ímpeto selecionado nesta ficha salva.':'Indicação pendente de dados da edição.')));
  if(review.tests.length)block.append(el('p','ct311-note','Observar em jogo: '+review.tests.join(' · ')));
  const exportStatus=el('p','ct375-copy-status');exportStatus.setAttribute('role','status');
  const fallback=el('textarea','ct375-copy-fallback');fallback.hidden=true;fallback.readOnly=true;
@@ -210,7 +218,7 @@ function create(target,model,opts={}){
  };
  formationSelect?.addEventListener('change',updateRoleOverview);
  target.append(node);
- let active=null,style=opts.style||'posse',manager=opts.manager||'',alive=true;
+ let active=null,style=opts.style||'posse',manager=opts.manager||'',alive=true,compareCompetitive=false,competitiveContext='';
  let advancedOpen=false; // Preferência temporária do painel; não altera dados, builds ou armazenamento.
  let alternativesOpen=false; // Cinco estilos consultivos; nenhuma gravação.
  // Uma revisão selecionada é somente leitura e isolada por chave de cenário.
@@ -766,21 +774,34 @@ function create(target,model,opts={}){
   // The calculation stays visible before the advanced dossier. Compare with
   // the currently saved context without overwriting that revision on opening.
   const reviewEngine=host.CRAQUE_FRIEND_TRAINING_V228;
-  const mainEngine=host.CRAQUE_MAIN_SHEET_V378;let mainSheet=null,mainBlock=null;
+  const mainEngine=host.CRAQUE_MAIN_SHEET_V378;let mainSheet=null,mainBlock=null,competitiveToggle=null;
   if(outcome.functionReview&&reviewEngine?.functionReview){
    const reviewCard={localKey:model.cardKey,name:model.name,position:scenario.position,
     originalPosition:model.position,style:model.style,level:model.level,pp:outcome.plan.pp,
     cardId:model.cardId,edition:model.edition,nativeSkills:model.nativeSkills,skills:model.skills,
     fixedBooster:model.fixedBooster,booster:model.booster,boosterSlot:model.boosterSlot,
     trainingLevels:model.trainingLevels,positionEvidence:scenario.compatibility,
-    baseReference:model.evidenceCard?.base_stats_known===true};
+    baseReference:model.evidenceCard?.base_stats_known===true,progressReview:model.evidenceCard?.nivel_referencia||null};
    const reference=savedProfile?.train||recorded?.levels;
    const publicReference=host.CRAQUE_REFERENCES_V376?.cards.find(c=>c.cardKey===model.cardKey);
    const selection={source:savedProfile?'profile':recorded?'revision':'proposal',reference:publicReference,
     managerLabel:coaching};
    if(savedProfile){selection.levels=savedProfile.train;selection.skills=savedProfile.skills||[];selection.booster=savedProfile.booster||'';}
-   else if(recorded)selection.levels=recorded.levels;
-   if(mainEngine&&model.collection==='minhas-246')try{mainSheet=mainEngine.resolve({...reviewCard,equipmentRecord:model.equipmentRecord},outcome,selection);}
+   else if(recorded){selection.levels=recorded.levels;
+    selection.skills=(recorded.recommendations||[]).map(s=>s.name);selection.booster=recorded.booster||'';}
+   if(mainEngine&&model.collection==='minhas-246')try{
+    const input={...reviewCard,equipmentRecord:model.equipmentRecord};
+    const proposalSelection={source:'proposal',reference:publicReference,managerLabel:coaching};
+    const alternative=savedProfile||recorded?mainEngine.resolve(input,outcome,proposalSelection):null;
+    const comparisonContext=JSON.stringify([scenario.id,scenario.contentSignature,
+     savedProfile?'profile':'revision',savedProfile?.revision??recorded?.revision??null]);
+    if(competitiveContext!==comparisonContext)compareCompetitive=false;
+    if(!alternative?.review.competitiveReview)compareCompetitive=false;
+    if(alternative?.review.competitiveReview)competitiveToggle=makeBtn(compareCompetitive?'Voltar à ficha salva':'Comparar proposta revista para Posse',()=>{
+     compareCompetitive=!compareCompetitive;competitiveContext=compareCompetitive?comparisonContext:'';draw();
+    });
+    mainSheet=compareCompetitive?alternative:mainEngine.resolve(input,outcome,selection);
+   }
    catch(e){profileError=String(e.message||e);}
    const review=mainSheet?.review||reviewEngine.functionReview(reviewCard,outcome,reference);
    review.managerId=scenario.manager;
@@ -797,10 +818,11 @@ function create(target,model,opts={}){
        source:'V374 · proposta por função adotada explicitamente',skillKeyFor,
        native:model.nativeSkills||'',equipped:model.skills||'',fixedBooster:model.fixedBooster||'',
        boosterSlot:model.boosterSlot||'pendente',informedBooster:model.booster||''});
-     }else engine.save(storage(),scenario);
-     draw();return 'Proposta adotada em nova revisão independente.';
+     }else engine.save(storage(),mainSheet?{...scenario,outcome:mainSheet.result}:scenario);
+     compareCompetitive=false;competitiveContext='';draw();return 'Proposta adotada em nova revisão independente.';
     }
-   });hero.append(mainBlock);
+   });if(competitiveToggle)mainBlock.insertBefore(competitiveToggle,mainBlock.children[1]||null);
+   hero.append(mainBlock);
   }
   if(equipmentAudit?.hasSkillConflict)hero.append(el('p','ct340-evidence-conflict',
    'REVISAR HABILIDADES: '+equipmentAudit.conflicts.map(c=>

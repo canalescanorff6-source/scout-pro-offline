@@ -1,6 +1,8 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const root=path.resolve(__dirname,'..'),read=p=>historicalRead(path.join(root,p),'utf8');
 const ui=require('../web/scout-training-reference-v208.js');
 const roster=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
 assert.equal(roster.length,246);

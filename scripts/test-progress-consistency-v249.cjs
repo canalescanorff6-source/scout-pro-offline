@@ -1,9 +1,11 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V249: conferência local precisa aparecer SEM transformar build em aprovada
  * e SEM alterar as 246 cartas, imagens, Card IDs ou PP definitivos. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.resolve(__dirname,'..',p),'utf8');
 const catalogBefore=read('web/SCOUT_V69_AUDITORIA.json');
 const cards=JSON.parse(catalogBefore).cards;
 const P=require('../web/craque-progresso-v248.js');

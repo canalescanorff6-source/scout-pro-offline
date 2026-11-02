@@ -1,7 +1,9 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const web=path.resolve(__dirname,'../web');
-const audit=JSON.parse(fs.readFileSync(path.join(web,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const audit=JSON.parse(historicalRead(path.join(web,'SCOUT_V69_AUDITORIA.json'),'utf8'));
 const expected=new Map([[233,["Nicola Zalewski",36,70]],[234,["Kakita Yuki",32,62]],[235,["Kumasaka Koki",33,64]],[236,["Samuel Eto'o",34,66]],[237,["Piero Hincapié",33,64]],[238,["Mateus Fernandes",35,68]],[239,["Alexander Isak",31,60]],[240,["Gonçalo Ramos",32,62]],[241,["Federico Valverde",31,60]],[242,["Maghnes Akliouche",32,62]]]);
 assert.equal(audit.cards.length,246);
 assert.equal(audit.summary.processed,246);
@@ -12,7 +14,7 @@ assert.ok(audit.cards.filter(c=>c.pp!==null).length>=242);
 assert(audit.cards.filter(c=>c.pp===null).every(c=>[243,244,245,246].includes(c.numero)));
 const kubo=audit.cards.find(c=>c.numero===211);
 assert.equal(kubo.max_level,1);assert.equal(kubo.pp,0);
-const index=fs.readFileSync(path.join(web,'index.html'),'utf8');
+const index=historicalRead(path.join(web,'index.html'),'utf8');
 const dir=path.join(web,'fichas'),files=fs.readdirSync(dir).filter(f=>/^\d{3}_.+\.html$/.test(f));
 let checked=0;
 for(const c of audit.cards){
@@ -28,7 +30,7 @@ for(const c of audit.cards){
  assert(!c.pendencias.includes('PP disponível e nível máximo'));
  const filename=files.find(f=>f.startsWith(String(c.numero).padStart(3,'0')+'_'));
  assert(filename,'Ficha ausente '+name);
- const html=fs.readFileSync(path.join(dir,filename),'utf8');
+ const html=historicalRead(path.join(dir,filename),'utf8');
  const parse=id=>{
   const m=html.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>','i'));
   assert(m,'JSON ausente '+id+' '+name);

@@ -1,9 +1,11 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V267 — 246 cartas x cinco estilos; nunca usar vetor fora do orçamento
  * como evidência de investimento individual. Sem inventar atributos-base.
  */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.join(__dirname,'..',p),'utf8');
 const original=read('web/SCOUT_V69_AUDITORIA.json');
 const cards=JSON.parse(original).cards;
 const B=require('../web/booster-engine-v103.js');

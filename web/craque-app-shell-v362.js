@@ -63,7 +63,7 @@ function navItems(page){
  return [
   {label:'Cartas',url:prefix+'index.html',mark:'▣',page:'catalog'},
   {label:'Outros',url:prefix+'outros-elencos-v227.html',mark:'♙',page:'friends'},
-  {label:'Time',url:prefix+'meu-time-duas-formacoes-v177.html',mark:'♜',page:'team'},
+  {label:'Time',url:prefix+'plano-do-time-v382.html',mark:'♜',page:'team382'},
   {label:'Técnicos',url:prefix+'tecnicos-v307.html',mark:'◎',page:'manager-hub'}
  ];
 }

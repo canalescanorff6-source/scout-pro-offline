@@ -196,4 +196,35 @@ public class ScoutFileExportPlugin extends Plugin {
             call.reject("Não foi possível gravar o JSON no destino escolhido: " + ex.getMessage());
         }
     }
+    // V384: somente o recurso conhecido do próprio APK, salvo pelo seletor SAF.
+    @PluginMethod
+    public void saveGuidePdf(PluginCall call) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("application/pdf");
+            intent.putExtra(Intent.EXTRA_TITLE, "Craque-Tatico-Manual-2027.pdf");
+            startActivityForResult(call, intent, "onGuidePdfCreated");
+        } catch (Exception e) { call.reject("Não foi possível escolher o destino do e-book: " + e.getMessage()); }
+    }
+
+    @ActivityCallback
+    private void onGuidePdfCreated(PluginCall call, ActivityResult result) {
+        if (call == null) return;
+        if (result == null || result.getResultCode() != Activity.RESULT_OK || result.getData() == null || result.getData().getData() == null) {
+            JSObject cancelled = new JSObject(); cancelled.put("status", "cancelled"); call.resolve(cancelled); return;
+        }
+        try (InputStream input = getContext().getAssets().open("public/manual-2027/manual-2027.pdf");
+             OutputStream output = getContext().getContentResolver().openOutputStream(result.getData().getData(), "w")) {
+            if (output == null) throw new IllegalStateException("O destino não aceitou a gravação.");
+            byte[] buffer = new byte[8192]; int count; int total = 0;
+            while ((count = input.read(buffer)) != -1) {
+                total += count; if (total > MAX_BYTES) throw new IllegalArgumentException("E-book acima de 8 MB");
+                output.write(buffer, 0, count);
+            }
+            if (total == 0) throw new IllegalStateException("E-book vazio");
+            output.flush(); JSObject saved = new JSObject(); saved.put("status", "saved"); saved.put("bytes", total); call.resolve(saved);
+        } catch (Exception e) { call.reject("Não foi possível salvar o e-book: " + e.getMessage()); }
+    }
+
 }

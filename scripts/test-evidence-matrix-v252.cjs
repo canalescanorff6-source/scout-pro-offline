@@ -1,9 +1,11 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V252: todos os 246 dossiês e bloqueio de PP divergentes por edição.
    PP/Overall/prints candidatos não são provas de meta ou gameplay. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.resolve(__dirname,'..',p),'utf8');
 const V=require('../web/craque-ficha-individual-v251.js');
 const T=require('../web/scout-multitactic-engine-v220.js');
 const audit=require('./historical-catalog-v377.cjs').historicalRoster(JSON.parse(read('web/SCOUT_V69_AUDITORIA.json'))).cards;

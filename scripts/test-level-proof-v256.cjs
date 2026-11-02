@@ -1,3 +1,5 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V256 — a validação de PP de uma edição tem dois estágios:
  * 1) custo da build fecha; 2) nível máximo/origem documental confiáveis.
@@ -5,7 +7,7 @@
  */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.resolve(__dirname,'..',p),'utf8');
 const original=read('web/SCOUT_V69_AUDITORIA.json');
 const catalog=JSON.parse(original).cards;
 const T=require('../web/scout-multitactic-engine-v220.js');

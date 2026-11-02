@@ -54,8 +54,7 @@ for(const c of owned)for(const tactic of F.MODES){
  const source={localKey:c.key,name:c.name,cardId:meta.cardId,edition:meta.engineEdition||'',position:c.position,
   originalPosition:c.position,style:c.style,level:meta.level,pp:null,nativeSkills:c.observed.nativeSkills.join('; '),boosterSlot:'pendente'};
  const out=F.evaluate(source,tactic,deps),sheet=Main.resolve(source,out,{reference:ref},deps);
- if(c.key==='ct364-12')assert.equal(sheet.review.proposed,null);
- else assert.equal(sheet.review.spent,2*(meta.level-1));
+ assert.equal(sheet.review.spent,2*(meta.level-1));
  count++;
 }
 assert.equal(count,1305);assert.equal(JSON.stringify(cards),snapshot);

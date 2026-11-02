@@ -18,7 +18,11 @@ const corpusHash=imageHash.digest('hex');
 // explícita desta trava, com a aprovação do mantenedor; não atualizar ao acaso.
 // V376: approved missing max-level references are reconciled field by field.
 // Removing ONLY these verified additions must reproduce the complete old hash.
-const preserved=JSON.parse(raw),references=require('../web/ct376-card-references.json').cards;
+// Reproduzir a trava antiga retirando apenas os campos da revisão autorizada.
+// A auditoria abaixo continua usando cards/HTML ATUAIS, sem maquiar a entrada.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
+const preserved=JSON.parse(historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8')),
+ references=JSON.parse(historicalRead(path.join(root,'web/ct376-card-references.json'),'utf8')).cards;
 const corrections=require('../web/ct377-identity-corrections.json').cards;
 assert.deepEqual(corrections.map(c=>[c.capture,c.afterCanonical.id]),[[153,'105780749692770'],[196,'105754711432614']]);
 for(const correction of corrections){
@@ -106,9 +110,12 @@ for(const c of cards){
  rows.push(audit);
 }
 assert.equal(summary.scenarios,1230);
-assert.equal(summary.contextualFrontiers,315);
+// V381: 26 declarações antigas divergentes passaram a referência pública;
+// não transformar essa pesquisa em confirmação do jogo (130 cenários).
+// Relato novo de Savinho34/66 habilita cinco cálculos documentais, sem gameplay.
+assert.equal(summary.contextualFrontiers,190);
 assert.equal(summary.identityBlockedFrontiers,110);
-assert.equal(summary.levelBlockedFrontiers,805);
+assert.equal(summary.levelBlockedFrontiers,930);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 const report={schema:'CRAQUE_V289_COMPUTATIONAL_AUDIT',baseline:'bd9c6226bd8475eb0c55b6cc3562ff94450351d8',
  warning:'246 edições processadas automaticamente; zero validações individuais de gameplay. Slots da conta permanecem desconhecidos.',

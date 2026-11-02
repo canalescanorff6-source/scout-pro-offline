@@ -59,7 +59,7 @@ assert(!ui.includes('review.skills.slice(0,3)'),'All five available candidates m
 assert(ui.includes('Copiar ficha completa'));
 const bundle=require('./export-function-sheets-v375.cjs').generate();
 assert.equal(bundle.cards,261);assert.equal(bundle.sheetCount,1305);assert.equal(bundle.adaptationCount,10);
-assert.equal(bundle.sheets.filter(r=>!r.proposed).length,75);
+assert.equal(bundle.sheets.filter(r=>!r.proposed).length,0,'V381 documentou os orçamentos das 15 próprias, mantendo propostas consultivas');
 assert.equal(new Set(bundle.sheets.map(r=>r.identity.localKey)).size,261);
 // Execute the real shared renderer without browser automation or user-session access.
 class Element{

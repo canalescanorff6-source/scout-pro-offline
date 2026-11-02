@@ -1,8 +1,10 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V247: revisão de PP, edição exata, reservas e rodízio, sem criar níveis. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const read=p=>fs.readFileSync(path.resolve(root,p),'utf8');
+const read=p=>historicalRead(path.resolve(root,p),'utf8');
 const cards=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
 const martinelli=cards.find(x=>x.numero===191);
 const original=JSON.stringify(cards);

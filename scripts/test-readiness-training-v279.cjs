@@ -1,10 +1,12 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V279 — prontidão do dossiê deve usar exatamente B.trainingAudit V267.
  * Uma build de PP coerente mas provisória não é uma build registrada válida.
  */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.join(__dirname,'..',p),'utf8');
 const catalogText=read('web/SCOUT_V69_AUDITORIA.json');
 const catalog=JSON.parse(catalogText).cards;
 const rows=JSON.parse(read('web/SCOUT_V221_EVIDENCE_INDEX.json')).cards;

@@ -1,8 +1,10 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../web');
-const audit=JSON.parse(fs.readFileSync(path.join(root,'SCOUT_V69_AUDITORIA.json'),'utf8'));
-const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const audit=JSON.parse(historicalRead(path.join(root,'SCOUT_V69_AUDITORIA.json'),'utf8'));
+const index=historicalRead(path.join(root,'index.html'),'utf8');
 const fichas=fs.readdirSync(path.join(root,'fichas')).filter(f=>/^\d{3}_.+\.html$/.test(f));
 assert.equal(fichas.length,246);assert.equal(audit.cards.length,246);
 assert.equal(audit.summary.with_pp,246);assert.equal(audit.summary.treinos_propostos_experimentais_v95,84);
@@ -18,7 +20,7 @@ for(const c of pending){
  assert.equal(p.pp,c.pp);
  assert.equal(p.fonte,'web/'+c.arquivo+' → lab-data.draftA');
  if(c.pp>0)withPP++;
- const html=fs.readFileSync(path.join(root,c.arquivo),'utf8');
+ const html=historicalRead(path.join(root,c.arquivo),'utf8');
  const start=html.indexOf('id="lab-data"'),begin=html.indexOf('>',start),end=html.indexOf('</script>',begin);
  assert(start>0&&begin>start&&end>begin,'JSON da ficha ausente '+c.numero);
  const lab=JSON.parse(html.slice(begin+1,end));
@@ -35,13 +37,13 @@ for(const c of pending){
  assert(entry[0].includes(c.pp===0?'0 PP confirmado':'PP conferidos · treino por função'));
 }
 assert.equal(withPP,83);
-const draft=c=>{const html=fs.readFileSync(path.join(root,c.arquivo),'utf8');const a=html.indexOf('id="lab-data"'),b=html.indexOf('>',a),e=html.indexOf('</script>',b);return JSON.parse(html.slice(b+1,e)).draftA;};
+const draft=c=>{const html=historicalRead(path.join(root,c.arquivo),'utf8');const a=html.indexOf('id="lab-data"'),b=html.indexOf('>',a),e=html.indexOf('</script>',b);return JSON.parse(html.slice(b+1,e)).draftA;};
 const eto=audit.cards.find(c=>c.numero===236);
 assert.equal(eto.pp,66);assert.deepEqual(draft(eto),[12,4,4,12,7,0,0,0,0,0]);
 const kubo=audit.cards.find(c=>c.numero===211);
 assert.equal(kubo.pp,0);assert(draft(kubo).every(n=>n===0));
 assert.equal(audit.cards.filter(c=>c.niveis!==null).length,160);
 assert.equal(corrections.filter(c=>Array.isArray(c.beforeCanonical.niveis)).length,2,'Dois treinos anteriores preservados no histórico da correção, não reutilizados');
-const src=fs.readFileSync(path.join(root,'lab.js'),'utf8');
+const src=historicalRead(path.join(root,'lab.js'),'utf8');
 for(const m of ['d.draftA.slice()','const oldEmpty=','TREINO FUNCIONAL · ','Salvar como meu treino de teste'])assert(src.includes(m));
 console.log('V95 OK: 84 fichas com propostas reais em JSON, 83 PP completos, Kubo 0 e 162 anteriores intactas.');

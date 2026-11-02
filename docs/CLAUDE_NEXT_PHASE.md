@@ -1,6 +1,6 @@
 # Próxima etapa — renovação premium e Posse central
 
-Pedido registrado em 31/10/2026 a partir da v1.1.1184. Entrega visual aprovada e publicada na **v1.1.1188**; Windows atualizado. A revisão competitiva e as 500 formações abaixo continuam como requisitos futuros, sem builds competitivas aprovadas nesta etapa.
+Pedido registrado em 31/10/2026 a partir da v1.1.1184. Entrega visual aprovada e publicada na **v1.1.1188**; Windows atualizado. A revisão competitiva começou pelo [lote 01](REVISAO_COMPETITIVA_LOTE_01_V380.md): 13 propostas editoriais de Posse, sem homologação online ou publicação. Restam 248 cartas fora desse lote, outros estilos e as 500 formações.
 
 ## 1. Renovação visual integral
 - Insatisfação abrange a interface inteira, cores e aparência, em Android e Windows; não limitar a reforma à tela inicial.
@@ -10,6 +10,8 @@ Pedido registrado em 31/10/2026 a partir da v1.1.1184. Entrega visual aprovada e
 - Respeitar leitura, foco, contraste, toque e funcionamento offline. Preservar imagens reais, identidade das cartas, persistência e controladores existentes. Investigar consolidação das camadas visuais em vez de acrescentar indefinidamente folhas de estilo sobrepostas.
 
 ## 2. Fichas, habilidades adicionais e ímpetos por carta
+- Prioridade posterior do proprietário: corrigir níveis/PP de **todas as 261 cartas antes de refazer as fichas**. [Revisão V381](REVISAO_NIVEIS_PP_V381.md): 261 referências de nível (incluindo três relatos do proprietário), 34 originais/15 próprias atualizadas, 30 orçamentos originais corrigidos e 1.305 contextos exportados. Resposta de 01/11: Aubameyang #183 32/62, Savinho #196 34/66, Messi #050 29/56. Todos registrados como relato do eFHUB, sem confirmação no jogo. Só a identidade exata do Messi050 continua pendente; não restaurar o ID invalidado. Havertz #041 usa 32/62 da captura confirmada como automática, com conflito público 26/50 registrado.
+- Lote 01 implementado: CAPs **1, 2, 4, 5, 6, 8, 9, 10, 11, 14, 24, 47, 208**. Não repetir a análise como se estivesse zerada; consultar o registro V380, fontes e lacunas antes de escolher o próximo lote. Gerrard/Neuer mantêm o treino; demais são alternativas estimadas. Comparação com rascunho salvo é explícita, sem sobrescrita.
 - Consultar catálogo atual e evidências já salvas; a release-base tinha 246 originais + 15 próprias, mas a quantidade precisa ser recalculada ao executar.
 - Revisar em lotes de aproximadamente 10–15 cartas, registrando IDs/edições concluídos e pendências.
 - Escolher por posição de uso, função, estilo, PP válido, habilidades nativas, slots adicionais e ímpetos fixos/selecionáveis daquela edição. Gameplay e adequação ao proprietário são prioridade; Overall máximo continua informativo.

@@ -53,7 +53,8 @@ function evaluate(card,ctx,model){
  const spent=trainingCost(ctx.training);
  if(spent===null)return pending('Treino atual não registrado; não presumir que a proposta já foi aplicada.');
  if(!Number.isInteger(ctx.budget)||ctx.budget<0||ctx.budget>238||spent>ctx.budget)return pending('Treino excede os PP disponíveis ou orçamento ausente.');
- const allowed=ctx.position==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6];
+ const functional=typeof window!=='undefined'?window.CRAQUE_FUNCTIONAL_RULES_V382:require('./craque-functional-rules-v382.js');
+ const allowed=functional?.allowed(ctx.position,ctx)||(ctx.position==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6]);
  if(ctx.training.some((n,i)=>n>0&&!allowed.includes(i)))return pending('Categorias do treino incompatíveis com a função.');
  if(ref.levelValid&&spent>ref.maxPP)return pending('Treino excede o orçamento público desta edição; conferir nível/PP.');
  if(baseOverall(ref.baseStats,ref.position,ref.height,ref.weakFootAccuracy,model)===null)return pending('Atributos-base completos indisponíveis.');

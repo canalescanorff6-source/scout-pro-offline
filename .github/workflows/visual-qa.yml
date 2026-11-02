@@ -10,6 +10,10 @@ on:
       - 'scripts/qa-all-cards-v379.py'
       - 'scripts/qa-editorial-theme.py'
       - 'scripts/qa-main-sheet-v378.py'
+      - 'scripts/qa-competitive-batch-v380.py'
+      - 'scripts/qa-levels-v381.py'
+      - 'scripts/qa-team-plan-v382.py'
+      - 'scripts/qa-account-entry-v382.py'
       - 'scripts/qa_navigation_v378.py'
       - 'scripts/qa-visual-v195.py'
       - 'scripts/qa-visual-rebuild-v361.py'
@@ -87,6 +91,12 @@ jobs:
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-review-v379.py
           timeout --signal=TERM --kill-after=10s 300s python -u scripts/qa-all-cards-v379.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-main-sheet-v378.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-competitive-batch-v380.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-levels-v381.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-team-plan-v382.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-function-method-v383.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-manual-in-app-v384.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-account-entry-v382.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-rating-v376.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-owned-main-v364.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-friends-focus-v363.py

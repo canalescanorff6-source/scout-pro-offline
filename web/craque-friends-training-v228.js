@@ -24,6 +24,10 @@ const primaryEngines=deps=>({
   window.CRAQUE_INTERPRETATION_V233:require('./craque-role-intelligence-v233.js'))
 });
 const METHODOLOGY='V251/V233 · mesma engenharia das fichas principais';
+const functionalAllowed=(role,card)=>{
+ const rules=typeof window!=='undefined'?window.CRAQUE_FUNCTIONAL_RULES_V382:require('./craque-functional-rules-v382.js');
+ return rules?.allowed(role,card)||(role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6]);
+};
 const getDeps=(deps)=>deps||{
  tactical:typeof window!=='undefined'?window.SCOUT_TACTICS_V220:null,
  skills:typeof window!=='undefined'?window.SCOUT_RECOMMENDATIONS_V162:null,
@@ -72,7 +76,7 @@ function parseBaseline(card,t){
   return {levels:null,error:'Treino anterior inválido: informe os 10 níveis (0 a 20) na ordem das categorias.'};
  if(t.total(values)!==resolveBudget(card).pp)
   return {levels:null,error:'O treino anterior não fecha os PP informados; revise os dez grupos.'};
- const role=t.roleOf(profileOf(card)),allowed=role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6];
+ const role=t.roleOf(profileOf(card)),allowed=functionalAllowed(role,card);
  if(values.some((x,i)=>x>0&&!allowed.includes(i)))
   return {levels:null,error:'Treino informado usa categorias fora da função escolhida; confirme a posição.'};
  return {levels:values,error:null};
@@ -188,7 +192,7 @@ function functionReview(card,result,currentLevels,provided){
  const analysis=interpretation?.interpret?.(profileOf(card),result.tactic,null);
  const budget=result.plan.pp??result.progress.pp;
  const role=result.plan.role||analysis?.role;
- const allowed=role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6];
+ const allowed=functionalAllowed(role,card);
  const usable=levels=>Number.isInteger(budget)&&t?.valid?.(levels)&&t.total(levels)<=budget&&
   levels.every((n,i)=>n===0||allowed.includes(i));
  const baseline=currentLevels===undefined?parseBaseline(card,t).levels:currentLevels;
@@ -282,6 +286,7 @@ function functionSheetText(review){
    'Vagas livres não comprovadas. Conferir a lista no jogo antes de gastar tokens.':
    'Vagas livres conferidas: '+review.freeSkillSlots);
  if(!review.skills.length)out.push('Sem nova candidata disponível; conferir inventário e equipamentos.');
+ if(review.fixedProgression)out.push('EDIÇÃO TRENDING COM PROGRESSÃO FIXA · sem distribuição de PP, novas habilidades ou ímpeto selecionável.');
  review.skills.forEach((s,i)=>out.push((i+1)+'. '+s.name+' — '+s.reason,
   '   Situação: '+s.situation,'   Complemento às nativas: '+s.nativeRelation,
   '   Relação com o treino: '+s.trainingRelation));
@@ -292,6 +297,10 @@ function functionSheetText(review){
  review.boosters.forEach((b,i)=>out.push((i?'Alternativa '+i:'Principal')+': '+b.name,
   'Atributos relacionados: '+b.attributes.join(', '),b.reason));
  if(!review.boosters.length)out.push('Ímpeto candidato pendente.');
+ if(review.levelRevision){const r=review.levelRevision;out.push('','PP REVISADOS',r.beforePP+' → '+r.afterPP+' PP · proposta recalculada, sem confirmar aplicação no jogo.',r.url);}
+ if(review.competitiveReview){const r=review.competitiveReview;out.push('',r.title,
+  'Proposta ESTIMADA · orçamento CALCULADO · desempenho em partidas PENDENTE',r.strategy,r.tradeoff,r.slotNote,r.researchNote,
+  ...r.sources.map(s=>s.title+': '+s.url));}
  out.push('','OBSERVAR EM PARTIDAS ONLINE',...review.tests.map(x=>'• '+x),'',review.baseReference,
   'Proposta calculada, sem validação em partidas online. Não comprova atributos finais, familiaridade ou ativação de estilo.',
   'Não equipa habilidades/ímpetos nem altera a carta ou o treino aprovado.');

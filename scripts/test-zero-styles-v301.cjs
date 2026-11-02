@@ -1,3 +1,5 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V301 — a ausência de uma proposta NÃO é nível 0. Os cinco estilos
  * devem distinguir referência cadastrada, hipótese e dados pendentes. */
@@ -5,7 +7,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const base=path.resolve(__dirname,'..');
-const read=p=>fs.readFileSync(path.join(base,p),'utf8');
+const read=p=>historicalRead(path.join(base,p),'utf8');
 const T=require('../web/scout-multitactic-engine-v220.js');
 const V=require('../web/craque-ficha-individual-v251.js');
 const cards=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;

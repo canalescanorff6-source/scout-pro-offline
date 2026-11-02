@@ -1,7 +1,9 @@
+// Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
+const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
-const read=p=>fs.readFileSync(path.resolve(__dirname,'..',p),'utf8');
+const read=p=>historicalRead(path.resolve(__dirname,'..',p),'utf8');
 const source=read('web/SCOUT_V69_AUDITORIA.json'),cards=JSON.parse(source).cards;
 const B=require('../web/booster-engine-v103.js');
 const S=require('../web/skills-booster-v162.js');

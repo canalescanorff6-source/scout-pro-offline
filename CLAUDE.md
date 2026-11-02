@@ -8,3 +8,5 @@
 - Verificação: `npm run check`; Windows: `npm run check:sequential`. QA de gravação em perfis descartáveis; instalação real somente autorizada e com backup. Não imprimir dados privados.
 - Git Windows: em push, selecionar a conta do repositório com `git -c credential.username=canalescanorff6-source -c credential.interactive=false push`; não ler/expor credenciais. Isso evita espera no seletor de contas.
 - Não duplicar auditorias/evidências existentes. Uma entrega completa por sessão, checkpoint curto, sem pesquisas mundiais nesta etapa.
+
+- V384: pedido explícito atual autoriza integrar PR311, publicar ambos sistemas e atualizar Windows com backup. Manual completo agora embarcado; pacote nativo e aparelho devem ser verificados antes de alegar instalação.

@@ -69,6 +69,10 @@ async function run(){
     URL_FORMACOES.replace('vocalclock33','other'),URL_FORMACOES.replace('.site/','.site:8443/'),'javascript:alert(1)'])await context.openTrustedExternal(url);
   assert.equal(opened.length,2,'Não ampliar a permissão para outros destinos, credenciais, portas ou rotas');
   const references=[
+    'https://game8.jp/efootball/576587',
+    'https://pbs.twimg.com/media/HFcHqM7WEAA6fXz.jpg',
+    'https://boooost.jp/wp-content/uploads/2026/07/efootball-control-trap-2.jpg',
+    'https://www.reddit.com/r/pesmobile/comments/1vampqm/new_tap_trick_skill/',
     'https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00',
     'https://www.pesmaster.com/sergi-cardona/efootball-2022/player/105803298257275/',
     'https://www.pesdb.net/efootball/players/k-kvaratskhelia-105880876086992',
@@ -85,7 +89,9 @@ async function run(){
   const count=opened.length;
   for(const url of ['https://www.konami.com.evil.test/path','https://evil.test/path',
     'https://user:pass@www.konami.com/path','https://www.pesmaster.com:8443/path',
-    'http://efootbase.com/players/1','file:///C:/Windows/notepad.exe'])await context.openTrustedExternal(url);
+    'http://efootbase.com/players/1','file:///C:/Windows/notepad.exe',
+    'https://game8.jp/other','https://game8.jp/efootball/576587?redirect=evil',
+    'https://pbs.twimg.com/media/other.jpg','https://www.reddit.com/r/other/'])await context.openTrustedExternal(url);
   assert.equal(opened.length,count,'Novas fontes não permitem domínios falsos, credenciais, portas ou protocolos arbitrários');
   console.log('PASS: acesso externo idempotente, navegador Android e destino Windows restrito.');
 }

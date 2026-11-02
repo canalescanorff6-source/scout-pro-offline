@@ -116,11 +116,11 @@ const allocationCache=new Map();
  * custo progressivo e função convexamente penalizada. Não simula status final.
  * Não introduz diferenças por nome, número da carta ou Card ID.
  */
-function allocate(weights,role,pp,baseline){
+function allocate(weights,role,pp,baseline,options={}){
  if(!T||!Number.isInteger(pp)||pp<0||pp>300||!Array.isArray(weights)||weights.length!==10)return null;
- const cacheKey=JSON.stringify([weights,role,pp,T.valid(baseline)?baseline:null]);
+ const cacheKey=JSON.stringify([weights,role,pp,T.valid(baseline)?baseline:null,...(options.physicalGroups===true?['functional-v382']:[])]);
  if(allocationCache.has(cacheKey))return allocationCache.get(cacheKey)?.slice()||null;
- const allowed=role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
+ const allowed=options.physicalGroups===true?(role==='GO'?[1,2,3,4,5,7,8,9]:[0,1,2,3,4,5,6,7]):role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
  let dp=Array(pp+1).fill(null);dp[0]={utility:0,levels:Array(10).fill(0)};
  for(const i of allowed){
   const next=Array(pp+1).fill(null);
@@ -381,7 +381,7 @@ function buildReview(card,raw,lab,all,style,opts={}){
   status,description:STATES[status],canDraft:!!proposal,proposal,
   positionUsed:mapped,positionEvidence:positionProof?.status||'original',
   changes:changed,specificity,sourceCompatible:true,related:shared,differences,
-  capture:aligned.capture,card_id:aligned.id,style,role:context?.role||roleOf(card),
+  capture:aligned.capture,card_id:aligned.id,edition:aligned.edition,style,role:context?.role||roleOf(card),
   pp:aligned.pp,level:levelKnown?(localProof?.level??card.max_level):null,
   original:buildKnown?card.niveis.slice():null,
   trainingProvisional:card.treino_proposto_nao_validado===true,
@@ -394,6 +394,14 @@ function buildReview(card,raw,lab,all,style,opts={}){
   trainingProof:'sem_teste_independente_de_partida',
   method:'Revisão de investimento de PP, não engenharia comprovada de atributos finais.'
  };
+}
+// Overlay de cálculo vinculado à conferência local. Não reclassifica a fonte pública.
+function comparisonSource(check,source){
+ if(check?.canDraft!==true||check.evidenceLevel!=='conferencia_local_usuario'||
+  Number(source?.capture)!==Number(check.capture)||String(source?.id)!==String(check.card_id)||
+  String(source?.edition)!==String(check.edition)||!Number.isInteger(check.level)||
+  check.pp!==2*(check.level-1)||source.pp!==check.pp)return source;
+ return {...source,max_level:check.level,pp_origem:'informado_pelo_usuario_conferencia_local',pp_estimado:false,pp_estimated:false};
 }
 function catalogAudit(cards){
  if(!Array.isArray(cards)||cards.length!==246)throw Error('O acervo precisa manter 246 cartas.');
@@ -650,7 +658,7 @@ function confirmedRole(card,wanted,positionTraining,store){
   rejected:proposed};
 }
 const api=Object.freeze({STATES,norm,roleOf,confirmedLevel,localLevelReview,hasValidBuild,baseEvidence,proofChecklist,methodologyGate,confirmedRole,signature,compareProposals,
-  exact,sourceFor,related,allocate,trainingFrontier,buildReview,catalogAudit});
+  exact,sourceFor,related,allocate,trainingFrontier,buildReview,catalogAudit,comparisonSource});
 if(!host?.document)return api;
 const doc=host.document;
 // V339: em Outros Elencos usar apenas a API pura de fronteira, sem instalar
@@ -730,7 +738,7 @@ function trainingComparison(check,source){
     equipmentRecord=JSON.parse(host.localStorage?.getItem(S.confirmationKey(check.capture,check.card_id))||'null');
     boosterRecord=JSON.parse(host.localStorage?.getItem('scoutpro:v103:booster:'+check.capture)||'null');
    }catch(_){}
-   const experimental=S?.trainingScenario?.({...source,role_used:check.positionUsed,
+   const experimental=S?.trainingScenario?.({...comparisonSource(check,source),role_used:check.positionUsed,
     shown_position:check.positionUsed},check.style,chosen.levels,B,manual,{equipmentRecord,boosterRecord});
    if(experimental?.status==='ESTIMADO'){
     scenario.append(mk('strong','','Complementos neste cenário experimental'));
