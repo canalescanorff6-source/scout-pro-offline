@@ -42,9 +42,12 @@ function read(store,card,confirmed=false){try{
 }catch(_){return null;}}
 function save(store,card,values,confirmed=false){
  const record=validate(card,values,confirmed),prev=read(store,card);
+ if(Object.hasOwn(values,'maxOverall'))record.maxOverallProvided=true;
+ else{const active=read(store,card,true),same=(record.cardId||card.cardId)===(active?.cardId||card.cardId)&&(record.edition||card.edition)===(active?.edition||card.edition);
+  if(same&&(infoRead(store,card)||active&&(active.maxOverall!==null||active.maxOverallProvided))){record.maxOverall=maximum(store,card);record.maxOverallProvided=true;}}
  const history=prev?[...(prev.history||[]),Object.fromEntries(Object.entries(prev).filter(([k])=>k!=='history'))].slice(-20):[];
  const activeConfirmed=confirmed?null:prev?.status==='confirmed'?Object.fromEntries(Object.entries(prev).filter(([k])=>!['history','activeConfirmed'].includes(k))):prev?.activeConfirmed||null;
- const result={...record,updatedAt:new Date().toISOString(),history,activeConfirmed};
+ const result={...record,updatedAt:nextStamp(store,card),history,activeConfirmed};
  store.setItem(PREFIX+card.key,JSON.stringify(result));return result;
 }
 function apply(card,record,descriptor){
@@ -54,6 +57,7 @@ function apply(card,record,descriptor){
  if(c.id!==card.id||c.versao!==card.versao){Object.assign(c,{pp:null,max_level:null,niveis:null,habilidades_nativas:'',impeto_fixo:'',impeto_extra:'',pp_origem:'pendente_nova_identidade_v379'});}
  set('estilo_ataque',r.attackStyle);set('estilo_defesa',r.defenceStyle);
  set('max_level',r.maxLevel);set('pp',r.pp);set('impeto_fixo',r.fixedBooster);set('habilidades_nativas',r.nativeSkills);
+ if(r.maxOverallProvided||r.maxOverall!==null)c.max_overall=r.maxOverall;
  if(r.training)c.niveis=r.training.slice();
  if(r.maxLevel!==null)c.pp_origem='declaracao_manual_proprietario_v379';
  if(c.id!==card.id||c.versao!==card.versao){c.base_stats_known=false;delete c.nivel_referencia;}
@@ -62,6 +66,9 @@ function apply(card,record,descriptor){
 // Metadata is separate from the review: editing four fields never replaces a
 // draft, approved training, equipment or documentary evidence.
 const INFO_PREFIX='scoutpro:v379:card-info:';
+function nextStamp(store,card){let last=Date.now()-1;
+ for(const key of [PREFIX+card.key,INFO_PREFIX+card.key])try{const r=JSON.parse(store.getItem(key)||'null');for(const item of [r,r?.activeConfirmed]){const t=Date.parse(item?.updatedAt);if(Number.isFinite(t))last=Math.max(last,t);}}catch(_){}
+ return new Date(Math.max(Date.now(),last+1)).toISOString();}
 const infoFields=v=>Object.fromEntries(['maxLevel','pp','rarity','maxOverall'].map(k=>[k,v?.[k]??(k==='rarity'?'':null)]));
 function infoIdentity(store,card){const r=read(store,card,true);return JSON.stringify([fingerprint(card),r?.cardId||card.cardId,r?.edition||card.edition]);}
 function checkInfo(values,partial=false){
@@ -83,9 +90,18 @@ function infoRead(store,card){try{
 }catch(_){return null;}}
 function infoValues(store,card,baseline={}){
  const values=infoFields(baseline),r=read(store,card,true);
+ const changed=r&&((r.cardId&&r.cardId!==card.cardId)||(r.edition&&r.edition!==card.edition));
+ const baselineMaximum=changed?null:values.maxOverall;
  if(r)for(const k of Object.keys(values))if(r[k]!==null&&r[k]!=='')values[k]=r[k];
  const custom=infoRead(store,card);
- return custom?infoFields(custom):values;
+ const out=custom?infoFields(custom):values,reviewMaximum=r&&(r.maxOverallProvided===true||r.maxOverall!==null);
+ const time=record=>{const n=Date.parse(record?.updatedAt);return Number.isFinite(n)?n:0;};
+ out.maxOverall=custom&&(!reviewMaximum||time(custom)>=time(r))?custom.maxOverall:reviewMaximum?r.maxOverall:baselineMaximum;
+ return out;
+}
+function maximum(store,card,baseline=null){
+ const n=infoValues(store,card,{maxOverall:baseline}).maxOverall;
+ return Number.isInteger(n)&&n>=1&&n<=150?n:null;
 }
 function saveInfo(store,card,values,baseline={}){
  // Nível máximo é a entrada: PP nunca devem ser digitados separadamente.
@@ -96,24 +112,24 @@ function saveInfo(store,card,values,baseline={}){
   throw Error('Nível máximo: informe um inteiro entre 1 e 120.');
  const value=checkInfo({...values,pp:2*(level-1)}),previous=infoValues(store,card,baseline);
  const record={...value,schema:'craque-card-info-v1',identity:infoIdentity(store,card),previous,
-  mathOk:value.pp===2*(value.maxLevel-1),updatedAt:new Date().toISOString()};
+  mathOk:value.pp===2*(value.maxLevel-1),updatedAt:nextStamp(store,card)};
  store.setItem(INFO_PREFIX+card.key,JSON.stringify(record));return record;
 }
 function restoreInfo(store,card){
  const old=infoRead(store,card);if(!old?.previous)throw Error('Não há valores anteriores para restaurar.');
- const value=checkInfo(old.previous,true),record={...old,...value,previous:infoFields(old),updatedAt:new Date().toISOString(),
+ const value=checkInfo(old.previous,true),record={...old,...value,previous:infoFields(old),updatedAt:nextStamp(store,card),
   mathOk:value.maxLevel!==null&&value.pp===2*(value.maxLevel-1)};
  store.setItem(INFO_PREFIX+card.key,JSON.stringify(record));return record;
 }
 function personal(card,store){
  const d=catalog([card],[])[0],r=read(store,d,true),base=apply(card,r,d),info=infoRead(store,d);
- return info?{...base,max_level:info.maxLevel,pp:info.pp,rarity:info.rarity,max_overall:info.maxOverall,cardInfo:info}:base;
+ return info?{...base,max_level:info.maxLevel,pp:info.pp,rarity:info.rarity,max_overall:maximum(store,d),cardInfo:info}:base;
 }
 function owned(card,store){
  const d=catalog([],[card])[0],r=read(store,d,true),info=infoRead(store,d);
  if(!info)return r;
- return {...(r||validate(d,{},true)),...infoFields(info),cardInfo:info};
+ return {...(r||validate(d,{},true)),...infoFields(info),maxOverall:maximum(store,d),cardInfo:info};
 }
 return Object.freeze({PREFIX,SCHEMA,INFO_PREFIX,catalog,matches,fingerprint,validate,read,save,apply,personal,owned,cost,
- infoRead,infoValues,saveInfo,restoreInfo});
+ infoRead,infoValues,saveInfo,restoreInfo,maximum});
 });

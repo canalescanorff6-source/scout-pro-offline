@@ -5,7 +5,7 @@ const M=w?.CRAQUE_FUNCTION_METHOD_V383||(typeof require==='function'?require('./
 const C=w?.CRAQUE_TEAM_CONTEXT_V382||(typeof require==='function'?require('./craque-team-context-v382.js'):null);
 const IMPORT_SCHEMA='CRAQUE_ACCOUNT_CARD_IMPORT_V385',SHEET_SCHEMA='CRAQUE_ACCOUNT_SHEET_V385',SHEET_PREFIX='scoutpro:v385:sheets:';
 const clone=x=>JSON.parse(JSON.stringify(x)),account=id=>{if(!['primary','secondary'].includes(id))throw Error('Conta inválida.');return id;},label=id=>account(id)==='primary'?'Principal':'Secundária';
-const fingerprint=c=>C.signature(A.normalCard(c));
+const fingerprint=c=>{const {maxOverall,maxOverallIdentity,...trainingCard}=A.normalCard(c);return C.signature(trainingCard);};
 function saveCard(store,id,raw){account(id);const c=A.normalCard(raw),doc=A.read(store);if(id==='primary'&&/^(?:cap:|ct364-)/.test(c.id))throw Error('Identificador reservado ao acervo legado.');
  const at=doc[id].cards.findIndex(x=>x.id===c.id);if(at<0)doc[id].cards.push(c);else doc[id].cards[at]=c;A.save(store,doc);return c;}
 function previewImport(store,id,data){account(id);const legacy=data?.schema===A.DRAFT;

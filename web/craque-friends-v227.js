@@ -12,6 +12,7 @@ const uid=()=>typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID()
   'ct-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12);
 const bytes=s=>new TextEncoder().encode(s).length;
 const empty=()=>({schema:SCHEMA,owners:[],cards:[],updatedAt:null});
+const overallIdentity=c=>JSON.stringify([readStr(c.id,95),readStr(c.cardId,LIMITS.cardId),readStr(c.edition,LIMITS.edition)]);
 function normalOwner(raw){
  const name=readStr(raw?.name,LIMITS.name);
  const id=readStr(raw?.id,95);
@@ -44,13 +45,16 @@ function normalCard(raw){
  if(!ownerId||!id||!name)throw Error('Carta sem pessoa, identificação ou nome.');
  const num=x=>x===''||x===null||x===undefined?null:Number(x);
  const level=num(raw?.level),pp=num(raw?.pp);
+ const maximum={};if(Object.hasOwn(raw,'maxOverall')){const n=num(raw.maxOverall),binding=overallIdentity(raw);
+  if(typeof raw.maxOverall==='boolean'||n!==null&&(!Number.isInteger(n)||n<1||n>150))throw Error('Overall máximo inválido (1 a 150).');
+  maximum.maxOverall=raw.maxOverallIdentity&&raw.maxOverallIdentity!==binding?null:n;maximum.maxOverallIdentity=binding;}
  if(level!==null&&(!Number.isInteger(level)||level<1||level>120))throw Error('Nível fora do intervalo permitido (1 a 120).');
  if(pp!==null&&(!Number.isInteger(pp)||pp<0||pp>300))throw Error('Pontos de progresso fora do intervalo permitido (0 a 300).');
  const image=readStr(raw?.image,MAX_IMAGE+32);
  if(image&&!/^data:image\/(?:webp|jpeg|png);base64,[a-zA-Z0-9+/]+={0,2}$/.test(image))throw Error('Imagem inválida: somente miniaturas locais.');
  if(image&&bytes(image)>MAX_IMAGE)throw Error('Miniatura acima do limite de 85 KB.');
  return {
-  id,ownerId,name,cardId:readStr(raw?.cardId,LIMITS.cardId),
+  ...maximum,id,ownerId,name,cardId:readStr(raw?.cardId,LIMITS.cardId),
   edition:readStr(raw?.edition,LIMITS.edition),position:readStr(raw?.position,LIMITS.position),
   rarity:readStr(raw?.rarity,LIMITS.rarity),style:readStr(raw?.style,LIMITS.style),
   level,pp,skills:readStr(raw?.skills,LIMITS.skills),booster:readStr(raw?.booster,LIMITS.booster),
@@ -148,8 +152,8 @@ function importOwner(data,file){
  const name=readStr(file.owner.name,LIMITS.name);
  if(!name)throw Error('Falta o nome da pessoa no arquivo.');
  const owner={id:uid(),name,createdAt:new Date().toISOString()};
- const cards=file.cards.map(raw=>normalCard({...raw,id:uid(),ownerId:owner.id}));
+ const cards=file.cards.map(raw=>normalCard({...raw,id:uid(),ownerId:owner.id,maxOverallIdentity:undefined}));
  return validate({...doc,owners:[...doc.owners,owner],cards:[...doc.cards,...cards]});
 }
-return Object.freeze({KEY,SCHEMA,EXPORT,MAX_STORAGE,MAX_IMAGE,PERSONAL_OWNER_ID,PERSONAL_OWNER_NAME,ensurePersonalCollection,empty,validate,read,write,addOwner,renameOwner,removeOwner,saveCard,removeCard,exportOwner,importOwner,normalCard,bytes});
+return Object.freeze({KEY,SCHEMA,EXPORT,MAX_STORAGE,MAX_IMAGE,PERSONAL_OWNER_ID,PERSONAL_OWNER_NAME,ensurePersonalCollection,empty,validate,read,write,addOwner,renameOwner,removeOwner,saveCard,removeCard,exportOwner,importOwner,normalCard,overallIdentity,bytes});
 });

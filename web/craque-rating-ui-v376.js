@@ -10,17 +10,19 @@
 const OBS='scoutpro:v376:ovr:';
 const observationKey=(ref,ctx)=>OBS+ref.key+':'+ctx.cardId;
 const LABELS=['Finalização','Passe','Drible','Destreza','Força nas pernas','Força aérea','Defesa','GO 1','GO 2','GO 3'];
-function paint(doc,parent,entry,context,result){
+function paint(doc,parent,entry,context,result,maximum=null){
  parent.classList.add('ct376-art');
  let b=parent.querySelector('.ct376-ovr');
  if(!b){b=doc.createElement('span');b.className='ct376-ovr';
   for(let i=0;i<3;i++)b.append(doc.createElement('span'));parent.append(b);}
- const available=Number.isInteger(result.overall),position=context.ctx.position||entry.position;
- b.children[0].textContent=available?String(result.overall):'—';
+ const declared=Number.isInteger(maximum)&&maximum>=1&&maximum<=150,available=Number.isInteger(result.overall),position=context.ctx.position||entry.position;
+ b.children[0].textContent=declared?String(maximum):available?String(result.overall):'—';
  b.children[1].textContent=position;
- b.children[2].textContent=result.status==='observed'?'no jogo':available?'estimado':'conferir';
- b.dataset.state=result.status;
- const text=entry.name+' · '+(available?(result.label||'OVR estimado')+' '+result.overall:'OVR a conferir')+
+ b.children[2].textContent=declared?'máx. informado':result.status==='observed'?'no jogo':available?'estimado':'conferir';
+ b.dataset.state=declared?'maximum':result.status;
+ const text=declared?entry.name+' · Overall máximo informado: '+maximum+' · '+position+
+  ' · Treino atual: '+(available?(result.label||'OVR estimado')+' '+result.overall:'OVR a conferir'):
+  entry.name+' · '+(available?(result.label||'OVR estimado')+' '+result.overall:'OVR a conferir')+
   ' · '+position+' · '+(result.manager||'Sem técnico')+' · '+context.source+
   (available?' · '+result.spent+'/'+result.budget+' PP · saldo '+result.remaining:' · '+(context.error||result.reason||'Treino pendente'));
  b.title=text;b.setAttribute('aria-label',text);return b;
@@ -79,7 +81,7 @@ async function boot(w){
    infoBases.set(ref.key,{maxLevel:context.maxLevel,pp:context.ctx.budget,
     rarity:card.rarity||types[ref.reference?.type]||
      (ref.capture!==null?d.querySelector('.detail-overline .tiny-chip.gold')?.textContent.trim():'')||'',
-    maxOverall:ref.ownerMaximumOverall?.value??card.max_overall??null});
+    maxOverall:Review.maximum(w.localStorage,descriptor,ref.ownerMaximumOverall?.value??card.max_overall??null)});
   }
   const base=infoBases.get(ref.key),values=Review.infoValues(w.localStorage,descriptor,base);
   const saved=Review.infoRead(w.localStorage,descriptor),stamp=JSON.stringify([ref.key,values,saved?.updatedAt]);
@@ -163,7 +165,7 @@ async function boot(w){
    ' · Orçamento: '+(ctx.budget??'pendente')+' PP'+
    (C.valid(ctx.training)?' · Distribuídos: '+C.cost(ctx.training)+' · Saldo: '+(ctx.budget-C.cost(ctx.training)):'')));
   panel.append(mk('p',context.source+'. '+context.warning));
-  const maximum=Review.infoValues(w.localStorage,descriptors.get(ref.key),{maxOverall:ref.ownerMaximumOverall?.value??null}).maxOverall;
+  const maximum=Review.maximum(w.localStorage,descriptors.get(ref.key),ref.ownerMaximumOverall?.value??null);
   if(maximum!==null)panel.append(mk('p','Máximo informado por você: '+maximum+
    ' OVR. Técnico e distribuição desse máximo ainda não foram vinculados; esta referência não altera o cálculo do treino atual.'));
   panel.append(mk('p','O cálculo é uma estimativa independente. O número máximo do banco não substitui seu treino. Bônus extras entram apenas com equipamento confirmado.'));
@@ -221,7 +223,7 @@ async function boot(w){
   paintInfoCatalog();
   for(const img of d.querySelectorAll('.card-art img,.ct364-card-art img,.side-art img,.mobile-profile>img,.ct361-glance-art img,#ct364-dialog-art')){
    const ref=images.get(decodeURIComponent(img.src.split('/').pop().split('?')[0]));if(!ref)continue;
-   const {context,result}=state(ref);paint(d,img.parentElement,ref,context,result);
+   const {context,result}=state(ref);paint(d,img.parentElement,ref,context,result,Review.maximum(w.localStorage,descriptors.get(ref.key),ref.ownerMaximumOverall?.value??cards.get(ref.key)?.max_overall??null));
    if(d.body.dataset.page==='detail')activeDetail=ref;
   }
   if(activeDetail){const target=d.querySelector('.profile-content')||d.querySelector('main');if(target){showPanel(activeDetail,target);showInfo(activeDetail,target);
@@ -240,7 +242,8 @@ async function boot(w){
   for(const ref of data.cards){const row=mk('p'),{context,result}=state(ref),link=mk('a',ref.name+' · '+ref.position);
    if(ref.file)link.href=root+ref.file;else {link.href='#ct364-owned-section';link.onclick=()=>d.querySelector('[data-owned-id="'+ref.key+'"]')?.click();}
    row.append(link,mk('span',' — '+(result.overall===null?'OVR pendente':(result.label||'OVR estimado')+' '+result.overall)+
-    ' · máximo '+(context.maxLevel??'pendente')+' · '+(context.ctx.budget??'?')+' PP · '+
+    ' · Overall máximo informado: '+(Review.maximum(w.localStorage,descriptors.get(ref.key),ref.ownerMaximumOverall?.value??null)??'pendente')+
+    ' · nível máximo '+(context.maxLevel??'pendente')+' · '+(context.ctx.budget??'?')+' PP · '+
     (context.error||result.reason||context.source)));
    body.append(row);
   }
