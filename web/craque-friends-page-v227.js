@@ -133,6 +133,7 @@ function makeCard(card){
  }else node.append(el('div','friends-placeholder','⚽'));
  const info=el('div','friends-card-info');
  info.append(el('strong','',card.name));
+ if(Number.isInteger(card.maxOverall))info.append(el('strong','friends-maximum','Overall máximo: '+card.maxOverall+' · informado'));
  if(card.edition)info.append(el('small','friends-edition',card.edition));
  info.append(el('small','',(card.position||'Posição pendente')+' · '+(card.rarity||'Raridade não informada')));
  if(card.style)info.append(el('small','friends-playstyle','Estilo: '+card.style));
@@ -291,12 +292,13 @@ $('friend-open-backup').onclick=()=>{
 const dialog=$('friend-card-dialog'),form=$('friend-card-form');
 const fields={name:'friend-card-name',cardId:'friend-card-gameid',edition:'friend-card-edition',
  position:'friend-card-position',rarity:'friend-card-rarity',style:'friend-card-style',
- level:'friend-card-level',pp:'friend-card-pp',skills:'friend-card-skills',
+ level:'friend-card-level',pp:'friend-card-pp',maxOverall:'friend-card-max-overall',skills:'friend-card-skills',
  booster:'friend-card-booster',nativeSkills:'friend-card-native',
  fixedBooster:'friend-card-fixed-booster',boosterSlot:'friend-card-booster-slot',
  trainingLevels:'friend-card-training-levels',notes:'friend-card-notes'};
 const preview=$('friend-photo-preview'),removePhoto=$('friend-photo-remove'),photoInput=$('friend-photo');
 const levelInput=$('friend-card-level'),ppInput=$('friend-card-pp');
+let maximumEdited=false;$('friend-card-max-overall').oninput=()=>{maximumEdited=true;};
 const budgetPreview=$('friend-budget-preview');
 function previewBudget(){
  if(!budgetPreview)return;
@@ -318,7 +320,7 @@ function setPreview(){
 }
 function openCard(card=null){
  const owner=getOwner();if(!owner||locked)return;
- form.reset();photoInput.value='';
+ form.reset();photoInput.value='';maximumEdited=false;
  cardImage=card?.image||'';imageModified=false;
  $('friend-card-id').value=card?.id||'';
  $('friend-dialog-title').textContent=card?'Editar carta':'Nova carta';
@@ -372,6 +374,7 @@ form.onsubmit=event=>{
  if(cardId&&!existing){status('A carta deixou de existir nesta coleção. Nada foi salvo.');return;}
  const raw={ownerId:owner.id,...Object.fromEntries(Object.entries(fields).map(([k,id])=>[k,$(id).value]))};
  if(existing)raw.id=existing.id;
+ if(existing&&maximumEdited)raw.maxOverallIdentity=api.overallIdentity(raw);
  if(imageModified||!existing)raw.image=cardImage;
  try{
   let next=api.saveCard(data,raw);

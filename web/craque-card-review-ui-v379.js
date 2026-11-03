@@ -39,6 +39,8 @@ try{
   active=card;const saved=R.read(localStorage,card),source=saved||{};form.reset();
   const catalog={attackStyle:card.attackStyle,defenceStyle:card.defenceStyle,edition:card.edition,cardId:/^\d{5,20}$/.test(card.cardId)?card.cardId:''};
   for(const [key,val] of Object.entries({...catalog,...source})){const e=form.elements.namedItem(key);if(e&&typeof val!=='object'){if(e.type==='checkbox')e.checked=val===true;else e.value=val??'';}}
+  const approved=R.read(localStorage,card,true),sameMaximumIdentity=saved?.status!=='draft'||((saved.cardId||card.cardId)===(approved?.cardId||card.cardId)&&(saved.edition||card.edition)===(approved?.edition||card.edition));
+  if(saved?.status!=='draft'||!(saved.maxOverallProvided||saved.maxOverall!==null))form.elements.maxOverall.value=sameMaximumIdentity?(R.maximum(localStorage,card,refs.cards.find(r=>r.key===card.key)?.ownerMaximumOverall?.value??null)??''):'';
   for(let i=0;i<10;i++)form.elements.namedItem('train'+i).value=source.training?.[i]??'';
   for(let i=0;i<5;i++)form.elements.namedItem('skill'+i).value=source.skills?.[i]??'';
   $('review-owner-confirm').checked=false;$('review-art').src=card.image;$('review-art').alt='Carta de '+card.name;
@@ -56,7 +58,7 @@ try{
   if(visible.length)show(visible.includes(active)?active:visible[0]);else{$('review-workspace').hidden=true;active=null;}
   feedback(visible.length+' nesta busca · '+stats());
  }
- form.addEventListener('input',()=>{dirty=true;paintCost();});
+ form.addEventListener('input',event=>{if(['cardId','edition'].includes(event.target.name))form.elements.maxOverall.value='';dirty=true;paintCost();});
  form.addEventListener('change',()=>{dirty=true;const slot=value('extraSlot');form.elements.extraBooster.disabled=slot!=='ocupado';if(slot!=='ocupado')form.elements.extraBooster.value='';});
  form.onsubmit=e=>{e.preventDefault();persist(true);};$('review-draft').onclick=()=>persist(false);
  const move=delta=>{const i=visible.indexOf(active)+delta;if(i>=0&&i<visible.length)show(visible[i]);};

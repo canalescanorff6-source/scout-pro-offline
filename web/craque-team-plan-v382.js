@@ -18,6 +18,7 @@ function roster(){
  const result=A.roster(account,sources,localStorage);
  if(account==='primary')for(const c of result){
   const ref=sources.references.find(r=>r.key===c.id);c.reference=ref||null;c.image=ref?.image||c.image;
+  if(['original','owned'].includes(c.source)){const R=window.CRAQUE_CARD_REVIEW_V379,descriptor=R.catalog(c.source==='original'?[c.legacy]:[],c.source==='owned'?[c.legacy]:[])[0];c.maxOverall=R.maximum(localStorage,descriptor,ref?.ownerMaximumOverall?.value??null);}
   if(c.source==='original'&&sources.positional){const m=sources.positional.fromPersonal(c.legacy,null,localStorage);c.positions=sources.positional.positionMap(m).filter(x=>x.eligible).map(x=>x.position);c.skillCapacity=c.skillsVerified?5:null;}
   if(c.source==='owned'){
    const manual=JSON.parse(localStorage.getItem('scoutpro:v364:owned-confirmed')||'{}')[c.id];
@@ -116,6 +117,7 @@ function paintObservations(){const ready=!!plan?.id&&!plan.historicalReadOnly&&p
 }
 function paintRoster(){const e=$('roster'),q=$('search').value.toLocaleLowerCase();e.replaceChildren();for(const c of cards.filter(c=>(c.name+' '+c.edition).toLocaleLowerCase().includes(q))){
  const row=mk('article');row.className='library-card';if(c.image){const img=mk('img');img.src=c.image;img.alt='';img.className='card-art';img.loading='lazy';row.append(img);}const d=mk('div');d.append(mk('b',c.name),mk('p',c.edition||'Edição a conferir'),mk('p',c.position+' · Nível '+(c.maxLevel??'pendente')+' · '+(c.pp??'?')+' PP'));
+ if(Number.isInteger(c.maxOverall))d.append(mk('p','Overall máximo: '+c.maxOverall+' · informado'));
  if(account==='secondary'||c.source==='private'){const edit=mk('button','Abrir ficha');edit.onclick=()=>{location.href='ficha-da-conta-v385.html?account='+account+'&id='+encodeURIComponent(c.id);};d.append(edit);}else{const a=mk('a','Conferir carta ↗');a.href='conferir-cartas.html#'+encodeURIComponent(c.id);d.append(a);}row.append(d);e.append(row);
  }}
 function field(container,name,label,value='',{type='text',choices=null}={}){const l=mk('label',label),e=mk(choices?'select':type==='textarea'?'textarea':'input');e.name=name;

@@ -25,8 +25,11 @@ function normalCard(raw){
   return {name:str(x.name,100),value,verified:x.verified===true,source:str(x.source,300)};};
  const additional=list(raw.skills);if(additional.length>5||(Number.isInteger(raw.skillCapacity)&&additional.length>raw.skillCapacity))throw Error('Adicionais acima da capacidade cadastrada.');
  const binding=evidenceIdentity(raw),identityChanged=!!raw.evidenceIdentity&&raw.evidenceIdentity!==binding;
+ const maximum={};if(Object.hasOwn(raw,'maxOverall')){const n=number(raw.maxOverall);
+  if(raw.maxOverall===true||raw.maxOverall===false||n!==null&&(!Number.isInteger(n)||n<1||n>150))throw Error('Overall máximo inválido (1 a 150).');
+  maximum.maxOverall=raw.maxOverallIdentity&&raw.maxOverallIdentity!==binding?null:n;maximum.maxOverallIdentity=binding;}
  const checkedBoost=x=>{const b=booster(x);return b&&identityChanged?{...b,verified:false}:b;};
- return {id:str(raw.id,100),name:str(raw.name,80),cardId,edition:str(raw.edition),position:position(raw.position),
+ return {...maximum,id:str(raw.id,100),name:str(raw.name,80),cardId,edition:str(raw.edition),position:position(raw.position),
   positions:[...new Set([position(raw.position),...(raw.positions||[]).map(position).filter(p=>POS.includes(p))])],maxLevel,pp,
   offenseStyle:str(raw.offenseStyle||raw.style,110),defenceStyle:str(raw.defenceStyle,110),nativeSkills:list(raw.nativeSkills),skills:additional,
   nativeVerified:!identityChanged&&raw.nativeVerified===true,skillsVerified:!identityChanged&&raw.skillsVerified===true,evidenceIdentity:binding,

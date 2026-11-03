@@ -382,6 +382,7 @@ function identity(){
   mk('span','',activeCard.style||'Estilo pendente'),
   mk('span','',(()=>{const budget=engine.resolveBudget(activeCard);
    return budget.pp===null?'PP pendentes':budget.pp+' PP'+(budget.source==='nivel_maximo'?' (nível)':'');})()));
+ if(Number.isInteger(activeCard.maxOverall))badges.append(mk('span','','Overall máximo: '+activeCard.maxOverall+' · informado'));
  const img=$('friend-analysis-cover'),empty=$('friend-analysis-cover-empty');
  img.hidden=!activeCard.image;empty.hidden=!!activeCard.image;
  if(activeCard.image){img.src=activeCard.image;img.alt='Imagem cadastrada de '+activeCard.name;}

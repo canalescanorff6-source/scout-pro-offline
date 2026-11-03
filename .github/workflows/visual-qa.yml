@@ -10,6 +10,7 @@ on:
       - 'scripts/qa-all-cards-v379.py'
       - 'scripts/qa-editorial-theme.py'
       - 'scripts/qa-catalog-mobile-v386.py'
+      - 'scripts/qa-maximum-overall-v387.py'
       - 'scripts/qa-main-sheet-v378.py'
       - 'scripts/qa-competitive-batch-v380.py'
       - 'scripts/qa-levels-v381.py'
@@ -85,6 +86,7 @@ jobs:
           done
           # V315: testar primeiro o caso novo; falhar claramente em bloqueios de navegação.
           # Mantém todos os QA anteriores, sem afrouxar assertivas.
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-maximum-overall-v387.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-catalog-mobile-v386.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-account-catalog-v385.py
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-account-editor-v385.py
