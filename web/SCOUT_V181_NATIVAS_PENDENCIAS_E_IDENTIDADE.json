@@ -1,0 +1,141 @@
+{
+  "version": "V181",
+  "date": "2026-10-14",
+  "goal": "Habilidades nativas corretas, sem imitação, sem alteração da identidade original",
+  "total": 246,
+  "documentadas_na_base": 240,
+  "pendentes": 6,
+  "rule": "A lista só será promovida quando a edição exata for identificada. Habilidades adicionais e sugestões não contam como habilidades nativas.",
+  "sources": [
+    "web/SCOUT_V179_NATIVE_SKILLS_RESEARCH.json",
+    "web/SCOUT_V180_NATIVE_SKILLS_EVIDENCE.json",
+    "https://pesdb.net/efootball/players/rodri-105779675902175"
+  ],
+  "unresolved": [
+    {
+      "cap": 50,
+      "name": "Lionel Messi",
+      "card_id_registrado": "PENDENTE - associação anterior invalidada pelo usuário",
+      "edicao_registrada": "Show Time - edição exata a confirmar (CAP050)",
+      "imagem_original": "web/cartas/CAP_050",
+      "status": "BLOQUEADO_SEM_CORRESPONDENCIA_INEQUIVOCA",
+      "motivo": "Duas edições Show Time Skill Up 2027 SS usam o mesmo nome/estilo; falta evidência de ID.",
+      "candidatos_nao_promovidos": [
+        "https://pesdb.net/efootball/players/lionel-messi-106803488628055",
+        "https://pesdb.net/efootball/players/lionel-messi-106784966581591"
+      ],
+      "confirmacao_exigida": "Tela da edição real no eFootball, incluindo Player ID e habilidades nativas, ou evidência externa inequivocamente igual à arte, edição e ID",
+      "habilidades_importadas": [],
+      "comparacao": {
+        "ids_candidatos": [
+          "106784966581591",
+          "106803488628055"
+        ],
+        "acao": "confirmar qual edição exata é a carta #050"
+      }
+    },
+    {
+      "cap": 75,
+      "name": "Luis Díaz",
+      "card_id_registrado": "106780671726691",
+      "edicao_registrada": "Highlight — Daily Bonus 2026 — Luis Díaz",
+      "imagem_original": "web/cartas/CAP_075",
+      "status": "BLOQUEADO_SEM_CORRESPONDENCIA_INEQUIVOCA",
+      "motivo": "Card ID numérico coincide com fonte Show Time, mas o catálogo registra Highlight. Não alterar raridade sem confronto dentro do jogo.",
+      "candidatos_nao_promovidos": [
+        "https://pesdb.net/efootball/players/luis-diaz-106780671726691"
+      ],
+      "confirmacao_exigida": "Tela da edição real no eFootball, incluindo Player ID e habilidades nativas, ou evidência externa inequivocamente igual à arte, edição e ID",
+      "habilidades_importadas": [],
+      "conflito_externo": {
+        "id_corresponde_ao_jogador": true,
+        "tipo_no_cadastro": "Highlight",
+        "tipo_na_fonte": "Show Time",
+        "acao": "não tratar raridades como equivalentes, não importar habilidades automaticamente"
+      }
+    },
+    {
+      "cap": 151,
+      "name": "Willian Pacho",
+      "card_id_registrado": "106776376791946",
+      "edicao_registrada": "Highlight — Ligue 1 McDonald’s Selection 2 Mar '26 — Willian Pacho",
+      "imagem_original": "web/cartas/CAP_151",
+      "status": "BLOQUEADO_SEM_CORRESPONDENCIA_INEQUIVOCA",
+      "motivo": "Card ID numérico coincide com Show Time, mas cadastro registra Highlight.",
+      "candidatos_nao_promovidos": [
+        "https://pesdb.net/efootball/players/willian-pacho-106776376791946"
+      ],
+      "confirmacao_exigida": "Tela da edição real no eFootball, incluindo Player ID e habilidades nativas, ou evidência externa inequivocamente igual à arte, edição e ID",
+      "habilidades_importadas": [],
+      "conflito_externo": {
+        "id_corresponde_ao_jogador": true,
+        "tipo_no_cadastro": "Highlight",
+        "tipo_na_fonte": "Show Time",
+        "acao": "não tratar raridades como equivalentes, não importar habilidades automaticamente"
+      }
+    },
+    {
+      "cap": 170,
+      "name": "Jan Oblak",
+      "card_id_registrado": "106766444571720",
+      "edicao_registrada": "Highlight — Extraordinary One 4 Dec '25 — Jan Oblak",
+      "imagem_original": "web/cartas/CAP_170",
+      "status": "BLOQUEADO_SEM_CORRESPONDENCIA_INEQUIVOCA",
+      "motivo": "Card ID numérico coincide com Show Time, mas cadastro registra Highlight.",
+      "candidatos_nao_promovidos": [
+        "https://pesdb.net/efootball/players/jan-oblak-106766444571720"
+      ],
+      "confirmacao_exigida": "Tela da edição real no eFootball, incluindo Player ID e habilidades nativas, ou evidência externa inequivocamente igual à arte, edição e ID",
+      "habilidades_importadas": [],
+      "conflito_externo": {
+        "id_corresponde_ao_jogador": true,
+        "tipo_no_cadastro": "Highlight",
+        "tipo_na_fonte": "Show Time",
+        "acao": "não tratar raridades como equivalentes, não importar habilidades automaticamente"
+      }
+    },
+    {
+      "cap": 181,
+      "name": "Serhou Guirassy",
+      "card_id_registrado": "106769397419872",
+      "edicao_registrada": "Highlight — eFootball League Rewards Phase 9 — Serhou Guirassy",
+      "imagem_original": "web/cartas/CAP_181",
+      "status": "BLOQUEADO_SEM_CORRESPONDENCIA_INEQUIVOCA",
+      "motivo": "Card ID numérico coincide com Show Time, mas cadastro registra Highlight.",
+      "candidatos_nao_promovidos": [
+        "https://pesdb.net/efootball/players/serhou-guirassy-106769397419872"
+      ],
+      "confirmacao_exigida": "Tela da edição real no eFootball, incluindo Player ID e habilidades nativas, ou evidência externa inequivocamente igual à arte, edição e ID",
+      "habilidades_importadas": [],
+      "conflito_externo": {
+        "id_corresponde_ao_jogador": true,
+        "tipo_no_cadastro": "Highlight",
+        "tipo_na_fonte": "Show Time",
+        "acao": "não tratar raridades como equivalentes, não importar habilidades automaticamente"
+      }
+    },
+    {
+      "cap": 225,
+      "name": "Rodri",
+      "card_id_registrado": "106780940205246",
+      "edicao_registrada": "Highlight — Back in the Game 14 Aug '25 — Rodri",
+      "imagem_original": "web/cartas/CAP_225",
+      "status": "BLOQUEADO_SEM_CORRESPONDENCIA_INEQUIVOCA",
+      "motivo": "Card ID atual resolve Nico O'Reilly. Fonte da edição correta Rodri do mesmo pacote: ID candidato 105779675902175; não substituir sem autenticar.",
+      "candidatos_nao_promovidos": [
+        "https://pesdb.net/efootball/players/rodri-105779675902175",
+        "https://pesdb.net/efootball/players/nico-o-reilly-106780940205246"
+      ],
+      "confirmacao_exigida": "Tela da edição real no eFootball, incluindo Player ID e habilidades nativas, ou evidência externa inequivocamente igual à arte, edição e ID",
+      "habilidades_importadas": [],
+      "conflito_externo": {
+        "id_no_cadastro": "106780940205246",
+        "resolvido_como": "Nico O'Reilly",
+        "id_candidato_para_edicao_Rodri": "105779675902175",
+        "fonte": "https://pesdb.net/efootball/players/rodri-105779675902175",
+        "acao": "não substituir dados originais automaticamente"
+      }
+    }
+  ],
+  "note_v181": "Murilo #228, Samuel Eto'o #236 e Eric Cantona #246 documentados na V181 do PR #84 por correspondência externa multifatorial, sem Card ID confirmado na conta; não são nativas verificadas por captura de tela interna."
+}
