@@ -3,10 +3,10 @@
  * Não inventa nível, Card ID, atributo-base, validação de criadores ou gameplay.
  */
 (function(host,factory){'use strict';
- const api=factory(host?.SCOUT_TACTICS_V220||(typeof module==='object'?require('./scout-multitactic-engine-v220.js'):null));
+ const api=factory(host?.SCOUT_TACTICS_V220||(typeof module==='object'?require('./scout-multitactic-engine-v220.js'):null),host);
  if(typeof module==='object'&&module.exports)module.exports=api;
  if(host)host.CRAQUE_STYLE_PLANNER_V303=api;
-})(typeof window!=='undefined'?window:null,function(T){'use strict';
+})(typeof window!=='undefined'?window:null,function(T,host){'use strict';
 const STYLES=Object.freeze({
  posse:Object.freeze({weights:[0.88,1.65,1.48,1.3,.88,.73,1.06],keeper:[1.38,1.05,.82],focus:'apoios curtos, giro, recepção e circulação'}),
  normal:Object.freeze({weights:[1.17,1.38,.78,1.01,1.18,1.12,1.34],keeper:[.97,1.17,1.17],focus:'cobertura e passe vertical após recuperar'}),
@@ -26,8 +26,28 @@ function budgetStatus(card){
 }
 function vectorEqual(a,b){return levelsValid(a)&&levelsValid(b)&&a.every((x,i)=>x===b[i])}
 function total(v){return T.total(v)}
+function contextualPlan(card,tactic,baseline){
+ const training=host?.CRAQUE_FRIEND_TRAINING_V228||
+  (typeof module==='object'?require('./craque-friends-training-v228.js'):null);
+ if(!training)return null;
+ const capture=Number(card.capture??card.numero),cardId=String(card.cardId??card.id??'');
+ const localKey=String(capture)+'@'+cardId;
+ const reference=card.reference??host?.CRAQUE_REFERENCES_V376?.cards.find(entry=>entry.cardKey===localKey);
+ const positional=host?.CRAQUE_POSITIONAL_V311||
+  (typeof module==='object'?require('./craque-positional-v311.js'):null);
+ const normalize=positional?.normalize||String;
+ return training.allocate({
+  capture,localKey,cardId,edition:card.versao||card.edition||'',name:card.name,
+  position:normalize(card.shown_position||card.role_used||card.posicao),
+  originalPosition:normalize(card.posicao),style:card.estilo_ataque||card.attack_style||card.style||'',
+  defenceStyle:card.estilo_defesa||card.defence_style||'',pp:card.pp,level:card.max_level,
+  nativeSkills:card.habilidades_nativas||card.native_skills||'',fixedBooster:card.impeto_fixo||card.boost1||'',
+  trainingLevels:Array.isArray(baseline)?baseline.join(','):'',reference
+ },tactic,{tactical:T});
+}
 function allocate(card,tactic){
  if(!T||!Object.hasOwn(STYLES,tactic))return null;
+ if(tactic!=='posse')return contextualPlan(card,tactic,card.niveis||card.recommended_levels)?.levels||null;
  const budget=Number(card?.pp),role=T.roleOf(card);
  if(!Number.isInteger(budget)||budget<0||budget>300||!role)return null;
  const cfg=T.strategy(card,tactic),factors=STYLES[tactic];
@@ -61,6 +81,7 @@ function allocate(card,tactic){
 function proposal(card,tactic,baseline){
  const profile=STYLES[tactic];
  if(!profile)return null;
+ if(card?.pp===undefined||card.pp===null||card.pp==='')return null;
  const budget=Number(card?.pp);
  if(!Number.isInteger(budget)||budget<0||budget>300)return null;
  const registered=levelsValid(baseline)&&total(baseline)===budget?baseline.slice():null;
@@ -70,7 +91,8 @@ function proposal(card,tactic,baseline){
   levelsValid(card.niveis)&&total(card.niveis)===budget?card.niveis.slice():null);
  // Posse approved registration is immutable; alternate táticas are simulations.
  const useReference=tactic==='posse'&&origin!==null;
- const chosen=useReference?origin:allocate(card,tactic);
+ const contextual=tactic==='posse'?null:contextualPlan(card,tactic,origin);
+ const chosen=useReference?origin:tactic==='posse'?allocate(card,tactic):contextual?.levels;
  if(!levelsValid(chosen)||total(chosen)!==budget)return null;
  const evid=budgetStatus(card),provisional=card.training_provisional===true||
   card.treino_proposto_nao_validado===true;
@@ -84,6 +106,7 @@ function proposal(card,tactic,baseline){
   source:mode,confidence:useReference?'documental_distribuicao_nao_gameplay':
    evid==='nivel_pp_informados'?'hipotese_matematica_com_pp_informados':'hipotese_condicional',
   budgetEvidence:evid,baselineProvisional:provisional,
+  analysis:contextual?.analysis||null,
   changes:Object.freeze(change.map(Object.freeze)),
   focus:profile.focus,
   profileReasons:Object.freeze(T.strategy(card,tactic).signals.slice()),

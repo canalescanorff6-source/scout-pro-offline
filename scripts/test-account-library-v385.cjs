@@ -24,5 +24,28 @@ L.saveCard(store,'primary',{...card,id:'level-only',pp:null});const levelOnly={.
 a.doesNotThrow(()=>L.saveSheet(store,'primary',levelOnly,L.individualContext(levelOnly,{style:'posse'}),review),'PP calculado a partir do nível máximo deve permitir salvar a proposta válida');
 const capped=memory();L.saveCard(capped,'primary',card);for(let i=0;i<30;i++)L.saveSheet(capped,'primary',p,pc,review);const capBefore=capped.getItem(L.SHEET_PREFIX+'primary:'+encodeURIComponent(card.id));
 a.throws(()=>L.saveSheet(capped,'primary',p,pc,review),/limite|histórico/i,'Não descartar silenciosamente revisões anteriores');a.equal(capped.getItem(L.SHEET_PREFIX+'primary:'+encodeURIComponent(card.id)),capBefore);
+const real=require('../web/SCOUT_V69_AUDITORIA.json').cards.find(c=>c.numero===37);
+const references=require('../web/ct376-card-references.json').cards;
+const manualStore=memory(),manual={id:'nihat-conta',name:real.name,cardId:real.id,edition:real.versao,position:'CA',
+ maxLevel:real.max_level,pp:real.pp,trainingLevels:real.niveis,skills:['Interceptação'],boosterSlot:'ocupado',
+ extraBooster:{name:'Técnica',value:null,verified:false}};
+L.saveCard(manualStore,'secondary',manual);
+const own=A.roster('secondary',{references},manualStore)[0];
+a.equal(own.reference?.reference.cardId,real.id,'Conta privada encontra prova pública somente pela edição exata');
+a.equal(A.referenceFor({...own,edition:'Outra edição'},references),null);
+const ownContext=L.individualContext(own,{style:'rapido'});
+const team=require('../web/craque-team-context-v382.js');
+const ownReview=team.recommend(ownContext,{tactical:T,training:require('../web/craque-friends-training-v228.js'),
+ individual:require('../web/craque-ficha-individual-v251.js'),interpretation:require('../web/craque-role-intelligence-v233.js'),
+ skills:require('../web/skills-booster-v162.js'),boosters:require('../web/booster-engine-v103.js')}).cards[0].review;
+a.equal(ownReview.individualAnalysis.status,'documentada');
+a.deepEqual(ownReview.equippedSkills,manual.skills);
+a.equal(ownReview.extraBooster.name,manual.extraBooster.name);
+const manualBefore=manualStore.getItem(A.KEY);
+L.saveSheet(manualStore,'secondary',own,ownContext,ownReview);
+a.deepEqual(L.sheets(manualStore,'secondary',own)[0].review.individualAnalysis,ownReview.individualAnalysis);
+a.equal(manualStore.getItem(A.KEY),manualBefore,'Salvar proposta não substitui o treino ou os itens manuais cadastrados');
+a.throws(()=>L.saveSheet(manualStore,'secondary',own,ownContext,{...ownReview,canSave:false}),/ficha|treino/i);
+a.throws(()=>L.saveSheet(manualStore,'secondary',own,L.individualContext(own,{style:'longo'}),ownReview),/contexto/i);
 const saveBefore=store.getItem(A.KEY),originalSet=store.setItem;store.setItem=(k,v)=>{if(k===A.KEY)throw Error('quota');originalSet(k,v);};a.throws(()=>L.saveCard(store,'primary',{...card,id:'third'}),/salvar|quota/i);a.equal(store.getItem(A.KEY),saveBefore);
 console.log('V385 LIBRARY PASS: legado, duas contas, importação atômica, edição exata, revisões e quota.');

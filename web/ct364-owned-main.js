@@ -1141,10 +1141,11 @@ async function renderTraining(c,body){
   const selectedManager=managerApi.find(managerOf(c));
   if(selectedManager)note(area,selectedManager.nome+' · '+STYLE_NAMES[activeStyle]+' · proficiência '+managerApi.proficiency(selectedManager,activeStyle));
   const role=activeRole||c.position,tactic=activeStyle,engineCard=cardAsEngine(c,role);
-  const result=engine.evaluate(cardAsEngine(c,activeRole),activeStyle);
+  engineCard.reference=window.CRAQUE_REFERENCES_V376?.cards.find(r=>r.key===c.key);
+  const result=engine.evaluate(engineCard,activeStyle);
   const plan=result.plan;
   const draft=engine.readFunctionDraft(localStorage,engineCard,tactic);
-  const selection={source:draft&&!draft.stale?'profile':'proposal',reference:window.CRAQUE_REFERENCES_V376?.cards.find(r=>r.key===c.key)};
+  const selection={source:draft&&!draft.stale?'profile':'proposal',reference:engineCard.reference,managerLabel:selectedManager?.nome||'',managerId:managerOf(c)};
   if(draft&&!draft.stale){selection.levels=draft.levels;selection.skills=draft.skills||[];selection.booster=draft.booster||'';}
   const mainSheet=window.CRAQUE_MAIN_SHEET_V378.resolve(engineCard,result,selection);
   const review=mainSheet.review;review.managerId=managerOf(c);

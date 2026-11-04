@@ -14,13 +14,36 @@ function cardFromModel(m,position){return {
  skills:m.skills||'',fixedBooster:m.fixedBooster,booster:m.booster,boosterSlot:m.boosterSlot,
  equipmentRecord:m.equipmentRecord||null,trainingLevels:m.trainingLevels,progressReview:m.evidenceCard?.nivel_referencia||null,
  baseReference:m.evidenceCard?.base_stats_known===true};}
+function repetitionAudit(card,result,selection){
+ const audit=selection.audit??host?.CRAQUE_TRAINING_REPETITIONS_V389;
+ const plan=result.plan;
+ if(audit?.schema!=='CRAQUE_TRAINING_REPETITIONS_V389'||audit.managerId!==(selection.managerId||card.managerId)||
+    !plan.analysis||!plan.levels||own(selection,'levels'))return null;
+ const match=audit.entries?.[card.localKey+'|'+result.tactic];
+ if(!match||match.cardId!==String(card.cardId??'')||match.edition!==card.edition||
+    match.position!==card.position||match.pp!==plan.pp||match.evidenceSignature!==plan.analysis.evidenceSignature||
+    JSON.stringify(match.levels)!==JSON.stringify(plan.levels))return null;
+ return {documentedPairs:match.documentedPairs,pendingPairs:match.pendingPairs};
+}
 function resolve(input,outcome,selection={},provided){
  const d=dependencies(provided),F=d.training,S=d.skills,B=d.boosters,T=d.tactical;
  if(!F||!S||!B||!T||!outcome?.plan)throw Error('Motor da ficha indisponível');
- const card={...input},reference=selection.reference;
+ const card={...input},reference=selection.reference??card.reference??F.catalogueReference?.(card);
  const exactReference=reference?.identityUsable===true&&reference.reference&&
   String(card.cardId)===String(reference.reference.cardId)&&
   [reference.edition,reference.reference.edition].includes(card.edition);
+ // Some older entry points only load the reference when opening the sheet.
+ // Rebuild their proposal for this context before presenting equipment or PP.
+ let proposal=outcome.plan,progress=outcome.progress;
+ const manual=own(selection,'levels');
+ if(!manual&&outcome.tactic!=='posse'&&F.allocate){
+  progress=F.resolveBudget(card);
+  const budget=progress.pp;
+  const context=[card.localKey,card.cardId,card.edition,card.position,outcome.tactic,budget].map(value=>String(value??''));
+  const sameContext=JSON.stringify(proposal.analysis?.context)===JSON.stringify(context);
+  const sameEvidence=proposal.analysis?.reference?.htmlSha256===(exactReference?reference.reference.htmlSha256:undefined);
+  if(!sameContext||!sameEvidence)proposal=F.allocate({...card,reference:exactReference?reference:null},outcome.tactic,d);
+ }
  let nativeSource=outcome.nativeDocumented||outcome.skills?.nativeKnown?'catalogue':'pending';
  if(nativeSource==='pending'&&exactReference&&reference.reference.nativeSkills?.length){
   card.nativeSkills=reference.reference.nativeSkills.join('; ');nativeSource='public';
@@ -29,21 +52,22 @@ function resolve(input,outcome,selection={},provided){
   (typeof module==='object'?require('./craque-competitive-batch-v380.js'):null);
  const editorial=exactReference?batch?.find(card,outcome,selection,S,T):null;
  const rules=host?.CRAQUE_FUNCTIONAL_RULES_V382||(typeof module==='object'?require('./craque-functional-rules-v382.js'):null);
- const role=outcome.plan.role,allowed=rules?.allowed(role,card)||(role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6]);
- const budget=outcome.plan.pp??outcome.progress.pp;
- const levels=own(selection,'levels')?selection.levels:editorial?.levels||outcome.plan.levels;
+ const role=proposal.role,allowed=rules?.allowed(role,card)||(role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6]);
+ const budget=proposal.pp??progress.pp;
+ const levels=manual?selection.levels:editorial?.levels||proposal.levels;
  const valid=v=>Number.isInteger(budget)&&T.valid(v)&&T.total(v)<=budget&&
   v.every((n,i)=>n===0||allowed.includes(i));
  if(own(selection,'levels')&&!valid(levels))throw Error('PP ou categorias da ficha salva incompatíveis com esta função');
- const usable=outcome.plan.status==='hipotese'&&valid(levels),vector=usable?levels.slice():null;
+ const usable=proposal.status==='hipotese'&&valid(levels),vector=usable?levels.slice():null;
  const raw={...F.profileOf(card),niveis:vector},existing=String(card.skills||'');
  const confirmed=Boolean(S.checkedEquipment?.(raw,existing,card.equipmentRecord));
  const skills=S.evaluate(raw,outcome.tactic,existing,{equippedConfirmed:confirmed,equipmentRecord:card.equipmentRecord||null});
  const booster=S.booster(raw,outcome.tactic,B,card.boosterSlot||'pendente',card.booster||'');
- const result={...outcome,plan:{...outcome.plan,levels:vector,remaining:vector?budget-T.total(vector):null},
+ const result={...outcome,progress,plan:{...proposal,analysis:manual?selection.analysis||null:editorial?null:proposal.analysis||null,levels:vector,remaining:vector?budget-T.total(vector):null},
   skills,booster,suggestedSkills:skills.recommendations.slice(0,Math.max(0,5-skills.alreadyEquippedProvided)),
   freeSkillSlots:Number.isInteger(skills.slotsRemaining)?skills.slotsRemaining:null};
  const review=F.functionReview(card,result,undefined,{...d});
+ review.repetitionAudit=repetitionAudit(card,result,selection);
  const current=F.parseBaseline(card,T).levels,baseline=valid(current)?current.slice():null;
  const changes=baseline&&vector?vector.flatMap((to,i)=>to===baseline[i]?[]:[{
   index:i,category:T.CATEGORIES[i],from:baseline[i],to,deltaPP:T.ppCost(to)-T.ppCost(baseline[i])}]):[];
@@ -98,8 +122,9 @@ function resolve(input,outcome,selection={},provided){
   if(!own(selection,'booster'))review.boosters=[];
  }
  // O contrato de gravação recebe exatamente as escolhas mostradas, inclusive vazias.
- result.suggestedSkills=review.skills.map(s=>({name:s.name}));
- result.booster={...result.booster,primary:review.boosters[0]?{nome:review.boosters[0].technicalName}:null};
+ result.suggestedSkills=review.skills.map(s=>({name:s.name,why:s.reason}));
+ const [primary,...alternatives]=review.boosters.map(item=>({nome:item.technicalName,motivo:item.reason}));
+ result.booster={...result.booster,primary:primary||null,alternatives};
  if(exactReference&&reference.reference.baseStats)review.baseReference='Base da edição disponível em referência pública; treino e atributos finais da conta a conferir';
  if(!editorial)review.sourceLabel={profile:'Treino salvo neste técnico',revision:'Revisão salva deste contexto',proposal:'Treino recomendado para esta função'}[review.sourceKind];
  if(issues.length)review.canSave=false;
@@ -116,7 +141,11 @@ function resolve(input,outcome,selection={},provided){
 }
 function text(review){
  const F=host?.CRAQUE_FRIEND_TRAINING_V228||(typeof module==='object'?require('./craque-friends-training-v228.js'):null);
- return F.functionSheetText(review).replace('TREINO PROPOSTO',review.sourceLabel||'TREINO DA FICHA');
+ const sheet=F.functionSheetText(review).replace('TREINO PROPOSTO',review.sourceLabel||'TREINO DA FICHA');
+ const analysis=review.individualAnalysis;
+ const repeats=review.repetitionAudit;
+ return analysis?[sheet,'','MOTIVOS DA FICHA',analysis.reason,...analysis.factors.map(f=>f.category+' · '+f.reason),
+  ...(repeats?['Coincidências auditadas · '+repeats.documentedPairs+' com análise documentada · '+repeats.pendingPairs+' com dados pendentes']:[]),analysis.reference?.url].filter(x=>x!==undefined).join('\n'):sheet;
 }
 return Object.freeze({resolve,cardFromModel,text});
 });

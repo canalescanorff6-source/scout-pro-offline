@@ -14,6 +14,13 @@ const progression=typeof window!=='undefined'?window.CRAQUE_PP_UNIVERSAL_V309:
   require('./craque-pp-universal-v309.js');
 if(!progression)throw Error('Motor universal de PP ausente. Verifique a instalação offline.');
 const levelBudget=progression.budget,resolveBudget=progression.resolve;
+function catalogueReference(card){
+ const id=String(card.cardId||'');
+ if(typeof window==='undefined'||!/^\d{5,20}$/.test(id)||!card.edition)return null;
+ return window.CRAQUE_REFERENCES_V376?.cards.find(entry=>entry.identityUsable===true&&
+  String(entry.reference?.cardId)===id&&[entry.edition,entry.reference?.edition].includes(card.edition)&&
+  (!card.capture||Number(card.capture)===entry.capture))||null;
+}
 // V359: o cálculo competitivo de TODOS os acervos passa pelos MESMOS
 // motores V251 (distribuição) e V233 (interpretação) de Minhas Cartas.
 // Dependências consultadas ao abrir: preservar o carregamento assíncrono.
@@ -108,11 +115,21 @@ function allocate(card,tactic,deps){
   pp_origem:'nivel_informado_no_cadastro_externo',
   recommended_levels:null,niveis:null,base_stats_known:false,
   pp_estimado:progress.source==='manual_divergente'};
+ if(tactic!=='posse'&&card.originalPosition&&card.position!==card.originalPosition){
+  const method=typeof window!=='undefined'?window.CRAQUE_FUNCTION_METHOD_V383:require('./craque-function-method-v383.js');
+  const activation=method?.activation({card,slot:{position:card.position},offBall:{position:card.position},
+   offenseStyle:card.style,defenceStyle:card.defenceStyle});
+  if(activation?.attack.status==='inactive')aligned.attack_style=aligned.estilo_ataque='';
+  if(activation?.defence.status==='inactive')aligned.defence_style=aligned.estilo_defesa='';
+ }
  const context=interpretation.interpret(aligned,tactic,null);
  if(!context||context.role!==role||!Array.isArray(context.weights)||
     context.weights.length!==10)return pending('Interpretação individual da edição indisponível.');
+ const refined=interpretation.refineIndividual?.({weights:context.weights,role,tactic,card,
+  reference:card.reference===null?null:card.reference??deps?.reference??catalogueReference(card)});
+ const analysis=refined?.analysis;
  const baseline=parseBaseline(card,t);
- const levels=individual.allocate(context.weights,context.role,budget,baseline.levels);
+ const levels=individual.allocate(refined?.weights||context.weights,context.role,budget,baseline.levels);
  if(!t.valid(levels)||t.total(levels)!==budget)
   return pending('Motor V251 não encontrou distribuição compatível com os PP.');
  const differences=baseline.levels?t.CATEGORIES.flatMap((name,i)=>
@@ -120,8 +137,9 @@ function allocate(card,tactic,deps){
  return {
   status:'hipotese',role:context.role,levels,pp:budget,remaining:0,
   categories:t.CATEGORIES,style:tactic,
-  focus:{...t.focus(source,tactic),priority:context.priorities.slice(0,4).map(x=>({
+  focus:{...t.focus(source,tactic),priority:(analysis?.status==='preservada'?context.priorities:analysis?.priorities||context.priorities).slice(0,4).map(x=>({
    index:x.index,name:x.name,weight:x.weight}))},
+  ...(analysis?{analysis:{...analysis,context:[card.localKey,card.cardId,card.edition,card.position,tactic,budget].map(value=>String(value??''))}}:{}),
   evidence:[...context.signals],baselineValid:Boolean(baseline.levels),
   baselineError:baseline.error,differences,
   methodology:METHODOLOGY,
@@ -190,6 +208,10 @@ function professionalAudit(card,result){
 function functionReview(card,result,currentLevels,provided){
  const deps=getDeps(provided),t=deps.tactical,{interpretation}=primaryEngines(provided);
  const analysis=interpretation?.interpret?.(profileOf(card),result.tactic,null);
+ const individualAnalysis=result.plan.analysis||null;
+ const priorities=individualAnalysis&&individualAnalysis.status!=='preservada'?
+  individualAnalysis.priorities.map(p=>({...p,stats:individualAnalysis.factors.find(f=>f.index===p.index)?.reason||analysis?.priorities.find(a=>a.index===p.index)?.stats||''})):
+  analysis?.priorities||[];
  const budget=result.plan.pp??result.progress.pp;
  const role=result.plan.role||analysis?.role;
  const allowed=functionalAllowed(role,card);
@@ -236,7 +258,8 @@ function functionReview(card,result,currentLevels,provided){
   eligibleForLineup:position===sourcePosition||card.positionEvidence?.eligible===true,
   positionEvidence:card.positionEvidence?.text||
    (position===sourcePosition?'Posição original cadastrada':'Familiaridade secundária ainda não comprovada'),
-  priorities:(analysis?.priorities||[]).slice(0,4).map(x=>({index:x.index,category:x.name,attributes:x.stats})),
+  individualAnalysis,
+  priorities:priorities.slice(0,4).map(x=>({index:x.index,category:x.name,attributes:x.stats})),
   pp:Number.isInteger(budget)?budget:null,current,proposed,
   trainingGroups:proposed?t.CATEGORIES.flatMap((category,i)=>allowed.includes(i)?[{
    index:i,category,proposed:proposed[i],cost:t.ppCost(proposed[i]),current:current?.[i]??null
@@ -353,7 +376,7 @@ function evaluate(card,tactic='posse',deps){
  const {tactical:t,skills:s,boosters:b}=getDeps(deps);
  if(!t||!s||!b)throw Error('Um dos motores oficiais do Craque Tático não carregou.');
  const progress=resolveBudget(card);
- const plan=allocate(card,tactic,{tactical:t,skills:s,boosters:b});
+ const plan=allocate(card,tactic,{...deps,tactical:t,skills:s,boosters:b});
  const raw=profileOf(card);
  // V322: campos preenchidos NÃO equivalem a dados da edição conferidos.
  // Um placeholder alfabético, "pendente" ou "a confirmar" não é Card ID
@@ -444,5 +467,5 @@ function validateSaved(card,record,deps){
  return true;
 }
 return Object.freeze({MODES,LABEL,METHODOLOGY,levelBudget,resolveBudget,profileOf,sourceSignature,parseBaseline,allocate,evaluate,professionalAudit,
- functionReview,functionSheetText,FUNCTION_DRAFT_PREFIX,functionDraftKey,readFunctionDraft,saveFunctionDraft,generate,validateSaved});
+ catalogueReference,functionReview,functionSheetText,FUNCTION_DRAFT_PREFIX,functionDraftKey,readFunctionDraft,saveFunctionDraft,generate,validateSaved});
 });

@@ -8,7 +8,7 @@ assert.equal(new Set(data.cards.map(c=>String(c.numero)+'@'+String(c.id))).size,
 assert(source.includes("const sourceVerified=Boolean(possession)&&levelDocumented&&"),'Sem nível documentado não gerar cinco propostas automáticas');
 assert(source.includes("card.training_provisional!==true"),'Uma distribuição marcada como provisória não é base confiável');
 assert(source.includes("Number(card.pp)===2*(card.max_level-1)"),'Conferir nível e orçamento reais da edição');
-assert(source.includes("const fallback=sourceVerified?engine.hypothetical"),'Só gerar hipótese a partir da fonte conferida');
+assert(source.includes("const fallback=tactic==='posse'&&sourceVerified?engine.hypothetical"),'Restringir o motor histórico à fonte conferida de Posse');
 assert(source.includes("engine.total(fallback.levels)===budget"),'Respeitar orçamento exato de PP');
 assert(source.includes("verifiedInGameplay:false"),'Não declarar treino testado sem evidência');
 assert(source.includes("evidenceStatus:sourceVerified?"),'Expor incerteza ao motor de fichas');

@@ -110,24 +110,37 @@ function afterRestore(store,{legacy=false}={}){
  const doc=read(store);doc.active='primary';doc.primaryRestoreEpoch++;
  for(const p of Object.values(doc.plans.primary))p.stale=true;return save(store,doc);
 }
+function referenceFor(card,references=[]){
+ const id=String(card.cardId||'');
+ if(!/^\d{5,20}$/.test(id)||!card.edition)return null;
+ return references?.find(r=>r.identityUsable===true&&String(r.reference?.cardId)===id&&
+  [r.edition,r.reference?.edition].includes(card.edition))||null;
+}
 function roster(account,sources,store){
- if(account==='secondary')return read(store).secondary.cards.map(c=>({...c,instanceId:c.id,accountId:account,source:'secondary'}));
+ const privateCard=(c,source)=>({...c,instanceId:c.id,accountId:account,source,reference:referenceFor(c,sources?.references)});
+ if(account==='secondary')return read(store).secondary.cards.map(c=>privateCard(c,'secondary'));
  if(account!=='primary')throw Error('Conta desconhecida.');
- const original=(sources.originals||[]).map(c=>{const m=sources.positional?.fromPersonal(c,null,store);return {
+ const original=(sources.originals||[]).map(c=>{
+  const m=sources.positional?.fromPersonal(c,null,store),nativeSkills=m?m.nativeSkills:c.habilidades_nativas;
+  const fixedBooster=m?m.fixedBooster:c.impeto_fixo;
+  const trainingLevels=m?.trainingLevels?str(m.trainingLevels,300).split(/[,;\s]+/).filter(Boolean).map(Number):null;
+  return {
   id:'cap:'+c.numero,instanceId:'cap:'+c.numero,accountId:account,source:'original',capture:c.numero,name:c.name,cardId:m?.cardId||c.id,edition:m?.edition||c.versao,
-  position:position(m?.position||c.posicao),positions:[position(m?.position||c.posicao)],maxLevel:m?.level??c.max_level??null,pp:m?.pp??c.pp,
-  offenseStyle:m?.style||c.estilo_ataque||'',defenceStyle:m?.defenceStyle||c.estilo_defesa||'',nativeSkills:list(m?.nativeSkills||c.habilidades_nativas),skills:list(m?.skills||''),
-  nativeVerified:!!(m?.nativeSkills||c.habilidades_nativas),skillsVerified:!!m?.equipmentRecord,
-  fixedBoosters:(m?.fixedBooster||c.impeto_fixo)?[{name:m?.fixedBooster||c.impeto_fixo,value:null,verified:false}]:[],extraBooster:m?.booster?{name:m.booster,value:null,verified:false}:null,
+  position:position(m?.position||c.posicao),positions:[position(m?.position||c.posicao)],
+  maxLevel:m?(m.level??m.publicMaxLevel??null):c.max_level??null,pp:m?m.pp:c.pp,
+  offenseStyle:m?m.style:c.estilo_ataque||'',defenceStyle:m?m.defenceStyle:c.estilo_defesa||'',
+  nativeSkills:list(nativeSkills),skills:list(m?.skills||''),
+  nativeVerified:!!nativeSkills,skillsVerified:!!m?.equipmentRecord,
+  fixedBoosters:fixedBooster?[{name:fixedBooster,value:null,verified:false}]:[],extraBooster:m?.booster?{name:m.booster,value:null,verified:false}:null,
   boosterSlot:m?.boosterSlot||'pendente',boosterSlotSupported:false,identityVerified:false,
-  trainingLevels:m?.trainingLevels?str(m.trainingLevels,300).split(/[,;\s]+/).filter(Boolean).map(Number):c.niveis||null,image:c.imagem||'',
+  trainingLevels:m?trainingLevels:c.niveis||null,image:c.imagem||'',
   reference:(sources.references||[]).find(r=>r.capture===c.numero)||null,legacy:c};});
  const owned=(sources.owned||[]).map(c=>({id:c.key,instanceId:c.key,accountId:account,source:'owned',name:c.name,cardId:c.cardId||'',edition:c.edition||'',
   position:position(c.position),positions:[position(c.position)],maxLevel:c.maxLevel??null,pp:c.pp??null,offenseStyle:c.style||'',defenceStyle:'',
   nativeSkills:list(c.observed?.nativeSkills),skills:[],fixedBoosters:[],extraBooster:null,boosterSlot:'pendente',trainingLevels:null,image:c.image||'',legacy:c}));
  const extras=(sources.extras||[]).map(c=>({...c,id:'extra:'+c.id,instanceId:'extra:'+c.id,accountId:account,source:'extra'}));
- const privateCards=read(store).primary.cards.map(c=>({...c,instanceId:c.id,accountId:account,source:'private'}));
+ const privateCards=read(store).primary.cards.map(c=>privateCard(c,'private'));
  return [...original,...owned,...extras,...privateCards];
 }
-return Object.freeze({KEY,SCHEMA,DRAFT,MAX_BYTES,POS,position,cost,empty,validate,normalCard,normalManager,normalObservation,MATCH_MODES,MATCH_SIGNALS,read,save,select,importDraft,afterRestore,roster,evidenceIdentity});
+return Object.freeze({KEY,SCHEMA,DRAFT,MAX_BYTES,POS,position,cost,empty,validate,normalCard,normalManager,normalObservation,MATCH_MODES,MATCH_SIGNALS,read,save,select,importDraft,afterRestore,roster,referenceFor,evidenceIdentity});
 });

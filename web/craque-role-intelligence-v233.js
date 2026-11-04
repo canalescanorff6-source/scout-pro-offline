@@ -202,6 +202,122 @@
    warning:'Interpretação orientada por posição e evidências do cadastro; NÃO comprova meta, animações, atributos finais ou superioridade em partida.'
   };
  }
+ const INDIVIDUAL_VERSION='prioridades-individuais-v389';
+ const AXES={
+  normal:{0:['finishing'],1:['low_pass','lofted_pass'],2:['ball_control','tight_possession'],
+   3:['acceleration','balance'],4:['speed','stamina'],5:['physical_contact','jumping'],
+   6:['defensive_awareness','tackling','defensive_engagement']},
+  rapido:{0:['finishing'],1:['low_pass','lofted_pass'],2:['ball_control','dribbling'],
+   3:['offensive_awareness','acceleration','balance'],4:['speed','stamina'],5:['physical_contact'],
+   6:['tackling','defensive_engagement']},
+  fora:{0:['finishing'],1:['low_pass','lofted_pass'],2:['ball_control','dribbling','tight_possession'],
+   3:['acceleration','balance'],4:['speed','stamina'],5:['heading','jumping'],
+   6:['defensive_awareness','defensive_engagement']},
+  longo:{0:['finishing'],1:['lofted_pass'],2:['ball_control','tight_possession'],
+   3:['offensive_awareness','balance'],4:['speed','stamina'],5:['heading','jumping','physical_contact'],
+   6:['defensive_awareness','tackling','defensive_engagement']}
+ };
+ const KEEPER_AXES={7:['gk_awareness'],8:['gk_parrying','gk_reach'],9:['gk_catching','gk_reflexes']};
+ const TASK_LABELS={normal:'transição organizada',rapido:'transição rápida',fora:'progressão pelo corredor',longo:'ligação direta e segunda bola'};
+ const STAT_LABELS={finishing:'finalização',low_pass:'passe rasteiro',lofted_pass:'passe alto',
+  ball_control:'controle de bola',tight_possession:'posse apertada',dribbling:'drible',offensive_awareness:'consciência ofensiva',
+  acceleration:'aceleração',balance:'equilíbrio',speed:'velocidade',stamina:'resistência',physical_contact:'contato físico',
+  jumping:'salto',heading:'cabeceio',defensive_awareness:'consciência defensiva',tackling:'desarme',
+  defensive_engagement:'engajamento defensivo',gk_awareness:'consciência de goleiro',gk_parrying:'rebatida do goleiro',
+  gk_reach:'alcance do goleiro',gk_catching:'segurança nas mãos',gk_reflexes:'reflexos do goleiro'};
+ const SPECIAL_SKILLS=[
+  [0,'phenomenal finishing','Finalização fenomenal'],[1,'visionary pass','Passe visionário'],
+  [2,'magnetic feet','Pés magnéticos'],[5,'aerial superiority','Superioridade aérea'],
+  [6,'sliding tackle','Carrinho']
+ ];
+ const clamp=(x,min,max)=>Math.max(min,Math.min(x,max));
+ const round=x=>Math.round(x*100)/100;
+ const avg=values=>values.reduce((sum,value)=>sum+value,0)/values.length;
+ const canonicalSkill=value=>clean(value).replace(/[^a-z0-9]+/g,' ').trim();
+ function individualReference(card,entry){
+  const ref=entry?.reference,id=String(card?.cardId??card?.id??card?.card_id??''),edition=String(card?.edition??card?.versao??'');
+  if(entry?.identityUsable!==true||!ref||!/^\d{5,20}$/.test(id)||String(ref.cardId)!==id||!edition||
+     ![entry.edition,ref.edition].includes(edition)||
+     !/^https:\/\/[^/\s]+\/[^\s]+$/.test(String(ref.url||''))||
+     !/^[a-f0-9]{64}$/i.test(String(ref.htmlSha256||'')))return null;
+  if(entry.cardId&&String(entry.cardId)!==id)return null;
+  const capture=Number(card?.capture??card?.numero);
+  if(Number.isInteger(capture)&&capture>0&&capture!==entry.capture)return null;
+  return ref;
+ }
+ function evidenceSignature(value){
+  const data=JSON.stringify(value);let h=2166136261;
+  for(let i=0;i<data.length;i++)h=Math.imul(h^data.charCodeAt(i),16777619)>>>0;
+  return INDIVIDUAL_VERSION+':'+data.length+':'+h.toString(16);
+ }
+ function refineIndividual({weights,role,tactic,card,reference}){
+  const refined=weights.slice(),factors=[];
+  const priorities=()=>refined.flatMap((weight,index)=>weight>0?[
+   {index,name:CATEGORY[index].name,category:CATEGORY[index].name,weight}]:[]).sort((a,b)=>b.weight-a.weight||a.index-b.index);
+  const finish=(status,reason,ref=null)=>({weights:refined,analysis:{version:INDIVIDUAL_VERSION,role,tactic,status,reason,factors,priorities:priorities(),
+   evidenceSignature:ref?evidenceSignature([ref.cardId,ref.edition,ref.url,ref.htmlSha256,role,tactic,factors]):null,
+   reference:ref?{cardId:ref.cardId,edition:ref.edition,url:ref.url,htmlSha256:ref.htmlSha256}:null}});
+  if(tactic==='posse')return finish('preservada','Prioridades da Posse de Bola preservadas.');
+  const ref=individualReference(card,reference);
+  if(!ref||!Object.hasOwn(AXES,tactic)||!Object.hasOwn(ROLES,role))
+   return finish('dados_insuficientes','Atributos-base com origem e vínculo à edição exata ainda pendentes.');
+  const axes=role==='GO'?KEEPER_AXES:AXES[tactic];
+  const axesForRole=Object.entries(axes).filter(([i])=>ROLES[role].weights[i]>0&&weights[i]>0);
+  const groups=axesForRole.map(([i,keys])=>({index:Number(i),attributes:keys.flatMap(key=>{
+   const value=ref.baseStats?.[key];
+   return Number.isInteger(value)&&value>=0&&value<=120?[{key,label:STAT_LABELS[key],value}]:[];
+  })})).filter(g=>g.attributes.length);
+  if(groups.length<2)return finish('dados_insuficientes','Base numérica documentada insuficiente para comparar as prioridades da função.',ref);
+  const complete=groups.reduce((n,g)=>n+g.attributes.length,0)===axesForRole.reduce((n,[,keys])=>n+keys.length,0);
+  const nativeList=reference.candidateSkillsMatch===false?[]:ref.nativeSkills;
+  const skills=new Set((Array.isArray(nativeList)?nativeList:[]).map(canonicalSkill));
+  const declaredFixed=clean(card.fixedBooster||card.impeto_fixo||card.boost1);
+  const fixed=(Array.isArray(ref.fixedBoosters)?ref.fixedBoosters:[]).filter(b=>
+   typeof b?.name==='string'&&b.name.trim()&&b.stats&&typeof b.stats==='object'&&
+   !Array.isArray(b.stats)&&Object.keys(b.stats).length>0&&
+   Object.values(b.stats).every(n=>Number.isInteger(n)&&n>=1&&n<=5)&&
+   (!declaredFixed||/pendente|nao confirmado|nao exposto/.test(declaredFixed)||declaredFixed.includes(clean(b.name))));
+  // Editorial comparison within the same card. Compare the documented axes
+  // required by the task, rather than assuming a universal gameplay target.
+  const centre=avg(groups.map(g=>avg(g.attributes.map(a=>a.value))));
+  for(const {index,attributes} of groups){
+   const category=CATEGORY[index].name;
+   const relevance=Math.min(1,ROLES[role].weights[index]/12);
+   const modifiers=[];
+   const apply=(kind,delta,reason,details={})=>{
+    const adjusted=round(Math.max(0,refined[index]+relevance*delta));
+    const applied=round(adjusted-refined[index]);
+    if(applied===0)return;
+    refined[index]=adjusted;modifiers.push({kind,delta:applied,reason,...details});
+   };
+   const stats=attributes.map(a=>a.label+' '+a.value).join(', ');
+   const baseDelta=clamp((centre-avg(attributes.map(a=>a.value)))/3,-6,6);
+   apply('base',baseDelta,stats+' · '+(baseDelta>0?'reforçar uma margem da edição':'preservar uma força da edição')+' para '+TASK_LABELS[tactic]+'.',{attributes});
+   for(const booster of fixed){
+    const coverage=attributes.filter(a=>Object.hasOwn(booster.stats,a.key));
+    if(coverage.length)apply('fixed',-avg(attributes.map(a=>booster.stats[a.key]||0))/3,
+     booster.name+' já cobre '+coverage.map(a=>a.label).join(', ')+' na referência da edição.');
+   }
+   const special=SPECIAL_SKILLS.find(([group,key])=>group===index&&skills.has(key));
+   if(special)apply('native',1.25,special[2]+' é nativa documentada e complementa este recurso.');
+   // Height has a small supporting role in aerial tasks with documented
+   // heading and jumping. No score is derived from height on its own.
+   if(index===5&&['fora','longo'].includes(tactic)&&Number.isInteger(ref.height)&&ref.height>=120&&ref.height<=230&&
+      attributes.some(a=>a.key==='heading')&&attributes.some(a=>a.key==='jumping'))
+    apply('height',clamp((180-ref.height)/12,-1.5,1.5),
+     ref.height+' cm considerados junto ao cabeceio e salto na disputa aérea.',{height:ref.height});
+   const delta=round(refined[index]-weights[index]);
+   if(delta){
+    const reason=modifiers.map(item=>item.reason).join(' ');
+    factors.push({index,category,delta,reason,text:reason,label:category,attributes,
+     modifiers,previousWeight:weights[index],weight:refined[index]});
+   }
+  }
+  if(!factors.length)return finish('calculada','A evidência disponível não alterou as prioridades desta função.',ref);
+  return finish(complete?'documentada':'calculada',complete?
+   'Prioridades refinadas com dados da edição, em simulação de PP.':
+   'Prioridades refinadas com os atributos disponíveis. A base desta função está incompleta.',ref);
+ }
  function rating(vec,weights,indices){
   return indices.reduce((acc,i)=>{
    const x=vec[i],excess=Math.max(0,x-8);
@@ -253,7 +369,7 @@
    note:'Comparação matemática de investimento; não foi testada em partidas e não substitui os treinos aprovados.'
   },reason:'Redistribuição hipotética calculada respeitando os PP da mesma edição; exige comparação em campo.'};
  }
- const api=Object.freeze({CATEGORY,ROLES,MODES,interpret,compare,levelDocumented,identityIssues,clean});
+ const api=Object.freeze({CATEGORY,ROLES,MODES,interpret,refineIndividual,compare,levelDocumented,identityIssues,clean});
  if(typeof module==='object'&&module.exports)module.exports=api;
  if(host)host.CRAQUE_INTERPRETATION_V233=api;
 })(typeof window!=='undefined'?window:null);

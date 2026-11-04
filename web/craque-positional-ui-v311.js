@@ -43,6 +43,22 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
   for(const source of r.sources){const p=el('p'),a=el('a','',source.title);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';p.append(a);info.append(p);}
   block.append(info);
  }
+ const calculation=review.individualAnalysis;
+ if(calculation&&calculation.status!=='preservada'){
+  const why=el('details','ct378-about');
+  why.append(el('summary','','Por que esta ficha foi escolhida?'),el('p','',calculation.reason));
+  const factors=el('ul');
+  for(const factor of calculation.factors)factors.append(el('li','',factor.category+' · '+factor.reason));
+  if(factors.children.length)why.append(factors);
+  if(calculation.reference){
+   const source=el('a','','Consultar a edição usada no cálculo');
+   source.href=calculation.reference.url;source.target='_blank';source.rel='noopener noreferrer';why.append(source);
+  }
+  const repeats=review.repetitionAudit;
+  if(repeats?.documentedPairs)why.append(el('p','ct311-note',repeats.documentedPairs+' outra(s) carta(s) chegaram ao mesmo vetor após análise individual neste contexto auditado.'));
+  if(repeats?.pendingPairs)why.append(el('p','ct311-note',repeats.pendingPairs+' coincidência(s) neste contexto ainda dependem de dados da edição.'));
+  block.append(why);
+ }
  if(review.levelRevision){const r=review.levelRevision;block.append(el('p','ct381-level-note',
   'PP revisados: '+r.beforePP+' → '+r.afterPP+'. Esta proposta usa o orçamento corrigido. O histórico anterior permanece preservado.'));}
  // V381: fontes mundiais no MESMO painel de treino, habilidades e ímpetos.
@@ -785,13 +801,13 @@ function create(target,model,opts={}){
    const reference=savedProfile?.train||recorded?.levels;
    const publicReference=host.CRAQUE_REFERENCES_V376?.cards.find(c=>c.cardKey===model.cardKey);
    const selection={source:savedProfile?'profile':recorded?'revision':'proposal',reference:publicReference,
-    managerLabel:coaching};
+    managerLabel:coaching,managerId:scenario.manager};
    if(savedProfile){selection.levels=savedProfile.train;selection.skills=savedProfile.skills||[];selection.booster=savedProfile.booster||'';}
    else if(recorded){selection.levels=recorded.levels;
     selection.skills=(recorded.recommendations||[]).map(s=>s.name);selection.booster=recorded.booster||'';}
    if(mainEngine&&model.collection==='minhas-246')try{
     const input={...reviewCard,equipmentRecord:model.equipmentRecord};
-    const proposalSelection={source:'proposal',reference:publicReference,managerLabel:coaching};
+    const proposalSelection={source:'proposal',reference:publicReference,managerLabel:coaching,managerId:scenario.manager};
     const alternative=savedProfile||recorded?mainEngine.resolve(input,outcome,proposalSelection):null;
     const comparisonContext=JSON.stringify([scenario.id,scenario.contentSignature,
      savedProfile?'profile':'revision',savedProfile?.revision??recorded?.revision??null]);
@@ -804,6 +820,10 @@ function create(target,model,opts={}){
    }
    catch(e){profileError=String(e.message||e);}
    const review=mainSheet?.review||reviewEngine.functionReview(reviewCard,outcome,reference);
+   if(mainSheet){
+    active={...scenario,outcome:mainSheet.result};
+    if(!review.canSave)save.disabled=true;
+   }
    review.managerId=scenario.manager;
    mainBlock=reviewPanel(review,{
     main:Boolean(mainSheet),
