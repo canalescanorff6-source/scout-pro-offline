@@ -88,6 +88,27 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
     el('td','',delta===null?'—':(delta>0?'+':'')+delta));table.append(row);
   });
   compare.append(table);block.append(compare);
+  if(review.matchTrial){
+   const trial=review.matchTrial,experiment=el('details','ct378-about ct389-match-trial');
+   experiment.append(el('summary','','Comparar em partida · ficha A/B'),el('p','',trial.task),
+    el('p','ct311-note','Mesmo orçamento de '+review.pp+' PP. Projeções antes de bônus do técnico, ímpetos e condição.'),
+    el('h4','','Atributos · ficha recomendada → variante de teste'));
+   const attributes=el('dl','ct375-training');
+   for(const attr of trial.attributes){
+    const row=el('div');row.append(el('dt','',attr.label),el('dd','',attr.current+' → '+attr.alternative));attributes.append(row);
+   }
+   experiment.append(attributes,el('h4','','Variante B · níveis por grupo'));
+   const groups=el('dl','ct375-training');
+   for(const group of review.trainingGroups){
+    const row=el('div'),level=trial.alternative[group.index];
+    row.append(el('dt','',group.category),el('dd','',level+' níveis'),el('small','',t.ppCost(level)+' PP'));groups.append(row);
+   }
+   const source=el('a','','Pesquisa que orientou a comparação');
+   source.href=trial.source;source.target='_blank';source.rel='noopener noreferrer';
+   experiment.append(groups,el('p','',trial.measure),
+    el('p','ct311-note','Simulação para PvP. Use a mesma posição, técnico, instruções, habilidades e ímpeto com as duas fichas.'),source);
+   block.append(experiment);
+  }
  }else block.append(el('p','ct311-alert','PP pendentes: confirme o nível máximo da edição para calcular a distribuição.'));
  const inventory=el('details','ct374-native-inventory');
  inventory.append(el('summary','','Nativas desta carta · '+review.nativeSkills.length+(review.nativeSource==='public'?' · referência pública':'')),

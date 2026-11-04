@@ -84,4 +84,31 @@ assert.deepEqual(saved.review.boosters, []);
 assert.deepEqual(saved.result.booster.alternatives, []);
 assert.equal(saved.review.repetitionAudit, null);
 assert.equal(saved.result.plan.analysis, null);
-console.log('V389 PASS: edição, posição, técnico, ficha manual, coincidência e prévia.');
+
+const trials = [
+  { id: 183, tactic: 'rapido', pp: 62, alternative: [8, 5, 6, 10, 8, 5, 0, 0, 0, 0], stats: ['Aceleração', 82, 84] },
+  { id: 109, tactic: 'normal', pp: 64, alternative: [2, 8, 5, 8, 8, 6, 8, 0, 0, 0], stats: ['Passe rasteiro', 90, 90] },
+  { id: 191, tactic: 'fora', pp: 66, alternative: [4, 8, 10, 8, 8, 4, 4, 0, 0, 0], stats: ['Drible', 87, 89] },
+  { id: 178, tactic: 'longo', pp: 60, alternative: [8, 5, 6, 7, 7, 8, 2, 0, 0, 0], stats: ['Contato físico', 94, 94] }
+];
+for (const { id, tactic, pp, alternative, stats } of trials) {
+  const current = context(id, undefined, tactic);
+  const sheet = resolve(current);
+  const trial = sheet.review.matchTrial;
+  assert.ok(trial, 'Comparação disponível para a edição e a proposta exatas');
+  assert.deepEqual(trial.alternative, alternative);
+  assert.equal(deps.tactical.total(trial.alternative), pp);
+  assert.deepEqual(sheet.review.proposed, current.outcome.plan.levels);
+  assert.deepEqual(sheet.result.plan.levels, current.outcome.plan.levels);
+  assert(trial.attributes.some(row => row.label === stats[0] && row.current === stats[1] && row.alternative === stats[2]));
+  assert(Sheet.text(sheet.review).includes('COMPARAR EM PARTIDA'));
+  assert.equal(resolve(current, { levels: sheet.review.proposed, source: 'profile' }).review.matchTrial, undefined);
+  assert.equal(resolve(current, { reference: { ...current.reference, reference: {
+    ...current.reference.reference, htmlSha256: 'a'.repeat(64)
+  } } }).review.matchTrial, undefined);
+  assert.equal(resolve({ ...current, card: { ...current.card, pp: pp + 2 } }).review.matchTrial, undefined);
+  assert.equal(resolve(context(id, undefined, 'posse')).review.matchTrial, undefined);
+}
+assert.equal(resolve(context(183, 'SA', 'rapido')).review.matchTrial, undefined);
+assert.equal(resolve({ ...aubameyang, card: { ...aubameyang.card, edition: nihat.card.edition } }).review.matchTrial, undefined);
+console.log('V389 PASS: edição, posição, técnico, ficha manual, coincidência, prévia e quatro comparações de mesmo PP.');

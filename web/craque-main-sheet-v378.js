@@ -25,6 +25,58 @@ function repetitionAudit(card,result,selection){
     JSON.stringify(match.levels)!==JSON.stringify(plan.levels))return null;
  return {documentedPairs:match.documentedPairs,pendingPairs:match.pendingPairs};
 }
+// Comparações editoriais com orçamento igual e ações observáveis em PvP.
+// Cada par pertence à edição, posição e proposta que foram analisadas.
+const matchTrials={
+ '183@105812156521859|rapido':{
+  position:'CA',sha:'b21eaea0bd3ec58990b465ed460b5843851ec4e4f8325643e8f8a3d4205283d0',
+  current:[8,5,6,8,8,8,0,0,0,0],alternative:[8,5,6,10,8,5,0,0,0,0],
+  task:'Atacar o espaço nas costas da defesa',
+  measure:'Conte quantos passes em profundidade ele alcança com vantagem e quantas disputas de corpo perde.',
+  attributes:{acceleration:'Aceleração',offensive_awareness:'Talento ofensivo',balance:'Equilíbrio',physical_contact:'Contato físico'},
+  source:'https://efhub.com/articles/261017_4-acceleration-thresholds-decoded'
+ },
+ '109@105858864355084|normal':{
+  position:'VOL',sha:'79c042dd85b369632a34394d8828258daeab3fb44f4f5e72a62cee058ca09473',
+  current:[2,8,5,6,8,8,8,0,0,0],alternative:[2,8,5,8,8,6,8,0,0,0],
+  task:'Girar e soltar o primeiro passe após recuperar',
+  measure:'Conte as saídas com passe completado sob pressão e as perdas no contato antes de tocar.',
+  attributes:{low_pass:'Passe rasteiro',acceleration:'Aceleração',balance:'Equilíbrio',physical_contact:'Contato físico'},
+  source:'https://efhub.com/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed'
+ },
+ '191@105850811319718|fora':{
+  position:'PTE',sha:'fdc69410cf15c0a9fe244e80da4eaafc4554bef34689427dc5c4c18616781f56',
+  current:[7,8,8,8,8,4,4,0,0,0],alternative:[4,8,10,8,8,4,4,0,0,0],
+  task:'Avançar pelo corredor e servir a área',
+  measure:'Conte quantas vezes supera o lateral e cria um passe útil. Compare também as finalizações quando corta para dentro.',
+  attributes:{ball_control:'Controle de bola',dribbling:'Drible',tight_possession:'Condução firme',finishing:'Finalização'},
+  source:'https://efhub.com/articles/260909_2-major-changes-to-how-dribbling-feels'
+ },
+ '178@105727599353018|longo':{
+  position:'CA',sha:'5fb7ee24798842d463447aae006bef3d3aaca11c2cb209de7be92b0874323433',
+  current:[8,7,4,7,7,8,2,0,0,0],alternative:[8,5,6,7,7,8,2,0,0,0],
+  task:'Dominar a ligação direta e entregar a segunda bola',
+  measure:'Conte quantas bolas longas ele domina e quantas consegue devolver a um companheiro sem perder a posse.',
+  attributes:{ball_control:'Controle de bola',tight_possession:'Condução firme',physical_contact:'Contato físico',lofted_pass:'Passe alto'},
+  source:'https://efhub.com/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed'
+ }
+};
+function matchTrial(card,result,reference,valid,T){
+ const trial=matchTrials[card.localKey+'|'+result.tactic],plan=result.plan;
+ if(!trial||trial.position!==card.position||trial.sha!==reference?.htmlSha256||
+    plan.analysis?.status!=='documentada'||plan.analysis.reference?.htmlSha256!==trial.sha||
+    !plan.levels?.every((level,index)=>level===trial.current[index])||!valid(trial.alternative))return null;
+ if(T.total(trial.alternative)!==plan.pp)return null;
+ const rating=host?.CRAQUE_RATING_V376||(typeof module==='object'?require('./craque-rating-v376.js'):null);
+ if(!rating)return null;
+ const attributes=[];
+ for(const [key,label] of Object.entries(trial.attributes)){
+  const index=rating.GROUPS.findIndex(group=>group.includes(key)),base=reference.baseStats?.[key];
+  if(index<0||!Number.isInteger(base))return null;
+  attributes.push({label,current:base+trial.current[index],alternative:base+trial.alternative[index]});
+ }
+ return {task:trial.task,measure:trial.measure,source:trial.source,alternative:trial.alternative.slice(),attributes};
+}
 function resolve(input,outcome,selection={},provided){
  const d=dependencies(provided),F=d.training,S=d.skills,B=d.boosters,T=d.tactical;
  if(!F||!S||!B||!T||!outcome?.plan)throw Error('Motor da ficha indisponível');
@@ -68,6 +120,8 @@ function resolve(input,outcome,selection={},provided){
   freeSkillSlots:Number.isInteger(skills.slotsRemaining)?skills.slotsRemaining:null};
  const review=F.functionReview(card,result,undefined,{...d});
  review.repetitionAudit=repetitionAudit(card,result,selection);
+ const trial=!manual&&exactReference&&matchTrial(card,result,reference.reference,valid,T);
+ if(trial)review.matchTrial=trial;
  const current=F.parseBaseline(card,T).levels,baseline=valid(current)?current.slice():null;
  const changes=baseline&&vector?vector.flatMap((to,i)=>to===baseline[i]?[]:[{
   index:i,category:T.CATEGORIES[i],from:baseline[i],to,deltaPP:T.ppCost(to)-T.ppCost(baseline[i])}]):[];
@@ -141,7 +195,14 @@ function resolve(input,outcome,selection={},provided){
 }
 function text(review){
  const F=host?.CRAQUE_FRIEND_TRAINING_V228||(typeof module==='object'?require('./craque-friends-training-v228.js'):null);
- const sheet=F.functionSheetText(review).replace('TREINO PROPOSTO',review.sourceLabel||'TREINO DA FICHA');
+ let sheet=F.functionSheetText(review).replace('TREINO PROPOSTO',review.sourceLabel||'TREINO DA FICHA');
+ if(review.matchTrial){
+  const trial=review.matchTrial;
+  sheet+=[ '', '', 'COMPARAR EM PARTIDA · SIMULAÇÃO',trial.task,
+   'Variante B · '+review.pp+' PP · '+review.trainingGroups.map(g=>g.category+' '+trial.alternative[g.index]).join(' · '),
+   'Projeção antes de bônus · '+trial.attributes.map(a=>a.label+' '+a.current+' → '+a.alternative).join(' · '),
+   'Use a mesma posição, técnico, instruções, habilidades e ímpeto com as duas fichas.',trial.measure,trial.source].join('\n');
+ }
  const analysis=review.individualAnalysis;
  const repeats=review.repetitionAudit;
  return analysis?[sheet,'','MOTIVOS DA FICHA',analysis.reason,...analysis.factors.map(f=>f.category+' · '+f.reason),
