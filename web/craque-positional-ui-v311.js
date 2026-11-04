@@ -44,9 +44,16 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
   block.append(info);
  }
  const calculation=review.individualAnalysis;
+ if(calculation?.task&&review.proposed)block.append(el('p','ct311-confirm','Foco da ficha · '+calculation.task.label));
  if(calculation&&calculation.status!=='preservada'){
   const why=el('details','ct378-about');
   why.append(el('summary','','Por que esta ficha foi escolhida?'),el('p','',calculation.reason));
+  if(calculation.task&&review.proposed){
+   const mechanics=el('a','','Referência da ação priorizada');
+   mechanics.href=calculation.task.source;mechanics.target='_blank';mechanics.rel='noopener noreferrer';
+   why.append(el('p','',calculation.task.stats.map(s=>s.label+' '+s.base+(s.fixed?' +'+s.fixed+' fixo':'')+' → '+(Math.min(99,s.base+review.proposed[s.group])+s.fixed)).join(' · ')),
+    el('p','ct311-note','Projeção de treino e ímpeto fixo documentado, antes dos bônus do técnico e da condição em jogo.'),mechanics);
+  }
   const factors=el('ul');
   for(const factor of calculation.factors)factors.append(el('li','',factor.category+' · '+factor.reason));
   if(factors.children.length)why.append(factors);
@@ -140,7 +147,7 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
    ' A recomendação não equipa o ímpeto.'));block.append(section);
  }
  if(main&&!review.boosters.length)block.append(el('h4','','Ímpeto adicional'),el('p','ct311-note',
-  review.competitiveReview?.slotNote||(review.boosterSlot==='ausente'?'Esta carta está cadastrada sem slot adicional.':
+  review.slotNote||review.competitiveReview?.slotNote||(review.boosterSlot==='ausente'?'Esta carta está cadastrada sem slot adicional.':
    review.sourceKind==='profile'?'Nenhum ímpeto selecionado nesta ficha salva.':'Indicação pendente de dados da edição.')));
  if(review.tests.length)block.append(el('p','ct311-note','Observar em jogo: '+review.tests.join(' · ')));
  const exportStatus=el('p','ct375-copy-status');exportStatus.setAttribute('role','status');

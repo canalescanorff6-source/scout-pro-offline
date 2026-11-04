@@ -10,7 +10,7 @@ function sample(capture,tactic='rapido'){
  const c=cards.find(row=>row.numero===capture);
  const reference=references.find(row=>row.capture===capture);
  const card={capture,localKey:reference.cardKey,cardId:c.id,edition:c.versao,
-  position:c.posicao,nativeSkills:c.habilidades_nativas,fixedBooster:c.impeto_fixo};
+  position:c.posicao,style:c.estilo_ataque,defenceStyle:c.estilo_defesa,nativeSkills:c.habilidades_nativas,fixedBooster:c.impeto_fixo};
  const {weights,role}=I.interpret(c,tactic,null);
  return {weights,role,tactic,card,reference,pp:c.pp};
 }
@@ -60,4 +60,24 @@ for(const tactic of ['normal','rapido','fora','longo']){
 const possession=sample(37,'posse');
 assert.deepEqual(I.refineIndividual(possession).weights,possession.weights);
 assert.equal(I.refineIndividual(possession).analysis.status,'preservada');
+const depth=I.refineIndividual(sample(183,'rapido'));
+const outlet=I.refineIndividual(sample(109,'normal'));
+const receiver=I.refineIndividual(sample(178,'longo'));
+const launcher=I.refineIndividual(sample(109,'longo'));
+const wing=I.refineIndividual(sample(191,'fora'));
+assert.equal(depth.analysis.task.key,'depth');
+assert.equal(outlet.analysis.task.key,'outlet');
+assert.equal(receiver.analysis.task.key,'receive');
+assert.equal(launcher.analysis.task.key,'launch');
+assert.equal(wing.analysis.task.key,'carry');
+const pivot = sample(178,'longo');
+assert.equal(I.refineIndividual({...pivot,card:{...pivot.card,trainingFunction:'finish'}}).analysis.task.key,'depth');
+const central = sample(4,'rapido');
+assert.equal(I.refineIndividual({...central,card:{...central.card,trainingFunction:'anchor'}}).analysis.task.key,'screen');
+assert.equal(I.refineIndividual({...pivot,card:{...pivot.card,trainingDefensive:true}}).analysis.task.key,'outlet');
+assert.equal(depth.utility[3].length,21);
+assert(depth.utility[3][8]-depth.utility[3][7]>depth.utility[3][19]-depth.utility[3][18]);
+assert.equal(T.total(allocate(depth.weights,'CA',62,null,{utility:depth.utility})),62);
+assert.equal(I.refineIndividual(possession).utility,null);
+assert.equal(unverified.utility,null);
 console.log('V389 PASS: artilheiros, primeiros volantes, evidência da edição, PP exatos e preservação da Posse.');

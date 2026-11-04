@@ -60,6 +60,7 @@ function compile(options,cards){
 }
 function engineCard(member,context){const c=member.card;return {accountId:context.accountId,localKey:localKey(c),cardId:String(c.cardId||''),edition:c.edition||'',name:c.name,
  capture:c.capture??null,managerId:context.manager?.id||'',
+ trainingFunction:context.functions?.[c.id],trainingDefensive:member.instructions.some(i=>i.type==='defensive'),
  position:member.slot.position,originalPosition:c.position,positionEvidence:{eligible:member.eligible,text:member.eligible?'Posições cadastradas nesta conta':'Familiaridade a conferir; simulação'},
  style:member.activation?.attack.status==='active'?c.offenseStyle:'',defenceStyle:member.activation?.defence.status==='active'?c.defenceStyle:'',level:c.maxLevel,pp:c.pp,nativeSkills:c.nativeVerified?(c.nativeSkills||[]).join('; '):'',skills:(c.skills||[]).join('; '),
  fixedBooster:c.fixedBoosters?.[0]?.name||'',booster:c.extraBooster?.name||'',boosterSlot:c.boosterSlot||'pendente',
@@ -79,14 +80,14 @@ function weightsFor(member,context,deps){
  if(role==='GO'){weights[1]=Math.max(weights[1],3);weights[4]=Math.max(weights[4],3);weights[5]=Math.max(weights[5],3);}
  else weights[7]=Math.max(0,weights[5]*0.35);
  const refined=overload?null:deps.interpretation.refineIndividual({weights,role,tactic:context.style,card,reference:member.card.reference});
- return {weights:refined?.weights||weights,analysis:refined?.analysis||null,role,reasons,
+ return {weights:refined?.weights||weights,utility:refined?.utility,analysis:refined?.analysis||null,role,reasons,
   method:overload?'Sobreposição: proposta editorial de compactação e apoio; sem fórmula de rendimento':'V233 com prioridades explícitas do contexto do time'};
 }
 function evaluateCard(context,slotId,deps){
  const member=context.members.find(m=>m.slot.id===slotId);if(!member)throw Error('Escolha a carta desta vaga.');
  const card=engineCard(member,context),axes=weightsFor(member,context,deps),progress=deps.training.resolveBudget(card),pp=progress.pp;
  const baseline=deps.training.parseBaseline(card,deps.tactical).levels;
- const levels=deps.individual.allocate(axes.weights,axes.role,pp,baseline,{physicalGroups:true});
+ const levels=deps.individual.allocate(axes.weights,axes.role,pp,baseline,{physicalGroups:true,utility:axes.utility});
  let result,review;
  if(context.style!=='overload'){
   result=deps.training.evaluate(card,context.style,deps);result={...result,plan:{...result.plan,analysis:axes.analysis,

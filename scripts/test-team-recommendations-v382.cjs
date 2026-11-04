@@ -38,6 +38,16 @@ for(const [i,context] of contexts.entries()){
  a.deepEqual(published.boosters,evaluated.review.boosters);
  a.equal(T.total(published.proposed),published.pp);
 }
+const lukaku=primary.find(c=>c.capture===178);
+const pivotContext=privateLibrary.individualContext(lukaku,{style:'longo',functionKey:'pivot'});
+const finishContext=privateLibrary.individualContext(lukaku,{style:'longo',functionKey:'finish'});
+const pivotReview=C.recommend(pivotContext,deps).cards[0].review;
+const finishReview=C.recommend(finishContext,deps).cards[0].review;
+a.equal(pivotReview.individualAnalysis.task.key,'receive');
+a.equal(finishReview.individualAnalysis.task.key,'depth');
+a.notDeepEqual(pivotReview.proposed,finishReview.proposed);
+a.equal(T.total(pivotReview.proposed),60);
+a.equal(T.total(finishReview.proposed),60);
 const fixedNames=new Set(forwards[0].fixedBoosters.map(b=>deps.boosters.boosterName(b.name)));
 const overlap=C.recommend(privateLibrary.individualContext(forwards[0],{style:'overload'}),deps).cards[0].review;
 a(overlap.boosters.every(b=>!fixedNames.has(deps.boosters.boosterName(b.technicalName))),'Sobreposição exclui o ímpeto fixo');

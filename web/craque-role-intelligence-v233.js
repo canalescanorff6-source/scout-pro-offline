@@ -202,7 +202,7 @@
    warning:'Interpretação orientada por posição e evidências do cadastro; NÃO comprova meta, animações, atributos finais ou superioridade em partida.'
   };
  }
- const INDIVIDUAL_VERSION='prioridades-individuais-v389';
+ const INDIVIDUAL_VERSION='prioridades-por-acao-v390';
  const AXES={
   normal:{0:['finishing'],1:['low_pass','lofted_pass'],2:['ball_control','tight_possession'],
    3:['acceleration','balance'],4:['speed','stamina'],5:['physical_contact','jumping'],
@@ -220,11 +220,60 @@
  const KEEPER_AXES={7:['gk_awareness'],8:['gk_parrying','gk_reach'],9:['gk_catching','gk_reflexes']};
  const TASK_LABELS={normal:'transição organizada',rapido:'transição rápida',fora:'progressão pelo corredor',longo:'ligação direta e segunda bola'};
  const STAT_LABELS={finishing:'finalização',low_pass:'passe rasteiro',lofted_pass:'passe alto',
-  ball_control:'controle de bola',tight_possession:'posse apertada',dribbling:'drible',offensive_awareness:'consciência ofensiva',
+  ball_control:'controle de bola',tight_possession:'condução firme',dribbling:'drible',offensive_awareness:'talento ofensivo',
   acceleration:'aceleração',balance:'equilíbrio',speed:'velocidade',stamina:'resistência',physical_contact:'contato físico',
-  jumping:'salto',heading:'cabeceio',defensive_awareness:'consciência defensiva',tackling:'desarme',
-  defensive_engagement:'engajamento defensivo',gk_awareness:'consciência de goleiro',gk_parrying:'rebatida do goleiro',
+  jumping:'salto',heading:'cabeceio',defensive_awareness:'talento defensivo',tackling:'desarme',
+  defensive_engagement:'dedicação defensiva',gk_awareness:'talento de goleiro',gk_parrying:'rebatida do goleiro',
   gk_reach:'alcance do goleiro',gk_catching:'segurança nas mãos',gk_reflexes:'reflexos do goleiro'};
+ const TACTICAL_SOURCE='https://efhub.com/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed';
+ const DEFENCE_SOURCE='https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00';
+ const ACTIONS={
+  depth:{label:'Atacar a profundidade e finalizar',stats:{acceleration:5,offensive_awareness:3,finishing:3,speed:2,ball_control:1},skills:['firstshot','onepass','acrobatic','sole'],source:'https://efhub.com/articles/261017_4-acceleration-thresholds-decoded'},
+  outlet:{label:'Girar e dar o primeiro passe após recuperar',stats:{low_pass:3,ball_control:3,tight_possession:2,balance:2,acceleration:1,lofted_pass:1},skills:['onepass','sole','through','heel'],source:TACTICAL_SOURCE},
+  vertical:{label:'Receber entre linhas e acelerar o passe vertical',stats:{low_pass:3,tight_possession:3,ball_control:2,balance:2,acceleration:2},skills:['through','onepass','sole','heel'],source:TACTICAL_SOURCE},
+  cover:{label:'Acompanhar a ruptura e proteger as costas da linha',stats:{speed:3,acceleration:3,defensive_awareness:3,defensive_engagement:2,tackling:2,stamina:1},skills:['intercept','blocker','mark','fighting'],source:DEFENCE_SOURCE},
+  duel:{label:'Sair para o bote e ganhar o duelo',stats:{tackling:3,defensive_engagement:3,physical_contact:3,acceleration:2,defensive_awareness:2},skills:['intercept','blocker','mark','clear'],source:DEFENCE_SOURCE},
+  screen:{label:'Cortar a linha de passe e oferecer saída segura',stats:{defensive_engagement:3,defensive_awareness:3,tackling:2,low_pass:3,stamina:2},skills:['intercept','onepass','blocker','fighting'],source:DEFENCE_SOURCE},
+  carry:{label:'Avançar pelo corredor e entregar um passe útil',stats:{dribbling:3,ball_control:3,tight_possession:2,acceleration:2,low_pass:2,stamina:1},skills:['double','sole','onepass','cutturn'],source:'https://efhub.com/articles/260909_2-major-changes-to-how-dribbling-feels'},
+  cross:{label:'Chegar pelo lado e entregar a bola na área',stats:{lofted_pass:3,ball_control:2,dribbling:2,speed:2,stamina:2},skills:['sole','double','onepass'],source:DEFENCE_SOURCE},
+  finish:{label:'Chegar à área para concluir a jogada do corredor',stats:{finishing:3,offensive_awareness:3,heading:2,ball_control:2,balance:1},skills:['firstshot','acrobatic','heading','aerial'],source:TACTICAL_SOURCE},
+  launch:{label:'Lançar com precisão e sustentar a segunda bola',stats:{lofted_pass:3,low_pass:2,ball_control:2,tight_possession:2,defensive_engagement:2,stamina:1},skills:['weighted','lowloft','through','onepass'],source:TACTICAL_SOURCE},
+  receive:{label:'Dominar de costas e devolver a segunda bola',stats:{ball_control:3,tight_possession:3,physical_contact:3,heading:2,jumping:2,low_pass:1},skills:['onepass','sole','aerial','heading'],source:TACTICAL_SOURCE},
+  keeper:{label:'Reagir ao chute e controlar a segunda bola',stats:{gk_awareness:3,gk_reflexes:3,gk_parrying:2,gk_reach:2,gk_catching:1},skills:['gklow','gklong','gkhigh'],source:DEFENCE_SOURCE}
+ };
+ const attributeGroups=Object.assign({},...Object.values(AXES).concat(KEEPER_AXES).flatMap(groups=>
+  Object.entries(groups).map(([index,keys])=>Object.fromEntries(keys.map(key=>[key,Number(index)])))));
+ function actionKey(role,tactic,card){
+  const style=clean(card.style),defence=clean(card.defenceStyle),fn=card.trainingFunction;
+  const pivot=/pivo|homem de area/.test(style);
+  const lateral=role==='LD'||role==='LE';
+  if(role==='GO')return 'keeper';
+  if(card.trainingDefensive)return role==='ZG'||lateral?'cover':role==='VOL'||role==='MLG'?'screen':'outlet';
+  if(fn==='anchor')return 'screen';
+  if(fn==='cover'||fn==='secure')return 'cover';
+  if(fn==='pivot')return 'receive';
+  if(fn==='infiltrate'||fn==='finish')return tactic==='fora'?'finish':'depth';
+  if(fn==='connect'||fn==='create')return tactic==='longo'?'launch':tactic==='rapido'?'vertical':'outlet';
+  if(role==='CA'||role==='SA'){
+   if(pivot)return 'receive';
+   if(tactic==='fora')return 'finish';
+   if(role==='SA'&&!/artilheiro|infiltracao|oportunista/.test(style))return 'vertical';
+   return 'depth';
+  }
+  if(role==='ZG'){
+   if(/destruidor/.test(style+' '+defence))return 'duel';
+   if(tactic==='longo'&&/construcao|criativo/.test(style))return 'launch';
+   return 'cover';
+  }
+  if(lateral&&/defensivo|destruidor/.test(style+' '+defence))return 'cover';
+  if(tactic==='fora'&&(role==='ALA'||lateral))return lateral||/perito em cruzamento/.test(style)?'cross':'carry';
+  if(role==='VOL'&&/primeiro volante|trinco|ancora/.test(style+' '+defence))return 'screen';
+  if(tactic==='longo')return 'launch';
+  if(tactic==='rapido'&&lateral)return 'cover';
+  if(tactic==='rapido'&&/infiltracao/.test(style))return 'depth';
+  if(tactic==='rapido'&&role==='ALA')return 'carry';
+  return tactic==='rapido'?'vertical':'outlet';
+ }
  const SPECIAL_SKILLS=[
   [0,'phenomenal finishing','Finalização fenomenal'],[1,'visionary pass','Passe visionário'],
   [2,'magnetic feet','Pés magnéticos'],[5,'aerial superiority','Superioridade aérea'],
@@ -252,10 +301,11 @@
  }
  function refineIndividual({weights,role,tactic,card,reference}){
   const refined=weights.slice(),factors=[];
+  let utility=null,task=null;
   const priorities=()=>refined.flatMap((weight,index)=>weight>0?[
    {index,name:CATEGORY[index].name,category:CATEGORY[index].name,weight}]:[]).sort((a,b)=>b.weight-a.weight||a.index-b.index);
-  const finish=(status,reason,ref=null)=>({weights:refined,analysis:{version:INDIVIDUAL_VERSION,role,tactic,status,reason,factors,priorities:priorities(),
-   evidenceSignature:ref?evidenceSignature([ref.cardId,ref.edition,ref.url,ref.htmlSha256,role,tactic,factors]):null,
+  const finish=(status,reason,ref=null)=>({weights:refined,utility,analysis:{version:INDIVIDUAL_VERSION,role,tactic,status,reason,factors,task,priorities:priorities(),
+   evidenceSignature:ref?evidenceSignature([ref.cardId,ref.edition,ref.url,ref.htmlSha256,role,tactic,factors,task]):null,
    reference:ref?{cardId:ref.cardId,edition:ref.edition,url:ref.url,htmlSha256:ref.htmlSha256}:null}});
   if(tactic==='posse')return finish('preservada','Prioridades da Posse de Bola preservadas.');
   const ref=individualReference(card,reference);
@@ -277,6 +327,30 @@
    !Array.isArray(b.stats)&&Object.keys(b.stats).length>0&&
    Object.values(b.stats).every(n=>Number.isInteger(n)&&n>=1&&n<=5)&&
    (!declaredFixed||/pendente|nao confirmado|nao exposto/.test(declaredFixed)||declaredFixed.includes(clean(b.name))));
+  const key=actionKey(role,tactic,card),action=ACTIONS[key];
+  const stats=Object.entries(action.stats).flatMap(([stat,weight])=>{
+   const group=attributeGroups[stat],base=ref.baseStats?.[stat];
+   if(!Number.isInteger(base)||base<0||base>120||!Number.isInteger(group)||refined[group]<=0)return [];
+   return [{key:stat,label:STAT_LABELS[stat],group,weight,base,trainLimit:Math.max(0,99-base),
+    fixed:fixed.reduce((n,b)=>n+(b.stats[stat]||0),0)}];
+  });
+  if(stats.length>=2){
+   task={key,label:action.label,skills:action.skills,source:action.source,stats};
+   utility=Array(10).fill(null);
+   for(const stat of stats){
+    const curve=utility[stat.group]||(utility[stat.group]=Array(21).fill(0));
+    let gain=0;
+    for(let n=1;n<=20;n++){
+     const projected=stat.base+stat.fixed+n-1;
+     // Retorno editorial por ponto no atributo da ação. Não simula a IA,
+     // bônus de técnico, condição, nem um limite universal de desempenho.
+     const sensitivity=clamp((115-projected)/35,0.25,1.4);
+     const accelerationReturn=stat.key==='acceleration'&&projected>=90?0.4:1;
+     if(n<=stat.trainLimit)gain+=1.65*stat.weight*sensitivity*accelerationReturn;
+     curve[n]=round(curve[n]+gain);
+    }
+   }
+  }
   // Editorial comparison within the same card. Compare the documented axes
   // required by the task, rather than assuming a universal gameplay target.
   const centre=avg(groups.map(g=>avg(g.attributes.map(a=>a.value))));
@@ -313,9 +387,9 @@
      modifiers,previousWeight:weights[index],weight:refined[index]});
    }
   }
-  if(!factors.length)return finish('calculada','A evidência disponível não alterou as prioridades desta função.',ref);
+  if(!factors.length&&!utility)return finish('calculada','A evidência disponível não alterou as prioridades desta função.',ref);
   return finish(complete?'documentada':'calculada',complete?
-   'Prioridades refinadas com dados da edição, em simulação de PP.':
+   'Prioridades refinadas com dados da edição e ganhos por nível na ação escolhida, em simulação de PP.':
    'Prioridades refinadas com os atributos disponíveis. A base desta função está incompleta.',ref);
  }
  function rating(vec,weights,indices){

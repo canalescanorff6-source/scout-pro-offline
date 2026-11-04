@@ -110,6 +110,7 @@ function paintResults(){const root=$('results');root.replaceChildren();$('plan-s
   const details=mk('details');details.append(mk('summary','Por que esta ficha?'),mk('p',r.searchMethod),mk('p',r.contextReasons.join(' ')||r.job),mk('p',r.stylePair.activation));
   if(r.individualAnalysis&&r.proposed){
    details.append(mk('p',r.individualAnalysis.reason));
+   if(r.individualAnalysis.task)details.append(mk('p','Foco da ficha · '+r.individualAnalysis.task.label));
    if(r.individualAnalysis.factors?.length){const factors=mk('ul');for(const factor of r.individualAnalysis.factors)
     factors.append(mk('li',factor.category+' · '+factor.reason));details.append(factors);}
   }

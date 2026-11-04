@@ -41,6 +41,16 @@ assert.deepEqual(aubameyang.outcome.plan.levels, second.review.proposed);
 assert.equal(first.result.plan.analysis.status, 'documentada');
 assert.equal(second.result.plan.analysis.status, 'documentada');
 assert.notEqual(first.result.plan.analysis.evidenceSignature, second.result.plan.analysis.evidenceSignature);
+assert.equal(first.review.individualAnalysis.task.key,'depth');
+assert.equal(second.review.skills[0].name,'Passe de primeira');
+assert.equal(second.review.boosters.length,0,'A edição de Aubameyang não tem slot selecionável na referência');
+assert(first.review.boosters.some(b=>b.reason.includes('atacar a profundidade')));
+const wilshere = context(17);
+const unsupported = resolve({ ...wilshere, card: { ...wilshere.card, boosterSlot: 'vazio', booster: 'SLOT SELECIONÁVEL +1' } });
+assert.equal(unsupported.review.boosterSlotSupported,false);
+assert.equal(unsupported.result.booster.slotSupported,false);
+assert.equal(unsupported.result.booster.able,false);
+assert.deepEqual(unsupported.result.booster.decisionEvidence.candidates,[]);
 const preview = Planner.proposal({ ...nihat.source, reference: nihat.reference }, 'rapido', nihat.source.niveis);
 assert.deepEqual(preview.levels, first.review.proposed);
 
@@ -63,16 +73,18 @@ const rijkaard = resolve(context(104));
 const tchouameni = resolve(context(107));
 assert.equal(rijkaard.review.spent, 64);
 assert.equal(tchouameni.review.spent, 64);
-assert.notDeepEqual(rijkaard.review.proposed, tchouameni.review.proposed);
+assert.notEqual(rijkaard.review.individualAnalysis.evidenceSignature, tchouameni.review.individualAnalysis.evidenceSignature);
+assert.notDeepEqual(rijkaard.review.skills.map(s=>s.name), tchouameni.review.skills.map(s=>s.name));
 assert.equal(resolve(context(191, 'CA')).review.position, 'CA');
 assert.equal(resolve(context(246)).result.plan.analysis.status, 'dados_insuficientes');
 
 const mbappe = context(49);
-const thuram = context(182);
-const sameVector = resolve(mbappe);
-assert.deepEqual(sameVector.review.proposed, resolve(thuram).review.proposed);
+assert.equal(resolve(mbappe).result.booster.slotSupported,true);
+const massaro = context(1);
+const sameVector = resolve(massaro);
+assert.deepEqual(sameVector.review.proposed, resolve(context(25)).review.proposed);
 assert(sameVector.review.repetitionAudit.documentedPairs > 0);
-assert.equal(resolve(mbappe, { managerId: 'CT-MGR-001' }).review.repetitionAudit, null);
+assert.equal(resolve(massaro, { managerId: 'CT-MGR-001' }).review.repetitionAudit, null);
 assert.equal(resolve(mbappe, { reference: nihat.reference }).result.plan.analysis.status, 'dados_insuficientes');
 assert.equal(resolve(mbappe, { reference: nihat.reference }).review.repetitionAudit, null);
 const manual = [0, 4, 4, 4, 0, 0, 0, 0, 0, 0];
@@ -86,9 +98,9 @@ assert.equal(saved.review.repetitionAudit, null);
 assert.equal(saved.result.plan.analysis, null);
 
 const trials = [
-  { id: 183, tactic: 'rapido', pp: 62, alternative: [8, 5, 6, 10, 8, 5, 0, 0, 0, 0], stats: ['Aceleração', 82, 84] },
+  { id: 183, tactic: 'rapido', pp: 62, alternative: [8, 5, 6, 10, 8, 5, 0, 0, 0, 0], stats: ['Aceleração', 84, 84] },
   { id: 109, tactic: 'normal', pp: 64, alternative: [2, 8, 5, 8, 8, 6, 8, 0, 0, 0], stats: ['Passe rasteiro', 90, 90] },
-  { id: 191, tactic: 'fora', pp: 66, alternative: [4, 8, 10, 8, 8, 4, 4, 0, 0, 0], stats: ['Drible', 87, 89] },
+  { id: 191, tactic: 'fora', pp: 66, alternative: [4, 8, 10, 8, 8, 4, 4, 0, 0, 0], stats: ['Drible', 89, 89] },
   { id: 178, tactic: 'longo', pp: 60, alternative: [8, 5, 6, 7, 7, 8, 2, 0, 0, 0], stats: ['Contato físico', 94, 94] }
 ];
 for (const { id, tactic, pp, alternative, stats } of trials) {
@@ -97,6 +109,7 @@ for (const { id, tactic, pp, alternative, stats } of trials) {
   const trial = sheet.review.matchTrial;
   assert.ok(trial, 'Comparação disponível para a edição e a proposta exatas');
   assert.deepEqual(trial.alternative, alternative);
+  assert.notDeepEqual(trial.alternative,sheet.review.proposed);
   assert.equal(deps.tactical.total(trial.alternative), pp);
   assert.deepEqual(sheet.review.proposed, current.outcome.plan.levels);
   assert.deepEqual(sheet.result.plan.levels, current.outcome.plan.levels);

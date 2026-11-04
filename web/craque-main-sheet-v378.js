@@ -65,17 +65,18 @@ function matchTrial(card,result,reference,valid,T){
  const trial=matchTrials[card.localKey+'|'+result.tactic],plan=result.plan;
  if(!trial||trial.position!==card.position||trial.sha!==reference?.htmlSha256||
     plan.analysis?.status!=='documentada'||plan.analysis.reference?.htmlSha256!==trial.sha||
-    !plan.levels?.every((level,index)=>level===trial.current[index])||!valid(trial.alternative))return null;
- if(T.total(trial.alternative)!==plan.pp)return null;
+    !plan.levels||T.total(trial.current)!==plan.pp)return null;
+ const alternative=plan.levels.every((level,index)=>level===trial.alternative[index])?trial.current:trial.alternative;
+ if(!valid(alternative)||T.total(alternative)!==plan.pp)return null;
  const rating=host?.CRAQUE_RATING_V376||(typeof module==='object'?require('./craque-rating-v376.js'):null);
  if(!rating)return null;
  const attributes=[];
  for(const [key,label] of Object.entries(trial.attributes)){
   const index=rating.GROUPS.findIndex(group=>group.includes(key)),base=reference.baseStats?.[key];
   if(index<0||!Number.isInteger(base))return null;
-  attributes.push({label,current:base+trial.current[index],alternative:base+trial.alternative[index]});
+  attributes.push({label,current:base+plan.levels[index],alternative:base+alternative[index]});
  }
- return {task:trial.task,measure:trial.measure,source:trial.source,alternative:trial.alternative.slice(),attributes};
+ return {task:trial.task,measure:trial.measure,source:trial.source,alternative:alternative.slice(),attributes};
 }
 function resolve(input,outcome,selection={},provided){
  const d=dependencies(provided),F=d.training,S=d.skills,B=d.boosters,T=d.tactical;
@@ -113,8 +114,9 @@ function resolve(input,outcome,selection={},provided){
  const usable=proposal.status==='hipotese'&&valid(levels),vector=usable?levels.slice():null;
  const raw={...F.profileOf(card),niveis:vector},existing=String(card.skills||'');
  const confirmed=Boolean(S.checkedEquipment?.(raw,existing,card.equipmentRecord));
- const skills=S.evaluate(raw,outcome.tactic,existing,{equippedConfirmed:confirmed,equipmentRecord:card.equipmentRecord||null});
- const booster=S.booster(raw,outcome.tactic,B,card.boosterSlot||'pendente',card.booster||'');
+ const task=vector&&(manual?selection.analysis?.task:proposal.analysis?.task);
+ const skills=S.evaluate(raw,outcome.tactic,existing,{equippedConfirmed:confirmed,equipmentRecord:card.equipmentRecord||null,task});
+ const booster=F.boosterFor(card,raw,outcome.tactic,d,task,exactReference?reference.reference:null);
  const result={...outcome,progress,plan:{...proposal,analysis:manual?selection.analysis||null:editorial?null:proposal.analysis||null,levels:vector,remaining:vector?budget-T.total(vector):null},
   skills,booster,suggestedSkills:skills.recommendations.slice(0,Math.max(0,5-skills.alreadyEquippedProvided)),
   freeSkillSlots:Number.isInteger(skills.slotsRemaining)?skills.slotsRemaining:null};
@@ -205,7 +207,8 @@ function text(review){
  }
  const analysis=review.individualAnalysis;
  const repeats=review.repetitionAudit;
- return analysis?[sheet,'','MOTIVOS DA FICHA',analysis.reason,...analysis.factors.map(f=>f.category+' · '+f.reason),
+ return analysis?[sheet,'','MOTIVOS DA FICHA',analysis.reason,
+  ...(analysis.task?['Ação · '+analysis.task.label,analysis.task.source]:[]),...analysis.factors.map(f=>f.category+' · '+f.reason),
   ...(repeats?['Coincidências auditadas · '+repeats.documentedPairs+' com análise documentada · '+repeats.pendingPairs+' com dados pendentes']:[]),analysis.reference?.url].filter(x=>x!==undefined).join('\n'):sheet;
 }
 return Object.freeze({resolve,cardFromModel,text});

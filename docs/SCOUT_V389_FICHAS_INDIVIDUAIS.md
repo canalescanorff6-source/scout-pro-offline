@@ -1,5 +1,22 @@
 # Auditoria V389 das fichas individuais
 
+## Evolução V390 da ficha recomendada
+
+Nos quatro estilos alternativos, a recomendação passou a distinguir a ação da carta na posição escolhida. O V233 identifica tarefas como ruptura, primeiro passe, cobertura, bote, cruzamento, lançamento e recepção da segunda bola. O V251 considera o ganho de cada nível nos atributos documentados relevantes para essa ação, dentro do custo progressivo de PP. A pontuação é uma regra editorial e o ganho estimado parte da base da edição e do ímpeto fixo documentado. [Estilos coletivos](https://efhub.com/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed) · [Aceleração](https://efhub.com/articles/261017_4-acceleration-thresholds-decoded) · [Notas da Konami](https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00)
+
+O V162 prioriza habilidades para a ação dentro do conjunto compatível e exclui as que já são nativas ou equipadas. O V103 compara os atributos alcançados pelo ímpeto com a mesma distribuição exibida. O V378 e o V228 suspendem a sugestão de novo ímpeto se a referência exata usada na análise não documenta slot selecionável. O Plano do Time e as fichas privadas recebem as mesmas prioridades por ação, combinadas com a função e as instruções disponíveis.
+
+Na comparação com o V389, a auditoria refeita para as 261 cartas mostrou 874 mudanças de distribuição nos quatro estilos alternativos e nenhuma em Posse. Também foram preservadas as listas de habilidades e o primeiro ímpeto nos 261 cenários de Posse. A análise por ação alcançou 239 edições e 956 cenários alternativos. As 22 cartas sem base suficiente mantêm o estado de evidência pendente. Os resultados são propostas para comparar em jogo.
+
+| Cenário | V389 | V390 |
+| --- | --- | --- |
+| Nihat #037 · Contra-Ataque Rápido | 8/6/6/8/8/7/0 | 9/4/6/9/8/6/0 |
+| Aubameyang #183 · Contra-Ataque Rápido | 8/5/6/8/8/8/0 | 8/4/6/10/8/6/0 |
+| Martinelli #191 · Por Fora | 7/8/8/8/8/4/4 | 5/8/10/7/8/4/4 |
+| Lukaku #178 · Bola Longa | 8/7/4/7/7/8/2 | 7/7/8/6/6/8/0 |
+
+Os resultados a seguir registram a entrega inicial do V389. A comparação mais recente usa o relatório do V389 como linha de base.
+
 ## O que causava as repetições
 
 Na revisão `9e6ade9`, a ficha principal chegava ao distribuidor V251 por V311 → V228 → V233. Os pesos levavam em conta função, tática e sinais já cadastrados. Os atributos-base públicos da edição só chegavam ao V378, depois da distribuição. Por isso duas cartas diferentes podiam entregar entradas matemáticas iguais mesmo com atributos documentados distintos. O cache do V251 reaproveitava cálculos de pesos e orçamento iguais. A auditoria isolada não reproduziu vazamento de ficha salva entre cartas, técnicos ou estilos.
