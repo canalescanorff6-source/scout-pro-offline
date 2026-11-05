@@ -53,6 +53,13 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
    mechanics.href=calculation.task.source;mechanics.target='_blank';mechanics.rel='noopener noreferrer';
    why.append(el('p','',calculation.task.stats.map(s=>s.label+' '+s.base+(s.fixed?' +'+s.fixed+' fixo':'')+' → '+(Math.min(99,s.base+review.proposed[s.group])+s.fixed)).join(' · ')),
     el('p','ct311-note','Projeção de treino e ímpeto fixo documentado, antes dos bônus do técnico e da condição em jogo.'),mechanics);
+   const accuracyStudy=calculation.task.stats.find(stat=>stat.study)?.study;
+   if(accuracyStudy){
+    const source=el('a','','Estudo do Amadeusz sobre precisão');
+    source.href=accuracyStudy;source.target='_blank';source.rel='noopener noreferrer';
+    const note=el('p','ct311-note','Nos atributos de precisão desta função, o cálculo dá mais peso aos ganhos entre 60 e 90, conforme o estudo. ');
+    note.append(source);why.append(note);
+   }
   }
   const factors=el('ul');
   for(const factor of calculation.factors)factors.append(el('li','',factor.category+' · '+factor.reason));
@@ -117,6 +124,26 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
    block.append(experiment);
   }
  }else block.append(el('p','ct311-alert','PP pendentes: confirme o nível máximo da edição para calcular a distribuição.'));
+ if(review.publishedTraining){
+  const p=review.publishedTraining,comparison=el('details','ct378-about');
+  comparison.append(el('summary','','Ficha publicada por Amadeusz'),
+   el('p','ct311-note',p.position+' · '+p.pp+' PP · José Mourinho na publicação · '+p.booster),
+   el('h4','','Níveis · ficha do app → publicação'));
+  const comparisonRows=items=>{
+   const list=el('dl','ct375-training');
+   for(const {label,app,published} of items){
+    const row=el('div');
+    row.append(el('dt','',label),el('dd','',app+' → '+published));list.append(row);
+   }
+   return list;
+  };
+  comparison.append(comparisonRows(p.groups));
+  if(p.attributes.length)comparison.append(el('h4','','Atributos projetados antes dos bônus'),comparisonRows(p.attributes));
+  const source=el('a','','Abrir publicação no eFHUB');
+  source.href=p.source;source.target='_blank';source.rel='noopener noreferrer';
+  comparison.append(source);
+  block.append(comparison);
+ }
  const inventory=el('details','ct374-native-inventory');
  inventory.append(el('summary','','Nativas desta carta · '+review.nativeSkills.length+(review.nativeSource==='public'?' · referência pública':'')),
   el('p','ct311-note',(review.nativeSkillLabels||review.nativeSkills).join(' · ')||'Lista pendente'));

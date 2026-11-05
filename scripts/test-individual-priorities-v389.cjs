@@ -80,4 +80,15 @@ assert(depth.utility[3][8]-depth.utility[3][7]>depth.utility[3][19]-depth.utilit
 assert.equal(T.total(allocate(depth.weights,'CA',62,null,{utility:depth.utility})),62);
 assert.equal(I.refineIndividual(possession).utility,null);
 assert.equal(unverified.utility,null);
+const passing = sample(109, 'normal');
+const passGroup = base => I.refineIndividual({
+ ...passing,
+ reference: {...passing.reference, reference: {...passing.reference.reference,
+  baseStats: {...passing.reference.reference.baseStats, low_pass: base, lofted_pass: base},
+  fixedBoosters: []}}
+}).utility[1];
+const below = passGroup(59), above = passGroup(89);
+assert(below[2] - below[1] > 3 * below[1], 'A curva de passe muda ao atingir 60');
+assert(above[2] - above[1] < 0.5 * above[1], 'O ponto de 89 a 90 rende mais que o ponto seguinte');
+assert(outlet.analysis.task.stats.find(stat => stat.key === 'low_pass').study);
 console.log('V389 PASS: artilheiros, primeiros volantes, evidência da edição, PP exatos e preservação da Posse.');

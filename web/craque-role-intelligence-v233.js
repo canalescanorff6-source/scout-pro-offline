@@ -227,6 +227,8 @@
   gk_reach:'alcance do goleiro',gk_catching:'segurança nas mãos',gk_reflexes:'reflexos do goleiro'};
  const TACTICAL_SOURCE='https://efhub.com/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed';
  const DEFENCE_SOURCE='https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00';
+ const ACCURACY_SOURCE='https://efhub.com/articles/261019_3-passing-and-finishing-the-threshold-is-90-for-both';
+ const accuracyStats=new Set(['low_pass','lofted_pass','finishing','heading']);
  const ACTIONS={
   depth:{label:'Atacar a profundidade e finalizar',stats:{acceleration:5,offensive_awareness:3,finishing:3,speed:2,ball_control:1},skills:['firstshot','onepass','acrobatic','sole'],source:'https://efhub.com/articles/261017_4-acceleration-thresholds-decoded'},
   outlet:{label:'Girar e dar o primeiro passe após recuperar',stats:{low_pass:3,ball_control:3,tight_possession:2,balance:2,acceleration:1,lofted_pass:1},skills:['onepass','sole','through','heel'],source:TACTICAL_SOURCE},
@@ -332,7 +334,8 @@
    const group=attributeGroups[stat],base=ref.baseStats?.[stat];
    if(!Number.isInteger(base)||base<0||base>120||!Number.isInteger(group)||refined[group]<=0)return [];
    return [{key:stat,label:STAT_LABELS[stat],group,weight,base,trainLimit:Math.max(0,99-base),
-    fixed:fixed.reduce((n,b)=>n+(b.stats[stat]||0),0)}];
+    fixed:fixed.reduce((n,b)=>n+(b.stats[stat]||0),0),
+    ...(accuracyStats.has(stat)?{study:ACCURACY_SOURCE}:{})}];
   });
   if(stats.length>=2){
    task={key,label:action.label,skills:action.skills,source:action.source,stats};
@@ -345,8 +348,11 @@
      // Retorno editorial por ponto no atributo da ação. Não simula a IA,
      // bônus de técnico, condição, nem um limite universal de desempenho.
      const sensitivity=clamp((115-projected)/35,0.25,1.4);
-     const accelerationReturn=stat.key==='acceleration'&&projected>=90?0.4:1;
-     if(n<=stat.trainLimit)gain+=1.65*stat.weight*sensitivity*accelerationReturn;
+     // Razões aproximadas entre as inclinações do estudo de precisão.
+     // A faixa 60–90 é a unidade. Os pesos da ação continuam editoriais.
+     const returnFactor=stat.study?(projected<60?0.1875:projected<90?1:5/12):
+      stat.key==='acceleration'&&projected>=90?0.4:1;
+     if(n<=stat.trainLimit)gain+=1.65*stat.weight*sensitivity*returnFactor;
      curve[n]=round(curve[n]+gain);
     }
    }

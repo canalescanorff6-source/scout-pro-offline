@@ -1,5 +1,13 @@
 # Auditoria V389 das fichas individuais
 
+## Estudos de Amadeusz na ficha do aplicativo
+
+O ganho marginal de passe rasteiro, passe alto, finalização e cabeceio usa três faixas de precisão com quebras em 60 e 90, quando esses atributos fazem parte da ação da carta. O modelo usa inclinações aproximadas do estudo como fatores editoriais e mantém o custo progressivo dos PP. A projeção considera a base e o ímpeto fixo documentado. Proficiência do técnico, condição e habilidades situacionais ficam fora dessa projeção. [Estudo de precisão](https://efhub.com/articles/261019_3-passing-and-finishing-the-threshold-is-90-for-both)
+
+As fichas publicadas para Neuer #011, Cristiano Ronaldo #024 e Matheus Cunha #093 aparecem em um painel separado quando edição, posição e orçamento coincidem. O painel mostra níveis, atributos projetados antes dos bônus e o ímpeto exibido na publicação com José Mourinho. A ficha do Cristiano inclui o nível de Goleiro 1 do original publicado. O painel é somente para consulta e não altera treinos salvos. [Neuer](https://efhub.com/articles/261013_1-this-move-beats-neuer) · [Cristiano Ronaldo](https://efhub.com/articles/261003_1-top-10-cfs-updated-progression-builds-for-90-proficiency-managers) · [Matheus Cunha](https://efhub.com/articles/261028_2-five-new-sss-tier-cards-featured-ss-rankings-10-28)
+
+A auditoria comparou 1.305 cenários. Houve 21 mudanças de distribuição nos quatro estilos alternativos e uma mudança no primeiro ímpeto sugerido. As listas de adicionais permaneceram iguais. As 261 propostas de Posse de Bola foram preservadas e os dados de entrada mantiveram os mesmos hashes.
+
 ## Evolução V390 da ficha recomendada
 
 Nos quatro estilos alternativos, a recomendação passou a distinguir a ação da carta na posição escolhida. O V233 identifica tarefas como ruptura, primeiro passe, cobertura, bote, cruzamento, lançamento e recepção da segunda bola. O V251 considera o ganho de cada nível nos atributos documentados relevantes para essa ação, dentro do custo progressivo de PP. A pontuação é uma regra editorial e o ganho estimado parte da base da edição e do ímpeto fixo documentado. [Estilos coletivos](https://efhub.com/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed) · [Aceleração](https://efhub.com/articles/261017_4-acceleration-thresholds-decoded) · [Notas da Konami](https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00)

@@ -78,6 +78,44 @@ function matchTrial(card,result,reference,valid,T){
  }
  return {task:trial.task,measure:trial.measure,source:trial.source,alternative:alternative.slice(),attributes};
 }
+// Referências literais da publicação, separadas do treino que o app pode aplicar.
+const publishedTraining={
+ '11@106788187832737':{
+  position:'GO',levels:[0,0,0,0,0,0,0,11,10,9],
+  stats:{gk_awareness:'Talento de GO',gk_reflexes:'Reflexos do GO',gk_reach:'Alcance do GO',gk_parrying:'Defesa do GO',gk_catching:'Firmeza do GO'},
+  booster:'Goleiro +3 (fixo)',
+  source:'https://efhub.com/articles/261013_1-this-move-beats-neuer'
+ },
+ '24@89138556572074':{
+  position:'CA',levels:[4,0,9,10,8,8,0,1,0,0],
+  stats:{finishing:'Finalização',ball_control:'Controle de bola',acceleration:'Aceleração',heading:'Cabeceio',jumping:'Salto'},
+  booster:'Instinto artilheiro +4 (fixo)',
+  source:'https://efhub.com/articles/261003_1-top-10-cfs-updated-progression-builds-for-90-proficiency-managers'
+ },
+ '93@105873896755947':{
+  position:'MLE',levels:[7,4,10,9,9,0,0,0,0,0],
+  stats:{low_pass:'Passe rasteiro',dribbling:'Drible',offensive_awareness:'Talento ofensivo',acceleration:'Aceleração',speed:'Velocidade'},
+  booster:'Movimentação sem bola +1 (adicional)',
+  source:'https://efhub.com/articles/261028_2-five-new-sss-tier-cards-featured-ss-rankings-10-28'
+ }
+};
+function publishedComparison(card,vector,budget,reference,T){
+ const key=card.localKey;
+ const published=Object.hasOwn(publishedTraining,key)&&publishedTraining[key];
+ if(!published||!key.endsWith('@'+card.cardId)||card.position!==published.position||
+    !vector||T.total(published.levels)!==budget)return null;
+ const groups=T.CATEGORIES.flatMap((label,i)=>vector[i]||published.levels[i]?
+  [{label,app:vector[i],published:published.levels[i]}]:[]);
+ const rating=host?.CRAQUE_RATING_V376||(typeof module==='object'?require('./craque-rating-v376.js'):null);
+ const attributes=rating?Object.entries(published.stats).flatMap(([stat,label])=>{
+  const base=reference.baseStats?.[stat];
+  if(!Number.isInteger(base)||base<0||base>120)return [];
+  const projected=levels=>Math.min(99,rating.GROUPS.reduce((sum,group,i)=>sum+(group.includes(stat)?levels[i]:0),base));
+  return [{label,app:projected(vector),published:projected(published.levels)}];
+ }):[];
+ return {position:published.position,levels:published.levels.slice(),booster:published.booster,
+  source:published.source,pp:budget,groups,attributes};
+}
 function resolve(input,outcome,selection={},provided){
  const d=dependencies(provided),F=d.training,S=d.skills,B=d.boosters,T=d.tactical;
  if(!F||!S||!B||!T||!outcome?.plan)throw Error('Motor da ficha indisponível');
@@ -124,6 +162,8 @@ function resolve(input,outcome,selection={},provided){
  review.repetitionAudit=repetitionAudit(card,result,selection);
  const trial=!manual&&exactReference&&matchTrial(card,result,reference.reference,valid,T);
  if(trial)review.matchTrial=trial;
+ const published=exactReference&&publishedComparison(card,vector,budget,reference.reference,T);
+ if(published)review.publishedTraining=published;
  const current=F.parseBaseline(card,T).levels,baseline=valid(current)?current.slice():null;
  const changes=baseline&&vector?vector.flatMap((to,i)=>to===baseline[i]?[]:[{
   index:i,category:T.CATEGORIES[i],from:baseline[i],to,deltaPP:T.ppCost(to)-T.ppCost(baseline[i])}]):[];
@@ -205,10 +245,19 @@ function text(review){
    'Projeção antes de bônus · '+trial.attributes.map(a=>a.label+' '+a.current+' → '+a.alternative).join(' · '),
    'Use a mesma posição, técnico, instruções, habilidades e ímpeto com as duas fichas.',trial.measure,trial.source].join('\n');
  }
+ if(review.publishedTraining){
+  const p=review.publishedTraining;
+  sheet+=['','','FICHA PUBLICADA POR AMADEUSZ · '+p.pp+' PP',
+   'José Mourinho na publicação · '+p.booster,
+   ...p.groups.map(g=>g.label+' · app '+g.app+' / publicação '+g.published),
+   ...(p.attributes.length?['Atributos antes dos bônus · '+p.attributes.map(a=>a.label+' '+a.app+' → '+a.published).join(' · ')]:[]),
+   p.source].join('\n');
+ }
  const analysis=review.individualAnalysis;
  const repeats=review.repetitionAudit;
  return analysis?[sheet,'','MOTIVOS DA FICHA',analysis.reason,
-  ...(analysis.task?['Ação · '+analysis.task.label,analysis.task.source]:[]),...analysis.factors.map(f=>f.category+' · '+f.reason),
+  ...(analysis.task?['Ação · '+analysis.task.label,analysis.task.source,
+   ...new Set(analysis.task.stats.map(stat=>stat.study).filter(Boolean))]:[]),...analysis.factors.map(f=>f.category+' · '+f.reason),
   ...(repeats?['Coincidências auditadas · '+repeats.documentedPairs+' com análise documentada · '+repeats.pendingPairs+' com dados pendentes']:[]),analysis.reference?.url].filter(x=>x!==undefined).join('\n'):sheet;
 }
 return Object.freeze({resolve,cardFromModel,text});

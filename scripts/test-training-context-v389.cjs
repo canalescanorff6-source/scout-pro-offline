@@ -124,4 +124,24 @@ for (const { id, tactic, pp, alternative, stats } of trials) {
 }
 assert.equal(resolve(context(183, 'SA', 'rapido')).review.matchTrial, undefined);
 assert.equal(resolve({ ...aubameyang, card: { ...aubameyang.card, edition: nihat.card.edition } }).review.matchTrial, undefined);
+for (const [id, position, pp, levels] of [
+  [11, 'GO', 54, [0,0,0,0,0,0,0,11,10,9]],
+  [24, 'CA', 62, [4,0,9,10,8,8,0,1,0,0]],
+  [93, 'MLE', 62, [7,4,10,9,9,0,0,0,0,0]]
+]) {
+  const current = context(id, position);
+  const sheet = resolve(current);
+  const published = sheet.review.publishedTraining;
+  assert.ok(published, 'A ficha publicada deve aparecer para a edição e posição exatas');
+  assert.deepEqual(published.levels, levels);
+  assert.equal(deps.tactical.total(published.levels), pp);
+  assert.equal(published.attributes.length, 5);
+  if (id === 24) assert.equal(published.attributes.find(a => a.label === 'Salto').published,
+    Math.min(99, current.reference.reference.baseStats.jumping + 9));
+  assert.deepEqual(sheet.review.proposed, current.outcome.plan.levels);
+  assert(Sheet.text(sheet.review).includes('AMADEUSZ'));
+  assert.equal(resolve(current, { reference: nihat.reference }).review.publishedTraining, undefined);
+  assert.equal(resolve({ ...current, card: {...current.card, pp: pp + 2} }).review.publishedTraining, undefined);
+  assert.equal(resolve({ ...current, card: {...current.card, position: 'MAT'} }).review.publishedTraining, undefined);
+}
 console.log('V389 PASS: edição, posição, técnico, ficha manual, coincidência, prévia e quatro comparações de mesmo PP.');
