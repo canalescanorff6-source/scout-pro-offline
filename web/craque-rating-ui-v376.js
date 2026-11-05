@@ -49,10 +49,12 @@ async function boot(w){
  const P=await load('craque-positional-v311.js','CRAQUE_POSITIONAL_V311');
  const Progress=await load('craque-progress-consistency-v249.js','CRAQUE_PROGRESS_CONSISTENCY_V249');
  const read=async file=>{const r=await w.fetch(root+file);if(!r.ok)throw Error('Catálogo local indisponível.');return r.json()};
- const [data,model,original,owned,corrections,Archive]=await Promise.all([
+ const [data,model,original,owned,corrections,Archive,trainingAudit]=await Promise.all([
   read('ct376-card-references.json'),read('ct376-rating-model.json'),read('SCOUT_V69_AUDITORIA.json'),read('ct364-owned-cards.json'),
-  read('ct377-identity-corrections.json'),load('craque-identity-archive-v377.js','CRAQUE_IDENTITY_ARCHIVE_V377')]);
+  read('ct377-identity-corrections.json'),load('craque-identity-archive-v377.js','CRAQUE_IDENTITY_ARCHIVE_V377'),
+  read('ct389-training-repetitions.json').catch(()=>null)]);
  w.CRAQUE_REFERENCES_V376=data;
+ w.CRAQUE_TRAINING_REPETITIONS_V389=trainingAudit;
  const cards=new Map([...original.cards.map(c=>['cap:'+c.numero,c]),...owned.cards.map(c=>[c.key,c])]);
  const refs=new Map(data.cards.map(c=>[c.key,c]));
  const images=new Map(data.cards.map(c=>[c.image.split('/').pop(),c]));

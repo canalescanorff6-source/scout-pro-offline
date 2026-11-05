@@ -50,6 +50,14 @@ jobs:
         run: |
           $items = @(Get-ChildItem dist\ScoutPRO-Setup-*.exe -ErrorAction Stop)
           if ($items.Count -ne 1) { throw 'Instalador Windows nao gerado' }
+      - name: Anexar instalador Windows de teste ao PR
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-tatico-windows-teste
+          path: dist/ScoutPRO-Setup-*.exe
+          if-no-files-found: error
+          retention-days: 7
   android_smoke:
     name: Compilar Android debug sem assinar release
     needs: validate
@@ -86,4 +94,12 @@ jobs:
           grep -Fq 'br.com.scoutpro.offline.ScoutUpdateFileProvider' /tmp/scout-provider-manifest.txt
           grep -Fq 'br.com.scoutpro.offline.scoutupdate.files' /tmp/scout-provider-manifest.txt
           echo 'OK: classe e autoridade específicas do atualizador presentes no APK.'
+      - name: Anexar APK Android de teste ao PR
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: craque-tatico-android-debug-teste
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7
 

@@ -14,6 +14,7 @@ const mk=(tag,cl='',txt)=>{
 };
 let activeCard=null,activeOwner=null,saveCallback=null,editCallback=null,style='posse';
 let panel='treino',cache=null,usedPosition='',positional=null;
+let referencesRequest;
 const managers=window.CRAQUE_MANAGERS_V302;
 let managerData=null,managerPanel=null,managerSelectedId='',managerTactic='',managerError='';
 const managerKey=()=>activeOwner&&activeCard?'scoutpro:v306:manager:'+encodeURIComponent(activeOwner.id)+':'+encodeURIComponent(activeCard.id):null;
@@ -48,6 +49,14 @@ function summaryCard(result){
  el.append(meta);
  const focus=mk('p','friend-analysis-focus',plan.focus?.headline||'Informe posição e PP para uma distribuição simulada.');
  el.append(focus);
+ if(plan.analysis&&result.tactic!=='posse'){
+  const why=mk('details','friend-analysis-warnings');
+  why.append(mk('summary','','Por que esta ficha foi escolhida?'),mk('p','',plan.analysis.reason));
+  const factors=mk('ul');
+  for(const factor of plan.analysis.factors)factors.append(mk('li','',factor.category+' · '+factor.reason));
+  if(factors.children.length)why.append(factors);
+  el.append(why);
+ }
  if(result.warnings.length){
   const details=mk('details','friend-analysis-warnings');
   details.open=true;
@@ -225,7 +234,7 @@ function booster(result){
  return panel;
 }
 function buildCache(){
- const effective={...activeCard,position:usedPosition||activeCard.position};
+ const effective={...activeCard,originalPosition:activeCard.position,position:usedPosition||activeCard.position};
  cache=Object.fromEntries(engine.MODES.map(mode=>[mode,engine.evaluate(effective,mode)]));
 }
 function selectPanel(value){
@@ -418,6 +427,16 @@ function display(){
 }
 function openCard(card,owner,onSave,onEdit){
  if(!card||!owner||card.ownerId!==owner.id){status('Erro: carta e pessoa não correspondem.');return}
+ if(!referencesRequest&&!window.CRAQUE_REFERENCES_V376){
+  referencesRequest=fetch('ct376-card-references.json').then(response=>{
+   if(!response.ok)throw Error('Referências indisponíveis');
+   return response.json();
+  }).then(data=>{
+   if(!Array.isArray(data.cards))return;
+   window.CRAQUE_REFERENCES_V376=data;
+   window.dispatchEvent(new CustomEvent('craque:references-ready'));
+  }).catch(()=>{referencesRequest=null;});
+ }
  activeCard=card;activeOwner=owner;saveCallback=onSave;editCallback=onEdit||null;
  style='posse';panel='treino';cache=null;managerError='';restoreManager();
  positional?.destroy();positional=null;usedPosition=activeCard.position;
@@ -454,6 +473,10 @@ function openCard(card,owner,onSave,onEdit){
  catch(e){status('Não foi possível calcular: '+(e.message||e));if(!modal.open)modal.showModal()}
 }
 const tabs=$('friend-analysis-modes');
+window.addEventListener('craque:references-ready',()=>{
+ if(!modal.open||!activeCard)return;
+ cache=null;display();
+});
 for(const mode of engine.MODES){
  const btn=mk('button','',engine.LABEL[mode]);btn.type='button';btn.dataset.style=mode;
  btn.setAttribute('aria-pressed','false');btn.onclick=()=>{style=mode;if(managerSelectedId){managerTactic=mode;saveManager()}try{display()}catch(e){status('Erro ao trocar tática: '+e.message)}};
@@ -499,7 +522,7 @@ $('friend-analysis-export').onclick=async()=>{
    caveat:'Treinos hipotéticos, habilidades e boosters são sugestões condicionais não validadas em gameplay. Não são aplicações no eFootball.',
    position_used:usedPosition||activeCard.position,manager_edition:managerSelectedId||null,
    styles:Object.fromEntries(engine.MODES.map(tactic=>{
-    const x=engine.evaluate({...activeCard,position:usedPosition||activeCard.position},tactic);
+    const x=engine.evaluate({...activeCard,originalPosition:activeCard.position,position:usedPosition||activeCard.position},tactic);
     return [tactic,{tactic:x.label,confidence:x.confidence,training:x.plan,extraSkills:x.suggestedSkills,
      booster:x.booster?.primary||null,boosterEligible:x.boosterEligible,warnings:x.warnings}];
    }))};

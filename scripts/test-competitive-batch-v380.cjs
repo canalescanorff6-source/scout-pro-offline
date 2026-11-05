@@ -40,8 +40,11 @@ for(const [cap,levels] of expected){
  assert(!equipped.skills.some(s=>['onepass','sole'].includes(S.keyFor(s.name))));
  assert.equal(Main.resolve({...card,boosterSlot:'ausente'},out,{reference:ref},deps).review.boosters.length,0);
  for(const style of F.MODES.filter(x=>x!=='posse')){
-  const o=P.compute(m,m.position,style).outcome,r=Main.resolve(card,o,{reference:ref},deps).review;
+  const o=P.compute(m,m.position,style,'',{...deps,reference:ref}).outcome;
+  const r=Main.resolve(card,o,{reference:ref},deps).review;
   assert.deepEqual(r.proposed,o.plan.levels);assert(!r.competitiveReview);
+  const beforeReference=P.compute(m,m.position,style).outcome;
+  assert.deepEqual(Main.resolve(card,beforeReference,{reference:ref},deps).review.proposed,r.proposed);
  }
 }
 const ney=setup(47),n=Main.resolve(ney.card,ney.out,{reference:ney.ref},deps).review;

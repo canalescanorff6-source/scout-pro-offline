@@ -17,17 +17,23 @@ function context(){return C.compile({accountId:account,manager:managerNow(),styl
 function roster(){
  const result=A.roster(account,sources,localStorage);
  if(account==='primary')for(const c of result){
-  const ref=sources.references.find(r=>r.key===c.id);c.reference=ref||null;c.image=ref?.image||c.image;
+  const ref=['original','owned'].includes(c.source)?sources.references.find(r=>r.key===c.id):c.reference;
+  c.reference=ref||null;if(['original','owned'].includes(c.source))c.image=ref?.image||c.image;
   if(['original','owned'].includes(c.source)){const R=window.CRAQUE_CARD_REVIEW_V379,descriptor=R.catalog(c.source==='original'?[c.legacy]:[],c.source==='owned'?[c.legacy]:[])[0];c.maxOverall=R.maximum(localStorage,descriptor,ref?.ownerMaximumOverall?.value??null);}
   if(c.source==='original'&&sources.positional){const m=sources.positional.fromPersonal(c.legacy,null,localStorage);c.positions=sources.positional.positionMap(m).filter(x=>x.eligible).map(x=>x.position);c.skillCapacity=c.skillsVerified?5:null;}
   if(c.source==='owned'){
    const manual=JSON.parse(localStorage.getItem('scoutpro:v364:owned-confirmed')||'{}')[c.id];
    const meta=deps.rating.ownedMetadata(c.legacy,manual,ref),r=window.CRAQUE_CARD_REVIEW_V379.owned(c.legacy,localStorage);
    c.maxLevel=meta.level;c.pp=meta.level===null?null:2*(meta.level-1);c.cardId=meta.cardId;c.edition=meta.engineEdition||c.edition;
+   const changedIdentity=r&&((r.cardId&&r.cardId!==c.cardId)||(r.edition&&r.edition!==c.edition&&
+    !(ref?.identityUsable&&String(c.cardId)===String(ref.reference?.cardId)&&[ref.edition,ref.reference?.edition].includes(r.edition))));
+   if(changedIdentity)Object.assign(c,{maxLevel:null,pp:null,nativeSkills:[],trainingLevels:null,fixedBoosters:[],
+    skills:[],skillsVerified:false,skillCapacity:null,boosterSlot:'pendente',extraBooster:null});
    if(r){if(r.cardId)c.cardId=r.cardId;if(r.edition)c.edition=r.edition;if(r.maxLevel!==null)c.maxLevel=r.maxLevel;if(r.pp!==null)c.pp=r.pp;
     c.offenseStyle=r.attackStyle||c.offenseStyle;c.defenceStyle=r.defenceStyle||c.defenceStyle;
     if(r.nativeSkills)c.nativeSkills=split(r.nativeSkills);if(r.training)c.trainingLevels=r.training;
-    if(r.equipmentReviewed){c.skills=r.skills.filter(Boolean);c.skillsVerified=true;c.skillCapacity=5;c.boosterSlot=r.extraSlot;c.extraBooster=r.extraBooster?{name:r.extraBooster,value:1,verified:false}:null;}
+    if(r.fixedBooster)c.fixedBoosters=[{name:r.fixedBooster,value:null,verified:false}];
+    if(r.equipmentReviewed){c.skills=r.skills.filter(Boolean);c.skillsVerified=true;c.skillCapacity=5;c.boosterSlot=r.extraSlot;c.extraBooster=r.extraBooster?{name:r.extraBooster,value:null,verified:false}:null;}
     if(r.cardInfo&&!r.cardInfo.mathOk){c.pp=null;c.maxLevel=null;}}
    c.nativeVerified=c.nativeSkills.length>0;
   }
@@ -102,6 +108,12 @@ function paintResults(){const root=$('results');root.replaceChildren();$('plan-s
   for(const b of r.boosters)proposed.append(mk('small',b.name+' — '+b.reason));
   compare.append(current,proposed);box.append(compare);const pending=mk('p','Conferir antes de investir: '+(r.pending.join(', ')||'nenhuma pendência de cadastro identificada')+'.');pending.className='pending';box.append(pending);
   const details=mk('details');details.append(mk('summary','Por que esta ficha?'),mk('p',r.searchMethod),mk('p',r.contextReasons.join(' ')||r.job),mk('p',r.stylePair.activation));
+  if(r.individualAnalysis&&r.proposed){
+   details.append(mk('p',r.individualAnalysis.reason));
+   if(r.individualAnalysis.task)details.append(mk('p','Foco da ficha · '+r.individualAnalysis.task.label));
+   if(r.individualAnalysis.factors?.length){const factors=mk('ul');for(const factor of r.individualAnalysis.factors)
+    factors.append(mk('li',factor.category+' · '+factor.reason));details.append(factors);}
+  }
   if(r.stylePair.activationPair)for(const [phase,label]of [['attack','Ataque'],['defence','Defesa']]){const a=r.stylePair.activationPair[phase];details.append(mk('p',label+': '+a.explanation));if(a.source){const link=mk('a','Referência de '+label.toLowerCase()+' ↗');link.href=a.source.url;link.target='_blank';link.rel='noopener noreferrer';details.append(link,mk('p',a.source.kind+' · consultado em '+a.source.checked));}}
   if(r.attributeEstimate?.status==='estimated')details.append(mk('p','OVR estimado desta proposta: '+r.attributeEstimate.overall+'; fórmula independente, sem confirmação no jogo.'),mk('pre',JSON.stringify(r.attributeEstimate.stats,null,2)));
   else details.append(mk('p','Atributos finais dependem da base exata da edição e dos bônus documentados. Nenhum número final foi inventado.'));box.append(details);root.append(box);

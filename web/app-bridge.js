@@ -913,6 +913,12 @@ window.addEventListener('craque:backup-error',event=>{
  if(e)e.textContent='Cópia automática indisponível: '+event.detail.message;
 });
 // V376: contextual Overall, separate from the original artwork and proposals.
+if(document.body.dataset.page==='detail'){
+ const functionMethod=document.createElement('script');
+ functionMethod.src=v189Root+'craque-function-method-v383.js';
+ functionMethod.addEventListener('load',()=>window.dispatchEvent(new CustomEvent('craque:references-ready')));
+ document.head.appendChild(functionMethod);
+}
 if(['catalog','detail'].includes(document.body.dataset.page)){
  const ratingCss=document.createElement('link');ratingCss.rel='stylesheet';
  ratingCss.href=v189Root+'craque-rating-ui-v376.css';document.head.appendChild(ratingCss);

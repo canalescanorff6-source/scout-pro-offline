@@ -43,6 +43,36 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
   for(const source of r.sources){const p=el('p'),a=el('a','',source.title);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';p.append(a);info.append(p);}
   block.append(info);
  }
+ const calculation=review.individualAnalysis;
+ if(calculation?.task&&review.proposed)block.append(el('p','ct311-confirm','Foco da ficha · '+calculation.task.label));
+ if(calculation&&calculation.status!=='preservada'){
+  const why=el('details','ct378-about');
+  why.append(el('summary','','Por que esta ficha foi escolhida?'),el('p','',calculation.reason));
+  if(calculation.task&&review.proposed){
+   const mechanics=el('a','','Referência da ação priorizada');
+   mechanics.href=calculation.task.source;mechanics.target='_blank';mechanics.rel='noopener noreferrer';
+   why.append(el('p','',calculation.task.stats.map(s=>s.label+' '+s.base+(s.fixed?' +'+s.fixed+' fixo':'')+' → '+(Math.min(99,s.base+review.proposed[s.group])+s.fixed)).join(' · ')),
+    el('p','ct311-note','Projeção de treino e ímpeto fixo documentado, antes dos bônus do técnico e da condição em jogo.'),mechanics);
+   const accuracyStudy=calculation.task.stats.find(stat=>stat.study)?.study;
+   if(accuracyStudy){
+    const source=el('a','','Estudo do Amadeusz sobre precisão');
+    source.href=accuracyStudy;source.target='_blank';source.rel='noopener noreferrer';
+    const note=el('p','ct311-note','Nos atributos de precisão desta função, o cálculo dá mais peso aos ganhos entre 60 e 90, conforme o estudo. ');
+    note.append(source);why.append(note);
+   }
+  }
+  const factors=el('ul');
+  for(const factor of calculation.factors)factors.append(el('li','',factor.category+' · '+factor.reason));
+  if(factors.children.length)why.append(factors);
+  if(calculation.reference){
+   const source=el('a','','Consultar a edição usada no cálculo');
+   source.href=calculation.reference.url;source.target='_blank';source.rel='noopener noreferrer';why.append(source);
+  }
+  const repeats=review.repetitionAudit;
+  if(repeats?.documentedPairs)why.append(el('p','ct311-note',repeats.documentedPairs+' outra(s) carta(s) chegaram ao mesmo vetor após análise individual neste contexto auditado.'));
+  if(repeats?.pendingPairs)why.append(el('p','ct311-note',repeats.pendingPairs+' coincidência(s) neste contexto ainda dependem de dados da edição.'));
+  block.append(why);
+ }
  if(review.levelRevision){const r=review.levelRevision;block.append(el('p','ct381-level-note',
   'PP revisados: '+r.beforePP+' → '+r.afterPP+'. Esta proposta usa o orçamento corrigido. O histórico anterior permanece preservado.'));}
  // V381: fontes mundiais no MESMO painel de treino, habilidades e ímpetos.
@@ -72,7 +102,48 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
     el('td','',delta===null?'—':(delta>0?'+':'')+delta));table.append(row);
   });
   compare.append(table);block.append(compare);
+  if(review.matchTrial){
+   const trial=review.matchTrial,experiment=el('details','ct378-about ct389-match-trial');
+   experiment.append(el('summary','','Comparar em partida · ficha A/B'),el('p','',trial.task),
+    el('p','ct311-note','Mesmo orçamento de '+review.pp+' PP. Projeções antes de bônus do técnico, ímpetos e condição.'),
+    el('h4','','Atributos · ficha recomendada → variante de teste'));
+   const attributes=el('dl','ct375-training');
+   for(const attr of trial.attributes){
+    const row=el('div');row.append(el('dt','',attr.label),el('dd','',attr.current+' → '+attr.alternative));attributes.append(row);
+   }
+   experiment.append(attributes,el('h4','','Variante B · níveis por grupo'));
+   const groups=el('dl','ct375-training');
+   for(const group of review.trainingGroups){
+    const row=el('div'),level=trial.alternative[group.index];
+    row.append(el('dt','',group.category),el('dd','',level+' níveis'),el('small','',t.ppCost(level)+' PP'));groups.append(row);
+   }
+   const source=el('a','','Pesquisa que orientou a comparação');
+   source.href=trial.source;source.target='_blank';source.rel='noopener noreferrer';
+   experiment.append(groups,el('p','',trial.measure),
+    el('p','ct311-note','Simulação para PvP. Use a mesma posição, técnico, instruções, habilidades e ímpeto com as duas fichas.'),source);
+   block.append(experiment);
+  }
  }else block.append(el('p','ct311-alert','PP pendentes: confirme o nível máximo da edição para calcular a distribuição.'));
+ if(review.publishedTraining){
+  const p=review.publishedTraining,comparison=el('details','ct378-about');
+  comparison.append(el('summary','','Ficha publicada por Amadeusz'),
+   el('p','ct311-note',p.position+' · '+p.pp+' PP · José Mourinho na publicação · '+p.booster),
+   el('h4','','Níveis · ficha do app → publicação'));
+  const comparisonRows=items=>{
+   const list=el('dl','ct375-training');
+   for(const {label,app,published} of items){
+    const row=el('div');
+    row.append(el('dt','',label),el('dd','',app+' → '+published));list.append(row);
+   }
+   return list;
+  };
+  comparison.append(comparisonRows(p.groups));
+  if(p.attributes.length)comparison.append(el('h4','','Atributos projetados antes dos bônus'),comparisonRows(p.attributes));
+  const source=el('a','','Abrir publicação no eFHUB');
+  source.href=p.source;source.target='_blank';source.rel='noopener noreferrer';
+  comparison.append(source);
+  block.append(comparison);
+ }
  const inventory=el('details','ct374-native-inventory');
  inventory.append(el('summary','','Nativas desta carta · '+review.nativeSkills.length+(review.nativeSource==='public'?' · referência pública':'')),
   el('p','ct311-note',(review.nativeSkillLabels||review.nativeSkills).join(' · ')||'Lista pendente'));
@@ -103,7 +174,7 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
    ' A recomendação não equipa o ímpeto.'));block.append(section);
  }
  if(main&&!review.boosters.length)block.append(el('h4','','Ímpeto adicional'),el('p','ct311-note',
-  review.competitiveReview?.slotNote||(review.boosterSlot==='ausente'?'Esta carta está cadastrada sem slot adicional.':
+  review.slotNote||review.competitiveReview?.slotNote||(review.boosterSlot==='ausente'?'Esta carta está cadastrada sem slot adicional.':
    review.sourceKind==='profile'?'Nenhum ímpeto selecionado nesta ficha salva.':'Indicação pendente de dados da edição.')));
  if(review.tests.length)block.append(el('p','ct311-note','Observar em jogo: '+review.tests.join(' · ')));
  const exportStatus=el('p','ct375-copy-status');exportStatus.setAttribute('role','status');
@@ -785,13 +856,13 @@ function create(target,model,opts={}){
    const reference=savedProfile?.train||recorded?.levels;
    const publicReference=host.CRAQUE_REFERENCES_V376?.cards.find(c=>c.cardKey===model.cardKey);
    const selection={source:savedProfile?'profile':recorded?'revision':'proposal',reference:publicReference,
-    managerLabel:coaching};
+    managerLabel:coaching,managerId:scenario.manager};
    if(savedProfile){selection.levels=savedProfile.train;selection.skills=savedProfile.skills||[];selection.booster=savedProfile.booster||'';}
    else if(recorded){selection.levels=recorded.levels;
     selection.skills=(recorded.recommendations||[]).map(s=>s.name);selection.booster=recorded.booster||'';}
    if(mainEngine&&model.collection==='minhas-246')try{
     const input={...reviewCard,equipmentRecord:model.equipmentRecord};
-    const proposalSelection={source:'proposal',reference:publicReference,managerLabel:coaching};
+    const proposalSelection={source:'proposal',reference:publicReference,managerLabel:coaching,managerId:scenario.manager};
     const alternative=savedProfile||recorded?mainEngine.resolve(input,outcome,proposalSelection):null;
     const comparisonContext=JSON.stringify([scenario.id,scenario.contentSignature,
      savedProfile?'profile':'revision',savedProfile?.revision??recorded?.revision??null]);
@@ -804,6 +875,10 @@ function create(target,model,opts={}){
    }
    catch(e){profileError=String(e.message||e);}
    const review=mainSheet?.review||reviewEngine.functionReview(reviewCard,outcome,reference);
+   if(mainSheet){
+    active={...scenario,outcome:mainSheet.result};
+    if(!review.canSave)save.disabled=true;
+   }
    review.managerId=scenario.manager;
    mainBlock=reviewPanel(review,{
     main:Boolean(mainSheet),
