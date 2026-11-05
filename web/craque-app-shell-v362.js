@@ -10,7 +10,8 @@ const names={
  'progress-audit':'Níveis e PP',boosters:'Ímpetos','tactical-review':'Análise tática',
  'video-evidence':'Vídeos e evidências','player-model':'Modelo corporal',
  'rarity-audit':'Raridades',review379:'Conferir cartas',
- 'batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas'
+ 'batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas',
+ 'craque-ai':'Craque Tático AI'
 };
 const at=()=>d.body?.dataset.page||'';
 const ACTIVE_RELEASE=362;
