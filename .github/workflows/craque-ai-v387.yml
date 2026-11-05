@@ -1,5 +1,8 @@
 name: Craque Tatico AI V387 - testes isolados
 on:
+  push:
+    branches:
+      - feat/v387-craque-ai-gemini-worker
   pull_request:
     paths:
       - 'cloudflare/craque-ai/**'
