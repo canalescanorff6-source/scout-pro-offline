@@ -234,6 +234,7 @@
   outlet:{label:'Girar e dar o primeiro passe após recuperar',stats:{low_pass:3,ball_control:3,tight_possession:2,balance:2,acceleration:1,lofted_pass:1},skills:['onepass','sole','through','heel'],source:TACTICAL_SOURCE},
   vertical:{label:'Receber entre linhas e acelerar o passe vertical',stats:{low_pass:3,tight_possession:3,ball_control:2,balance:2,acceleration:2},skills:['through','onepass','sole','heel'],source:TACTICAL_SOURCE},
   cover:{label:'Acompanhar a ruptura e proteger as costas da linha',stats:{speed:3,acceleration:3,defensive_awareness:3,defensive_engagement:2,tackling:2,stamina:1},skills:['intercept','blocker','mark','fighting'],source:DEFENCE_SOURCE},
+  inside_support:{label:'Tabelar por dentro e recuperar o corredor',stats:{low_pass:3,ball_control:3,balance:2,speed:2,stamina:2,defensive_awareness:2},skills:['onepass','through','sole','intercept','blocker'],source:DEFENCE_SOURCE},
   duel:{label:'Sair para o bote e ganhar o duelo',stats:{tackling:3,defensive_engagement:3,physical_contact:3,acceleration:2,defensive_awareness:2},skills:['intercept','blocker','mark','clear'],source:DEFENCE_SOURCE},
   screen:{label:'Cortar a linha de passe e oferecer saída segura',stats:{defensive_engagement:3,defensive_awareness:3,tackling:2,low_pass:3,stamina:2},skills:['intercept','onepass','blocker','fighting'],source:DEFENCE_SOURCE},
   carry:{label:'Avançar pelo corredor e entregar um passe útil',stats:{dribbling:3,ball_control:3,tight_possession:2,acceleration:2,low_pass:2,stamina:1},skills:['double','sole','onepass','cutturn'],source:'https://efhub.com/articles/260909_2-major-changes-to-how-dribbling-feels'},
@@ -253,6 +254,7 @@
   if(card.trainingDefensive)return role==='ZG'||lateral?'cover':role==='VOL'||role==='MLG'?'screen':'outlet';
   if(fn==='anchor')return 'screen';
   if(fn==='cover'||fn==='secure')return 'cover';
+  if(fn==='advance'&&lateral)return 'inside_support';
   if(fn==='pivot')return 'receive';
   if(fn==='infiltrate'||fn==='finish')return tactic==='fora'?'finish':'depth';
   if(fn==='connect'||fn==='create')return tactic==='longo'?'launch':tactic==='rapido'?'vertical':'outlet';

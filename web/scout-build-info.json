@@ -1,8 +1,8 @@
 {
   "schema": "scout_v189_shared_web_bundle",
   "version": "1.1.0",
-  "git_revision": "v391-preview",
-  "bundle_fingerprint": "d652aa959614abacf735",
+  "git_revision": "v392-preview",
+  "bundle_fingerprint": "aac7a7771b0a53ec23da",
   "common_web_dir": "web",
   "source_count": 225,
   "mobile_web_container": "Capacitor webDir=web",

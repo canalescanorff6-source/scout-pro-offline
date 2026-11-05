@@ -1,5 +1,19 @@
 # Auditoria V389 das fichas individuais
 
+## Apoio por dentro e cobertura na lateral
+
+O Plano do Time e a ficha por função passam a calcular a opção **Apoiar por dentro e recuperar** com uma ação própria, que combina passe curto, domínio, equilíbrio, velocidade, resistência e cobertura. A instrução **Defensivo** mantém a prioridade de cobertura. A função do app é uma hipótese de uso da carta. A ativação de estilos continua vinculada à posição e à fase informadas.
+
+Juan Foyth #131, Card ID `105864769945293`, LD, Contra-Ataque Rápido, 56 PP em cada cenário. A projeção soma a distribuição aos atributos-base antes dos bônus e da condição.
+
+| Função no plano | Passe rasteiro | Controle de bola | Aceleração | Talento defensivo | Desarme |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Dar apoio seguro pelo lado | 73 | 73 | 82 | 84 | 84 |
+| Apoiar por dentro e recuperar | 75 | 75 | 81 | 83 | 83 |
+| Apoiar por dentro e recuperar, com Defensivo | 74 | 73 | 82 | 84 | 84 |
+
+As recomendações respeitam as nativas da edição e o catálogo indica ausência de slot adicional de ímpeto. Os cenários com instruções diferentes servem para comparar o encaixe do conjunto. Para medir apenas a ficha em PvP, mantenha posição, técnico, instruções e equipamento iguais. Registre tabelas concluídas sob pressão por recepções e coberturas bem-sucedidas por bolas jogadas no corredor, com o placar e o período da partida. As entrevistas sustentam a escolha do que observar e o resultado em partida permanece em aberto. [Edição de Foyth](https://efhub.com/players/105864769945293) · [Notas da Konami](https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00) · [Entrevistas no eFHUB](https://efhub.com/es/articles/260930_3-which-defender-playing-style-is-best)
+
 ## Estudos de Amadeusz na ficha do aplicativo
 
 O ganho marginal de passe rasteiro, passe alto, finalização e cabeceio usa três faixas de precisão com quebras em 60 e 90, quando esses atributos fazem parte da ação da carta. O modelo usa inclinações aproximadas do estudo como fatores editoriais e mantém o custo progressivo dos PP. A projeção considera a base e o ímpeto fixo documentado. Proficiência do técnico, condição e habilidades situacionais ficam fora dessa projeção. [Estudo de precisão](https://efhub.com/articles/261019_3-passing-and-finishing-the-threshold-is-90-for-both)
