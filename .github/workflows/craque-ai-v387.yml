@@ -29,3 +29,5 @@ jobs:
           node --check scripts/test-craque-ai-v387.mjs
       - name: Testes sem API externa e sem segredos
         run: node --test scripts/test-craque-ai-v387.mjs
+      - name: Regressao integral do projeto
+        run: npm run check
