@@ -1,0 +1,28 @@
+name: Craque Tatico AI V387 - testes isolados
+on:
+  pull_request:
+    paths:
+      - 'cloudflare/craque-ai/**'
+      - 'web/craque-ai-v387.*'
+      - 'web/index.html'
+      - 'web/craque-app-shell-v362.js'
+      - 'web/sw.js'
+      - 'scripts/test-craque-ai-v387.mjs'
+      - '.github/workflows/craque-ai-v387.yml'
+  workflow_dispatch:
+
+jobs:
+  ai-v387:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sintaxe Worker e navegador
+        run: |
+          node --check cloudflare/craque-ai/src/index.mjs
+          node --check web/craque-ai-v387.js
+          node --check scripts/test-craque-ai-v387.mjs
+      - name: Testes sem API externa e sem segredos
+        run: node --test scripts/test-craque-ai-v387.mjs
