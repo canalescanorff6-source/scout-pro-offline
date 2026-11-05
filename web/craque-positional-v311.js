@@ -158,6 +158,7 @@ function compute(model,position='MAT',style='posse',manager='',provided){
  const positionEvidence=familiarity(m,id.position,deps);
  const copy={
   capture:m.evidenceCard?.numero??null,equipmentRecord:m.equipmentRecord||null,
+  reference:deps.reference??host?.CRAQUE_REFERENCES_V376?.cards.find(card=>card.cardKey===m.cardKey),
   localKey:m.cardKey,originalPosition:m.position,positionEvidence,
   baseReference:m.evidenceCard?.base_stats_known===true,
   position:id.position,style:m.style,defenceStyle:m.defenceStyle,level:m.level,pp:m.pp,cardId:m.cardId,edition:m.edition,

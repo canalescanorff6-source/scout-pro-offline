@@ -31,6 +31,9 @@ const ENTRIES=[
  ['supersub','Super substituto',['Super Sub','Super-sub','Super reserva','Super substituto'],'Alternativa para quem normalmente entra na segunda etapa.']
 ];
 const SKILLS=Object.fromEntries(ENTRIES.map(x=>[x[0],Object.freeze({key:x[0],name:x[1],aliases:x[2],why:x[3]})]));
+const ACTION_SKILL_REASON={onepass:'Ajuda a executar de primeira quando a bola chega rápida.',
+ weighted:'Aplica efeito para trás em lançamentos altos específicos.',
+ firstshot:'Ajuda a finalizar de primeira com o pé quando a bola chega rápida.'};
 const normal=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const aliasMap=new Map;
 for(const e of ENTRIES)for(const alias of [e[1],...e[2]])aliasMap.set(normal(alias),e[0]);
@@ -428,6 +431,8 @@ function evaluate(d,tactic,manualEquipped,options={}){
  if(tactic==='rapido')bump(['through','firstshot','double','longshot','fighting','intercept'],18,'tatica');
  if(tactic==='fora')bump(['weighted','lowloft','onepass','sole','double','through','aerial','gklong'],23,'tatica');
  if(tactic==='longo')bump(['weighted','lowloft','aerial','heading','firstshot','fighting','intercept','gklong'],24,'tatica');
+ const task=tactic!=='posse'?options.task:null;
+ if(task?.skills)task.skills.forEach((key,index)=>bump([key],Math.max(8,80-index*18),'tatica'));
  if(/pivo|homem de area|target/.test(style))bump(['heading','aerial','onepass','heel'],34);
  // V269: quem puxa marcação/infiltra para criar apoio não recebe, por padrão,
  // a mesma priorização de chute de primeira de um Artilheiro.
@@ -612,8 +617,8 @@ function evaluate(d,tactic,manualEquipped,options={}){
      tacticalPriority.includes(key)?'essencial_na_hipotese':
      i<5?'complementar':'situacional',
     confidence:!nativeKnown||!identityKnown?'pendente':additionalEvidenceConfirmed&&!unmappedNative.length?'limitada':'baixa',
-    reason:SKILLS[key].why,
-    situation:TACTIC_REASON[tactic]+' Função '+role+'.',
+    reason:(task&&ACTION_SKILL_REASON[key])||SKILLS[key].why,
+    situation:task?.skills?.includes(key)?'Ação priorizada · '+task.label+'.':TACTIC_REASON[tactic]+' Função '+role+'.',
     attributeRelation:investment.levels&&TRAINING_CATEGORY[key]!==undefined?
      investment.levels[TRAINING_CATEGORY[key]]+' níveis investidos na categoria relacionada; não é atributo final.':
      'Sem atributos finais confirmados para quantificar o benefício.',

@@ -25,7 +25,9 @@ function individualContext(card,options={}){const id=account(card.accountId),pos
  const manager=options.manager||null,instructions=(options.instructions||[]).map(type=>{if(!['defensive','anchoring','counter_target'].includes(type))throw Error('Instrução individual inválida.');return {type,phase:C.INSTRUCTIONS[type].phase,instanceId:card.id};});
  const member={slot:{id:'individual',position,x:50,y:50},offBall:{id:'individual',position,x:50,y:50},card,eligible:(card.positions||[card.position]).includes(position),offenseStyle:card.offenseStyle||'Não informado',defenceStyle:card.defenceStyle||'Não informado',instructions};
  member.activation=M.activation(member);member.functionPlan=M.contract(member,options.functionKey);member.role={attack:member.functionPlan.attack,defence:member.functionPlan.defence};member.styleActivation=member.activation.attack.label+'; '+member.activation.defence.label;
- const sig=C.signature({accountId:id,card:fingerprint(card),position,style,manager,instructions,functionKey:member.functionPlan.key,method:M.VERSION});
+ const reference=card.reference?.reference?.htmlSha256;
+ const sig=C.signature({accountId:id,card:fingerprint(card),position,style,manager,instructions,functionKey:member.functionPlan.key,method:M.VERSION,
+  ...(reference?{reference}:{})});
  return {schema:'CRAQUE_INDIVIDUAL_CONTEXT_V385',accountId:id,style,formation:null,manager,proficiency:manager?.proficiency?.[style]??null,lineup:{individual:card.id},instructions,functions:{[card.id]:member.functionPlan.key},members:[member],warnings:[...(!member.eligible?['Familiaridade nesta posição a conferir.']:[]),...(!manager?['Técnico não selecionado.']:[])],signature:sig,ready:false,cardFingerprint:fingerprint(card)};}
 const sheetKey=(id,cardId)=>SHEET_PREFIX+account(id)+':'+encodeURIComponent(cardId);
 function sheets(store,id,card){const raw=store.getItem(sheetKey(id,card.id));if(!raw)return [];let doc;try{doc=JSON.parse(raw);}catch(_){throw Error('Histórico de fichas ilegível; registros preservados.');}
@@ -33,8 +35,9 @@ function sheets(store,id,card){const raw=store.getItem(sheetKey(id,card.id));if(
  return doc.revisions.map(r=>({...clone(r),stale:r.cardFingerprint!==fingerprint(card)}));}
 function saveSheet(store,id,card,context,review){account(id);const current=A.read(store)[id].cards.find(c=>c.id===card.id);
  if(!current||card.accountId!==id||context.accountId!==id||context.cardFingerprint!==fingerprint(current)||context.members[0]?.card.id!==card.id||review.identity?.cardId!==String(card.cardId||'')||review.identity?.edition!==(card.edition||''))throw Error('Ficha não corresponde à conta, edição ou contexto atual.');
- const budget=card.pp??(Number.isInteger(card.maxLevel)?2*(card.maxLevel-1):null);
- if(!Array.isArray(review.proposed)||review.proposed.length!==10||review.proposed.some(n=>!Number.isInteger(n)||n<0||n>20)||!Number.isInteger(budget)||A.cost(review.proposed)!==budget||review.pp!==budget||!context.members[0].eligible)throw Error('Treino sem PP válidos ou familiaridade pendente.');
+ if(review.contextSignature&&review.contextSignature!==context.signature)throw Error('O contexto desta ficha mudou. Gere a proposta atual antes de salvar.');
+ const budget=current.pp??(Number.isInteger(current.maxLevel)?2*(current.maxLevel-1):null);
+ if(review.canSave===false||!Array.isArray(review.proposed)||review.proposed.length!==10||review.proposed.some(n=>!Number.isInteger(n)||n<0||n>20)||!Number.isInteger(budget)||A.cost(review.proposed)!==budget||review.pp!==budget||!context.members[0].eligible)throw Error('Ficha sem treino válido para salvar neste contexto.');
  const key=sheetKey(id,card.id),revisions=sheets(store,id,card).map(({stale,...r})=>r),revision={id:'sheet-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),savedAt:new Date().toISOString(),cardFingerprint:fingerprint(card),contextSignature:context.signature,
   options:{style:context.style,position:context.members[0].slot.position,functionKey:context.members[0].functionPlan.key,manager:context.manager,instructions:context.instructions.map(i=>i.type)},review:clone(review)};
  if(revisions.length>=30)throw Error('Limite de30revisões desta carta atingido. Exporte o backup; o histórico anterior foi preservado.');

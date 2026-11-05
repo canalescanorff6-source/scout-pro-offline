@@ -34,6 +34,10 @@ const BOOSTERS={
 // Konami v5.2.0: Select Booster Tokens can craft all 28 types, including Accuracy and Strength.
 // Natural booster values remain immutable; availability of the second slot is checked per card.
 const CRAFTABLE=Object.freeze(Object.keys(BOOSTERS));
+const ACTION_STATS={offensive_awareness:'awareness',ball_control:'control',tight_possession:'tight',
+ low_pass:'pass',lofted_pass:'loft',finishing:'finish',acceleration:'accel',physical_contact:'physical',jumping:'jump',
+ defensive_awareness:'defaware',defensive_engagement:'defengage',tackling:'tackle',gk_awareness:'gkaware',
+ gk_parrying:'gkparry',gk_reflexes:'gkreflex',gk_reach:'gkreach',gk_catching:'gkcatch'};
 const ROLE={CA:{awareness:6,finish:7,accel:5,control:4,power:3,physical:2,speed:3,pass:2,balance:2,heading:1,jump:1,stamina:1},
 SA:{awareness:5,finish:4,accel:5,control:5,pass:5,dribble:4,tight:4,balance:4,speed:2,physical:2,stamina:2},
 MAT:{control:6,tight:5,dribble:5,pass:7,awareness:4,accel:4,balance:5,finish:3,stamina:2,power:2},
@@ -442,6 +446,12 @@ function rank(card,tactic,equipment={}){
     ['Offence Creator','Off the Ball','Fantasista'].includes(name))contextScore+=3;
   }
   if(role==='GO'&&tactic==='posse'&&name==='Goalkeeping')contextScore+=1;
+  const task=tactic!=='posse'&&levels?equipment.task:null;
+  const supported=task?.stats?.filter(s=>stats.includes(ACTION_STATS[s.key]||s.key))||[];
+  contextScore+=supported.reduce((sum,s)=>{
+   const projected=Math.min(99,s.base+levels[s.group])+s.fixed;
+   return sum+1.6*s.weight*Math.max(.25,Math.min(1.3,(115-projected)/35));
+  },0);
   // Complementaridade relativa das skills instaladas, isolada do score de
   // nativas. Não cria atributo final nem duplica confirmação por booleano.
   const additionalScore=additional.confirmed?Math.min(3,stats.reduce((sum,key)=>
@@ -455,6 +465,7 @@ function rank(card,tactic,equipment={}){
    levels?'níveis de treino servem apenas como sinal de investimento, sem atributos finais medidos':'níveis individuais indisponíveis; recomendação provisória'
   ];
   if(nativeFindings.length)info.push('habilidades nativas indicam '+nativeFindings.slice(0,2).join(' e '));
+  if(supported.length)info.push('apoia '+task.label.toLowerCase()+' com '+supported.map(s=>s.label).join(', '));
   if(!identityDocumented)info.push('Card ID ou edição sem identificação segura: ímpeto pendente');
   else if(!nativeCataloged)info.push('habilidades nativas ausentes/provisórias: confiança pendente');
   else if(!progressOriginVerified)info.push('nível máximo e origem dos PP a confirmar');

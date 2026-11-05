@@ -171,7 +171,7 @@ function mount(doc){
    /^informado_pelo_usuario_/.test(String(card.pp_origem||''));
   const sourceVerified=Boolean(possession)&&levelDocumented&&
    card.training_provisional!==true&&engine.confirmSource(card);
-  const fallback=sourceVerified?engine.hypothetical({...card,niveis:possession},tactic,possession):null;
+  const fallback=tactic==='posse'&&sourceVerified?engine.hypothetical({...card,niveis:possession},tactic,possession):null;
   // V303: o perfil de CADA estilo é alocado individualmente com orçamento
   // exato. A falta de nível documentado reduz a confiança, não gera zeros
   // nem renomeia a distribuição de Posse como se fosse de outro estilo.
@@ -331,6 +331,9 @@ function mount(doc){
   switchTraining(style);
  });
  doc.addEventListener('scoutpro:skills-updated',updateRecommendations);
+ host.addEventListener('craque:references-ready',()=>{
+  if(wrap.isConnected&&style!=='posse')switchTraining(style);
+ });
  doc.addEventListener('scoutpro:recommendations-ready',()=>{
   const old=doc.getElementById('scout-v162');
   const bx=doc.getElementById('scout-v220-advanced-skills');

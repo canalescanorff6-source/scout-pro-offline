@@ -118,7 +118,8 @@ const allocationCache=new Map();
  */
 function allocate(weights,role,pp,baseline,options={}){
  if(!T||!Number.isInteger(pp)||pp<0||pp>300||!Array.isArray(weights)||weights.length!==10)return null;
- const cacheKey=JSON.stringify([weights,role,pp,T.valid(baseline)?baseline:null,...(options.physicalGroups===true?['functional-v382']:[])]);
+ const curves=options.utility||null;
+ const cacheKey=JSON.stringify([weights,role,pp,T.valid(baseline)?baseline:null,curves,options.physicalGroups===true]);
  if(allocationCache.has(cacheKey))return allocationCache.get(cacheKey)?.slice()||null;
  const allowed=options.physicalGroups===true?(role==='GO'?[1,2,3,4,5,7,8,9]:[0,1,2,3,4,5,6,7]):role==='GO'?[7,8,9]:[0,1,2,3,4,5,6];
  let dp=Array(pp+1).fill(null);dp[0]={utility:0,levels:Array(10).fill(0)};
@@ -132,7 +133,7 @@ function allocate(weights,role,pp,baseline,options={}){
     if(newCost>pp)break;
     const preserve=Array.isArray(baseline)&&T.valid(baseline)?
       Math.abs(n-baseline[i])*0.15:0;
-    const utility=before.utility+w*(n-0.047*n*n)-preserve;
+    const utility=before.utility+w*(n-0.047*n*n)+(curves?.[i]?.[n]||0)-preserve;
     const existing=next[newCost];
     if(!existing||utility>existing.utility+1e-9){
      const levels=before.levels.slice();levels[i]=n;
