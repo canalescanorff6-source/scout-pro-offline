@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#28282c"><title>Craque Tático AI · Assistente de análise</title>
+<link rel="stylesheet" href="craque-app-shell-v362.css" data-ct362-design="true"><link rel="stylesheet" href="craque-ai-v387.css"><script defer src="craque-app-shell-v362.js" data-ct362-design="true"></script><script defer src="craque-ai-v387.js"></script>
+</head><body data-page="craque-ai">
+<header class="ctai-top"><a href="index.html" class="ctai-back">← Meu elenco</a><span class="ctai-brand">CRAQUE TÁTICO <b>AI</b></span><span class="ctai-kicker">V387 · PRIVADO</span></header>
+<main class="ctai-shell">
+<section class="ctai-intro"><span class="ctai-eyebrow">ANÁLISE ASSISTIDA · SEM ALTERAR SUAS CARTAS</span>
+<h1>Inteligência para cada decisão.</h1>
+<p>Consulte sua coleção local, compare escalações, registre correções e revise trechos públicos do código. A IA só funciona com internet e com seu consentimento. Todo o restante do Craque Tático permanece offline.</p></section>
+<div class="ctai-columns">
+<section class="ctai-panel" aria-labelledby="ctai-settings-title">
+<h2 id="ctai-settings-title">01 · Conexão segura</h2>
+<p class="ctai-muted">Configure uma vez a URL do seu Worker. O token de acesso não será salvo no aparelho. <strong>Nunca digite a chave Gemini aqui.</strong></p>
+<label for="ctai-endpoint">URL HTTPS do Cloudflare Worker</label>
+<input id="ctai-endpoint" type="url" placeholder="https://craque-tatico-ai.seu-nome.workers.dev" autocomplete="url" spellcheck="false">
+<label for="ctai-token">Token pessoal de acesso ao Worker</label>
+<input id="ctai-token" type="password" autocomplete="off" placeholder="Token de acesso, não chave Gemini">
+<div class="ctai-actions"><button type="button" id="ctai-connect" class="ctai-button">Verificar conexão e orçamento</button><button type="button" id="ctai-clear-token" class="ctai-button secondary">Limpar token</button></div>
+<p id="ctai-connection-status" class="ctai-notice" role="status">IA opcional. Sem conexão, o acervo local continua disponível.</p>
+<div id="ctai-budget" class="ctai-budget" aria-live="polite">Orçamento preventivo: até US$ 3 em reservas mensais · limite do Worker, não fatura.</div>
+</section>
+<section class="ctai-panel" aria-labelledby="ctai-analyze-title">
+<h2 id="ctai-analyze-title">02 · Análise inteligente</h2>
+<label for="ctai-mode">O que analisar?</label>
+<select id="ctai-mode"><option value="carta">Uma carta específica</option><option value="formacao">Formação e estilo de jogo</option><option value="codigo">Auditoria de código (leitura)</option></select>
+<div class="ctai-mode-box" id="ctai-card-fields">
+<label for="ctai-account">Conta</label>
+<select id="ctai-account"><option value="primary">Principal</option><option value="secondary">Secundária</option></select>
+<label for="ctai-card-search">Buscar jogador, edição ou Card ID</label>
+<input id="ctai-card-search" type="search" placeholder="Ex.: Cristiano, #024, Epic" autocomplete="off">
+<label for="ctai-card">Carta para análise</label>
+<select id="ctai-card"><option value="">Carregando catálogo local…</option></select>
+</div>
+<div class="ctai-mode-box" id="ctai-formation-fields" hidden>
+<label for="ctai-formation">Formação</label><select id="ctai-formation"><option value="4312">4-3-1-2</option><option value="4213">4-2-1-3</option></select>
+<label for="ctai-style">Estilo do técnico</label><select id="ctai-style">
+<option value="posse">Posse de Bola</option><option value="normal">Contra-Ataque Normal</option><option value="rapido">Contra-Ataque Rápido</option><option value="fora">Por Fora</option><option value="longo">Passe Longo</option></select>
+<p class="ctai-muted">A escalação salva nesse aparelho é lida, sem modificar qualquer jogador. Se não houver registro, será usada a escalação histórica sinalizada como prévia.</p>
+</div>
+<div class="ctai-mode-box" id="ctai-code-fields" hidden>
+<label for="ctai-audit-file">Módulo público do GitHub</label><select id="ctai-audit-file">
+<option value="web/craque-ficha-individual-v251.js">Fichas individuais</option>
+<option value="web/scout-rotation-engine-v219.js">Gerador de formações</option>
+<option value="web/craque-lineup-profiles-v231.js">Perfis por estilo</option>
+<option value="web/craque-backup-v226.js">Backup e restauração</option>
+<option value="web/craque-pp-universal-v309.js">Cálculo de PP</option></select>
+<label class="ctai-check"><input id="ctai-allow-code" type="checkbox"> Concordo em enviar ao Gemini um trecho desse arquivo público do GitHub para análise, sem modificar o código.</label>
+</div>
+<label for="ctai-question">Sua pergunta</label>
+<textarea id="ctai-question" rows="4" maxlength="1500" placeholder="Ex.: Qual a melhor função dessa carta para posse central e quais evidências faltam?"></textarea>
+<label class="ctai-check"><input id="ctai-include-memory" type="checkbox"> Incluir minhas notas locais aprovadas na pergunta (envio explícito ao Gemini)</label>
+<button type="button" id="ctai-ask" class="ctai-button primary">Analisar com Gemini</button>
+<p class="ctai-muted">O resultado é uma recomendação, não prova de movimentação no jogo ou validação de PP. Nenhuma alteração é aplicada automaticamente.</p>
+</section>
+<section class="ctai-panel" id="ctai-memory-panel" aria-labelledby="ctai-memory-title">
+<h2 id="ctai-memory-title">03 · Memória de correções</h2>
+<p class="ctai-muted">Anote fatos que você conferiu manualmente. As notas são locais, entram no backup do Craque Tático e nunca sobrescrevem fichas canônicas.</p>
+<p id="ctai-memory-target" class="ctai-target">Selecione uma carta.</p>
+<label for="ctai-memory-note">Correção ou observação confirmada</label><textarea id="ctai-memory-note" rows="3" maxlength="700" placeholder="Ex.: Nível observado no print: 32. Falta conferir Card ID…"></textarea>
+<label for="ctai-memory-proof">Fonte de conferência</label><input id="ctai-memory-proof" maxlength="250" placeholder="Ex.: print pessoal de 03/11/2026">
+<div class="ctai-actions"><button type="button" id="ctai-memory-save" class="ctai-button">Salvar nota local</button><button type="button" id="ctai-memory-remove" class="ctai-button secondary">Excluir nota</button></div>
+<p id="ctai-memory-status" role="status" class="ctai-notice"></p>
+</section>
+<section class="ctai-panel ctai-result" aria-labelledby="ctai-result-title">
+<h2 id="ctai-result-title">04 · Parecer da IA</h2>
+<div id="ctai-result-status" class="ctai-notice" role="status">Pronto para analisar quando você configurar a conexão.</div>
+<pre id="ctai-result" aria-live="polite" tabindex="0">Nenhum parecer gerado. Suas cartas originais continuam intactas.</pre>
+</section>
+</div>
+<footer>CRAQUE TÁTICO · IA consultiva opcional · Dados locais continuam acessíveis sem conexão. <a href="index.html">Voltar ao aplicativo</a>.</footer>
+</main></body></html>

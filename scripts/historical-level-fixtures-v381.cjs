@@ -21,6 +21,10 @@ function historicalRead(file,options){
   // V385 acrescenta somente estas entradas de UI. Removê-las da fixture histórica
   // mantém a comparação SHA integral com o índice anterior à revisão de níveis.
   value=value.replace('<link rel="stylesheet" href="craque-account-catalog-v385.css"/>','').replace('<script src="craque-accounts-v382.js"></script><script src="craque-function-method-v383.js"></script><script src="craque-team-context-v382.js"></script><script src="craque-account-library-v385.js"></script><script src="craque-account-editor-v385.js"></script><script src="craque-account-catalog-v385.js"></script>','');
+  // V387: atalhos novos da IA sao adicoes independentes de treinamento, sem
+  // modificacao das 246 cartas; reconstituir historico anterior ao componente.
+  value=value.replace('\n<a href="craque-ai-v387.html"><strong>Craque Tático AI</strong><span>Fichas, formações e código</span></a>','');
+  value=value.replace('<a class="btn primary" href="craque-ai-v387.html">Craque Tático AI · Análises seguras ↗</a>','');
   for(const p of archive.index?.changes||[])value=value.replace(p.after,()=>p.before);return value;}
  if(/\/fichas\/\d{3}_[^/]+\.html$/.test(name)){
   const cap=Number(path.basename(name).slice(0,3)),p=archive.originals.find(p=>p.capture===cap);if(!p)return text;

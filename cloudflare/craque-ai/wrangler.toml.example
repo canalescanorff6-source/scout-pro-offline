@@ -1,0 +1,16 @@
+name = "craque-tatico-ai"
+main = "src/index.mjs"
+compatibility_date = "2026-10-29"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "https://localhost,scout://app"
+MONTHLY_BUDGET_MICRO_USD = "3000000"
+DAILY_CALL_LIMIT = "60"
+MONTHLY_CALL_LIMIT = "1500"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "craque-tatico-ai-usage"
+database_id = "SUBSTITUA_PELO_ID_REAL_D1"
+migrations_dir = "migrations"

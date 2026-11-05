@@ -10,7 +10,8 @@ const names={
  'progress-audit':'Níveis e PP',boosters:'Ímpetos','tactical-review':'Análise tática',
  'video-evidence':'Vídeos e evidências','player-model':'Modelo corporal',
  'rarity-audit':'Raridades',review379:'Conferir cartas',
- 'batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas'
+ 'batch-8':'Cadastro de cartas','batch-9':'Cadastro de cartas',
+ 'craque-ai':'Craque Tático AI'
 };
 const at=()=>d.body?.dataset.page||'';
 const ACTIVE_RELEASE=362;
@@ -121,6 +122,7 @@ function shell(){
    ['Habilidades e ímpetos','revisao-impetos-v103.html'],
    ['Análise tática','revisao-tatica-v98.html'],
    ['Laboratório','meu-time-testes-v219.html'],
+   ['Craque Tático AI','craque-ai-v387.html'],
    ['Vídeos e evidências','pesquisa-videos-v106.html'],
    ['Modelo corporal','player-model-v101.html'],
    ['Raridades','raridade-cadastro-v91.html']]){
