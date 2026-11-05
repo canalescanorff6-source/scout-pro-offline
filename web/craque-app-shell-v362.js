@@ -121,6 +121,7 @@ function shell(){
    ['Habilidades e ímpetos','revisao-impetos-v103.html'],
    ['Análise tática','revisao-tatica-v98.html'],
    ['Laboratório','meu-time-testes-v219.html'],
+   ['Craque Tático AI','craque-ai-v387.html'],
    ['Vídeos e evidências','pesquisa-videos-v106.html'],
    ['Modelo corporal','player-model-v101.html'],
    ['Raridades','raridade-cadastro-v91.html']]){
