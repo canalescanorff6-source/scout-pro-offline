@@ -199,21 +199,38 @@ function mount(doc){
   const scoped={...card,shown_position:activeRole,role_used:activeRole};
   const plan=planner?.proposal(scoped,tactic,registered)||null;
   const global=host.CRAQUE_GLOBAL_V394;
-  const key=[activeRole,budget,String(card.id),host.CRAQUE_FRIEND_TRAINING_V228?'motor-pronto':'motor-pendente',
-   host.CRAQUE_REFERENCES_V376?.cards?.length||0,global?.optimizeCard?'v395':'pendente'].join('|');
+  // V395: a interface deve executar o MESMO otimizador por edição usado
+  // nas cartas adicionais. V303 serve apenas como fallback legado quando
+  // a nova engine não estiver carregada; nunca chamar uma ficha V303 de V395.
+  const refs=host.CRAQUE_REFERENCES_V376;
+  const exact=(refs?.cards||[]).find(row=>Number(row.capture)===cap&&row.identityUsable===true&&
+   String(row.reference?.cardId)===id&&[row.edition,row.reference?.edition].includes(card.edition))||null;
+  const ready=Boolean(global?.optimizeCard&&host.CRAQUE_FRIEND_TRAINING_V228);
+  const key=[activeRole,budget,String(card.id),card.edition,card.attack_style,card.defence_style,
+   card.native_skills,card.boost1,card.max_level,card.pp_origem,ready,
+   exact?.reference?.htmlSha256||'prova-pendente',global?.VERSION||'motor-pendente'].join('|');
   if(key!==globalPreviewKey){
    globalPreviewKey=key;globalPreview=null;
-   // Na V395 a posse não deve reintroduzir a build histórica no consenso.
-   // Lemos a MESMA proposta da edição em um cenário válido e a exibimos
-   // integralmente nas seis abas, sem gravar nada nem alterar a carta.
-   if(global?.optimizeCard&&host.CRAQUE_FRIEND_TRAINING_V228&&planner){
-    const candidate=planner.proposal(scoped,'rapido',registered);
-    if(candidate&&engine.valid(candidate.levels)&&
-       engine.total(candidate.levels)===budget)
-     globalPreview={kind:'hipotese_por_edicao',levels:Array.from(candidate.levels),pp:budget};
+   if(ready){
+    const F=host.CRAQUE_FRIEND_TRAINING_V228;
+    const globalCard={
+     localKey:cap+'@'+id,capture:cap,name:card.name,
+     cardId:id,edition:card.edition,position:activeRole,originalPosition:originalPosition,
+     style:card.attack_style||card.playing_style||'',
+     defenceStyle:card.defence_style||'',level:card.max_level,
+     pp:budget,nativeSkills:card.native_skills||'',fixedBooster:card.boost1||'',
+     boosterSlot:'pendente',trainingLevels:registered,
+     reference:exact
+    };
+    try{
+     const result=F.allocate(globalCard,'posse');
+     if(result.status==='hipotese'&&result.global?.kind==='hipotese_por_edicao'&&
+      engine.valid(result.levels)&&engine.total(result.levels)===budget)
+      globalPreview={...result.global,levels:Array.from(result.levels)};
+    }catch(_error){globalPreview=null}
    }
   }
-  const readyForGlobal=Boolean(global?.optimizeCard&&host.CRAQUE_FRIEND_TRAINING_V228);
+  const readyForGlobal=ready;
   const proposed=readyForGlobal?
    (globalPreview?.levels?Array.from(globalPreview.levels):null):
    plan?.levels?Array.from(plan.levels):
