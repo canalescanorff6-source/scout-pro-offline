@@ -387,20 +387,17 @@ function mount(doc){
  });
  doc.addEventListener('scoutpro:skills-updated',updateRecommendations);
  host.addEventListener('craque:references-ready',()=>{
-  if(wrap.isConnected&&style!=='posse')switchTraining(style);
- });
- doc.addEventListener('scoutpro:recommendations-ready',()=>{
-  const old=doc.getElementById('scout-v162');
-  const bx=doc.getElementById('scout-v220-advanced-skills');
-  if(old&&bx&&!bx.contains(old))bx.append(old);
-  updateRecommendations();switchTraining(style);
- });
- // Refazer a leitura se o catálogo de atributos chegou depois da tela.
- doc.addEventListener('scoutpro:recommendations-ready',()=>{
-  globalPreviewKey='';
-  switchTraining(style);updateRecommendations();
- });
- doc.addEventListener('scoutpro:tactic-ui-selected-v220',event=>{
+   // O catálogo pode chegar depois da primeira renderização, inclusive na Posse.
+   if(wrap.isConnected){globalPreviewKey='';switchTraining(style);updateRecommendations();}
+  });
+  doc.addEventListener('scoutpro:recommendations-ready',()=>{
+   const old=doc.getElementById('scout-v162');
+   const bx=doc.getElementById('scout-v220-advanced-skills');
+   if(old&&bx&&!bx.contains(old))bx.append(old);
+   globalPreviewKey='';
+   switchTraining(style);updateRecommendations();
+  });
+  doc.addEventListener('scoutpro:tactic-ui-selected-v220',event=>{
   if(styles.includes(event.detail?.tactic)&&style!==event.detail.tactic)choose(event.detail.tactic,true);
  });
  // Mesmo estilo em dois técnicos pode ter proficiências/bônus distintos.
