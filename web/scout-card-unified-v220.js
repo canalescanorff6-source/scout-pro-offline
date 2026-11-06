@@ -213,7 +213,10 @@ function mount(doc){
      globalPreview={kind:'hipotese_por_edicao',levels:Array.from(candidate.levels),pp:budget};
    }
   }
-  const proposed=globalPreview?.levels?Array.from(globalPreview.levels):plan?.levels?Array.from(plan.levels):
+  const readyForGlobal=Boolean(global?.optimizeCard&&host.CRAQUE_FRIEND_TRAINING_V228);
+  const proposed=readyForGlobal?
+   (globalPreview?.levels?Array.from(globalPreview.levels):null):
+   plan?.levels?Array.from(plan.levels):
    Array.isArray(fallback?.levels)&&engine.valid(fallback.levels)&&
    engine.total(fallback.levels)===budget?fallback.levels:null;
   const summary=$(wrap,'scout-v303-style-summary');
@@ -221,7 +224,8 @@ function mount(doc){
    const changes=plan?.changes||[];
    const trade=changes.length?changes.slice().sort((a,b)=>b.delta-a.delta)
     .filter(x=>x.delta>0).slice(0,3).map(x=>x.category+' +'+x.delta).join(' · '):'distribuição conservada';
-   summary.textContent=globalPreview?'FICHA ÚNICA POR EDIÇÃO · '+budget+' PP idênticos nos seis estilos. Atributos-base da carta orientam a proposta V395; somente a movimentação coletiva muda. Hipótese de gameplay; ficha salva preservada.':plan?
+   summary.textContent=globalPreview?'FICHA ÚNICA POR EDIÇÃO · '+budget+' PP idênticos nos seis estilos. Atributos-base da carta orientam a proposta V395; somente a movimentação coletiva muda. Hipótese de gameplay; ficha salva preservada.':readyForGlobal?
+    'FICHA GLOBAL PENDENTE · Confira o Card ID, a edição, os atributos-base e a referência. Não gerar PP genéricos por estilo. A ficha anterior permanece intacta.':plan?
     (plan.source==='referencia_cadastrada'?'POSSE · referência registrada. ':
       s.short.toUpperCase()+' · simulação matemática específica. ')+
     (plan.source==='referencia_cadastrada'?'Sem alterar a build registrada.':
