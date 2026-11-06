@@ -18,9 +18,31 @@ with sync_playwright() as pw:
    for cap in selected:
     c=next(c for c in cards if c['numero']==cap)
     page.goto(BASE+'/'+c['arquivo'],wait_until='domcontentloaded')
-    page.wait_for_function('()=>document.querySelector(".ct378-main-sheet .ct380-evidence")',timeout=30000)
+    # V395 exibe uma justificativa por edição, e não o antigo lote V380.
+    page.wait_for_function(
+     '()=>document.querySelector(".ct378-main-sheet .ct395-global-evidence, .ct378-main-sheet .ct380-evidence")',
+     timeout=30000)
+    global_mode=page.locator('.ct378-main-sheet .ct395-global-evidence').count()>0
     sheet=page.locator('.ct378-main-sheet')
     assert sheet.get_attribute('data-source')=='proposal'
+    if global_mode:
+     assert page.evaluate("typeof window.CRAQUE_GLOBAL_V394?.optimizeCard === 'function'")
+     proof=sheet.locator('.ct395-global-evidence')
+     assert proof.locator('a').count()==1, (cap,'Fonte da edição ausente')
+     assert 'Card ID' in proof.inner_text()
+     assert proof.locator('li').count()>=3, (cap,'Faltam razões da otimização por edição')
+     assert sheet.locator('.ct374-skill-reasons > li').count()<=5
+     assert page.evaluate('document.documentElement.scrollWidth-innerWidth')<=12,(cap,width,'overflow')
+     assert not page.evaluate('Object.keys(localStorage).some(k=>k.startsWith("scoutpro:v324:manager-profile:"))')
+     page.evaluate("Object.defineProperty(navigator,'clipboard',{value:{writeText:async s=>window.__sheet=s},configurable:true})")
+     sheet.get_by_role('button',name='Copiar ficha completa',exact=True).click()
+     page.wait_for_function('()=>window.__sheet?.includes("PP")')
+     assert 'TREINO' in page.evaluate('window.__sheet').upper()
+     if width in [320,1366]:
+      sheet.scroll_into_view_if_needed()
+      page.screenshot(path=str(OUT/f'{width}-cap-{cap:03}-global.png'))
+     results.append({'cap':cap,'width':width,'pp':c['pp'],'mode':'global_v395','overflow':False})
+     continue
     assert sheet.locator('.ct311-budget').inner_text().startswith(str(c['pp'])+' / '+str(c['pp']))
     assert sheet.locator('.ct374-skill-reasons > li').count()<=5
     if cap in [6,11,14,24,47,208]:assert sheet.locator('.ct375-booster').count()==0
@@ -36,6 +58,35 @@ with sync_playwright() as pw:
     if width in [320,1366]:
      sheet.scroll_into_view_if_needed();page.screenshot(path=str(OUT/f'{width}-cap-{cap:03}.png'))
     results.append({'cap':cap,'width':width,'pp':c['pp'],'overflow':False})
+   # V395 substituiu as fichas por estilo por UM treino para a edição.
+   # Conferir os seis seletores, uma revisão salva e a restauração por reload.
+   if global_mode:
+    sheet=page.locator('.ct378-main-sheet')
+    levels=sheet.locator('.ct375-training').first.locator('dd').all_text_contents()
+    assert levels, 'Treino global vazio'
+    for tactic in ['rapido','normal','fora','longo','overload','posse']:
+     page.locator('#ct378-style').select_option(tactic)
+     page.wait_for_function('(t)=>document.querySelector(".ct378-main-sheet")?.dataset.tactic===t',arg=tactic)
+     sheet=page.locator('.ct378-main-sheet')
+     assert sheet.locator('.ct395-global-evidence').count()==1, (tactic,'Evidência global desapareceu')
+     assert sheet.locator('.ct375-training').first.locator('dd').all_text_contents()==levels, (
+      tactic,'Mudou PP ao alterar apenas estilo do técnico')
+    sheet.get_by_role('button',name='Guardar esta ficha em nova revisão',exact=True).click()
+    page.wait_for_function('()=>document.querySelector(".ct378-main-sheet")?.dataset.source==="profile"')
+    assert page.locator('.ct395-global-evidence').count()==0,'Ficha salva confundida com proposta'
+    page.reload(wait_until='domcontentloaded')
+    page.wait_for_function('()=>document.querySelector(".ct378-main-sheet")?.dataset.source==="profile"')
+    sheet=page.locator('.ct378-main-sheet')
+    assert sheet.locator('.ct375-training').first.locator('dd').all_text_contents()==levels
+    page.get_by_role('button',name='Ver proposta atualizada',exact=True).click()
+    page.wait_for_function('()=>document.querySelector(".ct378-main-sheet .ct395-global-evidence")')
+    assert page.locator('.ct378-main-sheet:visible').count()==1
+    page.get_by_role('button',name='Voltar à ficha salva',exact=True).click()
+    page.wait_for_function('()=>document.querySelector(".ct378-main-sheet")?.dataset.source==="profile"')
+    assert page.locator('.ct378-main-sheet .ct375-training').first.locator('dd').all_text_contents()==levels
+    assert not errors,(width,errors)
+    ctx.close()
+    continue
    # Alternar estilo remove o selo deste lote e não transporta a proposta.
    page.locator('#ct378-style').select_option('rapido')
    page.wait_for_function('()=>document.querySelector(".ct378-main-sheet")?.dataset.tactic==="rapido"')
@@ -81,4 +132,4 @@ with sync_playwright() as pw:
    ctx.close()
  finally:browser.close()
 (OUT/'resultados.json').write_text(json.dumps({'openings':len(results),'results':results,'errors':[]},indent=2),encoding='utf-8')
-print(f'V380 VISUAL PASS: {len(results)} aberturas, 13 edições, 3 telas, cópia e adoção preservadas; zero erros.')
+print(f'V380/V395 VISUAL PASS: {len(results)} aberturas, 13 edições, 3 telas, ficha global por edição, cópia e adoção preservadas; zero erros.')
