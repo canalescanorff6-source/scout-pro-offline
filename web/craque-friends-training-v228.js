@@ -448,6 +448,21 @@ function evaluate(card,tactic='posse',deps){
   skill=s.evaluate({...raw,niveis:plan.levels},tactic,existing,{equippedConfirmed:equipmentConfirmed,equipmentRecord:card.equipmentRecord||null,task});
   boost=boosterFor(card,{...raw,niveis:plan.levels},tactic,{skills:s,boosters:b},task,
    plan.analysis?.reference?reference?.reference:null);
+  // Ranking único de habilidades e ímpetos: uma escolha de equipamento não
+  // deve se tornar incompatível só porque o usuário mudou a tática.
+  // Nunca declarar slots livres se a edição/equipamento não os comprovar.
+  const global=plan.global&&globalMotor(deps);
+  if(global?.rankSkills){
+   const skillRows=MODES.map(mode=>({tactic:mode,
+    result:s.evaluate({...raw,niveis:plan.levels},mode,existing,
+     {equippedConfirmed:equipmentConfirmed,equipmentRecord:card.equipmentRecord||null,task:null})}));
+   skill={...skill,recommendations:global.rankSkills(skillRows,s.keyFor,5)};
+   const boosterRows=MODES.map(mode=>({tactic:mode,result:boosterFor(card,
+    {...raw,niveis:plan.levels},mode,{skills:s,boosters:b},null,
+    plan.analysis?.reference?reference?.reference:null)}));
+   const ranked=global.rankBoosters(boosterRows);
+   if(ranked)boost={...boost,...ranked};
+  }
  }
  // Usar a MESMA validação de nativas do motor V162; texto genérico
  // como "PENDENTE" não constitui inventário de habilidades documentado.
