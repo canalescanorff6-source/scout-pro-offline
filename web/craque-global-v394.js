@@ -104,8 +104,8 @@
   ['heading','jumping','physical_contact'],
   ['defensive_awareness','tackling','aggression','defensive_engagement'],
   ['gk_awareness','jumping'],
-  ['gk_catching','gk_parrying'],
-  ['gk_reflexes','gk_reach']
+  ['gk_parrying','gk_reach'],
+  ['gk_catching','gk_reflexes']
  ]);
  const TARGETS=Object.freeze({
   CA:{finishing:91,offensive_awareness:92,acceleration:89,kicking_power:90,ball_control:86,

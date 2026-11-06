@@ -49,4 +49,27 @@ assert.equal(missing.boosterSlotEvidence.editionDocumented,false,
  'Ausência de referência não autoriza slot');
 const absent=F.evaluate({...card,boosterSlot:'ausente'},'rapido',deps);
 assert.equal(absent.boosterEligible,false,'Slot explicitamente ausente deve ser respeitado');
+// Estilo inativo na posição: o contexto selecionado não deve contaminar o ranking global.
+const massaro=catalogue.find(c=>c.numero===1),massaroRef=refs.find(r=>r.capture===1);
+for(const position of ['SA','LE']){
+ const edition={...card,capture:1,localKey:'1@'+massaro.id,name:massaro.name,
+  cardId:String(massaro.id),edition:massaro.versao,position,originalPosition:massaro.posicao,
+  style:massaro.estilo_ataque,defenceStyle:massaro.estilo_defesa,
+  nativeSkills:massaro.habilidades_nativas,fixedBooster:massaro.impeto_fixo,
+  level:massaro.max_level,pp:massaro.pp,reference:massaroRef};
+ const signatures=F.MODES.map(mode=>{
+  const result=F.evaluate(edition,mode,{...deps,reference:massaroRef});
+  assert.equal(result.plan.status,'hipotese');
+  return JSON.stringify({levels:result.plan.levels,
+   skills:result.suggestedSkills.map(s=>s.name),
+   booster:result.booster?.primary?.nome,
+   alternatives:result.booster?.alternatives?.map(b=>b.nome)});
+ });
+ assert.equal(new Set(signatures).size,1,'PP, adicionais e ímpeto globais em '+position);
+}
+for(const incomplete of [{position:'CA',pp:null,level:null},{position:'desconhecida'}]){
+ const result=F.evaluate({...card,...incomplete},'normal',deps);
+ assert.equal(result.plan.status,'pendente','Cadastro incompleto deve exibir pendência, sem quebrar');
+ assert.equal(result.plan.levels,null);
+}
 console.log('V395: ímpeto por edição igual nos 6 estilos, sem slot falso, sem gasto automático PASS');

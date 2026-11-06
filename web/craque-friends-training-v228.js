@@ -131,7 +131,7 @@ function allocateStyle(card,tactic,deps){
  if(!MODES.includes(tactic))throw Error('Estilo tático inválido.');
  const progress=resolveBudget(card),budget=progress.pp;
  const source=profileOf(card),role=t.roleOf(source);
- const pending=reason=>({status:'pendente',reason,levels:null,role:role||null,
+ const pending=reason=>({status:'pendente',reason,levels:null,role:role||null,style:tactic,
   methodology:METHODOLOGY});
  if(!role)return pending('Cadastre uma posição reconhecida para analisar esta função.');
  if(!Number.isInteger(budget)||budget<0||budget>300)
@@ -207,18 +207,17 @@ function allocate(card,tactic,deps){
  const reference=card.reference===null?null:
   card.reference??deps?.reference??catalogueReference(card);
  const linkedCard={...card,reference};
- const ref=reference?.reference;
  const physical=physicalMotor(deps)?.lookup?.(linkedCard)||null;
- const key=sourceSignature(card)+'|'+String(card.localKey||'')+'|'+String(card.capture||'')+
-  '|nivel:'+String(card.level??'')+'|pp:'+String(card.pp??'')+
-  '|'+String(card.originalPosition||'')+'|'+String(ref?.htmlSha256||'')+
-  '|'+String(ref?.cardId||'')+'|'+String(ref?.edition||'')+
-  '|'+String(physical?.cardId||'')+'|'+String(g.VERSION||'');
- if(!universalCache||universalCache.key!==key||deps?.individual||deps?.interpretation){
+ // Cache transitório: incluir toda a prova, inclusive sua revogação, atributos,
+ // arte vinculada e medidas. sourceSignature permanece estável para os salvos.
+ const key=JSON.stringify([card,reference,physical,g.VERSION]);
+ if(!universalCache||universalCache.key!==key||universalCache.global!==g||
+    universalCache.tactical!==t||universalCache.individual!==individual||
+    deps?.individual||deps?.interpretation){
   const contexts=MODES.map(mode=>allocateStyle(linkedCard,mode,deps));
   const optimization=g.optimizeCard({card:linkedCard,plans:contexts,tactical:t,
    individual,reference,physical});
-  universalCache={key,contexts,optimization};
+  universalCache={key,contexts,optimization,global:g,tactical:t,individual};
  }
  const original=universalCache.contexts.find(p=>p.style===tactic);
  const choice=universalCache.optimization;
@@ -496,14 +495,18 @@ function evaluate(card,tactic='posse',deps){
   // Nunca declarar slots livres se a edição/equipamento não os comprovar.
   const global=plan.global&&globalMotor(deps);
   if(global?.rankSkills){
+   // A ativação depende da posição, não da aba aberta. O perfil "normal"
+   // já remove estilos individuais inativos, preservando o caminho legado.
+   const globalRaw={...profileOf(card,'normal'),niveis:plan.levels};
    const skillRows=MODES.map(mode=>({tactic:mode,
-    result:s.evaluate({...raw,niveis:plan.levels},mode,existing,
+    result:s.evaluate(globalRaw,mode,existing,
      {equippedConfirmed:equipmentConfirmed,equipmentRecord:card.equipmentRecord||null,task:null})}));
    skill={...skill,recommendations:global.rankSkills(skillRows,s.keyFor,5)};
    const boosterRows=MODES.map(mode=>({tactic:mode,result:boosterFor(card,
-    {...raw,niveis:plan.levels},mode,{skills:s,boosters:b},null,
+    globalRaw,mode,{skills:s,boosters:b},null,
     editionEvidence)}));
    const ranked=global.rankBoosters(boosterRows);
+   boost=boosterRows[0].result;
    if(ranked&&card.boosterSlot!=='ausente'&&boost?.primary)boost={...boost,...ranked};
   }
  }

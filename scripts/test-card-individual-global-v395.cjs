@@ -43,9 +43,28 @@ assert.notDeepEqual(vanBasten,drogbaReal,
  'Van Basten e Drogba têm mesmo estilo/CA/62 PP e bases diferentes');
 const renamed=verify({...cristianoBT,name:'Apelido de exibição'});
 assert.deepEqual(bt,renamed,'Alterar nome NÃO pode fabricar distribuição diferente');
+// A otimização deve usar as mesmas categorias de treino do simulador do app.
+const keeper=make(byCap(168),'Goleiro defensivo');
+verify(keeper);
+const keeperPlan=F.allocate(keeper,'posse',deps);
+const keeperAxes=keeperPlan.global.diagnostics;
+assert.deepEqual(keeperAxes.find(x=>x.index===8).attributes.map(x=>x.stat).sort(),
+ ['gk_parrying','gk_reach'],'GO2 treina defesa e alcance, não firmeza');
+assert.deepEqual(keeperAxes.find(x=>x.index===9).attributes.map(x=>x.stat).sort(),
+ ['gk_catching','gk_reflexes'],'GO3 treina firmeza e reflexos, não alcance');
 const withoutEvidence=F.allocate({...cristianoBT,reference:null},'posse',deps);
 assert.equal(withoutEvidence.status,'pendente','Dados não comprovados não viram ficha genérica');
 assert.equal(withoutEvidence.levels,null);
+verify(cristianoBT);
+const revoked=F.allocate({...cristianoBT,
+ reference:{...cristianoBT.reference,identityUsable:false}},'posse',deps);
+assert.equal(revoked.status,'pendente','Revogar evidência invalida imediatamente a ficha em cache');
+const alteredReference=JSON.parse(JSON.stringify(cristianoBT.reference));
+alteredReference.reference.baseStats.finishing=60;
+const refreshed=F.allocate({...cristianoBT,reference:alteredReference},'posse',deps);
+assert.equal(refreshed.global.diagnostics.find(x=>x.index===0)
+ .attributes.find(x=>x.stat==='finishing').base,60,
+ 'Atualização dos atributos-base não pode reutilizar cálculos antigos');
 const fake=F.allocate({...cristianoBT,reference:byCap(27)},'rapido',deps);
 assert.equal(fake.status,'pendente','Card ID/edição divergentes precisam ser bloqueados');
 assert.equal(P.lookup(cristianoBT),null,'Não inventar pernas diferentes para o Cristiano');
