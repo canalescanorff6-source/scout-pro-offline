@@ -71,7 +71,14 @@ function individual(a,pos){
  if(/lateral ofensivo/.test(s))return "Pode oferecer ultrapassagem lateral; uma instrução Defensivo ou estilo inativo altera esse comportamento.";
  if(/infiltr|meia versatil|meia versátil/.test(s))return "Pode atacar espaços adiante e apoiar o terceiro homem; a ativação varia pela posição de uso.";
  if(/homem de area|homem de área|artilheiro/.test(s))return "É referência de finalização e procura chegar a situações de chute; o momento da ruptura é contextual.";
- if(/pivô|pivo/.test(s))return "Pode oferecer recepção de costas e parede para o parceiro; diferencie rótulo da carta e função escolhida no plano.";
+ if(/atacante pivo|atacante pivô/.test(s))return "Atacante pivô (Deep-Lying Forward): tende a sair da última linha, vir ao encontro da bola e ligar o CA ao meia. Não é a mesma função do Pivô de referência.";
+ if(/pivo|pivô/.test(s))return "Pivô (Target Man): tende a ser referência mais fixa de costas, proteger a bola e oferecer parede ao parceiro. Não equivale ao Atacante pivô que recua para combinar.";
+ if(/puxa marcacao|puxa marcação/.test(s))return "Puxa marcação: tende a fazer corridas de isca para atrair o marcador e criar corredor ao outro atacante.";
+ if(/perito em cruzamento/.test(s))return "Perito em cruzamento: tendência a ocupar corredor para levantar a bola; você pode preferir usar a devolução curta e não cruzar.";
+ if(/lateral movel|lateral móvel/.test(s))return "Lateral móvel: pode variar corredor de apoio, mas o padrão exato da edição e sua ativação precisam ser comprovados em jogo.";
+ if(/lateral atacante/.test(s))return "Lateral atacante: tende a avançar pelo lado quando o jogo permite. Dê cobertura com o VOL para evitar contra-ataque.";
+ if(/atacante surpresa/.test(s))return "Atacante surpresa: padrão específico deste rótulo ainda pendente de verificação; avaliar corridas e ativação na posição de uso.";
+ if(/basico|básico/.test(s))return "Básico: não presume estilo individual de movimentação ativo; analisar posição, atributos, instruções e companheiros.";
  if(/armador|classico 10|clássico 10/.test(s))return "Favorece criação e recebimento entrelinhas, sujeito à posição de ativação e instruções.";
  if(/ala produtivo/.test(s))return "Pode se associar ao corredor e apoiar, mas esse estilo pode ficar inativo fora das posições compatíveis.";
  if(/goleiro adiantado|goleiro ofensivo/.test(s))return "Tende a proteger profundidade com maior agressividade, dependendo da fase e da condição do lance.";
