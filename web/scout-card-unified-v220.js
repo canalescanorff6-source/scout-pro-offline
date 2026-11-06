@@ -11,7 +11,7 @@ const localGet=k=>{try{return host.localStorage?.getItem(k)||null}catch(_e){retu
 const localSet=(k,s)=>{try{host.localStorage?.setItem(k,s);return true}catch(_e){return false}};
 const parse=s=>{try{return JSON.parse(s||'null')}catch(_e){return null}};
 const styles=['posse','normal','rapido','fora','longo','overload'];
-function nativeDetails(card,tactic){
+function nativeDetails(card,tactic,universalLevels=null){
  const R=host.SCOUT_RECOMMENDATIONS_V162,B=host.SCOUT_BOOSTERS_V103;
  const budget=Number(card.pp),cap=Number(card.capture),id=String(card.id);
  let results=null,booster=null;
@@ -23,8 +23,26 @@ function nativeDetails(card,tactic){
   const context=R.verifiedRecommendationContextV288?.({...card,capture:cap,id},{
    manualEquipped:manual,equipmentRecord:manualProof,boosterRecord:slot});
   const options=context?.options||{equippedConfirmed:false};
-  try{results=R.evaluate(card,tactic,manual,options)}catch(_e){results=null}
-  try{booster=R.booster(card,tactic,B,options.verifiedSlot,options.verifiedBooster,options)}catch(_e){booster=null}
+  const preview=universalLevels?{...card,niveis:universalLevels}:card;
+  try{results=R.evaluate(preview,tactic,manual,options)}catch(_e){results=null}
+  try{booster=R.booster(preview,tactic,B,options.verifiedSlot,options.verifiedBooster,options)}catch(_e){booster=null}
+  const global=host.CRAQUE_GLOBAL_V394;
+  if(universalLevels&&global?.rankSkills&&results){
+   const rows=styles.map(mode=>{
+    try{return {tactic:mode,result:R.evaluate(preview,mode,manual,options)}}
+    catch(_e){return {tactic:mode,result:null}}
+   });
+   results={...results,recommendations:global.rankSkills(rows,R.keyFor,5)};
+  }
+  if(universalLevels&&global?.rankBoosters&&booster){
+   const rows=styles.map(mode=>{
+    try{return {tactic:mode,result:R.booster(preview,mode,B,
+     options.verifiedSlot,options.verifiedBooster,options)}}
+    catch(_e){return {tactic:mode,result:null}}
+   });
+   const ranked=global.rankBoosters(rows);
+   if(ranked)booster={...booster,...ranked};
+  }
  }
  return {skills:results,booster,budget};
 }
@@ -81,6 +99,7 @@ function mount(doc){
  const budget=Number(card.pp),id=String(card.id),cap=Number(card.capture);
  if(!id||!Number.isInteger(budget)||budget<0)return false;
  const possession=engine.confirmSource(card)?card.recommended_levels.slice():null;
+ let globalPreview=null,globalPreviewKey='';
  const experimental=engine.valid(lab.draftA)&&engine.total(lab.draftA)===budget?lab.draftA.slice():null;
  const baseline=possession||experimental;
  let style=localGet('scoutpro:v220:style:'+cap+':'+id)||'posse';
@@ -100,7 +119,7 @@ function mount(doc){
   mk(doc,'span','',String(card.shown_position||card.posicao||'Posição pendente')),
   mk(doc,'span','',String(card.attack_style||'Estilo da carta pendente')),
   mk(doc,'span','scout-v220-id','Card ID '+id));
- const intro=mk(doc,'p','scout-v220-sub','Uma ficha principal por edição. Cada estilo é uma hipótese até haver atributos, PP e testes da carta exata; não priorizar Overall.');
+ const intro=mk(doc,'p','scout-v220-sub','Ficha global de gameplay proposta para os seis estilos, quando houver PP e motores válidos. O estilo selecionado explica a movimentação; nada é aplicado automaticamente no jogo.');
  const tabs=mk(doc,'div','scout-v220-tabs');tabs.id='scout-v220-tabs';tabs.setAttribute('role','group');tabs.setAttribute('aria-label','Estilo de jogo do técnico');
  for(const t of engine.STYLES){
   const b=mk(doc,'button','scout-v220-tab',t.label);b.type='button';b.dataset.tactic=t.id;
@@ -124,7 +143,7 @@ function mount(doc){
  const skillsSection=mk(doc,'section','scout-v220-recs');skillsSection.id='scout-v220-recs';
  skillsSection.innerHTML='<div class="scout-v220-section-head"><div id="scout-v303-recs-title">04 · HABILIDADES E ÍMPETO</div><p id="scout-v303-recs-context">Recomendações por edição cadastrada, função e tática. Não equipam nada na conta.</p></div>'+
  '<div class="scout-v220-recs-grid"><article class="scout-v220-skill-panel"><div class="scout-v220-card-head"><h3>5 habilidades adicionais</h3><span id="scout-v220-skill-count">—</span></div><div id="scout-v220-skill-list"></div><p class="scout-v220-small" id="scout-v220-skills-caution"></p><button type="button" class="scout-v220-link" id="scout-v220-edit-skills">Informar habilidades já equipadas ↗</button></article>'+
- '<article class="scout-v220-booster-panel"><div class="scout-v220-card-head"><h3>Ímpeto por estilo</h3><span id="scout-v220-booster-badge">PENDENTE</span></div><div class="scout-v220-boost-hero"><small>Recomendação consultiva</small><strong id="scout-v220-booster-name">—</strong></div><p id="scout-v220-booster-why"></p><p id="scout-v220-booster-other" class="scout-v220-small"></p><p id="scout-v220-booster-slot" class="scout-v220-warning"></p><button type="button" class="scout-v220-link" id="scout-v220-edit-booster">Conferir slot e opções ↗</button></article></div>';
+ '<article class="scout-v220-booster-panel"><div class="scout-v220-card-head"><h3>Ímpeto global (consultivo)</h3><span id="scout-v220-booster-badge">PENDENTE</span></div><div class="scout-v220-boost-hero"><small>Recomendação consultiva</small><strong id="scout-v220-booster-name">—</strong></div><p id="scout-v220-booster-why"></p><p id="scout-v220-booster-other" class="scout-v220-small"></p><p id="scout-v220-booster-slot" class="scout-v220-warning"></p><button type="button" class="scout-v220-link" id="scout-v220-edit-booster">Conferir slot e opções ↗</button></article></div>';
  wrap.append(skillsSection);
  const practical=mk(doc,'section','scout-v220-practice');
  practical.innerHTML='<div class="scout-v220-section-head"><div>05 · TESTE NO CAMPO</div><p>Compare partidas semelhantes e registre o que realmente aconteceu.</p></div>'+
@@ -177,9 +196,22 @@ function mount(doc){
   // nem renomeia a distribuição de Posse como se fosse de outro estilo.
   const planner=host.CRAQUE_STYLE_PLANNER_V303;
   const registered=(engine.valid(possession)?possession:null);
-  const plan=planner?.proposal({...card,shown_position:activeRole,role_used:activeRole},
-   tactic,registered)||null;
-  const proposed=plan?.levels?Array.from(plan.levels):
+  const scoped={...card,shown_position:activeRole,role_used:activeRole};
+  const plan=planner?.proposal(scoped,tactic,registered)||null;
+  const global=host.CRAQUE_GLOBAL_V394;
+  const key=activeRole+'|'+budget+'|'+String(card.id);
+  if(key!==globalPreviewKey){
+   globalPreviewKey=key;globalPreview=null;
+   if(global?.choose&&planner){
+    const proposals=styles.map(mode=>{
+     const p=planner.proposal(scoped,mode,registered);
+     return {tactic:mode,status:p?.levels?'hipotese':'pendente',pp:budget,
+      levels:p?.levels||null,focus:p?.focus||null};
+    });
+    globalPreview=global.choose(proposals,engine);
+   }
+  }
+  const proposed=globalPreview?.levels?Array.from(globalPreview.levels):plan?.levels?Array.from(plan.levels):
    Array.isArray(fallback?.levels)&&engine.valid(fallback.levels)&&
    engine.total(fallback.levels)===budget?fallback.levels:null;
   const summary=$(wrap,'scout-v303-style-summary');
@@ -187,7 +219,7 @@ function mount(doc){
    const changes=plan?.changes||[];
    const trade=changes.length?changes.slice().sort((a,b)=>b.delta-a.delta)
     .filter(x=>x.delta>0).slice(0,3).map(x=>x.category+' +'+x.delta).join(' · '):'distribuição conservada';
-   summary.textContent=plan?
+   summary.textContent=globalPreview?'FICHA GLOBAL · mesmos '+budget+' PP nos seis estilos. Movimentação atual: '+s.focus+'. Consenso V394 é hipótese de gameplay; registro original preservado.':plan?
     (plan.source==='referencia_cadastrada'?'POSSE · referência registrada. ':
       s.short.toUpperCase()+' · simulação matemática específica. ')+
     (plan.source==='referencia_cadastrada'?'Sem alterar a build registrada.':
@@ -238,7 +270,7 @@ function mount(doc){
   const pills=$(wrap,'scout-v220-priorities');pills.replaceChildren();
   for(const item of (read233?read233.priorities.slice(0,4):focus.priority))
    pills.append(mk(doc,'span','',item.name));
-  const {skills,booster}=nativeDetails(card,style);
+  const {skills,booster}=nativeDetails(card,style,globalPreview?.levels||null);
   const holder=$(wrap,'scout-v220-skill-list');holder.replaceChildren();
   if(skills){
    const remaining=skills.slotsRemaining;
