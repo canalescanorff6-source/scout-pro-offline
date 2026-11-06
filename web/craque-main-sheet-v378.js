@@ -8,6 +8,12 @@ const own=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
 const dependencies=provided=>provided||{
  training:host?.CRAQUE_FRIEND_TRAINING_V228,skills:host?.SCOUT_RECOMMENDATIONS_V162,
  boosters:host?.SCOUT_BOOSTERS_V103,tactical:host?.SCOUT_TACTICS_V220};
+// Only this resolver can attest that a proposal used the complete current
+// context. Keep the proof in memory: old/saved outcomes cannot self-certify it.
+const proposalContexts=new WeakMap();
+function proposalContext(card,reference,tactic,budget){
+ try{return JSON.stringify([card,reference,tactic,budget]);}catch(_){return null;}
+}
 function cardFromModel(m,position){return {
  localKey:m.cardKey,capture:m.evidenceCard?.numero??null,name:m.name,cardId:m.cardId,edition:m.edition,
  position,originalPosition:m.position,style:m.style,defenceStyle:m.defenceStyle,level:m.level,pp:m.pp,nativeSkills:m.nativeSkills,
@@ -127,13 +133,18 @@ function resolve(input,outcome,selection={},provided){
  // Rebuild their proposal for this context before presenting equipment or PP.
  let proposal=outcome.plan,progress=outcome.progress;
  const manual=own(selection,'levels');
+ let verifiedContext=null;
  if(!manual&&outcome.tactic!=='posse'&&F.allocate){
   progress=F.resolveBudget(card);
   const budget=progress.pp;
-  const context=[card.localKey,card.cardId,card.edition,card.position,outcome.tactic,budget].map(value=>String(value??''));
-  const sameContext=JSON.stringify(proposal.analysis?.context)===JSON.stringify(context);
-  const sameEvidence=proposal.analysis?.reference?.htmlSha256===(exactReference?reference.reference.htmlSha256:undefined);
-  if(!sameContext||!sameEvidence)proposal=F.allocate({...card,reference:exactReference?reference:null},outcome.tactic,d);
+  const context=proposalContext(card,exactReference?reference:null,outcome.tactic,budget);
+  const previous=proposalContexts.get(proposal);
+  const engines=[F,S,B,T,d.individual,d.interpretation];
+  const sameContext=context!==null&&previous?.context===context&&
+   previous.proposal===JSON.stringify(proposal)&&
+   engines.every((engine,i)=>engine===previous.engines[i]);
+  if(!sameContext)proposal=F.allocate({...card,reference:exactReference?reference:null},outcome.tactic,d);
+  if(context!==null)verifiedContext={context,engines};
  }
  let nativeSource=outcome.nativeDocumented||outcome.skills?.nativeKnown?'catalogue':'pending';
  if(nativeSource==='pending'&&exactReference&&reference.reference.nativeSkills?.length){
@@ -150,18 +161,23 @@ function resolve(input,outcome,selection={},provided){
   v.every((n,i)=>n===0||allowed.includes(i));
  if(own(selection,'levels')&&!valid(levels))throw Error('PP ou categorias da ficha salva incompatíveis com esta função');
  const usable=proposal.status==='hipotese'&&valid(levels),vector=usable?levels.slice():null;
- const raw={...F.profileOf(card),niveis:vector},existing=String(card.skills||'');
+ const raw={...F.profileOf(card,outcome.tactic),niveis:vector},existing=String(card.skills||'');
  const confirmed=Boolean(S.checkedEquipment?.(raw,existing,card.equipmentRecord));
  const task=vector&&(manual?selection.analysis?.task:proposal.analysis?.task);
- // A recomendação V394 vale para todos os estilos; manter a avaliação de
- // equipamento calculada sobre o MESMO vetor que aparece na ficha principal.
+ // V395: habilidades e ímpetos avaliados sobre os mesmos PP em todos os estilos.
  const shared=proposal.global&&!manual?F.evaluate({...card,reference:exactReference?reference:null},outcome.tactic,d):null;
  const skills=shared?.skills||S.evaluate(raw,outcome.tactic,existing,{equippedConfirmed:confirmed,equipmentRecord:card.equipmentRecord||null,task});
  const booster=shared?.booster||F.boosterFor(card,raw,outcome.tactic,d,task,exactReference?reference.reference:null);
  const result={...outcome,progress,plan:{...proposal,analysis:manual?selection.analysis||null:editorial?null:proposal.analysis||null,levels:vector,remaining:vector?budget-T.total(vector):null},
   skills,booster,suggestedSkills:skills.recommendations.slice(0,Math.max(0,5-skills.alreadyEquippedProvided)),
   freeSkillSlots:Number.isInteger(skills.slotsRemaining)?skills.slotsRemaining:null};
+ if(verifiedContext&&!editorial)proposalContexts.set(result.plan,{...verifiedContext,proposal:JSON.stringify(result.plan)});
  const review=F.functionReview(card,result,undefined,{...d});
+ if(['normal','rapido'].includes(outcome.tactic)){
+  const method=host?.CRAQUE_FUNCTION_METHOD_V383||(typeof module==='object'?require('./craque-function-method-v383.js'):null);
+  review.activationPair=method?.activation({card,slot:{position:card.position},offBall:{position:card.position},
+   offenseStyle:card.style,defenceStyle:card.defenceStyle});
+ }
  if(exactReference&&reference.publicIdentityV393)
   review.publicIdentityReference={capture:reference.capture,kind:'Arte vinculada à edição pública'};
  review.repetitionAudit=repetitionAudit(card,result,selection);
@@ -181,7 +197,7 @@ function resolve(input,outcome,selection={},provided){
   canSave:Boolean(vector&&String(card.localKey||'').trim()),
   sourceKind:['profile','revision'].includes(selection.source)?selection.source:'proposal'});
  if(proposal.global&&!manual)review.globalTraining={
-  ...proposal.global,note:'Mudar o estilo não muda os pontos desta ficha proposta. Movimentos coletivos, estilo individual ativo e proficiência do técnico continuam específicos.'
+  ...proposal.global,note:'Ficha única de PP nos seis estilos coletivos. Papel e ativação do estilo individual permanecem específicos.'
  };
  const issues=[],nativeKeys=new Set(review.nativeSkills.map(S.keyFor).filter(Boolean));
  const equippedKeys=new Set(existing.split(/[;,\n]/).map(S.keyFor).filter(Boolean));
