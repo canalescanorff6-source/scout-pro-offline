@@ -1,6 +1,7 @@
 """Real counter-style fichas across three libraries; disposable Chromium profiles only."""
 import json
 import os
+import shutil
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 from qa_navigation_v378 import reveal
@@ -66,7 +67,8 @@ def unchanged(page, before, library):
 
 results = []
 with sync_playwright() as pw:
-    browser = pw.chromium.launch(headless=True)
+    executable = shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
+    browser = pw.chromium.launch(headless=True, executable_path=executable, args=['--no-sandbox','--disable-dev-shm-usage'])
     try:
         for width, height in [(320, 740), (390, 844), (1366, 900)]:
             ctx = browser.new_context(viewport={'width': width, 'height': height}, reduced_motion='reduce')

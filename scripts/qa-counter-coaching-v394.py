@@ -1,5 +1,6 @@
 """Read-only coaching across both formations/styles; fresh mobile/desktop profiles."""
 import os
+import shutil
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 from qa_navigation_v378 import reveal
@@ -8,7 +9,8 @@ BASE=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 OUT=Path(os.getenv('SCOUT_QA_OUT','artifacts/visual-qa/v394-coaching'))
 OUT.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as pw:
-    browser=pw.chromium.launch(headless=True)
+    executable=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
+    browser=pw.chromium.launch(headless=True,executable_path=executable,args=['--no-sandbox','--disable-dev-shm-usage'])
     try:
         for width,height in [(320,740),(390,844),(1366,900)]:
             ctx=browser.new_context(viewport={'width':width,'height':height},reduced_motion='reduce')
