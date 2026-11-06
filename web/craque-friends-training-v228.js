@@ -193,6 +193,7 @@ function allocate(card,tactic,deps){
  const ref=reference?.reference;
  const physical=physicalMotor(deps)?.lookup?.(linkedCard)||null;
  const key=sourceSignature(card)+'|'+String(card.localKey||'')+'|'+String(card.capture||'')+
+  '|nivel:'+String(card.level??'')+'|pp:'+String(card.pp??'')+
   '|'+String(card.originalPosition||'')+'|'+String(ref?.htmlSha256||'')+
   '|'+String(ref?.cardId||'')+'|'+String(ref?.edition||'')+
   '|'+String(physical?.cardId||'')+'|'+String(g.VERSION||'');
