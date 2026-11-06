@@ -47,10 +47,30 @@ function summaryCard(result){
   infoRow('Precisão',result.confidence==='simulacao_documentada_parcial'?'Simulação parcial':'Hipótese pendente de validação'),
   infoRow('Motor da ficha',plan.methodology||'Engenharia individual ainda indisponível'));
  el.append(meta);
- if(plan.global)el.append(mk('p','friend-analysis-focus',
-  'FICHA GLOBAL · mesmos '+plan.pp+' PP em todos os seis estilos. '+
-  'Esta é uma hipótese de consenso, não um treino homologado em partidas. '+
-  'A movimentação coletiva muda conforme o estilo e o técnico; a distribuição proposta não.'));
+ if(plan.global?.kind==='hipotese_por_edicao'){
+  const proof=plan.global.evidence||{};
+  el.append(mk('p','friend-analysis-focus',
+   'FICHA ÚNICA POR EDIÇÃO · '+plan.pp+' PP para todos os seis estilos. '+
+   'Base externa vinculada ao Card ID, estilo individual, nativas e ímpeto fixo. '+
+   'É hipótese de gameplay, NÃO maximização de Overall nem teste PvP comprovado.'));
+  const specifics=mk('details','friend-analysis-warnings');
+  specifics.append(mk('summary','','Por que esta edição recebe esta ficha?'));
+  specifics.append(mk('p','',
+   'Card ID: '+(proof.cardId||'pendente')+' · '+
+   (proof.baseStatsCount||0)+' atributos-base de referência. '+
+   (proof.bodyModel?'Modelo corporal externo: comprimento de perna '+proof.bodyModel.legLength+
+    ' (sem prova de alteração da física do jogo).':
+    'Comprimento de pernas, braços e pescoço não documentados nesta edição: não estimados.')));
+  const groups=mk('ul');
+  for(const d of (plan.global.diagnostics||[]).slice().sort((a,b)=>b.groupWeight-a.groupWeight).slice(0,5)){
+   const names=(d.attributes||[]).slice(0,3).map(a=>a.stat+' '+a.base+
+    (a.fixed?' (ímpeto fixo +'+a.fixed+')':'')).join(' · ');
+   groups.append(mk('li','',d.category+': '+names));
+  }
+  specifics.append(groups);el.append(specifics);
+ }else if(plan.global?.status==='pendente'){
+  el.append(mk('p','friend-analysis-warning',plan.global.reason));
+ }
  const focus=mk('p','friend-analysis-focus',plan.focus?.headline||'Informe posição e PP para uma distribuição simulada.');
  el.append(focus);
  if(plan.analysis&&result.tactic!=='posse'){
