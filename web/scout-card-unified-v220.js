@@ -199,16 +199,18 @@ function mount(doc){
   const scoped={...card,shown_position:activeRole,role_used:activeRole};
   const plan=planner?.proposal(scoped,tactic,registered)||null;
   const global=host.CRAQUE_GLOBAL_V394;
-  const key=[activeRole,budget,String(card.id),host.CRAQUE_FRIEND_TRAINING_V228?'v228-ready':'v228-pending',global?.VERSION||'global-pending'].join('|');
+  const key=[activeRole,budget,String(card.id),host.CRAQUE_FRIEND_TRAINING_V228?'motor-pronto':'motor-pendente',
+   host.CRAQUE_REFERENCES_V376?.cards?.length||0,global?.optimizeCard?'v395':'pendente'].join('|');
   if(key!==globalPreviewKey){
    globalPreviewKey=key;globalPreview=null;
-   if(global?.choose&&planner){
-    const proposals=styles.map(mode=>{
-     const p=planner.proposal(scoped,mode,registered);
-     return {tactic:mode,status:p?.levels?'hipotese':'pendente',pp:budget,
-      levels:p?.levels||null,focus:p?.focus||null};
-    });
-    globalPreview=global.choose(proposals,engine);
+   // Na V395 a posse não deve reintroduzir a build histórica no consenso.
+   // Lemos a MESMA proposta da edição em um cenário válido e a exibimos
+   // integralmente nas seis abas, sem gravar nada nem alterar a carta.
+   if(global?.optimizeCard&&host.CRAQUE_FRIEND_TRAINING_V228&&planner){
+    const candidate=planner.proposal(scoped,'rapido',registered);
+    if(candidate&&engine.valid(candidate.levels)&&
+       engine.total(candidate.levels)===budget)
+     globalPreview={kind:'hipotese_por_edicao',levels:Array.from(candidate.levels),pp:budget};
    }
   }
   const proposed=globalPreview?.levels?Array.from(globalPreview.levels):plan?.levels?Array.from(plan.levels):
@@ -219,7 +221,7 @@ function mount(doc){
    const changes=plan?.changes||[];
    const trade=changes.length?changes.slice().sort((a,b)=>b.delta-a.delta)
     .filter(x=>x.delta>0).slice(0,3).map(x=>x.category+' +'+x.delta).join(' · '):'distribuição conservada';
-   summary.textContent=globalPreview?'FICHA GLOBAL · mesmos '+budget+' PP nos seis estilos. Movimentação atual: '+s.focus+'. Consenso V394 é hipótese de gameplay; registro original preservado.':plan?
+   summary.textContent=globalPreview?'FICHA ÚNICA POR EDIÇÃO · '+budget+' PP idênticos nos seis estilos. Atributos-base da carta orientam a proposta V395; somente a movimentação coletiva muda. Hipótese de gameplay; ficha salva preservada.':plan?
     (plan.source==='referencia_cadastrada'?'POSSE · referência registrada. ':
       s.short.toUpperCase()+' · simulação matemática específica. ')+
     (plan.source==='referencia_cadastrada'?'Sem alterar a build registrada.':
@@ -371,6 +373,11 @@ function mount(doc){
   const bx=doc.getElementById('scout-v220-advanced-skills');
   if(old&&bx&&!bx.contains(old))bx.append(old);
   updateRecommendations();switchTraining(style);
+ });
+ // Refazer a leitura se o catálogo de atributos chegou depois da tela.
+ doc.addEventListener('scoutpro:recommendations-ready',()=>{
+  globalPreviewKey='';
+  switchTraining(style);updateRecommendations();
  });
  doc.addEventListener('scoutpro:tactic-ui-selected-v220',event=>{
   if(styles.includes(event.detail?.tactic)&&style!==event.detail.tactic)choose(event.detail.tactic,true);
