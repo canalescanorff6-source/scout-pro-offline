@@ -199,7 +199,7 @@ function mount(doc){
   const scoped={...card,shown_position:activeRole,role_used:activeRole};
   const plan=planner?.proposal(scoped,tactic,registered)||null;
   const global=host.CRAQUE_GLOBAL_V394;
-  const key=activeRole+'|'+budget+'|'+String(card.id);
+  const key=[activeRole,budget,String(card.id),host.CRAQUE_FRIEND_TRAINING_V228?'v228-ready':'v228-pending',global?.VERSION||'global-pending'].join('|');
   if(key!==globalPreviewKey){
    globalPreviewKey=key;globalPreview=null;
    if(global?.choose&&planner){
