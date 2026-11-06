@@ -7,6 +7,13 @@ const deps={training:require('../web/craque-friends-training-v228.js'),tactical:
 const ctx=C.compile(opts,cards),plan=C.recommend(ctx,deps),saved=C.adopt(store,plan,ctx.signature);
 const input={mode:'online',games:3,memberId:'c6',support:'better',runs:'better',recovery:'same',coverage:'worse',note:'Chegou na área; deixou espaço na perda.'};
 const row=C.observe(store,'secondary',saved.id,input,ctx.signature);
+const legacyPlan=JSON.parse(JSON.stringify(saved));
+legacyPlan.cards.forEach(c=>{c.review.functionPlan.version='function-383-20261101';});
+const legacyObservation={...row.observations[0],methodVersion:'function-383-20261101'};
+a.equal(A.normalObservation(legacyObservation,legacyPlan).methodVersion,'function-383-20261101','Relatos anteriores continuam legíveis');
+a.throws(()=>A.normalObservation(legacyObservation,saved),/observa/i,'Não transferir relato antigo para o método novo');
+a.throws(()=>A.normalObservation(row.observations[0],legacyPlan),/observa/i);
+a.throws(()=>A.normalObservation({...legacyObservation,methodVersion:'function-inventado'},legacyPlan),/observa/i);
 a.equal(row.observations.length,1);a.equal(row.observations[0].memberId,'c6');a.equal(row.gameplayValidated,false);
 a.match(C.exportText(row),/Observações de partida/);a.match(C.exportText(row),/Chegou na área/);
 a(C.exportText(row).includes(saved.id));a(C.exportText(row).includes(ctx.signature));a(C.exportText(row).includes(saved.savedAt));

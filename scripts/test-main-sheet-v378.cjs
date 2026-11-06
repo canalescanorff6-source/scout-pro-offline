@@ -12,7 +12,7 @@ for(const c of cards)for(const style of F.MODES){
  const card=Main.cardFromModel(m,m.position),sheet=Main.resolve(card,outcome,{},deps);
  assert.deepEqual(sheet.review.proposed,outcome.plan.levels);assert.equal(sheet.review.spent,c.pp);
  assert.equal(sheet.source,'proposal');assert(sheet.review.skills.length<=5);
- const expected=S.evaluate({...F.profileOf(card),niveis:sheet.review.proposed},style,'');
+ const expected=S.evaluate({...F.profileOf(card,style),niveis:sheet.review.proposed},style,'',{task:sheet.review.individualAnalysis?.task});
  assert.deepEqual(sheet.review.skills.map(x=>S.keyFor(x.name)),expected.recommendations.map(x=>x.key).slice(0,5));
  assert.equal(sheet.review.trainingGroups.reduce((s,g)=>s+g.cost,0),c.pp);
  count++;

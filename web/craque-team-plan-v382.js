@@ -109,6 +109,10 @@ function paintResults(){const root=$('results');root.replaceChildren();$('plan-s
   compare.append(current,proposed);box.append(compare);const pending=mk('p','Conferir antes de investir: '+(r.pending.join(', ')||'nenhuma pendência de cadastro identificada')+'.');pending.className='pending';box.append(pending);
   const details=mk('details');details.append(mk('summary','Por que esta ficha?'),mk('p',r.searchMethod),mk('p',r.contextReasons.join(' ')||r.job),mk('p',r.stylePair.activation));
   if(r.individualAnalysis&&r.proposed){
+   const counter=r.individualAnalysis.task?.counter;
+   if(counter){const guide=mk('details');guide.className='ct394-counter-role';guide.dataset.tactic=counter.tactic;
+    guide.append(mk('summary','Atacar e defender · '+counter.label),mk('p','Com a bola · '+counter.attack),
+     mk('p','Sem a bola · '+counter.defence),mk('p','Risco e correção · '+counter.risk),mk('small',counter.note));box.append(guide);}
    details.append(mk('p',r.individualAnalysis.reason));
    if(r.individualAnalysis.task)details.append(mk('p','Foco da ficha · '+r.individualAnalysis.task.label));
    if(r.individualAnalysis.factors?.length){const factors=mk('ul');for(const factor of r.individualAnalysis.factors)

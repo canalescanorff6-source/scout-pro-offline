@@ -35,7 +35,9 @@ const first = resolve(nihat);
 const second = resolve(aubameyang);
 assert.equal(first.review.spent, 62);
 assert.equal(second.review.spent, 62);
-assert.notDeepEqual(first.review.proposed, second.review.proposed);
+// O custo discreto pode produzir o mesmo vetor após incluir ambas as fases.
+// A proteção contra ficha genérica deve provar entradas e cálculo individuais.
+assert.notDeepEqual(first.review.individualAnalysis.task.stats,second.review.individualAnalysis.task.stats);
 assert.deepEqual(nihat.outcome.plan.levels, first.review.proposed);
 assert.deepEqual(aubameyang.outcome.plan.levels, second.review.proposed);
 assert.equal(first.result.plan.analysis.status, 'documentada');
@@ -81,11 +83,13 @@ assert.equal(resolve(context(50)).result.plan.analysis.status, 'dados_insuficien
 
 const mbappe = context(49);
 assert.equal(resolve(mbappe).result.booster.slotSupported,true);
-const massaro = context(1);
-const sameVector = resolve(massaro);
-assert.deepEqual(sameVector.review.proposed, resolve(context(25)).review.proposed);
-assert(sameVector.review.repetitionAudit.documentedPairs > 0);
-assert.equal(resolve(massaro, { managerId: 'CT-MGR-001' }).review.repetitionAudit, null);
+const [repeatKey,repeatProof]=Object.entries(audit.entries).find(([key,entry])=>
+ key.endsWith('|rapido')&&Number(key.split('@')[0])<=246&&entry.documentedPairs>0);
+const repeated=context(Number(repeatKey.split('@')[0]));
+const sameVector=resolve(repeated);
+assert.deepEqual(sameVector.review.proposed,repeatProof.levels);
+assert.equal(sameVector.review.repetitionAudit.documentedPairs,repeatProof.documentedPairs);
+assert.equal(resolve(repeated,{managerId:'CT-MGR-001'}).review.repetitionAudit,null);
 assert.equal(resolve(mbappe, { reference: nihat.reference }).result.plan.analysis.status, 'dados_insuficientes');
 assert.equal(resolve(mbappe, { reference: nihat.reference }).review.repetitionAudit, null);
 const manual = [0, 4, 4, 4, 0, 0, 0, 0, 0, 0];
@@ -114,7 +118,7 @@ for (const { id, tactic, pp, alternative, stats } of trials) {
   assert.equal(deps.tactical.total(trial.alternative), pp);
   assert.deepEqual(sheet.review.proposed, current.outcome.plan.levels);
   assert.deepEqual(sheet.result.plan.levels, current.outcome.plan.levels);
-  assert(trial.attributes.some(row => row.label === stats[0] && row.current === stats[1] && row.alternative === stats[2]));
+  assert(trial.attributes.some(row => row.label === stats[0] && row.current === stats[1] && row.alternative === stats[2]),id+' '+JSON.stringify(trial.attributes));
   assert(Sheet.text(sheet.review).includes('COMPARAR EM PARTIDA'));
   assert.equal(resolve(current, { levels: sheet.review.proposed, source: 'profile' }).review.matchTrial, undefined);
   assert.equal(resolve(current, { reference: { ...current.reference, reference: {

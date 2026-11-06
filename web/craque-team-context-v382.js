@@ -61,6 +61,7 @@ function compile(options,cards){
 function engineCard(member,context){const c=member.card;return {accountId:context.accountId,localKey:localKey(c),cardId:String(c.cardId||''),edition:c.edition||'',name:c.name,
  capture:c.capture??null,managerId:context.manager?.id||'',
  trainingFunction:context.functions?.[c.id],trainingDefensive:member.instructions.some(i=>i.type==='defensive'),
+ trainingCounterTarget:member.instructions.some(i=>i.type==='counter_target'),
  position:member.slot.position,originalPosition:c.position,positionEvidence:{eligible:member.eligible,text:member.eligible?'Posições cadastradas nesta conta':'Familiaridade a conferir; simulação'},
  style:member.activation?.attack.status==='active'?c.offenseStyle:'',defenceStyle:member.activation?.defence.status==='active'?c.defenceStyle:'',level:c.maxLevel,pp:c.pp,nativeSkills:c.nativeVerified?(c.nativeSkills||[]).join('; '):'',skills:(c.skills||[]).join('; '),
  fixedBooster:c.fixedBoosters?.[0]?.name||'',booster:c.extraBooster?.name||'',boosterSlot:c.boosterSlot||'pendente',

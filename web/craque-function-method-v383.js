@@ -1,12 +1,15 @@
 /* Regras consultivas versionadas. Não alteram a carta, os atributos ou a IA do jogo. */
 (function(w,f){const a=f();if(typeof module==='object'&&module.exports)module.exports=a;if(w)w.CRAQUE_FUNCTION_METHOD_V383=a;})(typeof window!=='undefined'?window:null,function(){'use strict';
-const VERSION='function-383-20261101',CHECKED='2026-11-01',BASE='https://efootballexplained.com/playing-styles/';
+const VERSION='function-394-20261106',CHECKED='2026-11-06',BASE='https://efootballexplained.com/playing-styles/';
 const DEF='https://efhub.com/articles/260816_1-four-new-playing-styles-found-in-the-game-files';
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
-const source=url=>({url,checked:CHECKED,kind:'Levantamento técnico independente; conferir após atualização do jogo',version:'eFootball 2027 / 11.1.1'});
+const source=url=>({url,checked:CHECKED,kind:'Levantamento técnico independente; conferir após atualização do jogo',version:'eFootball 2027 / v6.0.0–v6.1.0'});
 const table={attack:{},defence:{}};
 function rule(phase,names,positions,slug){for(const name of names)table[phase][norm(name)]={positions,source:source(slug?BASE+slug+'/':DEF)};}
-rule('attack',['Jogador de infiltração'],['SA','MAT','MLG','MLE','MLD'],'hole-player');
+// Mesmos nomes/aliases já adotados pela normalização PT-BR V75. A regra de
+// posição não é estendida por semelhança com um nome desconhecido.
+rule('attack',['Jogador de infiltração','Infiltração','Criador de Espaços'],['SA','MAT','MLG','MLE','MLD'],'hole-player');
+rule('attack',['Artilheiro','Oportunista'],['CA'],'goal-poacher');
 rule('attack',['Ala produtivo'],['PTE','PTD'],'prolific-winger');
 rule('attack',['Orquestrador'],['VOL','MLG'],'orchestrator');
 rule('attack',['Armador criativo'],['SA','MAT','PTE','PTD','MLE','MLD'],'creative-playmaker');
@@ -14,14 +17,14 @@ rule('attack',['Atacante pivô'],['CA','SA'],'deep-lying-forward');
 rule('attack',['Pivô'],['CA'],'target-man');
 rule('attack',['Homem de área'],['CA'],'fox-in-the-box');
 rule('attack',['Puxa marcação','Arrastar defesa'],['CA','SA','MAT'],'dummy-runner');
-rule('attack',['Clássico nº 10'],['SA','MAT'],'classic-no-10');
+rule('attack',['Clássico nº 10','Clássico 10'],['SA','MAT'],'classic-no-10');
 rule('attack',['Perito em cruzamento'],['PTE','PTD','MLE','MLD'],'cross-specialist');
 rule('attack',['Meia versátil','Todo o terreno'],['VOL','MLG','MLE','MLD'],'box-to-box');
-rule('attack',['Primeiro volante'],['VOL'],'anchor-man');
-rule('attack',['Construção de jogo'],['ZG'],'build-up');
+rule('attack',['Primeiro volante','Trinco'],['VOL'],'anchor-man');
+rule('attack',['Construção de jogo','Defensor criativo'],['ZG'],'build-up');
 rule('attack',['Lateral ofensivo'],['LE','LD'],'attacking-full-back');
 rule('attack',['Lateral defensivo'],['LE','LD'],'defensive-full-back');
-rule('defence',['Pressão no ataque'],['CA','SA','PTE','PTD']);
+rule('defence',['Pressão no ataque','Pressão Elevada'],['CA','SA','PTE','PTD']);
 rule('defence',['Ladrão no ataque'],['CA','SA','PTE','PTD']);
 rule('defence',['Foco no ataque'],['CA','SA','PTE','PTD','MAT']);
 rule('defence',['Defensor participativo'],['MAT','MLE','MLD','MLG','VOL']);
