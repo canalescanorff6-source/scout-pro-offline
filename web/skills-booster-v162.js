@@ -435,7 +435,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
  if(tactic==='longo')bump(['weighted','lowloft','aerial','heading','firstshot','fighting','intercept','gklong'],24,'tatica');
  if(tactic==='overload')bump(['onepass','sole','heel','through','intercept','blocker','fighting'],22,'tatica');
  const task=tactic!=='posse'?options.task:null;
- if(task?.skills)task.skills.forEach((key,index)=>bump([key],Math.max(8,80-index*18),'tatica'));
+ if(task?.skills)task.skills.forEach((key,index)=>bump([key],task.skillWeights?.[key]??Math.max(8,80-index*18),'tatica'));
  if(/pivo|homem de area|target/.test(style))bump(['heading','aerial','onepass','heel'],34);
  // V269: quem puxa marcação/infiltra para criar apoio não recebe, por padrão,
  // a mesma priorização de chute de primeira de um Artilheiro.
