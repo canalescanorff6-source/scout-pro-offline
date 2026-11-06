@@ -92,5 +92,149 @@
    b.score-a.score||a.best-b.best);
   return ordered.length?{primary:ordered[0].item,alternatives:ordered.slice(1,6).map(x=>x.item),applyAuthorized:false,rankingStatus:'consultivo_sem_prova_de_slot'}:null;
  }
- return Object.freeze({MODES,VERSION,choose,rankSkills,rankBoosters});
+ // V395: otimização individual sobre atributos-base da edição documentada.
+ // Diferentemente do consenso V394, não seleciona uma das seis fichas.
+ // Os seis contextos servem como restrições da função, NÃO geram seis treinos.
+ const STAT_GROUPS=Object.freeze([
+  ['finishing','set_piece_taking','curl'],
+  ['low_pass','lofted_pass'],
+  ['ball_control','dribbling','tight_possession'],
+  ['offensive_awareness','acceleration','balance'],
+  ['speed','kicking_power','stamina'],
+  ['heading','jumping','physical_contact'],
+  ['defensive_awareness','tackling','aggression','defensive_engagement'],
+  ['gk_awareness','jumping'],
+  ['gk_catching','gk_parrying'],
+  ['gk_reflexes','gk_reach']
+ ]);
+ const TARGETS=Object.freeze({
+  CA:{finishing:91,offensive_awareness:92,acceleration:89,kicking_power:90,ball_control:86,
+   heading:88,physical_contact:86,low_pass:82},
+  SA:{finishing:87,offensive_awareness:90,acceleration:90,low_pass:86,ball_control:88,tight_possession:88},
+  MAT:{low_pass:91,ball_control:91,tight_possession:89,acceleration:88,offensive_awareness:89},
+  MLG:{low_pass:89,ball_control:87,tight_possession:86,stamina:90,acceleration:85},
+  VOL:{defensive_awareness:90,tackling:89,defensive_engagement:89,low_pass:87,
+   physical_contact:86,stamina:90},
+  ZG:{defensive_awareness:92,tackling:91,defensive_engagement:90,physical_contact:89,
+   speed:87,jumping:89},
+  LE:{defensive_awareness:88,tackling:88,speed:91,stamina:90,low_pass:84},
+  LD:{defensive_awareness:88,tackling:88,speed:91,stamina:90,low_pass:84},
+  ALA:{speed:92,acceleration:92,dribbling:89,stamina:87,low_pass:83},
+  GO:{gk_awareness:91,gk_reflexes:92,gk_reach:91,gk_parrying:88,gk_catching:87}
+ });
+ const statNumbers=s=>s&&typeof s==='object'&&!Array.isArray(s)?
+  Object.fromEntries(Object.entries(s).filter(([k,v])=>typeof k==='string'&&
+   Number.isInteger(v)&&v>=0&&v<=120)):{};
+ const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+ const normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ const r5=x=>Math.round(x*100000)/100000;
+ function evidenceOf({card,reference}){
+  const r=reference?.reference,id=String(card?.cardId||''),edition=String(card?.edition||'');
+  if(reference?.identityUsable!==true||!r||!/^[0-9]{5,20}$/.test(id)||
+   String(r.cardId)!==id||!edition||![reference.edition,r.edition].includes(edition)||
+   !/^[a-f0-9]{64}$/i.test(String(r.htmlSha256||''))||
+   (Number.isInteger(Number(card.capture))&&Number(card.capture)>0&&
+    Number(card.capture)!==Number(reference.capture)))return null;
+  // A Vinculação V393 de um candidato diferente do cadastro exige prova de arte.
+  if(reference.cardId&&String(reference.cardId)!==id){
+   const p=reference.publicIdentityV393;
+   if(!p||p.matchStatus!=='exact_artwork_match'||p.capture!==reference.capture||
+    p.catalogueId!==String(reference.cardId)||p.catalogueEdition!==reference.edition||
+    !/^[a-f0-9]{64}$/i.test(String(p.localImageSha256||''))||
+    String(reference.candidateId)!==id)return null;
+  }
+  const stats=statNumbers(r.baseStats);
+  if(Object.keys(stats).length<17)return null;
+  return {ref:r,stats};
+ }
+ function optimizeCard({card,plans,tactical,individual,reference,physical}){
+  if(!Array.isArray(plans)||plans.length!==MODES.length||!tactical?.valid||
+     !tactical?.total||!tactical?.ppCost||!individual?.allocate)return null;
+  const byId=new Map(plans.map(p=>[p.style,p]));
+  if(byId.size!==MODES.length||MODES.some(id=>!byId.has(id)))return null;
+  const ordered=MODES.map(id=>byId.get(id)),budget=ordered[0].pp,role=ordered[0].role;
+  if(!Number.isInteger(budget)||budget<0||
+   ordered.some(p=>p.status!=='hipotese'||p.pp!==budget||p.role!==role||
+    !Array.isArray(p.optimization?.weights)||p.optimization.weights.length!==10))
+   return null;
+  const identity=evidenceOf({card,reference});
+  if(!identity)return Object.freeze({kind:'pendente_dados_da_edicao',status:'pendente',
+   reason:'Não há ligação comprovada de Card ID, edição e atributos-base: não entregar uma ficha genérica como se fosse individual.'});
+  const {ref,stats}=identity,target=TARGETS[role]||{},groupWeights=Array(10).fill(0);
+  for(const p of ordered)for(let i=0;i<10;i++){
+   const w=p.optimization.weights[i];
+   if(!Number.isFinite(w)||w<0)return null;
+   groupWeights[i]+=w/MODES.length;
+  }
+  const fixed=Object.create(null);
+  for(const booster of ref.fixedBoosters||[]){
+   if(!booster?.stats||typeof booster.stats!=='object')continue;
+   for(const [name,amount] of Object.entries(booster.stats))
+    if(Number.isInteger(amount)&&amount>=1&&amount<=5)fixed[name]=(fixed[name]||0)+amount;
+  }
+  const native=(ref.nativeSkills||[]).map(normalize);
+  const physicalValid=physical&&physical.cardId===String(card.cardId)&&
+   Number(physical.capture)===Number(card.capture)&&
+   Number.isFinite(physical.legLength)?physical:null;
+  const diagnostics=[],curves=Array(10).fill(null);
+  // Os valores-alvo e pesos são editoriais: NÃO alegar limiares internos nem
+  // precisão medida; os incrementos são por categoria de treino do jogo.
+  for(let i=0;i<10;i++){
+   const axis=STAT_GROUPS[i],active=axis.filter(k=>Number.isInteger(stats[k]));
+   if(groupWeights[i]<=0||active.length===0)continue;
+   const weighted=active.map(k=>{
+    const v=stats[k]+(fixed[k]||0);
+    const expected=target[k]??(i===6?87:i===7||i===8||i===9?88:i===5?85:86);
+    const shortage=clamp(expected-v,-22,36);
+    const strength=clamp(1+shortage/68,.72,1.45);
+    return {name:k,base:stats[k],fixed:fixed[k]||0,expected,strength};
+   });
+   const meanStrength=weighted.reduce((s,k)=>s+k.strength,0)/weighted.length;
+   const skillBonus=i===0&&native.some(s=>/first.time shot|phenomenal finishing|long.range shooting/.test(s))?.045:
+    i===1&&native.some(s=>/one.touch pass|through passing|through pass/.test(s))?.055:
+    i===5&&native.some(s=>/heading|aerial superiority/.test(s))?.05:
+    i===6&&native.some(s=>/interception|blocker/.test(s))?.055:0;
+   const longLeg=physicalValid&&(i===6||i===5)&&['ZG','VOL','LE','LD','GO'].includes(role)?
+    clamp((physicalValid.legLength-8)*.006,-.018,.018):0;
+   const adjusted=groupWeights[i]*clamp(.73+meanStrength*.32+skillBonus+longLeg,.75,1.28);
+   groupWeights[i]=r5(adjusted);
+   curves[i]=Array(21).fill(0);
+   for(let n=1;n<=20;n++){
+    let increment=0;
+    for(const k of weighted){
+     const projected=k.base+k.fixed+n-1;
+     const band=projected<65?.72:projected<85?1.13:projected<93?1.02:
+      projected<99?.7:.27;
+     increment+=band*k.strength;
+    }
+    increment/=weighted.length;
+    curves[i][n]=r5(curves[i][n-1]+increment*groupWeights[i]*.24);
+   }
+   diagnostics.push({category:tactical.CATEGORIES?.[i]||String(i),index:i,
+    groupWeight:groupWeights[i],attributes:weighted.map(x=>({
+     stat:x.name,base:x.base,fixed:x.fixed,targetEditorial:x.expected})),
+    bodyEvidenceUsed:longLeg!==0});
+  }
+  if(diagnostics.length===0)return Object.freeze({kind:'pendente_dados_da_edicao',status:'pendente',
+   reason:'Atributos-base válidos, mas nenhum atributo útil à posição foi documentado.'});
+  // Não alimentar a escolha com nome, raridade ou hash como sorteio.
+  // Cartas genuinamente equivalentes podem alcançar a MESMA distribuição.
+  const baseline=Array.isArray(card.trainingLevels)?card.trainingLevels:
+   null;
+  const vec=individual.allocate(groupWeights,role,budget,
+   tactical.valid(baseline)?baseline:null,{utility:curves});
+  if(!tactical.valid(vec)||tactical.total(vec)!==budget)return null;
+  return Object.freeze({kind:'hipotese_por_edicao',version:'global-card-395',status:'hipotese',
+   levels:Object.freeze(vec.slice()),pp:budget,role,
+   evidence:{cardId:String(ref.cardId),edition:String(ref.edition),
+    htmlSha256:ref.htmlSha256,source:ref.url,baseStatsCount:Object.keys(stats).length,
+    fixedBoosterCount:(ref.fixedBoosters||[]).length,bodyModel:physicalValid?
+     {source:physicalValid.source,legLength:physicalValid.legLength,
+      status:'terceiros_sem_prova_mecanica'}:null},
+   diagnostics:Object.freeze(diagnostics),statement:
+    'Ficha ÚNICA por edição usando atributos-base, habilidades, ímpetos fixos e tarefa da posição. '+
+    'Seis contextos considerados em conjunto; não otimiza Overall nem garante desempenho ou animações.'});
+ }
+
+ return Object.freeze({MODES,VERSION,choose,rankSkills,rankBoosters,optimizeCard});
 });
