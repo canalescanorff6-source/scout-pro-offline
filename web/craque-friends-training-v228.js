@@ -107,7 +107,7 @@ function parseBaseline(card,t){
 // Paridade V359: utilizar a distribuição exata da engenharia V251 e a leitura
 // V233. Não converter OVR/atributos do eFHub com técnico em atributos-base.
 // Na falta de motor, não apresentar a heurística antiga como equivalente.
-function allocate(card,tactic,deps){
+function allocateStyle(card,tactic,deps){
  const {tactical:t}=getDeps(deps),{individual,interpretation}=primaryEngines(deps);
  if(!t?.strategy||!t?.ppCost||!t?.valid||!t?.roleOf)
   throw Error('Motor tático V220 indisponível; nenhuma ficha pode ser calculada.');
@@ -165,6 +165,42 @@ function allocate(card,tactic,deps){
   confidence:'hipotese_documental_sem_gameplay',
   note:'Mesmo motor de distribuição V251 e interpretação V233 de Minhas Cartas; comparação individual por função, estilo, habilidades e PP. NÃO otimiza Overall e NÃO prova desempenho real nem autoriza trocar treino aprovado.'
  };
+}
+/* V394: a MESMA proposta de PP nos seis estilos; só muda a leitura tática.
+ * Não altera cartas, drafts nem itens equipados. Histórico por estilo continua consultável.
+ * Falta de PP/identidade conserva a pendência do motor original.
+ */
+let universalCache=null;
+function globalMotor(deps){
+ return deps?.universal||(typeof window!=='undefined'?window.CRAQUE_GLOBAL_V394:null);
+}
+function allocate(card,tactic,deps){
+ if(!MODES.includes(tactic))throw Error('Estilo tático inválido.');
+ const g=globalMotor(deps);
+ if(!g?.choose||deps?.legacyByStyle===true)return allocateStyle(card,tactic,deps);
+ const t=getDeps(deps).tactical;
+ const ref=card.reference?.reference;
+ const key=sourceSignature(card)+'|'+String(card.localKey||'')+'|'+String(card.capture||'')+
+  '|'+String(card.originalPosition||'')+'|'+String(ref?.htmlSha256||'')+
+  '|'+String(ref?.cardId||'')+'|'+String(ref?.edition||'');
+ if(!universalCache||universalCache.key!==key||deps?.individual||deps?.interpretation){
+  const contexts=MODES.map(mode=>allocateStyle(card,mode,deps));
+  const choice=g.choose(contexts,t);
+  universalCache={key,contexts,choice};
+ }
+ const original=universalCache.contexts.find(p=>p.style===tactic);
+ const choice=universalCache.choice;
+ if(!choice||!original||original.status!=='hipotese')return original;
+ const levels=choice.levels.slice();
+ const baseline=parseBaseline(card,t);
+ const differences=baseline.levels?t.CATEGORIES.flatMap((name,i)=>
+  baseline.levels[i]!==levels[i]?[{name,was:baseline.levels[i],proposed:levels[i]}]:[]):[];
+ return {...original,levels,remaining:0,differences,global:choice,
+  methodology:'V394 · ficha global individual · V251/V233 em seis estilos',
+  confidence:'hipotese_multiestilo_sem_gameplay',
+  note:'Ficha global de gameplay: o mesmo vetor de PP permanece ao trocar os seis estilos. '+
+   'O consenso matemático entre propostas por carta não comprova superioridade no PvP. '+
+   'Treinos aprovados e equipamento cadastrados permanecem intactos.'};
 }
 /* V373 — dossiê PRO usa SÓ as hipóteses do motor oficial V251/V233/V162/V103.
    Rentão/Blackjhon são referência de critérios, não autores destas builds. */
