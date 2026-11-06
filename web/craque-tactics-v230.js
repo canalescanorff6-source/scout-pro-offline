@@ -206,8 +206,10 @@ function recommendSquad(cards,formation,mode,exclude=[]){
   if(['le','ld'].includes(slot)&&/lateral defensivo/.test(t))return 7;
   return 0;
  };
+ const optionCache=new Map();
  function options(slot){
-  return pool.flatMap(card=>{
+  if(optionCache.has(slot))return optionCache.get(slot);
+  const ordered=pool.flatMap(card=>{
    if(!fit(card,slot).match)return [];
    const info=score(card,slot,mode);
    if(info.score<0)return [];
@@ -217,6 +219,8 @@ function recommendSquad(cards,formation,mode,exclude=[]){
     source:'Ranking documental por posição, função e estilo: testar no jogo.'}];
   }).sort((a,b)=>b.priority-a.priority||b.score-a.score||
    Number(a.card.numero)-Number(b.card.numero));
+  optionCache.set(slot,ordered);
+  return ordered;
  }
  function pick(slot){
   const next=options(slot).find(item=>!caps.has(Number(item.card.numero))&&
