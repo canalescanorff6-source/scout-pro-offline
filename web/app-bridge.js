@@ -165,7 +165,12 @@ if(inCard){
    const prepareStylePlanner=()=>{
     const planner=document.createElement('script');
     planner.src=v189Root+'craque-style-planner-v303.js';
-    planner.onload=startUI;planner.onerror=startUI;document.head.appendChild(planner);
+    const startGlobal=()=>{
+     if(window.CRAQUE_GLOBAL_V394)return startUI();
+     const global=document.createElement('script');global.src=v189Root+'craque-global-v394.js';
+     global.onload=startUI;global.onerror=startUI;document.head.appendChild(global);
+    };
+    planner.onload=startGlobal;planner.onerror=startGlobal;document.head.appendChild(planner);
    };
    const managerCss=document.createElement('link');managerCss.rel='stylesheet';
    managerCss.href=v189Root+'craque-managers-v302.css';document.head.appendChild(managerCss);
