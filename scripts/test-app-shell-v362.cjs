@@ -13,7 +13,8 @@ for(const filename of ['craque-app-shell-v362.js','craque-app-shell-v362.css']){
  assert.ok(entry.includes(filename),'bridge precisa carregar '+filename);
 }
 const pages=fs.readdirSync(web).filter(p=>p.endsWith('.html'));
-assert.equal(pages.length,17,'Conferir cobertura das17páginas de topo, incluindo a ficha privada V385');
+assert.equal(pages.length,18,'Conferir cobertura das 18 páginas de topo, incluindo o guia V394 e a ficha privada V385');
+assert(pages.includes('guia-movimentacao-v394.html'),'Guia de movimentação das 261 cartas faltando');
 assert(pages.includes('ficha-da-conta-v385.html'));
 assert(pages.includes('plano-do-time-v382.html'));
 assert(pages.includes('conferir-cartas.html'));
