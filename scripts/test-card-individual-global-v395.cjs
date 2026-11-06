@@ -53,4 +53,17 @@ assert.equal(P.lookup(cristianoEpic),null,'Não inferir biotipo por raridade');
 const maldini=make(byCap(10));
 assert(P.lookup(maldini)?.legLength>=1,'Corpo vinculado por identidade quando documentado');
 assert.equal(P.lookup({...maldini,cardId:'999999999999'}),null,'Corpo de outra edição não deve ser usado');
+// Bloquear regressões na interface que exibiam uma ficha V303 com selo V395.
+const fs=require('node:fs');
+const originalUI=fs.readFileSync('web/scout-card-unified-v220.js','utf8');
+const singleUI=fs.readFileSync('web/craque-positional-ui-v311.js','utf8');
+const loader=fs.readFileSync('web/app-bridge.js','utf8');
+assert(originalUI.includes("F.allocate(globalCard,'posse')"),
+ 'As 246 telas precisam executar o algoritmo V395, não um preview antigo');
+assert(!originalUI.includes("planner.proposal(scoped,'rapido',registered)"),
+ 'Não reutilizar o simulador V303 rotulado incorretamente como V395');
+assert(singleUI.includes('ct395-global-evidence'),
+ 'A ficha principal deve explicar os atributos e a edição usados');
+assert(loader.includes('craque-physical-v395.js'),
+ 'As medidas documentadas devem estar disponíveis offline em Android e Windows');
 console.log('V395 PASS: 6 estilos, PP exatos, Cristiano BT/Epic, Drogba/Suárez, evidência corporal e antitemplate.');
