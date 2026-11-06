@@ -28,9 +28,15 @@ with sync_playwright() as pw:
     if global_mode:
      assert page.evaluate("typeof window.CRAQUE_GLOBAL_V394?.optimizeCard === 'function'")
      proof=sheet.locator('.ct395-global-evidence')
-     assert proof.locator('a').count()==1, (cap,'Fonte da edição ausente')
-     assert 'Card ID' in proof.inner_text()
+     assert not proof.evaluate('(e)=>e.open'), (cap,'Painel de evidências deveria iniciar recolhido')
+     summary=proof.locator(':scope > summary')
+     summary.click()
+     assert proof.evaluate('(e)=>e.open'), (cap,'Explicação da edição não abre')
+     assert 'Card ID' in proof.inner_text(), (cap,'Card ID ausente na explicação expandida')
+     assert proof.locator('a').count()==1 and proof.locator('a').is_visible(), (cap,'Fonte da edição ausente')
      assert proof.locator('li').count()>=3, (cap,'Faltam razões da otimização por edição')
+     summary.click()
+     assert not proof.evaluate('(e)=>e.open'), (cap,'Painel não fecha após toque')
      assert sheet.locator('.ct374-skill-reasons > li').count()<=5
      assert page.evaluate('document.documentElement.scrollWidth-innerWidth')<=12,(cap,width,'overflow')
      assert not page.evaluate('Object.keys(localStorage).some(k=>k.startsWith("scoutpro:v324:manager-profile:"))')
