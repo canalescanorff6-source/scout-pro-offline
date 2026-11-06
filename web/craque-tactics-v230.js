@@ -176,5 +176,87 @@ function rank(cards,slot,mode,exclude=[],used=[]){
  .filter(x=>x.score>=0&&fit(x.card,slot).match)
  .sort((a,b)=>b.score-a.score||Number(a.card.numero)-Number(b.card.numero));
 }
-return Object.freeze({MODES,POS,position,slotRole,fit,score,rank,counterGuide});
+
+/* V392: 11 + 12 para as duas formações existentes. Este é um ranking
+ * DOCUMENTAL de encaixe, não uma simulação de vitória, status final ou meta.
+ * Usa apenas posição comprovada, identidade e sinais reais cadastrados.
+ * Nunca escreve no banco de dados nem substitui plano salvo.
+ */
+function recommendSquad(cards,formation,mode,exclude=[]){
+ if(!['normal','rapido'].includes(mode)||!Array.isArray(cards)||!formation||
+   !['4312','4213'].includes(formation.id)||formation.starters?.length!==11)
+  return null;
+ const identity=(typeof window!=='undefined'?window.SCOUT_PLAYER_IDENTITY_V245:null)||
+  (typeof module==='object'&&module.exports?require('./scout-player-identity-v245.js'):null);
+ if(!identity?.key)throw Error('Identidade por pessoa indisponível: recomendação bloqueada');
+ const excluded=new Set((Array.isArray(exclude)?exclude:[]).map(Number));
+ const pool=cards.filter(c=>Number.isInteger(Number(c.numero))&&!excluded.has(Number(c.numero)));
+ const names=new Set(),caps=new Set();
+ const normStyle=c=>norm([c?.estilo_ataque,c?.estilo_defesa].filter(Boolean).join(' '));
+ const bonus=(card,slot)=>{
+  const t=normStyle(card);
+  if(slot==='vole'&&/orquestrador|defensor criativo/.test(t))return 7;
+  if(slot==='vold'&&/primeiro volante|destruidor/.test(t))return 7;
+  if(slot==='zge'&&/destruidor/.test(t))return 6;
+  if(slot==='zgd'&&/defensor criativo|construcao de jogo/.test(t))return 6;
+  if(slot==='cae'&&/artilheiro|infiltracao/.test(t))return mode==='rapido'?8:5;
+  if(slot==='cad'&&/pivo|homem de area|puxa marcacao|arrastar defesa/.test(t))return 7;
+  if(slot==='mat'&&/armador criativo|jogador de infiltracao/.test(t))return 5;
+  if(slot==='sa'&&/atacante pivo|infiltracao|puxa marcacao/.test(t))return 5;
+  if(['le','ld'].includes(slot)&&/lateral defensivo/.test(t))return 7;
+  return 0;
+ };
+ function options(slot){
+  return pool.flatMap(card=>{
+   if(!fit(card,slot).match)return [];
+   const info=score(card,slot,mode);
+   if(info.score<0)return [];
+   return [{card,slot,role:slotRole(slot),fit:info.placement,
+    score:info.score,priority:info.score+bonus(card,slot),
+    confidence:info.confidence,signals:info.signals.slice(0,3),
+    source:'Ranking documental por posição, função e estilo: testar no jogo.'}];
+  }).sort((a,b)=>b.priority-a.priority||b.score-a.score||
+   Number(a.card.numero)-Number(b.card.numero));
+ }
+ function pick(slot){
+  const next=options(slot).find(item=>!caps.has(Number(item.card.numero))&&
+   !names.has(identity.key(item.card)));
+  if(!next)return null;
+  caps.add(Number(next.card.numero));names.add(identity.key(next.card));
+  return Object.freeze({slot,role:next.role,cap:Number(next.card.numero),
+   name:next.card.name,fit:next.fit,score:next.score,
+   confidence:next.confidence,signals:Object.freeze(next.signals),
+   source:next.source});
+ }
+ const order=formation.starters.map(x=>x.slot).sort((a,b)=>{
+  const aDemand=formation.starters.filter(x=>slotRole(x.slot)===slotRole(a)).length;
+  const bDemand=formation.starters.filter(x=>slotRole(x.slot)===slotRole(b)).length;
+  return options(a).length/aDemand-options(b).length/bDemand||
+   a.localeCompare(b);
+ });
+ const starterMap=new Map();
+ for(const slot of order){const choice=pick(slot);if(choice)starterMap.set(slot,choice);}
+ const starters=formation.starters.map(x=>starterMap.get(x.slot)).filter(Boolean);
+ // Banco funcional por vaga, sem permitir duas cartas da mesma pessoa.
+ const needs=['go','zge','zgd','le','ld','vole','vold','mlg','mat','sa','cae','cad'];
+ const bench=[];
+ for(const slot of needs){
+  const choice=pick(slot);
+  if(choice)bench.push(choice);
+ }
+ const slots=Object.fromEntries(starters.map(s=>[s.slot,s.cap]));
+ const ready=starters.length===11&&bench.length===12;
+ const pending=starters.filter(s=>s.confidence!=='comparativo_documental').length+
+  bench.filter(s=>s.confidence!=='comparativo_documental').length;
+ return Object.freeze({formation:formation.id,mode,starters:Object.freeze(starters),
+  bench:Object.freeze(bench),slots:Object.freeze(slots),ready,pending,
+  excluded:excluded.size,method:'encaixe documental e complementaridade por função; não é prova de melhor rendimento',
+  warnings:Object.freeze([
+   ...(starters.length!==11?['Não há 11 posições elegíveis confirmadas. Não aplicar escalação incompleta.']:[]),
+   ...(bench.length!==12?['Banco incompleto: faltam reservas comprovadamente elegíveis para algumas funções.']:[]),
+   ...(pending?['Algumas edições não têm todos os sinais documentados: conferir fichas antes de investir PP, habilidades ou ímpetos.']:[])
+  ])});
+}
+
+return Object.freeze({MODES,POS,position,slotRole,fit,score,rank,counterGuide,recommendSquad});
 });
