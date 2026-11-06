@@ -30,6 +30,7 @@ with sync_playwright() as pw:
    reasons=root.locator('.ct336-equipment-evidence')
    assert reasons.count()==1
    assert not reasons.evaluate('(node)=>node.open'), 'Justificativas devem iniciar recolhidas'
+   reveal(reasons.locator('summary'))
    reasons.locator('summary').click()
    assert reasons.evaluate('(node)=>node.open')
    assert 'não validação em gameplay' in reasons.inner_text()

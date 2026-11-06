@@ -346,6 +346,9 @@ function create(target,model,opts={}){
   // próxima pintura. Ler o DOM real preserva a abertura ao mudar técnico.
   const before=details.querySelector('.ct326-deep-dive');
   if(before)advancedOpen=before.open;
+  // A ficha unificada move estes controles para dentro de details. Recuperá-los
+  // antes de redesenhar mantém o aviso e o bloqueio acessíveis em caso de erro.
+  node.insertBefore(status,details);node.append(actions);
   details.replaceChildren();
   const health=engine.storageHealth(storage());
   if(!health.ok){

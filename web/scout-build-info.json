@@ -2,7 +2,7 @@
   "schema": "scout_v189_shared_web_bundle",
   "version": "1.1.0",
   "git_revision": "v393-preview",
-  "bundle_fingerprint": "d11c04fd333641b6fff5",
+  "bundle_fingerprint": "3cfc42e64f30f6b15c03",
   "common_web_dir": "web",
   "source_count": 225,
   "mobile_web_container": "Capacitor webDir=web",

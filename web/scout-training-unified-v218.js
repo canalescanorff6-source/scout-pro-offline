@@ -325,7 +325,7 @@ function mount(doc){
   activeProfileContext=context;
   activeTactic=context.style;
   styleLabel=({posse:'Posse de Bola',rapido:'Contra-Ataque Rápido',
-   normal:'Contra-Ataque',fora:'Por Fora',longo:'Bola Longa'})[activeTactic]||activeTactic;
+   normal:'Contra-Ataque',fora:'Por Fora',longo:'Bola Longa',overload:'Sobreposição'})[activeTactic]||activeTactic;
   let stored=null;
   try{stored=readProfile();profileError=''}catch(e){profileError=String(e.message||e)}
   const individual=stored?.levels;

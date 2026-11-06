@@ -4,6 +4,7 @@ Dois viewports, acervo externo com técnico real e ida MAT→SA→MAT.
 """
 import os, shutil
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 
 URL=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 with sync_playwright() as pw:
@@ -26,6 +27,7 @@ with sync_playwright() as pw:
             page.locator('.friends-card .friends-analysis-action').first.click()
             root=page.locator('.ct311-positional')
             root.wait_for(timeout=25000)
+            reveal(root.locator('.ct326-deep-dive > summary'))
             root.locator(".ct326-deep-dive > summary").click()
             page.wait_for_function("""() => !!document.querySelector(
               '#friend-manager-version option[value="CT-MGR-071"]')""",timeout=30000)

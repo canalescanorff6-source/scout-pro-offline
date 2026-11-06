@@ -649,7 +649,7 @@ def run():
                     document.querySelector('#scout-v208-training tbody tr .scout-v208-level').textContent.trim()==='10'
                 """,timeout=10000)
 
-                # V302: técnicos por versão com troca real de estilo e Overload pendente.
+                # V393: Sobreposição participa da troca real, sem voltar ao estilo anterior.
                 manager=page.locator('#ct-manager-v302')
                 manager.wait_for(state='attached',timeout=20000)
                 if not manager.evaluate('(e)=>e.open'):
@@ -670,8 +670,8 @@ def run():
                     problems.append(f"{name}: técnico V302 não exibiu versão exata")
                 page.locator('#ct-manager-style').select_option('overload')
                 page.wait_for_function("""() =>
-                    document.querySelector('#ct-manager-details')?.textContent.includes('motor de PP') &&
-                    document.querySelector('#scout-v220-tabs [data-tactic="rapido"]')?.getAttribute('aria-pressed')==='true'
+                    document.querySelector('#ct378-style')?.value==='overload' &&
+                    document.querySelector('#scout-v220-tabs [data-tactic="overload"]')?.getAttribute('aria-pressed')==='true'
                 """,timeout=12000)
                 page.screenshot(path=str(OUT / f"{name}_v302_manager_selection.png"),full_page=False,animations="disabled")
                 page.locator('#ct-manager-style').select_option('posse')

@@ -53,6 +53,8 @@ with sync_playwright() as pw:
    page.locator('.friends-card .friends-analysis-action').first.click()
    root=page.locator('.ct311-positional')
    root.wait_for(timeout=25000)
+   assert root.locator('.ct378-main-sheet').is_visible(), 'Ficha unificada deve aparecer primeiro também em Outros Elencos'
+   reveal(root.locator('.ct326-focus'))
    assert root.locator('.ct326-focus').is_visible()
    # V331: a ficha mostra posição e formação sem despejar dois seletores.
    assert root.locator('.ct331-role-overview').is_visible()
@@ -70,7 +72,7 @@ with sync_playwright() as pw:
    assert not root.locator('.ct326-deep-dive').evaluate('(e)=>e.open'), 'Análise avançada inicia fechada'
    assert 'FICHA EM FOCO' in root.locator('.ct326-focus').inner_text()
    assert root.locator('.ct326-metric').count()==3
-   assert 'não equipado automaticamente' in root.locator('.ct326-focus').inner_text() or 'Escolha o técnico' in root.locator('.ct326-focus').inner_text()
+   assert 'A recomendação não equipa o ímpeto.' in root.locator('.ct326-focus').inner_text()
    assert not root.locator('.ct311-actions').is_visible(), 'Ações complexas devem ficar no detalhamento'
    reveal(root.locator('.ct326-primary-action'))
    root.locator('.ct326-primary-action').click()

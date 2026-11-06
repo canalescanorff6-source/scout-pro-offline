@@ -12,7 +12,9 @@ const STYLES=Object.freeze({
  normal:Object.freeze({weights:[1.17,1.38,.78,1.01,1.18,1.12,1.34],keeper:[.97,1.17,1.17],focus:'cobertura e passe vertical após recuperar'}),
  rapido:Object.freeze({weights:[1.25,.82,1.16,1.65,1.67,.82,.97],keeper:[.91,1.56,.98],focus:'aceleração, reação e ataque do espaço'}),
  fora:Object.freeze({weights:[1.06,1.3,1.54,1.09,1.32,1.29,.85],keeper:[1.31,1.02,1.06],focus:'condução e progressão por corredor'}),
- longo:Object.freeze({weights:[1.09,1.38,.66,.91,1.38,1.68,1.3],keeper:[.87,1.14,1.49],focus:'ligação direta, jogo aéreo e segunda bola'})
+ longo:Object.freeze({weights:[1.09,1.38,.66,.91,1.38,1.68,1.3],keeper:[.87,1.14,1.49],focus:'ligação direta, jogo aéreo e segunda bola'}),
+ // A distribuição usa contextualPlan, o mesmo motor individual da ficha principal.
+ overload:Object.freeze({focus:'apoios próximos no lado da bola, circulação curta e recuperação com cobertura'})
 });
 function levelsValid(v){return T?.valid?.(v)===true}
 function budgetStatus(card){

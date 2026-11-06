@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V303: cinco fichas PP por edição + tática; nunca treino automaticamente homologado. */
+/* V303: seis fichas PP por edição + tática; nunca treino automaticamente homologado. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
@@ -12,7 +12,7 @@ const R=require('../web/skills-booster-v162.js'),B=require('../web/booster-engin
 const cards=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
 assert.equal(cards.length,246);
 const before=JSON.stringify(cards);
-const styles=['posse','normal','rapido','fora','longo'];
+const styles=['posse','normal','rapido','fora','longo','overload'];
 assert.deepEqual(Object.keys(P.STYLES),styles);
 let conditional=0,withDifferences=0,threeDifferent=0,recs=0,missing=[];
 for(const card of cards){
@@ -80,6 +80,6 @@ for(const file of ['craque-style-planner-v303.js','craque-managers-v302.js']){
  assert(read('web/sw.js').includes("'./"+file+"'"),'Offline Android: '+file);
 }
 assert.equal(JSON.stringify(cards),before,'Nenhuma carta original deve ser alterada');
-console.log('V303 PASS: 246 cartas x 5 estilos = '+recs+' fichas/sugestões; '+
+console.log('V303 PASS: 246 cartas x 6 estilos = '+recs+' fichas/sugestões; '+
  withDifferences+' cartas com estilos distintos; '+threeDifferent+
  ' com 3+ vetores; '+conditional+' propostas condicionais. Catálogo original imutável.');

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """V314 — fluxo real: vaga no campo → contexto de PP, habilidades e ímpetos nos dois acervos."""
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 import shutil
 BASE="http://127.0.0.1:8765"
 with sync_playwright() as pw:
@@ -67,6 +68,7 @@ with sync_playwright() as pw:
       page.locator(".friends-card .friends-analysis-action").first.click(timeout=20000)
       panel=page.locator("#friend-analysis-dialog .ct311-positional")
       panel.wait_for(timeout=30000)
+      reveal(panel.locator('.ct326-deep-dive > summary'))
       panel.locator(".ct326-deep-dive > summary").click()
       assert "68 PP exatos distribuídos" in panel.inner_text()
       assert "Posição original: SA" in panel.locator('.ct311-origin').text_content()

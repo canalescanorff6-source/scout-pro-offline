@@ -2,6 +2,7 @@
 """V343 — QA real de slot de ímpeto AUSENTE, histórico e recuperação da ficha."""
 import os,shutil
 from playwright.sync_api import sync_playwright
+from qa_navigation_v378 import reveal
 URL=os.getenv('SCOUT_VISUAL_BASE','http://127.0.0.1:8765').rstrip('/')
 with sync_playwright() as pw:
  executable=shutil.which('google-chrome') or shutil.which('chromium') or shutil.which('google-chrome-stable')
@@ -25,6 +26,7 @@ with sync_playwright() as pw:
    page.locator('.friends-card .friends-analysis-action').first.click()
    root=page.locator('#friend-analysis-dialog .ct311-positional')
    root.wait_for(timeout=25000)
+   reveal(root.locator('.ct326-primary-action'))
    root.locator('.ct326-primary-action').click()
    page.wait_for_function("""() => !!document.querySelector('#friend-manager-version option[value="CT-MGR-071"]')""",timeout=30000)
    page.locator('#friend-manager-version').select_option('CT-MGR-071')
