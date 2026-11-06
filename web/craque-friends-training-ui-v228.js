@@ -47,6 +47,10 @@ function summaryCard(result){
   infoRow('Precisão',result.confidence==='simulacao_documentada_parcial'?'Simulação parcial':'Hipótese pendente de validação'),
   infoRow('Motor da ficha',plan.methodology||'Engenharia individual ainda indisponível'));
  el.append(meta);
+ if(plan.global)el.append(mk('p','friend-analysis-focus',
+  'FICHA GLOBAL · mesmos '+plan.pp+' PP em todos os seis estilos. '+
+  'Esta é uma hipótese de consenso, não um treino homologado em partidas. '+
+  'A movimentação coletiva muda conforme o estilo e o técnico; a distribuição proposta não.'));
  const focus=mk('p','friend-analysis-focus',plan.focus?.headline||'Informe posição e PP para uma distribuição simulada.');
  el.append(focus);
  if(plan.analysis&&result.tactic!=='posse'){
@@ -421,8 +425,8 @@ function display(){
   'Posição de uso '+usedPosition+' · proposta independente. Utilize “Salvar proposta” no seletor posicional, sem substituir a build original.':
   !allCalculated?
   'As fichas permanecem pendentes quando falta o nível máximo/PP ou existe divergência manual. Confira o cadastro.':
-  valid?'Seis treinos por estilo gerados e registrados neste acervo. Habilidades e ímpetos são recomendações calculadas ao abrir.':
-  'Seis propostas calculadas pelo app. Use “Gerar e salvar 6 fichas” para registrar os treinos neste acervo.';
+  valid?'Uma ficha global consultiva nos seis estilos; propostas salvas neste acervo preservadas. Habilidades e ímpetos são sugestões não equipadas.':
+  'Uma proposta global calculada para os seis estilos. O salvamento atual registra um perfil por estilo, sem mudar o jogo.';
 }
 function openCard(card,owner,onSave,onEdit){
  if(!card||!owner||card.ownerId!==owner.id){status('Erro: carta e pessoa não correspondem.');return}
