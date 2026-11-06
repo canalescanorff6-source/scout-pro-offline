@@ -58,6 +58,8 @@ function render(){
  const chosen=slots(),used=chosen.map(x=>x.cap);
  const container=$('ct-v230-tactic-details');
  positionPanel?.destroy();positionPanel=null;container.replaceChildren();
+ const guideHost=$('ct-v392-guide-outside');
+ guideHost?.replaceChildren();
  $('ct-v314-slot-panel')?.remove();
  // V392: guia prático ligado ao estilo e à formação EXISTENTE, sem alterar a escalação.
  const counter=tactical.counterGuide?.(activeMode,currentId);
@@ -75,7 +77,7 @@ function render(){
   }
   guide.append(node('small','',counter.evidence+
    ' Para PP, habilidades adicionais e ímpetos, abra a ficha individual da carta na vaga.'));
-  container.append(guide);
+  (guideHost||container).append(guide);
  }
  const name=tactical.MODES[activeMode];
  $('ct-v230-tactic-name').textContent=name.label+' · '+(currentId==='4312'?'4-3-1-2':'4-2-1-3 estreita');
