@@ -6,7 +6,7 @@
 const tactical=window.CRAQUE_TACTICS_V230,bar=document.getElementById('ct-v230-tactic-profile');
 if(!tactical||!bar)return;
 const $=id=>document.getElementById(id);
-let cards=[],activeMode='posse',currentId='4312',ready=false,positionPanel=null,contextSlot=null;
+let cards=[],knownForms=[],activeMode='posse',currentId='4312',ready=false,positionPanel=null,contextSlot=null;
 const KEY=id=>'scoutpro:v230:formation-mode:'+id;
 const escString=s=>String(s??'');
 const v=id=>{try{return localStorage.getItem(KEY(id))||'posse'}catch(_e){return 'posse'}};
@@ -86,6 +86,58 @@ function render(){
   b.classList.toggle('selected',b.dataset.mode===activeMode);
  });
  const blocked=(()=>{try{const a=JSON.parse(localStorage.getItem('scoutpro:v219:black-caps')||'[]');return Array.isArray(a)?a:[]}catch(_e){return[]}})();
+
+ // V392: classificação consultiva por vaga com onze titulares e doze reservas
+ // sem duplicidade de pessoa. APLICAÇÃO somente após confirmação manual.
+ const form=knownForms.find(f=>f.id===currentId);
+ const suggested=tactical.recommendSquad?.(cards,form,activeMode,blocked);
+ if(suggested){
+  const panel=node('details','ct-v392-squad');
+  const head=node('summary','', 'Sugestão para '+tactical.MODES[activeMode].label+
+   ' · '+suggested.starters.length+'/11 titulares e '+suggested.bench.length+'/12 reservas');
+  panel.append(head);
+  const intro=node('p','', 'Comparação documental, não ranking de desempenho real. '+
+   'Posição e identidade confirmadas; cada carta conserva sua ficha individual.');
+  panel.append(intro);
+  const addGroup=(label,players)=>{
+   panel.append(node('h4','',label));
+   const list=node('ol','ct-v392-roster-list');
+   for(const item of players){
+    const li=node('li','');
+    li.append(node('strong','',item.role+' · #'+String(item.cap).padStart(3,'0')+' '+item.name),
+      node('small','', ' · '+item.slot.toUpperCase()+' · '+item.fit+
+       ' · encaixe '+item.score+'/100 (heurístico)'));
+    const rationale=node('p','',item.signals.join(' · ')||
+     'Função/estilo individual pendente de documentação.');
+    li.append(rationale);list.append(li);
+   }
+   panel.append(list);
+  };
+  addGroup('11 titulares indicados',suggested.starters);
+  addGroup('12 opções de banco por função',suggested.bench);
+  for(const warning of suggested.warnings)panel.append(node('p','ct-v230-tactic-caution',warning));
+  if(suggested.ready){
+   const apply=node('button','ct-v230-fit-change','Aplicar 11 titulares e 12 reservas nesta tática');
+   apply.type='button';
+   apply.addEventListener('click',()=>{
+    const state=window.CRAQUE_FORMATION_STATE_V231;
+    if(!state?.applySuggested||state.formation()!==currentId||state.mode()!==activeMode){
+     $('ct-v230-persist').textContent='Plano ainda não carregado, nenhuma alteração feita.';
+     return;
+    }
+    if(!window.confirm('Aplicar estes 11 titulares e 12 reservas SOMENTE em '+
+      tactical.MODES[activeMode].label+' · '+form.title+
+      '? O elenco Posse e os outros estilos permanecem intactos.'))return;
+    const applied=state.applySuggested(suggested.slots,suggested.bench.map(x=>x.cap));
+    $('ct-v230-persist').textContent=applied?
+      'Escalação e banco desta tática salvos; demais estilos preservados.':
+      'Não foi possível salvar a sugestão; nenhum elenco foi alterado.';
+    if(applied)render();
+   });
+   panel.append(apply);
+  }
+  container.append(panel);
+ }
  let strong=0,pending=0;
  for(const {slot,cap} of chosen){
   const player=cards.find(c=>Number(c.numero)===cap);
@@ -186,7 +238,7 @@ Promise.all([
  fetch('SCOUT_V177_DUAS_FORMACOES.json').then(r=>{if(!r.ok)throw Error('Duas formações indisponíveis');return r.json()})
 ]).then(([roster,forms])=>{
  if(roster.cards?.length!==246||forms.formations?.length!==2)throw Error('Catálogo e formações incompletos');
- cards=roster.cards;ready=true;sync();
+ cards=roster.cards;knownForms=forms.formations;ready=true;sync();
 }).catch(e=>{$('ct-v230-tactic-explain').textContent='Não foi possível analisar as formações: '+e.message});
 window.CRAQUE_FORMATION_UI_V230={render,sync};
 })();
