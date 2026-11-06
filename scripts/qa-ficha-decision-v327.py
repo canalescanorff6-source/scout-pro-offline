@@ -45,9 +45,12 @@ with sync_playwright() as pw:
    assert styles.count()==6, 'Seis propostas de estilo devem existir'
    assert [text.replace(' · SELECIONADO','') for text in styles.locator('.ct327-style-name').all_text_contents()]==[
     'Posse de Bola','Contra-Ataque Normal','Contra-Ataque Rápido','Por Fora','Bola Longa','Sobreposição']
-   # V337: o comparador compartilha o custo marginal real nos dois acervos.
-   assert 'PP utilizados' in styles.first.inner_text(), (
-       'Exibir gasto e orçamento do treino, não somente níveis')
+   # V395: identidade de teste sem edição pública e atributos-base comprovados.
+   # O motor deve deixar TODAS as seis hipóteses pendentes, sem PP inventados.
+   statuses=styles.locator('.ct327-style-status').all_text_contents()
+   assert len(statuses)==6 and all('PP pendentes' in status for status in statuses), (
+       'Sem referência exata, não calcular PP genéricos',statuses)
+   assert all('PP utilizados' not in status for status in statuses)
    assert 'custo' in root.locator('.ct327-style-note').inner_text().lower(), (
        'Diferença de PP não equivale a ganho competitivo comprovado')
    assert styles.filter(has_text='SELECIONADO').count()==1
@@ -91,7 +94,15 @@ with sync_playwright() as pw:
    reveal(personal.locator('.ct326-secondary-action'))
    personal.locator('.ct326-secondary-action').click()
    assert personal.locator('.ct327-style-row').count()==6
-   assert 'PP utilizados' in personal.locator('.ct327-style-row').first.inner_text()
+   # Carta #001 documentada: seis estilos devem manter o MESMO gasto global.
+   personal_styles=personal.locator('.ct327-style-row')
+   assert personal_styles.count()==6
+   pp_statuses=personal_styles.locator('.ct327-style-status').all_text_contents()
+   assert all('PP utilizados' in status for status in pp_statuses), (
+       'Edição documentada deve exibir os PP reais para todos os estilos',pp_statuses)
+   investments=[status.split(' · ')[-1] for status in pp_statuses]
+   assert len(set(investments))==1, (
+       'A proposta de PP não pode variar apenas pela tática V395',investments)
    personal.locator('.ct327-style-row[data-style="normal"] .ct327-style-activate').click()
    page.wait_for_function("""() => document.querySelector('#scout-v220-hero .scout-v220-tab[data-tactic="normal"]')?.getAttribute('aria-pressed')==='true'""",timeout=25000)
    assert 'CONTRA-ATAQUE NORMAL' in personal.locator('.ct326-kicker').inner_text()
