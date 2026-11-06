@@ -46,7 +46,11 @@ with sync_playwright() as pw:
    tiles.nth(1).click()
    page.wait_for_url('**/outros-elencos-v227.html',timeout=20000)
    page.locator('#friend-new-card').click()
-   page.locator('#friend-card-name').fill('Visual V326')
+   # V395: ficha de teste vinculada a uma edição e Card ID reais.
+   # Rivaldo Epic #077 tem nível máximo 35 e orçamento exato de 68 PP.
+   page.locator('#friend-card-name').fill('Rivaldo')
+   page.locator('#friend-card-edition').fill('Epic — FC Barcelona 98-99')
+   page.locator('#friend-card-gameid').fill('88035555413454')
    page.locator('#friend-card-position').select_option('MAT')
    page.locator('#friend-card-level').fill('35')
    page.locator('#friend-dialog-save').click()
@@ -78,6 +82,10 @@ with sync_playwright() as pw:
    root.locator('.ct326-primary-action').click()
    assert root.locator('.ct326-deep-dive').evaluate('(e)=>e.open')
    assert root.locator('.ct311-actions').is_visible()
+   page.wait_for_function("""() => window.CRAQUE_REFERENCES_V376?.cards?.some(
+      c => c.capture===77 && c.identityUsable===true) &&
+      document.querySelector('.ct311-positional')?.textContent.includes(
+       '68 PP exatos distribuídos')""",timeout=30000)
    assert '68 PP exatos distribuídos' in root.inner_text()
    root.locator('.ct311-controls .ct311-select').select_option('SA')
    assert root.locator('.ct326-deep-dive').evaluate('(e)=>e.open'), 'Troca de posição não pode fechar ficha aberta'

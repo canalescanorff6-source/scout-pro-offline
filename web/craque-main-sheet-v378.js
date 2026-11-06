@@ -156,7 +156,7 @@ function resolve(input,outcome,selection={},provided){
  const rules=host?.CRAQUE_FUNCTIONAL_RULES_V382||(typeof module==='object'?require('./craque-functional-rules-v382.js'):null);
  const role=proposal.role,allowed=rules?.allowed(role,card)||(role==='GO'?[4,5,7,8,9]:[0,1,2,3,4,5,6]);
  const budget=proposal.pp??progress.pp;
- const levels=manual?selection.levels:editorial?.levels||proposal.levels;
+ const levels=manual?selection.levels:proposal.global?proposal.levels:editorial?.levels||proposal.levels;
  const valid=v=>Number.isInteger(budget)&&T.valid(v)&&T.total(v)<=budget&&
   v.every((n,i)=>n===0||allowed.includes(i));
  if(own(selection,'levels')&&!valid(levels))throw Error('PP ou categorias da ficha salva incompatíveis com esta função');
@@ -164,8 +164,10 @@ function resolve(input,outcome,selection={},provided){
  const raw={...F.profileOf(card,outcome.tactic),niveis:vector},existing=String(card.skills||'');
  const confirmed=Boolean(S.checkedEquipment?.(raw,existing,card.equipmentRecord));
  const task=vector&&(manual?selection.analysis?.task:proposal.analysis?.task);
- const skills=S.evaluate(raw,outcome.tactic,existing,{equippedConfirmed:confirmed,equipmentRecord:card.equipmentRecord||null,task});
- const booster=F.boosterFor(card,raw,outcome.tactic,d,task,exactReference?reference.reference:null);
+ // V395: habilidades e ímpetos avaliados sobre os mesmos PP em todos os estilos.
+ const shared=proposal.global&&!manual?F.evaluate({...card,reference:exactReference?reference:null},outcome.tactic,d):null;
+ const skills=shared?.skills||S.evaluate(raw,outcome.tactic,existing,{equippedConfirmed:confirmed,equipmentRecord:card.equipmentRecord||null,task});
+ const booster=shared?.booster||F.boosterFor(card,raw,outcome.tactic,d,task,exactReference?reference.reference:null);
  const result={...outcome,progress,plan:{...proposal,analysis:manual?selection.analysis||null:editorial?null:proposal.analysis||null,levels:vector,remaining:vector?budget-T.total(vector):null},
   skills,booster,suggestedSkills:skills.recommendations.slice(0,Math.max(0,5-skills.alreadyEquippedProvided)),
   freeSkillSlots:Number.isInteger(skills.slotsRemaining)?skills.slotsRemaining:null};
@@ -194,6 +196,9 @@ function resolve(input,outcome,selection={},provided){
    index:i,category,proposed:vector[i],cost:T.ppCost(vector[i]),current:baseline?.[i]??null}]:[]):[],
   canSave:Boolean(vector&&String(card.localKey||'').trim()),
   sourceKind:['profile','revision'].includes(selection.source)?selection.source:'proposal'});
+ if(proposal.global&&!manual)review.globalTraining={
+  ...proposal.global,note:'Ficha única de PP nos seis estilos coletivos. Papel e ativação do estilo individual permanecem específicos.'
+ };
  const issues=[],nativeKeys=new Set(review.nativeSkills.map(S.keyFor).filter(Boolean));
  const equippedKeys=new Set(existing.split(/[;,\n]/).map(S.keyFor).filter(Boolean));
  if(own(selection,'skills')){
@@ -225,7 +230,7 @@ function resolve(input,outcome,selection={},provided){
   }
  }
  if(card.boosterSlot==='ausente')review.boosters=[];
- if(editorial)batch.decorate(review,editorial,card,S,B);
+ if(editorial&&!proposal.global)batch.decorate(review,editorial,card,S,B);
  const fixedProgression=exactReference&&reference.reference.type==='Trending'&&
   reference.reference.maxLevel===1&&reference.reference.maxPP===0;
  if(fixedProgression){
@@ -241,7 +246,8 @@ function resolve(input,outcome,selection={},provided){
  const [primary,...alternatives]=review.boosters.map(item=>({nome:item.technicalName,motivo:item.reason}));
  result.booster={...result.booster,primary:primary||null,alternatives};
  if(exactReference&&reference.reference.baseStats)review.baseReference='Base da edição disponível em referência pública; treino e atributos finais da conta a conferir';
- if(!editorial)review.sourceLabel={profile:'Treino salvo neste técnico',revision:'Revisão salva deste contexto',proposal:'Treino recomendado para esta função'}[review.sourceKind];
+ if(!editorial||proposal.global)review.sourceLabel=proposal.global&&!manual?'Ficha global proposta · todos os seis estilos':
+  {profile:'Treino salvo neste técnico',revision:'Revisão salva deste contexto',proposal:'Treino recomendado para esta função'}[review.sourceKind];
  if(issues.length)review.canSave=false;
  review.pending=[...(!outcome.identityFormatValid?['edição']:[]),
   ...(nativeSource==='pending'?['habilidades nativas']:[]),

@@ -13,6 +13,7 @@ assert(source.includes("engine.total(fallback.levels)===budget"),'Respeitar orç
 assert(source.includes("verifiedInGameplay:false"),'Não declarar treino testado sem evidência');
 assert(source.includes("evidenceStatus:sourceVerified?"),'Expor incerteza ao motor de fichas');
 assert(!source.includes("const fallback=baseline?engine.hypothetical"),'Impedir propagação do draft para cinco estilos');
-assert(source.includes("nativeDetails(card,style)"),'Manter motor de habilidades e ímpetos por estilo');
+assert(source.includes("nativeDetails(card,style,globalPreview?.levels||null)"),'Manter o motor de equipamento na mesma ficha global por estilo');
+assert(source.includes("function nativeDetails(card,tactic,universalLevels=null)"),'Ranking compartilhado preserva o contexto tático selecionado');
 assert(source.includes("styles=['posse','normal','rapido','fora','longo','overload']"),'Preservar as cinco táticas e incluir a sexta sem convertê-la em Posse');
 console.log('V252 OK: 246 edições preservadas; hipóteses não se tornam builds validadas; PP exatos.');

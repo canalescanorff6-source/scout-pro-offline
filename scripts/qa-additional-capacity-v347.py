@@ -30,9 +30,9 @@ with sync_playwright() as pw:
    page.locator('#friend-new-card').click()
    # V360: abrir os campos avançados como o usuário antes de validar/salvar.
    page.locator('details.friend-card-advanced > summary').click()
-   page.locator('#friend-card-name').fill('V347 ocupação das adicionais')
-   page.locator('#friend-card-edition').fill('Edição de teste V347')
-   page.locator('#friend-card-gameid').fill('105297')
+   page.locator('#friend-card-name').fill('Rivaldo')
+   page.locator('#friend-card-edition').fill('Epic — FC Barcelona 98-99')
+   page.locator('#friend-card-gameid').fill('88035555413454')
    page.locator('#friend-card-position').select_option('MAT')
    page.locator('#friend-card-level').fill('35')
    page.locator('#friend-card-skills').fill(

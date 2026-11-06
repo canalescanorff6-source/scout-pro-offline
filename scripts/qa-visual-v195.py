@@ -752,8 +752,14 @@ def run():
                     [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v208-level')]
                       .map(x=>Number(x.textContent.trim()))
                 """)
-                if normal_levels==rapido_levels:
-                    problems.append(f"{name}: V303 CA Normal e CA Rápido exibem distribuição idêntica em Massaro")
+                # V395: consultar outro estilo preserva a ficha global da
+                # edição; o editor abaixo continua isolando rascunhos locais.
+                if normal_levels!=rapido_levels:
+                    problems.append(f"{name}: V395 CA Normal e CA Rápido alteraram a distribuição global de Massaro")
+                if page.locator('#scout-v220-skill-list strong').all_inner_texts()!=rapido_skill_names:
+                    problems.append(f"{name}: V395 consultar CA Normal alterou habilidades globais de Massaro")
+                if page.locator('#scout-v220-booster-name').inner_text()!=rapido_boost:
+                    problems.append(f"{name}: V395 consultar CA Normal alterou ímpeto global de Massaro")
                 page.locator('#ct378-style').select_option('rapido')
                 page.locator('#scout-v218-edit').click()
                 # V303: o ponto inicial NÃO é mais a ficha de Posse. Reduzir
@@ -1465,8 +1471,11 @@ def run():
                 if (page.locator("#friend-analysis-modes button").count()!=6 or
                     "68 PP" not in page.locator("#friend-analysis-badges").inner_text()):
                     problems.append(f"{name}: V310 perdeu seis fichas / PP 68 confirmados do Zico")
-                if not page.locator("#friend-analysis-content").inner_text().count("68 / 68 PP distribuídos"):
-                    problems.append(f"{name}: V310 Zico 35 não gerou as seis fichas com 68 PP")
+                # O orçamento relatado é preservado; sem Card ID exato a
+                # edição de Zico não recebe distribuição numérica inventada.
+                if ('Treino ainda não calculável' not in page.locator('#friend-analysis-content').inner_text() or
+                    page.locator('.friend-analysis-pp').count()!=0):
+                    problems.append(f"{name}: V395 Zico sem edição exata deixou de permanecer pendente")
                 page.locator('#friend-analysis-sections [data-panel="skills"]').click()
                 if page.locator('#friend-analysis-content [data-panel="skills"] .ct373-pro').count()!=1:
                     problems.append(f"{name}: V373 dossiê PRO de habilidades ausente em Outros Elencos")
@@ -1521,9 +1530,14 @@ def run():
                 if page.locator('#friend-analysis-modes button').count()!=6:
                     problems.append(f"{name}: V228 faltam estilos táticos de técnico")
                 page.locator('#friend-analysis-close').click()
-                # Registrar somente informações fornecidas pelo dono da carta.
+                # V395: PP informados não validam uma edição fictícia. O caso
+                # pendente acima fica preservado; cálculos usam Raúl Epic #002.
                 page.locator('#friend-cards .friends-actions button').filter(has_text='Editar').click()
-                page.locator('#friend-card-pp').fill('62')
+                page.locator('#friend-card-name').fill('Raúl')
+                page.locator('#friend-card-edition').fill('Epic — Schalke BW 10-11 (14 Aug 2025)')
+                page.locator('#friend-card-gameid').fill('88036360649078')
+                page.locator('#friend-card-level').fill('33')
+                page.locator('#friend-card-pp').fill('64')
                 # V360: campos avançados só são editáveis após abrir o painel.
                 page.locator('details.friend-card-advanced > summary').click()
                 page.locator('#friend-card-native').fill('Passe de primeira; Toque duplo')
@@ -1532,6 +1546,9 @@ def run():
                 page.locator('#friend-card-booster-slot').select_option('vazio')
                 page.locator('#friend-dialog-save').click()
                 page.locator('#friend-cards .friends-analysis-action').click()
+                page.wait_for_function("""() => window.CRAQUE_REFERENCES_V376?.cards?.some(
+                  c => c.capture===2 && c.identityUsable===true) &&
+                  document.querySelector('.friend-analysis-pp')?.textContent.includes('64')""",timeout=30000)
                 if (page.locator("#friend-analysis-modes button").count()!=6 or
                     not page.locator("#friend-analysis-cover-empty").is_visible()):
                     problems.append(f"{name}: V305 ficha premium de Ana não iniciou corretamente")
@@ -1541,7 +1558,7 @@ def run():
                     page.locator(f'#friend-analysis-modes button[data-style="{tactic}"]').click()
                     if page.locator('.friend-analysis-table tbody tr').count()!=10:
                         problems.append(f"{name}: V228 tabela ausente para {tactic}")
-                    if not page.locator('.friend-analysis-pp').inner_text().count('62'):
+                    if not page.locator('.friend-analysis-pp').inner_text().count('64'):
                         problems.append(f"{name}: V228 PP incorreto no modo {tactic}")
                 if name in ('mobile_390','windows_1366'):
                     with page.expect_download(timeout=12000) as sheet_wait:
@@ -1549,7 +1566,7 @@ def run():
                     sheet=json.loads(Path(sheet_wait.value.path()).read_text(encoding='utf8'))
                     if (sheet.get('format')!='craque-friend-training-v228' or
                         len(sheet.get('styles',{}))!=6 or
-                        sheet['styles']['posse']['training']['pp']!=62):
+                        sheet['styles']['posse']['training']['pp']!=64):
                         problems.append(f"{name}: V228 exportação de fichas táticas incompleta")
                 page.locator('#friend-analysis-sections [data-panel="skills"]').click()
                 if not page.locator('#friend-analysis-content [data-panel="skills"]').is_visible():
@@ -1560,7 +1577,8 @@ def run():
                 page.locator('#friend-analysis-close').click()
                 saved=page.evaluate("""() => {
                   const items=JSON.parse(localStorage.getItem('scoutpro:v227:friends-collections')).cards;
-                  const ana=items.find(x=>x.edition==='Épico de Ana');
+                  const ana=items.find(x=>x.cardId==='88036360649078' &&
+                    x.edition==='Epic — Schalke BW 10-11 (14 Aug 2025)');
                   return {version:ana?.analysis?.version,
                     profiles:Object.keys(ana?.analysis?.profiles||{}),
                     posse:ana?.analysis?.profiles?.posse?.pp,
@@ -1569,7 +1587,7 @@ def run():
                     boosters:ana?.boosterSlot}
                 }""")
                 if (saved['version']!=228 or len(saved['profiles'])!=6 or
-                    saved['posse']!=62 or saved['boosters']!='vazio' or
+                    saved['posse']!=64 or saved['boosters']!='vazio' or
                     'Passe de primeira' not in saved['native']):
                     problems.append(f"{name}: V228 ficha automática não persistiu {saved}")
 
@@ -1585,7 +1603,7 @@ def run():
                     problems.append(f"{name}: V227 Bruno não conseguiu ter sua própria carta Messi")
                 page.locator("#friend-people .friends-person").filter(has_text="Acervo da Ana").click()
                 card_text=page.locator("#friend-cards .friends-card").first.inner_text()
-                if "Épico de Ana" not in card_text or "Show Time de Bruno" in card_text:
+                if "Epic — Schalke BW 10-11 (14 Aug 2025)" not in card_text or "Show Time de Bruno" in card_text:
                     problems.append(f"{name}: V227 acervos misturados ao voltar para Ana")
                 if name in ('mobile_390','windows_1366'):
                     with page.expect_download(timeout=12000) as friend_export:
@@ -1593,7 +1611,7 @@ def run():
                     file_data=json.loads(Path(friend_export.value.path()).read_text(encoding="utf8"))
                     if (file_data.get('format')!='craque-friend-profile-v227' or
                         len(file_data.get('cards',[]))!=1 or
-                        file_data['cards'][0].get('edition')!='Épico de Ana'):
+                        file_data['cards'][0].get('edition')!='Epic — Schalke BW 10-11 (14 Aug 2025)'):
                         problems.append(f"{name}: V227 exportação individual misturou pessoas")
                     page.locator("#friend-open-backup").click()
                     page.locator("#scout-backup-modal").wait_for(state='visible',timeout=12000)
@@ -2109,12 +2127,24 @@ def run():
                     page.locator('#v254-confirm-equipped').wait_for(state='attached',timeout=15000)
                     if not page.locator('#v254-confirm-equipped').is_checked():
                         problems.append(f"{name}: V254 perdeu confirmação desta edição após reiniciar")
+                    # V395: a ficha de equipamentos é global; mudar estilo
+                    # atualiza o foco funcional, preservando ímpeto e motivo.
+                    page.wait_for_function("""() => document.querySelector('#scout-v220-booster-why')
+                      ?.textContent.trim().length>0""",timeout=15000)
+                    global_booster=[page.locator('#scout-v220-booster-'+part).inner_text()
+                      for part in ['name','why']]
                     page.locator('#ct378-style').select_option('fora')
-                    page.wait_for_function("""() => document.querySelector('#scout-v220-booster-why')
-                      ?.textContent.includes('em Por Fora')""",timeout=15000)
+                    page.wait_for_function("""() => document.querySelector('.ct378-main-sheet')
+                      ?.textContent.includes('Chegar à área para concluir a jogada do corredor')""",timeout=15000)
+                    if global_booster!=[page.locator('#scout-v220-booster-'+part).inner_text()
+                        for part in ['name','why']]:
+                        problems.append(f"{name}: V395 ímpeto global mudou ao consultar Por Fora")
                     page.locator('#ct378-style').select_option('longo')
-                    page.wait_for_function("""() => document.querySelector('#scout-v220-booster-why')
-                      ?.textContent.includes('em Passe Longo')""",timeout=15000)
+                    page.wait_for_function("""() => document.querySelector('.ct378-main-sheet')
+                      ?.textContent.includes('Atacar a profundidade e finalizar')""",timeout=15000)
+                    if global_booster!=[page.locator('#scout-v220-booster-'+part).inner_text()
+                        for part in ['name','why']]:
+                        problems.append(f"{name}: V395 ímpeto global mudou ao consultar Passe Longo")
                     # Alterar texto sem confirmar invalida prova anterior.
                     reveal(page.locator('#scout-v220-technical > summary'))
                     page.locator('#scout-v220-technical > summary').click()

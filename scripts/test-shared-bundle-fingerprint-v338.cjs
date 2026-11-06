@@ -17,7 +17,8 @@ const essential=[
  'craque-positional-v311.js','craque-positional-ui-v311.js',
  'craque-ficha-decision-v327.js','craque-ficha-individual-v251.js',
  'craque-manager-fichas-v324.js','craque-lineup-focus-v330.js',
- 'craque-manager-selector-v328.js','sw.js','SCOUT_V69_AUDITORIA.json'
+ 'craque-manager-selector-v328.js','sw.js','SCOUT_V69_AUDITORIA.json',
+ 'craque-global-v394.js','craque-physical-v395.js','guia-movimentacao-v394.html'
 ];
 for(const p of essential){
  assert(names.includes(p),'Arquivo crítico fora da paridade Android/Windows: '+p);
@@ -38,7 +39,8 @@ const hash=(changes=new Map())=>{
 };
 const baseline=hash();
 assert(/^[0-9a-f]{20}$/.test(baseline));
-for(const changed of ['premium.js','pwa.js','scout-config.js',
+for(const changed of ['craque-global-v394.js','craque-physical-v395.js',
+                      'guia-movimentacao-v394.html','premium.js','pwa.js','scout-config.js',
                       'position-order.js','lab.js','manifest.webmanifest']){
  const original=read('web/'+changed);
  const altered=hash(new Map([[changed,original+'\n// alteração simulada V338']]));

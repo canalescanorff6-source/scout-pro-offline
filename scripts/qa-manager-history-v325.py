@@ -18,9 +18,11 @@ with sync_playwright() as pw:
             page.on('pageerror',lambda e:errors.append(str(e)))
             page.goto(URL+'/outros-elencos-v227.html?colecao=minhas-cartas-adicionadas',wait_until='domcontentloaded')
             page.locator('#friend-new-card').click()
-            page.locator('#friend-card-name').fill('Auditoria V325 Histórico')
-            page.locator('#friend-card-edition').fill('Edição de ensaio V325')
-            page.locator('#friend-card-gameid').fill('V325-ID-TESTE')
+            # Edição de teste com identidade real e PP verificáveis.
+            # Os dados gravados abaixo são descartáveis, sem alegar posse da carta.
+            page.locator('#friend-card-name').fill('Rivaldo')
+            page.locator('#friend-card-edition').fill('Epic — FC Barcelona 98-99')
+            page.locator('#friend-card-gameid').fill('88035555413454')
             page.locator('#friend-card-position').select_option('MAT')
             page.locator('#friend-card-level').fill('35')
             page.locator('#friend-dialog-save').click()
@@ -48,6 +50,10 @@ with sync_playwright() as pw:
                     'rawCardId':page.evaluate("""() => window.CRAQUE_FRIENDS_PAGE_V227?.activeCard?.cardId||null""")
                 }
                 raise AssertionError(f"V325 contexto de técnico não atualizado: {diagnostic}") from error
+            page.wait_for_function("""() => window.CRAQUE_REFERENCES_V376?.cards?.some(
+                c=>c.capture===77 && c.identityUsable===true) &&
+                document.querySelector('.ct324-profile .ct342-live-audit')?.textContent
+                  .includes('RASCUNHO PRONTO')""",timeout=30000)
             box.get_by_role('button',name='Salvar ficha independente deste técnico').click()
             page.wait_for_function("""() => Object.keys(localStorage).some(k=>
                 k.startsWith('scoutpro:v324:manager-profile:')&&k.includes('CT-MGR-071')&&k.includes('MAT'))""")

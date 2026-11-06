@@ -35,11 +35,12 @@ with sync_playwright() as pw:
    page.locator('#friend-new-card').click()
    # V360: abrir os campos avançados como o usuário antes de validar/salvar.
    page.locator('details.friend-card-advanced > summary').click()
-   page.locator('#friend-card-name').fill('V344 Evidence Consistent')
-   page.locator('#friend-card-edition').fill('Edição de ensaio V344')
-   page.locator('#friend-card-gameid').fill('105297')
+   # V395: a consulta contextual exige uma edição real identificada.
+   page.locator('#friend-card-name').fill('Guti')
+   page.locator('#friend-card-edition').fill('Epic — Madrid Chamartin B 01-02')
+   page.locator('#friend-card-gameid').fill('88029918268943')
    page.locator('#friend-card-position').select_option('MAT')
-   page.locator('#friend-card-level').fill('35')
+   page.locator('#friend-card-level').fill('31')
    page.locator('#friend-card-native').fill('Passe de primeira')
    page.locator('#friend-card-booster-slot').select_option('ausente')
    page.locator('#friend-dialog-save').click()
@@ -76,9 +77,34 @@ with sync_playwright() as pw:
    after=page.evaluate("""() => JSON.stringify(Object.keys(localStorage).sort()
       .map(k=>[k,localStorage.getItem(k)]))""")
    assert before==after,'Leitura da UI e do filtro nunca grava'
+   # O antigo Card ID de exemplo não pode herdar a ficha da edição real.
+   profiles_before=page.evaluate("""() => Object.keys(localStorage).filter(k=>
+    k.startsWith('scoutpro:v324:manager-profile:')).sort()""")
+   page.locator('#friend-analysis-close').click()
+   page.locator('#friend-new-card').click()
+   page.locator('#friend-card-name').fill('V344 edição sem referência')
+   page.locator('#friend-card-edition').fill('Edição de ensaio V344')
+   page.locator('#friend-card-gameid').fill('105297')
+   page.locator('#friend-card-position').select_option('MAT')
+   page.locator('#friend-card-level').fill('35')
+   page.locator('#friend-dialog-save').click()
+   page.locator('.friends-card').filter(has_text='V344 edição sem referência').locator(
+    '.friends-analysis-action').click()
+   root=page.locator('#friend-analysis-dialog .ct311-positional')
+   root.wait_for(timeout=30000)
+   reveal(root.locator('.ct326-primary-action'))
+   root.locator('.ct326-primary-action').click()
+   page.locator('#friend-manager-version').select_option('CT-MGR-071')
+   assert 'Não há ligação comprovada de Card ID, edição e atributos-base' in root.inner_text()
+   unknown=root.locator('.ct324-profile')
+   assert 'Ficha independente indisponível' in unknown.inner_text()
+   assert unknown.get_by_role('button',name='Salvar ficha independente deste técnico').count()==0
+   assert profiles_before==page.evaluate("""() => Object.keys(localStorage).filter(k=>
+    k.startsWith('scoutpro:v324:manager-profile:')).sort()"""),(
+     'Edição desconhecida não cria revisões nem herda PP da carta identificada')
    assert not [x for x in errors if x!='Scout PRO: carta sem estilo para filtro #1'],errors
    assert page.evaluate('Math.max(0,document.documentElement.scrollWidth-innerWidth)')<=3
    ctx.close()
  finally:
   browser.close()
-print('V344 CHROMIUM PASS: filtros coerentes da edição, slot ausente teórico e nenhum salvamento na consulta Android/Windows.')
+print('V344 CHROMIUM PASS: edição real sem slot, filtros sem salvamento e Card ID desconhecido pendente Android/Windows.')

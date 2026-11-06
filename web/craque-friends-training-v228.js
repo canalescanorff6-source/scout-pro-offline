@@ -41,6 +41,15 @@ const getDeps=(deps)=>deps||{
  skills:typeof window!=='undefined'?window.SCOUT_RECOMMENDATIONS_V162:null,
  boosters:typeof window!=='undefined'?window.SCOUT_BOOSTERS_V103:null
 };
+function documentedEdition(card,reference){
+ const linked=reference?.reference;
+ if(reference?.identityUsable!==true||!linked||!/^\d{5,20}$/.test(String(card.cardId||''))||
+    String(linked.cardId)!==String(card.cardId)||!String(card.edition||'').trim()||
+    ![reference.edition,linked.edition].includes(card.edition)||
+    (card.capture!==null&&card.capture!==undefined&&card.capture!==''&&
+     Number(reference.capture)!==Number(card.capture)))return null;
+ return linked;
+}
 function boosterFor(card,raw,tactic,deps,task,reference){
  const result=deps.skills.booster(raw,tactic,deps.boosters,card.boosterSlot||'pendente',card.booster||'',{task});
  const support=reference?.extraSlotInPublicEdition;
@@ -115,14 +124,14 @@ function parseBaseline(card,t){
 // Paridade V359: utilizar a distribuição exata da engenharia V251 e a leitura
 // V233. Não converter OVR/atributos do eFHub com técnico em atributos-base.
 // Na falta de motor, não apresentar a heurística antiga como equivalente.
-function allocate(card,tactic,deps){
+function allocateStyle(card,tactic,deps){
  const {tactical:t}=getDeps(deps),{individual,interpretation}=primaryEngines(deps);
  if(!t?.strategy||!t?.ppCost||!t?.valid||!t?.roleOf)
   throw Error('Motor tático V220 indisponível; nenhuma ficha pode ser calculada.');
  if(!MODES.includes(tactic))throw Error('Estilo tático inválido.');
  const progress=resolveBudget(card),budget=progress.pp;
  const source=profileOf(card),role=t.roleOf(source);
- const pending=reason=>({status:'pendente',reason,levels:null,role:role||null,
+ const pending=reason=>({status:'pendente',reason,levels:null,role:role||null,style:tactic,
   methodology:METHODOLOGY});
  if(!role)return pending('Cadastre uma posição reconhecida para analisar esta função.');
  if(!Number.isInteger(budget)||budget<0||budget>300)
@@ -139,7 +148,9 @@ function allocate(card,tactic,deps){
   pp_origem:'nivel_informado_no_cadastro_externo',
   recommended_levels:null,niveis:null,base_stats_known:false,
   pp_estimado:progress.source==='manual_divergente'};
- if(tactic!=='posse'){
+ // V395: estilo individual inativo na posição real não deve influenciar
+ // nem a Posse nem qualquer outro contexto da ficha única.
+ {
   const method=typeof window!=='undefined'?window.CRAQUE_FUNCTION_METHOD_V383:require('./craque-function-method-v383.js');
   const activation=method?.activation({card,slot:{position:card.position},offBall:{position:card.position},
    offenseStyle:card.style,defenceStyle:card.defenceStyle});
@@ -162,6 +173,7 @@ function allocate(card,tactic,deps){
  return {
   status:'hipotese',role:context.role,levels,pp:budget,remaining:0,
   categories:t.CATEGORIES,style:tactic,
+  optimization:{weights:(refined?.weights||context.weights).slice(),role:context.role},
   focus:{...t.focus(source,tactic),priority:(analysis?.status==='preservada'?context.priorities:analysis?.priorities||context.priorities).slice(0,4).map(x=>({
    index:x.index,name:x.name,weight:x.weight}))},
   ...(analysis?{analysis:{...analysis,context:[card.localKey,card.cardId,card.edition,card.position,tactic,budget].map(value=>String(value??''))}}:{}),
@@ -173,6 +185,55 @@ function allocate(card,tactic,deps){
   confidence:'hipotese_documental_sem_gameplay',
   note:'Mesmo motor de distribuição V251 e interpretação V233 de Minhas Cartas; comparação individual por função, estilo, habilidades e PP. NÃO otimiza Overall e NÃO prova desempenho real nem autoriza trocar treino aprovado.'
  };
+}
+/* V395: ficha única POR EDIÇÃO, sem escolher um dos seis vetores V394.
+ * A base documentada (CAP + Card ID + edição) e os seis contextos entram
+ * juntos no otimizador; ausência de dados NÃO fabrica uma ficha genérica.
+ * Seis abas continuam sendo seletores de interpretação, não novas builds.
+ */
+let universalCache=null;
+function globalMotor(deps){
+ return deps?.universal||(typeof window!=='undefined'?window.CRAQUE_GLOBAL_V394:null);
+}
+function physicalMotor(deps){
+ return deps?.physical||(typeof window!=='undefined'?window.CRAQUE_PHYSICAL_V395:
+  (typeof module==='object'?require('./craque-physical-v395.js'):null));
+}
+function allocate(card,tactic,deps){
+ if(!MODES.includes(tactic))throw Error('Estilo tático inválido.');
+ const g=globalMotor(deps);
+ if(!g?.optimizeCard||deps?.legacyByStyle===true)return allocateStyle(card,tactic,deps);
+ const t=getDeps(deps).tactical,{individual}=primaryEngines(deps);
+ const reference=card.reference===null?null:
+  card.reference??deps?.reference??catalogueReference(card);
+ const linkedCard={...card,reference};
+ const physical=physicalMotor(deps)?.lookup?.(linkedCard)||null;
+ // Cache transitório: incluir toda a prova, inclusive sua revogação, atributos,
+ // arte vinculada e medidas. sourceSignature permanece estável para os salvos.
+ const key=JSON.stringify([card,reference,physical,g.VERSION]);
+ if(!universalCache||universalCache.key!==key||universalCache.global!==g||
+    universalCache.tactical!==t||universalCache.individual!==individual||
+    deps?.individual||deps?.interpretation){
+  const contexts=MODES.map(mode=>allocateStyle(linkedCard,mode,deps));
+  const optimization=g.optimizeCard({card:linkedCard,plans:contexts,tactical:t,
+   individual,reference,physical});
+  universalCache={key,contexts,optimization,global:g,tactical:t,individual};
+ }
+ const original=universalCache.contexts.find(p=>p.style===tactic);
+ const choice=universalCache.optimization;
+ if(!original||original.status!=='hipotese')return original;
+ if(!choice||choice.status==='pendente'||!choice.levels)
+  return {...original,status:'pendente',levels:null,remaining:null,
+   reason:choice?.reason||'Proposta global indisponível: conferir edição, PP e atributos-base.',
+   global:choice||null,confidence:'pendente_dados_da_edicao'};
+ const levels=choice.levels.slice(),baseline=parseBaseline(card,t);
+ const differences=baseline.levels?t.CATEGORIES.flatMap((name,i)=>
+  baseline.levels[i]!==levels[i]?[{name,was:baseline.levels[i],proposed:levels[i]}]:[]):[];
+ return {...original,levels,remaining:0,differences,global:choice,
+  methodology:'V395 · treino global por edição, atributos-base, V251/V233 e seis estilos',
+  confidence:'hipotese_individual_base_documentada_sem_gameplay',
+  note:'Um único vetor de PP por edição, independente do estilo coletivo. '+choice.statement+
+   ' Corpo e alcance só entram quando vinculados à edição; nunca inventar medidas ou ganhos.'};
 }
 /* V373 — dossiê PRO usa SÓ as hipóteses do motor oficial V251/V233/V162/V103.
    Rentão/Blackjhon são referência de critérios, não autores destas builds. */
@@ -417,6 +478,9 @@ function evaluate(card,tactic='posse',deps){
  const identity=Boolean(/^\d{5,20}$/.test(cardId)&&edition&&
   !/pendente|confirmar|desconhecid|não informad|nao informad|não cadastr|nao cadastr|indefinid|placeholder/i.test(edition));
  const existing=String(card.skills||'').trim();
+ // A existência de um slot selecionável é propriedade da EDIÇÃO, não do
+ // estilo tático ou do êxito do cálculo de PP. Conferir identidade completa.
+ const editionEvidence=documentedEdition(card,reference);
  let skill=null,boost=null;
  if(plan.role){
   const equipmentConfirmed=Boolean(s.checkedEquipment?.(raw,existing,card.equipmentRecord));
@@ -425,7 +489,26 @@ function evaluate(card,tactic='posse',deps){
   const task=plan.levels?plan.analysis?.task:null;
   skill=s.evaluate({...raw,niveis:plan.levels},tactic,existing,{equippedConfirmed:equipmentConfirmed,equipmentRecord:card.equipmentRecord||null,task});
   boost=boosterFor(card,{...raw,niveis:plan.levels},tactic,{skills:s,boosters:b},task,
-   plan.analysis?.reference?reference?.reference:null);
+   editionEvidence);
+  // Ranking único de habilidades e ímpetos: uma escolha de equipamento não
+  // deve se tornar incompatível só porque o usuário mudou a tática.
+  // Nunca declarar slots livres se a edição/equipamento não os comprovar.
+  const global=plan.global&&globalMotor(deps);
+  if(global?.rankSkills){
+   // A ativação depende da posição, não da aba aberta. O perfil "normal"
+   // já remove estilos individuais inativos, preservando o caminho legado.
+   const globalRaw={...profileOf(card,'normal'),niveis:plan.levels};
+   const skillRows=MODES.map(mode=>({tactic:mode,
+    result:s.evaluate(globalRaw,mode,existing,
+     {equippedConfirmed:equipmentConfirmed,equipmentRecord:card.equipmentRecord||null,task:null})}));
+   skill={...skill,recommendations:global.rankSkills(skillRows,s.keyFor,5)};
+   const boosterRows=MODES.map(mode=>({tactic:mode,result:boosterFor(card,
+    globalRaw,mode,{skills:s,boosters:b},null,
+    editionEvidence)}));
+   const ranked=global.rankBoosters(boosterRows);
+   boost=boosterRows[0].result;
+   if(ranked&&card.boosterSlot!=='ausente'&&boost?.primary)boost={...boost,...ranked};
+  }
  }
  // Usar a MESMA validação de nativas do motor V162; texto genérico
  // como "PENDENTE" não constitui inventário de habilidades documentado.
@@ -438,7 +521,8 @@ function evaluate(card,tactic='posse',deps){
  if(!identity)warnings.push('Identidade da versão pendente: informe um Card ID numérico plausível e a edição exata; texto genérico não comprova identidade.');
  else warnings.push('Card ID informado com formato plausível; conferir a correspondência com a edição exata antes de validar competitivamente.');
  if(!nativeDocumented)warnings.push('Habilidades nativas ausentes, provisórias ou não documentadas: confira as habilidades da edição antes de aplicar sugestões.');
- if(card.boosterSlot==='vazio')warnings.push(
+ if(card.boosterSlot==='vazio')warnings.push(boost?.slotSupported===true?
+  'A referência pública da edição documenta slot selecionável, mas a vaga livre foi apenas relatada e não conferida na conta. Confirmar no eFootball antes de gastar tokens.':
   'Slot relatado vazio pelo proprietário; a edição exata ainda não possui comprovação independente de slot selecionável. Não gastar tokens.');
  else warnings.push(card.boosterSlot==='ocupado'?'Segundo ímpeto ocupado: a sugestão é somente comparativa.':
  card.boosterSlot==='ausente'?'Carta informada sem slot selecionável: não equipa novo ímpeto.':

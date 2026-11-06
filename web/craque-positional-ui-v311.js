@@ -43,6 +43,37 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
   for(const source of r.sources){const p=el('p'),a=el('a','',source.title);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';p.append(a);info.append(p);}
   block.append(info);
  }
+ // V395: a ficha principal explica a análise por EDIÇÃO e mantém o treino
+ // global com evidência visível, sem criar qualquer estado permanente.
+ if(main&&review.globalTraining?.kind==='hipotese_por_edicao'){
+  const model=review.globalTraining,proof=model.evidence||{};
+  const info=el('details','ct395-global-evidence ct378-about');
+  info.append(el('summary','','Ficha global V395 · por que esta edição recebeu estes PP?'),
+   el('p','ct311-note','Um único treino é utilizado nos seis estilos coletivos. '+
+    'Não é uma garantia de desempenho PvP nem uma ficha otimizada por Overall.'),
+   el('p','',('Card ID: '+(proof.cardId||'pendente')+' · Edição: '+(proof.edition||'pendente')+
+    ' · Atributos-base documentados: '+(proof.baseStatsCount??0)+'.')));
+  const list=el('ul','ct374-priorities');
+  for(const axis of (model.diagnostics||[]).slice().sort((a,b)=>b.groupWeight-a.groupWeight).slice(0,5)){
+   const item=el('li');
+   item.append(el('strong','',axis.category),
+    el('span','',(axis.attributes||[]).slice(0,3).map(a=>a.stat+' '+a.base+
+     (a.fixed?' (ímpeto fixo +'+a.fixed+')':'')).join(' · ')));
+   list.append(item);
+  }
+  info.append(list);
+  const body=proof.bodyModel;
+  info.append(el('p','ct311-note',body?
+   'Modelo corporal de terceiro vinculado ao Card ID (pernas: '+body.legLength+
+    '); influência editorial pequena, sem comprovação de física/animação pela KONAMI.':
+   'Sem medida corporal confiável para esta edição: pernas, braços e pescoço NÃO foram estimados.'));
+  if(/^https:\/\//.test(proof.source||'')){
+   const source=el('a','','Conferir referência da edição');
+   source.href=proof.source;source.target='_blank';source.rel='noopener noreferrer';
+   info.append(source);
+  }
+  block.append(info);
+ }
  const calculation=review.individualAnalysis;
  if(review.publicIdentityReference){
   const capture=review.publicIdentityReference.capture;

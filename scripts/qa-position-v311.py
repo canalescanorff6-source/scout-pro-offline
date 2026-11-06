@@ -16,7 +16,11 @@ with sync_playwright() as p:
    page.locator('#friend-new-card').click()
    # V360: navegar até as opções avançadas antes de escolher slot.
    page.locator('details.friend-card-advanced > summary').click()
-   page.locator('#friend-card-name').fill('Cenário MAT SA')
+   # V395: exercitar revisões com a edição real Rivaldo Epic #077, 68 PP.
+   # Não atribuir build de uma carta real a um Card ID de exemplo.
+   page.locator('#friend-card-name').fill('Rivaldo')
+   page.locator('#friend-card-edition').fill('Epic — FC Barcelona 98-99')
+   page.locator('#friend-card-gameid').fill('88035555413454')
    page.locator('#friend-card-position').select_option('MAT')
    page.locator('#friend-card-level').fill('35')
    page.locator('#friend-card-booster-slot').select_option('vazio')
@@ -35,10 +39,21 @@ with sync_playwright() as p:
    # segundo slot na edição; ranking segue consultivo em ambas as telas.
    page.locator('#friend-analysis-sections [data-panel="boost"]').click()
    boost_view=page.locator('#friend-analysis-content [data-panel="boost"]')
-   assert 'Slot relatado vazio, mas a edição não possui prova independente' in boost_view.inner_text()
+   # Referências públicas são carregadas em paralelo; aguardar re-render após
+   # o evento de prontidão antes de conferir slot e PP.
+   page.wait_for_function("""() => Boolean(window.CRAQUE_REFERENCES_V376?.cards?.some(
+     c => c.capture===77 && c.identityUsable===true)) &&
+     document.querySelector('#friend-analysis-content [data-panel="boost"]')
+       ?.textContent.includes('Slot selecionável documentado na referência pública')""",timeout=30000)
+   # A referência pública confirma slot selecionável; não comprova
+   # vaga livre nem ímpeto equipado nesta conta.
+   assert 'Slot selecionável documentado na referência pública' in boost_view.inner_text()
+   assert 'vaga livre na sua conta NÃO foi comprovada' in boost_view.inner_text()
    assert 'NÃO gastar tokens' in boost_view.inner_text()
    assert 'Ranking' in boost_view.inner_text() or 'ranking' in boost_view.inner_text()
    page.locator('#friend-analysis-sections [data-panel="treino"]').click()
+   page.wait_for_function("""() => document.querySelector('.ct311-positional')
+     ?.textContent.includes('68 PP exatos distribuídos')""",timeout=30000)
    assert '68 PP exatos distribuídos' in root.inner_text()
    root.locator('.ct331-role-open').click()
    selector=root.locator('.ct311-controls .ct311-select')

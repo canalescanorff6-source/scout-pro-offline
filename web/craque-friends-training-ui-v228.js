@@ -47,6 +47,30 @@ function summaryCard(result){
   infoRow('Precisão',result.confidence==='simulacao_documentada_parcial'?'Simulação parcial':'Hipótese pendente de validação'),
   infoRow('Motor da ficha',plan.methodology||'Engenharia individual ainda indisponível'));
  el.append(meta);
+ if(plan.global?.kind==='hipotese_por_edicao'){
+  const proof=plan.global.evidence||{};
+  el.append(mk('p','friend-analysis-focus',
+   'FICHA ÚNICA POR EDIÇÃO · '+plan.pp+' PP para todos os seis estilos. '+
+   'Base externa vinculada ao Card ID, estilo individual, nativas e ímpeto fixo. '+
+   'É hipótese de gameplay, NÃO maximização de Overall nem teste PvP comprovado.'));
+  const specifics=mk('details','friend-analysis-warnings');
+  specifics.append(mk('summary','','Por que esta edição recebe esta ficha?'));
+  specifics.append(mk('p','',
+   'Card ID: '+(proof.cardId||'pendente')+' · '+
+   (proof.baseStatsCount||0)+' atributos-base de referência. '+
+   (proof.bodyModel?'Modelo corporal externo: comprimento de perna '+proof.bodyModel.legLength+
+    ' (sem prova de alteração da física do jogo).':
+    'Comprimento de pernas, braços e pescoço não documentados nesta edição: não estimados.')));
+  const groups=mk('ul');
+  for(const d of (plan.global.diagnostics||[]).slice().sort((a,b)=>b.groupWeight-a.groupWeight).slice(0,5)){
+   const names=(d.attributes||[]).slice(0,3).map(a=>a.stat+' '+a.base+
+    (a.fixed?' (ímpeto fixo +'+a.fixed+')':'')).join(' · ');
+   groups.append(mk('li','',d.category+': '+names));
+  }
+  specifics.append(groups);el.append(specifics);
+ }else if(plan.global?.status==='pendente'){
+  el.append(mk('p','friend-analysis-warning',plan.global.reason));
+ }
  const focus=mk('p','friend-analysis-focus',plan.focus?.headline||'Informe posição e PP para uma distribuição simulada.');
  el.append(focus);
  if(plan.analysis&&result.tactic!=='posse'){
@@ -225,7 +249,9 @@ function booster(result){
   if(b.alternatives?.length)panel.append(mk('p','friend-analysis-fineprint','Alternativas: '+b.alternatives.map(x=>x.nome).join(' · ')));
  }else panel.append(mk('p','friend-analysis-warning','Sem recomendação calculável com os dados atuais.'));
  panel.append(mk('p',result.boosterEligible?'friend-analysis-confirmed':'friend-analysis-warning',
-  result.boosterEligible?'Slot selecionável da edição documentado e relatado vazio: conferir no eFootball antes de qualquer aplicação.':
+  result.boosterEligible?'Slot selecionável documentado nesta edição, vaga relatada vazia. Confirmar no eFootball antes de qualquer aplicação.':
+   result.boosterSlotEvidence?.editionDocumented===true?
+    'Slot selecionável documentado na referência pública, mas a vaga livre na sua conta NÃO foi comprovada. Ranking consultivo; NÃO gastar tokens antes de conferir.':
    activeCard.boosterSlot==='vazio'?
     'Slot relatado vazio, mas a edição não possui prova independente de elegibilidade. Ranking consultivo; NÃO gastar tokens.':
     'Não aplicar ímpeto: slot inexistente, ocupado ou ainda sem confirmação. O ranking é apenas consultivo.'));
@@ -421,8 +447,8 @@ function display(){
   'Posição de uso '+usedPosition+' · proposta independente. Utilize “Salvar proposta” no seletor posicional, sem substituir a build original.':
   !allCalculated?
   'As fichas permanecem pendentes quando falta o nível máximo/PP ou existe divergência manual. Confira o cadastro.':
-  valid?'Seis treinos por estilo gerados e registrados neste acervo. Habilidades e ímpetos são recomendações calculadas ao abrir.':
-  'Seis propostas calculadas pelo app. Use “Gerar e salvar 6 fichas” para registrar os treinos neste acervo.';
+  valid?'Uma ficha global consultiva nos seis estilos; propostas salvas neste acervo preservadas. Habilidades e ímpetos são sugestões não equipadas.':
+  'Uma proposta global calculada para os seis estilos. O salvamento atual registra um perfil por estilo, sem mudar o jogo.';
 }
 function openCard(card,owner,onSave,onEdit){
  if(!card||!owner||card.ownerId!==owner.id){status('Erro: carta e pessoa não correspondem.');return}

@@ -30,19 +30,46 @@ def run():
     page.wait_for_function("document.querySelectorAll('.friends-card').length>=1",timeout=20000)
     assert "68 PP" in page.locator(".friends-card").first.inner_text()
     page.locator(".friends-card .friends-analysis-action").first.click()
-    page.wait_for_function("document.querySelector('#friend-analysis-state')?.textContent.includes('Seis')",timeout=25000)
+    page.wait_for_function("window.CRAQUE_REFERENCES_V376?.cards?.length>0",timeout=30000)
+    assert 'Treino ainda não calculável' in page.locator('#friend-analysis-content').inner_text(),(
+      'Nível e orçamento informados não comprovam a edição de Zico')
+    assert page.locator('.friend-analysis-pp').count()==0
+    page.locator('#friend-analysis-close').click()
+    # V395: seis distribuições numéricas somente com edição identificada.
+    page.locator('#friend-new-card').click()
+    page.locator('#friend-card-name').fill('Rivaldo')
+    page.locator('#friend-card-edition').fill('Epic — FC Barcelona 98-99')
+    page.locator('#friend-card-gameid').fill('88035555413454')
+    page.locator('#friend-card-position').select_option('MAT')
+    page.locator('#friend-card-level').fill('35')
+    assert '68 PP' in page.locator('#friend-budget-preview').inner_text()
+    assert not page.locator('#friend-card-pp').input_value()
+    page.locator('#friend-dialog-save').click()
+    page.locator('.friends-card').filter(has_text='Rivaldo').locator('.friends-analysis-action').click()
+    page.wait_for_function("""() => window.CRAQUE_REFERENCES_V376?.cards?.some(
+     c => c.capture===77 && c.identityUsable===true) &&
+     document.querySelector('.friend-analysis-pp')?.textContent.includes('68 / 68')""",timeout=30000)
+    assert 'seis estilos' in page.locator('#friend-analysis-state').inner_text()
     assert "68 PP" in page.locator("#friend-analysis-dialog").inner_text()
     for label in ["Posse de Bola","Contra-Ataque Normal","Contra-Ataque Rápido","Por Fora","Bola Longa","Sobreposição"]:
      assert label in page.locator("#friend-analysis-dialog").inner_text()
+    plans=[]
+    for tactic in ['posse','normal','rapido','fora','longo','overload']:
+     page.locator(f'#friend-analysis-modes button[data-style="{tactic}"]').click()
+     assert '68 / 68 PP distribuídos' in page.locator('.friend-analysis-pp').inner_text()
+     rows=page.locator('.friend-analysis-table tbody tr')
+     assert rows.count()==10
+     plans.append(rows.all_inner_texts())
+    assert all(plan==plans[0] for plan in plans),'A edição tem uma ficha global nos seis estilos'
     page.screenshot(path=str(OUT/(key+"_6_fichas.png")),full_page=False)
     page.locator("#friend-analysis-close").click()
     page.goto(URL+"/outros-elencos-v227.html?colecao=bruno-santos-cd",wait_until="domcontentloaded")
     page.wait_for_function("document.querySelector('#friend-current-name')?.textContent==='Bruno Santos CD'",timeout=20000)
     assert "Bruno Santos CD"==page.locator("#friend-current-name").inner_text()
     assert not errors,"Console errors: "+"|".join(errors)
-    results[key]={"pp_zico":68,"levels":35,"six_styles":True,"personal_owner_isolated":True,"errors":[]}
+    results[key]={"pp_rivaldo":68,"levels":35,"unknown_zico_pending":True,"six_styles":True,"personal_owner_isolated":True,"errors":[]}
     ctx.close()
   finally:browser.close()
  (OUT/"pp-universal-v309-report.json").write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding="utf-8")
- print("V309 QA PASS: Android/Windows, cadastro em Minhas Cartas Adicionadas, nível 35 -> 68 PP, seis fichas, Bruno isolado.")
+ print("V309 QA PASS: Android/Windows, Zico sem edição pendente, Rivaldo #077 nível 35 -> 68 PP, seis fichas, Bruno isolado.")
 if __name__=="__main__":run()

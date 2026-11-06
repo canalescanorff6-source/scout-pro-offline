@@ -16,11 +16,11 @@ with sync_playwright() as pw:
    page.locator('#friend-new-card').click()
    # V360: abrir os campos avançados como o usuário antes de validar/salvar.
    page.locator('details.friend-card-advanced > summary').click()
-   page.locator('#friend-card-name').fill('V343 Sem Slot')
-   page.locator('#friend-card-edition').fill('Edição de ensaio V343')
-   page.locator('#friend-card-gameid').fill('105297')
+   page.locator('#friend-card-name').fill('Guti')
+   page.locator('#friend-card-edition').fill('Epic — Madrid Chamartin B 01-02')
+   page.locator('#friend-card-gameid').fill('88029918268943')
    page.locator('#friend-card-position').select_option('MAT')
-   page.locator('#friend-card-level').fill('35')
+   page.locator('#friend-card-level').fill('31')
    page.locator('#friend-card-booster-slot').select_option('ausente')
    page.locator('#friend-dialog-save').click()
    page.locator('.friends-card .friends-analysis-action').first.click()
@@ -36,6 +36,11 @@ with sync_playwright() as pw:
    box.wait_for(timeout=25000)
    assert box.locator('.ct343-slot-evidence').count()==1
    button=box.get_by_role('button',name='Salvar ficha independente deste técnico')
+   # Somente uma edição identificada pode liberar o rascunho de PP V395.
+   page.wait_for_function("""() => window.CRAQUE_REFERENCES_V376?.cards?.some(
+    c => c.capture===78 && c.identityUsable===true) &&
+    document.querySelector('.ct324-profile .ct342-live-audit')?.textContent.includes(
+     'RASCUNHO PRONTO')""",timeout=30000)
    assert button.is_enabled(),'É permitido salvar ficha SEM ímpeto para carta sem slot'
    button.click()
    page.wait_for_function("""() => Object.keys(localStorage).some(k=>

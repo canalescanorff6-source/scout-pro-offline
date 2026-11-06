@@ -22,11 +22,13 @@ with sync_playwright() as pw:
    page.goto(BASE+'/outros-elencos-v227.html?colecao=minhas-cartas-adicionadas',
      wait_until='domcontentloaded',timeout=40000)
    page.locator('#friend-new-card').click()
-   page.locator('#friend-card-name').fill('V339 Pareto Contextual')
-   page.locator('#friend-card-edition').fill('Edição de teste V339')
-   page.locator('#friend-card-gameid').fill('105297')
+   # V395: para otimizar PP, a edição precisa existir no catálogo público.
+   # Rivaldo Epic #077 tem Card ID e 68 PP vinculados; o cadastro é descartável.
+   page.locator('#friend-card-name').fill('Rivaldo')
+   page.locator('#friend-card-edition').fill('Epic — FC Barcelona 98-99')
+   page.locator('#friend-card-gameid').fill('88035555413454')
    page.locator('#friend-card-position').select_option('MAT')
-   page.locator('#friend-card-level').fill('32')
+   page.locator('#friend-card-level').fill('35')
    page.locator('#friend-dialog-save').click()
    page.locator('.friends-card .friends-analysis-action').first.click()
    page.locator('#friend-manager-version').wait_for(timeout=30000)
@@ -35,6 +37,10 @@ with sync_playwright() as pw:
    page.locator('#friend-manager-version').select_option('CT-MGR-071')
    ext=page.locator('#friend-analysis-dialog .ct311-positional')
    ext.wait_for(timeout=25000)
+   page.wait_for_function("""() => window.CRAQUE_REFERENCES_V376?.cards?.some(
+    c => c.capture===77 && c.identityUsable===true) &&
+    document.querySelector('#friend-analysis-dialog .ct311-positional')
+     ?.textContent.includes('68 PP')""",timeout=30000)
    reveal(ext.locator('.ct326-primary-action'))
    ext.locator('.ct326-primary-action').click()
    panel=ext.locator('.ct339-frontier')
