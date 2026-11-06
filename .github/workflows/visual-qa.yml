@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - 'web/**'
+      - 'scripts/qa-counter-fichas-v394.py'
+      - 'scripts/qa-counter-coaching-v394.py'
       - 'scripts/qa-review-v379.py'
       - 'scripts/qa-all-cards-v379.py'
       - 'scripts/qa-editorial-theme.py'
@@ -84,6 +86,8 @@ jobs:
             if curl -fsS http://127.0.0.1:8765/index.html >/dev/null; then break; fi
             sleep 1
           done
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-counter-fichas-v394.py
+          timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-counter-coaching-v394.py
           # V315: testar primeiro o caso novo; falhar claramente em bloqueios de navegação.
           # Mantém todos os QA anteriores, sem afrouxar assertivas.
           timeout --signal=TERM --kill-after=10s 180s python -u scripts/qa-maximum-overall-v387.py

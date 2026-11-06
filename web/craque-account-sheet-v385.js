@@ -25,6 +25,11 @@ function paint(r,isHistory=false){const root=$('sheet-result');root.replaceChild
  else root.append(mk('p','Treino pendente: confira nível máximo e PP da edição.'));
  root.append(mk('p','Prioridades: '+(r.contextReasons?.join(' ')||r.searchMethod||'proposta por função')),mk('p','Conferir antes de investir: '+(r.pending?.join(', ')||'nenhuma pendência identificada no cadastro')+'.'));
  if(r.individualAnalysis&&r.proposed){
+  const counter=r.individualAnalysis.task?.counter;
+  if(counter){const guide=mk('details');guide.className='ct394-counter-role';guide.dataset.tactic=counter.tactic;
+   guide.append(mk('summary','Atacar e defender · '+counter.label),mk('p','Com a bola · '+counter.attack),
+    mk('p','Sem a bola · '+counter.defence),mk('p','Risco e correção · '+counter.risk));
+   const note=mk('p',counter.note);note.className='ct311-note';guide.append(note);root.append(guide);}
   const {status,reason,factors}=r.individualAnalysis,labels={documentada:'Dados da edição consultados',calculada:'Análise calculada',
    dados_insuficientes:'Dados individuais insuficientes',preservada:'Prioridades de Posse preservadas'};
   const details=mk('details');details.append(mk('summary','Por que esta ficha foi escolhida para esta carta?'),mk('p',reason));

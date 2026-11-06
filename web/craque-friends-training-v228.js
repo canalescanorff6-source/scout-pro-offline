@@ -56,11 +56,19 @@ function boosterFor(card,raw,tactic,deps,task,reference){
   decisionEvidence:{...result.decisionEvidence,candidates:[],warnings:[note],status:'SEM_AUTORIZACAO_DE_APLICACAO'},
   complementarity:{...result.complementarity,comparisons:[],lowOverlapAlternative:null}};
 }
-const profileOf=card=>({
+const profileOf=(card,tactic)=>{
+ let style=card.style||'',defence=card.defenceStyle||'';
+ if(tactic&&tactic!=='posse'){
+  const method=typeof window!=='undefined'?window.CRAQUE_FUNCTION_METHOD_V383:require('./craque-function-method-v383.js');
+  const activation=method?.activation({card,slot:{position:card.position},offBall:{position:card.position},offenseStyle:style,defenceStyle:defence});
+  if(activation?.attack.status!=='active')style='';
+  if(activation?.defence.status!=='active')defence='';
+ }
+ return {
  capture:card.capture??null,id:String(card.cardId||''),edition:String(card.edition||''),
  posicao:card.position||'',shown_position:card.position||'',
- attack_style:card.style||'',estilo_ataque:card.style||'',
- defence_style:card.defenceStyle||'',estilo_defesa:card.defenceStyle||'',
+ attack_style:style,estilo_ataque:style,
+ defence_style:defence,estilo_defesa:defence,
  native_skills:card.nativeSkills||'',habilidades_nativas:card.nativeSkills||'',
  impeto_fixo:card.fixedBooster||'',boost1:card.fixedBooster||'',
  // V321: status MANUAL de slot vazio não comprova que a edição tenha um
@@ -70,7 +78,7 @@ const profileOf=card=>({
  impeto_extra:card.booster||'PENDENTE',
  boost2:card.booster||'PENDENTE',
  pp:resolveBudget(card).pp,niveis:null
-});
+};};
 function sourceSignature(card){
  const signatureParts=[
   'motor-individual-v359',card.name,card.cardId,card.edition,card.position,card.style,card.pp,
@@ -135,8 +143,8 @@ function allocate(card,tactic,deps){
   const method=typeof window!=='undefined'?window.CRAQUE_FUNCTION_METHOD_V383:require('./craque-function-method-v383.js');
   const activation=method?.activation({card,slot:{position:card.position},offBall:{position:card.position},
    offenseStyle:card.style,defenceStyle:card.defenceStyle});
-  if(activation?.attack.status==='inactive')aligned.attack_style=aligned.estilo_ataque='';
-  if(activation?.defence.status==='inactive')aligned.defence_style=aligned.estilo_defesa='';
+  if(activation?.attack.status!=='active')aligned.attack_style=aligned.estilo_ataque='';
+  if(activation?.defence.status!=='active')aligned.defence_style=aligned.estilo_defesa='';
  }
  const context=interpretation.interpret(aligned,tactic,null);
  if(!context||context.role!==role||!Array.isArray(context.weights)||
@@ -342,6 +350,12 @@ function functionSheetText(review){
  if(review.competitiveReview){const r=review.competitiveReview;out.push('',r.title,
   'Proposta ESTIMADA · orçamento CALCULADO · desempenho em partidas PENDENTE',r.strategy,r.tradeoff,r.slotNote,r.researchNote,
   ...r.sources.map(s=>s.title+': '+s.url));}
+ const counter=review.individualAnalysis?.task?.counter;
+ if(counter)out.push('','ATACAR E DEFENDER · '+counter.label,
+  'Com a bola: '+counter.attack,'Sem a bola: '+counter.defence,'Risco e correção: '+counter.risk,counter.note);
+ if(review.activationPair)for(const [key,label]of [['attack','Com a bola'],['defence','Sem a bola']]){
+  const phase=review.activationPair[key];out.push(label+' · '+phase.style+' · '+phase.label,phase.explanation);
+ }
  out.push('','OBSERVAR EM PARTIDAS ONLINE',...review.tests.map(x=>'• '+x),'',review.baseReference,
   'Proposta calculada, sem validação em partidas online. Não comprova atributos finais, familiaridade ou ativação de estilo.',
   'Não equipa habilidades/ímpetos nem altera a carta ou o treino aprovado.');
@@ -395,7 +409,7 @@ function evaluate(card,tactic='posse',deps){
  const progress=resolveBudget(card);
  const reference=card.reference===null?null:card.reference??deps?.reference??catalogueReference(card);
  const plan=allocate({...card,reference},tactic,{...deps,tactical:t,skills:s,boosters:b});
- const raw=profileOf(card);
+ const raw=profileOf(card,tactic);
  // V322: campos preenchidos NÃO equivalem a dados da edição conferidos.
  // Um placeholder alfabético, "pendente" ou "a confirmar" não é Card ID
  // e não pode elevar a confiança competitiva de qualquer acervo.

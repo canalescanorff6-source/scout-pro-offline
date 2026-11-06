@@ -50,7 +50,10 @@ function normalManager(m){
 const MATCH_MODES=Object.freeze({online:'Online contra pessoas',friends:'Contra amigos',ai:'Contra a IA'});
 const MATCH_SIGNALS=Object.freeze({better:'Melhor',same:'Sem mudança percebida',worse:'Pior',unobserved:'Não observei'});
 function normalObservation(o,p){
- if(!isObj(o)||!id(o.id)||o.accountId!==p.accountId||o.planId!==p.id||o.contextSignature!==p.contextSignature||o.methodVersion!=='function-383-20261101'||
+ const versions=new Set((p.cards||[]).map(c=>c.review?.functionPlan?.version).filter(Boolean));
+ const version=versions.size===1?[...versions][0]:versions.size===0?'function-383-20261101':null;
+ if(!isObj(o)||!id(o.id)||o.accountId!==p.accountId||o.planId!==p.id||o.contextSignature!==p.contextSignature||
+  !['function-383-20261101','function-394-20261106'].includes(o.methodVersion)||o.methodVersion!==version||
   !Object.hasOwn(MATCH_MODES,o.mode)||!Number.isInteger(o.games)||o.games<1||o.games>100||
   (o.memberId!==null&&!p.cards?.some(c=>c.memberId===o.memberId))||typeof o.note!=='string'||o.note.length>1200||
   typeof o.recordedAt!=='string'||!Number.isFinite(Date.parse(o.recordedAt))||

@@ -147,8 +147,8 @@
    const activation=method?.activation({card:{position},slot:{position},offBall:{position},
     offenseStyle:card.attack_style||card.estilo_ataque,defenceStyle:card.defence_style||card.estilo_defesa});
    card={...card};
-   if(activation?.attack.status==='inactive')card.attack_style=card.estilo_ataque='';
-   if(activation?.defence.status==='inactive')card.defence_style=card.estilo_defesa='';
+   if(activation?.attack.status!=='active')card.attack_style=card.estilo_ataque='';
+   if(activation?.defence.status!=='active')card.defence_style=card.estilo_defesa='';
   }
   const [capture,id,edition]=fingerprints(card);
   const budget=number(card.pp);
@@ -242,6 +242,76 @@
  const TACTICAL_SOURCE='https://efhub.com/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed';
  const DEFENCE_SOURCE='https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00';
  const ACCURACY_SOURCE='https://efhub.com/articles/261019_3-passing-and-finishing-the-threshold-is-90-for-both';
+ const STAMINA_SOURCE='https://efhub.com/articles/261019_2-stamina-changes-these-cards-stand-to-benefit';
+ // Prioridades editoriais das duas fases, sem multiplicadores físicos ou
+ // consumo energético inventados. A edição fornece os atributos de entrada.
+ function counterProfile(role,tactic,card={},key='outlet'){
+  if(!['normal','rapido'].includes(tactic))return null;
+  const fast=tactic==='rapido',target=card.trainingCounterTarget===true;
+  const lateral=['LD','LE'].includes(role),front=['CA','SA'].includes(role);
+  const defensive=card.trainingDefensive===true;
+  let stats={},skills={},attack='',defence='';
+  if(role==='GO'){
+   stats={gk_awareness:3,gk_reflexes:3,gk_reach:2,gk_parrying:2,gk_catching:2};
+   attack=fast?'Repor para o companheiro livre e sustentar a transição curta':'Ler a pressão e escolher apoio seguro ou reposição longa livre';
+   defence=fast?'Cobrir a profundidade quando houver condição, sem saída automática prometida':'Ajustar posição ao chute e controlar o rebote no bloco recuado';
+   skills={gklow:60,gklong:fast?32:55};
+  }else if(role==='ZG'){
+   stats={defensive_awareness:4,tackling:3,physical_contact:2,jumping:2,heading:fast?1:2,
+    speed:fast?4:2,acceleration:fast?3:1,stamina:1,low_pass:1};
+   attack='Oferecer o primeiro passe sem perseguir a jogada no ataque';
+   defence=fast?'Proteger as costas da linha e cobrir o companheiro que sai ao bote':'Manter o bloco, antecipar o passe e disputar a bola aérea';
+   skills={intercept:72,blocker:64,mark:44,aerial:fast?32:48,onepass:24};
+  }else if(lateral){
+   stats={defensive_awareness:3,tackling:2,speed:fast?4:2,acceleration:2,
+    stamina:fast?3:2,low_pass:2,ball_control:2};
+   attack=defensive?'Dar apoio atrás da bola e preservar o corredor':key==='inside_support'?
+    'Tabelar por dentro com cobertura do volante e passe de retorno':'Ser apoio de segurança antes de escolher a subida';
+   defence=fast?'Recuperar o corredor e fechar a diagonal atrás do zagueiro':'Fechar o lado da área sem abandonar a proteção central';
+   skills={intercept:60,blocker:48,onepass:52,fighting:fast?38:26};
+  }else if(role==='VOL'){
+   stats={defensive_awareness:4,tackling:3,defensive_engagement:3,low_pass:3,
+    ball_control:2,stamina:fast?4:2,speed:fast?2:1,physical_contact:2};
+   attack=fast?'Dar saída vertical segura após recuperar, mantendo um apoio atrás':'Encontrar MAT/SA ou apoio livre no primeiro passe, sem lançamento obrigatório';
+   defence=fast?'Cobrir a linha alta e fechar o passe central antes de pressionar':'Guardar a frente da área e recolher a segunda bola';
+   skills={intercept:68,onepass:66,blocker:48,fighting:fast?40:28,through:36};
+  }else if(['MLG','MAT','ALA'].includes(role)){
+   const central=role==='MLG';
+   stats={low_pass:3,ball_control:3,tight_possession:2,acceleration:fast?3:1,
+    stamina:fast?4:2,speed:fast?2:1,defensive_engagement:central?2:1};
+   if(central){stats.defensive_awareness=2;stats.tackling=1;}
+   attack=key==='depth'?'Atacar o espaço depois do passe, sem antecipar a corrida':
+    fast?'Receber orientado, tabelar e soltar o passe com a linha aberta':'Aproximar do portador, girar sob pressão e conectar os atacantes';
+   defence=fast?'Pressionar com cobertura; se o passe sair, recompor o centro':'Fechar a saída central e retornar ao setor antes de perseguir o portador';
+   skills={onepass:72,through:60,sole:42,fighting:fast?40:26,...(central?{intercept:54}:{})};
+  }else if(front){
+   stats={finishing:3,offensive_awareness:3,acceleration:fast?4:3,
+    speed:fast?3:2,stamina:target?1:fast?3:2,ball_control:2,low_pass:key==='receive'?2:1};
+   attack=key==='receive'?'Fixar o defensor, dominar de costas e devolver; finalizar quando a área abrir':
+    key==='vertical'?'Conectar o meia ao CA e atacar o espaço que a tabela liberar':'Ameaçar a última linha e concluir com o corpo orientado';
+   defence=target?'Ficar disponível para a saída; os companheiros compensam a recomposição':
+    fast?'Orientar a primeira pressão sem correr sozinho atrás da bola':'Fechar o passe central e preparar a saída após a recuperação';
+   skills=key==='receive'?{onepass:76,firstshot:54,sole:44,aerial:36}:
+    key==='vertical'?{onepass:72,through:64,sole:42}:
+    {firstshot:72,onepass:70,sole:32,...(!target&&fast?{fighting:34}:{})};
+  }
+  if(defensive&&role!=='GO'){
+   attack='Dar apoio seguro atrás da bola e respeitar a função defensiva';
+   stats.defensive_awareness=Math.max(stats.defensive_awareness||0,3);
+   stats.tackling=Math.max(stats.tackling||0,2);
+  }
+  if(target&&role!=='GO'){
+   defence='Ficar disponível para a saída; os companheiros compensam a recomposição';
+   if(['CA','SA','MAT','MLG','ALA'].includes(role))stats.stamina=Math.min(stats.stamina||1,1);
+   delete skills.fighting;
+  }
+  return {tactic,label:fast?'Contra-Ataque Rápido':'Contra-Ataque',attack,defence,stats,skills,
+   pressing:fast&&!target&&!['GO','ZG'].includes(role),
+   risk:fast?'Se a primeira pressão falhar, recomponha e cubra a profundidade; não puxe os dois zagueiros.':
+    'Se os atacantes ficarem isolados, aproxime um apoio e recicle a bola; não lance sem corredor.',
+   source:TACTICAL_SOURCE,staminaSource:STAMINA_SOURCE,
+   note:'Prioridades editoriais por função; resistência não garante duração fixa nem a ficha comprova rendimento em PvP.'};
+ }
  const accuracyStats=new Set(['low_pass','lofted_pass','finishing','heading']);
  const ACTIONS={
   depth:{label:'Atacar a profundidade e finalizar',stats:{acceleration:5,offensive_awareness:3,finishing:3,speed:2,ball_control:1},skills:['firstshot','onepass','acrobatic','sole'],source:'https://efhub.com/articles/261017_4-acceleration-thresholds-decoded'},
@@ -364,6 +434,9 @@
   const actionStats={...action.stats};
   if(secondary)for(const [stat,weight]of Object.entries(secondary.stats))
    actionStats[stat]=Math.max(actionStats[stat]||0,weight/2);
+  const counter=counterProfile(role,tactic,card,key);
+  if(counter)for(const [stat,weight]of Object.entries(counter.stats))
+   actionStats[stat]=Math.max(actionStats[stat]||0,weight);
   const stats=Object.entries(actionStats).flatMap(([stat,weight])=>{
    const group=attributeGroups[stat],base=ref.baseStats?.[stat];
    if(!Number.isInteger(base)||base<0||base>120||!Number.isInteger(group)||refined[group]<=0)return [];
@@ -374,6 +447,12 @@
   if(stats.length>=2){
    task={key,label:action.label,skills:action.skills,source:action.source,stats,
     ...(secondary?{defensiveAction:{key:secondaryKey,label:secondary.label,source:secondary.source}}:{})};
+   if(counter){
+    task.counter=counter;
+    task.skills=[...new Set([...action.skills,...Object.keys(counter.skills)])];
+    task.skillWeights=Object.fromEntries(task.skills.map((skill,index)=>
+     [skill,Math.max(counter.skills[skill]||0,Math.max(8,80-index*18))]));
+   }
    utility=Array(10).fill(null);
    for(const stat of stats){
     const curve=utility[stat.group]||(utility[stat.group]=Array(21).fill(0));
@@ -484,7 +563,7 @@
    note:'Comparação matemática de investimento; não foi testada em partidas e não substitui os treinos aprovados.'
   },reason:'Redistribuição hipotética calculada respeitando os PP da mesma edição; exige comparação em campo.'};
  }
- const api=Object.freeze({CATEGORY,ROLES,MODES,interpret,refineIndividual,compare,levelDocumented,identityIssues,clean});
+ const api=Object.freeze({CATEGORY,ROLES,MODES,interpret,refineIndividual,counterProfile,compare,levelDocumented,identityIssues,clean});
  if(typeof module==='object'&&module.exports)module.exports=api;
  if(host)host.CRAQUE_INTERPRETATION_V233=api;
 })(typeof window!=='undefined'?window:null);

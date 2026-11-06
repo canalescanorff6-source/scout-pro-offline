@@ -90,18 +90,124 @@ const COUNTER_GUIDES=Object.freeze({
   })
  })
 });
-function counterGuide(mode,formation,slot){
+// V394: consultoria por vaga real. As condições são decisões para o usuário;
+// nenhuma instrução é aplicada ao eFootball ou ao armazenamento do elenco.
+const COUNTER_SLOTS=Object.freeze({
+ '4312':Object.freeze(['go','le','zge','zgd','ld','vole','vold','mlg','mat','cae','cad']),
+ '4213':Object.freeze(['go','le','zge','zgd','ld','vole','vold','mat','sa','cae','cad'])
+});
+function counterDecisions(mode,formation){
+ const fast=mode==='rapido',diamond=formation==='4312';
+ const bridge=diamond?'MLG':'SA central';
+ const rows=[
+  ['recovery','Primeiro passe após recuperar',
+   fast?'Você recuperou e MAT ou '+bridge+' oferece apoio de frente.':'Você recuperou no bloco e o VOL de ligação está livre.',
+   fast?(diamond?'VOL/MLG → MAT → CA: use Passe para tirar a bola da pressão; só acelere o segundo passe se o CA já abriu vantagem.':'VOL → MAT ou SA central → CA: use Passe no apoio livre e deixe o SA devolver antes de buscar a ruptura.'):
+    (diamond?'ZG → VOL de ligação → MLG/MAT: use Passe e reaproxime o meio antes da bola no CA.':'ZG → VOL → MAT; procure o SA central de frente para conectar um dos CA. Use Passe e espere o apoio se o SA estiver cercado.'),
+   'Passe vertical de costas sob pressão dupla; Lançam. automático só porque recuperou a bola.'],
+  ['central-block','Rival bloqueia o corredor central',
+   'O volante rival cobre MAT e a linha direta para o CA está fechada.',
+   diamond?'Devolva com Passe ao VOL, aproxime o MLG e use o lateral como apoio; retorne por dentro quando o marcador sair. Se não sair, conserve a bola.':
+    'Use o SA como parede somente se a devolução estiver livre. Caso contrário, Passe ao VOL/lateral, mude o ângulo e reencontre MAT-SA pelo centro.',
+   'Forçar Lançam. entre dois defensores, correr para dentro do marcador ou depender de cruzamento.'],
+  ['sprint','Quando usar Acelerar',
+   fast?'O CA de ruptura passou do marcador e existe espaço para o próximo toque.':'O passe de apoio tirou o primeiro marcador e há corredor livre.',
+   'Oriente o direcional para o espaço e use Acelerar depois do domínio. Solte Acelerar antes de virar, tabelar ou preparar Chute; se o corredor fechar, volte com Passe.',
+   'Manter Acelerar ao receber de costas ou durante toda a tabela; o toque longo pode entregar a bola.'],
+  ['pass-shot','Tempo de passe e chute',
+   'O defensor sai no portador e o outro CA começa a corrida, ou o portador já tem ângulo de gol.',
+   'Use Passe no apoio antes do bote; escolha Lançam. apenas com corredor e atacante em movimento. Se há linha de gol livre, reduza Acelerar, alinhe o corpo e use Chute. Sem ângulo, devolva a '+(diamond?'MAT/MLG.':'MAT/SA.'),
+   'Soltar profundidade tarde contra a cobertura, chutar bloqueado ou esperar uma sequência fixa de toques.'],
+  ['failed-press','A primeira pressão falhou',
+   fast?'O rival passou por MAT/'+bridge+' e pode atacar os dois VOL.':'O rival superou o jogador que tentou recuperar e avança pelo centro.',
+   fast?'Pare de perseguir com o atacante. Use Trocar para o VOL de proteção, recue entre bola e gol e use Marcar de perto para fechar o passe. O outro VOL cobre; só retome Pressão com apoio.':
+    'Use Trocar para o VOL e recomponha o bloco. Feche o passe central com Marcar de perto; espere o apoio do '+bridge+' para tentar Pressão sem abrir a frente dos ZG.',
+   'Segurar Pressão com todos; chamar um ZG para o meio e deixar o CA adversário nas costas.'],
+  ['through-ball','Adversário prepara bola nas costas',
+   'O passador levanta a cabeça e o atacante dispara além do seu VOL.',
+   fast?'Antecipe com Trocar para o ZG que cobre a corrida; recue para ficar entre atacante e gol. Use Acelerar para acompanhar a profundidade e solte ao ajustar a posição. O outro ZG conserva a cobertura.':
+    'Se o VOL ainda fecha a linha, intercepte por ele. Se a corrida já ameaça a zaga, use Trocar para o ZG de cobertura e acompanhe rumo ao gol; use Acelerar só para recuperar distância.',
+   'Esperar a bola sair para trocar, avançar os dois ZG ou usar Marcar de perto para perseguir um rival que já passou.']
+ ];
+ return Object.freeze(rows.map(([id,title,when,action,avoid])=>Object.freeze({id,title,when,action,avoid})));
+}
+function counterInstructions(mode,formation,context){
+ const fast=mode==='rapido',diamond=formation==='4312';
+ const entry=(slot,type,when,cost,leaveUnused,extra={})=>Object.freeze({slot,type,when,cost,leaveUnused,...extra});
+ const target=typeof context?.opponentTarget==='string'?context.opponentTarget.trim().slice(0,80):'';
+ const attack=[entry('vole','Defensivo',
+  'Se o VOL de proteção abandona a frente dos ZG durante seus ataques.',
+  'Restringe a chegada deste VOL e reduz uma opção de apoio à frente.',
+  'Se a carta já guarda a zona e a cobertura funciona; não gaste uma vaga só para repetir o comportamento.')];
+ attack.push(fast?entry('ld','Defensivo',
+  diamond?'Se o MLG avança e o lado direito fica sem cobertura na perda.':'Se MAT e SA atacam juntos e a perda expõe o lado direito dos dois VOL.',
+  'Perde a subida do LD e uma saída por fora quando o centro está fechado.',
+  'Se o perigo vem pela esquerda, reavalie o lateral em vez de prender os dois; se não há exposição, deixe Ataque 2 livre.'):
+  entry(diamond?'cad':'sa','Ancoragem',
+   diamond?'Se o CA de ruptura abre demais e falta uma referência central para a ligação.':'Se o SA central deriva para a lateral e rompe o triângulo MAT-SA-CA.',
+   diamond?'Reduz a liberdade lateral do CA; o CA de apoio deve oferecer outro ângulo.':'Limita o deslocamento lateral do SA e pode congestionar o mesmo corredor dos dois CA.',
+   'Se o jogador já ocupa o centro ou a mobilidade dele abre a tabela, deixe Ataque 2 livre. Ancoragem não é ordem para recuar.'));
+ const defence=[fast&&diamond?entry(null,null,
+  'Prioridade inicial: manter os dois CA participando da primeira pressão.',
+  'Sem Alvo de contra-ataque, o CA participa mais da defesa e pode chegar menos descansado à transição.',
+  'Deixe Defesa 1 livre enquanto a pressão funciona; só considere Alvo de contra-ataque em CAD se ele ficar isolado e você aceitar perder sua recomposição.'):
+  entry('cad','Alvo de contra-ataque',
+   fast?'Se o CA de ruptura fica sem saída após recuperar e você aceita pressionar com um atacante a menos.':
+    'Se o CA de ruptura recua tanto que não existe receptor quando o bloco recupera.',
+   diamond?'Menos recomposição do CAD; o CAE e o MAT precisam fechar a saída central.':
+    'Menos recomposição do CAD; SA e MAT terão mais trabalho e os dois VOL podem ficar expostos.',
+   'Se precisa defender com todos ou os dois CA já oferecem saída, deixe Defesa 1 livre. Não retire os dois CA da recomposição por padrão.')];
+ defence.push(target?entry('vold','Marcação individual',
+  'Somente se '+target+' recebe livre repetidamente na zona do VOL de ligação; confirme o alvo no Plano de jogo.',
+  'Pode arrastar o VOLD para fora da zona e abrir o centro; VOLE fica na cobertura. Retire se o alvo trocar de setor.',
+  'Sem alvo rival identificado, com rotações frequentes ou se fechar a linha manualmente resolve, deixe Defesa 2 livre.',{target}):
+  entry(null,null,'Ainda não há um alvo adversário identificado.',
+   'Marcar por hábito pode retirar o VOL da cobertura e gastar uma vaga defensiva.',
+   'Deixe Defesa 2 livre. Só considere Marcação individual em VOLD quando houver um receptor rival concreto e cobertura do VOLE.'));
+ return Object.freeze({attack:Object.freeze(attack),defence:Object.freeze(defence),
+  rule:'Até duas instruções de ataque e duas de defesa no Plano de jogo. São opções condicionais para configurar manualmente; comece sem instrução quando não houver um problema observado.',
+  removed:'Konami v6.0.0: Ofensiva e Defesa recuada foram removidas também no iOS/Android. Não há ajuste numérico de altura da linha ou pressão neste guia.'});
+}
+function counterSlotTasks(mode,formation,slot,task){
+ const fast=mode==='rapido',diamond=formation==='4312';
+ const special={
+  vole:['VOL de proteção: ofereça retorno atrás da bola; só avance com cobertura confirmada.',
+   'Guarde a frente dos ZG e acompanhe o receptor central; não persiga o portador até a lateral.'],
+  vold:['VOL de ligação: receba de frente e encontre '+(diamond?'MLG/MAT':'MAT/SA')+(fast?' sem atrasar o passe livre.':'; recicle se a ligação estiver fechada.'),
+   'Feche a segunda linha de passe e volte ao lado do VOLE se a pressão falhar.'],
+  cae:['CA de apoio: venha no passe de '+(diamond?'MAT/MLG':'MAT/SA')+' e devolva para a corrida do CAD; gire só sem pressão nas costas.',
+   'Feche o passe do ZG ao volante rival; avance para pressionar apenas com cobertura.'],
+  cad:['CA de ruptura: observe o apoio do CAE e ataque o intervalo entre lateral e ZG; espere vantagem antes de pedir Lançam.',
+   fast?'Oriente a pressão sem perseguir os dois ZG; se falhar, preserve a posição para a próxima saída.':'Feche a saída central sem gastar corrida contra os dois ZG; esteja disponível quando o bloco recuperar.'],
+  mat:[diamond?'MAT: conecte MLG e CAE e procure CAD quando a cobertura sair.':'MAT: encontre SA central de frente; não ocupe a mesma linha do SA e dos dois CA.',
+   diamond?'Cubra o volante rival com o MLG próximo; recomponha por dentro.':'Feche o passe ao volante rival com ajuda do SA; recue para não abandonar os dois VOL.'],
+  mlg:['MLG: seja terceiro homem entre VOLD e MAT; chegue depois da tabela sem avançar junto do VOLE.',
+   fast?'Inicie Pressão só se o VOL cobre; se o rival escapar, volte ao meio.':'Volte pelo meio para unir MAT aos dois VOL e diminuir a distância ao recuperar.'],
+  sa:['SA central: seja a parede entre MAT e os dois CA; devolva de frente e libere o corredor do CAD.',
+   fast?'Oriente a primeira pressão com MAT; se ela falhar, recomponha por dentro antes de perseguir ZG.':'Feche o apoio central da saída rival; ajude MAT sem recuar sobre a posição dos dois VOL.']
+ };
+ return special[slot]||task;
+}
+function counterGuide(mode,formation,slot,context={}){
  const cfg=COUNTER_GUIDES[mode];
  if(!cfg||!Object.hasOwn(cfg.formations,formation))return null;
+ if(slot!==undefined&&slot!==null&&!COUNTER_SLOTS[formation].includes(slot))return null;
  const role=slot===undefined||slot===null?null:slotRole(slot);
  if(slot!==undefined&&slot!==null&&!role)return null;
  const task=role?cfg.roles[role]:null;
  if(role&&!task)return null;
+ const slotTasks=task?counterSlotTasks(mode,formation,slot,task):null;
  return Object.freeze({
   mode,formation,label:cfg.label,attack:cfg.attack,defence:cfg.defence,risk:cfg.risk,
   formationAttack:cfg.formations[formation].attack,
   formationDefence:cfg.formations[formation].defence,
-  ...(task?{role,roleAttack:task[0],roleDefence:task[1]}:{}),
+  ...(task?{role,slot,roleAttack:task[0],roleDefence:task[1],
+   slotAttack:slotTasks[0],slotDefence:slotTasks[1]}:{}),
+  decisions:counterDecisions(mode,formation),instructions:counterInstructions(mode,formation,context),
+  slotMap:'Mapa de referência: VOLE (VOL esquerdo) protege, VOLD (VOL direito) liga; CAE (CA esquerdo) apoia e CAD (CA direito) rompe. Inverta os pares se as cartas e a movimentação pedirem, revendo também os alvos das instruções. É uma proposta por vaga, sem mudar sua escalação.',
+  controls:'Mobile STANDARD (padrão, botões visíveis): Passe, Lançam., Acelerar, Chute; na defesa, Trocar, Pressão e Marcar de perto. Confira a Lista de comandos instalada: defesa Normal e Estilo de pressão usam acionamentos diferentes. Aqui os nomes indicam botões, não gestos universais.',
+  validation:'Teste uma alteração por vez em séries de partidas semelhantes. Conte perdas no primeiro passe, chances limpas e bolas nas costas. A orientação é editorial; não há validação PvP desta combinação, nem promessa de meta.',
+  officialSource:'https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00',
   evidence:'Guia tático de controle manual por formação e vaga. Não é ficha individual, nem prova de habilidade, ímpeto ou rendimento da carta.',
   source:'https://efhub.com/pt-BR/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed'
  });

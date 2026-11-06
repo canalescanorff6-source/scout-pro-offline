@@ -75,6 +75,62 @@ function render(){
    p.append(node('strong','',label+': '),document.createTextNode(description));
    guide.append(p);
   }
+  const decisions=node('details','ct-v392-slot-duties');
+  decisions.dataset.counterDecisions='true';
+  decisions.append(node('summary','','Se acontecer → faça → evite · 6 decisões de jogo'),
+   node('p','ct-v392-guide-step',counter.controls));
+  for(const decision of counter.decisions||[]){
+   const step=node('section','ct-v392-guide-step');
+   step.dataset.counterDecision=decision.id;
+   step.append(node('h4','',decision.title));
+   for(const [label,value] of [['Quando',decision.when],['Faça',decision.action],['Evite',decision.avoid]]){
+    const line=node('p','');line.append(node('strong','',label+': '),document.createTextNode(value));step.append(line);
+   }
+   decisions.append(step);
+  }
+  const instructions=node('details','ct-v392-slot-duties');
+  instructions.dataset.counterInstructions='true';
+  instructions.append(node('summary','','Instruções individuais · opções condicionais por vaga'),
+   node('p','ct-v392-guide-step',counter.instructions.rule),
+   node('p','ct-v392-guide-step',counter.slotMap));
+  const targetLabel=node('label','ct-v392-guide-step','Alvo rival observado (opcional, só para esta consulta): ');
+  const target=node('input','');target.type='text';target.maxLength=80;
+  target.placeholder='Ex.: MAT rival · camisa 10';target.autocomplete='off';
+  target.setAttribute('aria-label','Alvo adversário para avaliar marcação individual');
+  target.style.cssText='display:block;box-sizing:border-box;width:100%;min-width:0;max-width:100%;margin-top:6px';
+  targetLabel.append(target);instructions.append(targetLabel);
+  const instructionRows=node('div','');
+  const showInstructions=()=>{
+   const plan=tactical.counterGuide(activeMode,currentId,null,{opponentTarget:target.value}).instructions;
+   instructionRows.replaceChildren();
+   for(const [phase,items] of [['Ataque',plan.attack],['Defesa',plan.defence]]){
+    items.forEach((item,index)=>{
+     const row=node('section','ct-v392-guide-step');
+     row.dataset.instructionSlot=item.slot||'';
+     row.dataset.instructionPhase=phase;
+     row.append(node('h4','',phase+' '+(index+1)+' · '+(item.type?
+      item.type+' em '+item.slot.toUpperCase():'Sem instrução')));
+     for(const [label,value] of [['Quando considerar',item.when],['Custo',item.cost],['Deixe livre',item.leaveUnused]]){
+      const line=node('p','');line.append(node('strong','',label+': '),document.createTextNode(value));row.append(line);
+     }
+     if(item.target)row.append(node('p','','Alvo a confirmar no jogo: '+item.target));
+     instructionRows.append(row);
+    });
+   }
+  };
+  target.addEventListener('input',showInstructions);showInstructions();
+  instructions.append(instructionRows,node('p','ct-v392-guide-step',counter.instructions.removed),
+   node('small','','Consulta por função, sem atribuir instrução à carta nem copiar o plano de Posse. Configure no jogo apenas se a condição aparecer.'));
+  guide.append(decisions,instructions,node('p','ct-v392-guide-step',counter.validation));
+  const sources=node('p','ct-v392-guide-step');
+  for(const [label,url] of [['Konami · regras v6.0.0',counter.officialSource],['eFHUB · análise de terceiros',counter.source],['Manual offline · botões e configuração','manual-2027/index.html#comandos']]){
+   const link=node('a','',label);link.href=url;
+   link.style.cssText='display:block;overflow-wrap:anywhere;margin:5px 0';
+   if(url.startsWith('https:')){link.target='_blank';link.rel='noopener noreferrer'}
+   sources.append(link);
+  }
+  guide.style.overflowWrap='anywhere';
+  guide.append(sources);
   guide.append(node('small','',counter.evidence+
    ' Para PP, habilidades adicionais e ímpetos, abra a ficha individual da carta na vaga.'));
   (guideHost||container).append(guide);
@@ -156,8 +212,8 @@ function render(){
   if(duty?.role){
    const tasks=node('details','ct-v392-slot-duties');
    tasks.append(node('summary','','Plano manual da vaga · '+duty.role),
-    node('p','', 'Com a bola: '+duty.roleAttack),
-    node('p','', 'Sem a bola: '+duty.roleDefence));
+    node('p','', 'Com a bola: '+(duty.slotAttack||duty.roleAttack)),
+    node('p','', 'Sem a bola: '+(duty.slotDefence||duty.roleDefence)));
    block.append(tasks);
   }
   const rivals=tactical.rank(cards,slot,activeMode,blocked,used).slice(0,2);

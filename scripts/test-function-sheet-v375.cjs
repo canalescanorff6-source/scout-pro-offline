@@ -20,7 +20,7 @@ for(const c of cards)for(const style of F.MODES){
   'Skill analysis must receive the new role-specific training, not a null vector');
  const expectedSkills=S.evaluate({...F.profileOf({...P.fromPersonal(c),
   cardId:String(c.id),edition:c.versao,position:P.normalize(c.posicao),nativeSkills:c.habilidades_nativas,
-  style:c.estilo_ataque,pp:c.pp}),niveis:result.plan.levels},style,'');
+  style:c.estilo_ataque,pp:c.pp},style),niveis:result.plan.levels},style,'',{task:result.plan.analysis?.task});
  assert.deepEqual(result.suggestedSkills.map(x=>x.key),expectedSkills.recommendations.map(x=>x.key));
  const r=result.functionReview,txt=F.functionSheetText(r),model=P.fromPersonal(c);
  assert.equal(r.identity.name,c.name);assert.equal(r.identity.cardId,model.cardId);
