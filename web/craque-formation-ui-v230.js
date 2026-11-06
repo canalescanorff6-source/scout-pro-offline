@@ -1,4 +1,4 @@
-/* V230 · duas formações históricas reavaliadas por CINCO estilos de técnico.
+/* V230 · duas formações históricas reavaliadas por SEIS estilos de técnico.
  * O usuário escolhe os jogadores manualmente, com um ranking consultivo para cada posição.
  * Não escreve na ficha, PP, habilidades, instruções aprovadas ou 23 restrições.
  */

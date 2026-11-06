@@ -84,7 +84,7 @@ with sync_playwright() as pw:
    assert not page.locator('.ct330-backup-fold').evaluate('(e)=>e.open')
    assert page.locator('#ct330-series-panel [data-series]').count()==2
    assert page.locator('#ct330-series-panel [data-cycle]').count()==2
-   assert page.locator('#ct330-series-panel [data-tactic-mode]').count()==5
+   assert page.locator('#ct330-series-panel [data-tactic-mode]').count()==6
    page.locator('.ct330-quick-action[data-focus-target="restrictions"]').click()
    assert page.locator('.ct330-black-options').evaluate('(e)=>e.open')
    assert page.locator('#black-search').is_visible()

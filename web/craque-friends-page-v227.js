@@ -24,7 +24,7 @@ if(!locked&&bruno){
   const seeded=bruno.seed(data,api,localStorage,budgets);
   data=seeded.data;
   if(['nivel_pp_confirmados','cadastrado_com_pp_confirmados'].includes(seeded.reason))
-   status('Zico · Bruno Santos CD: nível máximo 35 e 68 PP confirmados; cinco fichas calculáveis.');
+   status('Zico · Bruno Santos CD: nível máximo 35 e 68 PP confirmados; seis fichas calculáveis.');
  }
  catch(e){status('Não foi possível registrar a coleção Bruno Santos CD: '+e.message+
   '. Seus acervos existentes foram mantidos.')}
@@ -35,10 +35,10 @@ if(!locked&&sete){
  try{
   const seeded=sete.seed(data,api,localStorage,budgets);
   data=seeded.data;
-  if(seeded.inserted)status('Elenco 7$: '+seeded.inserted+' cartas exatas adicionadas com imagens e cinco fichas por tática.');
+  if(seeded.inserted)status('Elenco 7$: '+seeded.inserted+' cartas exatas adicionadas com imagens e seis fichas por tática.');
  }catch(e){status('Acervo 7$ não foi carregado: '+e.message+'. Dados anteriores preservados.')}
 }
-// V309: todas as novas cartas próprias usam o MESMO motor de PP/5 fichas.
+// V309: todas as novas cartas próprias usam o MESMO motor de PP/6 fichas.
 const personalRequested=(()=>{
  try{return new URLSearchParams(location.search).get('colecao')==='minhas-cartas-adicionadas'}
  catch(_){return false}
@@ -137,6 +137,7 @@ function makeCard(card){
  if(card.edition)info.append(el('small','friends-edition',card.edition));
  info.append(el('small','',(card.position||'Posição pendente')+' · '+(card.rarity||'Raridade não informada')));
  if(card.style)info.append(el('small','friends-playstyle','Estilo: '+card.style));
+ if(card.defenceStyle)info.append(el('small','friends-playstyle','Estilo defensivo: '+card.defenceStyle));
  if(card.cardId)info.append(el('small','','Card ID: '+card.cardId));
  if(card.level!==null||card.pp!==null)info.append(el('small','',[
   (card.level!==null?'Nível máx. '+card.level:null),
@@ -145,7 +146,7 @@ function makeCard(card){
  if(progress.source==='manual_divergente')info.append(el('small','friends-pp-conflict',progress.reason));
  const state=el('div','friends-card-fichas');
  state.append(el('span','friends-card-fichas-title','FICHAS DO APLICATIVO'),
-  el('strong',ready?'5 estilos · análise disponível':'5 estilos · dados pendentes'),
+  el('strong',ready?'6 estilos · análise disponível':'6 estilos · dados pendentes'),
   el('small','',ready?'Treino calculável com '+progress.pp+' PP · habilidades e ímpetos por estilo':
    'Informe o nível MÁXIMO ou resolva o conflito de PP para gerar treino; Card ID pode ficar pendente.'));
  info.append(state);
@@ -158,7 +159,7 @@ function makeCard(card){
    analyzer.openCard(card,owner,(original,proposed)=>{
     if(locked||original.ownerId!==selected||original.id!==proposed.id)throw Error('Coleção foi alterada: análise não salva.');
     const next=api.saveCard(data,proposed);
-    save(next,'Cinco fichas individuais atualizadas para '+original.name+' · '+owner.name);
+    save(next,'Seis fichas individuais atualizadas para '+original.name+' · '+owner.name);
     return data.cards.find(x=>x.ownerId===owner.id&&x.id===original.id);
    },()=>openCard(card));
   }),
@@ -166,7 +167,7 @@ function makeCard(card){
   button('Excluir','friends-remove',()=>eraseCard(card))
  );
  info.append(actions);
- const extra=[card.style&&'Estilo: '+card.style,card.skills&&'Habilidades: '+card.skills,card.booster&&'Ímpetos: '+card.booster,card.notes&&'Observações: '+card.notes].filter(Boolean);
+ const extra=[card.style&&'Estilo: '+card.style,card.defenceStyle&&'Estilo defensivo: '+card.defenceStyle,card.skills&&'Habilidades: '+card.skills,card.booster&&'Ímpetos: '+card.booster,card.notes&&'Observações: '+card.notes].filter(Boolean);
  if(extra.length){
   const details=el('details');details.append(el('summary','','Dados e observações'));
   const body=el('p','friends-card-more',extra.join('\n'));details.append(body);info.append(details);
@@ -182,11 +183,11 @@ function renderCards(){
  $('friend-current-name').textContent=owner.name;
  $('friend-current-meta').textContent=current.length+' carta'+(current.length===1?'':'s')+' cadastrada'+(current.length===1?'':'s')+' · coleção independente';
  const done=current.filter(c=>Number.isInteger(budgets.resolveBudget(c).pp)&&c.position).length;
- $('friend-fichas-count').textContent=done+'/'+current.length+' com PP e posição · 5 estilos por carta';
+ $('friend-fichas-count').textContent=done+'/'+current.length+' com PP e posição · 6 estilos por carta';
  const search=$('friend-search').value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
  const position=$('friend-position').value;
  const shown=current.filter(card=>{
-  const text=[card.name,card.cardId,card.edition,card.style,card.rarity].join(' ').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const text=[card.name,card.cardId,card.edition,card.style,card.defenceStyle,card.rarity].join(' ').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
   const progress=budgets.resolveBudget(card);
   const ready=Number.isInteger(progress.pp)&&progress.pp>=0&&Boolean(card.position);
   return (!search||text.includes(search))&&(!position||card.position===position)&&
@@ -292,6 +293,7 @@ $('friend-open-backup').onclick=()=>{
 const dialog=$('friend-card-dialog'),form=$('friend-card-form');
 const fields={name:'friend-card-name',cardId:'friend-card-gameid',edition:'friend-card-edition',
  position:'friend-card-position',rarity:'friend-card-rarity',style:'friend-card-style',
+ defenceStyle:'friend-card-defence-style',
  level:'friend-card-level',pp:'friend-card-pp',maxOverall:'friend-card-max-overall',skills:'friend-card-skills',
  booster:'friend-card-booster',nativeSkills:'friend-card-native',
  fixedBooster:'friend-card-fixed-booster',boosterSlot:'friend-card-booster-slot',
@@ -391,7 +393,7 @@ form.onsubmit=event=>{
    if(!training)throw Error('Motores táticos não carregaram.');
    const prepared=training.generate(saved);
    next=api.saveCard(next,{...saved,analysis:prepared});
-   analysisNote+=' Cinco fichas por tática calculadas e armazenadas (pendências identificadas quando faltam dados).';
+   analysisNote+=' Seis fichas por tática calculadas e armazenadas (pendências identificadas quando faltam dados).';
   }catch(e){
    analysisNote=' A carta foi salva; geração da ficha pendente: '+String(e.message||e);
   }

@@ -152,7 +152,7 @@ def run() -> int:
             assert_that(cardona["archiveClosed"] and cardona["comparisonArchived"] and
                         cardona["extraArchived"], "Cardona exibe comparação fora do arquivo recolhido")
             assert_that(cardona["singleMainTitle"] == 1 and
-                        cardona["mainTrainingCount"] == 1 and cardona["modes"] == 5,
+                        cardona["mainTrainingCount"] == 1 and cardona["modes"] == 6,
                         "Cardona perdeu ficha única ou estilos")
             assert_that(cardona["hasPP"] and cardona["layoutOverflow"] <= 8,
                         "Cardona perdeu PP ou criou rolagem horizontal")

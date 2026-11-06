@@ -1,12 +1,12 @@
 'use strict';
 /* V274 — evidência de nomes NATIVOS especiais, não SKILLs selecionáveis.
- * Auditar 246 × 5 sem alterar dados, builds nem slots.
+ * Auditar 246 × 6 sem alterar dados, builds nem slots.
  */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const raw=read('web/SCOUT_V69_AUDITORIA.json'),cards=JSON.parse(raw).cards;
 const S=require('../web/skills-booster-v162.js'),B=require('../web/booster-engine-v103.js');
-const original=JSON.stringify(cards),tactics=['posse','normal','rapido','fora','longo'];
+const original=JSON.stringify(cards),tactics=['posse','normal','rapido','fora','longo','overload'];
 assert.equal(cards.length,246);
 const contextual=new Map(),unresolved=new Map(),byGroup=new Map(),record=[];
 let scenarios=0,contextScenarios=0,nativeCount=0,recognized=0,unmatched=0;
@@ -68,7 +68,7 @@ for(const card of cards){
  assert.equal(JSON.stringify(card),snapshot);
  record.push(profileRow);
 }
-assert.equal(scenarios,1230);
+assert.equal(scenarios,1476);
 assert.equal(new Set(cards.map(c=>c.numero+'@'+c.id)).size,246);
 assert.equal(JSON.stringify(cards),original);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);

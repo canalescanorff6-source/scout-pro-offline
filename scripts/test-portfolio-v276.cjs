@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V276: 246 cartas x cinco táticas; portfolios e overlap não autorizam uso de tokens. */
+/* V276: 246 cartas x seis táticas; portfolios e overlap não autorizam uso de tokens. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),read=p=>historicalRead(path.join(root,p),'utf8');
@@ -81,7 +81,7 @@ for(const card of cards){
  assert.equal(JSON.stringify(card),initialCard);
  samples.push(audit);
 }
-assert.equal(scenarios,1230);
+assert.equal(scenarios,1476);
 assert.equal(JSON.stringify(cards),initial);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),original);
 // Balanceamento não troca a ordem oficial das 5 prioridades; é uma alternativa.

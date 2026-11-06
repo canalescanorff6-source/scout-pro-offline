@@ -235,7 +235,7 @@ body[data-page=friends] .friend-analysis-dialog .friends-dialog-head{background:
 .friend-analysis-five-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px}
 .friend-analysis-five-head strong{color:#ffdea5;font-size:14px}
 .friend-analysis-five-head small{font-size:11px;color:#b7c6d6}
-body[data-page=friends] .friend-analysis-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:9px 0 0}
+body[data-page=friends] .friend-analysis-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:9px 0 0}
 body[data-page=friends] .friend-analysis-tabs button{min-height:71px;display:grid;gap:6px;align-content:center;padding:7px 5px;border:1px solid #4a5970;border-radius:10px;background:#15283c;color:#e2ebf5;text-align:center;line-height:1.25}
 body[data-page=friends] .friend-analysis-tabs button strong{font-size:11px;overflow-wrap:anywhere}
 body[data-page=friends] .friend-analysis-tabs button small{font-size:10px;color:#b7c5d7;overflow-wrap:anywhere}

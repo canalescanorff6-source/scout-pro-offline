@@ -1,4 +1,4 @@
-/* SCOUT PRO V220 — ficha competitiva premium única por carta, cinco estilos de técnico.
+/* SCOUT PRO V220 — ficha competitiva premium única por carta, seis estilos de técnico.
  * Antiga engenharia, recomendações detalhadas e demais painéis permanecem consultáveis.
  * Dados / builds originais NÃO sofrem qualquer alteração automática.
  */
@@ -10,7 +10,7 @@ const mk=(doc,tag,cls,text)=>{const x=doc.createElement(tag);if(cls)x.className=
 const localGet=k=>{try{return host.localStorage?.getItem(k)||null}catch(_e){return null}};
 const localSet=(k,s)=>{try{host.localStorage?.setItem(k,s);return true}catch(_e){return false}};
 const parse=s=>{try{return JSON.parse(s||'null')}catch(_e){return null}};
-const styles=['posse','normal','rapido','fora','longo'];
+const styles=['posse','normal','rapido','fora','longo','overload'];
 function nativeDetails(card,tactic){
  const R=host.SCOUT_RECOMMENDATIONS_V162,B=host.SCOUT_BOOSTERS_V103;
  const budget=Number(card.pp),cap=Number(card.capture),id=String(card.id);
@@ -85,7 +85,7 @@ function mount(doc){
  const baseline=possession||experimental;
  let style=localGet('scoutpro:v220:style:'+cap+':'+id)||'posse';
  if(!styles.includes(style))style='posse';
- // Os níveis originais continuam preservados em todas as cinco táticas.
+ // Os níveis originais continuam preservados em todas as seis táticas.
  const wrap=mk(doc,'div','scout-v220-shell');wrap.id='scout-v220-hero';
  const hero=mk(doc,'section','scout-v220-hero');
  const eyebrow=mk(doc,'div','scout-v220-eyebrow','SCOUT PRO / ANÁLISE COMPETITIVA');
@@ -161,10 +161,10 @@ function mount(doc){
  function switchTraining(tactic){
   const s=engine.styleFor(tactic);
   // V252: somente o treino registrado e matematicamente confirmado pode
-  // fundamentar uma hipótese. Um draft experimental NÃO vira cinco builds
+  // fundamentar uma hipótese. Um draft experimental NÃO vira seis builds
   // supostamente confiáveis ao trocar a tática.
   // PP matematicamente fechados NÃO comprovam nível, edição ou gameplay.
-  // Evita replicar a mesma hipótese em cinco estilos para as 161 cartas sem
+  // Evita replicar a mesma hipótese em seis estilos para as 161 cartas sem
   // nível documentado e para treinos provisórios como Martinelli #191.
   const levelDocumented=Number.isInteger(card.max_level)&&card.max_level>=1&&
    Number(card.pp)===2*(card.max_level-1)&&card.pp_estimated!==true&&
@@ -347,13 +347,6 @@ function mount(doc){
  // Reapresentar o contexto, sem alegar mudança de PP por bônus do técnico.
  host.addEventListener('scoutpro:manager-selected-v302',event=>{
   const detail=event.detail||{};
-  if(detail.tactic==='overload'){
-   const notice=$(wrap,'scout-v303-style-summary');
-   if(notice)notice.textContent='SOBREPOSIÇÃO · motor de PP ainda pendente. '+
-    'A ficha que continua visível pertence à última tática suportada; '+
-    'não é uma ficha homologada de Overload.';
-   return;
-  }
   if(!styles.includes(detail.tactic))return;
   if(style!==detail.tactic)choose(detail.tactic,true);
   else{switchTraining(style);updateRecommendations();}

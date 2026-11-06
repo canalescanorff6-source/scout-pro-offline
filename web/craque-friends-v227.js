@@ -27,7 +27,10 @@ function normalAnalysis(value){
     !value.profiles||typeof value.profiles!=='object')
    throw Error('Ficha automática inválida no arquivo. Não é seguro importá-la.');
  const profiles={};
- for(const id of ['posse','normal','rapido','fora','longo']){
+ // Backups de cinco estilos continuam válidos; preservar o sexto quando existe.
+ const modes=['posse','normal','rapido','fora','longo'];
+ if(Object.hasOwn(value.profiles,'overload'))modes.push('overload');
+ for(const id of modes){
   const p=value.profiles[id];
   if(!p||!['hipotese','pendente'].includes(p.status))throw Error('Ficha tática inválida: '+id);
   const levels=p.levels===null?null:Array.isArray(p.levels)?p.levels.slice():null;
@@ -57,6 +60,7 @@ function normalCard(raw){
   ...maximum,id,ownerId,name,cardId:readStr(raw?.cardId,LIMITS.cardId),
   edition:readStr(raw?.edition,LIMITS.edition),position:readStr(raw?.position,LIMITS.position),
   rarity:readStr(raw?.rarity,LIMITS.rarity),style:readStr(raw?.style,LIMITS.style),
+  defenceStyle:readStr(raw?.defenceStyle,LIMITS.style),
   level,pp,skills:readStr(raw?.skills,LIMITS.skills),booster:readStr(raw?.booster,LIMITS.booster),
   nativeSkills:readStr(raw?.nativeSkills,LIMITS.nativeSkills),
   fixedBooster:readStr(raw?.fixedBooster,LIMITS.fixedBooster),

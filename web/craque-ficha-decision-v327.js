@@ -7,10 +7,10 @@
  if(typeof module==='object'&&module.exports)module.exports=api;
  if(host)host.CRAQUE_FICHA_DECISION_V327=api;
 })(typeof window!=='undefined'?window:null,function(){'use strict';
- const MODES=Object.freeze(['posse','normal','rapido','fora','longo']);
+ const MODES=Object.freeze(['posse','normal','rapido','fora','longo','overload']);
  const LABEL=Object.freeze({
   posse:'Posse de Bola',normal:'Contra-Ataque Normal',
-  rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'
+  rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa',overload:'Sobreposição'
  });
  const str=v=>typeof v==='string'?v.trim():'';
  function validPlan(plan,tactical){
@@ -204,8 +204,8 @@
     throw Error('Comparação exige a mesma carta, proprietário, edição, posição e técnico');
    byStyle.set(c.style,c);
   }
-  if(byStyle.size!==5||MODES.some(id=>!byStyle.has(id)))
-   throw Error('São necessárias as cinco hipóteses do mesmo contexto');
+  if(byStyle.size!==MODES.length||MODES.some(id=>!byStyle.has(id)))
+   throw Error('São necessárias as seis hipóteses do mesmo contexto');
   // A posição do estilo atual é explícita; não produzir "campeão" genérico.
   const rows=MODES.map(id=>{
    const item=byStyle.get(id),selectedStyle=id===selected.style;

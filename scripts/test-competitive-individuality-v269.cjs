@@ -1,5 +1,5 @@
 'use strict';
-/* V269 — regressão das 246 edições em cinco táticas.
+/* V269 — regressão das 246 edições em seis táticas.
  * Auditoria CONSULTIVA; não altera builds, slots, dados da conta ou catálogo.
  */
 const assert=require('node:assert/strict');
@@ -10,7 +10,7 @@ const raw=read('web/SCOUT_V69_AUDITORIA.json');
 const cards=JSON.parse(raw).cards;
 const S=require('../web/skills-booster-v162.js');
 const B=require('../web/booster-engine-v103.js');
-const tactics=['posse','normal','rapido','fora','longo'];
+const tactics=['posse','normal','rapido','fora','longo','overload'];
 assert.deepEqual(B.tactics,tactics);
 assert.equal(cards.length,246);
 assert.equal(new Set(cards.map(c=>c.numero+'@'+c.id)).size,246);
@@ -60,7 +60,7 @@ for(const c of cards){
  }
  assert.equal(JSON.stringify(c),original,'Mutação de carta #'+c.numero);
 }
-assert.equal(checks,1230);
+assert.equal(checks,1476);
 assert.equal(JSON.stringify(cards),before);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 assert(ptbrConflictsPrevented>0,'A cobertura precisa incluir ímpetos com tradução PT-BR');

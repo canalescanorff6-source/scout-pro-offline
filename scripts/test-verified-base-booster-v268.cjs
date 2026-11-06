@@ -1,5 +1,5 @@
 'use strict';
-/* V268 — 246 edições × cinco estilos, sem elevar flags e 9 atributos
+/* V268 — 246 edições × seis estilos, sem elevar flags e 9 atributos
  * parciais a status base completo. Rank só muda com prova V260 válida.
  */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
@@ -45,7 +45,7 @@ for(const c of cards){
  }
  assert.equal(JSON.stringify(c),snapshot,'Não editar os dados originais');
 }
-assert.equal(checks,1230);
+assert.equal(checks,1476);
 assert(partial>0);
 const raul=cards.find(c=>c.numero===2),lab=labFor(raul);
 assert.equal(V.baseEvidence(raul,index.get(2),lab).partial,true);

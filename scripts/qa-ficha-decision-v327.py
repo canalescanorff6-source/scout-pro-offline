@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""V327 — evidência visual da comparação de cinco estilos no mesmo Card ID.
+"""V327 — evidência visual da comparação de seis estilos no mesmo Card ID.
 Duas resoluções, dois acervos. Mudança de PRÉVIA sem aplicar PP ou skills.
 """
 import os,shutil
@@ -17,7 +17,7 @@ with sync_playwright() as pw:
    page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(BASE+'/outros-elencos-v227.html?colecao=minhas-cartas-adicionadas',wait_until='domcontentloaded')
    page.locator('#friend-new-card').click()
-   page.locator('#friend-card-name').fill('V327 Cinco Estilos')
+   page.locator('#friend-card-name').fill('V327 Seis Estilos')
    page.locator('#friend-card-edition').fill('Teste visual de edição')
    page.locator('#friend-card-gameid').fill('105297')
    page.locator('#friend-card-position').select_option('MAT')
@@ -30,6 +30,7 @@ with sync_playwright() as pw:
    reasons=root.locator('.ct336-equipment-evidence')
    assert reasons.count()==1
    assert not reasons.evaluate('(node)=>node.open'), 'Justificativas devem iniciar recolhidas'
+   reveal(reasons.locator('summary'))
    reasons.locator('summary').click()
    assert reasons.evaluate('(node)=>node.open')
    assert 'não validação em gameplay' in reasons.inner_text()
@@ -40,29 +41,34 @@ with sync_playwright() as pw:
    assert not root.locator('.ct327-style-panel').is_visible()
    reveal(root.locator('.ct326-secondary-action'))
    root.locator('.ct326-secondary-action').click()
-   five=root.locator('.ct327-style-row')
-   assert five.count()==5, 'Cinco propostas de estilo devem existir'
+   styles=root.locator('.ct327-style-row')
+   assert styles.count()==6, 'Seis propostas de estilo devem existir'
+   assert [text.replace(' · SELECIONADO','') for text in styles.locator('.ct327-style-name').all_text_contents()]==[
+    'Posse de Bola','Contra-Ataque Normal','Contra-Ataque Rápido','Por Fora','Bola Longa','Sobreposição']
    # V337: o comparador compartilha o custo marginal real nos dois acervos.
-   assert 'PP utilizados' in five.first.inner_text(), (
+   assert 'PP utilizados' in styles.first.inner_text(), (
        'Exibir gasto e orçamento do treino, não somente níveis')
    assert 'custo' in root.locator('.ct327-style-note').inner_text().lower(), (
        'Diferença de PP não equivale a ganho competitivo comprovado')
-   assert five.filter(has_text='SELECIONADO').count()==1
+   assert styles.filter(has_text='SELECIONADO').count()==1
    assert 'superioridade' in root.locator('.ct327-style-note').inner_text().lower() or 'eleger' in root.locator('.ct327-style-note').inner_text().lower()
    before=page.evaluate("""() => ({
      snapshots:localStorage.getItem('scoutpro:v311:position-scenarios'),
      profiles:Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:v324:manager-profile:'))
    })""")
+   root.locator('.ct327-style-row[data-style="overload"] .ct327-style-activate').click()
+   page.wait_for_function("""() => document.querySelector('#friend-analysis-modes [data-style="overload"]')?.getAttribute('aria-pressed')==='true'""",timeout=20000)
+   assert 'SOBREPOSIÇÃO' in root.locator('.ct326-kicker').inner_text()
    root.locator('.ct327-style-row[data-style="rapido"] .ct327-style-activate').click()
    page.wait_for_function("""() => document.querySelector('#friend-analysis-modes [data-style="rapido"]')?.getAttribute('aria-pressed')==='true'""",timeout=20000)
-   assert 'RAPIDO' in root.locator('.ct326-kicker').inner_text()
+   assert 'CONTRA-ATAQUE RÁPIDO' in root.locator('.ct326-kicker').inner_text()
    assert root.locator('.ct327-style-panel').is_visible()
    assert root.locator('.ct327-style-row[data-current="true"]').get_attribute('data-style')=='rapido'
    root.locator('.ct331-role-open').click()
    root.locator('.ct311-controls .ct311-select').select_option('SA')
-   assert ' SA · RAPIDO' in root.locator('.ct326-kicker').inner_text()
+   assert ' SA · CONTRA-ATAQUE RÁPIDO' in root.locator('.ct326-kicker').inner_text()
    root.locator('.ct311-controls .ct311-select').select_option('MAT')
-   assert ' MAT · RAPIDO' in root.locator('.ct326-kicker').inner_text()
+   assert ' MAT · CONTRA-ATAQUE RÁPIDO' in root.locator('.ct326-kicker').inner_text()
    after=page.evaluate("""() => ({
      snapshots:localStorage.getItem('scoutpro:v311:position-scenarios'),
      profiles:Object.keys(localStorage).filter(k=>k.startsWith('scoutpro:v324:manager-profile:'))
@@ -84,15 +90,15 @@ with sync_playwright() as pw:
    assert personal.locator('.ct327-why').count()==1
    reveal(personal.locator('.ct326-secondary-action'))
    personal.locator('.ct326-secondary-action').click()
-   assert personal.locator('.ct327-style-row').count()==5
+   assert personal.locator('.ct327-style-row').count()==6
    assert 'PP utilizados' in personal.locator('.ct327-style-row').first.inner_text()
    personal.locator('.ct327-style-row[data-style="normal"] .ct327-style-activate').click()
    page.wait_for_function("""() => document.querySelector('#scout-v220-hero .scout-v220-tab[data-tactic="normal"]')?.getAttribute('aria-pressed')==='true'""",timeout=25000)
-   assert 'NORMAL' in personal.locator('.ct326-kicker').inner_text()
+   assert 'CONTRA-ATAQUE NORMAL' in personal.locator('.ct326-kicker').inner_text()
    assert not [error for error in errors if error!='Scout PRO: carta sem estilo para filtro #1'],errors
    overflow=page.evaluate('Math.max(0,document.documentElement.scrollWidth-innerWidth)')
    assert overflow<=3,platform+' overflow='+str(overflow)
    context.close()
  finally:
   browser.close()
-print('V327 CHROMIUM PASS: cinco estilos, botão real, MAT-SA-MAT, sem salvar treinos; dois acervos e duas resoluções.')
+print('V327 CHROMIUM PASS: seis estilos, botão real, MAT-SA-MAT, sem salvar treinos; dois acervos e duas resoluções.')

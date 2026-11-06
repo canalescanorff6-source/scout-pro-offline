@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V272: 246 cartas × cinco táticas, skills/ímpetos/PP e transparência.
+/* V272: 246 cartas × seis táticas, skills/ímpetos/PP e transparência.
  * Não homologar builds por fórmula nem editar cartas aprovadas.
  */
 const assert=require('node:assert/strict');
@@ -80,7 +80,7 @@ for(const card of cards){
  assert.equal(JSON.stringify(card),cardSource,'Carta modificada #'+card.numero);
  rows.push(record);
 }
-assert.equal(cases,1230);
+assert.equal(cases,1476);
 assert.equal(coherent,159);
 assert.equal(provisional,1);
 assert.equal(noVectors,86);

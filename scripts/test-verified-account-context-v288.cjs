@@ -1,6 +1,6 @@
 'use strict';
 /* V288: engenharia de prova local; jamais equipar skills, consumir tokens ou
-   aceitar Card ID de edição diferente. Regressão das 246 × cinco táticas. */
+   aceitar Card ID de edição diferente. Regressão das 246 × seis táticas. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
@@ -58,7 +58,7 @@ for(const c of cards){
  }
  assert.equal(JSON.stringify(c),source);
 }
-assert.equal(scenarios,1230);
+assert.equal(scenarios,1476);
 assert.equal(JSON.stringify(cards),before);
 assert.equal(load('web/SCOUT_V69_AUDITORIA.json'),raw);
 

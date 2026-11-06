@@ -250,7 +250,7 @@ function mount(doc){
  host.addEventListener('scoutpro:tactic-selected-v220',event=>{
   const info=event.detail||{};
   if(Number(info.cap)!==capture||String(info.card_id)!==id)return;
-  if(!['posse','normal','rapido','fora','longo'].includes(info.tactic))return;
+  if(!['posse','normal','rapido','fora','longo','overload'].includes(info.tactic))return;
   activeTactic=info.tactic;styleLabel=String(info.label||info.tactic);
   const proposal=info.proposedLevels;
   suggested=valid(proposal)&&total(proposal)===budget?proposal.slice():null;
@@ -325,7 +325,7 @@ function mount(doc){
   activeProfileContext=context;
   activeTactic=context.style;
   styleLabel=({posse:'Posse de Bola',rapido:'Contra-Ataque Rápido',
-   normal:'Contra-Ataque',fora:'Por Fora',longo:'Bola Longa'})[activeTactic]||activeTactic;
+   normal:'Contra-Ataque',fora:'Por Fora',longo:'Bola Longa',overload:'Sobreposição'})[activeTactic]||activeTactic;
   let stored=null;
   try{stored=readProfile();profileError=''}catch(e){profileError=String(e.message||e)}
   const individual=stored?.levels;

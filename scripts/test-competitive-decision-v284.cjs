@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V284 — 246 × 5 fichas, habilidades e ímpetos sem tocar em identidade ou builds. */
+/* V284 — 246 × 6 fichas, habilidades e ímpetos sem tocar em identidade ou builds. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
@@ -64,7 +64,7 @@ for(const c of cards){
  assert.equal(JSON.stringify(c),originalCard,'Carta alterada: #'+c.numero);
  reports.push({capture:c.numero,cardId:c.id,edition:c.versao,tactics});
 }
-assert.equal(scenarios,1230);
+assert.equal(scenarios,1476);
 assert.equal(JSON.stringify(cards),original);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 const martin=cards.find(x=>x.numero===191);

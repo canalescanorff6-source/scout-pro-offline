@@ -1,6 +1,6 @@
 'use strict';
 const {historicalRoster,historicalCards}=require('./historical-catalog-v377.cjs'); // Conciliação dos dois snapshots corrigidos.
-/* V233 — auditoria da interpretação por 246 cartas × 5 táticas:
+/* V233 — auditoria da interpretação por 246 cartas × 6 táticas:
  * sem mudança de treino, PP ou dados locais.
  */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
@@ -10,7 +10,7 @@ const E=require('../web/craque-role-intelligence-v233.js');
 const cards=historicalRoster(JSON.parse(read('web/SCOUT_V69_AUDITORIA.json'))).cards;
 const review=JSON.parse(read('web/SCOUT_V213_AUDITORIA_INDIVIDUAL.json')).cards;
 const snapshot=JSON.stringify(cards);
-const modes=['posse','normal','rapido','fora','longo'];
+const modes=['posse','normal','rapido','fora','longo','overload'];
 assert.equal(cards.length,246);
 assert.equal(review.length,246);
 assert.deepEqual(Object.keys(E.MODES),modes);
@@ -21,7 +21,7 @@ assert.match(E.CATEGORY[8].stats,/alcance/);
 assert.match(E.CATEGORY[9].stats,/reflexos/);
 const roles=new Set(),changed=new Set(),identity=new Set(),variants=new Set();
 let inspected=0,proposals=0,missing=0,documented=0,blockedUnverified=0;
-const counted={posse:0,normal:0,rapido:0,fora:0,longo:0};
+const counted={posse:0,normal:0,rapido:0,fora:0,longo:0,overload:0};
 for(const c of cards){
  const cap=c.numero,card={...c,capture:cap,edition:c.versao,shown_position:c.posicao,
   attack_style:c.estilo_ataque,defence_style:c.estilo_defesa,native_skills:c.habilidades_nativas,
@@ -84,15 +84,15 @@ for(const c of cards){
  }
  assert.equal(JSON.stringify(card),freeze,'Engine must not mutate card '+fingerprint);
 }
-assert.equal(inspected,1230);
+assert.equal(inspected,1476);
 assert.equal(identity.size,246);
 assert.equal(JSON.stringify(cards),snapshot);
 assert(roles.size>=8,'Different job families actually covered');
-assert.equal(documented,85*5,'85 cartas com níveis documentados x cinco táticas');
-assert.equal(blockedUnverified,161*5,'161 cartas sem nível/PP documental bloqueadas nas cinco táticas');
+assert.equal(documented,85*6,'85 cartas com níveis documentados x seis táticas');
+assert.equal(blockedUnverified,161*6,'161 cartas sem nível/PP documental bloqueadas nas seis táticas');
 // Das 85 edições com nível documentado, apenas 1 tem simultaneamente
 // distribuição válida do acervo. As outras 84 não podem originar propostas.
-assert(proposals<=5,'Só a edição com nível E build documental completos pode propor até 5 táticas');
+assert(proposals<=6,'Só a edição com nível E build documental completos pode propor até 6 táticas');
 assert(changed.size<=1,'Nenhuma outra carta sem base plenamente documentada recebe revisão');
 const official=cards.find(x=>x.numero===40);
 const yorke={...official,capture:40,edition:official.versao,shown_position:official.posicao,recommended_levels:official.niveis};

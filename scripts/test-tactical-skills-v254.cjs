@@ -12,10 +12,10 @@ const cards=JSON.parse(catalog).cards;
 assert.equal(cards.length,246);
 assert.equal(new Set(cards.map(c=>String(c.numero)+'@'+String(c.id))).size,246);
 const snapshot=JSON.stringify(cards);
-const goal=['posse','normal','rapido','fora','longo'];
+const goal=['posse','normal','rapido','fora','longo','overload'];
 assert.deepEqual(B.tactics,goal);
 assert.deepEqual(goal.map(x=>B.TACTIC_LABEL[x]),[
- 'Posse de Bola','Contra-Ataque Normal','Contra-Ataque Rápido','Por Fora','Passe Longo'
+ 'Posse de Bola','Contra-Ataque Normal','Contra-Ataque Rápido','Por Fora','Passe Longo','Sobreposição'
 ]);
 const fake={capture:991,id:'990000991',edition:'EPIC-TESTE-991',shown_position:'MO',
  native_skills:'Passe de primeira',attack_style:'Armador criativo'};
@@ -110,7 +110,7 @@ for(const card of cards){
   assessed++;
  }
 }
-assert.equal(assessed,1230);
+assert.equal(assessed,1476);
 const ui=read('web/skills-booster-v162.js');
 const unified=read('web/scout-card-unified-v220.js');
 const sw=read('web/sw.js');
@@ -129,5 +129,5 @@ assert(sw.includes('v254-skill-slot-tactics'),
 assert(read('package.json').includes('test-tactical-skills-v254.cjs'));
 assert.equal(JSON.stringify(cards),snapshot);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),catalog);
-console.log('V254 OK: '+assessed+' combinações (246 cartas × 5 estilos), slots com conferência explícita e PP originais preservados.');
+console.log('V254 OK: '+assessed+' combinações (246 cartas × 6 estilos), slots com conferência explícita e PP originais preservados.');
 console.log('V254 OK: justificativas por estilo correto; ímpetos PT-BR apenas quando tradução documentada.');

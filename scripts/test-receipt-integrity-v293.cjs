@@ -87,7 +87,7 @@ for(const c of cards){
   conflict:boostProof.catalogConflict});
  assert.equal(JSON.stringify(c),old);
 }
-assert.equal(totals.scenarios,1230);
+assert.equal(totals.scenarios,1476);
 assert(totals.identityPending>0);
 assert(totals.sourceNamedConflicts>0);
 assert(totals.declaredEmptyAccepted>0);

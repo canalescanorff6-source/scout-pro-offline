@@ -61,10 +61,10 @@ for(const c of cards){
   nativeDocumented:!nativeAbsent,identityValid:withReceipt.identity.valid,
   slotsLocallyConfirmed:withReceipt.skills.confirmed});
 }
-assert.equal(scenarios,1230);
+assert.equal(scenarios,1476);
 assert.equal(missing,3);
 assert.deepEqual(missingCaps,[50,151,181]);
-assert.equal(blocked,15);
+assert.equal(blocked,18);
 assert(accepted>0);
 const example=cards.find(c=>c.numero===40);
 assert(example&&example.habilidades_nativas);
@@ -140,4 +140,4 @@ fs.writeFileSync(path.join(root,'build/v291-proof-training-246x5.json'),JSON.str
  evidence},null,2)+'\n');
 console.log('V291 PASS: '+scenarios+' cenários, '+blocked+
  ' bloqueios sem nativas, '+accepted+' confirmações locais elegíveis,'+
- ' Martinelli 26/50 nos cinco estilos, 246 cartas intactas.');
+ ' Martinelli 26/50 nos seis estilos, 246 cartas intactas.');

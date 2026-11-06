@@ -203,14 +203,25 @@ function generateIndex(report) {
 function compare(before, after) {
   if (before.schema !== schema || before.managerId !== after.managerId ||
       asJson(before.summary.cards) !== asJson(after.summary.cards) ||
-      before.scenarios.length !== after.scenarios.length) throw Error('Linha de base incompatível.');
+      before.scenarios.length > after.scenarios.length) throw Error('Linha de base incompatível.');
   const original = new Map(before.scenarios.map(row => [row.key, row]));
   const updated = new Map(after.scenarios.map(row => [row.key, row]));
   if (original.size !== before.scenarios.length || updated.size !== after.scenarios.length)
     throw Error('Contextos duplicados na comparação.');
+  const resolvedIdentities=[];
+  const currentReferences=JSON.parse(fs.readFileSync(path.join(web,'ct376-card-references.json'),'utf8')).cards;
   const changes = after.scenarios.flatMap(row => {
     const previous = original.get(row.key);
-    if (!previous || previous.cardId !== row.cardId || previous.edition !== row.edition || previous.position !== row.position)
+    if(!previous)return [];
+    if(previous.cardId!==row.cardId||previous.edition!==row.edition){
+      const entry=currentReferences.find(ref=>ref.key===row.key.split('|')[0]);
+      const proof=entry?.publicIdentityV393;
+      if(!proof||proof.catalogueId!==previous.cardId||proof.catalogueEdition!==previous.edition||
+         entry.reference?.cardId!==row.cardId||entry.reference?.edition!==row.edition)
+        throw Error('Identidade mudou sem vínculo público auditado para '+row.key);
+      resolvedIdentities.push(row.key);
+    }
+    if (previous.position !== row.position)
       throw Error('Identidade ou posição mudou para ' + row.key);
     return asJson(previous.vector) === asJson(row.vector) ? [] : [{
       key: row.key, name: row.name, before: previous.vector, after: row.vector,
@@ -227,6 +238,10 @@ function compare(before, after) {
   return {
     baselineRevision: before.revision,
     unchangedInputs: asJson(before.inputSha256) === asJson(after.inputSha256),
+    unchangedCardCatalogues:datasets.filter(file=>file!=='ct376-card-references.json')
+      .every(file=>before.inputSha256[file]===after.inputSha256[file]),
+    resolvedIdentities,
+    addedScenarios:after.scenarios.filter(row=>!original.has(row.key)).map(row=>row.key),
     changedVectors: changes.length,
     changesByStyle: Object.fromEntries(training.MODES.map(style => [style, changes.filter(row => row.key.endsWith('|' + style)).length])),
     beforeRepetitions: before.summary.repetitions,

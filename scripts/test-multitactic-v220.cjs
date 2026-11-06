@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V220: 246 cartas, cinco estilos, custo PP exato, recomendações sem dupla habilidade/ímpeto. */
+/* V220: 246 cartas, seis estilos, custo PP exato, recomendações sem dupla habilidade/ímpeto. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),read=p=>historicalRead(path.join(root,p),'utf8');
@@ -10,7 +10,7 @@ const T=require('../web/scout-multitactic-engine-v220.js');
 const R=require('../web/skills-booster-v162.js');
 const B=require('../web/booster-engine-v103.js');
 assert.equal(cards.length,246);
-assert.deepEqual(T.STYLES.map(s=>s.id),['posse','normal','rapido','fora','longo']);
+assert.deepEqual(T.STYLES.map(s=>s.id),['posse','normal','rapido','fora','longo','overload']);
 assert.deepEqual(B.tactics,T.STYLES.map(s=>s.id),'Booster rank cobre todos estilos, sem fallback genérico');
 const original=cards.map(c=>({id:c.id,num:c.numero,pp:c.pp,levels:c.niveis,native:c.habilidades_nativas,fixed:c.impeto_fixo,extra:c.impeto_extra}));
 const unique=new Set(cards.map(c=>c.numero+':'+c.id));assert.equal(unique.size,246,'Identificar a carta por número e Card ID');
@@ -95,5 +95,5 @@ assert(training.includes("activeTactic==='posse'"),'Apenas Posse sincroniza o la
 assert(css.includes('@media(max-width:420px)'),'Layout premium responsivo');
 assert(!ui.includes('fetch("https://')&&!ui.includes('eval('),'Nenhuma inferência remota de status de jogador');
 assert(!ui.includes('localStorage.setItem("SCOUT_V69')&&!training.includes('recommended_levels ='),'Nunca sobrescrever catálogo');
-console.log('V220 PASS: 246 cartas x 5 estilos; '+verified+' builds registradas, '+pending+
+console.log('V220 PASS: 246 cartas x 6 estilos; '+verified+' builds registradas, '+pending+
  ' pendentes, '+changed+' hipóteses PP reequilibradas e '+styleDifferences+' cartas com variações entre táticas; zero dados alterados.');

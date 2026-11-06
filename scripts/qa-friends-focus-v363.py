@@ -62,6 +62,17 @@ with sync_playwright() as pw:
    assert page.locator("#friend-cards .friends-card").count()==1,(platform,"prontas")
    assert "Carta Pronta QA" in page.locator("#friend-cards").inner_text()
    assert page.locator('#ct363-readiness button[data-filter="ready"]').get_attribute("aria-pressed")=="true"
+   page.locator('#friend-cards .friends-analysis-action').click()
+   modes=page.locator('#friend-analysis-modes button')
+   assert modes.count()==6
+   assert modes.locator('strong').all_text_contents()==[
+    'Posse de Bola','Contra-Ataque Normal','Contra-Ataque Rápido','Por Fora','Bola Longa','Sobreposição']
+   for style in ['normal','rapido','fora','longo','overload','posse']:
+    mode=page.locator('#friend-analysis-modes [data-style="'+style+'"]')
+    mode.click()
+    assert mode.get_attribute('aria-pressed')=='true'
+    assert '68 PP' in page.locator('#friend-analysis-badges').inner_text()
+   page.locator('#friend-analysis-close').click()
    page.locator('#ct363-readiness button[data-filter="pending"]').click()
    assert page.locator("#friend-cards .friends-card").count()==1,(platform,"pendentes")
    assert "Carta Pendente QA" in page.locator("#friend-cards").inner_text()

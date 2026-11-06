@@ -43,7 +43,7 @@ for(const card of cards){
  }
  assert.equal(JSON.stringify(card),unmodified);
 }
-assert.equal(total,1230);
+assert.equal(total,1476);
 const card=cards.find(c=>c.numero===2);
 assert(card&&B.trainingAudit(card).status==='custo_pp_conferido');
 const ids=['edition','budget','native','additional','booster','base','video','gameplay'];
@@ -72,4 +72,4 @@ const report=read('scripts/build-competitive-report-v264.cjs');
 assert(report.includes('evidencias_documentais_completas:readiness.documentaryComplete'));
 assert(read('web/sw.js').includes('v280-complete-evidence'));
 assert(read('package.json').includes('test-readiness-complete-v280.cjs'));
-console.log('V280 PASS: 1230 cenários; gameplay exige 9/9 evidências, inclusive nativas, adicionais e slot. 246 cartas intactas.');
+console.log('V280 PASS: 1476 cenários; gameplay exige 9/9 evidências, inclusive nativas, adicionais e slot. 246 cartas intactas.');

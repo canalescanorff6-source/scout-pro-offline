@@ -1,7 +1,7 @@
 'use strict';
 /* V294: uma flag booleana não cria vagas de habilidades adicionais.
  * O motor exige recibo V254 compatível com CAP/Card ID/edição/nativas/lista.
- * 246×5 cenários de prova sintética não homologam 246 cartas no jogo. */
+ * 246×6 cenários de prova sintética não homologam 246 cartas no jogo. */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const S=require('../web/skills-booster-v162.js'),B=require('../web/booster-engine-v103.js');
@@ -57,10 +57,10 @@ for(const c of cards){
  report.push({cap:c.numero,id:c.id,identityValid:validIdentity,
   localReceiptEligible:S.checkedEquipment(d,'',proof)});
 }
-assert.equal(count.scenarios,1230);
-assert.equal(count.booleanOnlyBlocked,1230);
+assert.equal(count.scenarios,1476);
+assert.equal(count.booleanOnlyBlocked,1476);
 assert(count.fullReceiptsAccepted>0);
-assert.equal(count.recordMismatchesBlocked,1230);
+assert.equal(count.recordMismatchesBlocked,1476);
 const primary=adapt(cards.find(c=>c.numero===1));
 assert(S.identityEvidenceV293(primary));
 const manual='Passe de primeira';

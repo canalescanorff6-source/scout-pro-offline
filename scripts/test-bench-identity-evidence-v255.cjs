@@ -103,7 +103,7 @@ for(const f of formation)for(const mode of Object.keys(tactics.MODES)){
   analyses++;
  }
 }
-assert.equal(analyses,3*5*12);
+assert.equal(analyses,3*6*12);
 for(const file of ['web/meu-time-duas-formacoes-v177.js',
  'web/meu-time-posse-4312.js','web/scout-rotation-lab-v219.js'])
  assert(read(file).includes('benchAdvisor.recommend('),
@@ -112,5 +112,5 @@ assert(read('web/sw.js').includes('v255-bench-person-clarity'),
  'Cache novo garante a mesma lógica no Windows e Android');
 assert(read('package.json').includes('test-bench-identity-evidence-v255.cjs'));
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),original);
-console.log('V255 OK: 246 cartas intactas, 120 opções das duas formações/5 táticas, sem duplicar pessoa.');
+console.log('V255 OK: 246 cartas intactas, 216 opções das três formações/6 táticas, sem duplicar pessoa.');
 console.log('V255 OK: outra edição não substitui a si mesma; encaixe irregular não gera falso ganho; posição treinada CA exige confirmação.');

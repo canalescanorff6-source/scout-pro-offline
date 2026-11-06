@@ -78,12 +78,12 @@ for(const card of cards){
  }
  assert.equal(JSON.stringify(card),before,'#'+card.numero+' modificado');
 }
-assert.equal(scenarios,1230);
+assert.equal(scenarios,1476);
 // V272 altera deliberadamente os pesos de função, estilo e nativas.
  // Técnica permanece monitorada, mas não se impõe o valor histórico 101.
  assert(technique>=0&&technique<=246,'Distribuição inconsistente');
 assert(realBudgets>0,'Nenhuma prova de PP documental passou o checklist');
-assert.equal(mathAccepted,795,'161 builds matematicamente coerentes × 5 estilos');
+assert.equal(mathAccepted,954,'159 builds matematicamente coerentes × 6 estilos');
 assert.equal(realBudgetsAccepted,0,'Sem atribuir origem comprovada a vetor que não a possui');
 assert(gateChanged>=0,'Contagem de mudanças de liderança não pode ser negativa');
 // Os 161 vetores conferem matematicamente mas não têm origem documental.

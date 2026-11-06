@@ -649,7 +649,7 @@ def run():
                     document.querySelector('#scout-v208-training tbody tr .scout-v208-level').textContent.trim()==='10'
                 """,timeout=10000)
 
-                # V302: técnicos por versão com troca real de estilo e Overload pendente.
+                # V393: Sobreposição participa da troca real, sem voltar ao estilo anterior.
                 manager=page.locator('#ct-manager-v302')
                 manager.wait_for(state='attached',timeout=20000)
                 if not manager.evaluate('(e)=>e.open'):
@@ -670,8 +670,8 @@ def run():
                     problems.append(f"{name}: técnico V302 não exibiu versão exata")
                 page.locator('#ct-manager-style').select_option('overload')
                 page.wait_for_function("""() =>
-                    document.querySelector('#ct-manager-details')?.textContent.includes('motor de PP') &&
-                    document.querySelector('#scout-v220-tabs [data-tactic="rapido"]')?.getAttribute('aria-pressed')==='true'
+                    document.querySelector('#ct378-style')?.value==='overload' &&
+                    document.querySelector('#scout-v220-tabs [data-tactic="overload"]')?.getAttribute('aria-pressed')==='true'
                 """,timeout=12000)
                 page.screenshot(path=str(OUT / f"{name}_v302_manager_selection.png"),full_page=False,animations="disabled")
                 page.locator('#ct-manager-style').select_option('posse')
@@ -680,10 +680,10 @@ def run():
                 """,timeout=12000)
                 manager.locator('.ct-manager-actions button').click()
                 manager.locator(':scope > summary').click()
-                # V220: uma ficha principal para os CINCO estilos, sem segunda ficha concorrente.
+                # V220: uma ficha principal para os SEIS estilos, sem segunda ficha concorrente.
                 main_tabs=page.locator('#scout-v220-tabs button[data-tactic]')
-                if main_tabs.count()!=5:
-                    problems.append(f"{name}: V220 deve oferecer cinco estilos de técnico no mesmo painel")
+                if main_tabs.count()!=6:
+                    problems.append(f"{name}: V220 deve oferecer seis estilos de técnico no mesmo painel")
                 if page.locator('#scout-v220-training #scout-v208-training').count()!=1:
                     problems.append(f"{name}: V220 duplicou ou perdeu a tabela principal de PP")
                 if page.locator('#scout-v220-technical #engenharia').count()!=1:
@@ -786,7 +786,7 @@ def run():
                 if remembered!=adjusted:
                     problems.append(f"{name}: rascunho V220 não ficou separado por estilo de jogo")
                 page.locator('#scout-v218-reset').click()
-                for tactic in ('normal','fora','longo'):
+                for tactic in ('normal','fora','longo','overload'):
                     page.locator(f'#scout-v220-tabs [data-tactic="{tactic}"]').click()
                     page.wait_for_function("""tactic => {
                       const btn=document.querySelector('#scout-v220-tabs [data-tactic="'+tactic+'"]');
@@ -806,7 +806,7 @@ def run():
                 page.locator('#scout-v220-save-notes').click()
                 if 'guardadas' not in page.locator('#scout-v220-notice').inner_text():
                     problems.append(f"{name}: registro local de teste por tática não confirmou salvamento")
-                page.screenshot(path=str(OUT / f"{name}_v220_card_five_styles.png"),full_page=False,animations="disabled")
+                page.screenshot(path=str(OUT / f"{name}_v220_card_six_styles.png"),full_page=False,animations="disabled")
                 v220_geom=page.evaluate("""() => ({
                     tabs:document.querySelectorAll('#scout-v220-tabs button').length,
                     panel:document.querySelector('#scout-v220-hero')?.getBoundingClientRect().width,
@@ -1279,7 +1279,7 @@ def run():
                     if page.locator('#scout-v221-review a.scout-v221-peer').count()<1:
                         problems.append(f"{name}: Huijsen #144 perdeu comparação de builds iguais")
                     page.screenshot(path=str(OUT / f"{name}_v221_huijsen_shared_id.png"),full_page=False,animations="disabled")
-                # V230: interface da logo e 5 estilos nas duas formações sem alterar histórico.
+                # V230: interface da logo e 6 estilos nas duas formações sem alterar histórico.
                 page.goto(URL + '/meu-time-duas-formacoes-v177.html',wait_until='domcontentloaded',timeout=35000)
                 page.locator('#ct-v230-tactic-tabs button').first.wait_for(timeout=25000)
                 page.wait_for_function("""() =>
@@ -1287,8 +1287,8 @@ def run():
                     document.querySelectorAll('#pitch button[data-slot]').length===11 &&
                     document.querySelectorAll('#ct-v230-tactic-details .ct-v230-fit-row').length===11
                 """,timeout=25000)
-                if page.locator('#ct-v230-tactic-tabs button').count()!=5:
-                    problems.append(f"{name}: V230 seletor dos cinco estilos na formação ausente")
+                if page.locator('#ct-v230-tactic-tabs button').count()!=6:
+                    problems.append(f"{name}: V230 seletor dos seis estilos na formação ausente")
                 # V255: testar o módulo REAL no navegador (sem alterar titulares)
                 # contra outra versão da mesma pessoa e falso ganho numérico
                 # quando a posição de um titular não está confirmada.
@@ -1375,7 +1375,7 @@ def run():
                     page.locator('#ct-v230-tactic-profile > details.ct-v230-tactic-advanced > summary').click()
                     if page.locator('#ct-v230-tactic-details .ct-v230-fit-row').count()!=11:
                         problems.append(f"{name}: V230 faltam diagnósticos individuais por posição")
-                    page.screenshot(path=str(OUT / f"{name}_five_modes_v230.png"),full_page=False,animations="disabled")
+                    page.screenshot(path=str(OUT / f"{name}_six_modes_v230.png"),full_page=False,animations="disabled")
                     # V246: Martinelli PTE só passa a CA após confirmação REAL no seletor.
                     page.locator('#pitch button[data-slot="cae"]').click()
                     page.locator('#show-all').check()
@@ -1433,7 +1433,7 @@ def run():
                     levels:cards.map(c=>c.level).sort(),
                     pp:cards.map(c=>c.pp).sort(),
                     images:cards.every(c=>c.image?.startsWith('data:image/webp;base64,')),
-                    profiles:cards.every(c=>Object.keys(c.analysis?.profiles||{}).length===5)
+                    profiles:cards.every(c=>Object.keys(c.analysis?.profiles||{}).length===6)
                   };
                 }""")
                 if (seven['ids']!=sorted(['89137214427270','88041460993477','89138556700485']) or
@@ -1458,15 +1458,15 @@ def run():
                 page.locator("#bruno-open-collection").click()
                 page.locator("#bruno-open-collection").click()
                 page.locator("#friend-cards .friends-card").first.wait_for(timeout=15000)
-                # V305: acesso visível e exclusivo por carta às cinco fichas do app.
+                # V305: acesso visível e exclusivo por carta às seis fichas do app.
                 if "Ver ficha do app" not in page.locator("#friend-cards .friends-card").first.inner_text():
                     problems.append(f"{name}: V305 não exibe botão para consultar a ficha")
                 page.locator("#friend-cards .friends-analysis-action").first.click()
-                if (page.locator("#friend-analysis-modes button").count()!=5 or
+                if (page.locator("#friend-analysis-modes button").count()!=6 or
                     "68 PP" not in page.locator("#friend-analysis-badges").inner_text()):
-                    problems.append(f"{name}: V310 perdeu cinco fichas / PP 68 confirmados do Zico")
+                    problems.append(f"{name}: V310 perdeu seis fichas / PP 68 confirmados do Zico")
                 if not page.locator("#friend-analysis-content").inner_text().count("68 / 68 PP distribuídos"):
-                    problems.append(f"{name}: V310 Zico 35 não gerou as cinco fichas com 68 PP")
+                    problems.append(f"{name}: V310 Zico 35 não gerou as seis fichas com 68 PP")
                 page.locator('#friend-analysis-sections [data-panel="skills"]').click()
                 if page.locator('#friend-analysis-content [data-panel="skills"] .ct373-pro').count()!=1:
                     problems.append(f"{name}: V373 dossiê PRO de habilidades ausente em Outros Elencos")
@@ -1518,7 +1518,7 @@ def run():
                 page.locator('#friend-cards .friends-analysis-action').click()
                 if not page.locator('#friend-analysis-content').inner_text().count('Treino ainda não calculável'):
                     problems.append(f"{name}: V228 ficha sem PP inventou treino")
-                if page.locator('#friend-analysis-modes button').count()!=5:
+                if page.locator('#friend-analysis-modes button').count()!=6:
                     problems.append(f"{name}: V228 faltam estilos táticos de técnico")
                 page.locator('#friend-analysis-close').click()
                 # Registrar somente informações fornecidas pelo dono da carta.
@@ -1532,12 +1532,12 @@ def run():
                 page.locator('#friend-card-booster-slot').select_option('vazio')
                 page.locator('#friend-dialog-save').click()
                 page.locator('#friend-cards .friends-analysis-action').click()
-                if (page.locator("#friend-analysis-modes button").count()!=5 or
+                if (page.locator("#friend-analysis-modes button").count()!=6 or
                     not page.locator("#friend-analysis-cover-empty").is_visible()):
                     problems.append(f"{name}: V305 ficha premium de Ana não iniciou corretamente")
                 if page.locator('.friend-analysis-table tbody tr').count()!=10:
                     problems.append(f"{name}: V228 não mostrou 10 grupos de treino")
-                for tactic in ['posse','normal','rapido','fora','longo']:
+                for tactic in ['posse','normal','rapido','fora','longo','overload']:
                     page.locator(f'#friend-analysis-modes button[data-style="{tactic}"]').click()
                     if page.locator('.friend-analysis-table tbody tr').count()!=10:
                         problems.append(f"{name}: V228 tabela ausente para {tactic}")
@@ -1548,7 +1548,7 @@ def run():
                         page.locator('#friend-analysis-export').click()
                     sheet=json.loads(Path(sheet_wait.value.path()).read_text(encoding='utf8'))
                     if (sheet.get('format')!='craque-friend-training-v228' or
-                        len(sheet.get('styles',{}))!=5 or
+                        len(sheet.get('styles',{}))!=6 or
                         sheet['styles']['posse']['training']['pp']!=62):
                         problems.append(f"{name}: V228 exportação de fichas táticas incompleta")
                 page.locator('#friend-analysis-sections [data-panel="skills"]').click()
@@ -1568,7 +1568,7 @@ def run():
                     native:ana?.nativeSkills,
                     boosters:ana?.boosterSlot}
                 }""")
-                if (saved['version']!=228 or len(saved['profiles'])!=5 or
+                if (saved['version']!=228 or len(saved['profiles'])!=6 or
                     saved['posse']!=62 or saved['boosters']!='vazio' or
                     'Passe de primeira' not in saved['native']):
                     problems.append(f"{name}: V228 ficha automática não persistiu {saved}")
@@ -1839,8 +1839,8 @@ def run():
                             lab285.locator(':scope > summary').click()
                             if lab285.locator('.ct285-stat').count()!=4:
                                 problems.append(f"{name}: V285 não mostra os quatro indicadores")
-                            if lab285.locator('.ct285-tactic').count()!=5:
-                                problems.append(f"{name}: V285 não mostra os cinco estilos")
+                            if lab285.locator('.ct285-tactic').count()!=6:
+                                problems.append(f"{name}: V285 não mostra os seis estilos")
                             if lab285.locator('.ct285-skill > strong').count()<1:
                                 problems.append(f"{name}: V285 sem justificativa individual de habilidade")
                             if lab285.locator('.ct285-experiments > li').count()!=3:

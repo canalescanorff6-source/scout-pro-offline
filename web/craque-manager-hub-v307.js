@@ -222,7 +222,7 @@ function makeCard(c,owned,favs){
  if(typeof url==='string'&&/^https:\/\//.test(url)){
   const a=el('a','','Fonte consultável da versão ↗');a.href=url;a.rel='noopener noreferrer';a.target='_blank';detail.append(a);
  }
- detail.append(el('p','','Retrato: '+(imgData?'adicionado pelo usuário':'pendente; adicione uma foto autorizada')+'. Sobreposição: motor de PP pendente.'));
+ detail.append(el('p','','Retrato: '+(imgData?'adicionado pelo usuário':'pendente; adicione uma foto autorizada')+'.'));
  node.append(detail);return node;
 }
 function render(){

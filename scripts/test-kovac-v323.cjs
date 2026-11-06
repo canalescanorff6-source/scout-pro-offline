@@ -28,7 +28,7 @@ assert.equal(API.proficiency(newEdition,'normal'),59);
 assert.equal(API.proficiency(newEdition,'rapido'),67);
 assert.equal(API.proficiency(newEdition,'longo'),53);
 assert.equal(API.proficiency(newEdition,'overload'),57);
-assert.equal(API.model(newEdition,'overload').canCalculate,false);
+assert.equal(API.model(newEdition,'overload').canCalculate,true);
 assert.equal(API.preferred(newEdition,null),'posse');
 assert.deepEqual(newEdition.boosters_PTBR,['Controle de bola +1','Dedicação defensiva +1']);
 assert.deepEqual(newEdition.link_ups_EN,['Aggressive Centring B','Shadow Link B']);

@@ -23,7 +23,7 @@ assert.equal(cards.length,246);assert.equal(new Set(cards.map(c=>c.numero+'@'+c.
 for(const card of cards){
  const snapshot=JSON.stringify(card),d=materialize(card);
  const dossier=S.evidenceDossier(d,'posse',B);
- assert.equal(dossier.tacticCounterfactuals.length,4);
+ assert.equal(dossier.tacticCounterfactuals.length,5);
  const results={cap:card.numero,cardId:card.id,edition:card.versao,
   origin:card.posicao,styles:{}};
  for(const tactic of B.tactics){
@@ -83,7 +83,7 @@ for(const card of cards){
  assert.equal(JSON.stringify(card),snapshot,'Carta original alterada #'+card.numero);
  dossiers.push(results);
 }
-assert.equal(count,1230);assert.equal(deltaCount,984);
+assert.equal(count,1476);assert.equal(deltaCount,1230);
 assert.equal(JSON.stringify(cards),before);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 for(const [signature,group] of bySignature){
@@ -141,6 +141,6 @@ fs.writeFileSync(path.join(root,'build/v282-individual-card-distinction-246x5.js
  JSON.stringify(report,null,2)+'\n');
 assert(read('web/sw.js').includes('v282-distinct-evidence'));
 assert(read('package.json').includes('test-card-distinction-v282.cjs'));
-console.log('V282 PASS: '+count+' fichas x cinco estilos, '+deltaCount+
+console.log('V282 PASS: '+count+' fichas x seis estilos, '+deltaCount+
  ' contrafactuais, '+differentSourceClusters+
  ' agrupamentos de recomendações iguais com evidências diferentes, 246 cartas intactas.');

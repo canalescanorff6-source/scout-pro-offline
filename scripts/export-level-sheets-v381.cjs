@@ -31,16 +31,16 @@ if(require.main===module){const at=process.argv.indexOf('--out'),folder=at>=0&&p
   '**Havertz #041:** 32 níveis e 62 PP conforme a captura e confirmação explícita do proprietário de que o eFHUB exibiu esse nível automaticamente. A página pública limpa dessa mesma ID retorna 26/50. A diferença está registrada; não foi tratada como confirmação dentro do jogo.','',
   '**Beckham #004:** fonte pública 33/64, em acordo com o catálogo. A conferência local 34/66 é distinta e, se continuar salva no dispositivo, aparece como divergência; não foi apagada.','',
   '**Resposta do proprietário em 01/11/2026:** Aubameyang #183 32/62; Savinho #196 34/66 (antes 42/82); Messi #050 29/56. São relatos do eFHUB, sem confirmação no jogo. A edição/ID exatos de Messi continuam pendentes; seu nível informado não resolve a identidade.','',
-  '**Fichas:** 1.305 contextos (261 cartas × cinco estilos) calculados com os orçamentos efetivos. Os cinco contextos do Messi preservam o aviso de identidade pendente. São propostas consultivas, não prova de melhor desempenho online.','',
+  '**Fichas:** 1.566 contextos (261 cartas × seis estilos) calculados com os orçamentos efetivos. Os seis contextos do Messi preservam o aviso de identidade pendente. São propostas consultivas, não prova de melhor desempenho online.','',
   'Treinos antigos incompatíveis foram arquivados, sem reaproveitá-los como treino atual. Não foram alterados imagens, IDs, nativas, equipamentos, formações ou dados pessoais do programa instalado. Os históricos salvos por você continuam preservados.','',
   'Daniel Muñoz #126 e Xavi Simons #204 são edições Trending sem progressão: 1 nível e 0 PP. A ficha não recomenda novos treinos, habilidades ou ímpeto selecionável para essas edições. [Regra oficial de evolução](https://www.konami.com/efootball/pt-br/page/overview).','',
-  '| Carta | Nível anterior | Nível revisado | PP anteriores | PP revisados | Fonte | Fichas dos cinco estilos |','|---|---:|---:|---:|---:|---|---|'];
+  '| Carta | Nível anterior | Nível revisado | PP anteriores | PP revisados | Fonte | Fichas dos seis estilos |','|---|---:|---:|---:|---:|---|---|'];
  for(const record of audit.cards){const rows=data.sheets.filter(s=>s.key===record.key),name=(record.capture===null?record.key:String(record.capture).padStart(3,'0'))+'_'+record.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'_')+'.txt',file=path.join(dir,name);
   fs.writeFileSync(file,rows.map(r=>r.text).join('\n\n'+'='.repeat(70)+'\n\n')+'\n');
   report.push('| '+record.name+' | '+(record.beforeLevel??'—')+' | '+(record.decision.maxLevel??'pendente')+' | '+(record.beforePP??'—')+' | '+(record.decision.pp??'mantidos')+' | '+(record.decision.ownerSource?'Relato/captura do proprietário':record.decision.url?'[referência]('+record.decision.url+')':'pendente')+' | [abrir]('+file.replace(/\\/g,'/')+') |');
  }
  fs.writeFileSync(path.join(folder,'LEIA-ME.md'),report.join('\n')+'\n');
- fs.writeFileSync(path.join(folder,'261-cartas-5-estilos.json'),JSON.stringify(data,null,2)+'\n');
+ fs.writeFileSync(path.join(folder,'261-cartas-6-estilos.json'),JSON.stringify(data,null,2)+'\n');
  for(const name of ['ct381-level-audit.json','ct381-level-corrections.json'])fs.copyFileSync(path.join(__dirname,'../web',name),path.join(folder,name));
  console.log(JSON.stringify({cards:261,sheets:data.sheetCount,reviewedCards:data.reviewedCards,pendingCards:data.pendingCards,output:folder}));
 }

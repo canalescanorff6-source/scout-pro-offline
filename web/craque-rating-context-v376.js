@@ -42,6 +42,7 @@ function resolve(ref,card,store,options={}){
    if(proof){ctx.budget=proof.pp;maxLevel=proof.level;}
    if(options.positional?.fromPersonal){
     const m=options.positional.fromPersonal(card,null,store);
+    if(m.evidenceCard?.publicIdentityV393){ctx.cardId=m.cardId;ctx.edition=m.edition;}
     if(m.boosterSlot==='ocupado'&&m.booster)ctx.extraBooster={name:m.booster,confirmed:true};
    }
   }

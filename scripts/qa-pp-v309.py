@@ -30,19 +30,19 @@ def run():
     page.wait_for_function("document.querySelectorAll('.friends-card').length>=1",timeout=20000)
     assert "68 PP" in page.locator(".friends-card").first.inner_text()
     page.locator(".friends-card .friends-analysis-action").first.click()
-    page.wait_for_function("document.querySelector('#friend-analysis-state')?.textContent.includes('Cinco')",timeout=25000)
+    page.wait_for_function("document.querySelector('#friend-analysis-state')?.textContent.includes('Seis')",timeout=25000)
     assert "68 PP" in page.locator("#friend-analysis-dialog").inner_text()
-    for label in ["Posse de Bola","Contra-Ataque Normal","Contra-Ataque Rápido"]:
+    for label in ["Posse de Bola","Contra-Ataque Normal","Contra-Ataque Rápido","Por Fora","Bola Longa","Sobreposição"]:
      assert label in page.locator("#friend-analysis-dialog").inner_text()
-    page.screenshot(path=str(OUT/(key+"_5_fichas.png")),full_page=False)
+    page.screenshot(path=str(OUT/(key+"_6_fichas.png")),full_page=False)
     page.locator("#friend-analysis-close").click()
     page.goto(URL+"/outros-elencos-v227.html?colecao=bruno-santos-cd",wait_until="domcontentloaded")
     page.wait_for_function("document.querySelector('#friend-current-name')?.textContent==='Bruno Santos CD'",timeout=20000)
     assert "Bruno Santos CD"==page.locator("#friend-current-name").inner_text()
     assert not errors,"Console errors: "+"|".join(errors)
-    results[key]={"pp_zico":68,"levels":35,"five_styles":True,"personal_owner_isolated":True,"errors":[]}
+    results[key]={"pp_zico":68,"levels":35,"six_styles":True,"personal_owner_isolated":True,"errors":[]}
     ctx.close()
   finally:browser.close()
  (OUT/"pp-universal-v309-report.json").write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding="utf-8")
- print("V309 QA PASS: Android/Windows, cadastro em Minhas Cartas Adicionadas, nível 35 -> 68 PP, cinco fichas, Bruno isolado.")
+ print("V309 QA PASS: Android/Windows, cadastro em Minhas Cartas Adicionadas, nível 35 -> 68 PP, seis fichas, Bruno isolado.")
 if __name__=="__main__":run()

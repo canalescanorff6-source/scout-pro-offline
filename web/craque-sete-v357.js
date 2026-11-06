@@ -85,7 +85,7 @@ function renderShortcut(doc){
  const info=doc.createElement('div');info.style.cssText='flex:1;min-width:210px';
  const eye=doc.createElement('span');eye.className='friends-eyebrow';eye.textContent='COLEÇÃO 7$ · 3 EDIÇÕES EXATAS';info.append(eye);
  const title=doc.createElement('h2');title.textContent='Elenco 7$';info.append(title);
- const p=doc.createElement('p');p.textContent='Hazard, Nedvěd e Bellingham · 33/64, 33/64 e 32/62 · 15 hipóteses de treino tático · recortes dos seus prints.';info.append(p);
+ const p=doc.createElement('p');p.textContent='Hazard, Nedvěd e Bellingham · 33/64, 33/64 e 32/62 · 18 hipóteses de treino tático · recortes dos seus prints.';info.append(p);
  const btn=doc.createElement('button');btn.className='friends-primary';btn.type='button';btn.textContent='Abrir as 3 cartas →';
  btn.onclick=()=>{
   const b=[...doc.querySelectorAll('#friend-people button')].find(x=>x.title==='Abrir somente as cartas de '+NAME);

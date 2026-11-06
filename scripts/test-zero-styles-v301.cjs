@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V301 — a ausência de uma proposta NÃO é nível 0. Os cinco estilos
+/* V301 — a ausência de uma proposta NÃO é nível 0. Os seis estilos
  * devem distinguir referência cadastrada, hipótese e dados pendentes. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
@@ -40,7 +40,7 @@ let generated=0,references=0,pending=0;
 for(const c of cards){
  if(T.valid(c.niveis)&&T.total(c.niveis)===c.pp)references++;
  else pending++;
- // Os cinco estilos mantêm sua identidade. A classificação não é prova de gameplay.
+ // Os seis estilos mantêm sua identidade. A classificação não é prova de gameplay.
  for(const tactic of T.STYLES){
   assert(T.styleFor(tactic.id));
   assert(Number.isInteger(c.pp));
@@ -59,8 +59,8 @@ for(const tactic of T.STYLES){
   'Treino provisório jamais vira baseline homologada');
  generated++;
 }
-assert.equal(generated,5);
+assert.equal(generated,6);
 assert.equal(JSON.stringify(cards),original,'Catálogo alterado');
 assert(read('web/sw.js').includes('v301-styles-no-false-zero'),
  'Cache offline precisa ser invalidado nos dois aplicativos');
-console.log('V301 PASS: 246 cartas intactas, 162 referências sem zero falso, 84 sem base marcadas pendentes, Martinelli 50 PP nos cinco estilos.');
+console.log('V301 PASS: 246 cartas intactas, 162 referências sem zero falso, 84 sem base marcadas pendentes, Martinelli 50 PP nos seis estilos.');

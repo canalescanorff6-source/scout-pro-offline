@@ -25,7 +25,7 @@
   registered:'BUILD REGISTRADA — NÃO HOMOLOGADA',
   gameplay:'EVIDÊNCIAS DOCUMENTADAS — EXIGIR REVISÃO HUMANA'
  });
- const styles=Object.freeze(['posse','normal','rapido','fora','longo']);
+ const styles=Object.freeze(['posse','normal','rapido','fora','longo','overload']);
  const has=(proof,id)=>proof?.checks?.some(x=>x.id===id&&x.documented===true)===true;
  function assess(card,proof,style,advice={}){
   if(!styles.includes(style))throw new Error('Tática inválida na V264');

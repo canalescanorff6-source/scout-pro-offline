@@ -49,7 +49,7 @@ with sync_playwright() as pw:
    for selector in ['#scout-v229-legacy-archive','#scout-v220-technical']:
     page.locator(selector).evaluate('(e)=>{e.open=false;}')
    more.locator(':scope > summary').click()
-   for style in ['rapido','normal','fora','longo','posse']:
+   for style in ['rapido','normal','fora','longo','overload','posse']:
     page.locator('#ct378-style').select_option(style)
     page.wait_for_function('(style)=>document.querySelector(".ct378-main-sheet")?.dataset.tactic===style',arg=style)
     assert page.locator('.ct378-main-sheet:visible').count()==1
@@ -142,4 +142,4 @@ with sync_playwright() as pw:
    (OUT/(name+'.json')).write_text(json.dumps({'errors':errors,'uniqueMainSheet':True,'advancedPreserved':True}),encoding='utf8')
    ctx.close()
  finally:browser.close()
-print('V378 VISUAL PASS: uma ficha principal, cinco contextos, ferramentas preservadas e técnico nas adicionadas;3telas.')
+print('V378 VISUAL PASS: uma ficha principal, seis contextos, ferramentas preservadas e técnico nas adicionadas;3telas.')

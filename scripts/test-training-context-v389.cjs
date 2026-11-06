@@ -76,7 +76,8 @@ assert.equal(tchouameni.review.spent, 64);
 assert.notEqual(rijkaard.review.individualAnalysis.evidenceSignature, tchouameni.review.individualAnalysis.evidenceSignature);
 assert.notDeepEqual(rijkaard.review.skills.map(s=>s.name), tchouameni.review.skills.map(s=>s.name));
 assert.equal(resolve(context(191, 'CA')).review.position, 'CA');
-assert.equal(resolve(context(246)).result.plan.analysis.status, 'dados_insuficientes');
+assert.equal(resolve(context(246)).result.plan.analysis.status, 'documentada');
+assert.equal(resolve(context(50)).result.plan.analysis.status, 'dados_insuficientes');
 
 const mbappe = context(49);
 assert.equal(resolve(mbappe).result.booster.slotSupported,true);

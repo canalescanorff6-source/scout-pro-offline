@@ -30,8 +30,8 @@ for(const c of cards){
  const dossier=S.evidenceDossier(d,'posse',B);
  const matrix=dossier.decisionMatrix;
  assert.equal(matrix.schema,'CRAQUE_V281_CROSS_TACTIC_DIAGNOSTIC');
- assert.equal(matrix.tactics,5);assert.equal(matrix.pairCount,10);
- assert.equal(matrix.rows.length,5);assert.equal(matrix.pairs.length,10);
+ assert.equal(matrix.tactics,6);assert.equal(matrix.pairCount,15);
+ assert.equal(matrix.rows.length,6);assert.equal(matrix.pairs.length,15);
  assert.deepEqual(matrix.rows.map(x=>x.tactic),B.tactics);
  assert.equal(matrix.canModifyBuild,false);assert.equal(matrix.canEquipSkills,false);
  assert.equal(matrix.canEquipBooster,false);
@@ -84,7 +84,7 @@ for(const c of cards){
   evidence:dossier.documentedIndicators,training:dossier.trainingStatus,
   native:dossier.nativeCoverage,matrix,allowedToApply:false});
 }
-assert.equal(scenarios,1230);assert.equal(pairs,2460);
+assert.equal(scenarios,1476);assert.equal(pairs,3690);
 assert.equal(JSON.stringify(cards),initial);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 // Igualdade de fórmula não equivale a duas builds idênticas comprovadas.
@@ -103,9 +103,9 @@ const simple=tactic=>( {style:tactic,skillKeys:['onepass','through'],
  balancedKeys:['onepass','through'],firstSkill:'Passe de primeira',technicalName:'Technique',
  skillMargin:0,margin:1} );
 const identical=S.decisionMatrixFromScenarios(B.tactics.map(simple));
-assert.equal(identical.pairCount,10);
-assert.equal(identical.repeatedPairs,10);
-assert.equal(identical.similarPairs80,10);
+assert.equal(identical.pairCount,15);
+assert.equal(identical.repeatedPairs,15);
+assert.equal(identical.similarPairs80,15);
 assert.equal(identical.uniqueFirstSkills,1);
 assert.equal(identical.uniqueFirstBoosters,1);
 assert(identical.warnings.length>=3);
@@ -115,7 +115,7 @@ const empty=S.decisionMatrixFromScenarios(B.tactics.map(tactic=>({
 assert.equal(empty.repeatedPairs,0);
 assert.equal(empty.similarPairs80,0);
 assert(empty.pairs.every(p=>p.overlapPercent===null&&p.verdict==='SEM_CANDIDATOS_CONFERIDOS'));
-assert.throws(()=>S.decisionMatrixFromScenarios([]),/exatamente cinco/);
+assert.throws(()=>S.decisionMatrixFromScenarios([]),/exatamente seis/);
 const noProof={...cards.find(x=>x.numero===191)};
 assert.equal(noProof.pp,50);assert.equal(noProof.max_level,26);
 const placeholderCards=cards.filter(x=>/pendente|não inferido|nao inferido/i.test(String(x.id)));

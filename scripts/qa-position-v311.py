@@ -27,7 +27,9 @@ with sync_playwright() as p:
    # V326: a ficha principal é compacta; abrir detalhes preserva integralmente
    # o mesmo motor, revisões e recomendações testados pelas versões antigas.
    assert not root.locator('.ct326-deep-dive').evaluate('(e) => e.open')
+   reveal(root.locator('.ct326-focus'))
    assert 'FICHA EM FOCO' in root.inner_text()
+   reveal(root.locator('.ct326-deep-dive > summary'))
    root.locator('.ct326-deep-dive > summary').click()
    # V321: relato de slot vazio na conta NÃO valida disponibilidade do
    # segundo slot na edição; ranking segue consultivo em ambas as telas.
@@ -129,13 +131,14 @@ with sync_playwright() as p:
       localStorage.setItem('scoutpro:v311:position-scenarios','{historico-invalido');
    }""")
    selector.select_option('MAT')
-   assert 'GRAVAÇÃO BLOQUEADA' in root.locator(':scope > .ct311-status').inner_text()
+   assert root.locator('.ct311-status[aria-live="polite"]').count()==1, 'Aviso de histórico inválido deve permanecer no documento'
+   assert 'GRAVAÇÃO BLOQUEADA' in root.locator('.ct311-status[aria-live="polite"]').inner_text()
    assert root.locator('.ct311-actions > .ct311-button').first.is_disabled()
    assert page.evaluate("localStorage.getItem('scoutpro:v311:position-scenarios')")== '{historico-invalido'
    page.evaluate("""() => localStorage.setItem(
       'scoutpro:v311:position-scenarios',window._validScenarioBackup)""")
    selector.select_option('SA')
-   assert 'GRAVAÇÃO BLOQUEADA' not in root.locator(':scope > .ct311-status').inner_text()
+   assert 'GRAVAÇÃO BLOQUEADA' not in root.locator('.ct311-status[aria-live="polite"]').inner_text()
    assert 'Cenário SA · rapido' in root.inner_text()
    page.goto(ROOT+'/fichas/001_Daniele_Massaro.html',wait_until='domcontentloaded')
    main=page.locator('.ct311-main-slot .ct311-positional')

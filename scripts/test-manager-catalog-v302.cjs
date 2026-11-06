@@ -19,9 +19,9 @@ assert.equal(new Set(C.map(x=>x.catalog_id)).size,70);
 assert.equal(new Set(C.map(x=>x.nome)).size,50);
 assert.equal(API.STYLES.length,6);
 assert.deepEqual(API.STYLES.filter(s=>s.supported).map(s=>s.id),
- ['posse','rapido','normal','fora','longo']);
-assert.equal(API.STYLES.find(x=>x.id==='overload').supported,false,
- 'Overload oficial precisa aguardar motor próprio; não reusar PP de outro estilo');
+ ['posse','rapido','normal','fora','longo','overload']);
+assert.equal(API.STYLES.find(x=>x.id==='overload').supported,true,
+ 'Sobreposição precisa oferecer sua própria ficha no seletor de técnicos');
 let dual=0,uncertain=0,unknownDate=0,notLicensed=0;
 for(const x of C){
  if(API.STYLES.filter(s=>s.supported&&API.proficiency(x,s.id)>=85).length>=2)dual++;
@@ -33,16 +33,21 @@ for(const x of C){
  for(const s of API.STYLES){
   const rank=API.model(x,s.id);
   assert.equal(rank.score,x.prof_cada_estilo[s.field]);
-  assert.equal(rank.canCalculate,s.supported&&rank.score!==null);
+  assert.equal(rank.canCalculate,s.supported,'Motor independente da proficiência documental');
   if(!s.supported)assert.equal(rank.status,
    rank.score===null?'nao_documentado':'motor_tatico_pendente');
  }
 }
-assert.equal(dual,33);
+assert.equal(dual,36);
 assert.equal(uncertain,40);
 assert.equal(unknownDate,1);
 assert.equal(notLicensed,70);
 const klopp=C.find(x=>x.catalog_id==='CT-MGR-001');
+const undocumented=C.find(x=>API.proficiency(x,'overload')===null);
+assert(undocumented,'Catálogo preserva proficiências ausentes');
+assert.equal(API.model(undocumented,'overload').status,'nao_documentado');
+assert.equal(API.preferred(undocumented,'overload'),'overload',
+ 'Estilo escolhido é restaurável mesmo quando a proficiência do técnico está ausente');
 assert.equal(API.proficiency(klopp,'rapido'),90);
 assert.equal(API.proficiency(klopp,'posse'),63);
 assert.equal(API.preferred(klopp,null),'rapido');
@@ -68,4 +73,4 @@ for(const f of ['craque-managers-v302.js','craque-managers-v302.css']){
 }
 const cards=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards;
 assert.equal(cards.length,246,'Nenhuma carta pode ser substituída');
-console.log('V302 PASS: 70 versões, 50 nomes, seis proficiências, 33 duplos >=85, 40 linkups não confirmados, 70 retratos sem licença e 246 cartas intactas. SHA256 original '+sha);
+console.log('V302 PASS: 70 versões, 50 nomes, seis estilos disponíveis, 36 duplos >=85, 40 linkups não confirmados, 70 retratos sem licença e 246 cartas intactas. SHA256 original '+sha);

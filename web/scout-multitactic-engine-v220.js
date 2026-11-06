@@ -1,4 +1,4 @@
-/* SCOUT PRO V220 — cinco estilos táticos oficiais com rótulos PT-BR.
+/* SCOUT PRO V220 — seis estilos táticos oficiais com rótulos PT-BR.
  * Simulações matemáticas por papel + habilidades documentadas, NÃO builds homologadas.
  * Nunca altera nem substitui as 246 cartas originais ou PP registrados.
  */
@@ -14,10 +14,12 @@ const STYLES=Object.freeze([
  {id:'fora',label:'Pelas Pontas · Por Fora',short:'Por Fora',focus:'Amplitude e apoio pelos lados; adaptação à preferência de jogo central requer validação.',
   priorities:[5,4,6,7,3,8,1,0,2,9]},
  {id:'longo',label:'Bola Longa · Passe Longo',short:'Bola Longa',focus:'Ligação mais direta, disputa da segunda bola, cobertura e transição.',
-  priorities:[4,6,8,0,7,5,1,3,2,9]}
+  priorities:[4,6,8,0,7,5,1,3,2,9]},
+ {id:'overload',label:'Sobreposição',short:'Sobreposição',focus:'Apoios próximos no lado da bola, circulação curta e recuperação com cobertura.',
+  priorities:[0,5,6,8,4,1,2,3,7,9]}
 ]);
 const CATEGORIES=['Chute','Passe','Drible','Destreza','Força das pernas','Jogo aéreo','Defesa','Goleiro 1','Goleiro 2','Goleiro 3'];
-const ROLE={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DC:'ZG',ZC:'ZG',ZG:'ZG',DD:'LD',LD:'LD',DE:'LE',LE:'LE',GR:'GO',GO:'GO',PTE:'ALA',PTD:'ALA',MLD:'ALA',MLE:'ALA'};
+const ROLE={AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DC:'ZG',ZC:'ZG',ZG:'ZG',DD:'LD',LD:'LD',DE:'LE',LE:'LE',GR:'GO',GO:'GO',PTE:'ALA',PTD:'ALA',MLD:'ALA',MLE:'ALA',PD:'ALA',PE:'ALA'};
 const BASE={
  CA:[16,9,8,14,13,9,0,0,0,0],
  SA:[12,15,13,16,12,4,0,0,0,0],
@@ -35,7 +37,8 @@ const MOD={
  normal:[1,6,2,2,4,2,5,0,0,0],
  rapido:[5,2,7,9,9,0,3,0,0,0],
  fora:[3,8,10,4,7,5,1,0,0,0],
- longo:[3,8,-1,3,7,10,7,0,0,0]
+ longo:[3,8,-1,3,7,10,7,0,0,0],
+ overload:[0,10,9,5,6,-2,5,0,1,1]
 };
 const nativeNames=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const ppCost=n=>{if(!Number.isInteger(n)||n<0||n>20)throw Error('Nível não permitido');let p=0;for(let j=0;j<n;j++)p+=1+Math.floor(j/4);return p};

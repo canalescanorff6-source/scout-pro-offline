@@ -10,7 +10,7 @@ const deps={tactical,skills,boosters},before=JSON.stringify(cards);
 const neymar=cards.find(c=>c.numero===90),maldini=cards.find(c=>c.numero===10);
 for(const [card,selected,origin] of [[neymar,'SA','MLE'],[maldini,'ZG','LD']]){
  const model=positional.fromPersonal(card);
- for(const style of ['posse','normal','rapido','fora','longo']){
+ for(const style of ['posse','normal','rapido','fora','longo','overload']){
   const scenario=positional.compute(model,selected,style);
   const review=scenario.outcome.functionReview;
   assert(review,'Each selected function must expose the individual review, not only generic warnings');
@@ -34,8 +34,8 @@ const pending={localKey:own.key,name:own.name,position:own.position,originalPosi
 const unknown=training.evaluate(pending,'posse',deps);
 assert.equal(training.evaluate({...pending,position:'ZG',originalPosition:'ZC'},'posse',deps).functionReview.eligibleForLineup,true,
  'ZC and ZG are documented position aliases, not an unproved secondary adaptation');
-assert.throws(()=>training.evaluate(pending,'sobreposicao',deps),/Sobreposição.*disponível/,
- 'Unsupported sixth style must be explicit, never silently mapped to possession');
+assert.throws(()=>training.evaluate(pending,'sobreposicao',deps),/Estilo tático inválido/,
+ 'Unknown tactical identifiers must be rejected, never silently mapped to possession');
 assert.equal(unknown.functionReview.proposed,null);
 assert.equal(unknown.functionReview.current,null);
 assert.equal(unknown.functionReview.canSave,false);
@@ -87,14 +87,14 @@ assert(!equippedScenario.outcome.functionReview.skills.some(x=>/Interceptação|
 assert.equal(positional.fromPersonal({...neymar,id:'999991'},null,{getItem:k=>account.get(k)??null}).skills,'');
 let originalScenarios=0,pendingAdditionScenarios=0;
 assert.equal(positional.normalize('ME'),'MLG','Paul Scholes #015 uses the documented ME central-midfield alias');
-for(const card of cards)for(const tactic of ['posse','normal','rapido','fora','longo']){
+for(const card of cards)for(const tactic of ['posse','normal','rapido','fora','longo','overload']){
  const model=positional.fromPersonal(card),scenario=positional.compute(model,model.position,tactic);
  assert.equal(scenario.outcome.functionReview.pp,card.pp);
  assert.equal(scenario.outcome.functionReview.spent,card.pp);
  assert.equal(scenario.outcome.functionReview.finalAttributesVerified,false);
  originalScenarios++;
 }
-for(const card of JSON.parse(read('ct364-owned-cards.json')).cards)for(const tactic of ['posse','normal','rapido','fora','longo']){
+for(const card of JSON.parse(read('ct364-owned-cards.json')).cards)for(const tactic of ['posse','normal','rapido','fora','longo','overload']){
  const result=training.evaluate({...pending,localKey:card.key,name:card.name,position:card.position,
   originalPosition:card.position,style:card.style,nativeSkills:card.observed.nativeSkills.join('; ')},tactic,deps);
  assert.equal(result.functionReview.proposed,null,'Shown simulator level must not create a PP budget');
@@ -102,6 +102,6 @@ for(const card of JSON.parse(read('ct364-owned-cards.json')).cards)for(const tac
  assert(result.functionReview.priorities.length>0);
  pendingAdditionScenarios++;
 }
-assert.equal(originalScenarios,1230);assert.equal(pendingAdditionScenarios,75);
+assert.equal(originalScenarios,1476);assert.equal(pendingAdditionScenarios,90);
 assert.equal(JSON.stringify(cards),before);
-console.log('V374 PASS: 261 × 5 = 1305 reviews (1230 exact-PP original proposals, 75 additions pending PP); secondary previews, account receipts, native filtering, explicit drafts and immutable history.');
+console.log('V374 PASS: 261 × 6 = 1566 reviews (1476 exact-PP original proposals, 90 additions pending PP); secondary previews, account receipts, native filtering, explicit drafts and immutable history.');

@@ -1,5 +1,29 @@
 # Auditoria V389 das fichas individuais
 
+## Fichas nos seis estilos e em todos os acervos
+
+O cálculo atende Posse de Bola, Contra-Ataque, Contra-Ataque Rápido, Por Fora, Bola Longa e Sobreposição nas fichas principais, próprias, privadas e de Outros Elencos. A posição de uso e a ativação dos estilos ofensivo e defensivo entram na interpretação. A função escolhida e as instruções entram no Plano do Time e na ficha por função. Sobreposição usa uma proposta própria de apoio próximo, controle sob pressão e recuperação. O orçamento continua sendo o da carta. [Sobreposição na Konami](https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00) · [Estilos coletivos no estudo de Amadeusz](https://efhub.com/zh/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed)
+
+As bases públicas agora abrangem 260 das 261 cartas embarcadas. As 21 referências acrescentadas usam as artes auditadas no V381, mantêm a chave histórica e respeitam revisões manuais. O ID e a edição públicos são apresentados na proposta derivada. Os arquivos originais, níveis, PP, imagens e treinamentos cadastrados ficam preservados. Messi #050 mantém o relato 29/56 e a pendência da edição exata. Os três jogadores da coleção 7$ têm referências adicionais com bases, nativas e slots documentados.
+
+A auditoria das cartas embarcadas produz 1.566 cenários, 1.560 com base pública, sem erro de identidade ou custo de PP. Na comparação com V391, 197 distribuições mudaram nos quatro estilos alternativos e 261 propostas de Sobreposição foram acrescentadas. As 261 distribuições de Posse registradas nessa comparação mantiveram os vetores. Slots adicionais agora respeitam a referência pública em todos os estilos.
+
+Os testes verificam os seis estilos nas 13 posições, Principal e Secundária, isolamento de revisões, compatibilidade com backups anteriores, prioridade dos dados manuais e acesso à proposta atualizada mesmo quando existe uma ficha salva. Proficiências desconhecidas continuam explicitamente ausentes. A presença de uma base pública e a validade matemática da proposta não comprovam aquisição, familiaridade em outras posições ou superioridade em partidas.
+
+## Apoio por dentro e cobertura na lateral
+
+O Plano do Time e a ficha por função passam a calcular a opção **Apoiar por dentro e recuperar** com uma ação própria, que combina passe curto, domínio, equilíbrio, velocidade, resistência e cobertura. A instrução **Defensivo** mantém a prioridade de cobertura. A função do app é uma hipótese de uso da carta. A ativação de estilos continua vinculada à posição e à fase informadas.
+
+Juan Foyth #131, Card ID `105864769945293`, LD, Contra-Ataque Rápido, 56 PP em cada cenário. A projeção soma a distribuição aos atributos-base antes dos bônus e da condição.
+
+| Função no plano | Passe rasteiro | Controle de bola | Aceleração | Talento defensivo | Desarme |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Dar apoio seguro pelo lado | 73 | 73 | 82 | 84 | 84 |
+| Apoiar por dentro e recuperar | 75 | 75 | 81 | 83 | 83 |
+| Apoiar por dentro e recuperar, com Defensivo | 74 | 73 | 82 | 84 | 84 |
+
+As recomendações respeitam as nativas da edição e o catálogo indica ausência de slot adicional de ímpeto. Os cenários com instruções diferentes servem para comparar o encaixe do conjunto. Para medir apenas a ficha em PvP, mantenha posição, técnico, instruções e equipamento iguais. Registre tabelas concluídas sob pressão por recepções e coberturas bem-sucedidas por bolas jogadas no corredor, com o placar e o período da partida. As entrevistas sustentam a escolha do que observar e o resultado em partida permanece em aberto. [Edição de Foyth](https://efhub.com/players/105864769945293) · [Notas da Konami](https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00) · [Entrevistas no eFHUB](https://efhub.com/es/articles/260930_3-which-defender-playing-style-is-best)
+
 ## Estudos de Amadeusz na ficha do aplicativo
 
 O ganho marginal de passe rasteiro, passe alto, finalização e cabeceio usa três faixas de precisão com quebras em 60 e 90, quando esses atributos fazem parte da ação da carta. O modelo usa inclinações aproximadas do estudo como fatores editoriais e mantém o custo progressivo dos PP. A projeção considera a base e o ímpeto fixo documentado. Proficiência do técnico, condição e habilidades situacionais ficam fora dessa projeção. [Estudo de precisão](https://efhub.com/articles/261019_3-passing-and-finishing-the-threshold-is-90-for-both)

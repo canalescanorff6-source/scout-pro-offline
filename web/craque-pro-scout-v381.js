@@ -43,9 +43,9 @@ const SOURCES=Object.freeze([
   proves:'Cartas com Skill Training/Position Training não eram permitidas no torneio.'})
 ]);
 const PROVEN_BUILDS=Object.freeze([]); // Sem print/frame com Card ID, PP e treino comprovados.
-const MODES=Object.freeze(['posse','normal','rapido','fora','longo']);
+const MODES=Object.freeze(['posse','normal','rapido','fora','longo','overload']);
 const MODE_TEXT=Object.freeze({posse:'Posse de Bola',normal:'Contra-Ataque Normal',
- rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Passe Longo'});
+ rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Passe Longo',overload:'Sobreposição'});
 const ROLE_NOTE=Object.freeze({
  CA:'Priorizar recepção orientada, tabelas com MAT/SA, finalização e ataque ao espaço central.',
  SA:'Conectar os dois atacantes com MAT, apoiar tabelas curtas e escolher infiltrações.',
@@ -66,7 +66,8 @@ const MODE_NOTE=Object.freeze({
  normal:'Comparação contextual: progressão em transição mais cadenciada; não substituir a ficha de Posse.',
  rapido:'Comparação contextual: velocidade de execução e recuperação; não substituir a ficha de Posse.',
  fora:'Comparação contextual: uso de amplitude sem impor pontas nem cruzamentos à sua escalação.',
- longo:'Comparação contextual: saída vertical e segunda bola; não substituir a ficha de Posse.'
+ longo:'Comparação contextual: saída vertical e segunda bola; não substituir a ficha de Posse.',
+ overload:'Apoios próximos no lado da bola, recepção sob pressão e recuperação com cobertura.'
 });
 const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase();
 function ppCost(n){if(!Number.isInteger(n)||n<0||n>20)return null;let total=0;

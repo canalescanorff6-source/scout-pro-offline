@@ -8,7 +8,7 @@
 const KEY='scoutpro:v311:position-scenarios';
 const PREF='scoutpro:v311:position-selection:';
 const POS=Object.freeze(['CA','SA','MAT','MLG','VOL','ZG','LD','LE','PTE','PTD','MLE','MLD','GO']);
-const MAP=Object.freeze({AC:'CA',MO:'MAT',MC:'MLG',ME:'MLG',MDF:'VOL',ZC:'ZG',DC:'ZG',DD:'LD',DE:'LE',GR:'GO'});
+const MAP=Object.freeze({AC:'CA',MO:'MAT',MC:'MLG',ME:'MLG',MDF:'VOL',ZC:'ZG',DC:'ZG',DD:'LD',DE:'LE',GR:'GO',PD:'PTD',PE:'PTE'});
 const normalize=v=>MAP[String(v||'').trim().toUpperCase()]||String(v||'').trim().toUpperCase();
 const text=v=>String(v??'').trim();
 const depsDefault=()=>({
@@ -24,13 +24,30 @@ const hash=input=>{
  return a.toString(16).padStart(8,'0');
 };
 const json=x=>JSON.stringify(x);
-function fromPersonal(card,raw,store){
+function publicPersonal(card,entries){
+ if(card.review379||/^\d{5,20}$/.test(String(card.id||'')))return card;
+ const entry=entries?.find(r=>r.capture===Number(card.numero)),proof=entry?.publicIdentityV393,ref=entry?.reference;
+ if(!entry?.identityUsable||!proof||proof.matchStatus!=='exact_artwork_match'||
+    proof.capture!==Number(card.numero)||proof.catalogueId!==String(card.id)||
+    proof.catalogueEdition!==card.versao||entry.file!==card.arquivo||
+    proof.image!==entry.image||!/^[a-f0-9]{64}$/.test(proof.localImageSha256||'')||
+    !/^\d{5,20}$/.test(entry.candidateId||'')||entry.candidateId!==ref?.cardId)return card;
+ return {...card,id:ref.cardId,versao:ref.edition,publicIdentityV393:proof,
+  publicLegacyKeyV393:String(card.numero)+'@'+String(card.id),
+  habilidades_nativas:ref.nativeSkills.join('; '),
+  impeto_fixo:ref.fixedBoosters.map(b=>b.name).join('; '),base_stats_known:true};
+}
+function fromPersonal(card,raw,store,publicReferences){
  if(!card||!Number.isInteger(Number(card.numero)))throw Error('Carta pessoal sem número comprovado');
  const review=typeof window!=='undefined'?window.CRAQUE_CARD_REVIEW_V379:require('./craque-card-review-v379.js');
  card=review?.personal(card,store)||card;
  if(card.review379?.identityChanged)raw=null;
+ const entries=publicReferences??host?.CRAQUE_REFERENCES_V376?.cards??
+  (typeof module==='object'?require('./ct376-card-references.json').cards:null);
+ card=publicPersonal(card,entries);
+ if(card.publicIdentityV393)raw=null;
  const model={
-  collection:'minhas-246',owner:'principal',cardKey:String(card.numero)+'@'+text(card.id),
+  collection:'minhas-246',owner:'principal',cardKey:card.publicLegacyKeyV393||String(card.numero)+'@'+text(card.id),
   name:text(card.name),edition:text(card.versao),cardId:text(card.id),
   position:normalize(card.posicao),
   // V376: a public reference is not a new owner declaration. Keeping the
@@ -71,7 +88,7 @@ function fromExternal(card,owner){
   collection:'outros-elencos',owner:text(owner.id),cardKey:text(card.id),
   name:text(card.name),edition:text(card.edition),cardId:text(card.cardId),
   position:normalize(card.position),level:card.level??null,pp:card.pp??null,
-  style:text(card.style),nativeSkills:text(card.nativeSkills),
+  style:text(card.style),defenceStyle:text(card.defenceStyle),nativeSkills:text(card.nativeSkills),
   skills:text(card.skills),fixedBooster:text(card.fixedBooster),
   booster:text(card.booster),boosterSlot:text(card.boosterSlot)||'pendente',
   trainingLevels:text(card.trainingLevels),evidenceCard:null
@@ -95,7 +112,7 @@ function contentSignature(m){
 function identity(m,pos,style,manager){
  validate(m);const use=normalize(pos);
  if(!POS.includes(use))throw Error('Posição de uso inválida');
- if(!['posse','normal','rapido','fora','longo'].includes(style))throw Error('Estilo coletivo inválido');
+ if(!['posse','normal','rapido','fora','longo','overload'].includes(style))throw Error('Estilo coletivo inválido');
  const mgr=text(manager)||'sem-tecnico';
  if(mgr.length>110)throw Error('Identificação do técnico inválida');
  const components=[m.collection,m.owner,m.cardKey,m.cardId||'sem-card-id',m.edition||'edicao-pendente',use,style,mgr];

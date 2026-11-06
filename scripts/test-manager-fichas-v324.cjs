@@ -73,7 +73,13 @@ assert.throws(()=>core.save(store,ctx,{train:Array(10).fill(20)}),/PP|inválid/i
 assert.throws(()=>core.save(store,ctx,{train:pp,skills:Array(6).fill('Candidata')}),/cinco/i);
 assert.throws(()=>core.save(store,ctx,{train:pp,skills:['Passe de primeira','Passe de primeira']}),/duplicada/i);
 assert.throws(()=>core.validateContext({...ctx,manager:'CT-MGR-INVALIDO'}),/técnico/);
-assert.throws(()=>core.validateContext({...ctx,style:'overload'}),/estilo/);
+const overload=core.withStyle(ctx,'overload');
+assert.notEqual(core.key(overload),core.key(ctx),'Sobreposição mantém revisão própria');
+const overloadRecord=core.save(store,overload,{train:pp,skills:[],booster:''});
+assert.equal(overloadRecord.revision,1);
+assert.deepEqual(core.read(store,overload).train,pp);
+assert.equal(core.read(store,ctx).revision,2,'Sobreposição não altera a ficha de Posse');
+assert.throws(()=>core.validateContext({...ctx,style:'desconhecido'}),/estilo/);
 const previous=store.getItem(core.key(ctx));
 store.setItem(core.key(ctx),'{NÃO É JSON');
 assert.throws(()=>core.read(store,ctx),/ilegível/);

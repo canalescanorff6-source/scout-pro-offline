@@ -41,7 +41,7 @@ for(const c of cards){
  }
  assert.equal(JSON.stringify(c),record,'Carta mutada na memória: '+c.numero);
 }
-assert.equal(scenarios,1230);
+assert.equal(scenarios,1476);
 assert(Object.keys(statuses).length>=3,'Caminhos de prova heterogêneos precisam ser exercitados');
 const martin=cards.find(c=>c.numero===191);
 assert(martin&&martin.max_level===26&&martin.pp===50&&martin.treino_proposto_nao_validado);

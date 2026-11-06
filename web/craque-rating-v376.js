@@ -47,8 +47,12 @@ function evaluate(card,ctx,model){
  if((ctx.position==='GO')!==(card.position==='GO'))return pending('Goleiro e jogador de linha exigem funções compatíveis.');
  const accepted=card.identityUsable===true||ctx.referenceConfirmed===true;
  if(!ref||!accepted)return pending('Edição/ID ainda precisa de conferência individual.');
- const id=card.cardId||card.candidateId;
- if(String(ctx.cardId)!==String(id)||String(ctx.edition)!==String(card.edition))return pending('A edição selecionada não corresponde à referência.');
+ const proof=card.publicIdentityV393;
+ const publicIdentity=proof?.matchStatus==='exact_artwork_match'&&proof.catalogueId===String(card.cardId)&&
+  proof.catalogueEdition===card.edition&&card.candidateId===ref.cardId;
+ const id=publicIdentity?ref.cardId:card.cardId||card.candidateId;
+ const editions=publicIdentity?[card.edition,ref.edition]:[card.edition];
+ if(String(ctx.cardId)!==String(id)||!editions.includes(String(ctx.edition)))return pending('A edição selecionada não corresponde à referência.');
  if(!Object.hasOwn(POS,ctx.position))return pending('Posição não reconhecida.');
  const spent=trainingCost(ctx.training);
  if(spent===null)return pending('Treino atual não registrado; não presumir que a proposta já foi aplicada.');

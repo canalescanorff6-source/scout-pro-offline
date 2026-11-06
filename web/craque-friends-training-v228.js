@@ -7,8 +7,8 @@
  if(typeof module==='object'&&module.exports)module.exports=api;
  if(host)host.CRAQUE_FRIEND_TRAINING_V228=api;
 })(typeof window!=='undefined'?window:null,function(){'use strict';
-const MODES=['posse','normal','rapido','fora','longo'];
-const LABEL={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'};
+const MODES=['posse','normal','rapido','fora','longo','overload'];
+const LABEL={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa',overload:'Sobreposição'};
 // V309: mesmo cálculo para Minhas Cartas e todos os outros elencos.
 const progression=typeof window!=='undefined'?window.CRAQUE_PP_UNIVERSAL_V309:
   require('./craque-pp-universal-v309.js');
@@ -17,7 +17,8 @@ const levelBudget=progression.budget,resolveBudget=progression.resolve;
 function catalogueReference(card){
  const id=String(card.cardId||'');
  if(typeof window==='undefined'||!/^\d{5,20}$/.test(id)||!card.edition)return null;
- return window.CRAQUE_REFERENCES_V376?.cards.find(entry=>entry.identityUsable===true&&
+ const catalogue=window.CRAQUE_REFERENCES_V376;
+ return [...(catalogue?.cards||[]),...(catalogue?.externalCards||[])].find(entry=>entry.identityUsable===true&&
   String(entry.reference?.cardId)===id&&[entry.edition,entry.reference?.edition].includes(card.edition)&&
   (!card.capture||Number(card.capture)===entry.capture))||null;
 }
@@ -43,7 +44,7 @@ const getDeps=(deps)=>deps||{
 function boosterFor(card,raw,tactic,deps,task,reference){
  const result=deps.skills.booster(raw,tactic,deps.boosters,card.boosterSlot||'pendente',card.booster||'',{task});
  const support=reference?.extraSlotInPublicEdition;
- if(tactic==='posse'||typeof support!=='boolean'||card.boosterSlot==='ausente')return result;
+ if(typeof support!=='boolean'||card.boosterSlot==='ausente')return result;
  if(support){
   if(result.slotSupported)return result;
   return {...result,slotSupported:true,slotEvidence:'slot_documentado_na_referencia',
@@ -130,7 +131,7 @@ function allocate(card,tactic,deps){
   pp_origem:'nivel_informado_no_cadastro_externo',
   recommended_levels:null,niveis:null,base_stats_known:false,
   pp_estimado:progress.source==='manual_divergente'};
- if(tactic!=='posse'&&card.originalPosition&&card.position!==card.originalPosition){
+ if(tactic!=='posse'){
   const method=typeof window!=='undefined'?window.CRAQUE_FUNCTION_METHOD_V383:require('./craque-function-method-v383.js');
   const activation=method?.activation({card,slot:{position:card.position},offBall:{position:card.position},
    offenseStyle:card.style,defenceStyle:card.defenceStyle});
@@ -388,8 +389,7 @@ function saveFunctionDraft(store,card,tactic,result,provided){
  store.setItem(functionDraftKey(card,tactic),JSON.stringify(record));return record;
 }
 function evaluate(card,tactic='posse',deps){
- if(!MODES.includes(tactic))throw Error(tactic==='sobreposicao'?
-  'Sobreposição: perfil ainda não disponível; não substituir por Posse de Bola.':'Estilo tático inválido.');
+ if(!MODES.includes(tactic))throw Error('Estilo tático inválido.');
  const {tactical:t,skills:s,boosters:b}=getDeps(deps);
  if(!t||!s||!b)throw Error('Um dos motores oficiais do Craque Tático não carregou.');
  const progress=resolveBudget(card);

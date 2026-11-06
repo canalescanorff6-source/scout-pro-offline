@@ -63,7 +63,7 @@ jobs:
   screenshots:
     name: Capturas visuais em 8 resoluções Android e Windows
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

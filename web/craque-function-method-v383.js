@@ -30,6 +30,7 @@ rule('defence',['Meia versátil','Todo o terreno'],['MLE','MLD','MLG','VOL']);
 rule('defence',['Primeiro volante','Trinco'],['VOL']);
 rule('defence',['O destruidor','Destruidor'],['MLG','VOL','LE','LD','ZG']);
 rule('defence',['Mestre da linha alta'],['LE','LD','ZG']);
+rule('defence',['Cobertura'],['LE','LD','ZG']);
 rule('defence',['Goleiro ofensivo','GR ofensivo'],['GO']);rule('defence',['Goleiro defensivo'],['GO']);
 function phase(style,position,kind){const label=String(style||'Não informado'),key=norm(style),r=table[kind][key];
  const status=['basico','básico'].includes(key)?'basic':!r?'pending':r.positions.includes(position)?'active':'inactive';

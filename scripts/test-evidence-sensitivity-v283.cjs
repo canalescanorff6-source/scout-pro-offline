@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-// V283 — auditoria integral das 246 cartas nos cinco estilos, sem alterar o acervo.
+// V283 — auditoria integral das 246 cartas nos seis estilos, sem alterar o acervo.
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
@@ -55,7 +55,7 @@ for(const card of cards){
  assert.equal(JSON.stringify(card),before,'Carta original modificada '+card.numero);
  report.push({capture:card.numero,cardId:card.id,edition:card.versao,rows});
 }
-assert.equal(scenarios,1230);assert.equal(JSON.stringify(cards),initial);
+assert.equal(scenarios,1476);assert.equal(JSON.stringify(cards),initial);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 const martin=cards.find(c=>c.numero===191);
 assert(martin);assert.equal(martin.pp,50);assert.equal(martin.max_level,26);

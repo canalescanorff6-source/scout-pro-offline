@@ -48,6 +48,27 @@ a.equal(finishReview.individualAnalysis.task.key,'depth');
 a.notDeepEqual(pivotReview.proposed,finishReview.proposed);
 a.equal(T.total(pivotReview.proposed),60);
 a.equal(T.total(finishReview.proposed),60);
+const foyth=primary.find(c=>c.capture===131);
+const foythReview=(functionKey,instructions=[])=>C.recommend(
+ privateLibrary.individualContext(foyth,{style:'rapido',functionKey,instructions}),deps).cards[0].review;
+const secureFoyth=foythReview('secure'),advanceFoyth=foythReview('advance');
+a.equal(secureFoyth.individualAnalysis.task.key,'cover');
+a.equal(advanceFoyth.individualAnalysis.task.key,'inside_support');
+a.equal(foythReview('advance',['defensive']).individualAnalysis.task.key,'cover');
+a.notDeepEqual(secureFoyth.proposed,advanceFoyth.proposed);
+a(advanceFoyth.proposed[1]>secureFoyth.proposed[1],'Apoio por dentro investe mais no grupo de passe neste caso');
+for(const review of [secureFoyth,advanceFoyth]){
+ a.equal(T.total(review.proposed),56);
+ a.equal(review.identity.cardId,'105864769945293');
+ a.equal(review.boosters.length,0);
+}
+const rightBack=form.slots.find(slot=>slot.position==='LD');
+const fullRoster=[foyth,...cards.map(c=>({...c,accountId:'primary'}))];
+const lateralPlan=C.compile({...opts,accountId:'primary',style:'rapido',lineup:{...opts.lineup,[rightBack.id]:foyth.id},
+ functions:{[foyth.id]:'advance'}},fullRoster);
+const lateralReview=C.recommend(lateralPlan,deps).cards.find(row=>row.slotId===rightBack.id).review;
+a.equal(lateralReview.individualAnalysis.task.key,'inside_support');
+a.equal(T.total(lateralReview.proposed),56);
 const fixedNames=new Set(forwards[0].fixedBoosters.map(b=>deps.boosters.boosterName(b.name)));
 const overlap=C.recommend(privateLibrary.individualContext(forwards[0],{style:'overload'}),deps).cards[0].review;
 a(overlap.boosters.every(b=>!fixedNames.has(deps.boosters.boosterName(b.technicalName))),'Sobreposição exclui o ímpeto fixo');

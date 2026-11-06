@@ -41,7 +41,7 @@ for(const name of ['ct364-owned-main.js','ct364-owned-main.css','ct364-owned-car
  assert.ok(fingerprint.includes("'"+name+"'"),'fingerprint sem '+name);
 }
 assert.match(js,/CRAQUE_FRIEND_TRAINING_V228/,'mesmo motor de análise tática');
-assert.match(js,/const STYLE_IDS=\['posse','normal','rapido','fora','longo'\]/);
+assert.match(js,/const STYLE_IDS=\['posse','normal','rapido','fora','longo','overload'\]/);
 assert.match(js,/scoutpro:v364:owned-confirmed/);
 assert.match(js,/scoutpro:v364:owned-equipment/,'skills e ímpetos manuais sem armazenamento isolado');
 assert.match(js,/equipmentSave/,'gravação manual por edição ausente');
@@ -290,4 +290,4 @@ assert.equal(proVm.professionalAudit({boosterSlot:'ausente'},{
  tactic:'posse',identityConfirmed:false,freeSkillSlots:null,
  skills:null,booster:null,plan:{status:'pendente',role:null,levels:null}
 }).trainingStatus,'pendente','V373 não pode falhar em carta sem dados');
-console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 5 táticas mesmo motor, Android/Windows offline.');
+console.log('V364 OK: 246 originais + 15 minhas cartas com fotos, dados reais e lacunas honestas; 6 táticas mesmo motor, Android/Windows offline.');

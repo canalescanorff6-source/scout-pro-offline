@@ -1,5 +1,5 @@
 'use strict';
-/* V264 — dossiê CONSULTIVO das 246 cartas, 5 estilos táticos.
+/* V264 — dossiê CONSULTIVO das 246 cartas, 6 estilos táticos.
  * Não substitui builds; não injeta progressões, habilidades nem ímpetos
  * inventados nas páginas originais. Gera relatório de auditoria isolado.
  */
@@ -71,13 +71,13 @@ for(const card of cards){
  });
 }
 assert.equal(entries.length,246);
-assert.equal(entries.reduce((sum,e)=>sum+e.estilos.length,0),1230);
+assert.equal(entries.reduce((sum,e)=>sum+e.estilos.length,0),1476);
 assert.equal(JSON.stringify(cards),original);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),src);
 const report={
  schema:'CRAQUE_COMPETITIVE_REPORT_V264',
  status:'HIPOTESES — NAO APLICAR NEM HOMOLOGAR SEM PROVA',
- total_cartas:246,total_avaliacoes:1230,
+ total_cartas:246,total_avaliacoes:1476,
  preferencia_tatica:'posse',
  fonte_catalogo:'web/SCOUT_V69_AUDITORIA.json',
  fonte_auditoria:'web/SCOUT_V221_EVIDENCE_INDEX.json',
@@ -97,4 +97,4 @@ for(const e of entries)for(const s of e.estilos)csv.push([
 const escape=v=>'"'+String(v??'').replace(/"/g,'""').replace(/[\r\n]+/g,' ').trim()+'"';
 fs.writeFileSync(path.join(outDir,'v264-competitive-246x5.csv'),
  '\uFEFF'+csv.map(row=>row.map(escape).join(',')).join('\n')+'\n');
-console.log('V264 EXPORT OK: 246 cartas, 1230 cenários consultivos; JSON e CSV sob build/. Zero alterações em builds.');
+console.log('V264 EXPORT OK: 246 cartas, 1476 cenários consultivos; JSON e CSV sob build/. Zero alterações em builds.');

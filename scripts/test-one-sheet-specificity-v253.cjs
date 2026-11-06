@@ -14,7 +14,7 @@ const baseline=JSON.stringify(cards);
 assert.equal(cards.length,246);
 const idSet=new Set(cards.map(c=>String(c.numero)+'@'+String(c.id)));
 assert.equal(idSet.size,246);
-assert.deepEqual(T.STYLES.map(x=>x.id),['posse','normal','rapido','fora','longo']);
+assert.deepEqual(T.STYLES.map(x=>x.id),['posse','normal','rapido','fora','longo','overload']);
 const martinelli=cards.find(c=>c.numero===191);
 assert.equal(martinelli.max_level,26);
 assert.equal(martinelli.pp,50);
@@ -81,6 +81,6 @@ assert(sw.includes('v253-one-sheet-audit'),'Novo cache offline para Android/Wind
 assert(packageJson.scripts.check.includes('test-one-sheet-specificity-v253.cjs'));
 assert.equal(JSON.stringify(cards),baseline,'Não alterar nenhum dado de carta');
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),source);
-console.log('V253 OK: 246 edições preservadas, cinco estilos e PP exatos.');
+console.log('V253 OK: 246 edições preservadas, seis estilos e PP exatos.');
 console.log('V253 OK: fichas repetidas são sinalizadas por função/PP e diferenças nativas.');
 console.log('V253 OK: auditoria V251 dentro da ficha V220, recolhível e responsiva.');
