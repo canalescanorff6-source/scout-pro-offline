@@ -249,7 +249,9 @@ function booster(result){
   if(b.alternatives?.length)panel.append(mk('p','friend-analysis-fineprint','Alternativas: '+b.alternatives.map(x=>x.nome).join(' · ')));
  }else panel.append(mk('p','friend-analysis-warning','Sem recomendação calculável com os dados atuais.'));
  panel.append(mk('p',result.boosterEligible?'friend-analysis-confirmed':'friend-analysis-warning',
-  result.boosterEligible?'Slot selecionável da edição documentado e relatado vazio: conferir no eFootball antes de qualquer aplicação.':
+  result.boosterEligible?'Slot selecionável documentado nesta edição, vaga relatada vazia. Confirmar no eFootball antes de qualquer aplicação.':
+   result.boosterSlotEvidence?.editionDocumented===true?
+    'Slot selecionável documentado na referência pública, mas a vaga livre na sua conta NÃO foi comprovada. Ranking consultivo; NÃO gastar tokens antes de conferir.':
    activeCard.boosterSlot==='vazio'?
     'Slot relatado vazio, mas a edição não possui prova independente de elegibilidade. Ranking consultivo; NÃO gastar tokens.':
     'Não aplicar ímpeto: slot inexistente, ocupado ou ainda sem confirmação. O ranking é apenas consultivo.'));
