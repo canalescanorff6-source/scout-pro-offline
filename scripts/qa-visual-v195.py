@@ -1372,7 +1372,7 @@ def run():
                 if page.evaluate("""() => window.CRAQUE_FORMATION_STATE_V231.snapshot().go""")!=170:
                     problems.append(f"{name}: V231 perdeu titulares ao alternar formações")
                 if name in ('mobile_390','windows_1366'):
-                    page.locator('#ct-v230-tactic-profile details > summary').click()
+                    page.locator('#ct-v230-tactic-profile > details.ct-v230-tactic-advanced > summary').click()
                     if page.locator('#ct-v230-tactic-details .ct-v230-fit-row').count()!=11:
                         problems.append(f"{name}: V230 faltam diagnósticos individuais por posição")
                     page.screenshot(path=str(OUT / f"{name}_six_modes_v230.png"),full_page=False,animations="disabled")

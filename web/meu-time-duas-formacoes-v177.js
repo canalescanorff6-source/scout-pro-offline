@@ -14,6 +14,57 @@ if(!identity)throw Error('Identidade dos jogadores V245 não carregou');
 let doc=null,roster=[],byCap=new Map(),imageMap=new Map(),activeId='4312',activeMode='posse',allSelections={},editingSlot=null,showAll=false;
 const modes=profiles?.MODES||{posse:'Posse de Bola'};
 const profileId=(id,mode)=>id+':'+mode;
+const benchKey=(id,mode)=>'scoutpro:v392:formation-bench:'+id+':'+mode;
+function activeBench(){
+ const old=active().bench;
+ if(!['normal','rapido'].includes(activeMode))return old;
+ try{
+  const entry=JSON.parse(localStorage.getItem(benchKey(activeId,activeMode))||'null');
+  const caps=entry?.schema==='CRAQUE_V392_BENCH'&&Array.isArray(entry.caps)?entry.caps:[];
+  if(caps.length!==12||new Set(caps).size!==12||
+     caps.some(n=>!byCap.has(Number(n)))||
+     !identity.unique(caps.map(n=>byCap.get(Number(n)))))return old;
+  return old.map((x,i)=>({...x,cap:Number(caps[i])}));
+ }catch(_){return old;}
+}
+function applySuggested(slots,benchCaps){
+ if(!['normal','rapido'].includes(activeMode)||
+    !profiles.validate(active(),slots,byCap)||
+    !Array.isArray(benchCaps)||benchCaps.length!==12)return false;
+ const ids=[...Object.values(slots).map(Number),...benchCaps.map(Number)];
+ if(ids.length!==23||new Set(ids).size!==23||
+    ids.some(n=>!byCap.has(n))||!identity.unique(ids.map(n=>byCap.get(n))))return false;
+ for(const [slot,n] of Object.entries(slots)){
+  if(!fits(byCap.get(Number(n)),slot))return false;
+ }
+ const excluded=(()=>{try{return JSON.parse(localStorage.getItem('scoutpro:v219:black-caps')||'[]')}
+  catch(_){return[]}})();
+ if(Array.isArray(excluded)&&ids.some(n=>excluded.map(Number).includes(n)))return false;
+ const key=profiles.profileKey(activeId,activeMode),bk=benchKey(activeId,activeMode);
+ let oldLineup=null,oldBench=null;
+ try{
+  oldLineup=localStorage.getItem(key);oldBench=localStorage.getItem(bk);
+  profiles.save(active(),activeMode,slots,localStorage,byCap);
+  localStorage.setItem(bk,JSON.stringify({schema:'CRAQUE_V392_BENCH',
+   formation:activeId,mode:activeMode,caps:benchCaps.map(Number)}));
+ }catch(error){
+  // Uma falha de espaço/quota no segundo registro não deve deixar meia atualização.
+  try{
+   if(oldLineup===null)localStorage.removeItem(key);else localStorage.setItem(key,oldLineup);
+   if(oldBench===null)localStorage.removeItem(bk);else localStorage.setItem(bk,oldBench);
+  }catch(_){}
+  setStatus('Não foi possível salvar os 23 jogadores: '+error.message);return false;
+ }
+ allSelections[profileId(activeId,activeMode)]={...slots};
+ render();
+ window.dispatchEvent(new CustomEvent('craque:data-changed',{detail:{key}}));
+ window.dispatchEvent(new CustomEvent('craque:formation-profile-v231',
+  {detail:{formation:activeId,mode:activeMode}}));
+ setStatus('11 titulares e 12 reservas salvos somente em '+modes[activeMode]+
+  ' · '+active().title+'. Nenhuma ficha ou Posse foi alterada.');
+ return true;
+}
+
 const currentSelections=()=>allSelections[profileId(activeId,activeMode)];
 const active=()=>doc.formations.find(f=>f.id===activeId);
 const roles=slot=>slot==='zge'||slot==='zgd'?'ZG':slot==='cae'||slot==='cad'?'CA':slot==='vole'||slot==='vold'?'VOL':LABEL[slot]?.split(' ')[0];
@@ -96,7 +147,7 @@ function checkLink(rule){
 function renderKovacLink(){
  let saved=null;
  try{saved=JSON.parse(localStorage.getItem('scoutpro:v307:default-manager')||'null')}catch(_){}
- if(saved?.catalog_id!=='CT-MGR-071')return false;
+ if(activeMode!=='posse'||saved?.catalog_id!=='CT-MGR-071')return false;
  const slots=currentSelections();
  const card=slot=>byCap.get(Number(slots[slot]));
  const verified=(slot,expected)=>{
@@ -152,17 +203,19 @@ function renderInstructions(){
   'Instruções de movimentação recomendadas para as escolhas registradas; não são comandos instalados no jogo.')+'</p>'+
  f.starters.map(s=>{
  const now=byCap.get(Number(slots[s.slot]));const changed=now.numero!==s.cap;
+ const counterDuty=window.CRAQUE_TACTICS_V230?.counterGuide?.(activeMode,activeId,s.slot);
  return '<article class="note"><b>'+esc(LABEL[s.slot])+' · #'+now.numero+' '+esc(now.name)+'</b>'+
  '<small>Ofensivo: '+esc(now.estilo_ataque)+' · Defensivo: '+esc(now.estilo_defesa)+' · '+(changed?'Escolha manual':'Escolha histórica')+'</small>'+
  '<p>'+esc(activeMode!=='posse'?
-  'Avaliar encaixe de '+modes[activeMode]+': conferir movimentação, familiaridade posicional, habilidades, ímpetos e instruções específicas desta tática.':
+  (counterDuty?'Com a bola: '+counterDuty.roleAttack+' Sem a bola: '+counterDuty.roleDefence+' ':'')+
+  'Verificar familiaridade, ficha individual, habilidades e ímpetos nesta tática.':
   changed?'Confirmar encaixe de posição, habilidades, ímpeto e comportamento em jogo antes de manter.':s.role_instruction)+'</p>'+
  (fits(now,s.slot)?'':'<p class="caution">Sem familiaridade comprovada nesta edição: confirmar no Plano de Jogo ou treinar a posição antes de usar.</p>')+'</article>';
  }).join('');
 }
 function effectiveBench(){
  // Nenhum Card ID é removido: lista temporária de 12 reservas para a equipe ativa.
- return identity.benchFor(Object.values(currentSelections()),active().bench,roster)
+ return identity.benchFor(Object.values(currentSelections()),activeBench(),roster)
   .map(row=>({...row,art:getImage(row.cap)}));
 }
 function renderBench(){
@@ -249,7 +302,7 @@ async function init(){
  $('player-search').oninput=renderPicker;$('show-all').onchange=e=>{showAll=e.target.checked;renderPicker()};
  $('picker-close').onclick=closePicker;$('picker').addEventListener('click',e=>{if(e.target===$('picker'))closePicker()});
  window.CRAQUE_FORMATION_STATE_V231=Object.freeze({
-  mode:()=>activeMode,formation:()=>activeId,setMode:changeMode,
+  mode:()=>activeMode,formation:()=>activeId,setMode:changeMode,applySuggested,
   snapshot:()=>({...currentSelections()}),
   read:(id,mode)=>({...ensureProfile(id,mode)})
  });
