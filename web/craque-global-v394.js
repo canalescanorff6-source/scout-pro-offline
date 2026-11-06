@@ -48,7 +48,7 @@
    statement:'Uma proposta de PP para seis estilos. Consenso matemático entre fichas individuais, sem prova de superioridade em gameplay.'
   });
  }
- const norm=s=>String(s||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim().toLowerCase();
+ const norm=s=>String(s||'').normalize('NFD').split('').filter(ch=>{const code=ch.charCodeAt(0);return code<768||code>879}).join('').trim().toLowerCase();
  function rankSkills(outputs,keyFor,max=5){
   if(!Array.isArray(outputs)||outputs.length!==MODES.length)return [];
   const byKey=new Map();
