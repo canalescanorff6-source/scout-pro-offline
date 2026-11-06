@@ -37,5 +37,8 @@ const boostRows=G.MODES.map(tactic=>({tactic,result:{slotSupported:true,able:tru
  primary:{nome:'Agilidade',motivo:'Hipótese'},alternatives:[{nome:'Passe'}]}}));
 assert.equal(G.rankBoosters(boostRows).primary.nome,'Agilidade');
 boostRows[2].result.slotSupported=false;
-assert.equal(G.rankBoosters(boostRows),null,'Slot sem evidência não autoriza sugestão global');
+assert.equal(G.rankBoosters(boostRows).applyAuthorized,false,
+ 'Sem prova de slot o ranking continua meramente consultivo');
+boostRows[2].result.primary=null;boostRows[2].result.alternatives=[];
+assert.equal(G.rankBoosters(boostRows),null,'Sem candidatos não criar ímpeto global');
 console.log('V394: consenso universal, PP, seis estilos, slots e integridade PASS');
