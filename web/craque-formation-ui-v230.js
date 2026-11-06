@@ -59,6 +59,24 @@ function render(){
  const container=$('ct-v230-tactic-details');
  positionPanel?.destroy();positionPanel=null;container.replaceChildren();
  $('ct-v314-slot-panel')?.remove();
+ // V392: guia prático ligado ao estilo e à formação EXISTENTE, sem alterar a escalação.
+ const counter=tactical.counterGuide?.(activeMode,currentId);
+ if(counter){
+  const guide=node('details','ct-v230-fit-row ct-v392-counter-guide');
+  guide.open=true;
+  guide.append(node('summary','',counter.label+' · Como atacar e defender com esta formação'));
+  for(const [label,description] of [
+   ['Ataque',counter.attack],['Defesa',counter.defence],
+   ['Ataque na formação',counter.formationAttack],
+   ['Defesa na formação',counter.formationDefence],['Risco e correção',counter.risk]]){
+   const p=node('p','ct-v392-guide-step');
+   p.append(node('strong','',label+': '),document.createTextNode(description));
+   guide.append(p);
+  }
+  guide.append(node('small','',counter.evidence+
+   ' Para PP, habilidades adicionais e ímpetos, abra a ficha individual da carta na vaga.'));
+  container.append(guide);
+ }
  const name=tactical.MODES[activeMode];
  $('ct-v230-tactic-name').textContent=name.label+' · '+(currentId==='4312'?'4-3-1-2':'4-2-1-3 estreita');
  $('ct-v230-tactic-explain').textContent=name.hint+
@@ -80,6 +98,14 @@ function render(){
   title.append(node('strong','',('#'+String(cap).padStart(3,'0')+' '+player.name)),
    node('small','',slot.toUpperCase()+' · '+info.placement+' · '+(info.score<0?'Não elegível':'Encaixe '+info.score+'/100 (heurístico)')));
   const note=node('p','',info.signals.slice(0,2).join(' · '));block.append(title,note);
+  const duty=tactical.counterGuide?.(activeMode,currentId,slot);
+  if(duty?.role){
+   const tasks=node('details','ct-v392-slot-duties');
+   tasks.append(node('summary','','Plano manual da vaga · '+duty.role),
+    node('p','', 'Com a bola: '+duty.roleAttack),
+    node('p','', 'Sem a bola: '+duty.roleDefence));
+   block.append(tasks);
+  }
   const rivals=tactical.rank(cards,slot,activeMode,blocked,used).slice(0,2);
   if(rivals.length){
    block.append(node('small','ct-v230-fit-alts','Opções por função (não equipadas): '+
