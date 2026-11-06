@@ -39,6 +39,12 @@ with sync_playwright() as p:
    # segundo slot na edição; ranking segue consultivo em ambas as telas.
    page.locator('#friend-analysis-sections [data-panel="boost"]').click()
    boost_view=page.locator('#friend-analysis-content [data-panel="boost"]')
+   # Referências públicas são carregadas em paralelo; aguardar re-render após
+   # o evento de prontidão antes de conferir slot e PP.
+   page.wait_for_function("""() => Boolean(window.CRAQUE_REFERENCES_V376?.cards?.some(
+     c => c.capture===77 && c.identityUsable===true)) &&
+     document.querySelector('#friend-analysis-content [data-panel="boost"]')
+       ?.textContent.includes('Slot selecionável documentado na referência pública')""",timeout=30000)
    # A referência pública confirma slot selecionável; não comprova
    # vaga livre nem ímpeto equipado nesta conta.
    assert 'Slot selecionável documentado na referência pública' in boost_view.inner_text()
@@ -46,6 +52,8 @@ with sync_playwright() as p:
    assert 'NÃO gastar tokens' in boost_view.inner_text()
    assert 'Ranking' in boost_view.inner_text() or 'ranking' in boost_view.inner_text()
    page.locator('#friend-analysis-sections [data-panel="treino"]').click()
+   page.wait_for_function("""() => document.querySelector('.ct311-positional')
+     ?.textContent.includes('68 PP exatos distribuídos')""",timeout=30000)
    assert '68 PP exatos distribuídos' in root.inner_text()
    root.locator('.ct331-role-open').click()
    selector=root.locator('.ct311-controls .ct311-select')
