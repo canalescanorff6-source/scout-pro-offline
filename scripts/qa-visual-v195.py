@@ -752,8 +752,14 @@ def run():
                     [...document.querySelectorAll('#scout-v208-training tbody tr .scout-v208-level')]
                       .map(x=>Number(x.textContent.trim()))
                 """)
-                if normal_levels==rapido_levels:
-                    problems.append(f"{name}: V303 CA Normal e CA Rápido exibem distribuição idêntica em Massaro")
+                # V395: consultar outro estilo preserva a ficha global da
+                # edição; o editor abaixo continua isolando rascunhos locais.
+                if normal_levels!=rapido_levels:
+                    problems.append(f"{name}: V395 CA Normal e CA Rápido alteraram a distribuição global de Massaro")
+                if page.locator('#scout-v220-skill-list strong').all_inner_texts()!=rapido_skill_names:
+                    problems.append(f"{name}: V395 consultar CA Normal alterou habilidades globais de Massaro")
+                if page.locator('#scout-v220-booster-name').inner_text()!=rapido_boost:
+                    problems.append(f"{name}: V395 consultar CA Normal alterou ímpeto global de Massaro")
                 page.locator('#ct378-style').select_option('rapido')
                 page.locator('#scout-v218-edit').click()
                 # V303: o ponto inicial NÃO é mais a ficha de Posse. Reduzir
@@ -1465,8 +1471,11 @@ def run():
                 if (page.locator("#friend-analysis-modes button").count()!=6 or
                     "68 PP" not in page.locator("#friend-analysis-badges").inner_text()):
                     problems.append(f"{name}: V310 perdeu seis fichas / PP 68 confirmados do Zico")
-                if not page.locator("#friend-analysis-content").inner_text().count("68 / 68 PP distribuídos"):
-                    problems.append(f"{name}: V310 Zico 35 não gerou as seis fichas com 68 PP")
+                # O orçamento relatado é preservado; sem Card ID exato a
+                # edição de Zico não recebe distribuição numérica inventada.
+                if ('Treino ainda não calculável' not in page.locator('#friend-analysis-content').inner_text() or
+                    page.locator('.friend-analysis-pp').count()!=0):
+                    problems.append(f"{name}: V395 Zico sem edição exata deixou de permanecer pendente")
                 page.locator('#friend-analysis-sections [data-panel="skills"]').click()
                 if page.locator('#friend-analysis-content [data-panel="skills"] .ct373-pro').count()!=1:
                     problems.append(f"{name}: V373 dossiê PRO de habilidades ausente em Outros Elencos")
