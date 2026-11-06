@@ -17,9 +17,9 @@ with sync_playwright() as pw:
    page.locator('#friend-new-card').click()
    # V360: abrir os campos avançados como o usuário antes de validar/salvar.
    page.locator('details.friend-card-advanced > summary').click()
-   page.locator('#friend-card-name').fill('V342 Live Skills')
-   page.locator('#friend-card-edition').fill('Edição experimental V342')
-   page.locator('#friend-card-gameid').fill('105297')
+   page.locator('#friend-card-name').fill('Rivaldo')
+   page.locator('#friend-card-edition').fill('Epic — FC Barcelona 98-99')
+   page.locator('#friend-card-gameid').fill('88035555413454')
    page.locator('#friend-card-position').select_option('MAT')
    page.locator('#friend-card-level').fill('35')
    page.locator('#friend-card-native').fill('Passe de primeira; Chute de primeira')
@@ -41,6 +41,11 @@ with sync_playwright() as pw:
    button=box.get_by_role('button',name='Salvar ficha independente deste técnico')
    assert note.get_attribute('role')=='status'
    assert note.get_attribute('aria-live')=='polite'
+   # Somente uma edição identificada pode liberar o rascunho de PP V395.
+   page.wait_for_function("""() => window.CRAQUE_REFERENCES_V376?.cards?.some(
+    c => c.capture===77 && c.identityUsable===true) &&
+    document.querySelector('.ct324-profile .ct342-live-audit')?.textContent.includes(
+     'RASCUNHO PRONTO')""",timeout=30000)
    assert 'RASCUNHO PRONTO' in note.inner_text()
    assert button.is_enabled()
    button.click()
