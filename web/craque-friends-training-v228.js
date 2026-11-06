@@ -131,7 +131,9 @@ function allocateStyle(card,tactic,deps){
   pp_origem:'nivel_informado_no_cadastro_externo',
   recommended_levels:null,niveis:null,base_stats_known:false,
   pp_estimado:progress.source==='manual_divergente'};
- if(tactic!=='posse'){
+ // V395: estilo individual inativo na posição real não deve influenciar
+ // nem a Posse nem qualquer outro contexto da ficha única.
+ {
   const method=typeof window!=='undefined'?window.CRAQUE_FUNCTION_METHOD_V383:require('./craque-function-method-v383.js');
   const activation=method?.activation({card,slot:{position:card.position},offBall:{position:card.position},
    offenseStyle:card.style,defenceStyle:card.defenceStyle});
