@@ -147,7 +147,7 @@ function checkLink(rule){
 function renderKovacLink(){
  let saved=null;
  try{saved=JSON.parse(localStorage.getItem('scoutpro:v307:default-manager')||'null')}catch(_){}
- if(saved?.catalog_id!=='CT-MGR-071')return false;
+ if(activeMode!=='posse'||saved?.catalog_id!=='CT-MGR-071')return false;
  const slots=currentSelections();
  const card=slot=>byCap.get(Number(slots[slot]));
  const verified=(slot,expected)=>{
@@ -203,10 +203,12 @@ function renderInstructions(){
   'Instruções de movimentação recomendadas para as escolhas registradas; não são comandos instalados no jogo.')+'</p>'+
  f.starters.map(s=>{
  const now=byCap.get(Number(slots[s.slot]));const changed=now.numero!==s.cap;
+ const counterDuty=window.CRAQUE_TACTICS_V230?.counterGuide?.(activeMode,activeId,s.slot);
  return '<article class="note"><b>'+esc(LABEL[s.slot])+' · #'+now.numero+' '+esc(now.name)+'</b>'+
  '<small>Ofensivo: '+esc(now.estilo_ataque)+' · Defensivo: '+esc(now.estilo_defesa)+' · '+(changed?'Escolha manual':'Escolha histórica')+'</small>'+
  '<p>'+esc(activeMode!=='posse'?
-  'Avaliar encaixe de '+modes[activeMode]+': conferir movimentação, familiaridade posicional, habilidades, ímpetos e instruções específicas desta tática.':
+  (counterDuty?'Com a bola: '+counterDuty.roleAttack+' Sem a bola: '+counterDuty.roleDefence+' ':'')+
+  'Verificar familiaridade, ficha individual, habilidades e ímpetos nesta tática.':
   changed?'Confirmar encaixe de posição, habilidades, ímpeto e comportamento em jogo antes de manter.':s.role_instruction)+'</p>'+
  (fits(now,s.slot)?'':'<p class="caution">Sem familiaridade comprovada nesta edição: confirmar no Plano de Jogo ou treinar a posição antes de usar.</p>')+'</article>';
  }).join('');
