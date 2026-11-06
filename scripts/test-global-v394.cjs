@@ -4,7 +4,7 @@ const G=require('../web/craque-global-v394.js');
 const T=require('../web/scout-multitactic-engine-v220.js');
 const fs=require('node:fs');
 const guide=fs.readFileSync('web/guia-movimentacao-v394.html','utf8');
-const embedded=guide.match(/^const cards=(\\[[^\\n]+\\]);$/m);
+const embedded=guide.match(/^const cards=(\[[^\n]+\]);$/m);
 assert.ok(embedded,'Guia precisa conter catálogo offline fixo, sem requisição de dados privados');
 const catalogue=JSON.parse(embedded[1]);
 assert.equal(catalogue.length,261,'Não excluir cartas do guia');
