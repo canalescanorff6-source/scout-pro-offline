@@ -41,6 +41,15 @@ const getDeps=(deps)=>deps||{
  skills:typeof window!=='undefined'?window.SCOUT_RECOMMENDATIONS_V162:null,
  boosters:typeof window!=='undefined'?window.SCOUT_BOOSTERS_V103:null
 };
+function documentedEdition(card,reference){
+ const linked=reference?.reference;
+ if(reference?.identityUsable!==true||!linked||!/^\d{5,20}$/.test(String(card.cardId||''))||
+    String(linked.cardId)!==String(card.cardId)||!String(card.edition||'').trim()||
+    ![reference.edition,linked.edition].includes(card.edition)||
+    (card.capture!==null&&card.capture!==undefined&&card.capture!==''&&
+     Number(reference.capture)!==Number(card.capture)))return null;
+ return linked;
+}
 function boosterFor(card,raw,tactic,deps,task,reference){
  const result=deps.skills.booster(raw,tactic,deps.boosters,card.boosterSlot||'pendente',card.booster||'',{task});
  const support=reference?.extraSlotInPublicEdition;
@@ -470,6 +479,9 @@ function evaluate(card,tactic='posse',deps){
  const identity=Boolean(/^\d{5,20}$/.test(cardId)&&edition&&
   !/pendente|confirmar|desconhecid|não informad|nao informad|não cadastr|nao cadastr|indefinid|placeholder/i.test(edition));
  const existing=String(card.skills||'').trim();
+ // A existência de um slot selecionável é propriedade da EDIÇÃO, não do
+ // estilo tático ou do êxito do cálculo de PP. Conferir identidade completa.
+ const editionEvidence=documentedEdition(card,reference);
  let skill=null,boost=null;
  if(plan.role){
   const equipmentConfirmed=Boolean(s.checkedEquipment?.(raw,existing,card.equipmentRecord));
@@ -478,7 +490,7 @@ function evaluate(card,tactic='posse',deps){
   const task=plan.levels?plan.analysis?.task:null;
   skill=s.evaluate({...raw,niveis:plan.levels},tactic,existing,{equippedConfirmed:equipmentConfirmed,equipmentRecord:card.equipmentRecord||null,task});
   boost=boosterFor(card,{...raw,niveis:plan.levels},tactic,{skills:s,boosters:b},task,
-   plan.analysis?.reference?reference?.reference:null);
+   editionEvidence);
   // Ranking único de habilidades e ímpetos: uma escolha de equipamento não
   // deve se tornar incompatível só porque o usuário mudou a tática.
   // Nunca declarar slots livres se a edição/equipamento não os comprovar.
@@ -490,7 +502,7 @@ function evaluate(card,tactic='posse',deps){
    skill={...skill,recommendations:global.rankSkills(skillRows,s.keyFor,5)};
    const boosterRows=MODES.map(mode=>({tactic:mode,result:boosterFor(card,
     {...raw,niveis:plan.levels},mode,{skills:s,boosters:b},null,
-    plan.analysis?.reference?reference?.reference:null)}));
+    editionEvidence)}));
    const ranked=global.rankBoosters(boosterRows);
    if(ranked&&card.boosterSlot!=='ausente'&&boost?.primary)boost={...boost,...ranked};
   }
@@ -506,7 +518,8 @@ function evaluate(card,tactic='posse',deps){
  if(!identity)warnings.push('Identidade da versão pendente: informe um Card ID numérico plausível e a edição exata; texto genérico não comprova identidade.');
  else warnings.push('Card ID informado com formato plausível; conferir a correspondência com a edição exata antes de validar competitivamente.');
  if(!nativeDocumented)warnings.push('Habilidades nativas ausentes, provisórias ou não documentadas: confira as habilidades da edição antes de aplicar sugestões.');
- if(card.boosterSlot==='vazio')warnings.push(
+ if(card.boosterSlot==='vazio')warnings.push(boost?.slotSupported===true?
+  'A referência pública da edição documenta slot selecionável, mas a vaga livre foi apenas relatada e não conferida na conta. Confirmar no eFootball antes de gastar tokens.':
   'Slot relatado vazio pelo proprietário; a edição exata ainda não possui comprovação independente de slot selecionável. Não gastar tokens.');
  else warnings.push(card.boosterSlot==='ocupado'?'Segundo ímpeto ocupado: a sugestão é somente comparativa.':
  card.boosterSlot==='ausente'?'Carta informada sem slot selecionável: não equipa novo ímpeto.':
