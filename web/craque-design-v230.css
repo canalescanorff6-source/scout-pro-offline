@@ -319,3 +319,45 @@ body[data-page="catalog"] .hero .hero-text .eyebrow{color:#e6c985!important}
 }
 @media(max-width:345px){body[data-page="catalog"] .scout-v189-quick{grid-template-columns:1fr}
  body[data-page="catalog"] .scout-v189-quick .scout-v189-tile{min-height:70px;flex-direction:row;align-items:center}}
+
+
+/* V392 · guias leves de tática e escalação (sem animações ou efeitos pesados). */
+#ct-v230-tactic-profile .ct-v392-counter-guide,
+#ct-v230-tactic-profile .ct-v392-squad{
+ margin:12px 0;border:1px solid rgba(234,195,108,.33);border-radius:13px;
+ padding:12px 14px;background:#102738;color:#eef5f7;min-width:0;
+}
+#ct-v230-tactic-profile .ct-v392-counter-guide>summary,
+#ct-v230-tactic-profile .ct-v392-squad>summary{
+ cursor:pointer;color:#f5d596;font-weight:800;line-height:1.5;
+}
+#ct-v230-tactic-profile .ct-v392-guide-step{
+ font-size:13px;line-height:1.55;margin:9px 0;color:#e0eaf0;
+}
+#ct-v230-tactic-profile .ct-v392-slot-duties{
+ margin:8px 0;padding:9px 10px;border:1px solid #49606b;
+ border-radius:9px;background:#102333;font-size:12px;line-height:1.45;
+}
+#ct-v230-tactic-profile .ct-v392-slot-duties>summary{
+ cursor:pointer;color:#e8cd94;font-weight:700;
+}
+#ct-v230-tactic-profile .ct-v392-roster-list{
+ display:grid;gap:7px;padding-left:23px;margin:8px 0 15px;
+}
+#ct-v230-tactic-profile .ct-v392-roster-list li{
+ padding:8px 9px 9px 2px;border-bottom:1px solid rgba(200,220,229,.17);
+ font-size:13px;line-height:1.45;overflow-wrap:anywhere;
+}
+#ct-v230-tactic-profile .ct-v392-roster-list li small{
+ display:inline;color:#bacdd8;font-weight:500;
+}
+#ct-v230-tactic-profile .ct-v392-roster-list li p{
+ margin:3px 0 0;font-size:12px;color:#c5d6df;
+}
+#ct-v230-tactic-profile .ct-v392-squad h4{
+ margin:12px 0 5px;color:#eac36c;font-size:14px;
+}
+@media(max-width:480px){
+ #ct-v230-tactic-profile .ct-v392-counter-guide,
+ #ct-v230-tactic-profile .ct-v392-squad{padding:11px;max-width:100%}
+}
