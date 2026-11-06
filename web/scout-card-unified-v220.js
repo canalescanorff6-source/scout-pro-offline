@@ -255,8 +255,9 @@ function mount(doc){
    detail:{cap,card_id:id,tactic,label:s.label,proposedLevels:proposed,
     evidenceStatus:sourceVerified?'pp_e_nivel_documentados_hipotese':'nivel_ou_build_sem_comprovacao',
     verifiedInGameplay:false,
-    proposalOrigin:plan?.source||'pendente',
-    proposalEvidence:plan?.budgetEvidence||'pendente',
+    proposalOrigin:globalPreview?'global_card_v395':readyForGlobal?'pendente_global':plan?.source||'pendente',
+     proposalEvidence:globalPreview?'base_externa_edicao_exata_sem_teste_pvp':
+      readyForGlobal?'pendente':plan?.budgetEvidence||'pendente',
     managerEdition:host.CRAQUE_MANAGERS_V302?.selectedManager?.()?.catalog_id||null}
   }));
   doc.dispatchEvent(new host.CustomEvent('scoutpro:tactic-selected-v220',{detail:{tactic}}));
