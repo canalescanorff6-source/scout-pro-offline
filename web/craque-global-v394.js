@@ -7,7 +7,7 @@
  if(host)host.CRAQUE_GLOBAL_V394=api;
 })(typeof window!=='undefined'?window:null,function(){'use strict';
  const MODES=Object.freeze(['posse','normal','rapido','fora','longo','overload']);
- const VERSION='global-394-20261106';
+ const VERSION='global-card-395-20261106';
  const idOf=x=>x?.tactic||x?.style;
  function choose(plans,tactical){
   if(!Array.isArray(plans)||plans.length!==MODES.length||!tactical?.valid||
