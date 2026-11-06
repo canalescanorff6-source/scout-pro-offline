@@ -2,6 +2,17 @@
 const assert=require('node:assert/strict');
 const G=require('../web/craque-global-v394.js');
 const T=require('../web/scout-multitactic-engine-v220.js');
+const fs=require('node:fs');
+const guide=fs.readFileSync('web/guia-movimentacao-v394.html','utf8');
+const embedded=guide.match(/^const cards=(\\[[^\\n]+\\]);$/m);
+assert.ok(embedded,'Guia precisa conter catálogo offline fixo, sem requisição de dados privados');
+const catalogue=JSON.parse(embedded[1]);
+assert.equal(catalogue.length,261,'Não excluir cartas do guia');
+assert.equal(catalogue.filter(c=>c.collection==='originais').length,246);
+assert.equal(catalogue.filter(c=>c.collection==='adicionais').length,15);
+assert.equal(new Set(catalogue.map(c=>c.n)).size,261,'Cada registro público é distinto');
+assert.ok(fs.readFileSync('web/sw.js','utf8').includes("'./guia-movimentacao-v394.html'"));
+assert.ok(fs.readFileSync('web/app-bridge.js','utf8').includes("guia-movimentacao-v394.html"));
 assert.equal(G.MODES.length,6);
 const build=(shift)=>{
  const v=Array(10).fill(0);
