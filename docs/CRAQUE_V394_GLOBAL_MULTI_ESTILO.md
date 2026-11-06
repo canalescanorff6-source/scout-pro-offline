@@ -1,3 +1,20 @@
+# Revisão V395 — uma ficha global por edição (06/11/2026)
+
+A V394 era um **consenso entre seis treinos** e poderia continuar repetindo PP entre dois CA com a mesma função. Isso **não atendia** ao requisito. A V395 substitui essa escolha por uma **otimização única calculada sobre a edição exata**.
+
+**Contrato implementado**
+
+- Uma única ficha de PP para cada edição + posição de uso: o vetor **não muda** ao clicar em Posse, Contra-Ataque, Contra-Ataque Rápido, Por Fora, Bola Longa ou Sobreposição.
+- As seis prioridades táticas participam do cálculo em conjunto, com a mesma importância; nenhuma seleção sozinha determina o treino. A tela mantém a leitura de movimentação por estilo.
+- O cálculo utiliza atributos-base vinculados a **CAP + Card ID + edição**, estilo individual ofensivo e defensivo, habilidades nativas, ímpeto fixo e orçamento de PP, sem maximizar Overall. Só entrega ficha numérica quando o vínculo documental e os atributos de referência são suficientes; caso contrário marca **PENDENTE**, sem distribuir pontos genéricos.
+- Dados corporais externos de **15 edições** podem fornecer apenas pequenos ajustes editoriais de disputa; são vinculados por CAP e Card ID em `craque-physical-v395.js`, sem supor braços, pernas ou pescoço diferentes entre Big Time e Epic. O arquivo `SCOUT_V189_CORPO_EXTRAS.json` não possui Card ID confirmado e **não pode** ser convertido em evidência dessa edição.
+- Não há diferenciação forçada por nome, raridade ou hash: **cartas diferentes podem legitimamente ter ficha igual** se forem equivalentes nos dados verificáveis e nos objetivos de função. Diferenciação é consequência da base técnica, não regra estética.
+- `scripts/test-card-individual-global-v395.cjs` compara seis estilos por carta, mesmo PP/função/estilo com cartas de Cristiano Ronaldo e Drogba, Cristiano Big Time/Épico, Suárez, dados ausentes, ID errado e medidas corporais não disponíveis.
+- **Metodologia experimental:** a função de utilidade considera prioridades editoriais, atributos-base, bônus fixos, talentos nativos e retornos decrescentes aproximados. Os alvos numéricos **não são limiares comprovados da IA da KONAMI**. Nem atributos individuais nem modelo físico são confirmação de desempenho competitivo; validação com replay e partidas controladas permanece necessária.
+- Nenhum treino/equipamento aplicado no jogo, atualização dos binários nem mudança automática dos treinos aprovados. O PR permanece de revisão até testes e QA.
+
+---
+
 # Craque Tático V394 — ficha global de gameplay e guia de movimentação
 
 **Data:** 06/11/2026 · **Branch:** `feat/ficha-global-multiestilo-v394` · **Estado:** PR de revisão, sem instalação/publicação
