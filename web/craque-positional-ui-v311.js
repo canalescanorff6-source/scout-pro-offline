@@ -86,6 +86,21 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
  if(calculation?.task&&review.proposed)block.append(el('p','ct311-confirm','Foco da ficha · '+calculation.task.label));
  if(calculation?.task?.defensiveAction&&review.proposed)
   block.append(el('p','ct311-note','Sem a bola · '+calculation.task.defensiveAction.label));
+ if(calculation?.task?.counter&&review.proposed){
+  const counter=calculation.task.counter,guide=el('details','ct378-about ct394-counter-role');
+  guide.dataset.tactic=counter.tactic;
+  guide.append(el('summary','','Atacar e defender · '+counter.label),
+   el('p','','Com a bola · '+counter.attack),el('p','','Sem a bola · '+counter.defence),
+   el('p','','Risco e correção · '+counter.risk),el('p','ct311-note',counter.note));
+  block.append(guide);
+ }
+ if(review.activationPair){const phases=el('details','ct378-about ct394-activation');
+  phases.append(el('summary','','Ativação dos estilos da carta'));
+  for(const [key,label]of [['attack','Com a bola'],['defence','Sem a bola']]){
+   const phase=review.activationPair[key];
+   phases.append(el('p','',label+' · '+phase.style+' · '+phase.label),el('p','ct311-note',phase.explanation));
+  }block.append(phases);
+ }
  if(calculation&&calculation.status!=='preservada'){
   const why=el('details','ct378-about');
   why.append(el('summary','','Por que esta ficha foi escolhida?'),el('p','',calculation.reason));
