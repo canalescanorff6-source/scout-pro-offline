@@ -38,14 +38,27 @@ function contextualPlan(card,tactic,baseline){
  const positional=host?.CRAQUE_POSITIONAL_V311||
   (typeof module==='object'?require('./craque-positional-v311.js'):null);
  const normalize=positional?.normalize||String;
- return training.allocate({
+ let input={
   capture,localKey,cardId,edition:card.versao||card.edition||'',name:card.name,
   position:normalize(card.shown_position||card.role_used||card.posicao),
   originalPosition:normalize(card.posicao),style:card.estilo_ataque||card.attack_style||card.style||'',
   defenceStyle:card.estilo_defesa||card.defence_style||'',pp:card.pp,level:card.max_level,
   nativeSkills:card.habilidades_nativas||card.native_skills||'',fixedBooster:card.impeto_fixo||card.boost1||'',
   trainingLevels:Array.isArray(baseline)?baseline.join(','):'',reference
- },tactic,{tactical:T});
+ };
+ // Reutilizar o vínculo auditado da ficha principal também no editor legado.
+ // A rota real fornece o arquivo; não derivá-lo da própria referência.
+ if(reference?.publicIdentityV393&&positional?.fromPersonal){
+  const model=positional.fromPersonal({...card,numero:capture,id:cardId,
+   versao:card.versao||card.edition||'',
+   arquivo:card.arquivo??host?.location?.pathname?.split('/').slice(-2).join('/'),
+   posicao:card.posicao||card.shown_position,
+   habilidades_nativas:input.nativeSkills,impeto_fixo:input.fixedBooster},
+   null,host?.localStorage,[reference]);
+  input={...input,cardId:model.cardId,edition:model.edition,
+   nativeSkills:model.nativeSkills,fixedBooster:model.fixedBooster};
+ }
+ return training.allocate(input,tactic,{tactical:T});
 }
 function allocate(card,tactic){
  if(!T||!Object.hasOwn(STYLES,tactic))return null;

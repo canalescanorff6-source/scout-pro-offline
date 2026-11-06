@@ -66,6 +66,20 @@ for(const source of originals.filter(c=>c.numero>=226)){
  assert.equal(model.cardKey,entry.cardKey);
  assert.equal(model.cardId,entry.reference.cardId);
  assert.equal(model.edition,entry.reference.edition);
+ for(const style of modes.filter(style=>style!=='posse')){
+  const preview=require('../web/craque-style-planner-v303.js').proposal({...source,
+   capture:source.numero,shown_position:source.posicao,reference:entry},style,source.niveis);
+  assert.equal(preview.analysis.status,'documentada','Editor complementar: '+source.numero+' '+style);
+ }
+ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+ const window={SCOUT_TACTICS_V220:T,CRAQUE_FRIEND_TRAINING_V228:F,CRAQUE_POSITIONAL_V311:P,
+  CRAQUE_REFERENCES_V376:{cards:references},location:{pathname:'/'+source.arquivo}};
+ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../web/craque-style-planner-v303.js'),'utf8'),{window});
+ const html=fs.readFileSync(path.join(__dirname,'../web',source.arquivo),'utf8');
+ const raw=JSON.parse(html.match(/id="scout-v68-data"[^>]*>([\s\S]*?)<\/script>/)[1]);
+ assert.equal(window.CRAQUE_STYLE_PLANNER_V303.proposal(raw,'overload',raw.recommended_levels).analysis.status,'documentada');
+ window.location.pathname='/fichas/outra.html';
+ assert.equal(window.CRAQUE_STYLE_PLANNER_V303.proposal(raw,'overload',raw.recommended_levels).analysis.status,'dados_insuficientes');
  const bad=references.map(r=>r===entry?{...r,publicIdentityV393:{...r.publicIdentityV393,catalogueId:'outra'}}:r);
  assert.equal(P.fromPersonal(source,null,null,bad).cardId,source.id);
  const review=require('../web/craque-card-review-v379.js'),map=new Map();
