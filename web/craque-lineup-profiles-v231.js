@@ -9,7 +9,7 @@
 })(typeof window!=='undefined'?window:null,function(){'use strict';
 const MODES=Object.freeze({
  posse:'Posse de Bola',normal:'Contra-Ataque Normal',
- rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'
+ rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa',overload:'Sobreposição'
 });
 const SCHEMA='CRAQUE_V231_LINEUP_PROFILE';
 const identity=(typeof window!=='undefined'?window.SCOUT_PLAYER_IDENTITY_V245:null)||

@@ -48,7 +48,8 @@
   normal:{delta:[2,3,0,3,4,3,5,0,1,1],phrase:'Transição controlada e recuperação organizada.'},
   rapido:{delta:[3,-1,2,9,10,0,3,0,3,7],phrase:'Arranque, reação à perda e proteção da profundidade.'},
   fora:{delta:[2,5,8,2,7,3,1,0,0,0],phrase:'Amplitude com opção de passe de retorno pelo meio.'},
-  longo:{delta:[3,5,-3,-1,6,10,5,2,5,0],phrase:'Disputa aérea e organização da segunda bola.'}
+  longo:{delta:[3,5,-3,-1,6,10,5,2,5,0],phrase:'Disputa aérea e organização da segunda bola.'},
+  overload:{delta:[-1,11,10,5,6,-2,5,0,1,1],phrase:'Apoio próximo, recepção sob pressão e recuperação no lado da bola.'}
  });
  const clean=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
  const nInt=v=>Number.isInteger(v)&&v>=0&&v<=20;
@@ -139,6 +140,16 @@
  function interpret(card,tactic,lab){
   if(!T||!card||typeof card!=='object'||!Object.hasOwn(MODES,tactic))return null;
   const roleId=role(card),rule=ROLES[roleId];if(!rule)return null;
+  if(tactic!=='posse'){
+   const method=host?.CRAQUE_FUNCTION_METHOD_V383||
+    (typeof module==='object'?require('./craque-function-method-v383.js'):null);
+   const position=roleId==='ALA'?String(card.shown_position||card.posicao||'').toUpperCase():roleId;
+   const activation=method?.activation({card:{position},slot:{position},offBall:{position},
+    offenseStyle:card.attack_style||card.estilo_ataque,defenceStyle:card.defence_style||card.estilo_defesa});
+   card={...card};
+   if(activation?.attack.status==='inactive')card.attack_style=card.estilo_ataque='';
+   if(activation?.defence.status==='inactive')card.defence_style=card.estilo_defesa='';
+  }
   const [capture,id,edition]=fingerprints(card);
   const budget=number(card.pp);
   const levels=card.recommended_levels||card.niveis;
@@ -213,12 +224,15 @@
   fora:{0:['finishing'],1:['low_pass','lofted_pass'],2:['ball_control','dribbling','tight_possession'],
    3:['acceleration','balance'],4:['speed','stamina'],5:['heading','jumping'],
    6:['defensive_awareness','defensive_engagement']},
+  overload:{0:['finishing'],1:['low_pass','lofted_pass'],2:['ball_control','dribbling','tight_possession'],
+   3:['offensive_awareness','acceleration','balance'],4:['speed','stamina'],5:['physical_contact'],
+   6:['defensive_awareness','tackling','defensive_engagement']},
   longo:{0:['finishing'],1:['lofted_pass'],2:['ball_control','tight_possession'],
    3:['offensive_awareness','balance'],4:['speed','stamina'],5:['heading','jumping','physical_contact'],
    6:['defensive_awareness','tackling','defensive_engagement']}
  };
  const KEEPER_AXES={7:['gk_awareness'],8:['gk_parrying','gk_reach'],9:['gk_catching','gk_reflexes']};
- const TASK_LABELS={normal:'transição organizada',rapido:'transição rápida',fora:'progressão pelo corredor',longo:'ligação direta e segunda bola'};
+ const TASK_LABELS={normal:'transição organizada',rapido:'transição rápida',fora:'progressão pelo corredor',longo:'ligação direta e segunda bola',overload:'apoios próximos e recuperação no lado da bola'};
  const STAT_LABELS={finishing:'finalização',low_pass:'passe rasteiro',lofted_pass:'passe alto',
   ball_control:'controle de bola',tight_possession:'condução firme',dribbling:'drible',offensive_awareness:'talento ofensivo',
   acceleration:'aceleração',balance:'equilíbrio',speed:'velocidade',stamina:'resistência',physical_contact:'contato físico',
@@ -235,6 +249,7 @@
   vertical:{label:'Receber entre linhas e acelerar o passe vertical',stats:{low_pass:3,tight_possession:3,ball_control:2,balance:2,acceleration:2},skills:['through','onepass','sole','heel'],source:TACTICAL_SOURCE},
   cover:{label:'Acompanhar a ruptura e proteger as costas da linha',stats:{speed:3,acceleration:3,defensive_awareness:3,defensive_engagement:2,tackling:2,stamina:1},skills:['intercept','blocker','mark','fighting'],source:DEFENCE_SOURCE},
   inside_support:{label:'Tabelar por dentro e recuperar o corredor',stats:{low_pass:3,ball_control:3,balance:2,speed:2,stamina:2,defensive_awareness:2},skills:['onepass','through','sole','intercept','blocker'],source:DEFENCE_SOURCE},
+  combine:{label:'Receber próximo, tabelar e pressionar após a perda',stats:{low_pass:3,ball_control:3,tight_possession:3,balance:2,stamina:2,defensive_engagement:1},skills:['onepass','sole','through','heel','intercept'],source:DEFENCE_SOURCE},
   duel:{label:'Sair para o bote e ganhar o duelo',stats:{tackling:3,defensive_engagement:3,physical_contact:3,acceleration:2,defensive_awareness:2},skills:['intercept','blocker','mark','clear'],source:DEFENCE_SOURCE},
   screen:{label:'Cortar a linha de passe e oferecer saída segura',stats:{defensive_engagement:3,defensive_awareness:3,tackling:2,low_pass:3,stamina:2},skills:['intercept','onepass','blocker','fighting'],source:DEFENCE_SOURCE},
   carry:{label:'Avançar pelo corredor e entregar um passe útil',stats:{dribbling:3,ball_control:3,tight_possession:2,acceleration:2,low_pass:2,stamina:1},skills:['double','sole','onepass','cutturn'],source:'https://efhub.com/articles/260909_2-major-changes-to-how-dribbling-feels'},
@@ -276,6 +291,7 @@
   if(tactic==='rapido'&&lateral)return 'cover';
   if(tactic==='rapido'&&/infiltracao/.test(style))return 'depth';
   if(tactic==='rapido'&&role==='ALA')return 'carry';
+  if(tactic==='overload')return lateral?'inside_support':'combine';
   return tactic==='rapido'?'vertical':'outlet';
  }
  const SPECIAL_SKILLS=[
@@ -293,7 +309,12 @@
      ![entry.edition,ref.edition].includes(edition)||
      !/^https:\/\/[^/\s]+\/[^\s]+$/.test(String(ref.url||''))||
      !/^[a-f0-9]{64}$/i.test(String(ref.htmlSha256||'')))return null;
-  if(entry.cardId&&String(entry.cardId)!==id)return null;
+  if(entry.cardId&&String(entry.cardId)!==id){
+   const proof=entry.publicIdentityV393;
+   if(!proof||proof.matchStatus!=='exact_artwork_match'||proof.capture!==entry.capture||
+      proof.catalogueId!==String(entry.cardId)||proof.catalogueEdition!==entry.edition||
+      !/^[a-f0-9]{64}$/.test(proof.localImageSha256||'')||entry.candidateId!==id)return null;
+  }
   const capture=Number(card?.capture??card?.numero);
   if(Number.isInteger(capture)&&capture>0&&capture!==entry.capture)return null;
   return ref;
@@ -332,7 +353,18 @@
    Object.values(b.stats).every(n=>Number.isInteger(n)&&n>=1&&n<=5)&&
    (!declaredFixed||/pendente|nao confirmado|nao exposto/.test(declaredFixed)||declaredFixed.includes(clean(b.name))));
   const key=actionKey(role,tactic,card),action=ACTIONS[key];
-  const stats=Object.entries(action.stats).flatMap(([stat,weight])=>{
+  const defensiveActions=[
+   {style:/destruidor/,roles:['ZG','VOL','MLG','LD','LE'],key:'duel'},
+   {style:/cobertura|mestre da linha alta/,roles:['ZG','LD','LE'],key:'cover'},
+   {style:/interceptador de passe|primeiro volante|trinco/,roles:['VOL','MLG','MAT','ALA'],key:'screen'},
+   {style:/defensor participativo|meia versatil|todo o terreno/,roles:['VOL','MLG','MAT','ALA'],key:'screen'}
+  ];
+  const secondaryKey=defensiveActions.find(item=>item.roles.includes(role)&&item.style.test(clean(card.defenceStyle)))?.key;
+  const secondary=secondaryKey&&secondaryKey!==key?ACTIONS[secondaryKey]:null;
+  const actionStats={...action.stats};
+  if(secondary)for(const [stat,weight]of Object.entries(secondary.stats))
+   actionStats[stat]=Math.max(actionStats[stat]||0,weight/2);
+  const stats=Object.entries(actionStats).flatMap(([stat,weight])=>{
    const group=attributeGroups[stat],base=ref.baseStats?.[stat];
    if(!Number.isInteger(base)||base<0||base>120||!Number.isInteger(group)||refined[group]<=0)return [];
    return [{key:stat,label:STAT_LABELS[stat],group,weight,base,trainLimit:Math.max(0,99-base),
@@ -340,7 +372,8 @@
     ...(accuracyStats.has(stat)?{study:ACCURACY_SOURCE}:{})}];
   });
   if(stats.length>=2){
-   task={key,label:action.label,skills:action.skills,source:action.source,stats};
+   task={key,label:action.label,skills:action.skills,source:action.source,stats,
+    ...(secondary?{defensiveAction:{key:secondaryKey,label:secondary.label,source:secondary.source}}:{})};
    utility=Array(10).fill(null);
    for(const stat of stats){
     const curve=utility[stat.group]||(utility[stat.group]=Array(21).fill(0));

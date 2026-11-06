@@ -44,7 +44,17 @@ function reviewPanel(review,{onAdopt,referenceLabel='Treino cadastrado nesta car
   block.append(info);
  }
  const calculation=review.individualAnalysis;
+ if(review.publicIdentityReference){
+  const capture=review.publicIdentityReference.capture;
+  const cardno=host.document.querySelector('.ct361-glance-cardno'),caption=host.document.querySelector('.ct361-glance-edition');
+  if(cardno&&new RegExp('Carta\\s+0*'+capture+'\\b').test(cardno.textContent)){
+   cardno.textContent='Carta '+String(capture).padStart(3,'0')+' · Card ID '+review.identity.cardId;
+   if(caption)caption.textContent=review.identity.edition+' · referência pública';
+  }
+ }
  if(calculation?.task&&review.proposed)block.append(el('p','ct311-confirm','Foco da ficha · '+calculation.task.label));
+ if(calculation?.task?.defensiveAction&&review.proposed)
+  block.append(el('p','ct311-note','Sem a bola · '+calculation.task.defensiveAction.label));
  if(calculation&&calculation.status!=='preservada'){
   const why=el('details','ct378-about');
   why.append(el('summary','','Por que esta ficha foi escolhida?'),el('p','',calculation.reason));
@@ -291,7 +301,7 @@ function create(target,model,opts={}){
  target.append(node);
  let active=null,style=opts.style||'posse',manager=opts.manager||'',alive=true,compareCompetitive=false,competitiveContext='';
  let advancedOpen=false; // Preferência temporária do painel; não altera dados, builds ou armazenamento.
- let alternativesOpen=false; // Cinco estilos consultivos; nenhuma gravação.
+ let alternativesOpen=false; // Seis estilos consultivos; nenhuma gravação.
  // Uma revisão selecionada é somente leitura e isolada por chave de cenário.
  // Trocar MAT/SA ou estilo não altera qualquer snapshot armazenado.
  const viewedRevisions=new Map();
@@ -810,7 +820,8 @@ function create(target,model,opts={}){
    model.booster||'');
   const hero=el('section','ct326-focus');
   hero.setAttribute('aria-label','Ficha em foco para a posição e o técnico');
-  hero.append(el('div','ct326-kicker','FICHA EM FOCO · '+scenario.position+' · '+scenario.style.toUpperCase()));
+  hero.append(el('div','ct326-kicker','FICHA EM FOCO · '+scenario.position+' · '+
+   (host.CRAQUE_FRIEND_TRAINING_V228.LABEL[scenario.style]||scenario.style).toUpperCase()));
   hero.append(el('h3','ct326-title',decision?.title||(verified?'Existe uma aprovação registrada':
    ppReady?'Proposta para avaliar':'Dados insuficientes para recomendar')));
   const contextLine=el('p','ct326-subtitle',
@@ -848,7 +859,8 @@ function create(target,model,opts={}){
   const mainEngine=host.CRAQUE_MAIN_SHEET_V378;let mainSheet=null,mainBlock=null,competitiveToggle=null;
   if(outcome.functionReview&&reviewEngine?.functionReview){
    const reviewCard={localKey:model.cardKey,name:model.name,position:scenario.position,
-    originalPosition:model.position,style:model.style,level:model.level,pp:outcome.plan.pp,
+    capture:model.evidenceCard?.numero??null,originalPosition:model.position,style:model.style,
+    defenceStyle:model.defenceStyle,level:model.level,pp:outcome.plan.pp,
     cardId:model.cardId,edition:model.edition,nativeSkills:model.nativeSkills,skills:model.skills,
     fixedBooster:model.fixedBooster,booster:model.booster,boosterSlot:model.boosterSlot,
     trainingLevels:model.trainingLevels,positionEvidence:scenario.compatibility,
@@ -860,15 +872,15 @@ function create(target,model,opts={}){
    if(savedProfile){selection.levels=savedProfile.train;selection.skills=savedProfile.skills||[];selection.booster=savedProfile.booster||'';}
    else if(recorded){selection.levels=recorded.levels;
     selection.skills=(recorded.recommendations||[]).map(s=>s.name);selection.booster=recorded.booster||'';}
-   if(mainEngine&&model.collection==='minhas-246')try{
+   if(mainEngine)try{
     const input={...reviewCard,equipmentRecord:model.equipmentRecord};
     const proposalSelection={source:'proposal',reference:publicReference,managerLabel:coaching,managerId:scenario.manager};
     const alternative=savedProfile||recorded?mainEngine.resolve(input,outcome,proposalSelection):null;
     const comparisonContext=JSON.stringify([scenario.id,scenario.contentSignature,
      savedProfile?'profile':'revision',savedProfile?.revision??recorded?.revision??null]);
     if(competitiveContext!==comparisonContext)compareCompetitive=false;
-    if(!alternative?.review.competitiveReview)compareCompetitive=false;
-    if(alternative?.review.competitiveReview)competitiveToggle=makeBtn(compareCompetitive?'Voltar à ficha salva':'Comparar proposta revista para Posse',()=>{
+    if(!alternative?.review.proposed)compareCompetitive=false;
+    if(alternative?.review.proposed)competitiveToggle=makeBtn(compareCompetitive?'Voltar à ficha salva':'Ver proposta atualizada',()=>{
      compareCompetitive=!compareCompetitive;competitiveContext=compareCompetitive?comparisonContext:'';draw();
     });
     mainSheet=compareCompetitive?alternative:mainEngine.resolve(input,outcome,selection);
@@ -996,12 +1008,12 @@ function create(target,model,opts={}){
    deep.open=true;advancedOpen=true;node.classList.add('ct326-expanded');
    deep.scrollIntoView?.({block:'nearest',behavior:'smooth'});
   });
-  // V327: comparação informativa e interativa das cinco táticas. A seleção
+  // V327: comparação informativa e interativa das seis táticas. A seleção
   // muda a PRÉVIA da ficha, nunca equipamento/PP aprovado.
   const alternatives=el('section','ct327-style-panel');
-  alternatives.setAttribute('aria-label','Comparar cinco estilos coletivos nesta posição');
-  const altTitle=el('h4','','Cinco estilos · a mesma carta e posição');
-  const altNote=el('p','ct327-style-note','O estilo em uso não é prova de superioridade. Sobreposição: perfil ainda pendente neste laboratório.');
+  alternatives.setAttribute('aria-label','Comparar seis estilos coletivos nesta posição');
+  const altTitle=el('h4','','Seis estilos · a mesma carta e posição');
+  const altNote=el('p','ct327-style-note','O estilo em uso não é prova de superioridade.');
   const altList=el('div','ct327-style-list');
   alternatives.append(altTitle,altNote,altList);
   const renderAlternatives=()=>{
@@ -1059,7 +1071,7 @@ function create(target,model,opts={}){
     'Não foi possível comparar estas propostas: '+String(e.message||e)+
     '. Nenhum treino foi alterado.'))}
   };
-  const alternative=el('button','ct326-secondary-action','Comparar 5 estilos de jogo');
+  const alternative=el('button','ct326-secondary-action','Comparar 6 estilos de jogo');
   alternative.type='button';
   alternative.setAttribute('aria-expanded',String(alternativesOpen));
   alternative.addEventListener('click',()=>{

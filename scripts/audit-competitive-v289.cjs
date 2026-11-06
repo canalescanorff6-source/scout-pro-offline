@@ -109,13 +109,13 @@ for(const c of cards){
  }
  rows.push(audit);
 }
-assert.equal(summary.scenarios,1230);
+assert.equal(summary.scenarios,1476);
 // V381: 26 declarações antigas divergentes passaram a referência pública;
-// não transformar essa pesquisa em confirmação do jogo (130 cenários).
-// Relato novo de Savinho34/66 habilita cinco cálculos documentais, sem gameplay.
-assert.equal(summary.contextualFrontiers,190);
-assert.equal(summary.identityBlockedFrontiers,110);
-assert.equal(summary.levelBlockedFrontiers,930);
+// não transformar essa pesquisa em confirmação do jogo (156 cenários).
+// Relato novo de Savinho34/66 habilita seis cálculos documentais, sem gameplay.
+assert.equal(summary.contextualFrontiers,228);
+assert.equal(summary.identityBlockedFrontiers,132);
+assert.equal(summary.levelBlockedFrontiers,1116);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 const report={schema:'CRAQUE_V289_COMPUTATIONAL_AUDIT',baseline:'bd9c6226bd8475eb0c55b6cc3562ff94450351d8',
  warning:'246 edições processadas automaticamente; zero validações individuais de gameplay. Slots da conta permanecem desconhecidos.',

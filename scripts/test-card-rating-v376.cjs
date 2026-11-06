@@ -13,7 +13,7 @@ for(const card of data.cards){
  if(!s.levelValid)assert.equal(s.maxPP,null,'Nível1 ausente/inconsistente não autoriza PP0');
  baseCases++;
 }
-assert.equal(baseCases,239);
+assert.equal(baseCases,260);
 for(const [key,value] of [['cap:171',106],['cap:185',97],['cap:205',103],['ct364-12',103]]){
  const card=data.cards.find(c=>c.key===key);
  assert.equal(card.ownerMaximumOverall?.value,value,'O máximo informado não é nível nem OVR do treino corrente');

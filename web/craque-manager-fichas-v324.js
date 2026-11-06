@@ -8,7 +8,7 @@
 })(typeof window!=='undefined'?window:null,function(){'use strict';
 const PREFIX='scoutpro:v324:manager-profile:';
 const SCHEMA='CRAQUE_MANAGER_FICHA_V324';
-const STYLES=Object.freeze(['posse','rapido','normal','fora','longo']);
+const STYLES=Object.freeze(['posse','rapido','normal','fora','longo','overload']);
 const POSITIONS=Object.freeze(['CA','SA','MAT','MLG','VOL','ZG','LE','LD','GO','PTE','PTD','MLE','MLD']);
 const normalize=v=>String(v??'').trim();
 const safeParts=parts=>parts.map(x=>encodeURIComponent(normalize(x))).join('|');

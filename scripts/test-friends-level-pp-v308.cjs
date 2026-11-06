@@ -26,7 +26,7 @@ assert.equal(progress.pp,68);
 assert.equal(progress.source,'nivel_maximo');
 assert.equal(engine.profileOf(zico).pp,68);
 const plans=engine.generate(zico,deps);
-assert.equal(Object.keys(plans.profiles).length,5);
+assert.equal(Object.keys(plans.profiles).length,6);
 for(const mode of engine.MODES){
  const result=engine.evaluate(zico,mode,deps);
  assert.equal(result.plan.status,'hipotese','Ficha não pode continuar bloqueada apenas por Card ID: '+mode);
@@ -80,4 +80,4 @@ assert(page.includes("isInitialZico"));
 assert(page.includes("previewBudget();"));
 assert(ui.includes("engine.resolveBudget(activeCard)"));
 assert(read('web/sw.js').includes('v308-max-level-pp'));
-console.log('V308 PASS: nível 35 => 68 PP, 5 fichas com custo exato, PP manual preservado, conflitos protegidos, backup compatível, 246 cartas intactas.');
+console.log('V308 PASS: nível 35 => 68 PP, 6 fichas com custo exato, PP manual preservado, conflitos protegidos, backup compatível, 246 cartas intactas.');

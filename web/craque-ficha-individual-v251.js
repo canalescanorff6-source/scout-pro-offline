@@ -88,7 +88,7 @@ function sourceFor(card,raw,lab,index){
   habilidades_nativas_origem:card.habilidades_nativas_origem||null
  };
 }
-const recognizedStyles=new Set(['posse','normal','rapido','fora','longo']);
+const recognizedStyles=new Set(['posse','normal','rapido','fora','longo','overload']);
 // Chave contém todos os sinais matemáticos, nunca CAP/nome/Overall. As
 // cópias de saída impedem um rascunho de contaminar outra ficha no cache.
 const allocationCache=new Map();

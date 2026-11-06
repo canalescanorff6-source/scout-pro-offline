@@ -1,5 +1,5 @@
 'use strict';
-/* V231: 2 formações x 5 estilos: 10 elencos independentes, sem perder Posse.
+/* V231: 2 formações x 6 estilos: 12 elencos independentes, sem perder Posse.
  * Nenhuma das 246 cartas é alterada, nem fichas, PP, ou bloqueios.
  */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
@@ -10,7 +10,7 @@ const roster=JSON.parse(read('web/SCOUT_V69_AUDITORIA.json'));
 const ids=new Map(roster.cards.map(x=>[x.numero,x]));
 const original=JSON.stringify(roster.cards),formations=JSON.stringify(data);
 assert.equal(roster.cards.length,246);assert.equal(data.formations.length,2);
-assert.equal(Object.keys(profiles.MODES).length,5);
+assert.equal(Object.keys(profiles.MODES).length,6);
 const saved=new Map([
  ['scoutpro:v219:black-caps','[12,40,21]'],
  ['scoutpro:training-original','{"approved":true}']
@@ -83,4 +83,4 @@ assert(editor.includes("activeMode=profiles.selectedMode(localStorage,id)"));
 for(const file of ['web/sw.js','scripts/stamp-bundle-v189.cjs']){
  assert(read(file).includes('craque-lineup-profiles-v231.js'),'V231 not in offline/Windows/Android bundle: '+file);
 }
-console.log('V231 PASS: 2 formações × 5 estilos, 10 elencos independentes, substituições válidas, recuperação de perfis corrompidos, Posse preservada, bloqueios e 246 cartas intactos.');
+console.log('V231 PASS: 2 formações × 6 estilos, 12 elencos independentes, substituições válidas, recuperação de perfis corrompidos, Posse preservada, bloqueios e 246 cartas intactos.');

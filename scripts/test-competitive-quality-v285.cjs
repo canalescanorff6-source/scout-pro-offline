@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V285: auditoria por CAP/Card ID/edição, função, cinco táticas e três ablações. */
+/* V285: auditoria por CAP/Card ID/edição, função, seis táticas e três ablações. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),read=p=>historicalRead(path.join(root,p),'utf8');
@@ -41,17 +41,17 @@ for(const card of cards){
   assert.equal(new Set(lab.skillReasons.map(s=>s.key)).size,lab.skillReasons.length);
   assert(lab.skillReasons.every(s=>s.neverEquippedByApp&&s.recommendationOnly));
   assert(lab.skillReasons.every(s=>s.explanation&&s.fieldTask&&s.fieldSupport&&s.fieldRisk));
-  assert(lab.skillReasons.every(s=>s.usedInTactics.length>=1&&s.usedInTactics.length<=5));
+  assert(lab.skillReasons.every(s=>s.usedInTactics.length>=1&&s.usedInTactics.length<=6));
   assert(lab.boosterReasons.length<=3);
   assert(lab.boosterReasons.every(b=>b.fourAxes.length===4&&!b.maySpendTokens&&!b.mayApply));
   assert(lab.boosterReasons.every(b=>b.sharedWithFixed===null||
    (Number.isInteger(b.sharedWithFixed)&&b.sharedWithFixed>=0&&b.sharedWithFixed<=4)));
-  assert.equal(lab.tacticalMatrix.length,5);
-  assert.equal(lab.tacticPairs.length,10);
-  assert.equal(lab.summary.comparablePairs,10);
-  assert(lab.summary.sameFivePairs>=0&&lab.summary.sameFivePairs<=10);
-  assert(lab.summary.distinctSkillSets>=1&&lab.summary.distinctSkillSets<=5);
-  assert.equal(lab.summary.exactlySameFiveAllStyles,lab.summary.sameFivePairs===10);
+  assert.equal(lab.tacticalMatrix.length,6);
+  assert.equal(lab.tacticPairs.length,15);
+  assert.equal(lab.summary.comparablePairs,15);
+  assert(lab.summary.sameFivePairs>=0&&lab.summary.sameFivePairs<=15);
+  assert(lab.summary.distinctSkillSets>=1&&lab.summary.distinctSkillSets<=6);
+  assert.equal(lab.summary.exactlySameFiveAllStyles,lab.summary.sameFivePairs===15);
   assert.equal(lab.summary.nativeMapped+lab.summary.nativeUnmapped<=lab.summary.sourceNativeTotal,true);
   assert.equal(lab.evidenceAblation.length,3);
   assert.deepEqual(lab.evidenceAblation.map(a=>a.factor),['sem_nativas','sem_pp','sem_estilo']);
@@ -62,6 +62,8 @@ for(const card of cards){
   assert(lab.tacticPairs.every(pair=>pair.sharedFive<=5));
   assert(lab.evidenceTasks.some(x=>x.key==='gameplay'));
   assert(Object.values(lab.guards).every(Boolean), 'V285 invariantes: #'+card.numero+' '+tactic);
+  assert.equal(lab.guards.sourceHasFiveTactics,true,'Contrato legado de ao menos cinco estilos preservado');
+  assert.equal(lab.guards.sourceHasAllTactics,true,'Os seis estilos precisam alimentar o parecer');
   const dlab=S.competitiveDecisionBoardV284(d,tactic,B);
   assert.deepEqual(lab.skillReasons.map(s=>s.key),dlab.skills.map(s=>s.key));
   assert.deepEqual(lab.boosterReasons.map(s=>s.key),dlab.boosters.map(s=>s.key));
@@ -88,8 +90,8 @@ for(const card of cards){
  assert.equal(JSON.stringify(card),source,'Dados de origem alterados: '+card.numero);
  results.push({capture:card.numero,cardId:card.id,edition:card.versao,tactics});
 }
-assert.equal(scenarios,1230);
-assert.equal(crossPairs,12300);
+assert.equal(scenarios,1476);
+assert.equal(crossPairs,22140);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),original);
 const messiPending=cards.find(c=>c.numero===50);
 assert(messiPending&&/PENDENTE/i.test(messiPending.id));

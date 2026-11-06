@@ -331,14 +331,14 @@ function renderManager(){
  const selected=managerData.find(c=>c.catalog_id===managerSelectedId);
  if(!selected){managerSelectedId='';tactic.disabled=true;
   const o=mk('option','','Escolha uma versão primeiro');tactic.append(o);
-  statusBox.append(mk('p','','Sem técnico vinculado a esta carta. As cinco simulações continuam disponíveis.'));
+  statusBox.append(mk('p','','Sem técnico vinculado a esta carta. As seis simulações continuam disponíveis.'));
   return;
  }
  selection.value=selected.catalog_id;tactic.disabled=false;
  for(const st of managers.STYLES){
   const score=managers.proficiency(selected,st.id);
   const opt=mk('option','',st.label+' · '+(score===null?'não documentada':score)+
-   (!st.supported?' · motor PP pendente':score<85?' · uso com ressalvas':''));
+   (!st.supported?' · motor PP pendente':score!==null&&score<85?' · uso com ressalvas':''));
   opt.value=st.id;tactic.append(opt);
  }
  if(!managers.STYLES.some(s=>s.id===managerTactic))managerTactic=managers.preferred(selected,null);
@@ -362,7 +362,7 @@ function renderManager(){
  statusBox.append(allScores);
  statusBox.append(mk('p',statusModel.score!==null&&statusModel.score<85?'friend-manager-warning':'',
   'Proficiência: '+(statusModel.score??'não confirmada')+' · '+(
-   !statusModel.canCalculate?'Sem motor específico de PP para este estilo.':
+   statusModel.score===null?'Proficiência desta edição não documentada; não inferir bônus do técnico.':
    statusModel.score>=89?'Alta proficiência competitiva.':
    statusModel.score>=85?'Alternativa com ressalvas.':'Proficiência baixa: não equivale ao estilo principal.'
   )));
@@ -376,8 +376,6 @@ function renderManager(){
     ' ('+(selected.catalog_id==='CT-MGR-071'?'CA':(link.keyman_position_EN||'?'))+'). Ativação não comprovada na escalação.'));
   }
  }
- if(managerTactic==='overload')statusBox.append(mk('p','friend-manager-warning',
-  'Sobreposição: sem ficha PP própria homologada. O painel abaixo conserva a última simulação de um dos cinco estilos suportados.'));
  statusBox.append(mk('p','',managerError||
   'Perfil documental V302; retratos externos não incorporados. Treino, habilidades e ímpetos continuam hipóteses específicas da carta e da tática.'));
 }
@@ -392,6 +390,7 @@ function identity(){
   mk('span','',(()=>{const budget=engine.resolveBudget(activeCard);
    return budget.pp===null?'PP pendentes':budget.pp+' PP'+(budget.source==='nivel_maximo'?' (nível)':'');})()));
  if(Number.isInteger(activeCard.maxOverall))badges.append(mk('span','','Overall máximo: '+activeCard.maxOverall+' · informado'));
+ if(activeCard.defenceStyle)badges.append(mk('span','','Estilo defensivo: '+activeCard.defenceStyle));
  const img=$('friend-analysis-cover'),empty=$('friend-analysis-cover-empty');
  img.hidden=!activeCard.image;empty.hidden=!!activeCard.image;
  if(activeCard.image){img.src=activeCard.image;img.alt='Imagem cadastrada de '+activeCard.name;}
@@ -422,8 +421,8 @@ function display(){
   'Posição de uso '+usedPosition+' · proposta independente. Utilize “Salvar proposta” no seletor posicional, sem substituir a build original.':
   !allCalculated?
   'As fichas permanecem pendentes quando falta o nível máximo/PP ou existe divergência manual. Confira o cadastro.':
-  valid?'Cinco treinos por estilo gerados e registrados neste acervo. Habilidades e ímpetos são recomendações calculadas ao abrir.':
-  'Cinco propostas calculadas pelo app. Use “Gerar e salvar 5 fichas” para registrar os treinos neste acervo.';
+  valid?'Seis treinos por estilo gerados e registrados neste acervo. Habilidades e ímpetos são recomendações calculadas ao abrir.':
+  'Seis propostas calculadas pelo app. Use “Gerar e salvar 6 fichas” para registrar os treinos neste acervo.';
 }
 function openCard(card,owner,onSave,onEdit){
  if(!card||!owner||card.ownerId!==owner.id){status('Erro: carta e pessoa não correspondem.');return}
@@ -507,8 +506,8 @@ $('friend-analysis-save').onclick=()=>{
   if(updated)activeCard=updated;
   cache=null;
   const count=Object.values(next.profiles).filter(x=>x.status==='hipotese').length;
-  status(count===5?'Cinco treinamentos experimentais registrados no acervo de '+activeOwner.name+'. Nenhuma carta sua foi alterada.':
-   count+' treinos simulados e '+(5-count)+' pendentes por falta de nível/posição ou conflito de PP. Nenhum PP foi inventado.');
+  status(count===engine.MODES.length?'Seis treinamentos experimentais registrados no acervo de '+activeOwner.name+'. Nenhuma carta sua foi alterada.':
+   count+' treinos simulados e '+(engine.MODES.length-count)+' pendentes por falta de nível/posição ou conflito de PP. Nenhum PP foi inventado.');
   display();
  }catch(e){status('Fichas não salvas: '+String(e.message||e))}
  finally{button.disabled=false}

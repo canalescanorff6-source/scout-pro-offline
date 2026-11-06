@@ -24,6 +24,7 @@
 <script defer src="craque-pp-universal-v309.js"></script>
 <script defer src="craque-function-method-v383.js"></script>
 <script defer src="craque-friends-training-v228.js"></script>
+<script defer src="craque-main-sheet-v378.js"></script>
 <script defer src="craque-positional-v311.js"></script>
 <script defer src="craque-formation-context-v314.js"></script>
 <script defer src="craque-manager-fichas-v324.js"></script>
@@ -49,7 +50,7 @@
  <section class="friends-hero">
   <div><p class="friends-eyebrow">COLEÇÕES INDEPENDENTES · 100% OFFLINE</p>
    <h1>Outros Elencos</h1>
-   <p>Um espaço para cada pessoa, com suas cartas, cinco fichas por estilo, habilidades e ímpetos do laboratório.</p>
+   <p>Um espaço para cada pessoa, com suas cartas, seis fichas por estilo, habilidades e ímpetos do laboratório.</p>
    <div class="friends-journey" aria-label="Como usar"><span><b>01</b> Escolha a pessoa</span><span><b>02</b> Abra uma carta</span><span><b>03</b> Consulte as fichas do app</span></div>
    <div class="friends-safe"><span aria-hidden="true">✓</span><span>Seu catálogo original de <strong>246 cartas</strong>, suas formações, bloqueios e treinamentos não são modificados nesta página. Cada carta de amigo também terá <strong>fichas por tática, habilidades e ímpetos sugeridos</strong> conforme dados confirmados.</span></div>
   </div>
@@ -93,7 +94,7 @@
     <button type="button" class="friends-primary" id="friend-new-card">+ Nova carta</button></div>
     <div class="friends-toolbar">
      <label for="friend-search">Buscar neste acervo<input id="friend-search" type="search" placeholder="Nome, edição, posição, Card ID…" autocomplete="off"/></label>
-     <label for="friend-position">Posição<select id="friend-position"><option value="">Todas as posições</option><option>CA</option><option>SA</option><option>MAT</option><option>MLG</option><option>VOL</option><option>ZC</option><option>LD</option><option>LE</option><option>GO</option><option>PD</option><option>PE</option><option>Outra</option></select></label>
+     <label for="friend-position">Posição<select id="friend-position"><option value="">Todas as posições</option><option>CA</option><option>SA</option><option>MAT</option><option>MLG</option><option>VOL</option><option>ZG</option><option>LD</option><option>LE</option><option>PTE</option><option>PTD</option><option>MLE</option><option>MLD</option><option>GO</option><option>ZC</option><option>PD</option><option>PE</option><option>Outra</option></select></label>
     </div>
     <div id="ct363-readiness" class="ct363-readiness" role="group" aria-label="Filtrar cartas por dados disponíveis">
      <div class="ct363-readiness-actions">
@@ -105,7 +106,7 @@
     </div>
     <div class="friends-fichas-bar">
      <div><span class="friends-eyebrow">FICHAS GERADAS PELO CRAQUE TÁTICO</span>
-       <h3>Cartas e análises</h3><details class="ct363-method"><summary>Como funcionam as cinco fichas e os PP</summary><p>Cadastre também suas novas cartas em <strong>Minhas Cartas Adicionadas</strong>: cada carta com nível máximo e posição conhecidos já gera as cinco fichas. Abra <strong>Ver ficha do app</strong> em cada carta para comparar as cinco táticas, habilidades e ímpetos. Com nível máximo confirmado, os PP são calculados automaticamente; Card ID continua como verificação separada.</p></details></div>
+       <h3>Cartas e análises</h3><details class="ct363-method"><summary>Como funcionam as seis fichas e os PP</summary><p>Cadastre também suas novas cartas em <strong>Minhas Cartas Adicionadas</strong>: cada carta com nível máximo e posição conhecidos já gera as seis fichas. Abra <strong>Ver ficha do app</strong> em cada carta para comparar as seis táticas, habilidades e ímpetos. Com nível máximo confirmado, os PP são calculados automaticamente; Card ID continua como verificação separada.</p></details></div>
      <div id="friend-fichas-count" class="friends-fichas-count" aria-live="polite">0 fichas com PP</div>
     </div>
     <div id="friend-cards" class="friends-card-grid" aria-live="polite"></div>
@@ -140,9 +141,10 @@
    <label>Nome do jogador <span class="friends-required">*</span><input id="friend-card-name" maxlength="80" required placeholder="Ex.: Samuel Eto'o"/></label>
    <label>Versão / edição da carta<input id="friend-card-edition" maxlength="180" placeholder="Ex.: Épico — Inter 2009-10"/></label>
    <label>Card ID (somente se confirmado)<input id="friend-card-gameid" maxlength="90" placeholder="ID exato da edição"/></label>
-   <label>Posição<select id="friend-card-position"><option value="">Não informada</option><option>CA</option><option>SA</option><option>MAT</option><option>MLG</option><option>VOL</option><option>ZC</option><option>LD</option><option>LE</option><option>GO</option><option>PD</option><option>PE</option><option>Outra</option></select></label>
+   <label>Posição<select id="friend-card-position"><option value="">Não informada</option><option>CA</option><option>SA</option><option>MAT</option><option>MLG</option><option>VOL</option><option>ZG</option><option>LD</option><option>LE</option><option>PTE</option><option>PTD</option><option>MLE</option><option>MLD</option><option>GO</option><option>ZC</option><option>PD</option><option>PE</option><option>Outra</option></select></label>
    <label>Raridade<input id="friend-card-rarity" maxlength="50" placeholder="Épico, Show Time, etc."/></label>
    <label>Estilo de jogo do jogador<input id="friend-card-style" maxlength="110" placeholder="Ex.: Artilheiro"/></label>
+   <label>Estilo defensivo do jogador (se informado)<input id="friend-card-defence-style" maxlength="110" placeholder="Conforme a edição da carta"/></label>
    <label>Nível MÁXIMO da carta<input id="friend-card-level" type="number" min="1" max="120" placeholder="Ex.: 35 para Zico"/><small>Use o nível máximo, não o nível atual nem o Overall.</small></label>
    <label>Overall máximo informado<input id="friend-card-max-overall" type="number" min="1" max="150" placeholder="Opcional · edição exata"/><small>Informativo; não altera nível, PP ou treino.</small></label>
    <label>PP manuais (opcional)<input id="friend-card-pp" type="number" min="0" max="300" placeholder="Automático pelo nível"/><small>Deixe em branco para calcular. Divergências não serão sobrescritas.</small></label>
@@ -154,7 +156,7 @@
    <label>Ímpeto fixo de fábrica<input id="friend-card-fixed-booster" maxlength="180" placeholder="Somente se confirmado na carta"/></label>
    <label>Situação do slot de ímpeto adicional<select id="friend-card-booster-slot"><option value="pendente">Ainda não conferido</option><option value="vazio">Relatado vazio na conta (suporte da edição ainda precisa ser comprovado)</option><option value="ocupado">Ocupado</option><option value="ausente">Esta carta não possui slot</option></select></label>
    <label class="friends-wide">Treino atual da carta (opcional, 10 grupos)<input id="friend-card-training-levels" maxlength="150" placeholder="Ex.: 7, 5, 9, 8, 6, 0, 0, 0, 0, 0"/><small>Ordem: Chute, Passe, Drible, Destreza, Pernas, Jogo aéreo, Defesa, GO1, GO2, GO3. O custo precisa fechar exatamente os PP.</small></label>
-   <div class="friends-wide friends-auto-note">Após salvar, o Craque Tático calcula automaticamente <strong>cinco fichas de treino</strong> e propõe até cinco habilidades adicionais e um ímpeto por tática. Todas as recomendações são hipóteses; dados não documentados continuam pendentes e não viram atributos inventados.</div>
+   <div class="friends-wide friends-auto-note">Após salvar, o Craque Tático calcula automaticamente <strong>seis fichas de treino</strong> e propõe até cinco habilidades adicionais e um ímpeto por tática. Todas as recomendações são hipóteses; dados não documentados continuam pendentes e não viram atributos inventados.</div>
    <label class="friends-wide">Observações e fonte dos dados<textarea id="friend-card-notes" maxlength="1500" rows="3" placeholder="Ex.: carta enviada por João; atributos ainda pendentes"></textarea></label>
    </div></details>
   </div>
@@ -175,7 +177,7 @@
   <div class="friend-analysis-identity-info"><span class="friends-eyebrow">FICHA AUTOMÁTICA · NÃO ALTERA A CARTA ORIGINAL</span><strong id="friend-analysis-player">Jogador</strong><p id="friend-analysis-edition">Edição pendente</p><div id="friend-analysis-badges" class="friend-analysis-identity-badges"></div></div>
  </div>
  <div class="friend-analysis-five">
-  <div class="friend-analysis-five-head"><strong>Minhas cinco fichas do app</strong><small>Escolha um estilo para ver o treino, habilidades e ímpeto</small></div>
+  <div class="friend-analysis-five-head"><strong>Minhas seis fichas do app</strong><small>Escolha um estilo para ver o treino, habilidades e ímpeto</small></div>
   <nav id="friend-analysis-modes" class="friend-analysis-tabs" aria-label="Escolher estilo de jogo do técnico"></nav>
  </div>
  <p id="friend-analysis-state" class="friend-analysis-state" role="status"></p>
@@ -187,8 +189,8 @@
  <div id="friend-analysis-content" class="friend-analysis-content"></div>
  <div class="friends-dialog-actions friend-analysis-cta">
   <button type="button" id="friend-analysis-edit">Completar dados da carta</button>
-  <button type="button" id="friend-analysis-export">Exportar 5 fichas (.json)</button>
-  <button type="button" id="friend-analysis-save" class="friends-primary">Gerar e salvar 5 fichas</button>
+  <button type="button" id="friend-analysis-export">Exportar 6 fichas (.json)</button>
+  <button type="button" id="friend-analysis-save" class="friends-primary">Gerar e salvar 6 fichas</button>
  </div>
  <p id="friend-analysis-feedback" class="friends-feedback" role="status" aria-live="polite"></p>
 </dialog>

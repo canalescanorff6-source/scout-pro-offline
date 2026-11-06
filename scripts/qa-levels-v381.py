@@ -54,7 +54,7 @@ with sync_playwright() as pw:
      assert sheet.locator('.ct374-skill-reasons li').count()==0
      assert sheet.locator('.ct375-booster').count()==0
      assert sheet.get_by_role('button',name='Guardar esta ficha em nova revisão',exact=True).is_disabled()
-    for tactic in ['normal','rapido','fora','longo','posse']:
+    for tactic in ['normal','rapido','fora','longo','overload','posse']:
      page.locator('#ct378-style').select_option(tactic)
      page.wait_for_function('(t)=>document.querySelector(".ct378-main-sheet")?.dataset.tactic===t',arg=tactic)
      assert sheet.locator('.ct311-budget').inner_text().startswith(f'{c["pp"]} / {c["pp"]} PP')
@@ -67,7 +67,7 @@ with sync_playwright() as pw:
      assert page.locator('.detail-header .hero-kpi').first.locator('strong').text_content()=='66 PP'
     if cap==41:
      sheet.evaluate('(e)=>scrollTo(0,e.getBoundingClientRect().top+scrollY-12)');page.screenshot(path=str(OUT/f'{width}-ficha-havertz.png'))
-    results.append({'cap':cap,'width':width,'pp':c['pp'],'styles':5})
+    results.append({'cap':cap,'width':width,'pp':c['pp'],'styles':6})
    page.goto(BASE+'/index.html?owned=ct364-12',wait_until='domcontentloaded')
    owned=page.locator('#ct364-panel .ct378-main-sheet');owned.wait_for(timeout=25000)
    assert '56 / 56 PP' in owned.locator('.ct311-budget').inner_text(),'Provedel documentado: nível29/56PP'
@@ -75,4 +75,4 @@ with sync_playwright() as pw:
    ctx.close()
  finally:browser.close()
 (OUT/'resultados.json').write_text(json.dumps({'checks':results,'errors':[]},indent=2),encoding='utf8')
-print(f'V381 VISUAL PASS: {len(results)} fichas originais, cinco estilos, 3 próprias, conferência e histórico preservado em três telas; zero erros.')
+print(f'V381 VISUAL PASS: {len(results)} fichas originais, seis estilos, 3 próprias, conferência e histórico preservado em três telas; zero erros.')

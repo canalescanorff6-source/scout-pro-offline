@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V267 — 246 cartas x cinco estilos; nunca usar vetor fora do orçamento
+/* V267 — 246 cartas x seis estilos; nunca usar vetor fora do orçamento
  * como evidência de investimento individual. Sem inventar atributos-base.
  */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
@@ -49,7 +49,7 @@ for(const c of cards){
  }
  assert.equal(JSON.stringify(c),snapshot,'Carta alterada #'+c.numero);
 }
-assert.equal(total,1230);assert.equal(recorded+provisionalCount+absent,246);
+assert.equal(total,1476);assert.equal(recorded+provisionalCount+absent,246);
 assert.equal(recorded,159);assert.equal(provisionalCount,1);assert.equal(absent,86);
 const massaro=cards.find(x=>x.numero===1),martinelli=cards.find(x=>x.numero===191);
 assert(massaro&&martinelli&&martinelli.pp===50&&martinelli.max_level===26);

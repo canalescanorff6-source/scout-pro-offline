@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V251 — auditoria FORENSE das 246 cartas, cinco estilos, dados por edição.
+/* V251 — auditoria FORENSE das 246 cartas, seis estilos, dados por edição.
  * Não é validação de gameplay ou atribuição automática de meta.
  */
 const assert=require('node:assert/strict');
@@ -95,10 +95,10 @@ for(const c of cards){
  if(V.norm(raw.native_skills)!==V.norm(c.habilidades_nativas))gaps.push({number:c.numero,name:c.name});
 }
 assert.equal(mismatches.length,0,'Corrigir fontes com identidade ou PP diferentes:\n'+mismatches.join('\n'));
-assert.deepEqual(statuses,{complete:5,no_build:420,no_level:805,unsupported:0});
+assert.deepEqual(statuses,{complete:6,no_build:504,no_level:966,unsupported:0});
 assert.equal(mainCards,85);
-assert.equal(proposed,85*5);
-assert.equal(skipped,161*5);
+assert.equal(proposed,85*6);
+assert.equal(skipped,161*6);
 assert(styleVariations.length>15,'Estilos precisam gerar propostas realmente distintas quando PP documentados.');
 assert(!gaps.some(x=>x.number===191),'As nativas do Martinelli agora estão sincronizadas com o catálogo.');
 const martinelli=cards.find(x=>x.numero===191),raw=JSON.parse(read('web/'+martinelli.arquivo).match(/<script id="scout-v68-data"[^>]*>([\s\S]*?)<\/script>/)[1]);
@@ -151,7 +151,7 @@ assert(read('web/app-bridge.js').includes("position251.onload=loadReadiness;"),
 assert(read('web/app-bridge.js').includes("v264.onload=loadV251;v264.onerror=loadV251;"),
  'Motor V251 permanece acessível mesmo sem arquivo V264 no cache antigo');
 
-// O estado de níveis original continua protegido mesmo após 425 hipóteses.
+// O estado de níveis original continua protegido mesmo após 510 hipóteses.
 assert.equal(JSON.stringify(cards),before);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),sourceText);
 const code=read('web/craque-ficha-individual-v251.js');
@@ -173,7 +173,7 @@ assert(css.includes('azul')||css.includes('Azul'));
 assert(css.includes('@media(max-width:720px)'));
 assert.equal((read('web/index.html').match(/class="player-card"/g)||[]).length,246);
 console.log('V251 OK: 246 edições, 85 orçamentos documentados, '+proposed+
- ' propostas experimentais nos cinco estilos, '+skipped+' alternativas bloqueadas sem nível comprovado.');
+ ' propostas experimentais nos seis estilos, '+skipped+' alternativas bloqueadas sem nível comprovado.');
 console.log('V251 DUPLICADOS: '+summary.duplicateGroups+' grupos, '+summary.duplicatedCards+
  ' cartas; '+styleVariations.length+' cartas com hipóteses distintas conforme estilo.');
 console.log('V251 FONTE: '+gaps.length+' fichas HTML com habilidades nativas diferentes do catálogo; reconciliadas na interface por CAP + Card ID + edição.');

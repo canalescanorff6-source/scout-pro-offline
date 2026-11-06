@@ -53,14 +53,14 @@ for(const c of cards){
  }
  assert.equal(JSON.stringify(c),snapshot);
 }
-assert.equal(examined,1230);assert.equal(conflicts,1230);assert.equal(normal,1230);
+assert.equal(examined,1476);assert.equal(conflicts,1476);assert.equal(normal,1476);
 const martin=cards.find(c=>c.numero===191);
 assert(martin&&martin.max_level===26&&martin.pp===50);
 assert.equal(historicalRead(path.join(root,'web/SCOUT_V69_AUDITORIA.json'),'utf8'),before);
 fs.mkdirSync(path.join(root,'build'),{recursive:true});
 fs.writeFileSync(path.join(root,'build/v298-pp-conflict-gate-246x5.json'),JSON.stringify({
- schema:'CRAQUE_V298_PP_CONFLICT_GATE',cards:246,styles:5,conflictBlocked:1230,
- legacyProofIgnored:1230,originalsModified:false,
+ schema:'CRAQUE_V298_PP_CONFLICT_GATE',cards:246,styles:6,conflictBlocked:1476,
+ legacyProofIgnored:1476,originalsModified:false,
  equipmentApplied:false,gameplayValidated:false
 },null,2)+'\n');
-console.log('V298 PASS: 246 cartas x 5 estilos; 1230 conflitos PP bloqueados, 1230 recibos legados ignorados e build original intacta.');
+console.log('V298 PASS: 246 cartas x 6 estilos; 1476 conflitos PP bloqueados, 1476 recibos legados ignorados e build original intacta.');

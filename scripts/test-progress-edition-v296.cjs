@@ -92,7 +92,7 @@ fs.writeFileSync(path.join(root,'build/v296-progress-proof-246.json'),
  JSON.stringify({schema:'CRAQUE_V296_PROGRESS_EDITION_PROOF',
   cards:246,receiptValid:valid,receiptRejected:blocked,
   invalidScenarios:['sem_edition','edition_null','edition_vazia','outra_edition'],
-  martinelli:{cap:191,maxLevel:26,pp:50,tactics:5},
+  martinelli:{cap:191,maxLevel:26,pp:50,tactics:6},
   catalogModified:false,legacyRecordPolicy:'preservar_e_exigir_reconfirmacao',
   gameplayValidated:false},null,2)+'\n');
-console.log('V296 PASS: 246 cartas, 984 recibos falsos/legados bloqueados, 5 estilos de Martinelli preservados, nenhum PP alterado.');
+console.log('V296 PASS: 246 cartas, 984 recibos falsos/legados bloqueados, 6 estilos de Martinelli preservados, nenhum PP alterado.');

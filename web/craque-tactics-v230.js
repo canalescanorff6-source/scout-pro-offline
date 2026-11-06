@@ -1,5 +1,5 @@
 /* Craque Tático V230 — comparação documental de estilos nas DUAS formações.
- * 5 estratégias + qualquer um dos 246 jogadores, sem inventar atributos ou Overall.
+ * 6 estratégias + qualquer um dos 246 jogadores, sem inventar atributos ou Overall.
  * Pontuação ordinal de encaixe tático, NÃO avaliação de qualidade/meta em partidas.
  */
 (function(host,factory){'use strict';
@@ -12,7 +12,8 @@ const MODES=Object.freeze({
  normal:{label:'Contra-Ataque Normal',hint:'Bloco equilibrado, transição controlada e apoio defensivo. A mesma formação pode ser usada com funções complementares.'},
  rapido:{label:'Contra-Ataque Rápido',hint:'Ataque à profundidade, pressão após perda e movimentos de ruptura. Preferir características de velocidade sem supor atributos desconhecidos.'},
  fora:{label:'Por Fora',hint:'Criar amplitude a partir de laterais/meias sem obrigar pontas nem cruzamentos. Seu desenho estreito continua possível.'},
- longo:{label:'Bola Longa',hint:'Primeira ligação vertical, disputa aérea e segunda bola. Considerar um atacante de referência e meias que recolham rebotes.'}
+ longo:{label:'Bola Longa',hint:'Primeira ligação vertical, disputa aérea e segunda bola. Considerar um atacante de referência e meias que recolham rebotes.'},
+ overload:{label:'Sobreposição',hint:'Aproximar apoios no setor da bola, oferecer linhas curtas e cobrir deslocamentos. Hipótese editorial de encaixe; validar a movimentação no jogo.'}
 });
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const POS=Object.freeze({AC:'CA',CA:'CA',SA:'SA',MO:'MAT',MAT:'MAT',MC:'MLG',ME:'MLG',MLG:'MLG',MDF:'VOL',VOL:'VOL',DC:'ZG',ZC:'ZG',ZG:'ZG',DD:'LD',LD:'LD',DE:'LE',LE:'LE',GR:'GO',GO:'GO',PTE:'PTE',PTD:'PTD',MLE:'MLE',MLD:'MLD'});
@@ -65,6 +66,11 @@ const clauses={
  [/pivo|homem de area|artilheiro/,17,'Recepção e presença ofensiva'],
  [/destruidor|primeiro volante|meia versatil/,10,'Segunda bola e cobertura'],
  [/defensor criativo|orquestrador/,8,'Primeira distribuição']
+ ],
+ overload:[
+ [/orquestrador|armador criativo|pivo/,14,'Apoios próximos para combinar no setor da bola'],
+ [/meia versatil|lateral ofensivo|lateral movel/,12,'Deslocamentos para oferecer linhas de passe'],
+ [/primeiro volante|defensor criativo|lateral defensivo/,8,'Cobertura dos espaços deixados pelos apoios']
  ]
 };
 const SKILL={
@@ -72,7 +78,8 @@ const SKILL={
  normal:[/interception|interceptacao|one.touch pass|passe de primeira/,7,'Leitura da transição'],
  rapido:[/through passing|passe em profundidade|first.time shot|chute de primeira/,8,'Passe ou finalização rápida'],
  fora:[/weighted pass|passe na medida|low lofted pass|passe aereo baixo/,8,'Circulação lateral'],
- longo:[/heading|cabecada|aerial superiority|superioridade aerea|low lofted pass/,8,'Jogo aéreo ou lançamento']
+ longo:[/heading|cabecada|aerial superiority|superioridade aerea|low lofted pass/,8,'Jogo aéreo ou lançamento'],
+ overload:[/one.touch pass|passe de primeira|through passing|passe em profundidade/,9,'Combinação curta entre apoios próximos']
 };
 function score(card,slot,mode='posse'){
  if(!Object.hasOwn(MODES,mode))throw Error('Estilo de técnico não reconhecido');
@@ -93,7 +100,8 @@ function score(card,slot,mode='posse'){
   score:Math.min(100,result),role:slotRole(slot),position:position(card),
   placement:placement.label,signals,
   confidence:placement.match&&styles&&skill?'comparativo_documental':'provisorio',
-  mode,why:'Encaixe por posição/estilo/habilidade documentados, sem Overall, atributos ocultos ou testes inventados.'
+  mode,why:'Encaixe por posição/estilo/habilidade documentados, sem Overall, atributos ocultos ou testes inventados.'+
+   (mode==='overload'?' Sobreposição: hipótese editorial, sem validação de rendimento em partidas.':'')
  };
 }
 function rank(cards,slot,mode,exclude=[],used=[]){

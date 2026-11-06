@@ -83,7 +83,7 @@ with sync_playwright() as pw:
    reveal(root.locator('.ct326-secondary-action'))
    root.locator('.ct326-secondary-action').click()
    assert root.locator('.ct327-style-panel').is_visible()
-   assert root.locator('.ct327-style-row').count()==5
+   assert root.locator('.ct327-style-row').count()==6
    root.locator('.ct311-compare > summary').click()
    assert root.locator('.ct311-compare').evaluate('(e)=>e.open')
    assert 'Comparar MAT × SA' in root.inner_text()

@@ -53,7 +53,7 @@ for(const card of catalog){
   count++;
  }
 }
-assert.equal(count,1230);
+assert.equal(count,1476);
 assert.equal(valid,159);
 assert.equal(provisional,1);
 assert.equal(missing,86);

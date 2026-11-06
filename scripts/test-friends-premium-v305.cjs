@@ -13,9 +13,9 @@ const zico={
  nativeSkills:'',skills:'',booster:'',fixedBooster:'',boosterSlot:'pendente',trainingLevels:''
 };
 const modes=e.MODES;
-assert.equal(modes.length,5);
+assert.equal(modes.length,6);
 const pending=e.generate(zico,deps);
-assert.equal(Object.keys(pending.profiles).length,5);
+assert.equal(Object.keys(pending.profiles).length,6);
 for(const mode of modes){
  const result=e.evaluate(zico,mode,deps);
  assert.equal(result.plan.status,'pendente','Não gerar números falsos para '+mode);
@@ -49,10 +49,10 @@ for(const term of ['friend-fichas-count','friend-analysis-player','friend-analys
  'friend-analysis-sections','friend-analysis-edit','friend-analysis-save','friend-analysis-modes'])
  assert(page.includes('id="'+term+'"'),'Seção não disponível: '+term);
 assert(ui.includes('Ver ficha do app')&&ui.includes('friends-card-fichas'),
- 'Cada carta precisa de acesso explícito às cinco fichas');
+ 'Cada carta precisa de acesso explícito às seis fichas');
 assert(ui.includes('()=>openCard(card)'),'Edição acessível a partir da ficha');
 assert(fichas.includes("Object.fromEntries(engine.MODES.map"),
- 'Cinco estilos realmente calculados por carta, não um painel duplicado');
+ 'Seis estilos realmente calculados por carta, não um painel duplicado');
 assert(fichas.includes('selectPanel(panel)'),'Alternar treino, habilidades e ímpetos');
 assert(fichas.includes('Treino pendente')&&fichas.includes('PP · hipótese'),
  'Status documental diferenciado por estilo');
@@ -68,4 +68,4 @@ assert(read('web/sw.js').includes('v305-premium-fichas'),
 assert(read('scripts/stamp-bundle-v189.cjs').includes('craque-friends-training-ui-v228.js'),
  'Paridade de bundle Android/Windows mantida');
 assert.equal(JSON.parse(read('web/SCOUT_V69_AUDITORIA.json')).cards.length,246);
-console.log('V305 PASS: 5 fichas por carta, Zico com PP pendentes, recomputação real após PP, sugestões por estilo, backup isolado, acesso e seções premium.');
+console.log('V305 PASS: 6 fichas por carta, Zico com PP pendentes, recomputação real após PP, sugestões por estilo, backup isolado, acesso e seções premium.');

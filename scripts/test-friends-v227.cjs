@@ -3,11 +3,35 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {webcrypto}=require('node:crypto'),root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const model=require('../web/craque-friends-v227.js');
+const normalizeAnalysis=analysis=>model.normalCard({ownerId:'compat',id:'card',name:'Carta',analysis}).analysis;
+const normalizeStyle=extra=>model.normalCard({ownerId:'compat',id:'card',name:'Carta',style:'Estilo legado',...extra});
+assert.equal(normalizeStyle({}).defenceStyle,'','Backup sem estilo defensivo mantém campo vazio');
+assert.equal(normalizeStyle({defenceStyle:'  Lateral defensivo  '}).defenceStyle,'Lateral defensivo');
+assert.equal(normalizeStyle({defenceStyle:'Lateral defensivo'}).style,'Estilo legado',
+ 'O estilo defensivo não substitui o estilo de jogo legado');
+const pendingProfile={status:'pendente',levels:null,pp:null,remaining:null,confidence:'pendente'};
+const oldAnalysis={version:228,source:'Teste de compatibilidade',createdAt:new Date().toISOString(),
+ profiles:Object.fromEntries(['posse','normal','rapido','fora','longo'].map(id=>[id,{...pendingProfile}]))};
+assert.deepEqual(Object.keys(normalizeAnalysis(oldAnalysis).profiles),Object.keys(oldAnalysis.profiles),
+ 'Backup histórico de cinco estilos continua legível sem mutação');
+const newAnalysis={...oldAnalysis,profiles:{...oldAnalysis.profiles,overload:{...pendingProfile}}};
+assert.deepEqual(normalizeAnalysis(newAnalysis).profiles.overload,pendingProfile,
+ 'Sobreposição deve sobreviver à normalização de importação e armazenamento');
+assert.throws(()=>normalizeAnalysis({...newAnalysis,profiles:{...newAnalysis.profiles,
+ overload:{...pendingProfile,levels:Array(10).fill(1)}}}),/pendente/,
+ 'O sexto estilo obedece às mesmas regras de integridade');
 const externalPath='scoutpro:v227:friends-collections';
 assert.equal(model.KEY,externalPath);
 assert(!/SCOUT_V69_AUDITORIA\.json|SCOUT_V177_DUAS_FORMACOES\.json|scoutpro:v219:black-caps/.test(read('web/craque-friends-page-v227.js')),
   'A nova UI não pode modificar o catálogo, formações ou bloqueios pessoais.');
 assert(read('web/outros-elencos-v227.html').includes('data-page="friends"'));
+const friendHtml=read('web/outros-elencos-v227.html');
+for(const id of ['friend-position','friend-card-position']){
+ const select=friendHtml.match(new RegExp('<select id="'+id+'"[^>]*>([\\s\\S]*?)</select>'))?.[1];
+ assert(select,'Seletor de posição acessível: '+id);
+ for(const position of ['CA','SA','MAT','MLG','VOL','ZG','LD','LE','PTE','PTD','MLE','MLD','GO','ZC','PD','PE'])
+  assert(select.includes('<option>'+position+'</option>'),'Posição disponível no cadastro/filtro: '+position+' '+id);
+}
 assert(read('web/index.html').includes('href="outros-elencos-v227.html"'));
 assert(read('web/scout-ui-v189.js').includes('scout-v227-friends-entry'));
 assert(read('web/sw.js').includes("'./outros-elencos-v227.html'"));
@@ -17,7 +41,7 @@ doc=model.addOwner(doc,'Ana');
 const ana=doc.owners[0];
 doc=model.addOwner(doc,'Bruno');
 const bruno=doc.owners[1];
-doc=model.saveCard(doc,{ownerId:ana.id,name:'Messi',edition:'Épico A',cardId:'12345',position:'SA',pp:60,level:31,notes:'Informado por Ana'});
+doc=model.saveCard(doc,{ownerId:ana.id,name:'Messi',edition:'Épico A',cardId:'12345',position:'SA',pp:60,level:31,defenceStyle:'Informado pelo proprietário',notes:'Informado por Ana'});
 doc=model.saveCard(doc,{ownerId:bruno.id,name:'Messi',edition:'Show Time B',cardId:'67890',position:'MAT',pp:64,level:33,notes:'Informado por Bruno'});
 assert.equal(doc.cards.length,2,'Duas pessoas podem ter versões diferentes do mesmo jogador');
 assert.equal(doc.cards.filter(c=>c.ownerId===ana.id).length,1);
@@ -38,6 +62,8 @@ assert.equal(doc.owners.length,3);
 assert.equal(doc.cards.length,3);
 assert.notEqual(doc.owners[2].id,ana.id,'Importação gera novo acervo independente');
 assert.equal(doc.cards.find(x=>x.ownerId===doc.owners[2].id).name,'Messi');
+assert.equal(doc.cards.find(x=>x.ownerId===doc.owners[2].id).defenceStyle,'Informado pelo proprietário',
+ 'Importação/exportação preserva o estilo defensivo da edição sem cruzar proprietários');
 assert.equal(JSON.stringify(doc).includes('Épico A corrigida'),true);
 assert.throws(()=>model.importOwner(doc,{format:'other-app',owner:{name:'X'},cards:[]}),/não reconhecido/);
 doc=model.removeOwner(doc,ana.id);

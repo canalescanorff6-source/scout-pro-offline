@@ -79,7 +79,7 @@ for(const card of cards){
  assert.equal(JSON.stringify(card),original);
  record.push(report);
 }
-assert.equal(cases,1230);assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
+assert.equal(cases,1476);assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 const synthetic={capture:977,id:'977000977',edition:'TESTE-V277',shown_position:'CA',attack_style:'Artilheiro',native_skills:'Heading'}; // Fixture V291: inventário conhecido
 const initial=S.evaluate(synthetic,'posse');
 const ranked=initial.recommendations.concat(initial.alternatives);

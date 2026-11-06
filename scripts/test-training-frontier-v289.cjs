@@ -85,7 +85,7 @@ for(const c of cards){
  }
  assert.equal(JSON.stringify(c),before);
 }
-assert.equal(tested,425);assert.equal(pending,805);assert(candidates>tested);
+assert.equal(tested,510);assert.equal(pending,966);assert(candidates>tested);
 assert.equal(historicalRead(require.resolve('../web/SCOUT_V69_AUDITORIA.json'),'utf8'),raw);
 assert.equal(typeof S.trainingScenario,'function','Cenário precisa recalcular habilidades e ímpetos sem gravar treino');
 const c=cards.find(x=>x.numero===191);

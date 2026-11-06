@@ -14,7 +14,7 @@ const LABELS=Object.freeze({go:'Goleiro',le:'Lateral esquerdo',ld:'Lateral direi
  zge:'Zagueiro esquerdo',zgd:'Zagueiro direito',vole:'Volante esquerdo',
  vold:'Volante direito',mlg:'Meio-campista',mat:'Meia-atacante',sa:'Segundo atacante',
  cae:'Centroavante esquerdo',cad:'Centroavante direito'});
-const modes=Object.freeze(['posse','normal','rapido','fora','longo']);
+const modes=Object.freeze(['posse','normal','rapido','fora','longo','overload']);
 function slotPosition(id,slot){
  return PLANS[id]?.find(x=>x[0]===slot)?.[1]||null;
 }

@@ -23,7 +23,7 @@ const modes=decision.MODES.map(style=>decision.resolve(scenario(style),identity,
  null,style==='rapido'?{train:alternative.slice(),skills:[],booster:''}:null));
 const selected=modes[0];
 const result=decision.compare(selected,modes,engine.CATEGORIES,engine);
-assert.equal(result.rows.length,5);
+assert.equal(result.rows.length,6);
 assert.equal(result.rows[0].costBasis,'custo_progressivo_exato');
 const rapid=result.rows.find(x=>x.style==='rapido');
 assert.equal(rapid.kind,'rascunho_salvo');
@@ -55,7 +55,7 @@ assert.equal(without.rows[2].changes[0].deltaPP,null);
 assert.deepEqual(decision.diff(selected,modes[2],engine.CATEGORIES,engine).map(x=>x.deltaPP),[-3,2]);
 assert.throws(()=>decision.compare(selected,modes.map((x,i)=>i===1?
  {...x,edition:'outra versão'}:x),engine.CATEGORIES,engine),/mesma carta/);
-assert.throws(()=>decision.compare(selected,modes.slice(0,4),engine.CATEGORIES,engine),/cinco/);
+assert.throws(()=>decision.compare(selected,modes.slice(0,5),engine.CATEGORIES,engine),/seis/);
 assert(Object.isFrozen(rapid)&&Object.isFrozen(rapid.changes));
 const ui=read('web/craque-positional-ui-v311.js');
 assert(ui.includes('host.SCOUT_TACTICS_V220);'),'O comparador precisa receber o custo progressivo real');

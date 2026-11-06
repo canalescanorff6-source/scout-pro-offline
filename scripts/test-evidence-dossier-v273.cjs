@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V273: 246 Card IDs × cinco táticas; nenhuma mudança do catálogo.
+/* V273: 246 Card IDs × seis táticas; nenhuma mudança do catálogo.
  * Investimento matemático PP não é homologação, nem stats finais.
  */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
@@ -37,7 +37,7 @@ for(const card of cards){
   assert.equal(dossier.competitivelyApproved,false);
   assert.equal(dossier.maySpendTokensAutomatically,false);
   assert.equal(dossier.sourceConfirmed,false);
-  assert.equal(dossier.scenarios.length,5);
+  assert.equal(dossier.scenarios.length,6);
   assert.equal(dossier.skillSlotsVerified,false);
   assert.equal(dossier.trainingStatus,inv.status);
   assert.equal(dossier.trainingCategories.length,inv.levels?10:0);
@@ -76,7 +76,7 @@ for(const card of cards){
  assert.equal(JSON.stringify(card),before);
  cases.push(auditRecord);
 }
-assert.equal(scenarios,1230);
+assert.equal(scenarios,1476);
 assert.equal(math,159);assert.equal(provisional,1);assert.equal(missing,86);
 // Investimento não é usado quando orçamento inválido ou proposta não validada.
 const first=cards.find(x=>x.numero===1),mart=cards.find(x=>x.numero===191);

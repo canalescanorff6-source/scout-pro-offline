@@ -134,7 +134,9 @@ with sync_playwright() as pw:
    page.locator('#ct364-tabs [data-panel="skills"]').click()
    assert page.locator(".ct364-skill-list span").count()==10
    # V366: recomendações do MESMO motor oficial, reagindo à tática.
-   assert page.locator("#ct366-advisory .ct364-modes button").count()==5
+   assert page.locator("#ct366-advisory .ct364-modes button").count()==6
+   assert page.locator('#ct366-advisory .ct364-modes button').all_text_contents()==[
+    'Posse de Bola','Contra-Ataque Normal','Contra-Ataque Rápido','Por Fora','Bola Longa','Sobreposição']
    page.wait_for_function("""() => document.querySelector('#ct366-advisory .ct366-results')?.textContent.includes('Vagas adicionais livres verificadas')""",timeout=25000)
    assert "PENDENTE" in page.locator("#ct366-advisory").inner_text()
    assert page.locator('#ct366-advisory [data-pro-kind="skills"]').count()==1,(name,"V373 não mostrou carteira de habilidades")
@@ -143,6 +145,8 @@ with sync_playwright() as pw:
    page.locator("#ct366-advisory .ct364-modes button").filter(has_text="Contra-Ataque Normal").click()
    assert "Contra-Ataque Normal" in page.locator("#ct366-advisory").inner_text()
    assert page.locator("#ct366-advisory .ct364-modes button[aria-pressed=true]").count()==1
+   page.locator('#ct366-advisory .ct364-modes button').filter(has_text='Sobreposição').click()
+   assert page.locator('#ct366-advisory .ct364-modes button[aria-pressed=true]').inner_text()=='Sobreposição'
    page.locator("#ct366-advisory .ct364-modes button").filter(has_text="Posse de Bola").click()
    # V364.3: as cinco vagas manuais não presumem equipamento; nomes
    # duplicados com habilidades observadas e edições vizinhas ficam isolados.
@@ -168,7 +172,7 @@ with sync_playwright() as pw:
    assert page.locator('[data-skill-slot="3"]').input_value()=="Outra habilidade de QA descartável"
    reveal(page.locator('#ct364-tabs [data-panel="boost"]'))
    page.locator('#ct364-tabs [data-panel="boost"]').click()
-   assert page.locator("#ct366-advisory .ct364-modes button").count()==5
+   assert page.locator("#ct366-advisory .ct364-modes button").count()==6
    page.wait_for_function("""() => document.querySelector('#ct366-advisory .ct366-results')?.textContent.includes('Gastar tokens')""",timeout=25000)
    assert "NÃO AUTORIZADO" in page.locator("#ct366-advisory").inner_text()
    assert page.locator('#ct366-advisory [data-pro-kind="boost"]').count()==1,(name,"V373 sem alternativas por função")
@@ -192,7 +196,7 @@ with sync_playwright() as pw:
    assert "simulação" in page.locator("#ct364-panel").inner_text().lower()
    reveal(page.locator('#ct364-tabs [data-panel="treino"]'))
    page.locator('#ct364-tabs [data-panel="treino"]').click()
-   assert page.locator(".ct364-modes button").count()==5
+   assert page.locator(".ct364-modes button").count()==6
    assert "PENDENTE" in page.locator("#ct364-panel").inner_text().upper()
    page.wait_for_function("""() => document.querySelector('#ct364-panel [data-pro-kind="treino"]')!==null""",timeout=25000)
    reveal(page.locator('#ct364-panel [data-pro-kind="treino"]'))
@@ -448,6 +452,6 @@ with sync_playwright() as pw:
    # Check scripts are not throwing even with lazy engines.
    assert not [e for e in error if "ct364" in e.lower()],(name,error)
    ctx.close()
-  print("V364 VISUAL PASS: 246 originais + 15 imagens, busca, duas Guirassy, cinco estilos, confirmação manual, 3 resoluções.")
+  print("V364 VISUAL PASS: 246 originais + 15 imagens, busca, duas Guirassy, seis estilos, confirmação manual, 3 resoluções.")
  finally:
   browser.close()

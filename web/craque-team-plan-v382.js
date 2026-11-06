@@ -158,7 +158,7 @@ try{
  const [data,own,refs,formations,ratingModel,catalog]=await Promise.all([load('SCOUT_V69_AUDITORIA.json'),load('ct364-owned-cards.json'),load('ct376-card-references.json'),load('ct382-formations.json'),load('ct376-rating-model.json'),window.CRAQUE_MANAGERS_V302.load()]);
  deps.ratingModel=ratingModel;forms=formations.formations;
  const managerSource=window.CRAQUE_MANAGERS_V302;
- sources={originals:data.cards,owned:own.cards,references:refs.cards,positional:P,managers:catalog.tecnicos.map(m=>A.normalManager({id:m.catalog_id,name:m.nome,edition:m.versao_lancamento,
+ sources={originals:data.cards,owned:own.cards,references:[...refs.cards,...(refs.externalCards||[])],positional:P,managers:catalog.tecnicos.map(m=>A.normalManager({id:m.catalog_id,name:m.nome,edition:m.versao_lancamento,
   proficiency:Object.fromEntries(Object.keys(C.MODES).map(s=>[s,managerSource.proficiency(m,s)])),bonuses:m.boosters_EN,bonusesVerified:false,source:'Catálogo público; aquisição e bônus na conta a conferir'}))};
  options($('style'),Object.entries(C.MODES));options($('family'),[['','Todas as famílias'],...[...new Set(forms.map(f=>f.family))].map(f=>[f,f])]);
  const requested=new URLSearchParams(location.search).get('account');setAccount(['primary','secondary'].includes(requested)?requested:A.read(localStorage).active,false);

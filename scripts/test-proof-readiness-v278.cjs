@@ -48,7 +48,7 @@ for(const c of cards){
  assert.equal(JSON.stringify(c),previous);
  profile.push(record);
 }
-assert.equal(count,1230);assert.equal(JSON.stringify(cards),pristine);
+assert.equal(count,1476);assert.equal(JSON.stringify(cards),pristine);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 const source=cards.find(x=>x.numero===1),native=source.habilidades_nativas;
 const d={capture:source.numero,id:source.id,edition:source.versao,

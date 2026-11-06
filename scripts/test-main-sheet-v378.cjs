@@ -57,6 +57,6 @@ for(const c of owned)for(const tactic of F.MODES){
  assert.equal(sheet.review.spent,2*(meta.level-1));
  count++;
 }
-assert.equal(count,1305);assert.equal(JSON.stringify(cards),snapshot);
+assert.equal(count,1566);assert.equal(JSON.stringify(cards),snapshot);
 assert(Main.text(selected.review).includes('Treino salvo'));
-console.log('V378 PASS: 261×5 fichas coerentes, treino parcial, seleção vazia, nativas por edição e nenhum dado alterado.');
+console.log('V378 PASS: 261×6 fichas coerentes, treino parcial, seleção vazia, nativas por edição e nenhum dado alterado.');

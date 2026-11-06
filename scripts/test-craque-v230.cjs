@@ -1,5 +1,5 @@
 'use strict';
-/* V230 — PT-BR verificado, identidade da logo, cinco táticas, ícones novos.
+/* V230 — PT-BR verificado, identidade da logo, seis táticas, ícones novos.
  * 246 originais, 23 bloqueios, histórico antigo e treino aprovado não podem mudar.
  */
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
@@ -39,7 +39,7 @@ for(const key of ['chute','passe','drible','destreza','pernas','aereo','defesa',
  const big=icons.render(key,true);assert(big.includes('scout-v208-svg'));assert(big.includes('data-scout-v230-symbol="'+key+'"'));
 }
 assert.equal(icons.render('unknown'),''),assert.equal(icons.upgrade(null),false);
-assert.equal(Object.keys(tactics.MODES).length,5);
+assert.equal(Object.keys(tactics.MODES).length,6);
 assert.deepEqual(Object.keys(tactics.MODES),boost.tactics);
 for(const f of formations){
  for(const slot of f.starters){
@@ -91,4 +91,4 @@ assert(bridge.includes("v189Root+'craque-design-v230.css'"));
 assert(bridge.includes("v189Root+'craque-impetos-ptbr-v230.js'"));
 assert(bridge.includes("v189Root+'craque-training-icons-v230.js'"));
 assert(!read('web/scout-card-curation-v229.js').includes('CRAQUE_TACTICS_V230'),'Preserve V229 card principal');
-console.log('V230 PASS: 28 PT-BR names (official/descriptive), 10 crest icons, 5 tactics x 2 formations x 246, no blocked cards, no catalog changes.');
+console.log('V230 PASS: 28 PT-BR names (official/descriptive), 10 crest icons, 6 tactics x 2 formations x 246, no blocked cards, no catalog changes.');

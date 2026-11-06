@@ -1,5 +1,15 @@
 # Auditoria V389 das fichas individuais
 
+## Fichas nos seis estilos e em todos os acervos
+
+O cálculo atende Posse de Bola, Contra-Ataque, Contra-Ataque Rápido, Por Fora, Bola Longa e Sobreposição nas fichas principais, próprias, privadas e de Outros Elencos. A posição de uso e a ativação dos estilos ofensivo e defensivo entram na interpretação. A função escolhida e as instruções entram no Plano do Time e na ficha por função. Sobreposição usa uma proposta própria de apoio próximo, controle sob pressão e recuperação. O orçamento continua sendo o da carta. [Sobreposição na Konami](https://www.konami.com/efootball/pt-br/page/v6/versioninfo_v6-00) · [Estilos coletivos no estudo de Amadeusz](https://efhub.com/zh/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed)
+
+As bases públicas agora abrangem 260 das 261 cartas embarcadas. As 21 referências acrescentadas usam as artes auditadas no V381, mantêm a chave histórica e respeitam revisões manuais. O ID e a edição públicos são apresentados na proposta derivada. Os arquivos originais, níveis, PP, imagens e treinamentos cadastrados ficam preservados. Messi #050 mantém o relato 29/56 e a pendência da edição exata. Os três jogadores da coleção 7$ têm referências adicionais com bases, nativas e slots documentados.
+
+A auditoria das cartas embarcadas produz 1.566 cenários, 1.560 com base pública, sem erro de identidade ou custo de PP. Na comparação com V391, 197 distribuições mudaram nos quatro estilos alternativos e 261 propostas de Sobreposição foram acrescentadas. As 261 distribuições de Posse registradas nessa comparação mantiveram os vetores. Slots adicionais agora respeitam a referência pública em todos os estilos.
+
+Os testes verificam os seis estilos nas 13 posições, Principal e Secundária, isolamento de revisões, compatibilidade com backups anteriores, prioridade dos dados manuais e acesso à proposta atualizada mesmo quando existe uma ficha salva. Proficiências desconhecidas continuam explicitamente ausentes. A presença de uma base pública e a validade matemática da proposta não comprovam aquisição, familiaridade em outras posições ou superioridade em partidas.
+
 ## Apoio por dentro e cobertura na lateral
 
 O Plano do Time e a ficha por função passam a calcular a opção **Apoiar por dentro e recuperar** com uma ação própria, que combina passe curto, domínio, equilíbrio, velocidade, resistência e cobertura. A instrução **Defensivo** mantém a prioridade de cobertura. A função do app é uma hipótese de uso da carta. A ativação de estilos continua vinculada à posição e à fase informadas.

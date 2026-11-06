@@ -159,6 +159,8 @@ function resolve(input,outcome,selection={},provided){
   skills,booster,suggestedSkills:skills.recommendations.slice(0,Math.max(0,5-skills.alreadyEquippedProvided)),
   freeSkillSlots:Number.isInteger(skills.slotsRemaining)?skills.slotsRemaining:null};
  const review=F.functionReview(card,result,undefined,{...d});
+ if(exactReference&&reference.publicIdentityV393)
+  review.publicIdentityReference={capture:reference.capture,kind:'Arte vinculada à edição pública'};
  review.repetitionAudit=repetitionAudit(card,result,selection);
  const trial=!manual&&exactReference&&matchTrial(card,result,reference.reference,valid,T);
  if(trial)review.matchTrial=trial;
@@ -257,6 +259,7 @@ function text(review){
  const repeats=review.repetitionAudit;
  return analysis?[sheet,'','MOTIVOS DA FICHA',analysis.reason,
   ...(analysis.task?['Ação · '+analysis.task.label,analysis.task.source,
+   ...(analysis.task.defensiveAction?['Sem a bola · '+analysis.task.defensiveAction.label,analysis.task.defensiveAction.source]:[]),
    ...new Set(analysis.task.stats.map(stat=>stat.study).filter(Boolean))]:[]),...analysis.factors.map(f=>f.category+' · '+f.reason),
   ...(repeats?['Coincidências auditadas · '+repeats.documentedPairs+' com análise documentada · '+repeats.pendingPairs+' com dados pendentes']:[]),analysis.reference?.url].filter(x=>x!==undefined).join('\n'):sheet;
 }

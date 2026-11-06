@@ -229,52 +229,52 @@ const ROLE_TACTIC_SKILLS=Object.freeze({
  CA:{
   posse:['onepass','sole','heel','double'],normal:['fighting','weighted','acrobatic','onepass'],
   rapido:['firstshot','through','double','longshot'],fora:['weighted','sole','double','aerial'],
-  longo:['aerial','heading','weighted','fighting']
+  longo:['aerial','heading','weighted','fighting'],overload:['onepass','sole','heel','firstshot']
  },
  SA:{
   posse:['onepass','sole','heel','through'],normal:['fighting','weighted','onepass','trackback'],
   rapido:['through','firstshot','double','longshot'],fora:['weighted','cutturn','double','sole'],
-  longo:['weighted','acrobatic','fighting','through']
+  longo:['weighted','acrobatic','fighting','through'],overload:['onepass','sole','heel','through']
  },
  MAT:{
   posse:['onepass','through','sole','heel'],normal:['fighting','intercept','weighted','onepass'],
   rapido:['through','double','firstshot','longshot'],fora:['lowloft','weighted','cutturn','sole'],
-  longo:['weighted','lowloft','fighting','longshot']
+  longo:['weighted','lowloft','fighting','longshot'],overload:['onepass','through','sole','heel']
  },
  MLG:{
   posse:['onepass','through','sole','heel'],normal:['intercept','blocker','fighting','mark'],
   rapido:['through','double','fighting','trackback'],fora:['lowloft','weighted','sole','cutturn'],
-  longo:['weighted','lowloft','intercept','fighting']
+  longo:['weighted','lowloft','intercept','fighting'],overload:['onepass','sole','intercept','through']
  },
  VOL:{
   posse:['onepass','through','weighted','sole'],normal:['blocker','mark','fighting','intercept'],
   rapido:['intercept','through','fighting','aerial'],fora:['weighted','lowloft','onepass','sole'],
-  longo:['aerial','lowloft','heading','blocker']
+  longo:['aerial','lowloft','heading','blocker'],overload:['onepass','intercept','blocker','sole']
  },
  ZG:{
   posse:['onepass','weighted','sole','intercept'],normal:['blocker','mark','sliding','fighting'],
   rapido:['intercept','blocker','fighting','clear'],fora:['weighted','lowloft','onepass','intercept'],
-  longo:['aerial','heading','clear','weighted']
+  longo:['aerial','heading','clear','weighted'],overload:['intercept','blocker','onepass','mark']
  },
  LD:{
   posse:['onepass','through','sole','intercept'],normal:['blocker','mark','fighting','sliding'],
   rapido:['intercept','through','trackback','fighting'],fora:['weighted','lowloft','sole','onepass'],
-  longo:['aerial','lowloft','clear','fighting']
+  longo:['aerial','lowloft','clear','fighting'],overload:['onepass','sole','intercept','blocker']
  },
  LE:{
   posse:['onepass','through','sole','intercept'],normal:['blocker','mark','fighting','sliding'],
   rapido:['intercept','through','trackback','fighting'],fora:['weighted','lowloft','sole','onepass'],
-  longo:['aerial','lowloft','clear','fighting']
+  longo:['aerial','lowloft','clear','fighting'],overload:['onepass','sole','intercept','blocker']
  },
  ALA:{
   posse:['onepass','sole','double','heel'],normal:['trackback','fighting','onepass','weighted'],
   rapido:['double','firstshot','longshot','through'],fora:['cutturn','weighted','sole','double'],
-  longo:['aerial','weighted','fighting','firstshot']
+  longo:['aerial','weighted','fighting','firstshot'],overload:['onepass','sole','double','through']
  },
  GO:{
   posse:['gklow','gklong','fighting'],normal:['gkhigh','gkpenalty','fighting'],
   rapido:['gklow','gkhigh','fighting'],fora:['gklow','gklong','weighted'],
-  longo:['gklong','gkhigh','fighting']
+  longo:['gklong','gkhigh','fighting'],overload:['gklow','gkhigh','fighting']
  }
 });
 const TACTIC_REASON=Object.freeze({
@@ -282,7 +282,8 @@ const TACTIC_REASON=Object.freeze({
  normal:'Equilíbrio defensivo e primeira ligação segura após recuperar.',
  rapido:'Ataque ao espaço, passe vertical e ações imediatas na transição.',
  fora:'Apoio nos corredores e entrada por dentro; cruzar não é obrigatório.',
- longo:'Apoio à segunda bola, passe longo consciente e duelos no setor.'
+ longo:'Apoio à segunda bola, passe longo consciente e duelos no setor.',
+ overload:'Apoio próximo, tabela sob pressão e reação à perda no lado da bola.'
 });
 function roleOf(d){return POSITION[d.role_used]||POSITION[d.shown_position]||POSITION[d.posicao]||null}
 // V276: composição de um pacote HIPOTÉTICO complementar.
@@ -311,7 +312,8 @@ const TACTIC_FAMILIES=Object.freeze({
  posse:['apoio','criacao','dominio'],normal:['cobertura','apoio'],
  rapido:['finalizacao','criacao','intensidade'],
  fora:['criacao','dominio','jogo_aereo'],
- longo:['jogo_aereo','criacao','intensidade']
+ longo:['jogo_aereo','criacao','intensidade'],
+ overload:['apoio','dominio','cobertura']
 });
 function composePortfolio(ranked,role,tactic,limit,context={}){
  // Contexto APENAS de nativas/adicionais com identidade canônica reconhecida;
@@ -377,7 +379,7 @@ function composePortfolio(ranked,role,tactic,limit,context={}){
  });
 }
 function evaluate(d,tactic,manualEquipped,options={}){
- if(!['posse','normal','rapido','fora','longo'].includes(tactic))throw Error('Tática inválida');
+ if(!['posse','normal','rapido','fora','longo','overload'].includes(tactic))throw Error('Tática inválida');
  const role=roleOf(d);if(!role)return {role:null,recommendations:[],nativeKnown:false,missing:['Posição da carta não cadastrada']};
  const native=splitSkills(d.native_skills||d.habilidades_nativas);
  const nativeKnown=nativeInventoryUsable(native);
@@ -431,6 +433,7 @@ function evaluate(d,tactic,manualEquipped,options={}){
  if(tactic==='rapido')bump(['through','firstshot','double','longshot','fighting','intercept'],18,'tatica');
  if(tactic==='fora')bump(['weighted','lowloft','onepass','sole','double','through','aerial','gklong'],23,'tatica');
  if(tactic==='longo')bump(['weighted','lowloft','aerial','heading','firstshot','fighting','intercept','gklong'],24,'tatica');
+ if(tactic==='overload')bump(['onepass','sole','heel','through','intercept','blocker','fighting'],22,'tatica');
  const task=tactic!=='posse'?options.task:null;
  if(task?.skills)task.skills.forEach((key,index)=>bump([key],Math.max(8,80-index*18),'tatica'));
  if(/pivo|homem de area|target/.test(style))bump(['heading','aerial','onepass','heel'],34);
@@ -799,7 +802,7 @@ function booster(d,tactic,engine,verifiedSlot,verifiedEquipped,equipment={}){
 }
 // V273: dossiê competitivo de uma edição, sem dependências mutáveis.
 // Referências de criadores são critério de rigor; nunca atribuir autoria.
-const DOSSIER_TACTICS=Object.freeze(['posse','normal','rapido','fora','longo']);
+const DOSSIER_TACTICS=Object.freeze(['posse','normal','rapido','fora','longo','overload']);
 const PLAYBOOK_ROLE=Object.freeze({
  CA:{task:'Aproveite o espaço liberado pela tabela curta.',support:'Aproxime SA ou MAT antes da recepção.',risk:'Evite girar de costas com o defensor colado.'},
  SA:{task:'Recuar para apoiar os CAs e atacar a segunda bola.',support:'Use a devolução de primeira na zona central.',risk:'Não transforme o SA em ponta aberto por padrão.'},
@@ -817,7 +820,8 @@ const PLAYBOOK_TACTIC=Object.freeze({
  normal:'Ao recuperar, prefira o primeiro passe seguro antes de acelerar.',
  rapido:'Explore a desorganização com dois ou três passes objetivos.',
  fora:'Aproxime o apoio do corredor, mas procure entrada por dentro; cruzar é opcional.',
- longo:'Explore a segunda bola com apoio, sem rifar passes curtos livres.'
+ longo:'Explore a segunda bola com apoio, sem rifar passes curtos livres.',
+ overload:'Aproxime os apoios do lado da bola, tabelando e cobrindo a reação à perda.'
 });
 function playbookOf(d,tactic){
  if(!DOSSIER_TACTICS.includes(tactic))throw Error('Tática inválida no guia');
@@ -892,12 +896,12 @@ function evidenceRoadmap(checks,{creatorSource=null}={}){
  });
 }
 // V281: análise de DIFERENÇAS, não otimização por diversidade artificial.
-// Dez pares dos cinco estilos do técnico revelam recomendações idênticas
+// Dez pares dos seis estilos do técnico revelam recomendações idênticas
 // entre contextos diferentes e explicam quando o acervo não sustenta mudança.
 function decisionMatrixFromScenarios(scenarios){
  if(!Array.isArray(scenarios)||scenarios.length!==DOSSIER_TACTICS.length||
   scenarios.some((x,i)=>x.style!==DOSSIER_TACTICS[i]))
-  throw Error('Matriz exige exatamente cinco estilos em ordem documentada');
+  throw Error('Matriz exige exatamente seis estilos em ordem documentada');
  const rows=scenarios.map(x=>Object.freeze({
   tactic:x.style,topSkill:x.firstSkill||null,topBooster:x.technicalName||null,
   skills:Object.freeze((x.skillKeys||[]).slice()),
@@ -927,19 +931,19 @@ function decisionMatrixFromScenarios(scenarios){
  const highSimilarity=pairs.filter(x=>x.overlapPercent!==null&&x.overlapPercent>=80).length;
  const identicalLists=pairs.filter(x=>x.verdict==='LISTAS_IDENTICAS').length;
  const risks=[];
- if(populated<5)risks.push('Há estilos sem candidato: não transformar ausência de vaga em habilidade equipável.');
- if(identicalLists>=6)
+ if(populated<DOSSIER_TACTICS.length)risks.push('Há estilos sem candidato: não transformar ausência de vaga em habilidade equipável.');
+ if(identicalLists>=Math.ceil(pairs.length*.6))
   risks.push('Listas de habilidades muito parecidas entre estilos; exigir atributos e testes da edição antes de escolher.');
- if(topSkills.size===1&&populated===5)
-  risks.push('Primeira habilidade idêntica nos cinco estilos: NÃO é prova de superioridade universal.');
+ if(topSkills.size===1&&populated===DOSSIER_TACTICS.length)
+  risks.push('Primeira habilidade idêntica nos seis estilos: NÃO é prova de superioridade universal.');
  if(topBoosters.size===1)
-  risks.push('Primeiro ímpeto idêntico nos cinco estilos: conferir a função e os quatro atributos da mesma versão.');
+  risks.push('Primeiro ímpeto idêntico nos seis estilos: conferir a função e os quatro atributos da mesma versão.');
  if(rows.some(x=>x.skillMargin!==null&&x.skillMargin<3))
   risks.push('Prioridades de habilidades próximas; ordem não prova eficácia competitiva.');
  if(rows.some(x=>x.boosterMargin!==null&&x.boosterMargin<2))
   risks.push('Ímpetos próximos; não equipar apenas pela diferença de score.');
  return Object.freeze({
-  schema:'CRAQUE_V281_CROSS_TACTIC_DIAGNOSTIC',tactics:5,pairCount:pairs.length,
+  schema:'CRAQUE_V281_CROSS_TACTIC_DIAGNOSTIC',tactics:rows.length,pairCount:pairs.length,
   rows:Object.freeze(rows),pairs:Object.freeze(pairs),
   repeatedPairs:identicalLists,similarPairs80:highSimilarity,
   uniqueFirstSkills:topSkills.size,uniqueFirstBoosters:topBoosters.size,
@@ -1216,7 +1220,7 @@ function evidenceDossier(d,tactic,engine,manualEquipped='',opts={}){
 }
 const tacticLabelFor=t=>({
  posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',
- fora:'Por Fora',longo:'Passe Longo'
+ fora:'Por Fora',longo:'Passe Longo',overload:'Sobreposição'
 })[t]||t;
 const USER_SLOT_NOTES=Object.freeze({
  24:'Cristiano Ronaldo Big Time #024: o usuário relata dois ímpetos embutidos, sem edição; preservar ambos.',
@@ -1500,7 +1504,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
   const gap=next?Number((skill.score-next.score).toFixed(2)):null;
   const bestFamily=skill.family;
   const selected=rotation.filter(r=>r.skills.includes(skill.key)).map(r=>r.tactic);
-  const relevance=selected.length===5?'constante_nos_cinco_estilos':
+  const relevance=selected.length===DOSSIER_TACTICS.length?'constante_nos_seis_estilos':
    selected.length>1?'comum_a_multiplos_estilos':'mais_especifica_de_estilo';
   const nativeSignal=skill.factors.nativas||0;
   const missingEvidence=[];
@@ -1569,7 +1573,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
   noTokens:boosters.every(x=>!x.maySpendTokens),
   noGameplayClaim:board.gameplayValidated===false,
   noCreatorAttribution:board.creatorEndorsement===false,
-  sourceHasFiveTactics:rotation.length===5,
+  sourceHasFiveTactics:rotation.length>=5,sourceHasAllTactics:rotation.length===DOSSIER_TACTICS.length,
   fourAxesEach:boosters.every(b=>b.fourAxes.length===4)
  });
  return Object.freeze({
@@ -1580,7 +1584,7 @@ function competitiveQualityLabV285(d,tactic,engine,manualEquipped='',opts={}){
   tacticPairs:Object.freeze(pairs),
   summary:Object.freeze({
    sameFivePairs:duplicates,comparablePairs:pairs.length,
-   exactlySameFiveAllStyles:duplicates===10,
+   exactlySameFiveAllStyles:duplicates===pairs.length,
    distinctSkillSets:new Set(rotation.map(x=>x.skills.join('|'))).size,
    uniqueFirstBoosters:new Set(rotation.map(x=>x.booster).filter(Boolean)).size,
    nativeMapped:nativeProfile.known.length,
@@ -1956,7 +1960,7 @@ function professionalEvidenceCouncilV287(d,tactic,engine,index=null,opts={}){
  if(main.insufficientCandidates)warnings.push(
   'Menos de cinco skills novas elegíveis: não completar a lista artificialmente.');
  if(opinion.summary.exactlySameFiveAllStyles)warnings.push(
-  'Cinco estilos geram o mesmo ranking; revisar contexto sem forçar variação.');
+  'Seis estilos geram o mesmo ranking; revisar contexto sem forçar variação.');
  if(boosterSensitivity.some(x=>x.important))warnings.push(
   'O líder do ímpeto varia quando uma evidência é retirada; evitar gasto baseado apenas na ordem.');
  const confidence=canonical&&nativeAligned&&completeBase&&localSkills&&catalogSlot&&accountSlot&&
@@ -2043,7 +2047,7 @@ section.innerHTML='<div class="v162-meta">CRAQUE TÁTICO · HABILIDADES E ÍMPET
 '<div class="v162-modes" role="group" aria-label="Estilo tático"><button type="button" data-tactic="posse" aria-pressed="true">Posse de Bola</button><button type="button" data-tactic="normal" aria-pressed="false">Contra-Ataque Normal</button><button type="button" data-tactic="rapido" aria-pressed="false">Contra-Ataque Rápido</button><button type="button" data-tactic="fora" aria-pressed="false">Por Fora</button><button type="button" data-tactic="longo" aria-pressed="false">Passe Longo</button></div>'+
 '<p id="v272-proofline" class="v272-proofline" aria-live="polite"></p>'+
 '<section id="v276-portfolio" class="v276-portfolio" aria-label="Portfólio complementar de habilidades"></section>'+
-'<details id="v273-dossier"><summary>Laudo competitivo desta carta · 5 estilos e evidências</summary><div id="v273-dossier-content"></div></details><div class="v162-panels"><article class="v162-panel"><h3>Até 5 habilidades adicionais · ordem por edição</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
+'<details id="v273-dossier"><summary>Laudo competitivo desta carta · 6 estilos e evidências</summary><div id="v273-dossier-content"></div></details><div class="v162-panels"><article class="v162-panel"><h3>Até 5 habilidades adicionais · ordem por edição</h3><p id="v162-skills-status"></p><ol class="v162-list" id="v162-skills"></ol><p id="v162-alts"></p></article><article class="v162-panel"><h3>Ímpetos fixos / adicionais</h3><div id="v162-source"></div><div id="v162-booster"></div></article></div>'+
 '<details><summary>Informar habilidades adicionais desta edição</summary><p>Separe os nomes por ponto e vírgula. Sem conferência, esta é apenas uma lista parcial: não presumimos que os outros slots estejam vazios.</p><textarea id="v162-equipped" aria-label="Habilidades adicionais já equipadas" placeholder="Ex.: Passe de primeira; Toque duplo"></textarea><label class="v254-confirm-line"><input type="checkbox" id="v254-confirm-equipped"><span>Conferi no Plano de Jogo: esta lista contém TODAS as habilidades adicionais equipadas nesta edição exata, inclusive se estiver vazia.</span></label><button id="v162-save" type="button">Salvar conferência e recalcular</button><p id="v162-feedback" aria-live="polite"></p></details>'+
 '<p class="v162-foot">Recomendações teóricas baseadas nas habilidades registradas, no estilo e na função da carta. Não são testes comprovados em partidas; verifique habilidades nativas, compatibilidade e slot antes de usar tokens. Nenhuma escolha é aplicada automaticamente.</p>';
 // V192: mostrar as cinco habilidades dentro da ficha PRINCIPAL, sem cópia do painel.
@@ -2237,7 +2241,7 @@ function draw(){
     .map(z=>z.name+' (diferença '+(z.scoreDelta>0?'+':'')+z.scoreDelta+')')
     .join(', ')+'.' ));
  addSection('V281 · comparador competitivo entre estilos',[
-  'Cinco estilos, '+dossier.decisionMatrix.pairCount+' pares comparados; '+
+  'Seis estilos, '+dossier.decisionMatrix.pairCount+' pares comparados; '+
    dossier.decisionMatrix.repeatedPairs+' pares com listas idênticas e '+
    dossier.decisionMatrix.similarPairs80+' pares com 80% ou mais de sobreposição.',
   ...dossier.decisionMatrix.pairs.map(p=>
@@ -2247,7 +2251,7 @@ function draw(){
    ' · primeiro ímpeto '+(p.boosterSame?'igual':'diferente ou pendente')),
   ...dossier.decisionMatrix.warnings.map(w=>'ATENÇÃO: '+w)
  ]);
- addSection('Variação entre os cinco estilos do técnico',[
+ addSection('Variação entre os seis estilos do técnico',[
   'A habilidade prioritária muda entre '+dossier.tacticalStability.topSkillVariations+
    ' resultados diferentes.',
   'O ímpeto prioritário muda entre '+dossier.tacticalStability.boosterVariations+

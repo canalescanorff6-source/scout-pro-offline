@@ -1,5 +1,7 @@
 # Craque Tático — Android e Windows
 
+**Fichas nos seis estilos:** propostas por carta, posição e estilo do técnico em Principal, Secundária e Outros Elencos. Sobreposição utiliza o mesmo fluxo de treino, habilidades e ímpetos com prioridades próprias. Há bases públicas para 260 das 261 cartas embarcadas e para as três cartas da coleção 7$. A edição exata de Messi #050 permanece em conferência. [Cobertura, critérios e auditoria](docs/SCOUT_V389_FICHAS_INDIVIDUAIS.md).
+
 **Correção V386 publicada na [v1.1.1286](https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1286):** resumo dos filtros acompanha o total real após carregar cartas adicionais; controles de conta livres da sobreposição do cabeçalho Android. Windows instalado e conferido nesta versão. APK oficial verificado, com confirmação manual de instalação ainda necessária no aparelho.
 
 **V385 publicada na [v1.1.1284](https://github.com/canalescanorff6-source/scout-pro-offline/releases/tag/v1.1.1284):** o mesmo **Meu elenco** para Principal e Secundária, com busca, filtros, imagens e fichas de cartas cadastradas. A conta aparece no catálogo, cadastro, importação e ficha; os acervos e revisões são independentes. [Desenho e limites](docs/superpowers/specs/2026-11-02-account-roster-design.md).

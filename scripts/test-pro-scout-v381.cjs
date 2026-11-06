@@ -12,7 +12,7 @@ assert(M.SOURCES.some(x=>x.id==='dm7-blackjhon-2026'&&x.kind==='public_gameplay'
 assert(M.SOURCES.some(x=>x.kind==='official_rules'));
 assert(M.SOURCES.every(s=>/^https:\/\//.test(s.url)&&s.proves.toLowerCase().includes('não')));
 assert.equal(M.PROVEN_BUILDS.length,0,'Fontes do Mundial não são builds exatas.');
-assert.deepEqual(M.MODES,['posse','normal','rapido','fora','longo']);
+assert.deepEqual(M.MODES,['posse','normal','rapido','fora','longo','overload']);
 const vector=[8,4,4,4,4,4,0,0,0,0];
 const review={identity:{capture:12,cardId:'88036360719839',edition:'ÉPICA',name:'Ruud van Nistelrooij'},
  tactic:'posse',role:'CA',pp:60,sourceKind:'proposal',proposed:vector,
@@ -63,4 +63,4 @@ for(const file of ['craque-pro-scout-v381.js','craque-pro-scout-v381.css']){
 const code=read('web/craque-pro-scout-v381.js');
 assert(!/localStorage\.setItem|navigator\.sendBeacon|fetch\(/.test(code),'Radar não pode enviar dados nem alterar as fichas.');
 assert(!code.includes('Overall como objetivo'));
-console.log('V381 PASS: 32 mundialistas, Rentão/Blackjhon separados por prova, cinco estilos, 246 cartas, sem atribuição falsa ou modificação de builds.');
+console.log('V381 PASS: 32 mundialistas, Rentão/Blackjhon separados por prova, seis estilos, 246 cartas, sem atribuição falsa ou modificação de builds.');

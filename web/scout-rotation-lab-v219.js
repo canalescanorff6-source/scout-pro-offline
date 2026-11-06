@@ -10,7 +10,7 @@ if(!benchAdvisor)throw Error('Reservas inteligentes V247 indisponíveis');
 const KEY_BLACK='scoutpro:v219:black-caps',KEY_BLACK_REVIEW='scoutpro:v222:black-reviewed',KEY_MATCHES='scoutpro:v219:match-logs';
 let cards=[],byCap=new Map(),images=new Map(),formats=[],active='4312',cycle=1,sheets={},excluded=[],userReviewed=false,gameLogs={},opened=null;
 const TACTIC_KEY='scoutpro:v230:rotation-tactic';
-const TACTICS={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'};
+const TACTICS={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa',overload:'Sobreposição'};
 let tactic='posse';
 const status=(id,v)=>{const e=$(id);if(e)e.textContent=v};
 const len=x=>Array.isArray(x)?x.length:0;

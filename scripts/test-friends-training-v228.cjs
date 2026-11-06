@@ -24,7 +24,7 @@ const source=(ownerId,overrides={})=>({
 });
 const a=source(ana.id);
 const plans=training.generate(a,engines);
-assert.equal(plans.version,228);assert.equal(Object.keys(plans.profiles).length,5);
+assert.equal(plans.version,228);assert.equal(Object.keys(plans.profiles).length,6);
 assert.equal(plans.source,training.sourceSignature(a));
 for(const tactic of training.MODES){
  const result=training.evaluate(a,tactic,engines);
@@ -178,4 +178,4 @@ assert(sharedPanel.includes('result.candidateCapacity'),
  'Contagem consultiva de candidatas não depende da prova de slots');
 
 assert(read('scripts/stamp-bundle-v189.cjs').includes('craque-friends-training-ui-v228.js'),'Android e Windows com mesmos arquivos');
-console.log('V228 PASS: cinco fichas/PP exatos, 5 habilidades sem duplicatas, ímpeto condicionado a slot, evidência pendente, exportação/restauração, acervos isolados.');
+console.log('V228 PASS: seis fichas/PP exatos, 5 habilidades sem duplicatas, ímpeto condicionado a slot, evidência pendente, exportação/restauração, acervos isolados.');

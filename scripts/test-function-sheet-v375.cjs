@@ -22,12 +22,12 @@ for(const c of cards)for(const style of F.MODES){
   cardId:String(c.id),edition:c.versao,position:P.normalize(c.posicao),nativeSkills:c.habilidades_nativas,
   style:c.estilo_ataque,pp:c.pp}),niveis:result.plan.levels},style,'');
  assert.deepEqual(result.suggestedSkills.map(x=>x.key),expectedSkills.recommendations.map(x=>x.key));
- const r=result.functionReview,txt=F.functionSheetText(r);
- assert.equal(r.identity.name,c.name);assert.equal(r.identity.cardId,String(c.id));
- assert.equal(r.identity.edition,c.versao);assert.equal(r.identity.capture,c.numero);
+ const r=result.functionReview,txt=F.functionSheetText(r),model=P.fromPersonal(c);
+ assert.equal(r.identity.name,c.name);assert.equal(r.identity.cardId,model.cardId);
+ assert.equal(r.identity.edition,model.edition);assert.equal(r.identity.capture,c.numero);
  assert.equal(r.trainingGroups.reduce((n,x)=>n+x.cost,0),c.pp);
  assert(r.trainingGroups.every(x=>x.cost===T.ppCost(x.proposed)));
- assert(txt.includes(c.name)&&txt.includes(c.versao)&&txt.includes('#'+String(c.numero).padStart(3,'0')));
+ assert(txt.includes(c.name)&&txt.includes(model.edition)&&txt.includes('#'+String(c.numero).padStart(3,'0')));
  assert(txt.includes('HABILIDADES ADICIONAIS')&&txt.includes('ÍMPETO PRINCIPAL'));
  assert(txt.includes(r.tacticLabel)&&txt.includes('sem validação em partidas online'));
  assert.equal(r.skills.length,result.suggestedSkills.length);
@@ -53,12 +53,12 @@ for(const c of JSON.parse(fs.readFileSync(path.join(root,'ct364-owned-cards.json
  const txt=F.functionSheetText(r);assert(txt.includes('PP pendentes')&&!txt.includes('undefined'));
  count++;
 }
-assert.equal(count,1305);assert.equal(JSON.stringify(cards),before);
+assert.equal(count,1566);assert.equal(JSON.stringify(cards),before);
 const ui=fs.readFileSync(path.join(root,'craque-positional-ui-v311.js'),'utf8');
 assert(!ui.includes('review.skills.slice(0,3)'),'All five available candidates must appear in the usable sheet');
 assert(ui.includes('Copiar ficha completa'));
 const bundle=require('./export-function-sheets-v375.cjs').generate();
-assert.equal(bundle.cards,261);assert.equal(bundle.sheetCount,1305);assert.equal(bundle.adaptationCount,10);
+assert.equal(bundle.cards,261);assert.equal(bundle.sheetCount,1566);assert.equal(bundle.adaptationCount,12);
 assert.equal(bundle.sheets.filter(r=>!r.proposed).length,0,'V381 documentou os orçamentos das 15 próprias, mantendo propostas consultivas');
 assert.equal(new Set(bundle.sheets.map(r=>r.identity.localKey)).size,261);
 // Execute the real shared renderer without browser automation or user-session access.
@@ -85,5 +85,5 @@ const fallback=nodes.find(n=>n.className==='ct375-copy-fallback');
  host.navigator.clipboard.writeText=async()=>{throw Error('not allowed')};
  await copy.listeners.click();assert(!fallback.hidden&&fallback.readOnly&&fallback.selected);
  assert.equal(fallback.value,copied);assert.equal(JSON.stringify(cards),before);
- console.log('V375 PASS: 1.305 fichas + 10 adaptações, 5 habilidades visíveis, custos PP, ímpetos com motivos e cópia com contingência sem alterar dados.');
+ console.log('V375 PASS: 1.566 fichas + 12 adaptações, 5 habilidades visíveis, custos PP, ímpetos com motivos e cópia com contingência sem alterar dados.');
 })().catch(error=>{console.error(error);process.exitCode=1});

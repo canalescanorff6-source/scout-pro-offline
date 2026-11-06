@@ -250,7 +250,7 @@ function mount(doc){
  host.addEventListener('scoutpro:tactic-selected-v220',event=>{
   const info=event.detail||{};
   if(Number(info.cap)!==capture||String(info.card_id)!==id)return;
-  if(!['posse','normal','rapido','fora','longo'].includes(info.tactic))return;
+  if(!['posse','normal','rapido','fora','longo','overload'].includes(info.tactic))return;
   activeTactic=info.tactic;styleLabel=String(info.label||info.tactic);
   const proposal=info.proposedLevels;
   suggested=valid(proposal)&&total(proposal)===budget?proposal.slice():null;

@@ -13,8 +13,8 @@ function managerOf(card){
  return '';
 }
 
-const STYLE_IDS=['posse','normal','rapido','fora','longo'];
-const STYLE_NAMES={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa'};
+const STYLE_IDS=['posse','normal','rapido','fora','longo','overload'];
+const STYLE_NAMES={posse:'Posse de Bola',normal:'Contra-Ataque Normal',rapido:'Contra-Ataque Rápido',fora:'Por Fora',longo:'Bola Longa',overload:'Sobreposição'};
 const $=(s,root=document)=>root.querySelector(s),mk=(tag,cls,txt)=>{
  const node=document.createElement(tag);
  if(cls)node.className=cls;if(txt!==undefined)node.textContent=String(txt);return node;

@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V264: auditoria de 246 edições × cinco estilos com rastreabilidade.
+/* V264: auditoria de 246 edições × seis estilos com rastreabilidade.
  * Não modifica build, não homologa jogador por Overall nem usa IA para
  * completar habilidades, Card IDs, atributos-base, vídeos ou boosters.
  */
@@ -61,7 +61,7 @@ for(const card of cards){
  if(proof.competitivelyVerified)ready++;
  assert.equal(JSON.stringify(card),same,'Não modificar #'+card.numero);
 }
-assert.equal(count,1230);
+assert.equal(count,1476);
 assert(invalid>0&&noTraining>0&&noNative>0);
 const messi=cards.find(c=>c.numero===50),martinelli=cards.find(c=>c.numero===191);
 assert(messi&&martinelli);

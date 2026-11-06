@@ -69,7 +69,7 @@ for(const c of cards){
  assert.equal(JSON.stringify(c),original,'Carta alterada: #'+c.numero);
  profiles.push({capture:c.numero,cardId:c.id,edition:c.versao,tactics});
 }
-assert.equal(scenarios,1230);
+assert.equal(scenarios,1476);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 assert.equal(roles.size>=8,true);
 const martin=cards.find(c=>c.numero===191),m=S.strategicPortfolioV286(adapt(martin),'posse',B);

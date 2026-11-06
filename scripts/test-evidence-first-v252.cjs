@@ -14,5 +14,5 @@ assert(source.includes("verifiedInGameplay:false"),'Não declarar treino testado
 assert(source.includes("evidenceStatus:sourceVerified?"),'Expor incerteza ao motor de fichas');
 assert(!source.includes("const fallback=baseline?engine.hypothetical"),'Impedir propagação do draft para cinco estilos');
 assert(source.includes("nativeDetails(card,style)"),'Manter motor de habilidades e ímpetos por estilo');
-assert(source.includes("styles=['posse','normal','rapido','fora','longo']"),'Preservar cinco táticas');
+assert(source.includes("styles=['posse','normal','rapido','fora','longo','overload']"),'Preservar as cinco táticas e incluir a sexta sem convertê-la em Posse');
 console.log('V252 OK: 246 edições preservadas; hipóteses não se tornam builds validadas; PP exatos.');

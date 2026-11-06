@@ -11,7 +11,7 @@ const before=JSON.stringify(catalog);
 assert.equal(catalog.length,246);assert.equal(new Set(catalog.map(c=>c.numero+'@'+c.id)).size,246);
 const profiles={},identical=new Map(),audit=[];
 let scenarios=0,playbooks=0,nearSkills=0,nearBoosters=0,incompleteId=0,positionWarnings=0;
-const tactics=['posse','normal','rapido','fora','longo'];
+const tactics=['posse','normal','rapido','fora','longo','overload'];
 for(const card of catalog){
  const cBefore=JSON.stringify(card);
  const d={capture:card.numero,id:card.id,edition:card.versao,
@@ -42,9 +42,9 @@ for(const card of catalog){
   assert.equal(dossier.playbook.tactic,tactic);
   assert.equal(play.role,sk.role);
   assert.equal(play.steps.length,3);
-  assert.equal(dossier.tacticalStability.tacticsCompared,5);
-  assert(dossier.tacticalStability.topSkillVariations<=5);
-  assert(dossier.tacticalStability.boosterVariations<=5);
+  assert.equal(dossier.tacticalStability.tacticsCompared,6);
+  assert(dossier.tacticalStability.topSkillVariations<=6);
+  assert(dossier.tacticalStability.boosterVariations<=6);
   assert(sk.recommendations.length<=5);
   assert.equal(sk.equippedConfirmed,false);
   assert.equal(sk.slotsRemaining,null);
@@ -78,8 +78,8 @@ for(const card of catalog){
   archetype:S.archetypeOf(d),recommendations:results});
  assert.equal(JSON.stringify(card),cBefore,'Alteração inesperada da carta '+card.numero);
 }
-assert.equal(scenarios,1230);
-assert.equal(playbooks,1230);
+assert.equal(scenarios,1476);
+assert.equal(playbooks,1476);
 assert.equal(JSON.stringify(catalog),before);
 assert.equal(read('web/SCOUT_V69_AUDITORIA.json'),raw);
 // PTE com doutrinação CA não vira CA na posição ORIGINAL e não é
@@ -120,6 +120,6 @@ fs.mkdirSync(path.join(root,'build'),{recursive:true});
 fs.writeFileSync(path.join(root,'build/v275-competitive-evidence-246x5.json'),JSON.stringify(report,null,2)+'\n');
 assert(read('web/sw.js').includes('v275-deep-evidence'));
 assert(read('package.json').includes('test-deep-evidence-v275.cjs'));
-console.log('V275 PASS: 246 cartas x 5 táticas = '+scenarios+' laudos, '+playbooks+
+console.log('V275 PASS: 246 cartas x 6 táticas = '+scenarios+' laudos, '+playbooks+
  ' guias práticos, '+nearSkills+' margens pequenas de skills e '+nearBoosters+
  ' disputas de ímpeto. Catálogo inalterado.');

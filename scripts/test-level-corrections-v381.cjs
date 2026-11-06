@@ -19,6 +19,35 @@ const T=require('../web/scout-multitactic-engine-v220.js'),P=require('../web/cra
 const Main=require('../web/craque-main-sheet-v378.js'),F=require('../web/craque-friends-training-v228.js');
 const S=require('../web/skills-booster-v162.js'),B=require('../web/booster-engine-v103.js');
 const refs=require('../web/ct376-card-references.json').cards;
+const Review=require('../web/craque-card-review-v379.js');
+const PriorLevels=require('../web/craque-progresso-v248.js');
+const canonicalBefore=JSON.stringify(cards);
+for(const c of cards.filter(c=>c.numero>=226)){
+ const entry=refs.find(r=>r.capture===c.numero),legacyKey=c.numero+'@'+c.id;
+ const priorReceipt={schema:PriorLevels.SCHEMA,numero:c.numero,card_id:String(c.id),name:c.name,edition:c.versao,level:c.max_level,pp:c.pp,confirmed_in_game:true};
+ const values=new Map([[PriorLevels.key(c),JSON.stringify(priorReceipt)]]),store={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,String(value))};
+ const priorState=JSON.stringify([...values]);
+ const model=P.fromPersonal(c,null,store);
+ assert.equal(model.cardKey,legacyKey,'Overlay público preserva a chave dos históricos e treinos: '+c.numero);
+ assert.equal(model.cardId,entry.candidateId);assert.equal(model.edition,entry.reference.edition);
+ assert.equal(model.pp,c.pp);assert.equal(model.level??model.publicMaxLevel,c.max_level);
+ assert.equal(model.trainingLevels,Array.isArray(c.niveis)?c.niveis.join(','):'','Treino original preservado ao vincular a fonte: '+c.numero);
+ assert.equal(JSON.stringify([...values]),priorState,'Consulta da fonte pública não grava nem reescreve recibos');
+ assert.deepEqual(PriorLevels.readSaved(c,store),priorReceipt,'Recibo original de nível permanece legível pela identidade histórica: '+c.numero);
+ assert.equal(PriorLevels.readSaved({...c,id:model.cardId,versao:model.edition},store),null,'Recibo antigo não é transferido automaticamente para uma nova identidade pública');
+ const descriptor=Review.catalog([c],[])[0],manualId='999990'+c.numero,manualEdition='Edição informada pelo proprietário '+c.numero;
+ Review.save(store,descriptor,{cardId:manualId,edition:manualEdition,maxLevel:c.max_level,pp:c.pp,training:c.niveis||null},true);
+ const savedBefore=JSON.stringify([...values]),manual=P.fromPersonal(c,null,store);
+ assert.equal(manual.cardId,manualId,'Revisão manual prevalece sobre candidato público: '+c.numero);
+ assert.equal(manual.edition,manualEdition);assert.equal(manual.pp,c.pp);
+ assert.equal(manual.trainingLevels,Array.isArray(c.niveis)?c.niveis.join(','):'');
+ assert.equal(JSON.stringify([...values]),savedBefore,'Leitura não altera revisão ou histórico local');
+}
+const unknownMessi=cards.find(c=>c.numero===50),unknownModel=P.fromPersonal(unknownMessi);
+assert.equal(unknownModel.cardId,unknownMessi.id);assert.equal(unknownModel.edition,unknownMessi.versao);
+assert.equal(unknownModel.pp,56);assert.equal(unknownModel.level,29);
+assert.equal(unknownModel.evidenceCard.publicIdentityV393,undefined,'Relato 29/56 não resolve identidade do Messi');
+assert.equal(JSON.stringify(cards),canonicalBefore,'Vínculo público e revisão manual não alteram nenhuma carta canônica');
 for(const c of cards){
  const r=audit.cards.find(r=>r.capture===c.numero);assert(r);
  if(r.decision.status==='reviewed')assert.equal(c.pp,2*(r.decision.maxLevel-1));
@@ -63,8 +92,9 @@ const H=require('./historical-level-fixtures-v381.cjs');
 assert.equal(crypto.createHash('sha256').update(H.historicalRead('web/index.html','utf8').replace(/\r\n/g,'\n')).digest('hex'),archive.index.beforeSha256);
 assert.equal(crypto.createHash('sha256').update(H.historicalRead('web/ct364-owned-cards.json','utf8')).digest('hex'),archive.beforeOwnedSha256);
 const exported=require('./export-level-sheets-v381.cjs').generate();
-assert.equal(exported.sheets.length,1305);assert.equal(exported.sheets.filter(s=>s.levelReviewStatus==='reviewed').length,1305);
+assert.deepEqual(F.MODES,['posse','normal','rapido','fora','longo','overload']);
+assert.equal(exported.sheets.length,1566);assert.equal(exported.sheets.filter(s=>s.levelReviewStatus==='reviewed').length,1566);
 assert.equal(exported.sheets.filter(s=>s.key==='cap:196').every(s=>s.pp===66),true);
 assert.equal(exported.sheets.filter(s=>s.key==='cap:50').every(s=>s.identityPending===true&&s.text.includes('edição/ID exatos ainda pendentes')),true);
 for(const s of exported.sheets)assert.equal(T.total(s.review.proposed),s.pp,'Exportação deve usar o mesmo orçamento efetivo da ficha');
-console.log('V381 integration PASS: 261 cartas auditadas, Havertz32/62, edições fixas0PP, 1230 cenários originais recalculados, orçamento/arquivo reversível.');
+console.log('V381 integration PASS: 261 cartas auditadas, Havertz32/62, edições fixas0PP, 1476 cenários originais, 21 vínculos públicos sem alterar treinos, revisão manual prioritária, Messi pendente, orçamento/arquivo reversível.');

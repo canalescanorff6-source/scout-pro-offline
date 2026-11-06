@@ -138,7 +138,7 @@ function mount(doc){
  const technicalTitle=technical.querySelector(':scope > summary');
  if(technicalTitle)technicalTitle.textContent='Análises e histórico · opcionais';
  const brand=doc.querySelector('.brand-copy small');
- if(brand)brand.textContent='FICHA ÚNICA • CINCO TÁTICAS';
+ if(brand)brand.textContent='FICHA ÚNICA • SEIS TÁTICAS';
  const edition=doc.querySelector('.topbar .edition');
  if(edition)edition.textContent='eFOOTBALL 2027 · CRAQUE TÁTICO';
  const rawTitle=doc.title||'';

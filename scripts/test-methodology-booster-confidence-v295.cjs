@@ -26,7 +26,7 @@ for(const c of cards){
   states[status]=(states[status]||0)+1;scenarios++;
  }
 }
-assert.equal(scenarios,1230);
+assert.equal(scenarios,1476);
 const m=cards.find(x=>x.numero===191);
 assert.equal(m.max_level,26);assert.equal(m.pp,50);
 const method=V.methodologyGate(m,checks,'posse',null,{});

@@ -1,7 +1,7 @@
 // Fixture histórica anterior à correção autorizada V381; dados atuais são verificados no teste de integração V381.
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
-/* V287 — 246 fichas, 5 estilos, provas exatas e fila operacional de fontes. */
+/* V287 — 246 fichas, 6 estilos, provas exatas e fila operacional de fontes. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),load=p=>historicalRead(path.join(root,p),'utf8');
@@ -90,8 +90,8 @@ for(const c of cards){
  });
  assert.equal(JSON.stringify(c),immutable,'Acervo adulterado: CAP '+c.numero);
 }
-assert.equal(scenarios,1230);
-assert.equal(sourceMatches,1220);
+assert.equal(scenarios,1476);
+assert.equal(sourceMatches,1464);
 assert.equal(load('web/SCOUT_V69_AUDITORIA.json'),corpus);
 assert.equal(load('web/SCOUT_V221_EVIDENCE_INDEX.json'),source);
 assert.equal(inferredSource,0,'Print candidato não pode ser convertido em print confirmado');

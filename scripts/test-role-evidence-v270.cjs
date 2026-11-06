@@ -2,7 +2,7 @@
 const {historicalRead}=require('./historical-level-fixtures-v381.cjs');
 'use strict';
 /* V270: efeitos consultivos da função real sem Overall, nem mutação de builds.
- * Integração: 246 cartas × cinco táticas, nativas PT/EN, slots e PP intactos.
+ * Integração: 246 cartas × seis táticas, nativas PT/EN, slots e PP intactos.
  */
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path');
@@ -15,7 +15,7 @@ const B=require('../web/booster-engine-v103.js');
 assert.equal(cards.length,246);
 assert.equal(new Set(cards.map(c=>String(c.numero)+'@'+String(c.id))).size,246);
 const tactics=B.tactics;
-assert.deepEqual(tactics,['posse','normal','rapido','fora','longo']);
+assert.deepEqual(tactics,['posse','normal','rapido','fora','longo','overload']);
 const normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const count=(map,key)=>map.set(key,(map.get(key)||0)+1);
 const first=new Map(),firstByRole=new Map(),skillLists=new Map(),profileCounts=new Map();
@@ -71,7 +71,7 @@ for(const card of cards){
  }
  assert.equal(JSON.stringify(card),snapshot,'Mutação de carta '+card.numero);
 }
-assert.equal(evaluations,1230);
+assert.equal(evaluations,1476);
 assert.equal(missingBuilds,87,'84 sem vetor + 1 proposta não validada permanecem bloqueados');
 assert(ptNativeAliases>0,'Amostra PT-BR precisa existir no catálogo');
 assert((profileCounts.get('zagueiro_construtor')||0)>0);
