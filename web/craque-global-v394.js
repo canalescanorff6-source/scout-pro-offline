@@ -71,8 +71,10 @@
  }
  function rankBoosters(outputs){
   if(!Array.isArray(outputs)||outputs.length!==MODES.length)return null;
-  if(outputs.some(x=>!MODES.includes(x?.tactic)||x.result?.slotSupported!==true||
-   x.result?.able!==true))return null;
+  // Ranking consultivo mesmo com slot não confirmado. A elegibilidade
+  // continua no resultado original; esta função NUNCA autoriza equipamento.
+  if(outputs.some(x=>!MODES.includes(x?.tactic)||!x.result||
+   (!x.result.primary&&!(x.result.alternatives||[]).length)))return null;
   const byName=new Map();
   for(const row of outputs){
    const picks=[row.result.primary,...(row.result.alternatives||[])].filter(Boolean);
@@ -88,7 +90,7 @@
   }
   const ordered=[...byName.values()].sort((a,b)=>b.styles.size-a.styles.size||
    b.score-a.score||a.best-b.best);
-  return ordered.length?{primary:ordered[0].item,alternatives:ordered.slice(1,6).map(x=>x.item)}:null;
+  return ordered.length?{primary:ordered[0].item,alternatives:ordered.slice(1,6).map(x=>x.item),applyAuthorized:false,rankingStatus:'consultivo_sem_prova_de_slot'}:null;
  }
  return Object.freeze({MODES,VERSION,choose,rankSkills,rankBoosters});
 });
