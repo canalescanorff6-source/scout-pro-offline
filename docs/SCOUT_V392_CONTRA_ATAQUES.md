@@ -49,6 +49,14 @@ O PR #315, já integrado à `main`, adicionou distribuição individual por edi�
 - **Comparabilidade:** trocar `normal` e `rapido` não pode regravar Posse, outros elencos, níveis originais ou fichas salvas. Uma recomendação pode coincidir entre duas cartas sem ser prova de cópia; quando for o caso, o painel precisa explicar as evidências ou marcá-las pendentes.
 - **Validação PvP:** recomendações são hipóteses; só ensaio controlado com observações de jogo pode sustentá-las como configuração competitiva.
 
+## V392 — seleção completa de titulares e banco por estilo
+
+- A seção **Sugestão para Contra-Ataque / Contra-Ataque Rápido** exibe até 11 titulares e 12 reservas por formação. O cálculo só considera jogadores com posição documentada ou familiaridade/treino já confirmado na edição, sem misturar duas cartas do mesmo atleta. Cartas restringidas na lista local não são sugeridas.
+- A ordenação é um **encaixe documental ordinal**, não uma comprovação de quais cartas são melhores no PvP. Usa sinais cadastrados de posição, estilo, habilidades nativas e complementaridade de função (volante de ligação/proteção, CA de apoio/ruptura, zagueiros de cobertura). Só um teste de partida e dados do jogador podem homologar o resultado.
+- O usuário pode **Aplicar 11 titulares e 12 reservas nesta tática**, com confirmação explícita. A seleção é validada novamente e salva em chave própria do estilo e formação. A **Posse de Bola** não pode receber essa atualização; as fichas, PP, slots de habilidades e ímpetos não são alterados automaticamente.
+- O banco sugerido é aplicado somente pelo botão. Caso o usuário mude os titulares depois, o banco continua protegido contra duplicidade de pessoa e pode ser automaticamente corrigido, com aviso na ficha do reserva.
+- `scripts/test-dual-counter-v392.cjs` verifica os quatro contextos (2 formações x 2 estilos), o XI e 12 reservas, a identidade, a elegibilidade e as exclusões.
+
 ## Entrega e aceitação
 
 - Guia visível na tela **Minhas duas formações**, ao selecionar Contra-Ataque ou Contra-Ataque Rápido, com ataque, defesa, risco, variação 4-3-1-2/4-2-1-3 e tarefas individuais da **vaga**. Cada vaga continua abrindo a ficha por posição para PP, skills e ímpetos específicos da edição.
