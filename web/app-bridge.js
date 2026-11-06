@@ -182,9 +182,15 @@ if(inCard){
     const planner=document.createElement('script');
     planner.src=v189Root+'craque-style-planner-v303.js';
     const startGlobal=()=>{
-     if(window.CRAQUE_GLOBAL_V394)return startUI();
+     const loadPhysical=()=>{
+      if(window.CRAQUE_PHYSICAL_V395)return startUI();
+      const physical=document.createElement('script');
+      physical.src=v189Root+'craque-physical-v395.js';
+      physical.onload=startUI;physical.onerror=startUI;document.head.appendChild(physical);
+     };
+     if(window.CRAQUE_GLOBAL_V394)return loadPhysical();
      const global=document.createElement('script');global.src=v189Root+'craque-global-v394.js';
-     global.onload=startUI;global.onerror=startUI;document.head.appendChild(global);
+     global.onload=loadPhysical;global.onerror=loadPhysical;document.head.appendChild(global);
     };
     planner.onload=startGlobal;planner.onerror=startGlobal;document.head.appendChild(planner);
    };
