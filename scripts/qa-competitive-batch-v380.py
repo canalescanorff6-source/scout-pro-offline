@@ -62,7 +62,7 @@ with sync_playwright() as pw:
     page.wait_for_function('()=>document.querySelector(".ct378-main-sheet")?.dataset.source==="profile"')
     page.locator('#ct-manager-v302').evaluate('(e)=>e.open=true');manager.select_option(coach_a)
     page.wait_for_function('(m)=>document.querySelector(".ct378-main-sheet")?.dataset.manager===m',arg=coach_a)
-    page.get_by_role('button',name='Comparar proposta revista para Posse',exact=True).click()
+    page.get_by_role('button',name='Ver proposta atualizada',exact=True).click()
     page.wait_for_function('()=>document.querySelector(".ct380-evidence")')
     page.locator('#ct-manager-v302').evaluate('(e)=>e.open=true');manager.select_option(coach_b)
     page.wait_for_function('(m)=>document.querySelector(".ct378-main-sheet")?.dataset.manager===m',arg=coach_b)
@@ -70,7 +70,7 @@ with sync_playwright() as pw:
     assert page.locator('.ct380-evidence').count()==0
    assert sheet.locator('.ct374-skill-reasons > li > strong').all_text_contents()==skills
    assert page.locator('.ct380-evidence').count()==0,'Revisão salva não deve ganhar rótulo editorial novamente'
-   compare=page.get_by_role('button',name='Comparar proposta revista para Posse',exact=True)
+   compare=page.get_by_role('button',name='Ver proposta atualizada',exact=True)
    compare.click(timeout=25000)
    page.wait_for_function('()=>document.querySelector(".ct380-evidence")')
    assert page.locator('.ct378-main-sheet:visible').count()==1
