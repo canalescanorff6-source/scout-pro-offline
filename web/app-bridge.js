@@ -45,6 +45,22 @@ const bar=document.createElement('aside');bar.id='scout-app-bar';bar.setAttribut
 bar.innerHTML='<div><strong>CRAQUE TÁTICO · OFFLINE</strong><span class="app-small" id="scout-update-label">246 fichas no dispositivo · atualização quando houver conexão</span></div><nav class="scout-page-actions" aria-label="Navegação Craque Tático"><button id="scout-back" type="button">← Voltar</button><a id="scout-home" href="#">⌂ Elenco</a><button id="scout-top" type="button">↑ Topo</button></nav><div class="app-actions"><button id="scout-backup" type="button">Meus dados</button><button id="scout-update" type="button">Atualizar</button></div>';
 document.body.appendChild(bar);
 const inCard=location.pathname.includes('/fichas/');
+// V394: abrir o guia sem modificar o HTML histórico nem os hashes do catálogo.
+// Posicionar o atalho DENTRO da biblioteca, para não deslocar a hero no mobile.
+if(!inCard&&document.body?.dataset.page==='catalog'){
+ const catalogue=document.getElementById('catalogo');
+ if(catalogue&&!document.getElementById('ct394-guide-link')){
+  const guideLink=document.createElement('a');
+  guideLink.id='ct394-guide-link';
+  guideLink.href='guia-movimentacao-v394.html';
+  guideLink.textContent='Guia de movimentação · 261 cartas · 6 estilos';
+  guideLink.style.cssText='display:inline-flex;align-items:center;min-height:42px;padding:9px 13px;border:1px solid #7797ad;border-radius:11px;background:#1b2d3d;color:#f6f7ff;font:700 12px/1.4 system-ui,sans-serif;text-decoration:none';
+  const guideWrap=document.createElement('div');
+  guideWrap.style.cssText='display:flex;justify-content:flex-end;margin:6px 0 10px';
+  guideWrap.append(guideLink);
+  (catalogue.querySelector('.section-top')||catalogue).insertAdjacentElement('afterend',guideWrap);
+ }
+}
 // V354: um único ponto de atualização da marca para as 246 fichas.
  // Executa no script defer ANTES do DOMContentLoaded, sem alterar
  // conteúdo documental, arte das cartas, Card IDs ou builds.
