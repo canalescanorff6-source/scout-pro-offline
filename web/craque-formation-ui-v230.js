@@ -62,7 +62,7 @@ function render(){
  // V392: guia prático ligado ao estilo e à formação EXISTENTE, sem alterar a escalação.
  const counter=tactical.counterGuide?.(activeMode,currentId);
  if(counter){
-  const guide=node('details','ct-v230-fit-row ct-v392-counter-guide');
+  const guide=node('details','ct-v392-counter-guide');
   guide.open=true;
   guide.append(node('summary','',counter.label+' · Como atacar e defender com esta formação'));
   for(const [label,description] of [
