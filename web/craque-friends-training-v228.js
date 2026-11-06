@@ -154,6 +154,7 @@ function allocateStyle(card,tactic,deps){
  return {
   status:'hipotese',role:context.role,levels,pp:budget,remaining:0,
   categories:t.CATEGORIES,style:tactic,
+  optimization:{weights:(refined?.weights||context.weights).slice(),role:context.role},
   focus:{...t.focus(source,tactic),priority:(analysis?.status==='preservada'?context.priorities:analysis?.priorities||context.priorities).slice(0,4).map(x=>({
    index:x.index,name:x.name,weight:x.weight}))},
   ...(analysis?{analysis:{...analysis,context:[card.localKey,card.cardId,card.edition,card.position,tactic,budget].map(value=>String(value??''))}}:{}),
@@ -166,41 +167,54 @@ function allocateStyle(card,tactic,deps){
   note:'Mesmo motor de distribuição V251 e interpretação V233 de Minhas Cartas; comparação individual por função, estilo, habilidades e PP. NÃO otimiza Overall e NÃO prova desempenho real nem autoriza trocar treino aprovado.'
  };
 }
-/* V394: a MESMA proposta de PP nos seis estilos; só muda a leitura tática.
- * Não altera cartas, drafts nem itens equipados. Histórico por estilo continua consultável.
- * Falta de PP/identidade conserva a pendência do motor original.
+/* V395: ficha única POR EDIÇÃO, sem escolher um dos seis vetores V394.
+ * A base documentada (CAP + Card ID + edição) e os seis contextos entram
+ * juntos no otimizador; ausência de dados NÃO fabrica uma ficha genérica.
+ * Seis abas continuam sendo seletores de interpretação, não novas builds.
  */
 let universalCache=null;
 function globalMotor(deps){
  return deps?.universal||(typeof window!=='undefined'?window.CRAQUE_GLOBAL_V394:null);
 }
+function physicalMotor(deps){
+ return deps?.physical||(typeof window!=='undefined'?window.CRAQUE_PHYSICAL_V395:
+  (typeof module==='object'?require('./craque-physical-v395.js'):null));
+}
 function allocate(card,tactic,deps){
  if(!MODES.includes(tactic))throw Error('Estilo tático inválido.');
  const g=globalMotor(deps);
- if(!g?.choose||deps?.legacyByStyle===true)return allocateStyle(card,tactic,deps);
- const t=getDeps(deps).tactical;
- const ref=card.reference?.reference;
+ if(!g?.optimizeCard||deps?.legacyByStyle===true)return allocateStyle(card,tactic,deps);
+ const t=getDeps(deps).tactical,{individual}=primaryEngines(deps);
+ const reference=card.reference===null?null:
+  card.reference??deps?.reference??catalogueReference(card);
+ const linkedCard={...card,reference};
+ const ref=reference?.reference;
+ const physical=physicalMotor(deps)?.lookup?.(linkedCard)||null;
  const key=sourceSignature(card)+'|'+String(card.localKey||'')+'|'+String(card.capture||'')+
   '|'+String(card.originalPosition||'')+'|'+String(ref?.htmlSha256||'')+
-  '|'+String(ref?.cardId||'')+'|'+String(ref?.edition||'');
+  '|'+String(ref?.cardId||'')+'|'+String(ref?.edition||'')+
+  '|'+String(physical?.cardId||'')+'|'+String(g.VERSION||'');
  if(!universalCache||universalCache.key!==key||deps?.individual||deps?.interpretation){
-  const contexts=MODES.map(mode=>allocateStyle(card,mode,deps));
-  const choice=g.choose(contexts,t);
-  universalCache={key,contexts,choice};
+  const contexts=MODES.map(mode=>allocateStyle(linkedCard,mode,deps));
+  const optimization=g.optimizeCard({card:linkedCard,plans:contexts,tactical:t,
+   individual,reference,physical});
+  universalCache={key,contexts,optimization};
  }
  const original=universalCache.contexts.find(p=>p.style===tactic);
- const choice=universalCache.choice;
- if(!choice||!original||original.status!=='hipotese')return original;
- const levels=choice.levels.slice();
- const baseline=parseBaseline(card,t);
+ const choice=universalCache.optimization;
+ if(!original||original.status!=='hipotese')return original;
+ if(!choice||choice.status==='pendente'||!choice.levels)
+  return {...original,status:'pendente',levels:null,remaining:null,
+   reason:choice?.reason||'Proposta global indisponível: conferir edição, PP e atributos-base.',
+   global:choice||null,confidence:'pendente_dados_da_edicao'};
+ const levels=choice.levels.slice(),baseline=parseBaseline(card,t);
  const differences=baseline.levels?t.CATEGORIES.flatMap((name,i)=>
   baseline.levels[i]!==levels[i]?[{name,was:baseline.levels[i],proposed:levels[i]}]:[]):[];
  return {...original,levels,remaining:0,differences,global:choice,
-  methodology:'V394 · ficha global individual · V251/V233 em seis estilos',
-  confidence:'hipotese_multiestilo_sem_gameplay',
-  note:'Ficha global de gameplay: o mesmo vetor de PP permanece ao trocar os seis estilos. '+
-   'O consenso matemático entre propostas por carta não comprova superioridade no PvP. '+
-   'Treinos aprovados e equipamento cadastrados permanecem intactos.'};
+  methodology:'V395 · treino global por edição, atributos-base, V251/V233 e seis estilos',
+  confidence:'hipotese_individual_base_documentada_sem_gameplay',
+  note:'Um único vetor de PP por edição, independente do estilo coletivo. '+choice.statement+
+   ' Corpo e alcance só entram quando vinculados à edição; nunca inventar medidas ou ganhos.'};
 }
 /* V373 — dossiê PRO usa SÓ as hipóteses do motor oficial V251/V233/V162/V103.
    Rentão/Blackjhon são referência de critérios, não autores destas builds. */
