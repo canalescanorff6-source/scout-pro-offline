@@ -461,7 +461,7 @@ function evaluate(card,tactic='posse',deps){
     {...raw,niveis:plan.levels},mode,{skills:s,boosters:b},null,
     plan.analysis?.reference?reference?.reference:null)}));
    const ranked=global.rankBoosters(boosterRows);
-   if(ranked)boost={...boost,...ranked};
+   if(ranked&&card.boosterSlot!=='ausente'&&boost?.primary)boost={...boost,...ranked};
   }
  }
  // Usar a MESMA validação de nativas do motor V162; texto genérico
