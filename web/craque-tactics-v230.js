@@ -41,6 +41,71 @@ function fit(card,slot){
  if(NEAR[want]?.includes(have))return {match:false,score:15,label:'Adaptação sem familiaridade confirmada'};
  return {match:false,score:-100,label:'Posição incompatível'};
 }
+/* V392: guia de execução MANUAL para duas táticas. São tarefas por VAGA,
+ * nunca equipamento, build validada ou comportamento garantido da carta.
+ * A ficha individual, seu PP e seus slots seguem nos motores V251/V228/V311.
+ */
+const COUNTER_GUIDES=Object.freeze({
+ normal:Object.freeze({
+  label:'Contra-Ataque',
+  attack:'Recupere, confirme a primeira linha de passe e procure MAT/SA entre as linhas. Combine passe curto e vertical; lance ao espaço só quando o CA tiver vantagem. Um CA apoia, o outro ataca a profundidade.',
+  defence:'Defenda primeiro pelo centro controlando o VOL. Feche o passe para o atacante, use contenção e intercepte; não tire o ZG da cobertura sem necessidade. Reagrupe antes de tentar recuperar alto.',
+  risk:'Bloco recuado pode isolar os atacantes. Se o MAT/SA não acompanhar, segure a bola no VOL e reaproxime em vez de forçar lançamento.',
+  formations:Object.freeze({
+   '4312':Object.freeze({attack:'4-3-1-2: VOL de proteção + VOL de ligação; MLG se aproxima do MAT para formar o apoio do primeiro CA. Segundo CA procura ruptura.',defence:'4-3-1-2: dois VOL vedam o meio; MLG recompõe e MAT corta a linha de passe ao volante rival.'}),
+   '4213':Object.freeze({attack:'4-2-1-3 estreita: VOL encontra MAT ou SA central; SA devolve a um dos dois CA. Alterne passe de apoio e profundidade.',defence:'4-2-1-3 estreita: o SA fecha a saída central e o MAT recua sobre o primeiro volante rival; os dois VOL não devem subir juntos.'})
+  }),
+  roles:Object.freeze({
+   GO:Object.freeze(['Distribuir com segurança para ZG/VOL; ligação direta só se receptor e segunda bola estiverem cobertos.','Proteger a meta e não sair sem ângulo claro.']),
+   LE:Object.freeze(['Dar apoio simples por fora ou por dentro sem cruzamento obrigatório.','Segurar o lado esquerdo e não abandonar o corredor em transição.']),
+   LD:Object.freeze(['Dar passe de apoio, ficando como cobertura da perda.','Segurar o lado direito e fechar o espaço entre lateral e ZG.']),
+   ZG:Object.freeze(['Iniciar com passe limpo e não conduzir para zona congestionada.','Conservar linha, acompanhar a profundidade e cobrir o colega que confronta.']),
+   VOL:Object.freeze(['Um sustenta o time; outro oferece passe vertical ao MAT/SA conforme a jogada.','Proteger zona central, bloquear passe de ruptura e não pressionar com os dois ao mesmo tempo.']),
+   MLG:Object.freeze(['Ser terceiro homem: recuperar, apoiar o MAT e chegar de trás.','Recompor o meio e fechar opções de passe ao redor do VOL.']),
+   MAT:Object.freeze(['Receber entre linhas, devolver de primeira quando possível e servir o CA desmarcado.','Fechar o passe central de saída e voltar ao espaço dos VOL.']),
+   SA:Object.freeze(['Aproximar dos dois CA e preparar tabela curta para ruptura.','Atrapalhar a distribuição pelo centro sem perder a linha do meio.']),
+   CA:Object.freeze(['Alternar apoio de costas e desmarque nas costas; finalizar quando houver ângulo real.','Fechar o passe simples ao meio; não gastar corrida perseguindo os dois ZG.'])
+  })
+ }),
+ rapido:Object.freeze({
+  label:'Contra-Ataque Rápido',
+  attack:'Após o desarme, procure rapidamente uma linha curta e vertical para VOL, MAT ou SA. Acione um CA em profundidade e use o outro como apoio; se o caminho estiver fechado, recicle o passe sem acelerar às cegas.',
+  defence:'A pressão é mais adiantada: pressione com o jogador próximo e cubra a linha de passe com o VOL. Troque o cursor para proteger a profundidade antes do lançamento rival. Evite puxar os dois ZG e pressionar sem cobertura.',
+  risk:'Linha alta expõe bolas nas costas. Quando o adversário prepara lançamento, abandone a perseguição e priorize o ZG de cobertura; se necessário, desacelere a pressão.',
+  formations:Object.freeze({
+   '4312':Object.freeze({attack:'4-3-1-2: recuperar no VOL/MLG, MAT recebe em um ou dois toques, CA de apoio combina com o CA de ruptura.',defence:'4-3-1-2: MLG pressiona o portador próximo; um VOL cobre a frente da zaga e o outro vigia o passe de retorno.'}),
+   '4213':Object.freeze({attack:'4-2-1-3 estreita: MAT liga o primeiro passe e SA central encosta nos dois CA para tabela e ruptura por dentro.',defence:'4-2-1-3 estreita: MAT/SA perturbam a saída central; um VOL guarda a zona da bola nas costas do MAT e o outro protege os ZG.'})
+  }),
+  roles:Object.freeze({
+   GO:Object.freeze(['Saída rápida, mas com passe seguro para iniciar a transição.','Ficar atento à profundidade sem sair automaticamente em toda bola.']),
+   LE:Object.freeze(['Apoiar curto sem subir ao mesmo tempo que o outro lateral.','Recompor imediatamente; proteger o corredor na linha alta.']),
+   LD:Object.freeze(['Ser linha de passe de retorno sem romper a cobertura.','Recompor e não abrir o espaço lateral do ZG.']),
+   ZG:Object.freeze(['Primeiro passe vertical apenas quando houver receptor livre; caso contrário, apoiar o VOL.','Um confronta, o outro cobre a profundidade; antecipar lançamentos, não perseguir os dois CA.']),
+   VOL:Object.freeze(['Um progride com passe vertical; outro permanece preparado para a perda.','Controlar a zona à frente dos ZG e cortar a bola nas costas do MAT.']),
+   MLG:Object.freeze(['Pressionar, recuperar e atacar como terceiro homem em apoio ao MAT.','Pressionar apenas com cobertura do VOL; retornar se a primeira pressão falhar.']),
+   MAT:Object.freeze(['Receber de frente e acelerar a tabela; decidir rapidamente entre CA de apoio e CA de ruptura.','Fechar passe ao meio e iniciar pressão coordenada, sem perseguir lateral fora de sua zona.']),
+   SA:Object.freeze(['Aproximar dos dois CA, combinar passe de primeira e infiltração central.','Pressionar saída por dentro e recompor para não abrir a frente dos VOL.']),
+   CA:Object.freeze(['Um ataca a última linha, o outro encosta para tabela; alternar funções conforme as cartas reais.','Orientar a pressão para o corredor escolhido, não correr sem direção.'])
+  })
+ })
+});
+function counterGuide(mode,formation,slot){
+ const cfg=COUNTER_GUIDES[mode];
+ if(!cfg||!Object.hasOwn(cfg.formations,formation))return null;
+ const role=slot===undefined||slot===null?null:slotRole(slot);
+ if(slot!==undefined&&slot!==null&&!role)return null;
+ const task=role?cfg.roles[role]:null;
+ if(role&&!task)return null;
+ return Object.freeze({
+  mode,formation,label:cfg.label,attack:cfg.attack,defence:cfg.defence,risk:cfg.risk,
+  formationAttack:cfg.formations[formation].attack,
+  formationDefence:cfg.formations[formation].defence,
+  ...(task?{role,roleAttack:task[0],roleDefence:task[1]}:{}),
+  evidence:'Guia tático de controle manual por formação e vaga. Não é ficha individual, nem prova de habilidade, ímpeto ou rendimento da carta.',
+  source:'https://efhub.com/pt-BR/articles/261021_3-the-six-team-playstyles-underlying-parameters-revealed'
+ });
+}
+
 const clauses={
  posse:[
  [/orquestrador|armador criativo|classico|meia versatil|primeiro volante/,17,'Apoio e controle pelo centro'],
@@ -111,5 +176,5 @@ function rank(cards,slot,mode,exclude=[],used=[]){
  .filter(x=>x.score>=0&&fit(x.card,slot).match)
  .sort((a,b)=>b.score-a.score||Number(a.card.numero)-Number(b.card.numero));
 }
-return Object.freeze({MODES,POS,position,slotRole,fit,score,rank});
+return Object.freeze({MODES,POS,position,slotRole,fit,score,rank,counterGuide});
 });
