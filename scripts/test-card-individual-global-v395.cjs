@@ -35,6 +35,12 @@ const bt=verify(cristianoBT),epic=verify(cristianoEpic),dg=verify(drogba),su=ver
 assert.notDeepEqual(bt,dg,'Mesmos PP/estilo/posição, mas atributos e identidade distintos');
 assert.notDeepEqual(bt,epic,'Cristiano Big Time e Epic são analisados por suas edições distintas');
 assert.notDeepEqual(dg,su,'Drogba e Suárez não usam um template de CA');
+const nihat=verify(make(byCap(37),'Artilheiro'));
+assert.notDeepEqual(bt,nihat,'Cristiano e Nihat têm mesmo estilo/CA/62 PP e bases diferentes');
+const vanBasten=verify(make(byCap(25),'Homem de área'));
+const drogbaReal=verify(make(byCap(45),'Homem de área'));
+assert.notDeepEqual(vanBasten,drogbaReal,
+ 'Van Basten e Drogba têm mesmo estilo/CA/62 PP e bases diferentes');
 const renamed=verify({...cristianoBT,name:'Apelido de exibição'});
 assert.deepEqual(bt,renamed,'Alterar nome NÃO pode fabricar distribuição diferente');
 const withoutEvidence=F.allocate({...cristianoBT,reference:null},'posse',deps);
